@@ -1,8 +1,9 @@
 .container {
   margin-top: 180px;
+  padding: 50px 60px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 50px;
 }
 .breadcrumbs {
@@ -18,4 +19,7 @@
     color: var(--Black);
     font-weight: bold;
   }
+}
+.product-info {
+  width: 100%;
 }
