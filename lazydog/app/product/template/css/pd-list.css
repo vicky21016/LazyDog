@@ -211,7 +211,7 @@
   position: relative;
 }
 .product-card-hover {
-  background: rgba(var(--skin), 0.9);
+  background: rgb(241, 213, 182, 0.7);
   position: absolute;
   top: 0;
   left: 0;
