@@ -23,3 +23,111 @@
 .product-info {
   width: 100%;
 }
+/* ----------也買區------------ */
+.also-buy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  overflow: hidden;
+}
+.also-buy-title {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.also-buy-list {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+/* --------------------------- */
+/* ----------他愛區------------ */
+.other-like {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  overflow: hidden;
+}
+.other-like-title {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.other-like-list {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+/* --------------------------- */
+/* ---------card元件----------- */
+.product-card {
+  width: 360px;
+  position: relative;
+}
+.product-card-hover {
+  background: rgb(241, 213, 182, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  .hover-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--White);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  h1 {
+    color: var(--orange);
+    padding-bottom: 20px;
+    cursor: pointer;
+  }
+}
+.product-card-img {
+  width: 100%;
+}
+.product-card-heart {
+  position: absolute;
+  right: 19px;
+  top: 18px;
+}
+.product-card-onsale {
+  position: absolute;
+  background: url(../img/font/onsale-bg.png);
+  width: 63px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--White);
+  user-select: none;
+  padding-bottom: 3px;
+}
+.product-card-info {
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  .product-card-name {
+    color: var(--Black);
+  }
+  .product-card-price {
+    color: var(--Orange);
+  }
+}
+/* --------------------------- */
