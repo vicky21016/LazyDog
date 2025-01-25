@@ -1,6 +1,5 @@
 .container {
   margin-top: 180px;
-  padding: 50px 60px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -22,13 +21,30 @@
 }
 .product-info {
   width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.product-info-img-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+}
+.product-img-small {
+  display: flex;
+}
+.product-info-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  flex: 1 0 0;
 }
 /* ----------也買區------------ */
 .also-buy {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 20px;
+  gap: 60px;
   width: 100%;
   overflow: hidden;
 }
@@ -36,20 +52,21 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 .also-buy-list {
   display: flex;
   align-items: center;
-  gap: 60px;
+  gap: 45px;
 }
+
 /* --------------------------- */
 /* ----------他愛區------------ */
 .other-like {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 20px;
+  gap: 60px;
   width: 100%;
   overflow: hidden;
 }
@@ -57,17 +74,17 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 .other-like-list {
   display: flex;
   align-items: center;
-  gap: 60px;
+  gap: 45px;
 }
 /* --------------------------- */
 /* ---------card元件----------- */
 .product-card {
-  width: 360px;
+  width: 240px;
   position: relative;
 }
 .product-card-hover {
@@ -98,17 +115,24 @@
 }
 .product-card-img {
   width: 100%;
+  img {
+    width: 100%;
+  }
 }
 .product-card-heart {
   position: absolute;
-  right: 19px;
-  top: 18px;
+  right: 12px;
+  top: 10px;
+  width: 25px;
+  img {
+    width: 100%;
+  }
 }
 .product-card-onsale {
   position: absolute;
-  background: url(../img/font/onsale-bg.png);
-  width: 63px;
-  height: 60px;
+  background: url(../img/font/onsale-bg.png) no-repeat center/cover;
+  width: 50px;
+  height: 48px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,12 +141,12 @@
   padding-bottom: 3px;
 }
 .product-card-info {
-  padding: 28px 20px;
+  padding: 0 20px 14px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 22px;
+  gap: 10px;
   .product-card-name {
     color: var(--Black);
   }
