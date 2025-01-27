@@ -5,6 +5,7 @@
   align-items: flex-start;
   gap: 50px;
 }
+/* --------麵包屑與標題-------- */
 .breadcrumbs {
   width: 242px;
   margin: 0;
@@ -19,6 +20,8 @@
     font-weight: bold;
   }
 }
+/* --------------------------- */
+/* ----------商品資訊---------- */
 .product-info {
   width: 100%;
   display: flex;
@@ -29,8 +32,20 @@
   flex-direction: column;
   flex: 1 0 0;
 }
-.product-img-small {
+.product-info-img-small {
   display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  .product-info-img-small-active {
+    border: 4px solid var(--Orange);
+  }
+  figure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid var(--skin);
+    border-radius: 4px;
+  }
 }
 .product-info-detail {
   display: flex;
@@ -39,6 +54,129 @@
   gap: 30px;
   flex: 1 0 0;
 }
+.product-info-content {
+  display: flex;
+  padding: 0px 10px 30px 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  .info-product-name {
+    font-weight: bold;
+  }
+}
+.info-favorite-group {
+  display: flex;
+  gap: 30px;
+  h4 {
+    font-weight: bold;
+    user-select: none;
+  }
+}
+.info-onsale-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  .onsale-tag {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--Orange);
+    border-radius: 30px;
+    h4 {
+      color: var(--White);
+    }
+  }
+  .onsale-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .onsale-time {
+    font-weight: bold;
+  }
+}
+.info-rate-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.info-price-group {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  h1 {
+    font-weight: bold;
+  }
+  h2 {
+    text-decoration: line-through;
+    color: var(--gray);
+  }
+  h3 {
+    color: var(--gray);
+  }
+}
+.info-qty-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--White);
+    width: 30px;
+    height: 30px;
+    padding: 0 8px;
+    border: 1px solid var(--Orange);
+    border-radius: 50%;
+    img {
+      width: 100%;
+    }
+  }
+  input {
+    width: 40px;
+    font-size: 20px;
+    text-align: center;
+    background: var(--White);
+    border: none;
+    outline: none;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}
+.info-btn-group {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    background: var(--orange);
+    border: 1px solid var(--orange);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    padding: 25px 55px;
+  }
+  h3 {
+    font-weight: bold;
+    color: var(--White);
+  }
+  .btn-buynow {
+    background: var(--White);
+    h3 {
+      color: var(--orange);
+    }
+  }
+}
+/* --------------------------- */
 /* ----------也買區------------ */
 .also-buy {
   display: flex;
