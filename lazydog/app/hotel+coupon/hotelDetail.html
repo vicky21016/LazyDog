@@ -1,42 +1,547 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Title</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
+  <head>
+    <title>hotel detail</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-        <!-- Bootstrap CSS v5.2.1 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
-    </head>
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <!-- 加入 Flatpickr (日期選擇器) -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh.js"></script>
 
-    <body>
-        <header>
-            <!-- place navbar here -->
-        </header>
-        <main></main>
-        <footer>
-            <!-- place footer here -->
-        </footer>
-        <!-- Bootstrap JavaScript Libraries -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
+    <style>
+      body {
+        background-color: #fff;
+      }
 
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
-    </body>
+      /* 搜尋欄 */
+      .search-bar {
+        display: flex;
+        gap: 15px;
+        background: #f5d1a8;
+        border-radius: 15px;
+        padding: 12px;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 950px;
+        margin: auto;
+      }
+
+      /* 搜尋框樣式 */
+      .search-group {
+        display: flex;
+        align-items: center;
+        background: white;
+        border-radius: 8px;
+        padding: 8px 12px;
+        flex: 1;
+        max-width: 300px; /* 讓日期欄位變長 */
+      }
+
+      .icon {
+        margin-right: 8px;
+        width: 20px;
+        height: 20px;
+      }
+
+      .search-input,
+      .search-date {
+        border: none;
+        outline: none;
+        width: 100%;
+        font-size: 16px;
+        background: transparent;
+        cursor: pointer;
+      }
+
+      /* 數量選擇 */
+      .quantity-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+      }
+
+      .quantity-btn img {
+        width: 24px;
+        height: 24px;
+      }
+
+      .quantity-btn:hover {
+        background: #f3dccc;
+      }
+
+      .quantity-display {
+        width: 40px;
+        text-align: center;
+        font-size: 16px;
+      }
+
+      /* 搜尋按鈕 */
+      .search-btn {
+        background-color: #f5842b;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+      }
+
+      .search-btn:hover {
+        background-color: #e65c00;
+      }
+
+      
+      .hotel-description {
+        max-width: 550px;  
+        line-height: 1.6;  
+        text-align: left; 
+      }
+
+      .hotel-image {
+        width: 100%;
+        max-height: 400px;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+
+      /* 房型選擇 */
+      .room-card img {
+        width: 100%;
+        height: 280px;
+        object-fit: contain ;
+        border-radius: 10px;
+        background-color: #fff;
+      }
+
+      .room-card {
+        text-align: center;
+        padding: 15px;
+        margin-bottom: 30px;
+      }
+
+      .room-card h3 {
+        font-size: 20px;
+      }
+
+      .room-price {
+        font-size: 18px;
+        font-weight: bold;
+        color: #ff6600;
+      }
+
+      .book-btn {
+        background-color: #ff9900;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+      }
+
+      .book-btn:hover {
+        background-color: #ff6600;
+      }
+      .effort-section {
+        background-image: url('./hotel-images/page-image/bg-hotel-01.png'); /* 設定背景 */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 80px 0;
+        text-align: center;
+        }
+
+        /* 🌟 標題區塊 */
+        .effort-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #ff9900;
+        margin-bottom: 10px; 
+        }
+
+        .effort-subtitle {
+        font-size: 18px;
+        color: #5db2a5;
+        margin-bottom: 25px; 
+        }
+
+        /* 🌟 數據區塊 */
+        .effort-stats {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        margin-bottom: 25px;
+        }
+
+        .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        }
+
+        .stat-item img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        margin-bottom: 5px;
+        background-color: #ffcc80;
+        }
+
+        .stat-item p {
+        font-size: 16px;
+        color: #333;
+        font-weight: 500;
+        }
+
+
+        .effort-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px; 
+        }
+
+        .effort-buttons .btn {
+        font-size: 16px;
+        padding: 12px 24px;
+        border-radius: 8px;
+        }
+
+
+        .effort-buttons .btn-primary {
+        background-color: #ff9900;
+        border: none;
+        }
+
+        .effort-buttons .btn-primary:hover {
+        background-color: #e67e22;
+        }
+
+        .effort-buttons .btn-outline-light {
+        color: #ff9900;
+        border: 2px solid #ff9900;
+        background: transparent;
+        }
+
+        .effort-buttons .btn-outline-light:hover {
+        background-color: #ff9900;
+        color: white;
+        }
+
+       
+        @media (max-width: 768px) {
+        .effort-stats {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .effort-buttons {
+            flex-direction: column;
+        }
+        }
+        
+  
+        
+        .map-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+}
+
+
+.wave-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1; 
+}
+
+/* 讓波浪更自然 */
+.wave svg {
+    width: 100%;
+    height: 60px;
+    display: block;
+}
+
+
+    </style>
+
+    </style>
+  </head>
+
+  <body>
+    <div class="container mt-4">
+      <div class="search-bar">
+        <div class="search-group">
+          <img
+            class="icon"
+            src="./hotel-images/page-image/icon-search.png"
+            alt=""
+          />
+          <input
+            type="text"
+            class="search-input"
+            placeholder="搜尋關鍵字、地區..."
+          />
+        </div>
+        <div class="search-group">
+          <img
+            class="icon"
+            src="./hotel-images/page-image/icon-Calendar.png"
+            alt=""
+          />
+          <input
+            type="text"
+            id="date-range"
+            class="search-date"
+            placeholder="入住日期 → 退房日期"
+          />
+        </div>
+
+        <div class="search-group">
+          <img
+            class="icon"
+            src="./hotel-images/page-image/Icon-mimi.png"
+            alt=""
+          />
+          <span class="text">數量</span>
+          <button class="quantity-btn" id="decrease">
+            <img src="./hotel-images/page-image/Minus.png" alt="減少" />
+          </button>
+          <span id="quantity-display">1</span>
+          <button class="quantity-btn" id="increase">
+            <img src="./hotel-images/page-image/Plus.png" alt="增加" />
+          </button>
+        </div>
+        <button class="search-btn">搜尋</button>
+      </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row align-items-center">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Library</li>
+                </ol>
+              </nav>
+          <div class="col-lg-6">
+            <img src="../../public/images/hotel/hotel_uploads/1-outside.png" alt="旅館主圖" class="hotel-image">
+          </div>
+          <div class="col-lg-6 hotel-description">
+            <h2>旅館簡介</h2>
+            <p>
+              專為寵物打造的舒適旅宿，讓您的毛孩安心入住。
+              我們提供完善的照顧環境，讓毛孩享受舒適的空間與專業的服務。
+              此外，我們的旅館設施皆採用無毒、抗菌材質，確保您的毛孩入住期間，擁有最安全健康的體驗。
+              無論是短期住宿或長期寄宿，我們的專業團隊將提供最優質的照顧服務，讓您的毛孩擁有賓至如歸的感受！
+            </p>
+          </div>
+        </div>
+        <h2 class="mt-5">房型選擇</h2>
+        <div class="row mt-3">
+          <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card room-card">
+              <img
+                src="../../public/images/hotel/hotel_uploads/1-l-room.webp"
+                alt="豪華大房"
+              />
+              <div class="card-body">
+                <h3>豪華大房</h3>
+                <p class="room-price">價格: 1000元</p>
+                <select class="form-select mb-2">
+                  <option>選擇數量</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                </select>
+                <button class="book-btn">BOOK</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card room-card">
+              <img
+                src="../../public/images/hotel/hotel_uploads/1-m-room.webp"
+                alt="普通房"
+              />
+              <div class="card-body">
+                <h3>普通房</h3>
+                <p class="room-price">價格: 900元</p>
+                <select class="form-select mb-2">
+                  <option>選擇數量</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                </select>
+                <button class="book-btn">BOOK</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card room-card">
+              <img
+                src="../../public/images/hotel/hotel_uploads/1-s-room.webp"
+                alt="精緻小房"
+              />
+              <div class="card-body">
+                <h3>精緻小房</h3>
+                <p class="room-price">價格: 750元</p>
+                <select class="form-select mb-2">
+                  <option>選擇數量</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                </select>
+                <button class="book-btn">BOOK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="effort-section">
+        <div class="container text-center">
+          <!-- 標題 -->
+          <h2 class="effort-title">我們的努力，看的見</h2>
+          <p class="effort-subtitle">
+            每一次陪伴、每一小時的付出，都為毛孩創造更快樂、更健康的生活！
+          </p>
+      
+          <!-- 3 個數據區塊 -->
+          <div class="effort-stats">
+            <div class="stat-item">
+              <img src="./hotel-images/page-image/Dog2.png" alt="服務時數" />
+              <p>總服務時數：8,520+ 小時</p>
+            </div>
+            <div class="stat-item">
+              <img src="./hotel-images/page-image/Dog5.png" alt="服務狗狗" />
+              <p>服務狗狗：1,200+ 隻</p>
+            </div>
+            <div class="stat-item">
+              <img src="./hotel-images/page-image/Mask group.png" alt="滿意度" />
+              <p>滿意度：98.7%</p>
+            </div>
+          </div>
+      
+          <!-- 按鈕區塊 -->
+          <div class="effort-buttons">
+            <button class="btn btn-primary">立即預約</button>
+            <button class="btn btn-outline-light">了解更多</button>
+          </div>
+        </div>
+      </div>
+      <div class="map-container">
+        <div id="map" style="height: 500px; width: 100%;"></div>
+    
+        <!-- 🌊 調整過高度的波浪 SVG -->
+        <div class="wave-container">
+            <svg class="wave" viewBox="0 0 1440 320">
+                <path fill="#FFA500" fill-opacity="1"
+                d="M0,280 C360,260 720,300 1080,280 C1260,270 1380,250 1440,240 V320 H0 Z">
+              </path>
+            </svg>
+        </div>
+    </div>
+    
+    
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Flatpickr 日期選擇器
+        flatpickr("#date-range", {
+          mode: "range",
+          dateFormat: "m/d",
+          minDate: "today",
+          locale: "zh",
+          formatDate: function (date, format, locale) {
+            const days = ["日", "一", "二", "三", "四", "五", "六"];
+            return `${date.getMonth() + 1}/${date.getDate()} (${
+              days[date.getDay()]
+            })`;
+          },
+        });
+        document.getElementById("increase").addEventListener("click", () => {
+          let quantity = parseInt(
+            document.getElementById("quantity-display").innerText
+          );
+          document.getElementById("quantity-display").innerText = quantity + 1;
+        });
+
+        document.getElementById("decrease").addEventListener("click", () => {
+          let quantity = parseInt(
+            document.getElementById("quantity-display").innerText
+          );
+          if (quantity > 1) {
+            document.getElementById("quantity-display").innerText =
+              quantity - 1;
+          }
+        });
+      });
+    </script>
+     <!-- API 不要亂給喔 -->
+     <script>
+        function initMap() {
+            var mapOptions = {
+                center: { lat: 25.033964, lng: 121.564468 }, // 台北 101
+                zoom: 14,
+                styles: [ // 這裡可以加 Google Maps 自訂樣式
+                    {
+                        featureType: "all",
+                        elementType: "geometry",
+                        stylers: [{ color: "#f2f2f2" }]
+                    },
+                    {
+                        featureType: "road",
+                        elementType: "geometry",
+                        stylers: [{ color: "#ffffff" }]
+                    }
+                ]
+            };
+            
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+            // 加入標記
+            var marker = new google.maps.Marker({
+                position: { lat: 25.033964, lng: 121.564468 },
+                map: map,
+                title: "台北 101"
+            });
+        }
+    </script>
+     <script async defer src="https://maps.googleapis.com/maps/api/js?key=API&callback=initMap"></script>
+
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
