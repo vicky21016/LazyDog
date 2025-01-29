@@ -23,6 +23,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tw-city-selector"></script>
 
     <style>
       body {
@@ -301,10 +302,13 @@
             alt=""
           />
           <input
-            type="text"
-            class="search-input"
-            placeholder="搜尋關鍵字、地區..."
-          />
+              type="text"
+              class="search-input"
+              id="locationInput"
+              placeholder="搜尋關鍵字、地區..."
+              data-bs-toggle="modal"
+              data-bs-target="#locationModal"
+            />
         </div>
         <div class="search-group">
           <img
@@ -338,7 +342,32 @@
         <button class="search-btn">搜尋</button>
       </div>
     </div>
-
+ <!-- 🔹 插入台灣地區選擇彈跳視窗 -->
+    <!-- 🌟 台灣地區選擇的 Modal -->
+    <div class="modal fade" id="locationModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">選擇地區</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="twzipcode">
+              <select class="county"></select>
+              <select class="district"></select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="confirmLocation" class="btn btn-primary">確定</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container mt-5">
         <div class="row align-items-center">
             <nav aria-label="breadcrumb">
@@ -466,7 +495,41 @@
         </div>
     </div>
     
-    
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // ✅ 初始化台灣地區選擇器
+        new TwCitySelector({
+          el: "#twzipcode",
+          elCounty: ".county",
+          elDistrict: ".district",
+          hasZipcode: false,
+        });
+
+        document
+          .getElementById("confirmLocation")
+          .addEventListener("click", function () {
+            let county = document.querySelector(".county").value;
+            let district = document.querySelector(".district").value;
+            document.getElementById(
+              "locationInput"
+            ).value = `${county} ${district}`;
+
+            let modalElement = document.getElementById("locationModal");
+            let modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if (modalInstance) {
+              modalInstance.hide();
+            }
+
+            setTimeout(() => {
+              document
+                .querySelectorAll(".modal-backdrop")
+                .forEach((el) => el.remove());
+              document.body.classList.remove("modal-open");
+              document.body.style.overflow = "auto";
+            }, 300);
+          });
+      });
+    </script>
     
     <script>
       document.addEventListener("DOMContentLoaded", function () {
