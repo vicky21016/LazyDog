@@ -26,268 +26,261 @@
     <script src="https://cdn.jsdelivr.net/npm/tw-city-selector"></script>
 
     <style>
-      body {
-        background-color: #fff;
-      }
-
-      /* 搜尋欄 */
-      .search-bar {
-        display: flex;
-        gap: 15px;
-        background: #f5d1a8;
-        border-radius: 15px;
-        padding: 12px;
-        align-items: center;
-        justify-content: space-between;
-        max-width: 950px;
-        margin: auto;
-      }
-
-     
-      .search-group {
-        display: flex;
-        align-items: center;
-        background: white;
-        border-radius: 8px;
-        padding: 8px 12px;
-        flex: 1;
-        max-width: 300px; /* 讓日期欄位變長 */
-      }
-
-      .icon {
-        margin-right: 8px;
-        width: 20px;
-        height: 20px;
-      }
-
-      .search-input,
-      .search-date {
-        border: none;
-        outline: none;
-        width: 100%;
-        font-size: 16px;
-        background: transparent;
-        cursor: pointer;
-      }
-
-      /* 數量選擇 */
-      .quantity-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 5px;
-      }
-
-      .quantity-btn img {
-        width: 24px;
-        height: 24px;
-      }
-
-      .quantity-btn:hover {
-        background: #f3dccc;
-      }
-
-      .quantity-number {
-        width: 40px;
-        text-align: center;
-        font-size: 16px;
-      }
-
-      
-      .search-btn {
-        background-color: #f5842b;
-        color: white;
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-weight: bold;
-        border: none;
-        cursor: pointer;
-      }
-
-      .search-btn:hover {
-        background-color: #e65c00;
-      }
-      /* 搜尋欄結束 */
-      
-      /* hotel 的上半部 含介紹 */
-      .hotel-description {
-        max-width: 550px;  
-        line-height: 1.6;  
-        text-align: left; 
-      }
-
-      .hotel-image {
-        width: 100%;
-        max-height: 400px;
-        object-fit: cover;
-        border-radius: 10px;
-      }
-
-     
-      .room-card img {
-        width: 100%;
-        height: 280px;
-        object-fit: contain ;
-        border-radius: 10px;
-        background-color: #fff;
-      }
-
-      .room-card {
-        text-align: center;
-        padding: 15px;
-        margin-bottom: 30px;
-      }
-
-      .room-card h3 {
-        font-size: 20px;
-      }
-
-      .room-price {
-        font-size: 18px;
-        font-weight: bold;
-        color: #ff6600;
-      }
-
-      .book-btn {
-        background-color: #ff9900;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        border: none;
-        cursor: pointer;
-      }
-
-      .book-btn:hover {
-        background-color: #ff6600;
-      }
-      /* 廣告部分 */
-      .effort-section {
-        background-image: url('./hotel-images/page-image/bg-hotel-01.png'); 
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        padding: 80px 0;
-        text-align: center;
+        body {
+          background-color: #fff;
         }
 
+        /* 搜尋欄 */
+        .search-bar {
+          display: flex;
+          gap: 15px;
+          background: #f5d1a8;
+          border-radius: 15px;
+          padding: 12px;
+          align-items: center;
+          justify-content: space-between;
+          max-width: 950px;
+          margin: auto;
+        }
+
+        .search-group {
+          display: flex;
+          align-items: center;
+          background: white;
+          border-radius: 8px;
+          padding: 8px 12px;
+          flex: 1;
+          max-width: 300px;
+        }
+
+        .icon {
+          margin-right: 8px;
+          width: 20px;
+          height: 20px;
+        }
+
+        .search-input,
+        .search-date {
+          border: none;
+          outline: none;
+          width: 100%;
+          font-size: 16px;
+          background: transparent;
+          cursor: pointer;
+        }
+
+        /* 數量選擇 */
+        .quantity-btn {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 5px;
+        }
+
+        .quantity-btn img {
+          width: 24px;
+          height: 24px;
+        }
+
+        .quantity-btn:hover {
+          background: #f3dccc;
+        }
+
+        .quantity-number {
+          width: 40px;
+          text-align: center;
+          font-size: 16px;
+        }
+
+        /* 搜尋按鈕 */
+        .search-btn {
+          background-color: #f5842b;
+          color: white;
+          padding: 12px 20px;
+          border-radius: 8px;
+          font-weight: bold;
+          border: none;
+          cursor: pointer;
+        }
+
+        .search-btn:hover {
+          background-color: #e65c00;
+        }
+
+        /* 飯店上半部（介紹） */
+        .hotel-description {
+          max-width: 550px;
+          line-height: 1.6;
+          text-align: left;
+        }
+
+        .hotel-image {
+          width: 100%;
+          max-height: 400px;
+          object-fit: cover;
+          border-radius: 10px;
+        }
+
+        /* 房間*/
+        .room-card {
+          text-align: center;
+          padding: 15px;
+          margin-bottom: 30px;
+        }
+
+        .room-card img {
+          width: 100%;
+          height: 280px;
+          object-fit: contain;
+          border-radius: 10px;
+          background-color: #fff;
+        }
+
+        .room-card h3 {
+          font-size: 20px;
+        }
+
+        .room-price {
+          font-size: 18px;
+          font-weight: bold;
+          color: #ff6600;
+        }
+
+        /* book按鈕 */
+        .book-btn {
+          background-color: #ff9900;
+          color: white;
+          padding: 10px 15px;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: bold;
+          border: none;
+          cursor: pointer;
+        }
+
+        .book-btn:hover {
+          background-color: #ff6600;
+        }
+
+        /* ad部分 */
+        .effort-section {
+          background-image: url("./hotel-images/page-image/bg-hotel-01.png");
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          padding: 80px 0;
+          text-align: center;
+        }
 
         .effort-title {
-        font-size: 28px;
-        font-weight: bold;
-        color: #ff9900;
-        margin-bottom: 10px; 
+          font-size: 28px;
+          font-weight: bold;
+          color: #ff9900;
+          margin-bottom: 10px;
         }
 
         .effort-subtitle {
-        font-size: 18px;
-        color: #5db2a5;
-        margin-bottom: 25px; 
+          font-size: 18px;
+          color: #5db2a5;
+          margin-bottom: 25px;
         }
 
-
+        /* 假統計數字區塊 */
         .effort-stats {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 30px;
-        margin-bottom: 25px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 30px;
+          margin-bottom: 25px;
         }
 
         .stat-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
         .stat-item img {
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        margin-bottom: 5px;
-        background-color: #ffcc80;
+          width: 70px;
+          height: 70px;
+          border-radius: 50%;
+          margin-bottom: 5px;
+          background-color: #ffcc80;
         }
 
         .stat-item p {
-        font-size: 16px;
-        color: #333;
-        font-weight: 500;
+          font-size: 16px;
+          color: #333;
+          font-weight: 500;
         }
 
-
+        /* 按鈕兩顆 */
         .effort-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 20px; 
+          display: flex;
+          justify-content: center;
+          gap: 20px;
         }
 
         .effort-buttons .btn {
-        font-size: 16px;
-        padding: 12px 24px;
-        border-radius: 8px;
+          font-size: 16px;
+          padding: 12px 24px;
+          border-radius: 8px;
         }
 
-
         .effort-buttons .btn-primary {
-        background-color: #ff9900;
-        border: none;
+          background-color: #ff9900;
+          border: none;
         }
 
         .effort-buttons .btn-primary:hover {
-        background-color: #e67e22;
+          background-color: #e67e22;
         }
 
         .effort-buttons .btn-outline-light {
-        color: #ff9900;
-        border: 2px solid #ff9900;
-        background: transparent;
+          color: #ff9900;
+          border: 2px solid #ff9900;
+          background: transparent;
         }
 
         .effort-buttons .btn-outline-light:hover {
-        background-color: #ff9900;
-        color: white;
+          background-color: #ff9900;
+          color: white;
         }
 
-       
+        /* 暫定RWD*/
         @media (max-width: 768px) {
-        .effort-stats {
+          .effort-stats {
             flex-direction: column;
             gap: 20px;
-        }
+          }
 
-        .effort-buttons {
+          .effort-buttons {
             flex-direction: column;
+          }
         }
-        }
-        /* 廣告結束 */
-  
-        /* googlemap api不要亂給，格式還在調整 */
+
+        /*  Google 地圖 API */
         .map-container {
-        position: relative;
-        width: 100%;
-        height: 500px;
-        overflow: hidden;
+          position: relative;
+          width: 100%;
+          height: 500px;
+          overflow: hidden;
         }
 
-
+        /* 波浪裝飾 */
         .wave-container {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1; 
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          z-index: 1;
         }
 
-        /* 波浪...超麻煩 */
         .wave svg {
-            width: 100%;
-            height: 60px;
-            display: block;
+          width: 100%;
+          height: 60px;
+          display: block;
         }
-        /* 地圖結束 */
-
-    </style>
 
     </style>
   </head>
@@ -497,8 +490,14 @@
     
       <!-- API 不要亂給喔 -->
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        //  台灣地區選擇器
+        document.addEventListener("DOMContentLoaded", function () {
+        initCitySelector();
+        initFlatpickr();
+        initQuantityControls();
+      });
+
+      /*  台灣地區選擇器 (TwCitySelector)*/
+      function initCitySelector() {
         new TwCitySelector({
           el: "#twzipcode",
           elCounty: ".county",
@@ -506,91 +505,80 @@
           hasZipcode: false,
         });
 
-        document
-          .getElementById("confirmLocation")
-          .addEventListener("click", function () {
-            let county = document.querySelector(".county").value;
-            let district = document.querySelector(".district").value;
-            document.getElementById(
-              "locationInput"
-            ).value = `${county} ${district}`;
+        document.getElementById("confirmLocation").addEventListener("click", function () {
+          const county = document.querySelector(".county").value;
+          const district = document.querySelector(".district").value;
+          document.getElementById("locationInput").value = `${county} ${district}`;
 
-            let modalElement = document.getElementById("locationModal");
-            let modalInstance = bootstrap.Modal.getInstance(modalElement);
-            if (modalInstance) {
-              modalInstance.hide();
-            }
+          const modalElement = document.getElementById("locationModal");
+          const modalInstance = bootstrap.Modal.getInstance(modalElement);
+          if (modalInstance) {
+            modalInstance.hide();
+          }
+        });
+      }
 
-            setTimeout(() => {
-              document
-                .querySelectorAll(".modal-backdrop")
-                .forEach((el) => el.remove());
-              document.body.classList.remove("modal-open");
-              document.body.style.overflow = "auto";
-            }, 300);
-          });
-          flatpickr("#date-date", {
+      /* Flatpickr 日期選擇器*/
+      function initFlatpickr() {
+        flatpickr("#date-date", {
           mode: "range",
           dateFormat: "m/d",
           minDate: "today",
           locale: "zh",
           formatDate: function (date, format, locale) {
             const days = ["日", "一", "二", "三", "四", "五", "六"];
-            return `${date.getMonth() + 1}/${date.getDate()} (${
-              days[date.getDay()]
-            })`;
+            return `${date.getMonth() + 1}/${date.getDate()} (${days[date.getDay()]})`;
           },
         });
+      }
+
+      /*+-按鈕*/
+      function initQuantityControls() {
+        const quantityDisplay = document.getElementById("quantity-number");
+
         document.getElementById("plus").addEventListener("click", () => {
-          let quantity = parseInt(
-            document.getElementById("quantity-number").innerText
-          );
-          document.getElementById("quantity-number").innerText = quantity + 1;
+          let quantity = parseInt(quantityDisplay.innerText);
+          quantityDisplay.innerText = quantity + 1;
         });
 
         document.getElementById("minus").addEventListener("click", () => {
-          let quantity = parseInt(
-            document.getElementById("quantity-number").innerText
-          );
+          let quantity = parseInt(quantityDisplay.innerText);
           if (quantity > 1) {
-            document.getElementById("quantity-number").innerText =
-              quantity - 1;
+            quantityDisplay.innerText = quantity - 1;
           }
         });
-      });
+      }
+
+      /* Google 地圖*/
       function initMap() {
-            var mapOptions = {
-                center: { lat: 25.033964, lng: 121.564468 }, // 台北 101
-                zoom: 14,
-                styles: [ // 這裡可以加 Google Maps 自訂樣式
-                    {
-                        featureType: "all",
-                        elementType: "geometry",
-                        stylers: [{ color: "#f2f2f2" }]
-                    },
-                    {
-                        featureType: "road",
-                        elementType: "geometry",
-                        stylers: [{ color: "#ffffff" }]
-                    }
-                ]
-            };
-            
-            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        const mapOptions = {
+          center: { lat: 25.033964, lng: 121.564468 }, 
+          zoom: 14,
+          styles: [
+            {
+              featureType: "all",
+              elementType: "geometry",
+              stylers: [{ color: "#f2f2f2" }],
+            },
+            {
+              featureType: "road",
+              elementType: "geometry",
+              stylers: [{ color: "#ffffff" }],
+            },
+          ],
+        };
 
-            // 加入標記
-            var marker = new google.maps.Marker({
-                position: { lat: 25.033964, lng: 121.564468 },
-                map: map,
-                title: "台北 101"
-            });
-        }
+        const map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        // 加入標記
+        new google.maps.Marker({
+          position: { lat: 25.033964, lng: 121.564468 },
+          map: map,
+          title: "台北 101",
+        });
+      }
     </script>
-   
-       
      <script async defer src="https://maps.googleapis.com/maps/api/js?key=API&callback=initMap"></script>
-
-
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
