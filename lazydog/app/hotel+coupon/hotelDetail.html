@@ -87,7 +87,7 @@
         background: #f3dccc;
       }
 
-      .quantity-display {
+      .quantity-number {
         width: 40px;
         text-align: center;
         font-size: 16px;
@@ -318,7 +318,7 @@
           />
           <input
             type="text"
-            id="date-range"
+            id="date-date"
             class="search-date"
             placeholder="入住日期 → 退房日期"
           />
@@ -331,19 +331,19 @@
             alt=""
           />
           <span class="text">數量</span>
-          <button class="quantity-btn" id="decrease">
+          <button class="quantity-btn" id="minus">
             <img src="./hotel-images/page-image/Minus.png" alt="減少" />
           </button>
-          <span id="quantity-display">1</span>
-          <button class="quantity-btn" id="increase">
+          <span id="quantity-number">1</span>
+          <button class="quantity-btn" id="plus">
             <img src="./hotel-images/page-image/Plus.png" alt="增加" />
           </button>
         </div>
         <button class="search-btn">搜尋</button>
       </div>
     </div>
- <!-- 🔹 插入台灣地區選擇彈跳視窗 -->
-    <!-- 🌟 台灣地區選擇的 Modal -->
+ <!--彈跳視窗 -->
+    <!-- Modal -->
     <div class="modal fade" id="locationModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -459,7 +459,7 @@
             每一次陪伴、每一小時的付出，都為毛孩創造更快樂、更健康的生活！
           </p>
       
-          <!-- 3 個數據區塊 -->
+          <!-- 3 個區塊 -->
           <div class="effort-stats">
             <div class="stat-item">
               <img src="./hotel-images/page-image/Dog2.png" alt="服務時數" />
@@ -485,7 +485,7 @@
       <div class="map-container">
         <div id="map" style="height: 500px; width: 100%;"></div>
     
-        <!-- 🌊 調整過高度的波浪 SVG -->
+        <!-- 波浪 SVG -->
         <div class="wave-container">
             <svg class="wave" viewBox="0 0 1440 320">
                 <path fill="#FFA500" fill-opacity="1"
@@ -495,9 +495,10 @@
         </div>
     </div>
     
+      <!-- API 不要亂給喔 -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // ✅ 初始化台灣地區選擇器
+        //  台灣地區選擇器
         new TwCitySelector({
           el: "#twzipcode",
           elCounty: ".county",
@@ -528,13 +529,7 @@
               document.body.style.overflow = "auto";
             }, 300);
           });
-      });
-    </script>
-    
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Flatpickr 日期選擇器
-        flatpickr("#date-range", {
+          flatpickr("#date-date", {
           mode: "range",
           dateFormat: "m/d",
           minDate: "today",
@@ -546,27 +541,24 @@
             })`;
           },
         });
-        document.getElementById("increase").addEventListener("click", () => {
+        document.getElementById("plus").addEventListener("click", () => {
           let quantity = parseInt(
-            document.getElementById("quantity-display").innerText
+            document.getElementById("quantity-number").innerText
           );
-          document.getElementById("quantity-display").innerText = quantity + 1;
+          document.getElementById("quantity-number").innerText = quantity + 1;
         });
 
-        document.getElementById("decrease").addEventListener("click", () => {
+        document.getElementById("minus").addEventListener("click", () => {
           let quantity = parseInt(
-            document.getElementById("quantity-display").innerText
+            document.getElementById("quantity-number").innerText
           );
           if (quantity > 1) {
-            document.getElementById("quantity-display").innerText =
+            document.getElementById("quantity-number").innerText =
               quantity - 1;
           }
         });
       });
-    </script>
-     <!-- API 不要亂給喔 -->
-     <script>
-        function initMap() {
+      function initMap() {
             var mapOptions = {
                 center: { lat: 25.033964, lng: 121.564468 }, // 台北 101
                 zoom: 14,
@@ -594,6 +586,8 @@
             });
         }
     </script>
+   
+       
      <script async defer src="https://maps.googleapis.com/maps/api/js?key=API&callback=initMap"></script>
 
 

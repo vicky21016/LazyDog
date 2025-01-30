@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Title</title>
+    <title>hotelhome</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -21,6 +21,11 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tw-city-selector"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
 
     <style>
       body {
@@ -80,7 +85,7 @@
         background: #f3dccc;
       }
 
-      .quantity-display {
+      .quantity-number {
         width: 40px;
         text-align: center;
         font-size: 16px;
@@ -108,9 +113,43 @@
         padding: 80px 0;
       }
 
-      /* 🔹 左側篩選欄 */
+      /* 左篩選欄 */
+      .map-card {
+        position: relative;
+        width: 100%;
+        max-width: 300px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .map-btn {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 123, 255, 0.9);
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      .map-btn:hover {
+        background: rgba(0, 123, 255, 1);
+      }
+
+      .map-image {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+      }
+
       .sidebar {
-        background: #fdf7f0;
+        background: #fff;
         padding: 20px;
         border-radius: 10px;
       }
@@ -121,9 +160,156 @@
       }
 
       .filter-group {
-        border-bottom: 1px solid #ddd;
         padding-bottom: 10px;
         margin-bottom: 15px;
+      }
+      /* 篩選條 */
+      .price-filter-container {
+        background: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .price-input-group {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 10px;
+      }
+
+      .price-input {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        border: 2px solid #ff9900;
+        border-radius: 20px;
+        padding: 5px 10px;
+      }
+
+      .price-input input {
+        border: none;
+        outline: none;
+        text-align: center;
+        width: 50px;
+        font-size: 12px;
+      }
+      .price-filter input {
+        border: 2px solid #ff9900; /* 橘色邊框 */
+        border-radius: 20px; /* 圓角 */
+        padding: 5px 10px;
+        font-size: 16px;
+        text-align: center;
+        width: 100px;
+        color: #333;
+        font-weight: bold;
+        background: #fff;
+      }
+      /* 篩選條那邊 */
+      .range-slider {
+        position: relative;
+        width: 100%;
+        height: 40px;
+      }
+
+      .range-slider input {
+        position: absolute;
+        width: 100%;
+        height: 5px;
+        background: #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      .range-slider input::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+        background: #ff9900;
+        border-radius: 50%;
+        cursor: pointer;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      .clear-filter-btn {
+        background: none;
+        border: 2px solid #ff9900;
+        color: #ff9900;
+        padding: 8px 20px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      .clear-filter-btn:hover {
+        background: #ff9900;
+        color: white;
+      }
+
+      .slider-track {
+        background: #ff9900 !important; /* 滑軌顏色 */
+        height: 5px;
+      }
+
+      .slider-selection {
+        background: #ff6600 !important;
+      }
+
+      /* 修改左右滑塊顏色 */
+      .slider-handle {
+        background: white !important; /* 滑塊填充 */
+        border: 3px solid #ff9900 !important; /* 橘色外框 */
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+      }
+
+      /* 🔹 滑塊 Hover 效果 */
+      .slider-handle:hover {
+        background-color: #ff9900 !important;
+        border-color: #ff6600 !important;
+      }
+      /* 🔹 滑軌內的進度條 */
+      .slider-selection {
+        background: #ff9900 !important; /* 已選區域橘色 */
+      }
+
+      /* 🔹 滑塊的數值標籤 (Tooltip) */
+      .tooltip-inner {
+        background: white !important; /* 白色背景 */
+        color: #333 !important; /* 黑色字體 */
+        font-weight: bold;
+        border: 1px solid #ccc !important;
+      }
+
+      /* 🔹 清除搜尋按鈕 */
+      .clear-btn {
+        background: white;
+        border: 2px solid #ff9900;
+        color: #ff9900;
+        border-radius: 20px;
+        padding: 8px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      /* 🔹 清除搜尋按鈕 Hover */
+      .clear-btn:hover {
+        background: #ff9900;
+        color: white;
+      }
+      /* 選中時的顏色 */
+      .slider-handle.active {
+        background-color: #ff3300 !important;
+      }
+
+      .slider {
+        width: 100% !important;
+        margin: 10px 0;
       }
 
       .show-more {
@@ -132,7 +318,6 @@
         cursor: pointer;
       }
 
-      /* 🔹 飯店卡片 */
       .hotel-card {
         display: flex;
         align-items: center;
@@ -142,7 +327,6 @@
         border-bottom: 1px solid #ddd;
       }
 
-      /* 確保圖片大小一致 */
       .hotel-card img {
         width: 180px;
         height: 120px;
@@ -150,19 +334,17 @@
         border-radius: 10px;
       }
 
-      /* 讓文字區塊保持適當的間距 */
       .hotel-info {
         flex: 1;
         padding-left: 15px;
       }
 
-      /* 🔹 顯示全部按鈕 */
       .show-more {
         color: #ff9900;
         font-weight: bold;
         cursor: pointer;
         display: block;
-        margin-top: 10px; /* 增加間距 */
+        margin-top: 10px;
       }
 
       .hotel-info h5 {
@@ -204,14 +386,14 @@
         background-color: #ff6600;
       }
       .pagination .page-item .page-link {
-        border-radius: 50%; /* 讓按鈕變圓 */
+        border-radius: 50%;
         margin: 0 5px;
         color: #333;
         border: none;
       }
 
       .pagination .page-item.active .page-link {
-        background-color: #f5842b; /* 橘色 */
+        background-color: #f5842b;
         color: white;
         border-radius: 50%;
       }
@@ -250,7 +432,7 @@
             />
             <input
               type="text"
-              id="date-range"
+              id="date-date"
               class="search-date"
               placeholder="入住日期 → 退房日期"
             />
@@ -263,11 +445,11 @@
               alt=""
             />
             <span class="text">數量</span>
-            <button class="quantity-btn" id="decrease">
+            <button class="quantity-btn" id="minus">
               <img src="./hotel-images/page-image/Minus.png" alt="減少" />
             </button>
-            <span id="quantity-display">1</span>
-            <button class="quantity-btn" id="increase">
+            <span id="quantity-number">1</span>
+            <button class="quantity-btn" id="plus">
               <img src="./hotel-images/page-image/Plus.png" alt="增加" />
             </button>
           </div>
@@ -275,8 +457,7 @@
         </div>
       </div>
     </div>
-    <!-- 🔹 插入台灣地區選擇彈跳視窗 -->
-    <!-- 🌟 台灣地區選擇的 Modal -->
+    <!-- Modal -->
     <div class="modal fade" id="locationModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -304,15 +485,22 @@
 
     <div class="container mt-4">
       <div class="row">
-        <!-- 🔹 側邊篩選區 -->
+        <!-- 篩選-->
         <aside class="col-lg-3 sidebar">
-          <img
-            src="./hotel-images/page-image/map.png"
-            class="img-fluid mb-3"
-            alt="地圖縮圖"
-          />
+          <div class="map-card">
+            <button class="btn map-btn btn-primary" onclick="openMap()">
+              📍 於地圖上顯示
+            </button>
+            <img
+              src="https://maps.googleapis.com/maps/api/staticmap?center=台北,台灣&zoom=13&size=300x200&maptype=roadmap
+                &markers=color:blue%7Clabel:台北%7C25.0330,121.5654
+                &key="
+              alt="地圖縮圖"
+              class="map-image"
+            />
+          </div>
 
-          <div class="filter-group">
+          <div class="filter-group mt-4">
             <h6 class="filter-title">優質住宿</h6>
             <select class="form-select">
               <option>選擇類型</option>
@@ -337,9 +525,59 @@
             </div>
             <span class="show-more">顯示全部 ▼</span>
           </div>
+          <!-- 🔹 價格篩選區 -->
+          <div class="filter-group price-filter-container">
+            <h6 class="filter-title">價格篩選</h6>
+
+            <!-- 價格輸入框 -->
+            <div class="price-input-group">
+              <div class="price-input">
+                <label for="filterMin">最少</label>
+                <input
+                  id="filterMin"
+                  type="number"
+                  value="200"
+                  min="0"
+                  max="10000"
+                />
+                <span>元</span>
+              </div>
+              <div class="price-input">
+                <label for="filterMax">最多</label>
+                <input
+                  id="filterMax"
+                  type="number"
+                  value="1000"
+                  min="0"
+                  max="10000"
+                />
+                <span>元</span>
+              </div>
+            </div>
+
+            <!-- Bootstrap Slider -->
+            <input
+              id="priceRange"
+              type="text"
+              data-slider-min="0"
+              data-slider-max="10000"
+              data-slider-step="100"
+              data-slider-value="[200,1000]"
+            />
+
+            <!-- 清除按鈕 -->
+            <button id="resetFilter" class="clear-filter-btn">清除搜尋</button>
+          </div>
+
+          <a href=""
+            ><figure>
+              <img
+                src="./hotel-images/page-image/hotelad2.png"
+                alt=""
+              /></figure
+          ></a>
         </aside>
 
-        <!-- 🔹 飯店列表 -->
         <section class="col-lg-9">
           <div class="hotel-card">
             <img
@@ -544,9 +782,10 @@
         </li>
       </ul>
     </nav>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // ✅ 初始化台灣地區選擇器
+        // 台灣地區選擇器 (TwCitySelector)
         new TwCitySelector({
           el: "#twzipcode",
           elCounty: ".county",
@@ -577,13 +816,9 @@
               document.body.style.overflow = "auto";
             }, 300);
           });
-      });
-    </script>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Flatpickr 日期選擇器
-        flatpickr("#date-range", {
+        // 2日期選擇器 (Flatpickr)
+        flatpickr("#date-date", {
           mode: "range",
           dateFormat: "m/d",
           minDate: "today",
@@ -595,23 +830,61 @@
             })`;
           },
         });
-        document.getElementById("increase").addEventListener("click", () => {
+
+        // +-功能
+        document.getElementById("plus").addEventListener("click", () => {
           let quantity = parseInt(
-            document.getElementById("quantity-display").innerText
+            document.getElementById("quantity-number").innerText
           );
-          document.getElementById("quantity-display").innerText = quantity + 1;
+          document.getElementById("quantity-number").innerText = quantity + 1;
         });
 
-        document.getElementById("decrease").addEventListener("click", () => {
+        document.getElementById("minus").addEventListener("click", () => {
           let quantity = parseInt(
-            document.getElementById("quantity-display").innerText
+            document.getElementById("quantity-number").innerText
           );
           if (quantity > 1) {
-            document.getElementById("quantity-display").innerText =
-              quantity - 1;
+            document.getElementById("quantity-number").innerText = quantity - 1;
           }
         });
       });
+
+      // 4️⃣ Google 地圖按鈕
+      function openMap() {
+        window.open("https://www.google.com/maps?q=台北", "_blank");
+      }
+      const filterMin = document.getElementById("filterMin");
+      const filterMax = document.getElementById("filterMax");
+      const priceRange = new Slider("#priceRange", {
+        min: 0,
+        max: 10000,
+        step: 100,
+        value: [200, 1000],
+        tooltip_split: true,
+      });
+
+      // 更新輸入框數值
+      priceRange.on("slide", function (values) {
+        filterMin.value = values[0];
+        filterMax.value = values[1];
+      });
+
+      // 更新滑桿數值
+      filterMin.addEventListener("input", () => {
+        priceRange.setValue([filterMin.value, filterMax.value]);
+      });
+      filterMax.addEventListener("input", () => {
+        priceRange.setValue([filterMin.value, filterMax.value]);
+      });
+
+      // 清除篩選
+      document
+        .getElementById("resetFilter")
+        .addEventListener("click", function () {
+          priceRange.setValue([200, 1000]);
+          filterMin.value = 200;
+          filterMax.value = 1000;
+        });
     </script>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
