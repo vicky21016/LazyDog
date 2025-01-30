@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/operatorCamera.css" />
+    <style>
+      .form-control,
+      .form-select {
+        border-radius: 8px;
+      }
+      .btn-orange {
+        background-color: #f5842b;
+        color: white;
+        border-radius: 5px;
+        transition: background-color 0.2s ease-in-out;
+        border: none;
+      }
+
+      .btn-orange:hover {
+        background-color: #e65c00;
+      }
+
+      .btn-secondary {
+        background-color: #81eaaf;
+        color: black;
+        border-radius: 5px;
+        border: none;
+      }
+
+      .btn-secondary:hover {
+        background-color: #aaa;
+      }
+
+      .section {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        background: #f9f9f9;
+      }
+      /* 美化圖片預覽區 */
+      .image-card {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        padding: 8px;
+      }
+
+      .image-card img {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .image-card input {
+        width: 100%;
+        font-size: 12px;
+        margin-top: 5px;
+        padding: 3px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <div class="container mt-5">
+        <div class="row">
+          <!-- 左邊 -->
+          <div class="col-md-3">
+            <div class="card p-3">
+              <div class="text-center">
+                <div class="position-relative d-inline-block">
+                  <img
+                    src="./hotel-images/page-image/Dog2.png"
+                    class="rounded-circle avatar-img"
+                    alt="User Avatar"
+                  />
+                  <!-- 相機按鈕Dropdown) -->
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-light camera-icon p-0"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <img
+                        src="./hotel-images/page-image/icon-camera.png"
+                        alt="相機"
+                        class="camera-icon-img"
+                      />
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <button
+                          class="dropdown-item text-danger"
+                          id="deletePhoto"
+                        >
+                          刪除照片
+                        </button>
+                      </li>
+                      <li>
+                        <label for="uploadPhoto" class="dropdown-item"
+                          >上傳照片</label
+                        >
+                        <input
+                          type="file"
+                          id="uploadPhoto"
+                          accept="image/*"
+                          class="d-none"
+                        />
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <h5 class="mt-2">陳大方</h5>
+                <p class="text-muted">165846hote@gmail.com</p>
+                <button class="btn btn-outline-success btn-sm">已認證</button>
+              </div>
+              <hr />
+              <ul class="list-unstyled text-start">
+                <li class="py-2">
+                  <a
+                    href="operatorDetail.html"
+                    class="text-decoration-none text-dark"
+                  >
+                    <i class="list operator me-2"></i>負責人資訊
+                  </a>
+                </li>
+                <li class="py-2">
+                  <a
+                    href="operatorHotel.html"
+                    class="text-decoration-none text-dark"
+                  >
+                    <i class="list hotel me-2"></i>旅館資訊
+                  </a>
+                </li>
+                <li class="py-2">
+                  <a
+                    href="operatorReview.html"
+                    class="text-decoration-none text-dark"
+                  >
+                    <i class="list review me-2"></i>旅館評論
+                  </a>
+                </li>
+                <li class="py-2">
+                  <a
+                    href="operatorCouponDetail.html"
+                    class="text-decoration-none text-dark"
+                  >
+                    <i class="list coupon me-2"></i>旅館優惠券
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <h3 class="mb-3">新增旅館</h3>
+            <form>
+              <div class="section">
+                <h5>基本資訊</h5>
+                <div class="mb-3">
+                  <label class="form-label">旅館名稱 *</label>
+                  <input type="text" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">地址 *</label>
+                  <input type="text" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">電話 *</label>
+                  <input type="text" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-bold">上傳圖片</label>
+                  <!-- 圖片預覽區 -->
+                  <div
+                    id="imagePreviewContainer"
+                    class="d-flex flex-wrap gap-3 mb-2"
+                  ></div>
+
+                  <input
+                    type="file"
+                    id="imageUpload"
+                    class="form-control d-none"
+                    accept="image/*"
+                    multiple
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-sm mt-2"
+                    onclick="document.getElementById('imageUpload').click();"
+                  >
+                    + 新增圖片
+                  </button>
+                </div>
+              </div>
+              <div class="section">
+                <h5>房型</h5>
+                <div class="row g-2 align-items-center">
+                  <div class="col-md-4">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="房型 (如大、中、小)"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-2">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="數量"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-3">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="金額"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-3">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="定金"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="mt-2 text-primary" style="cursor: pointer">
+                  + 新增房型
+                </div>
+              </div>
+              <div class="section">
+                <h5>營業時間</h5>
+                <div class="mb-3">
+                  <label class="form-label">營業時間</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="營業時間"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">最早入住時間</label>
+                  <input type="time" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">最晚退房時間</label>
+                  <input type="time" class="form-control" required />
+                </div>
+              </div>
+              <div class="section">
+                <h5>其他資訊</h5>
+                <div class="mb-3">
+                  <label class="form-label">標籤</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="如: 寵物友善, 免費早餐"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">旅館簡介</label>
+                  <textarea class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">注意事項</label>
+                  <textarea class="form-control" rows="3" required></textarea>
+                </div>
+              </div>
+              <div class="d-flex justify-content-end gap-2 mt-3">
+                <button
+                  type="button"
+                  class="btn btn-secondary btn-sm px-4"
+                  onclick="location.href='operatorDetail.html'"
+                >
+                  取消
+                </button>
+                <button type="submit" class="btn btn-orange btn-sm px-4">
+                  儲存
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="./js/operatorCamera.js"></script>
+    <script>
+      document
+        .getElementById("imageUpload")
+        .addEventListener("change", function (event) {
+          const files = event.target.files;
+          const previewContainer = document.getElementById(
+            "imagePreviewContainer"
+          );
+
+          for (const file of files) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const imgWrapper = document.createElement("div");
+              imgWrapper.classList.add("image-card");
+
+              const imgElement = document.createElement("img");
+              imgElement.src = e.target.result;
+
+              const descriptionInput = document.createElement("input");
+              descriptionInput.type = "text";
+              descriptionInput.classList.add("form-control");
+              descriptionInput.placeholder = "輸入圖片描述";
+
+              const removeBtn = document.createElement("button");
+              removeBtn.classList.add("delete-btn");
+              removeBtn.innerHTML = "&times;";
+              removeBtn.onclick = function () {
+                previewContainer.removeChild(imgWrapper);
+              };
+
+              imgWrapper.appendChild(imgElement);
+              imgWrapper.appendChild(descriptionInput);
+              imgWrapper.appendChild(removeBtn);
+
+              previewContainer.appendChild(imgWrapper);
+            };
+            reader.readAsDataURL(file);
+          }
+
+          event.target.value = "";
+        });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
