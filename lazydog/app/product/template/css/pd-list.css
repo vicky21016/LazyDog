@@ -29,7 +29,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  h4 {
+  a {
     color: var(--gray);
   }
   .breadcrumbs-active {
@@ -82,11 +82,11 @@
 }
 .search-table {
   gap: 17px;
-  p {
+  input {
+    width: 100%;
+    border: none;
+    outline: none;
     font-size: 16px;
-    color: var(--gray);
-    font-weight: 350;
-    letter-spacing: 3.2px;
   }
 }
 .menu-table {
@@ -230,11 +230,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  h1 {
-    color: var(--orange);
-    padding-bottom: 20px;
-    cursor: pointer;
   }
 }
 .product-card-img {
