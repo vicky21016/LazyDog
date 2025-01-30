@@ -54,11 +54,13 @@
         flex: 1;
         max-width: 300px;
       }
+
       .icon {
         margin-right: 8px;
         width: 20px;
         height: 20px;
       }
+
       .search-input,
       .search-date {
         border: none;
@@ -69,6 +71,7 @@
         cursor: pointer;
       }
 
+      /* 數量 */
       .quantity-btn {
         background: none;
         border: none;
@@ -91,6 +94,7 @@
         font-size: 16px;
       }
 
+      /* 搜尋按鈕 */
       .search-btn {
         background-color: #f5842b;
         color: white;
@@ -100,12 +104,9 @@
         border: none;
         cursor: pointer;
       }
-
       .search-btn:hover {
         background-color: #e65c00;
       }
-      /* 搜尋欄結束 */
-
       .search-bg {
         background: url("./hotel-images/services-banner-dog-boarding.2203041608391.jpg")
           no-repeat center;
@@ -113,7 +114,7 @@
         padding: 80px 0;
       }
 
-      /* 左篩選欄 */
+      /* 地圖 */
       .map-card {
         position: relative;
         width: 100%;
@@ -148,6 +149,7 @@
         border-radius: 10px;
       }
 
+      /* 側邊篩選區 */
       .sidebar {
         background: #fff;
         padding: 20px;
@@ -163,7 +165,8 @@
         padding-bottom: 10px;
         margin-bottom: 15px;
       }
-      /* 篩選條 */
+
+      /* 價格篩選 */
       .price-filter-container {
         background: #fff;
         padding: 20px;
@@ -193,18 +196,8 @@
         width: 50px;
         font-size: 12px;
       }
-      .price-filter input {
-        border: 2px solid #ff9900; /* 橘色邊框 */
-        border-radius: 20px; /* 圓角 */
-        padding: 5px 10px;
-        font-size: 16px;
-        text-align: center;
-        width: 100px;
-        color: #333;
-        font-weight: bold;
-        background: #fff;
-      }
-      /* 篩選條那邊 */
+
+      /* 滑桿 */
       .range-slider {
         position: relative;
         width: 100%;
@@ -232,6 +225,7 @@
         appearance: none;
       }
 
+      /* 篩選按鈕 */
       .clear-filter-btn {
         background: none;
         border: 2px solid #ff9900;
@@ -249,8 +243,9 @@
         color: white;
       }
 
+      /* 🔹 自訂 Slider */
       .slider-track {
-        background: #ff9900 !important; /* 滑軌顏色 */
+        background: #ff9900 !important;
         height: 5px;
       }
 
@@ -258,34 +253,27 @@
         background: #ff6600 !important;
       }
 
-      /* 修改左右滑塊顏色 */
       .slider-handle {
-        background: white !important; /* 滑塊填充 */
-        border: 3px solid #ff9900 !important; /* 橘色外框 */
+        background: white !important;
+        border: 3px solid #ff9900 !important;
         width: 18px;
         height: 18px;
         border-radius: 50%;
       }
 
-      /* 🔹 滑塊 Hover 效果 */
       .slider-handle:hover {
         background-color: #ff9900 !important;
         border-color: #ff6600 !important;
       }
-      /* 🔹 滑軌內的進度條 */
-      .slider-selection {
-        background: #ff9900 !important; /* 已選區域橘色 */
-      }
 
-      /* 🔹 滑塊的數值標籤 (Tooltip) */
       .tooltip-inner {
-        background: white !important; /* 白色背景 */
-        color: #333 !important; /* 黑色字體 */
+        background: white !important;
+        color: #333 !important;
         font-weight: bold;
         border: 1px solid #ccc !important;
       }
 
-      /* 🔹 清除搜尋按鈕 */
+      /* 清除搜尋按鈕 */
       .clear-btn {
         background: white;
         border: 2px solid #ff9900;
@@ -297,27 +285,12 @@
         cursor: pointer;
       }
 
-      /* 🔹 清除搜尋按鈕 Hover */
       .clear-btn:hover {
         background: #ff9900;
         color: white;
       }
-      /* 選中時的顏色 */
-      .slider-handle.active {
-        background-color: #ff3300 !important;
-      }
 
-      .slider {
-        width: 100% !important;
-        margin: 10px 0;
-      }
-
-      .show-more {
-        color: #ff9900;
-        font-weight: bold;
-        cursor: pointer;
-      }
-
+      /* 飯店 */
       .hotel-card {
         display: flex;
         align-items: center;
@@ -337,14 +310,6 @@
       .hotel-info {
         flex: 1;
         padding-left: 15px;
-      }
-
-      .show-more {
-        color: #ff9900;
-        font-weight: bold;
-        cursor: pointer;
-        display: block;
-        margin-top: 10px;
       }
 
       .hotel-info h5 {
@@ -378,13 +343,13 @@
         font-weight: bold;
         border: none;
         cursor: pointer;
-        display: block;
-        margin-top: 10px;
       }
 
       .book-btn:hover {
         background-color: #ff6600;
       }
+
+      /*  分頁 */
       .pagination .page-item .page-link {
         border-radius: 50%;
         margin: 0 5px;
@@ -817,7 +782,7 @@
             }, 300);
           });
 
-        // 2日期選擇器 (Flatpickr)
+        // 日期選擇器 (Flatpickr)
         flatpickr("#date-date", {
           mode: "range",
           dateFormat: "m/d",
@@ -849,7 +814,7 @@
         });
       });
 
-      // 4️⃣ Google 地圖按鈕
+      //  Google 地圖按鈕
       function openMap() {
         window.open("https://www.google.com/maps?q=台北", "_blank");
       }
@@ -863,13 +828,12 @@
         tooltip_split: true,
       });
 
-      // 更新輸入框數值
       priceRange.on("slide", function (values) {
         filterMin.value = values[0];
         filterMax.value = values[1];
       });
 
-      // 更新滑桿數值
+      // 滑桿數值
       filterMin.addEventListener("input", () => {
         priceRange.setValue([filterMin.value, filterMax.value]);
       });
@@ -877,7 +841,7 @@
         priceRange.setValue([filterMin.value, filterMax.value]);
       });
 
-      // 清除篩選
+      // 清除
       document
         .getElementById("resetFilter")
         .addEventListener("click", function () {
