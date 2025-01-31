@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>couponOwn</title>
+    <title>我的優惠券</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -17,145 +17,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./css/operatorCamera.css" />
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-      }
-
-      .container {
-        max-width: 1100px;
-      }
-
-      .profile-card {
-        border-radius: 10px;
-        padding: 20px;
-      }
-
-      .profile-card img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-      }
-
-      .profile-card .btn {
-        font-size: 14px;
-      }
-
-      .profile-links {
-        list-style: none;
-        padding: 0;
-      }
-
-      .profile-links li {
-        padding: 8px 0;
-      }
-
-      .profile-links a {
-        display: block;
-        font-size: 16px;
-        text-decoration: none;
-        color: black;
-      }
-
-      .feature-links a {
-        font-size: 16px;
-        font-weight: bold;
-        text-decoration: none;
-        margin-right: 20px;
-      }
-
-      .feature-links a:first-child {
-        color: red;
-      }
-
-      .feature-links a:last-child {
-        color: orange;
-      }
-
-      .coupon-input-group {
-        display: flex;
-        margin-bottom: 20px;
-      }
-
-      .coupon-input-group input {
-        flex: 1;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 8px;
-        margin-right: 10px;
-      }
-
-      .coupon-input-group button {
-        background-color: #f9a825;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 8px;
-        color: white;
-        font-weight: bold;
-      }
-
-      .nav-tabs {
-        border-bottom: 2px solid #ddd;
-        font-size: 16px;
-        font-weight: bold;
-      }
-
-      .nav-tabs .nav-link {
-        color: black;
-        border-bottom: 2px solid transparent;
-      }
-
-      .nav-tabs .nav-link.active {
-        color: #f9a825;
-        border-bottom: 2px solid #f9a825;
-      }
-
-      .coupon-card {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 15px;
-        background-color: white;
-        margin-bottom: 15px;
-      }
-
-      .coupon-card .price {
-        font-size: 22px;
-        font-weight: bold;
-        color: #28a745;
-      }
-
-      .coupon-card .details {
-        flex: 1;
-        padding-left: 15px;
-      }
-
-      .coupon-card .details p {
-        margin: 0;
-        font-size: 14px;
-      }
-
-      .coupon-card .details .expired {
-        color: red;
-        font-size: 12px;
-      }
-
-      .coupon-card .action {
-        text-align: right;
-      }
-
-      .coupon-card .action a {
-        color: #007bff;
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-      .coupon-card .action a:hover {
-        text-decoration: underline;
-      }
-    </style>
+    <link rel="stylesheet" href="./css/userCoupon.css" />
   </head>
 
   <body>
@@ -226,7 +88,10 @@
                   </a>
                 </li>
                 <li class="py-2">
-                  <a href="#" class="text-decoration-none text-dark">
+                  <a
+                    href="couponOwn.html"
+                    class="text-decoration-none text-dark"
+                  >
                     <i class="list coupon me-2"></i>我的優惠券
                   </a>
                 </li>
@@ -269,7 +134,7 @@
                 class="form-control"
                 placeholder="請輸入優惠代碼"
               />
-              <button class="btn">領取</button>
+              <button class="btn btn-primary">領取</button>
             </div>
 
             <ul class="nav nav-tabs mb-3">
