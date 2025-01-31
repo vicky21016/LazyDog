@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Title</title>
+    <title>operatorDetailEdit</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -16,7 +16,7 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="./css/operatorCamera.css">
+    <link rel="stylesheet" href="./css/operatorCamera.css" />
   </head>
 
   <body>
@@ -28,19 +28,46 @@
             <div class="card p-3">
               <div class="text-center">
                 <div class="position-relative d-inline-block">
-                  <img src="./hotel-images/page-image/Dog2.png" class="rounded-circle avatar-img" alt="User Avatar">
-                     <!-- 相機按鈕Dropdown) -->
-                    <div class="dropdown">
-                      <button class="btn btn-light camera-icon p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          <img src="./hotel-images/page-image/icon-camera.png" alt="相機" class="camera-icon-img">
-                      </button>
-                      <ul class="dropdown-menu">
-                          <li><button class="dropdown-item text-danger" id="deletePhoto">刪除照片</button></li>
-                          <li>
-                              <label for="uploadPhoto" class="dropdown-item">上傳照片</label>
-                              <input type="file" id="uploadPhoto" accept="image/*" class="d-none">
-                          </li>
-                      </ul>
+                  <img
+                    src="./hotel-images/page-image/Dog2.png"
+                    class="rounded-circle avatar-img"
+                    alt="User Avatar"
+                  />
+                  <!-- 相機按鈕Dropdown) -->
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-light camera-icon p-0"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <img
+                        src="./hotel-images/page-image/icon-camera.png"
+                        alt="相機"
+                        class="camera-icon-img"
+                      />
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <button
+                          class="dropdown-item text-danger"
+                          id="deletePhoto"
+                        >
+                          刪除照片
+                        </button>
+                      </li>
+                      <li>
+                        <label for="uploadPhoto" class="dropdown-item"
+                          >上傳照片</label
+                        >
+                        <input
+                          type="file"
+                          id="uploadPhoto"
+                          accept="image/*"
+                          class="d-none"
+                        />
+                      </li>
+                    </ul>
                   </div>
                 </div>
                 <h5 class="mt-2">陳大方</h5>
@@ -59,7 +86,7 @@
                 </li>
                 <li class="py-2">
                   <a
-                    href="operatorHotel.html"
+                    href="operatorHotelList.html"
                     class="text-decoration-none text-dark"
                   >
                     <i class="list hotel me-2"></i>旅館資訊
@@ -124,7 +151,11 @@
                   <input type="text" class="form-control" />
                 </div>
                 <div class="d-flex justify-content-end mt-4">
-                  <button type="reset" class="btn btn-outline-warning me-2">
+                  <button
+                    type="reset"
+                    class="btn btn-outline-warning me-2"
+                    onclick="location.href='operatorDetail.html'"
+                  >
                     儲存
                     <!-- 待設定轉跳operatorDetail.html -->
                   </button>

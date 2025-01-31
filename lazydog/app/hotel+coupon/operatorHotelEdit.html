@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Title</title>
+    <title>operatorHotelEdit</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -29,22 +29,18 @@
         transition: background-color 0.2s ease-in-out;
         border: none;
       }
-
       .btn-orange:hover {
         background-color: #e65c00;
       }
-
       .btn-secondary {
         background-color: #81eaaf;
         color: black;
         border-radius: 5px;
         border: none;
       }
-
       .btn-secondary:hover {
         background-color: #aaa;
       }
-
       .section {
         padding: 15px;
         border: 1px solid #ddd;
@@ -52,7 +48,7 @@
         margin-bottom: 20px;
         background: #f9f9f9;
       }
-      /* 美化圖片預覽區 */
+      /* 圖片區 */
       .image-card {
         position: relative;
         width: 120px;
@@ -68,19 +64,30 @@
         text-align: center;
         padding: 8px;
       }
-
       .image-card img {
         width: 100%;
         height: 80px;
         object-fit: cover;
         border-radius: 8px;
       }
-
-      .image-card input {
-        width: 100%;
-        font-size: 12px;
-        margin-top: 5px;
-        padding: 3px;
+      .delete-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .delete-btn:hover {
+        background: darkred;
       }
     </style>
   </head>
@@ -160,7 +167,7 @@
                 </li>
                 <li class="py-2">
                   <a
-                    href="operatorReview.html"
+                    href="operatorHotelList.html"
                     class="text-decoration-none text-dark"
                   >
                     <i class="list review me-2"></i>旅館評論
@@ -177,86 +184,174 @@
               </ul>
             </div>
           </div>
-          <div class="col-md-9">
-            <h3 class="mb-3">新增旅館</h3>
-            <form>
+          <div class="col-md-9 mx-auto">
+            <h3 class="mb-3">編輯旅館資訊</h3>
+            <form id="editForm">
               <div class="section">
                 <h5>基本資訊</h5>
                 <div class="mb-3">
                   <label class="form-label">旅館名稱 *</label>
-                  <input type="text" class="form-control" required />
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="寵物樂園"
+                    required
+                  />
                 </div>
                 <div class="mb-3">
                   <label class="form-label">地址 *</label>
-                  <input type="text" class="form-control" required />
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="台北市中山區 123 號"
+                    required
+                  />
                 </div>
                 <div class="mb-3">
                   <label class="form-label">電話 *</label>
-                  <input type="text" class="form-control" required />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label fw-bold">上傳圖片</label>
-                  <!-- 圖片預覽區 -->
-                  <div
-                    id="imagePreviewContainer"
-                    class="d-flex flex-wrap gap-3 mb-2"
-                  ></div>
-
                   <input
-                    type="file"
-                    id="imageUpload"
-                    class="form-control d-none"
-                    accept="image/*"
-                    multiple
+                    type="text"
+                    class="form-control"
+                    value="02-12345678"
+                    required
                   />
-                  <button
-                    type="button"
-                    class="btn btn-primary btn-sm mt-2"
-                    onclick="document.getElementById('imageUpload').click();"
-                  >
-                    + 新增圖片
-                  </button>
                 </div>
+              </div>
+
+              <!-- 圖片區 -->
+              <div class="section">
+                <h5>旅館圖片</h5>
+                <div
+                  id="imagePreviewContainer"
+                  class="d-flex flex-wrap gap-3 mb-2"
+                >
+                  <div class="image-card">
+                    <img
+                      src="https://via.placeholder.com/120"
+                      alt="旅館圖片1"
+                    />
+                    <button type="button" class="delete-btn">&times;</button>
+                  </div>
+                  <div class="image-card">
+                    <img
+                      src="https://via.placeholder.com/120"
+                      alt="旅館圖片2"
+                    />
+                    <button type="button" class="delete-btn">&times;</button>
+                  </div>
+                </div>
+                <input
+                  type="file"
+                  id="imageUpload"
+                  class="form-control d-none"
+                  accept="image/*"
+                  multiple
+                />
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm mt-2"
+                  onclick="document.getElementById('imageUpload').click();"
+                >
+                  + 新增圖片
+                </button>
               </div>
               <div class="section">
                 <h5>房型</h5>
-                <div class="row g-2 align-items-center">
-                  <div class="col-md-4">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="房型 (如大、中、小)"
-                      required
-                    />
+                <div id="roomContainer">
+                  <!-- 假資料房型 1 -->
+                  <div class="row g-2 align-items-center mb-2 room-entry">
+                    <div class="col-md-4">
+                      <input
+                        type="text"
+                        class="form-control"
+                        value="大型犬房"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-2">
+                      <input
+                        type="number"
+                        class="form-control"
+                        value="5"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        value="1500 元/晚"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-3 d-flex">
+                      <input
+                        type="text"
+                        class="form-control"
+                        value="500 元"
+                        required
+                      />
+                      <button
+                        type="button"
+                        class="btn btn-danger btn-sm ms-2 remove-room"
+                      >
+                        X
+                      </button>
+                    </div>
                   </div>
-                  <div class="col-md-2">
-                    <input
-                      type="number"
-                      class="form-control"
-                      placeholder="數量"
-                      required
-                    />
-                  </div>
-                  <div class="col-md-3">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="金額"
-                      required
-                    />
-                  </div>
-                  <div class="col-md-3">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="定金"
-                      required
-                    />
+
+                  <!-- 假資料房型 2 -->
+                  <div class="row g-2 align-items-center mb-2 room-entry">
+                    <div class="col-md-4">
+                      <input
+                        type="text"
+                        class="form-control"
+                        value="中型犬房"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-2">
+                      <input
+                        type="number"
+                        class="form-control"
+                        value="3"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        value="1200 元/晚"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-3 d-flex">
+                      <input
+                        type="text"
+                        class="form-control"
+                        value="400 元"
+                        required
+                      />
+                      <button
+                        type="button"
+                        class="btn btn-danger btn-sm ms-2 remove-room"
+                      >
+                        X
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div class="mt-2 text-primary" style="cursor: pointer">
+
+                <!-- 新增房型-->
+
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm mt-2"
+                  id="addRoom"
+                >
                   + 新增房型
-                </div>
+                </button>
               </div>
               <div class="section">
                 <h5>營業時間</h5>
@@ -265,19 +360,12 @@
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="營業時間"
+                    value="09:00 - 20:00"
                     required
                   />
                 </div>
-                <div class="mb-3">
-                  <label class="form-label">最早入住時間</label>
-                  <input type="time" class="form-control" required />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">最晚退房時間</label>
-                  <input type="time" class="form-control" required />
-                </div>
               </div>
+
               <div class="section">
                 <h5>其他資訊</h5>
                 <div class="mb-3">
@@ -285,26 +373,26 @@
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="如: 寵物友善, 免費早餐"
+                    value="寵物友善, 免費早餐"
                     required
                   />
                 </div>
                 <div class="mb-3">
                   <label class="form-label">旅館簡介</label>
-                  <textarea class="form-control" rows="3" required></textarea>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">注意事項</label>
-                  <textarea class="form-control" rows="3" required></textarea>
+                  <textarea class="form-control" rows="3" required>
+寵物樂園是一個專門提供給狗狗的住宿場所，提供優質的照顧與設施。</textarea
+                  >
                 </div>
               </div>
+
+              
               <div class="d-flex justify-content-end gap-2 mt-3">
                 <button
                   type="button"
                   class="btn btn-secondary btn-sm px-4"
-                  onclick="location.href='operatorDetail.html'"
+                  onclick="history.back()"
                 >
-                  取消
+                  返回
                 </button>
                 <button type="submit" class="btn btn-orange btn-sm px-4">
                   儲存
@@ -316,6 +404,50 @@
       </div>
     </main>
     <script src="./js/operatorCamera.js"></script>
+    <script>
+      document.getElementById("addRoom").addEventListener("click", function () {
+        const roomContainer = document.getElementById("roomContainer");
+
+        // 新增一個房型輸入區塊
+        const newRoom = document.createElement("div");
+        newRoom.classList.add(
+          "row",
+          "g-2",
+          "align-items-center",
+          "mb-2",
+          "room-entry"
+        );
+
+        newRoom.innerHTML = `
+           <div class="col-md-4">
+        <input type="text" class="form-control" name="room_type[]" placeholder="房型 (如大、中、小)" required />
+      </div>
+      <div class="col-md-2">
+        <input type="number" class="form-control" name="room_quantity[]" placeholder="數量" required />
+      </div>
+      <div class="col-md-3">
+        <input type="text" class="form-control" name="room_price[]" placeholder="金額" required />
+      </div>
+      <div class="col-md-3 d-flex">
+        <input type="text" class="form-control" name="room_deposit[]" placeholder="定金" required />
+        <button type="button" class="btn btn-danger btn-sm ms-2 remove-room">X</button>
+      </div>
+        `;
+
+        roomContainer.appendChild(newRoom);
+        addRemoveRoomListeners(); // 重新綁定刪除按鈕事件
+      });
+
+      function addRemoveRoomListeners() {
+        document.querySelectorAll(".remove-room").forEach((btn) => {
+          btn.onclick = function () {
+            this.closest(".room-entry").remove();
+          };
+        });
+      }
+
+      addRemoveRoomListeners(); // 綁定刪除事件給假資料
+    </script>
     <script>
       document
         .getElementById("imageUpload")
@@ -356,6 +488,12 @@
           }
 
           event.target.value = "";
+        });
+      document
+        .getElementById("editForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          alert("旅館資訊已儲存！");
         });
     </script>
     <script
