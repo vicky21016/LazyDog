@@ -17,8 +17,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./css/operatorCamera.css" />
-    <link rel="stylesheet" href="./css/operatorHotel.css">
-    
+    <link rel="stylesheet" href="./css/operatorHotel.css" />
   </head>
 
   <body>
@@ -96,7 +95,7 @@
                 </li>
                 <li class="py-2">
                   <a
-                  href="operatorReview.html" 
+                    href="operatorReview.html"
                     class="text-decoration-none text-dark"
                   >
                     <i class="list review me-2"></i>旅館評論
@@ -104,7 +103,7 @@
                 </li>
                 <li class="py-2">
                   <a
-                  href="operatorCouponList.html"
+                    href="operatorCouponList.html"
                     class="text-decoration-none text-dark"
                   >
                     <i class="list coupon me-2"></i>旅館優惠券
@@ -312,7 +311,6 @@
                 </div>
               </div>
 
-              
               <div class="d-flex justify-content-end gap-2 mt-3">
                 <button
                   type="button"
@@ -321,7 +319,11 @@
                 >
                   返回
                 </button>
-                <button type="submit" class="btn btn-orange btn-sm px-4">
+                <button
+                  type="submit"
+                  class="btn btn-orange btn-sm px-4"
+                 
+                >
                   儲存
                 </button>
               </div>
@@ -331,98 +333,7 @@
       </div>
     </main>
     <script src="./js/operatorCamera.js"></script>
-    <script>
-      document.getElementById("addRoom").addEventListener("click", function () {
-        const roomContainer = document.getElementById("roomContainer");
-
-        // 新增輸入區
-        const newRoom = document.createElement("div");
-        newRoom.classList.add(
-          "row",
-          "g-2",
-          "align-items-center",
-          "mb-2",
-          "room-entry"
-        );
-
-        newRoom.innerHTML = `
-           <div class="col-md-4">
-        <input type="text" class="form-control" name="room_type[]" placeholder="房型 (如大、中、小)" required />
-      </div>
-      <div class="col-md-2">
-        <input type="number" class="form-control" name="room_quantity[]" placeholder="數量" required />
-      </div>
-      <div class="col-md-3">
-        <input type="text" class="form-control" name="room_price[]" placeholder="金額" required />
-      </div>
-      <div class="col-md-3 d-flex">
-        <input type="text" class="form-control" name="room_deposit[]" placeholder="定金" required />
-        <button type="button" class="btn btn-danger btn-sm ms-2 remove-room">X</button>
-      </div>
-        `;
-
-        roomContainer.appendChild(newRoom);
-        addRemoveRoomListeners(); 
-      });
-
-      function addRemoveRoomListeners() {
-        document.querySelectorAll(".remove-room").forEach((btn) => {
-          btn.onclick = function () {
-            this.closest(".room-entry").remove();
-          };
-        });
-      }
-
-      addRemoveRoomListeners(); // 假資料
-    </script>
-    <script>
-      document
-        .getElementById("imageUpload")
-        .addEventListener("change", function (event) {
-          const files = event.target.files;
-          const previewContainer = document.getElementById(
-            "imagePreviewContainer"
-          );
-
-          for (const file of files) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              const imgWrapper = document.createElement("div");
-              imgWrapper.classList.add("image-card");
-
-              const imgElement = document.createElement("img");
-              imgElement.src = e.target.result;
-
-              const descriptionInput = document.createElement("input");
-              descriptionInput.type = "text";
-              descriptionInput.classList.add("form-control");
-              descriptionInput.placeholder = "輸入圖片描述";
-
-              const removeBtn = document.createElement("button");
-              removeBtn.classList.add("delete-btn");
-              removeBtn.innerHTML = "&times;";
-              removeBtn.onclick = function () {
-                previewContainer.removeChild(imgWrapper);
-              };
-
-              imgWrapper.appendChild(imgElement);
-              imgWrapper.appendChild(descriptionInput);
-              imgWrapper.appendChild(removeBtn);
-
-              previewContainer.appendChild(imgWrapper);
-            };
-            reader.readAsDataURL(file);
-          }
-
-          event.target.value = "";
-        });
-      document
-        .getElementById("editForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          alert("旅館資訊已儲存！");
-        });
-    </script>
+    <script src="./js/operatorHotel.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

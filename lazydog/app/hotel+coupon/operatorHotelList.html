@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>operatorHotel(暫定)</title>
+    <title>operatorHotel</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -194,18 +194,26 @@
                   <td><span class="badge bg-success">營業中</span></td>
                   <td>
                     <button
+                      type="button"
                       class="btn btn-primary btn-sm"
                       onclick="location.href='operatorHotel.html'"
                     >
                       檢視
                     </button>
                     <button
+                      type="button"
                       class="btn btn-warning btn-sm"
                       onclick="location.href='operatorHotelEdit.html'"
                     >
                       編輯
                     </button>
-                    <button class="btn btn-danger btn-sm">刪除</button>
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm delete-hotel"
+                      id="deleteBtn"
+                    >
+                      刪除
+                    </button>
                   </td>
                 </tr>
                 <tr>
@@ -223,19 +231,27 @@
                   <td class="text-warning">4.5 ⭐</td>
                   <td><span class="badge bg-danger">已關閉</span></td>
                   <td>
-                    <a
-                      href="#"
+                    <button
+                      type="button"
                       class="btn btn-primary btn-sm"
                       onclick="location.href='operatorHotel.html'"
-                      >檢視</a
                     >
-                    <a
-                      href="#"
+                      檢視
+                    </button>
+                    <button
+                      type="button"
                       class="btn btn-warning btn-sm"
                       onclick="location.href='operatorHotelEdit.html'"
-                      >編輯</a
                     >
-                    <a href="#" class="btn btn-danger btn-sm">刪除</a>
+                      編輯
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm delete-hotel"
+                      id="deleteBtn"
+                    >
+                      刪除
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -253,6 +269,7 @@
       </div>
     </main>
     <script src="./js/operatorCamera.js"></script>
+    <script src="./js/operatorHotel.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
