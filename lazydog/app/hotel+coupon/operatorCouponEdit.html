@@ -17,29 +17,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./css/operatorCamera.css" />
-    <style>
-      .badge {
-        font-size: 0.85rem;
-        padding: 6px 12px;
-        border-radius: 8px;
-      }
-
-      .bg-light {
-        background-color: #f9f9f9 !important;
-      }
-
-      .rounded {
-        border-radius: 10px !important;
-      }
-
-      .form-control {
-        border-radius: 8px;
-      }
-
-      .generate-code-btn {
-        margin-left: 10px;
-      }
-    </style>
+    <link rel="stylesheet" href="./css/operatorCoupon.css">
   </head>
 
   <body>
@@ -252,18 +230,7 @@
       </div>
     </main>
     <script src="./js/operatorCamera.js"></script>
-    <script>
-      function generateCode() {
-        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        let code = "";
-        for (let i = 0; i < 10; i++) {
-          code += characters.charAt(
-            Math.floor(Math.random() * characters.length)
-          );
-        }
-        document.getElementById("couponCode").value = code;
-      }
-    </script>
+    <script src="./js/operatorCoupon.js"></script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
