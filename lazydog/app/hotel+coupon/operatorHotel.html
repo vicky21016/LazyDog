@@ -21,7 +21,15 @@
      .form-control {
         border-radius: 8px;
       }
-
+    .btn-success {
+      background-color: #81eaaf;
+      color: black;
+      border-radius: 5px;
+      border: none;
+    }
+    .btn-success:hover {
+      background-color: #aaa;
+    }
       .btn-orange {
         background-color: #f5842b;
         color: white;
@@ -236,6 +244,14 @@
 
                   <!-- 按鈕區 -->
                   <div class="d-flex justify-content-end gap-2 mt-3">
+                    <button
+                      type="button"
+                      class="btn btn-success btn-sm px-4"
+                      id="backBtn"
+                      onclick="location.href='operatorHotelList.html'"
+                    >
+                      返回
+                    </button>
                     <button
                       type="button"
                       class="btn btn-orange btn-sm px-4"
