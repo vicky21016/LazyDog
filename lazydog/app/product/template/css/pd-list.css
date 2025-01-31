@@ -94,6 +94,11 @@
   h3 {
     width: 100%;
   }
+  button {
+    padding: 0;
+    border: none;
+    background: none;
+  }
 }
 .checkbox-table {
   gap: 10px;
