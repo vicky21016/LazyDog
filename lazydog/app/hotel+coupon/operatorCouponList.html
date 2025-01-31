@@ -148,7 +148,9 @@
                     <td>
                       <button
                         class="btn btn-sm btn-primary"
-                        onclick="location.href='operatorCouponDetail.html'"
+                        data-bs-toggle="modal"
+                        data-bs-target="#couponModal"
+                        onclick="loadCoupon('SWW2024', '新春折扣', '滿 1000 減 200', '2024/03/01', '2024/03/10', '所有用戶', 1, '啟用')"
                       >
                         檢視
                       </button>
@@ -166,7 +168,9 @@
                     <td>
                       <button
                         class="btn btn-sm btn-primary"
-                        onclick="location.href='operatorCouponDetail.html'"
+                        data-bs-toggle="modal"
+                        data-bs-target="#couponModal"
+                        onclick="loadCoupon('SWW2024', '新春折扣', '滿 1000 減 200', '2024/03/01', '2024/03/10', '所有用戶', 1, '啟用')"
                       >
                         檢視
                       </button>
@@ -184,7 +188,9 @@
                     <td>
                       <button
                         class="btn btn-sm btn-primary"
-                        onclick="location.href='operatorCouponDetail.html'"
+                        data-bs-toggle="modal"
+                        data-bs-target="#couponModal"
+                        onclick="loadCoupon('VIP50', '會員專屬折扣', '50% 折扣', '2024/02/15', '2024/03/15', '會員限定', 2, '啟用')"
                       >
                         檢視
                       </button>
@@ -193,6 +199,80 @@
                 </tbody>
               </table>
             </div>
+            <!-- 優惠券檢視 Modal -->
+            <div
+              class="modal fade"
+              id="couponModal"
+              tabindex="-1"
+              aria-labelledby="couponModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="couponModalLabel">
+                      優惠券詳細資訊
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>
+                      <strong>優惠代碼：</strong>
+                      <span id="modalCouponCode"></span>
+                    </p>
+                    <p>
+                      <strong>優惠名稱：</strong>
+                      <span id="modalCouponName"></span>
+                    </p>
+                    <p>
+                      <strong>優惠內容：</strong>
+                      <span id="modalCouponDetails"></span>
+                    </p>
+                    <p>
+                      <strong>開始日期：</strong>
+                      <span id="modalStartDate"></span>
+                    </p>
+                    <p>
+                      <strong>結束日期：</strong>
+                      <span id="modalEndDate"></span>
+                    </p>
+                    <p>
+                      <strong>適用對象：</strong>
+                      <span id="modalApplicableTo"></span>
+                    </p>
+                    <p>
+                      <strong>使用次數：</strong> <span id="modalUsage"></span>
+                    </p>
+                    <p>
+                      <strong>狀態：</strong>
+                      <span id="modalStatus" class="badge"></span>
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      關閉
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-warning"
+                      onclick="location.href='operatorCouponEdit.html'"
+                    >
+                      編輯
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="d-flex justify-content-end">
               <button
                 class="btn btn-sm btn-primary"
@@ -206,6 +286,35 @@
       </div>
     </main>
     <script src="./js/operatorCamera.js"></script>
+    <script>
+      function loadCoupon(
+        code,
+        name,
+        details,
+        startDate,
+        endDate,
+        applicableTo,
+        usage,
+        status
+      ) {
+        document.getElementById("modalCouponCode").textContent = code;
+        document.getElementById("modalCouponName").textContent = name;
+        document.getElementById("modalCouponDetails").textContent = details;
+        document.getElementById("modalStartDate").textContent = startDate;
+        document.getElementById("modalEndDate").textContent = endDate;
+        document.getElementById("modalApplicableTo").textContent = applicableTo;
+        document.getElementById("modalUsage").textContent = usage;
+
+        // 設定狀態 Badge 顏色
+        let statusBadge = document.getElementById("modalStatus");
+        statusBadge.textContent = status;
+        if (status === "啟用") {
+          statusBadge.className = "badge bg-success";
+        } else {
+          statusBadge.className = "badge bg-secondary";
+        }
+      }
+    </script>
     <!-- Bootstrap JavaScript Libraries -->
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

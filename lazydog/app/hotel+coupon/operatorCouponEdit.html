@@ -46,15 +46,53 @@
     <main>
       <div class="container mt-5">
         <div class="row">
-          <!-- 左邊資訊欄 -->
+          <!-- 左邊 -->
           <div class="col-md-3">
             <div class="card p-3">
               <div class="text-center">
-                <img
-                  src="./hotel-images/page-image/Dog2.png"
-                  class="rounded-circle avatar-img"
-                  alt="User Avatar"
-                />
+                <div class="position-relative d-inline-block">
+                  <img
+                    src="./hotel-images/page-image/Dog2.png"
+                    class="rounded-circle avatar-img"
+                    alt="User Avatar"
+                  />
+                  <!-- 相機按鈕Dropdown) -->
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-light camera-icon p-0"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <img
+                        src="./hotel-images/page-image/icon-camera.png"
+                        alt="相機"
+                        class="camera-icon-img"
+                      />
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <button
+                          class="dropdown-item text-danger"
+                          id="deletePhoto"
+                        >
+                          刪除照片
+                        </button>
+                      </li>
+                      <li>
+                        <label for="uploadPhoto" class="dropdown-item"
+                          >上傳照片</label
+                        >
+                        <input
+                          type="file"
+                          id="uploadPhoto"
+                          accept="image/*"
+                          class="d-none"
+                        />
+                      </li>
+                    </ul>
+                  </div>
+                </div>
                 <h5 class="mt-2">陳大方</h5>
                 <p class="text-muted">165846hote@gmail.com</p>
                 <button class="btn btn-outline-success btn-sm">已認證</button>
@@ -65,34 +103,37 @@
                   <a
                     href="operatorDetail.html"
                     class="text-decoration-none text-dark"
-                    >負責人資訊</a
                   >
+                    <i class="list operator me-2"></i>負責人資訊
+                  </a>
                 </li>
                 <li class="py-2">
                   <a
                     href="operatorHotelList.html"
                     class="text-decoration-none text-dark"
-                    >旅館資訊</a
                   >
+                    <i class="list hotel me-2"></i>旅館資訊
+                  </a>
                 </li>
                 <li class="py-2">
                   <a
-                    href="operatorReview.html"
+                  href="operatorReview.html" 
                     class="text-decoration-none text-dark"
-                    >旅館評論</a
                   >
+                    <i class="list review me-2"></i>旅館評論
+                  </a>
                 </li>
                 <li class="py-2">
                   <a
                   href="operatorCouponList.html"
                     class="text-decoration-none text-dark"
-                    >旅館優惠券</a
                   >
+                    <i class="list coupon me-2"></i>旅館優惠券
+                  </a>
                 </li>
               </ul>
             </div>
           </div>
-
           <div class="col-md-9">
             <h3 class="mb-4">編輯優惠券</h3>
             <div class="p-4 border rounded bg-light mb-4">
