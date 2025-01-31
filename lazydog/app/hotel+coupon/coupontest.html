@@ -1,27 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
   <head>
-    <title>couponOwn</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <title>優惠券使用紀錄</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Bootstrap CSS v5.2.1 -->
+    <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./css/operatorCamera.css" />
     <style>
       body {
         font-family: Arial, sans-serif;
       }
-
       .container {
         max-width: 1100px;
       }
@@ -37,21 +30,9 @@
         object-fit: cover;
       }
 
-      .profile-card .btn {
-        font-size: 14px;
-      }
-
-      .profile-links {
-        list-style: none;
-        padding: 0;
-      }
-
-      .profile-links li {
-        padding: 8px 0;
-      }
-
       .profile-links a {
         display: block;
+        padding: 8px 0;
         font-size: 16px;
         text-decoration: none;
         color: black;
@@ -63,35 +44,11 @@
         text-decoration: none;
         margin-right: 20px;
       }
-
       .feature-links a:first-child {
         color: red;
       }
-
       .feature-links a:last-child {
         color: orange;
-      }
-
-      .coupon-input-group {
-        display: flex;
-        margin-bottom: 20px;
-      }
-
-      .coupon-input-group input {
-        flex: 1;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 8px;
-        margin-right: 10px;
-      }
-
-      .coupon-input-group button {
-        background-color: #f9a825;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 8px;
-        color: white;
-        font-weight: bold;
       }
 
       .nav-tabs {
@@ -108,6 +65,19 @@
       .nav-tabs .nav-link.active {
         color: #f9a825;
         border-bottom: 2px solid #f9a825;
+      }
+
+      /* 狀態篩選 */
+      .status-filter button {
+        border: none;
+        background: none;
+        font-size: 16px;
+        font-weight: bold;
+        margin-right: 20px;
+        cursor: pointer;
+      }
+      .status-filter .active {
+        color: #f9a825;
       }
 
       .coupon-card {
@@ -145,19 +115,8 @@
       .coupon-card .action {
         text-align: right;
       }
-
-      .coupon-card .action a {
-        color: #007bff;
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-      .coupon-card .action a:hover {
-        text-decoration: underline;
-      }
     </style>
   </head>
-
   <body>
     <main>
       <div class="container mt-5">
@@ -254,24 +213,14 @@
             </div>
           </div>
 
-          <!-- 右邊 -->
+          <!-- 右邊  -->
           <div class="col-md-9 coupon-section">
-            <h3 class="mb-3">我的優惠券</h3>
+            <h3 class="mb-3">優惠券使用紀錄</h3>
 
             <div class="feature-links mb-3">
-              <a href="#">領取免運券</a>
-              <a href="#">查看歷史紀錄</a>
+              <a href="#">我的優惠券</a>
             </div>
-
-            <div class="coupon-input-group">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="請輸入優惠代碼"
-              />
-              <button class="btn">領取</button>
-            </div>
-
+            <!-- 切換 -->
             <ul class="nav nav-tabs mb-3">
               <li class="nav-item">
                 <a class="nav-link active" href="#">全部</a>
@@ -287,32 +236,49 @@
               </li>
             </ul>
 
-            <div class="coupon-card">
+            <!-- 狀態篩選 -->
+            <div class="status-filter mb-3">
+              <button class="active" onclick="filterStatus('used')">
+                已使用
+              </button>
+              <button onclick="filterStatus('unused')">未使用</button>
+              <button onclick="filterStatus('expired')">逾期</button>
+            </div>
+
+            <div class="coupon-card used">
               <span class="price">NT200</span>
               <div class="details">
                 <p><strong>整單折扣！訂單滿 1,600 折 200 元</strong></p>
                 <p class="text-muted">有效期限: 2025/12/31</p>
                 <p class="expired">⚠ 已使用</p>
               </div>
-              <div class="action">
-                <a href="#">前往購物</a>
-              </div>
+              <div class="expired text-danger">失效</div>
             </div>
           </div>
         </div>
       </div>
     </main>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"
-    ></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-      crossorigin="anonymous"
-    ></script>
+    <script>
+      function changeCategory(category) {
+        console.log("切換到分類: " + category);
+      }
+
+      function filterStatus(status) {
+        document
+          .querySelectorAll(".status-filter button")
+          .forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+
+        document.querySelectorAll(".coupon-card").forEach((card) => {
+          card.style.display = card.classList.contains(status)
+            ? "flex"
+            : "none";
+        });
+      }
+    </script>
   </body>
 </html>
