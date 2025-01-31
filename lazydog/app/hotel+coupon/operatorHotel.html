@@ -61,7 +61,7 @@
         background: #f9f9f9;
       }
 
-      /* 圖片區樣式 */
+      /* 圖片區 */
       .image-card {
         position: relative;
         width: 120px;
@@ -216,7 +216,7 @@
                   </div>
 
                
-              <!-- 圖片區（僅顯示） -->
+              <!-- 圖片（僅顯示） -->
               <div class="section">
                 <h5>旅館圖片</h5>
                 <div id="imagePreviewContainer" class="d-flex flex-wrap gap-3 mb-2">
@@ -242,7 +242,7 @@
                     </div>
                   </div>
 
-                  <!-- 按鈕區 -->
+
                   <div class="d-flex justify-content-end gap-2 mt-3">
                     <button
                       type="button"
@@ -277,7 +277,6 @@
     </main>
     <script>
       const deleteBtn = document.getElementById("deleteBtn");
-      // 刪除按鈕
       deleteBtn.addEventListener("click", function () {
         if (confirm("確定要刪除此旅館資訊嗎？")) {
           alert("旅館已刪除");

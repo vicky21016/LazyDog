@@ -214,7 +214,7 @@
                   <input type="text" class="form-control" required />
                 </div>
               </div>
-              <!-- 圖片區 -->
+              <!-- 圖片 -->
               <div class="section">
                 <h5>旅館圖片</h5>
                 <div
@@ -254,7 +254,6 @@
               <div class="section">
                 <h5>房型</h5>
                 <div id="roomContainer">
-                  <!-- 預設有一筆空白房型 -->
                   <div class="row g-2 align-items-center mb-2 room-entry">
                     <div class="col-md-4">
                       <input
@@ -301,7 +300,6 @@
                   </div>
                 </div>
 
-                <!-- 新增房型按鈕 -->
                 <button
                   type="button"
                   class="btn btn-primary btn-sm mt-2"
@@ -373,7 +371,7 @@
       document.getElementById("addRoom").addEventListener("click", function () {
         const roomContainer = document.getElementById("roomContainer");
 
-        // 新增一個輸入區塊
+        // 新增一個輸入區
         const newRoom = document.createElement("div");
         newRoom.classList.add(
           "row",

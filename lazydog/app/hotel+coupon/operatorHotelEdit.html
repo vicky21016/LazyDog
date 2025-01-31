@@ -258,7 +258,7 @@
               <div class="section">
                 <h5>房型</h5>
                 <div id="roomContainer">
-                  <!-- 假資料房型 1 -->
+                  <!-- 假資料1 -->
                   <div class="row g-2 align-items-center mb-2 room-entry">
                     <div class="col-md-4">
                       <input
@@ -300,7 +300,7 @@
                     </div>
                   </div>
 
-                  <!-- 假資料房型 2 -->
+                  <!-- 假資料2 -->
                   <div class="row g-2 align-items-center mb-2 room-entry">
                     <div class="col-md-4">
                       <input
@@ -342,8 +342,6 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- 新增房型-->
 
                 <button
                   type="button"
@@ -408,7 +406,7 @@
       document.getElementById("addRoom").addEventListener("click", function () {
         const roomContainer = document.getElementById("roomContainer");
 
-        // 新增一個房型輸入區塊
+        // 新增輸入區
         const newRoom = document.createElement("div");
         newRoom.classList.add(
           "row",
@@ -435,7 +433,7 @@
         `;
 
         roomContainer.appendChild(newRoom);
-        addRemoveRoomListeners(); // 重新綁定刪除按鈕事件
+        addRemoveRoomListeners(); 
       });
 
       function addRemoveRoomListeners() {
@@ -446,7 +444,7 @@
         });
       }
 
-      addRemoveRoomListeners(); // 綁定刪除事件給假資料
+      addRemoveRoomListeners(); // 假資料
     </script>
     <script>
       document
