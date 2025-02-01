@@ -242,7 +242,21 @@
         background: #ff9900;
         color: white;
       }
+      .show-more {
+        cursor: pointer;
+        color: #0c0c0d;
+        font-weight: bold;
+        display: inline-block;
+        margin-top: 10px;
+      }
 
+      .show-more:hover {
+        text-decoration: underline;
+      }
+
+      .hidden {
+        display: none;
+      }
       /*自訂 Slider */
       .slider-track {
         background: #ff9900 !important;
@@ -488,9 +502,27 @@
               <input class="form-check-input" type="checkbox" id="pets" />
               <label class="form-check-label" for="pets">戶外運動</label>
             </div>
-            <span class="show-more">顯示全部 ▼</span>
+            <!-- 顯示全部按鈕 -->
+            <span class="show-more" id="toggleBtn">顯示全部 ▼</span>
+
+            <!-- 折疊項目 (顯示全部按鈕下方) -->
+            <div class="collapse-items hidden mt-2">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="wifi" />
+                <label class="form-check-label" for="wifi">免費 Wi-Fi</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="spa" />
+                <label class="form-check-label" for="spa">SPA 按摩</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gym" />
+                <label class="form-check-label" for="gym">健身房</label>
+              </div>
+            </div>
           </div>
-          <!-- 🔹 價格篩選區 -->
+
+          <!-- 價格篩選區 -->
           <div class="filter-group price-filter-container">
             <h6 class="filter-title">價格篩選</h6>
 
@@ -748,6 +780,20 @@
       </ul>
     </nav>
 
+    <script>
+      const toggleBtn = document.getElementById("toggleBtn");
+      const collapseItems = document.querySelector(".collapse-items");
+
+      toggleBtn.addEventListener("click", function () {
+        collapseItems.classList.toggle("hidden");
+
+        if (collapseItems.classList.contains("hidden")) {
+          toggleBtn.textContent = "顯示全部 ▼";
+        } else {
+          toggleBtn.textContent = "收起 ▲";
+        }
+      });
+    </script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // 台灣地區選擇器 (TwCitySelector)
