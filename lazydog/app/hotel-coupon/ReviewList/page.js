@@ -3,6 +3,9 @@ import React, { useEffect, useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
+// ReviewList 
+// reviews.js 裡get+post+delete+put做API連結後台，
+//下面都是假資料參考用就好
 const ReviewList = () => {
   const [modalData, setModalData] = useState({});
   const fileInputRef = useRef(null);
