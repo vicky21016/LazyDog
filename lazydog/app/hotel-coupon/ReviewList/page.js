@@ -1,10 +1,14 @@
 "use client";
-import react, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const ReviewList = () => {
   const [modalData, setModalData] = useState({});
+
+  useEffect(() => {
+    import("bootstrap/dist/js/bootstrap.bundle.min.js");
+  }, []);
 
   const reviews = [
     {
@@ -34,19 +38,85 @@ const ReviewList = () => {
   return (
     <div className="container mt-5">
       <div className="row">
+        {/* 左邊：用戶資訊區塊 */}
         <div className="col-md-3">
-          <div className="card p-3 text-center">
-            <img
-              src="./hotel-images/page-image/Dog2.png"
-              className="rounded-circle avatar-img"
-              alt="User Avatar"
-            />
-            <h5 className="mt-2">陳大方</h5>
-            <p className="text-muted">165846hote@gmail.com</p>
-            <button className="btn btn-outline-success btn-sm">已認證</button>
+          <div className="card p-3">
+            <div className="text-center">
+              <div className="position-relative d-inline-block">
+                <img
+                  src="/images/hotel/hotel-images/page-image/Dog2.png"
+                  alt="User Avatar"
+                  className="rounded-circle avatar-img"
+                />
+
+                <div className="dropdown">
+                  <button
+                    className="btn btn-light camera-icon p-0"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <img
+                      src="/images/hotel/hotel-images/page-image/icon-camera.png"
+                      alt="相機"
+                      className="camera-icon-img"
+                    />
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <button
+                        className="dropdown-item text-danger"
+                        id="deletePhoto"
+                      >
+                        刪除照片
+                      </button>
+                    </li>
+                    <li>
+                      <label htmlFor="uploadPhoto" className="dropdown-item">
+                        上傳照片
+                      </label>
+                      <input
+                        type="file"
+                        id="uploadPhoto"
+                        accept="image/*"
+                        className="d-none"
+                      />
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <h5 className="mt-2">陳大方</h5>
+              <p className="text-muted">165846hote@gmail.com</p>
+              <button className="btn btn-outline-success btn-sm">已認證</button>
+            </div>
+
+            <hr />
+            <ul className="list-unstyled text-start">
+              <li className="py-2">
+                <a href="#" className="text-decoration-none text-dark">
+                  <i className="bi bi-person-fill me-2"></i>負責人資訊
+                </a>
+              </li>
+              <li className="py-2">
+                <a href="#" className="text-decoration-none text-dark">
+                  <i className="bi bi-house-heart-fill me-2"></i>旅館資訊
+                </a>
+              </li>
+              <li className="py-2">
+                <a href="#" className="text-decoration-none text-dark">
+                  <i className="bi bi-card-list me-2"></i>旅館評論
+                </a>
+              </li>
+              <li className="py-2">
+                <a href="#" className="text-decoration-none text-dark">
+                  <i className="bi bi-ticket-perforated me-2"></i>旅館優惠券
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
 
+        {/* 右側：評論列表 */}
         <div className="col-md-9">
           <h3 className="mb-4">評論列表</h3>
           <div className="table-responsive">
@@ -69,9 +139,7 @@ const ReviewList = () => {
                     <td>{review.customer}</td>
                     <td>{review.order}</td>
                     <td>{review.date}</td>
-                    <td>
-                      <span className="stars">{review.rating}</span>
-                    </td>
+                    <td>{review.rating}</td>
                     <td>{review.content}</td>
                     <td>{review.replied ? "已回覆" : "未回覆"}</td>
                     <td>
@@ -124,21 +192,21 @@ const ReviewList = () => {
             </div>
             <div className="modal-body">
               <p>
-                <strong>顧客名稱：</strong> {modalData.customer}
+                <strong>顧客名稱：</strong> {modalData.customer || "N/A"}
               </p>
               <p>
-                <strong>訂單編號：</strong> {modalData.order}
+                <strong>訂單編號：</strong> {modalData.order || "N/A"}
               </p>
               <p>
-                <strong>評論日期：</strong> {modalData.date}
+                <strong>評論日期：</strong> {modalData.date || "N/A"}
               </p>
               <p>
-                <strong>評分：</strong> {modalData.rating}
+                <strong>評分：</strong> {modalData.rating || "N/A"}
               </p>
               <p>
                 <strong>評論內容：</strong>
               </p>
-              <p className="border p-2">{modalData.content}</p>
+              <p className="border p-2">{modalData.content || "N/A"}</p>
               <label className="form-label mt-3">回覆：</label>
               <textarea
                 className="form-control"
