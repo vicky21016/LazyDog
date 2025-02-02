@@ -1,10 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const ReviewList = () => {
   const [modalData, setModalData] = useState({});
+  const fileInputRef = useRef(null);
+  const avatarRef = useRef(null);
+  const replyInputRef = useRef(null);
 
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
@@ -35,15 +38,46 @@ const ReviewList = () => {
     setModalData(review);
   };
 
+  const uploadPhoto = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        avatarRef.current.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const deletePhoto = () => {
+    avatarRef.current.src =
+      "/images/hotel/hotel-images/page-image/default-avatar.png";
+  };
+
+  const replyReview = () => {
+    const replyContent = replyInputRef.current.value.trim();
+    if (replyContent) {
+      alert(`回覆成功：${replyContent}`);
+      replyInputRef.current.value = ""; // 清空
+    } else {
+      alert("請先填寫回覆內容");
+    }
+  };
+
   return (
     <div className="container mt-5">
       <div className="row">
-        {/* 左邊：用戶資訊區塊 */}
+        {/* 左邊*/}
         <div className="col-md-3">
           <div className="card p-3">
             <div className="text-center">
               <div className="position-relative d-inline-block">
                 <img
+                  ref={avatarRef}
                   src="/images/hotel/hotel-images/page-image/Dog2.png"
                   alt="User Avatar"
                   className="rounded-circle avatar-img"
@@ -55,6 +89,7 @@ const ReviewList = () => {
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
+                    onClick={uploadPhoto}
                   >
                     <img
                       src="/images/hotel/hotel-images/page-image/icon-camera.png"
@@ -67,6 +102,7 @@ const ReviewList = () => {
                       <button
                         className="dropdown-item text-danger"
                         id="deletePhoto"
+                        onClick={deletePhoto}
                       >
                         刪除照片
                       </button>
@@ -80,6 +116,8 @@ const ReviewList = () => {
                         id="uploadPhoto"
                         accept="image/*"
                         className="d-none"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
                       />
                     </li>
                   </ul>
@@ -116,7 +154,7 @@ const ReviewList = () => {
           </div>
         </div>
 
-        {/* 右側：評論列表 */}
+        {/* 右邊 */}
         <div className="col-md-9">
           <h3 className="mb-4">評論列表</h3>
           <div className="table-responsive">
@@ -209,6 +247,7 @@ const ReviewList = () => {
               <p className="border p-2">{modalData.content || "N/A"}</p>
               <label className="form-label mt-3">回覆：</label>
               <textarea
+                ref={replyInputRef}
                 className="form-control"
                 rows="3"
                 placeholder="請輸入回覆內容..."
@@ -222,7 +261,11 @@ const ReviewList = () => {
               >
                 取消
               </button>
-              <button type="button" className="btn btn-primary">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={replyReview}
+              >
                 送出回覆
               </button>
             </div>
