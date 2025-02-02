@@ -2,7 +2,6 @@ body {
   font-family: Arial, sans-serif;
 }
 
-
 .profile-card {
   border-radius: 10px;
   padding: 20px;
@@ -116,4 +115,23 @@ body {
 }
 .status-filter .active {
   color: #f95325;
+}
+.table th,
+.table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.badge {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+.stars {
+  color: #ffc107;
+}
+
+.btn-action {
+  min-width: 100px;
 }
