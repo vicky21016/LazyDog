@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>opTeacherCreat</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="./css/operatorCamera.css" />
+    <style>
+
+      /* 右邊 */
+      .right{
+        margin: 0 20px;
+      }
+      .badge {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+        border-radius: 8px;
+      }
+      .btn-outline{
+        height: 35px;
+        padding: 6px 15px;
+        border-radius: 5px;
+        border: 1px solid var(--Color-3, #66C5BD);
+        color: var(--Color-3, #66C5BD);
+        font-family: "Noto Sans TC";
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 2.5px;
+
+      }
+      .btn-outline:hover{
+        background-color:  var(--Color-3, #66C5BD);
+        color: #fff;
+        
+      }
+      .text-center {
+        padding: 38px;
+      }
+      .lis {
+        border-top: 0.1px solid var(--text-Gy, #dee2e6);
+      }
+      .icons{
+        width: 18px;
+        margin-right: 15px;
+      }
+
+      .li-text {
+        color: var(--text-Gy, #bcbcbc);
+        font-family: 'Noto Sans TC';
+        font-size: 15px;
+        font-style: normal;
+        font-weight: bold;
+        line-height: 30px; /* 187.5% */
+        letter-spacing: 0.96px;
+      }
+
+      .bg-light {
+        background-color: #f9f9f9 !important;
+      }
+
+      .must{
+        color: red;
+        padding-left: 5px;
+      }
+
+      .rounded {
+        border-radius: 5px !important;
+      }
+
+      .tName,.tGmail,.tTitle{
+        font-weight: bold;
+      }
+
+      .form-control {
+        border-radius: 8px;
+      }
+
+      .generate-code-btn {
+        margin-left: 10px;
+      }
+      
+      .btnSubmit{
+        background-color: #F5842B;
+        border: none;
+      }
+
+      /* 美化圖片預覽區 */
+      .image-card {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        padding: 8px;
+      }
+
+      .image-card img {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .image-card input {
+        width: 100%;
+        font-size: 12px;
+        margin-top: 5px;
+        padding: 3px;
+      }
+      .delete-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .delete-btn:hover {
+        background: darkred;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <div class="container mt-5">
+        <div class="row">
+          <!-- 左邊 -->
+          <div class="col-md-3">
+            <div class="right">
+              <div class="border rounded ">
+                <div class="text-center">
+                  <div class="position-relative d-inline-block">
+                    <img
+                      src="./img/25 (1).jpeg"
+                      class="rounded-circle avatar-img"
+                      alt="User Avatar"
+                    />
+                    <!-- 相機按鈕Dropdown) -->
+                    <div class="dropdown">
+                      <button
+                        class="btn btn-light camera-icon p-0"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <img
+                          src="./img/camera.png"
+                          alt="相機"
+                          class="camera-icon-img"
+                        />
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <button
+                            class="dropdown-item text-danger"
+                            id="deletePhoto"
+                          >
+                            刪除照片
+                          </button>
+                        </li>
+                        <li>
+                          <label for="uploadPhoto" class="dropdown-item"
+                            >上傳照片</label
+                          >
+                          <input
+                            type="file"
+                            id="uploadPhoto"
+                            accept="image/*"
+                            class="d-none"
+                          />
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <h5 class="m-3 tName">陳大方</h5>
+                  <p class="text-muted tGmail">165846hote@gmail.com</p>
+                  <button class="btn btn-outline btn-sm">已認證</button>
+                </div>
+                <ul class="list-unstyled text-start m-0">
+                  <li class="p-4 lis">
+                    <a
+                      href="opTeacherInfo.html"
+                      class="text-decoration-none li-text"
+                    >
+                      <img class="icons" src="./img/userIcon.png" alt="" />我的資訊
+                    </a>
+                  </li>
+                  <li class="p-4 lis">
+                    <a
+                      href="opTeacherList.html"
+                      class="text-decoration-none li-text"
+                    >
+                      <img class="icons" src="./img/penIcon.png" alt=""></i>我的課程
+                    </a>
+                  </li>
+                  <li class="p-4 lis">
+                    <a
+                      href="opTeacherPlace.html"
+                      class="text-decoration-none li-text"
+                    >
+                      <img class="icons" src="./img/flagIcon.png" alt=""></i>開課地點
+                    </a>
+                  </li>
+                  
+                </ul>
+              </div>
+            </div>
+            
+          </div>
+          <!-- 右邊 -->
+          <div class="col-md-9">
+            <div class="left border rounded p-5">
+            <h3 class="mb-4 tTitle">師資內容</h3>
+            <div class="mb-4">
+              <!-- <h5 class="mb-3">基本資訊</h5> -->
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="form-label">姓名<span class="must">*</span></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder=""
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">課程類別<span class="must">*</span></label>
+                  <select class="form-select">
+                    <option selected></option>
+                    <option>寵物美容</option>
+                    <option>寵膳食育</option>
+                    <option>寵物訓練</option>
+                    <option>寵物照護</option>
+                    <option>商業思維與專業培訓</option>
+                  </select>
+                </div>
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">個人介紹<span class="must">*</span></label>
+                  <textarea class="form-control" style="resize: none;" id="exampleFormControlTextarea1" rows="10"></textarea>
+                </div>
+                <div class="col-md-12 mt-3">
+                  <label class="form-label">經歷<span class="must">*</span></label>
+                  <textarea class="form-control" style="resize: none;" id="exampleFormControlTextarea1" rows="10"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 mt-3">
+              <div class="section">
+                <label class="form-label">圖片<span class="must">*</span></label>
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm m-2"
+                  onclick="document.getElementById('imageUpload').click();"
+                >
+                  上傳
+                </button>
+                <div
+                  id="imagePreviewContainer"
+                  class="d-flex flex-wrap gap-3 mb-5"
+                >
+                  <div class="image-card">
+                    <img
+                      src="./img/25 (1).jpeg"
+                      alt=""
+                    />
+                    <button type="button" class="delete-btn">&times;</button>
+                  </div>
+                  
+                </div>
+                <input
+                  type="file"
+                  id="imageUpload"
+                  class="form-control d-none"
+                  accept="image/*"
+                  multiple
+                />
+                
+              </div>
+            </div>
+
+            <!-- 圖片 -->
+            
+
+             <!-- 按鈕區 -->
+             <div class="d-flex justify-content-end gap-3">
+              <button
+                type="button"
+                class="btn btn-secondary btn-sm px-4"
+                onclick="location.href='operatorCouponList.html'"
+              >
+                取消
+              </button>
+              <button type="submit" class="btn btn-primary btn-sm px-4 btnSubmit">
+                儲存
+              </button>
+            </div>
+            </div>
+            
+
+           
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="./js/operatorCamera.js"></script>
+    <script>
+      function generateCode() {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        let code = ''
+        for (let i = 0; i < 10; i++) {
+          code += characters.charAt(
+            Math.floor(Math.random() * characters.length)
+          )
+        }
+        document.getElementById('couponCode').value = code
+      }
+    </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
