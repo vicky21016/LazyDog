@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react'
 
-export default function CouponListPage(props) {
+export default function HotelDetailPage(props) {
   return (
     <>
-      <div>CouponList Page</div>
+      <div>HotelDetail Page</div>
     </>
   )
 }

@@ -2,36 +2,17 @@
 import React, { useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import styles from "../../../styles/modules/hotelList.module.css";
 import { useRouter } from "next/navigation";
+import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 
 export default function PagesHotelList() {
-  const fileInputRef = useRef(null);
-  const avatarRef = useRef(null);
   const router = useRouter();
-
+  const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
+    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
-
-  const uploadPhoto = () => {
-    fileInputRef.current.click();
-  };
-
-  const fileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        avatarRef.current.src = reader.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const deletePhoto = () => {
-    avatarRef.current.src =
-      "/images/hotel/hotel-images/page-image/default-avatar.png";
-  };
 
   return (
     <>
@@ -55,7 +36,6 @@ export default function PagesHotelList() {
                       type="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
-                      onClick={uploadPhoto}
                     >
                       <img
                         src="/images/hotel/hotel-images/page-image/icon-camera.png"
@@ -74,7 +54,11 @@ export default function PagesHotelList() {
                         </button>
                       </li>
                       <li>
-                        <label htmlFor="uploadPhoto" className="dropdown-item">
+                        <label
+                          htmlFor="uploadPhoto"
+                          className="dropdown-item"
+                          onClick={uploadPhoto}
+                        >
                           上傳照片
                         </label>
                         <input
@@ -98,23 +82,41 @@ export default function PagesHotelList() {
 
               <hr />
               <ul className="list-unstyled text-start">
-                <li className="py-2">
-                  <a href="#" className="text-decoration-none text-dark">
+                <li
+                  className="py-2"
+                  onClick={() => changepage("operatorDetail")}
+                >
+                  <a
+                    className="text-decoration-none text-dark"
+                    style={{ cursor: "pointer" }}
+                  >
                     <i className="bi bi-person-fill me-2"></i>負責人資訊
                   </a>
                 </li>
-                <li className="py-2">
-                  <a href="#" className="text-decoration-none text-dark">
+                <li
+                  className="py-2"
+                  onClick={() => changepage("operatorHotel")}
+                >
+                  <a
+                    className="text-decoration-none text-dark"
+                    style={{ cursor: "pointer" }}
+                  >
                     <i className="bi bi-house-heart-fill me-2"></i>旅館資訊
                   </a>
                 </li>
-                <li className="py-2">
-                  <a href="#" className="text-decoration-none text-dark">
+                <li className="py-2" onClick={() => changepage("review")}>
+                  <a
+                    className="text-decoration-none text-dark"
+                    style={{ cursor: "pointer" }}
+                  >
                     <i className="bi bi-card-list me-2"></i>旅館評論
                   </a>
                 </li>
-                <li className="py-2">
-                  <a href="#" className="text-decoration-none text-dark">
+                <li className="py-2" onClick={() => changepage("couponList")}>
+                  <a
+                    className="text-decoration-none text-dark"
+                    style={{ cursor: "pointer" }}
+                  >
                     <i className="bi bi-ticket-perforated me-2"></i>旅館優惠券
                   </a>
                 </li>
@@ -125,7 +127,7 @@ export default function PagesHotelList() {
           {/* 右邊 */}
           <div className="col-md-9">
             <h3 className="mb-4">旅館名稱</h3>
-            <table className="table">
+            <table className="`${styles.hotelTable} table">
               <thead>
                 <tr>
                   <th>名稱</th>
@@ -141,8 +143,8 @@ export default function PagesHotelList() {
                 <tr className="">
                   <td className="d-flex align-items-center gap-2">
                     <img
-                      src="/images/hotel/hotel_uploads/30-outside.png"
-                      className="hotel-img rounded"
+                      src="/images/hotel/hotel-uploads/30-outside.png"
+                      className={`${styles.hotelImg} rounded`}
                       alt="寵物之星"
                     />
                     <span className="ms-3">寵物之星</span>
@@ -159,14 +161,14 @@ export default function PagesHotelList() {
                     <button
                       type="button"
                       className="btn btn-primary btn-sm"
-                      onClick="location.href='operatorHotel.html'"
+                      onClick={() => changepage("hotel")}
                     >
                       檢視
                     </button>
                     <button
                       type="button"
                       className="btn btn-warning btn-sm"
-                      onClick="location.href='operatorHotelEdit.html'"
+                      onClick={() => changepage("hotelEdit")}
                     >
                       編輯
                     </button>
@@ -180,13 +182,13 @@ export default function PagesHotelList() {
                   </td>
                 </tr>
                 <tr>
-                  <td className="d-flex align-items-center">
+                  <td className="d-flex align-items-center gap-2">
                     <img
-                      src="/images/hotel/hotel_uploads/10-outside.png"
-                      className="hotel-img rounded"
+                      src="/images/hotel/hotel-uploads/10-outside.png"
+                      className={`${styles.hotelImg} rounded`}
                       alt="象山寵物旅館"
                     />
-                    <span className="ms-3">象山寵物旅館</span>
+                    <span className="ms-3">象山寵物</span>
                   </td>
                   <td>新北</td>
                   <td>2 間</td>
@@ -199,14 +201,14 @@ export default function PagesHotelList() {
                     <button
                       type="button"
                       className="btn btn-primary btn-sm"
-                      onClick="location.href='operatorHotel.html'"
+                      onClick={() => changepage("hotel")}
                     >
                       檢視
                     </button>
                     <button
                       type="button"
                       className="btn btn-warning btn-sm"
-                      onClick="location.href='operatorHotelEdit.html'"
+                      onClick={() => changepage("hotelEdit")}
                     >
                       編輯
                     </button>
@@ -223,8 +225,8 @@ export default function PagesHotelList() {
             </table>
             <div className="text-end mt-3">
               <button
-                className="btn btn-add"
-                onClick="location.href='operatorHotelCreate.html'"
+                className={styles.btnAdd}
+                onClick={() => changepage("hotelCreate")}
               >
                 + 新增旅館
               </button>
