@@ -1,3 +1,5 @@
+/* hotelList.module.css */
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -13,11 +15,12 @@
 .table tbody tr {
   border-bottom: 1px solid #eee;
 }
+
 .table tbody td {
   vertical-align: middle;
 }
 
-.hotel-img {
+.hotelImg {
   width: 50px;
   height: 50px;
   object-fit: cover;
@@ -28,12 +31,7 @@
   font-size: 16px;
 }
 
-.badge {
-  font-size: 14px;
-  padding: 6px 10px;
-}
-
-.btn-add {
+.btnAdd {
   background-color: #5dc2b1 !important;
   color: white !important;
   border-radius: 10px;
@@ -44,6 +42,6 @@
   min-width: 140px;
 }
 
-.btn-add:hover {
+.btnAdd:hover {
   background-color: #4daaa0 !important;
 }

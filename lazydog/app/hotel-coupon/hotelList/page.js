@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import styles from "../../../styles/modules/hotelList.module.css";
 import { useRouter } from "next/navigation";
 
 export default function PagesHotelList() {
@@ -107,7 +108,10 @@ export default function PagesHotelList() {
                   className="py-2"
                   onClick={() => changepage("operatorDetail")}
                 >
-                  <a className="text-decoration-none text-dark">
+                  <a
+                    className="text-decoration-none text-dark"
+                    style={{ cursor: "pointer" }}
+                  >
                     <i className="bi bi-person-fill me-2"></i>負責人資訊
                   </a>
                 </li>
@@ -115,17 +119,26 @@ export default function PagesHotelList() {
                   className="py-2"
                   onClick={() => changepage("operatorHotel")}
                 >
-                  <a className="text-decoration-none text-dark">
+                  <a
+                    className="text-decoration-none text-dark"
+                    style={{ cursor: "pointer" }}
+                  >
                     <i className="bi bi-house-heart-fill me-2"></i>旅館資訊
                   </a>
                 </li>
                 <li className="py-2" onClick={() => changepage("review")}>
-                  <a className="text-decoration-none text-dark">
+                  <a
+                    className="text-decoration-none text-dark"
+                    style={{ cursor: "pointer" }}
+                  >
                     <i className="bi bi-card-list me-2"></i>旅館評論
                   </a>
                 </li>
                 <li className="py-2" onClick={() => changepage("couponList")}>
-                  <a className="text-decoration-none text-dark">
+                  <a
+                    className="text-decoration-none text-dark"
+                    style={{ cursor: "pointer" }}
+                  >
                     <i className="bi bi-ticket-perforated me-2"></i>旅館優惠券
                   </a>
                 </li>
@@ -136,7 +149,7 @@ export default function PagesHotelList() {
           {/* 右邊 */}
           <div className="col-md-9">
             <h3 className="mb-4">旅館名稱</h3>
-            <table className="table">
+            <table className="`${styles.hotelTable} table">
               <thead>
                 <tr>
                   <th>名稱</th>
@@ -153,7 +166,7 @@ export default function PagesHotelList() {
                   <td className="d-flex align-items-center gap-2">
                     <img
                       src="/images/hotel/hotel-uploads/30-outside.png"
-                      className="hotel-img rounded"
+                      className={`${styles.hotelImg} rounded`}
                       alt="寵物之星"
                     />
                     <span className="ms-3">寵物之星</span>
@@ -191,13 +204,13 @@ export default function PagesHotelList() {
                   </td>
                 </tr>
                 <tr>
-                  <td className="d-flex align-items-center">
+                  <td className="d-flex align-items-center gap-2">
                     <img
                       src="/images/hotel/hotel-uploads/10-outside.png"
-                      className="hotel-img rounded"
+                      className={`${styles.hotelImg} rounded`}
                       alt="象山寵物旅館"
                     />
-                    <span className="ms-3">象山寵物旅館</span>
+                    <span className="ms-3">象山寵物</span>
                   </td>
                   <td>新北</td>
                   <td>2 間</td>
@@ -234,7 +247,7 @@ export default function PagesHotelList() {
             </table>
             <div className="text-end mt-3">
               <button
-                className="btn btn-add"
+                className={styles.btnAdd}
                 onClick={() => changepage("hotelCreate")}
               >
                 + 新增旅館

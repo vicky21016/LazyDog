@@ -139,22 +139,22 @@ const ReviewList = () => {
             <hr />
             <ul className="list-unstyled text-start">
               <li className="py-2" onClick={() => changepage("operatorDetail")}>
-                <a className="text-decoration-none text-dark">
+                <a className="text-decoration-none text-dark" style={{ cursor: "pointer" }}>
                   <i className="bi bi-person-fill me-2"></i>負責人資訊
                 </a>
               </li>
               <li className="py-2" onClick={() => changepage("operatorHotel")}>
-                <a className="text-decoration-none text-dark">
+                <a className="text-decoration-none text-dark"style={{ cursor: "pointer" }}>
                   <i className="bi bi-house-heart-fill me-2"></i>旅館資訊
                 </a>
               </li>
               <li className="py-2" onClick={() => changepage("review")}>
-                <a className="text-decoration-none text-dark">
+                <a className="text-decoration-none text-dark"style={{ cursor: "pointer" }}>
                   <i className="bi bi-card-list me-2"></i>旅館評論
                 </a>
               </li>
               <li className="py-2" onClick={() => changepage("couponList")}>
-                <a className="text-decoration-none text-dark">
+                <a className="text-decoration-none text-dark"style={{ cursor: "pointer" }}>
                   <i className="bi bi-ticket-perforated me-2"></i>旅館優惠券
                 </a>
               </li>
