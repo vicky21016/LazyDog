@@ -1,14 +1,26 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { useRouter } from "next/navigation";
+import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 
+// ReviewList
+// reviews.js 裡get+post+delete+put做API連結後台，
+//下面都是假資料參考用就好
 const ReviewList = () => {
   const [modalData, setModalData] = useState({});
+  const replyInputRef = useRef(null);
+  const router = useRouter();
+  const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
+    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
 
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
+  const changepage = (path) => {
+    router.push(`/hotel-coupon/${path}`);
+  };
 
   const reviews = [
     {
@@ -35,15 +47,26 @@ const ReviewList = () => {
     setModalData(review);
   };
 
+  const replyReview = () => {
+    const replyContent = replyInputRef.current.value.trim();
+    if (replyContent) {
+      alert(`回覆成功：${replyContent}`);
+      replyInputRef.current.value = ""; // 清空
+    } else {
+      alert("請先填寫回覆內容");
+    }
+  };
+
   return (
     <div className="container mt-5">
       <div className="row">
-        {/* 左邊：用戶資訊區塊 */}
+        {/* 左邊*/}
         <div className="col-md-3">
           <div className="card p-3">
             <div className="text-center">
               <div className="position-relative d-inline-block">
                 <img
+                  ref={avatarRef}
                   src="/images/hotel/hotel-images/page-image/Dog2.png"
                   alt="User Avatar"
                   className="rounded-circle avatar-img"
@@ -67,12 +90,17 @@ const ReviewList = () => {
                       <button
                         className="dropdown-item text-danger"
                         id="deletePhoto"
+                        onClick={deletePhoto}
                       >
                         刪除照片
                       </button>
                     </li>
                     <li>
-                      <label htmlFor="uploadPhoto" className="dropdown-item">
+                      <label
+                        htmlFor="uploadPhoto"
+                        className="dropdown-item"
+                        onClick={uploadPhoto}
+                      >
                         上傳照片
                       </label>
                       <input
@@ -80,6 +108,8 @@ const ReviewList = () => {
                         id="uploadPhoto"
                         accept="image/*"
                         className="d-none"
+                        ref={fileInputRef}
+                        onChange={fileChange}
                       />
                     </li>
                   </ul>
@@ -92,23 +122,35 @@ const ReviewList = () => {
 
             <hr />
             <ul className="list-unstyled text-start">
-              <li className="py-2">
-                <a href="#" className="text-decoration-none text-dark">
+              <li className="py-2" onClick={() => changepage("operatorDetail")}>
+                <a
+                  className="text-decoration-none text-dark"
+                  style={{ cursor: "pointer" }}
+                >
                   <i className="bi bi-person-fill me-2"></i>負責人資訊
                 </a>
               </li>
-              <li className="py-2">
-                <a href="#" className="text-decoration-none text-dark">
+              <li className="py-2" onClick={() => changepage("operatorHotel")}>
+                <a
+                  className="text-decoration-none text-dark"
+                  style={{ cursor: "pointer" }}
+                >
                   <i className="bi bi-house-heart-fill me-2"></i>旅館資訊
                 </a>
               </li>
-              <li className="py-2">
-                <a href="#" className="text-decoration-none text-dark">
+              <li className="py-2" onClick={() => changepage("review")}>
+                <a
+                  className="text-decoration-none text-dark"
+                  style={{ cursor: "pointer" }}
+                >
                   <i className="bi bi-card-list me-2"></i>旅館評論
                 </a>
               </li>
-              <li className="py-2">
-                <a href="#" className="text-decoration-none text-dark">
+              <li className="py-2" onClick={() => changepage("couponList")}>
+                <a
+                  className="text-decoration-none text-dark"
+                  style={{ cursor: "pointer" }}
+                >
                   <i className="bi bi-ticket-perforated me-2"></i>旅館優惠券
                 </a>
               </li>
@@ -116,7 +158,7 @@ const ReviewList = () => {
           </div>
         </div>
 
-        {/* 右側：評論列表 */}
+        {/* 右邊 */}
         <div className="col-md-9">
           <h3 className="mb-4">評論列表</h3>
           <div className="table-responsive">
@@ -209,6 +251,7 @@ const ReviewList = () => {
               <p className="border p-2">{modalData.content || "N/A"}</p>
               <label className="form-label mt-3">回覆：</label>
               <textarea
+                ref={replyInputRef}
                 className="form-control"
                 rows="3"
                 placeholder="請輸入回覆內容..."
@@ -222,7 +265,11 @@ const ReviewList = () => {
               >
                 取消
               </button>
-              <button type="button" className="btn btn-primary">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={replyReview}
+              >
                 送出回覆
               </button>
             </div>
