@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 
-export default function AppPage(props) {
+export default function CartPage(props) {
   return (
     <>
-      <div>App Page</div>
+      <div>Cart Page</div>
     </>
   );
 }
