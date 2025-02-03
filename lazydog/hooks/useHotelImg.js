@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react'
 
-export default function HooksExmple(props) {
+export default function HooksUseHotelImg(props) {
   return (
     <>
-      <div>Hooks Exmple</div>
+      <div>Hooks UseHotelImg</div>
     </>
   )
 }
