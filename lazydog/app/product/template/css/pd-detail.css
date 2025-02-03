@@ -66,6 +66,7 @@
 }
 .info-favorite-group {
   display: flex;
+  align-items: center;
   gap: 30px;
   h4 {
     font-weight: bold;
@@ -341,6 +342,11 @@
   }
   .product-card-price {
     color: var(--Orange);
+  }
+}
+.favorite-btn {
+  img {
+    width: 100%;
   }
 }
 /* --------------------------- */

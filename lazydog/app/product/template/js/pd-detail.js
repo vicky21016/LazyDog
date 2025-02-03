@@ -4,6 +4,19 @@ const collapses = document.querySelectorAll(".accordion-collapse");
 const collapseRate = document.querySelector("#collapse4");
 const scoreBar = document.querySelector(".score-bar");
 const bsEvent = ["shown.bs.collapse", "click"];
+const favoIcon = document.querySelector(".favorite-btn");
+
+favoIcon.addEventListener("click", () => {
+  if (
+    favoIcon.querySelector("img").getAttribute("src").includes("heart-fill")
+  ) {
+    favoIcon.querySelector("img").setAttribute("src", "./img/font/heart.png");
+  } else {
+    favoIcon
+      .querySelector("img")
+      .setAttribute("src", "./img/font/heart-fill.png");
+  }
+});
 
 window.addEventListener("scroll", () => {
   if (window.scrollY >= stickyNav.offsetTop) {
