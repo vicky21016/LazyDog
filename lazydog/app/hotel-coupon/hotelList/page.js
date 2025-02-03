@@ -4,40 +4,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "../../../styles/modules/hotelList.module.css";
 import { useRouter } from "next/navigation";
+import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 
 export default function PagesHotelList() {
-  const fileInputRef = useRef(null);
-  const avatarRef = useRef(null);
   const router = useRouter();
-
+  const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
+    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
-
-  const changepage = (path) => {
-    router.push(`/hotel-coupon/${path}`);
-  };
-
-  //上傳
-  const uploadPhoto = () => {
-    fileInputRef.current.click();
-  };
-  //上傳
-  const fileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        avatarRef.current.src = reader.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  //刪除的
-  const deletePhoto = () => {
-    avatarRef.current.src =
-      "/images/hotel/hotel-images/page-image/default-avatar.png";
-  };
 
   return (
     <>
@@ -61,7 +36,6 @@ export default function PagesHotelList() {
                       type="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
-                      onClick={uploadPhoto}
                     >
                       <img
                         src="/images/hotel/hotel-images/page-image/icon-camera.png"
@@ -80,7 +54,11 @@ export default function PagesHotelList() {
                         </button>
                       </li>
                       <li>
-                        <label htmlFor="uploadPhoto" className="dropdown-item">
+                        <label
+                          htmlFor="uploadPhoto"
+                          className="dropdown-item"
+                          onClick={uploadPhoto}
+                        >
                           上傳照片
                         </label>
                         <input
