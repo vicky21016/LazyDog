@@ -6,7 +6,7 @@
     border-radius: 5px;
   }
 
-  .bg-light {
+  .bgLight {
     background-color: #f9f9f9 !important;
   }
 
@@ -14,10 +14,10 @@
     border-radius: 10px !important;
   }
 
-  .form-control {
+  .formControl {
     border-radius: 8px;
   }
 
-  .generate-code-btn {
+  .generateCodeBtn {
     margin-left: 10px;
   }

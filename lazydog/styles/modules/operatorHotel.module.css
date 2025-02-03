@@ -1,45 +1,45 @@
 /* 待改 */
-.form-control,
-.form-select {
+.formControl,
+.formSelect {
   border-radius: 8px;
 }
-.btn-success {
+.btnSuccess {
   background-color: #81eaaf;
   color: black;
   border-radius: 5px;
   border: none;
 }
-.btn-success:hover {
+.btnSuccess:hover {
   background-color: #aaa;
 }
-.btn-orange {
+.btnOrange {
   background-color: #f5842b;
   color: white;
   border-radius: 5px;
   transition: background-color 0.2s ease-in-out;
   border: none;
 }
-.btn-orange:hover {
+.btnOrange:hover {
   background-color: #e65c00;
 }
-.btn-secondary {
+.btnSecondary {
   background-color: #81eaaf;
   color: black;
   border-radius: 5px;
   border: none;
 }
-.btn-secondary:hover {
+.btnSecondary:hover {
   background-color: #aaa;
 }
 
-.btn-danger {
+.btnDanger {
   background-color: #dc3545;
   color: white;
   border-radius: 5px;
   border: none;
 }
 
-.btn-danger:hover {
+.btnDanger:hover {
   background-color: #bb2d3b;
 }
 .section {
@@ -50,7 +50,7 @@
   background: #f9f9f9;
 }
 
-.image-card {
+.imageCard {
   position: relative;
   width: 120px;
   height: 120px;
@@ -65,13 +65,13 @@
   text-align: center;
   padding: 8px;
 }
-.image-card img {
+.imageCard img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 8px;
 }
-.delete-btn {
+.deleteBtn {
   position: absolute;
   top: 5px;
   right: 5px;
@@ -87,6 +87,6 @@
   justify-content: center;
   cursor: pointer;
 }
-.delete-btn:hover {
+.deleteBtn:hover {
   background: darkred;
 }
