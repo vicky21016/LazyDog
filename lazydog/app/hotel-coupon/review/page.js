@@ -2,8 +2,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { useRouter } from "next/navigation";
 
-// ReviewList 
+// ReviewList
 // reviews.js 裡get+post+delete+put做API連結後台，
 //下面都是假資料參考用就好
 const ReviewList = () => {
@@ -11,10 +12,14 @@ const ReviewList = () => {
   const fileInputRef = useRef(null);
   const avatarRef = useRef(null);
   const replyInputRef = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
+  const changepage = (path) => {
+    router.push(`/hotel-coupon/${path}`);
+  };
 
   const reviews = [
     {
@@ -133,23 +138,23 @@ const ReviewList = () => {
 
             <hr />
             <ul className="list-unstyled text-start">
-              <li className="py-2">
-                <a href="#" className="text-decoration-none text-dark">
+              <li className="py-2" onClick={() => changepage("operatorDetail")}>
+                <a className="text-decoration-none text-dark">
                   <i className="bi bi-person-fill me-2"></i>負責人資訊
                 </a>
               </li>
-              <li className="py-2">
-                <a href="#" className="text-decoration-none text-dark">
+              <li className="py-2" onClick={() => changepage("operatorHotel")}>
+                <a className="text-decoration-none text-dark">
                   <i className="bi bi-house-heart-fill me-2"></i>旅館資訊
                 </a>
               </li>
-              <li className="py-2">
-                <a href="#" className="text-decoration-none text-dark">
+              <li className="py-2" onClick={() => changepage("review")}>
+                <a className="text-decoration-none text-dark">
                   <i className="bi bi-card-list me-2"></i>旅館評論
                 </a>
               </li>
-              <li className="py-2">
-                <a href="#" className="text-decoration-none text-dark">
+              <li className="py-2" onClick={() => changepage("couponList")}>
+                <a className="text-decoration-none text-dark">
                   <i className="bi bi-ticket-perforated me-2"></i>旅館優惠券
                 </a>
               </li>

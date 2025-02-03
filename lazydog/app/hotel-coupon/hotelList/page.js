@@ -13,10 +13,15 @@ export default function PagesHotelList() {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
 
+  const changepage = (path) => {
+    router.push(`/hotel-coupon/${path}`);
+  };
+
+  //上傳
   const uploadPhoto = () => {
     fileInputRef.current.click();
   };
-
+  //上傳
   const fileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -27,7 +32,7 @@ export default function PagesHotelList() {
       reader.readAsDataURL(file);
     }
   };
-
+  //刪除的
   const deletePhoto = () => {
     avatarRef.current.src =
       "/images/hotel/hotel-images/page-image/default-avatar.png";
@@ -98,23 +103,29 @@ export default function PagesHotelList() {
 
               <hr />
               <ul className="list-unstyled text-start">
-                <li className="py-2">
-                  <a href="#" className="text-decoration-none text-dark">
+                <li
+                  className="py-2"
+                  onClick={() => changepage("operatorDetail")}
+                >
+                  <a className="text-decoration-none text-dark">
                     <i className="bi bi-person-fill me-2"></i>負責人資訊
                   </a>
                 </li>
-                <li className="py-2">
-                  <a href="#" className="text-decoration-none text-dark">
+                <li
+                  className="py-2"
+                  onClick={() => changepage("operatorHotel")}
+                >
+                  <a className="text-decoration-none text-dark">
                     <i className="bi bi-house-heart-fill me-2"></i>旅館資訊
                   </a>
                 </li>
-                <li className="py-2">
-                  <a href="#" className="text-decoration-none text-dark">
+                <li className="py-2" onClick={() => changepage("review")}>
+                  <a className="text-decoration-none text-dark">
                     <i className="bi bi-card-list me-2"></i>旅館評論
                   </a>
                 </li>
-                <li className="py-2">
-                  <a href="#" className="text-decoration-none text-dark">
+                <li className="py-2" onClick={() => changepage("couponList")}>
+                  <a className="text-decoration-none text-dark">
                     <i className="bi bi-ticket-perforated me-2"></i>旅館優惠券
                   </a>
                 </li>
@@ -141,7 +152,7 @@ export default function PagesHotelList() {
                 <tr className="">
                   <td className="d-flex align-items-center gap-2">
                     <img
-                      src="/images/hotel/hotel_uploads/30-outside.png"
+                      src="/images/hotel/hotel-uploads/30-outside.png"
                       className="hotel-img rounded"
                       alt="寵物之星"
                     />
@@ -159,14 +170,14 @@ export default function PagesHotelList() {
                     <button
                       type="button"
                       className="btn btn-primary btn-sm"
-                      onClick="location.href='operatorHotel.html'"
+                      onClick={() => changepage("hotel")}
                     >
                       檢視
                     </button>
                     <button
                       type="button"
                       className="btn btn-warning btn-sm"
-                      onClick="location.href='operatorHotelEdit.html'"
+                      onClick={() => changepage("hotelEdit")}
                     >
                       編輯
                     </button>
@@ -182,7 +193,7 @@ export default function PagesHotelList() {
                 <tr>
                   <td className="d-flex align-items-center">
                     <img
-                      src="/images/hotel/hotel_uploads/10-outside.png"
+                      src="/images/hotel/hotel-uploads/10-outside.png"
                       className="hotel-img rounded"
                       alt="象山寵物旅館"
                     />
@@ -199,14 +210,14 @@ export default function PagesHotelList() {
                     <button
                       type="button"
                       className="btn btn-primary btn-sm"
-                      onClick="location.href='operatorHotel.html'"
+                      onClick={() => changepage("hotel")}
                     >
                       檢視
                     </button>
                     <button
                       type="button"
                       className="btn btn-warning btn-sm"
-                      onClick="location.href='operatorHotelEdit.html'"
+                      onClick={() => changepage("hotelEdit")}
                     >
                       編輯
                     </button>
@@ -224,7 +235,7 @@ export default function PagesHotelList() {
             <div className="text-end mt-3">
               <button
                 className="btn btn-add"
-                onClick="location.href='operatorHotelCreate.html'"
+                onClick={() => changepage("hotelCreate")}
               >
                 + 新增旅館
               </button>
