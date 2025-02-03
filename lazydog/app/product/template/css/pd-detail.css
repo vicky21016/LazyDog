@@ -178,7 +178,7 @@
   }
 }
 /* --------------------------- */
-/* ---------商品詳細----------- */
+/* ------商品詳細(手風琴)------- */
 .sticky-top {
   background: #fff;
   padding-block: 20px;
@@ -210,28 +210,159 @@
   h3 {
     font-weight: bold;
   }
+}
+.accordion-body {
+  padding: 20px 30px;
+  h4 {
+    line-height: 2;
+  }
+  figure {
+    width: 840px;
+    margin: auto;
+  }
+  img {
+    width: 100%;
+  }
+  p {
+    font-size: 16px;
+    line-height: 2;
+  }
+}
+.product-detail-rate {
   .accordion-body {
-    padding: 20px 30px;
-    h4 {
-      line-height: 2;
-    }
-    figure {
-      width: 840px;
-      margin: auto;
-    }
-    img {
-      width: 100%;
-    }
-    p {
-      font-size: 16px;
-      line-height: 2;
-    }
+    display: flex;
+    padding-bottom: 30px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
   }
 }
 .score-bar {
   display: flex;
   align-items: center;
   gap: 80px;
+}
+.score {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.star-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  img {
+    width: 18px;
+  }
+}
+.star-bar-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+  .star-group {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    img {
+      width: 12px;
+    }
+  }
+}
+.star-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  p {
+    line-height: 1;
+  }
+}
+.bar-area {
+  width: 110px;
+  height: 5px;
+  background: var(--skin);
+}
+.bar {
+  height: 100%;
+  background: var(--orange);
+}
+.rate-card-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+.rate-card {
+  display: flex;
+  width: 392px;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 10px;
+  border: 1px solid var(--Orange);
+}
+.rate-card-text {
+  width: 100%;
+  display: flex;
+  padding: 20px 20px 5px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  .star-group {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    img {
+      width: 12px;
+    }
+  }
+}
+.rate-card-user {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+    }
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+.rate-card-btn {
+  width: 100%;
+  display: flex;
+  padding: 10px 20px 20px 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+.btn-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 0.5px solid var(--skin);
+    border-radius: 50%;
+  }
+}
+.rate-more {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: var(--Orange);
 }
 /* --------------------------- */
 /* ----------也買區------------ */
@@ -342,11 +473,6 @@
   }
   .product-card-price {
     color: var(--Orange);
-  }
-}
-.favorite-btn {
-  img {
-    width: 100%;
   }
 }
 /* --------------------------- */

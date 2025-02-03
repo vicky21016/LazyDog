@@ -4,18 +4,29 @@ const collapses = document.querySelectorAll(".accordion-collapse");
 const collapseRate = document.querySelector("#collapse4");
 const scoreBar = document.querySelector(".score-bar");
 const bsEvent = ["shown.bs.collapse", "click"];
-const favoIcon = document.querySelector(".favorite-btn");
+const favoriteIcons = document.querySelectorAll(".favorite-btn");
+const score = document.querySelector(".score");
+const starBars = document.querySelectorAll(".star-bar");
+let scoreList = [];
+let totalScore = 0;
 
-favoIcon.addEventListener("click", () => {
-  if (
-    favoIcon.querySelector("img").getAttribute("src").includes("heart-fill")
-  ) {
-    favoIcon.querySelector("img").setAttribute("src", "./img/font/heart.png");
-  } else {
-    favoIcon
-      .querySelector("img")
-      .setAttribute("src", "./img/font/heart-fill.png");
-  }
+favoriteIcons.forEach((favoriteIcon) => {
+  favoriteIcon.addEventListener("click", () => {
+    if (
+      favoriteIcon
+        .querySelector("img")
+        .getAttribute("src")
+        .includes("heart-fill")
+    ) {
+      favoriteIcon
+        .querySelector("img")
+        .setAttribute("src", "./img/font/heart.png");
+    } else {
+      favoriteIcon
+        .querySelector("img")
+        .setAttribute("src", "./img/font/heart-fill.png");
+    }
+  });
 });
 
 window.addEventListener("scroll", () => {
@@ -39,26 +50,15 @@ collapses.forEach((collapse) => {
   });
 });
 
-bsEvent.forEach((event) => {
-  accordion.addEventListener(event, () => {
-    collapseRateStar();
-  });
+starBars.forEach((starBar) => {
+  // console.log(starBar.querySelector("p").innerText);
+  let barLength = starBar.querySelector("p").innerText;
+  let bar = parseInt(barLength) / 100;
+  scoreList.push(bar);
+  starBar.querySelector(".bar").style.width = barLength;
 });
 
-collapseRateStar();
-function collapseRateStar() {
-  if (collapseRate.getAttribute("class").includes("show")) {
-    // let imgs = scoreBar.querySelectorAll("img");
-    // imgs.forEach((img) => {
-    //   if (img.getAttribute("src").includes("star-fill")) {
-    //     let src = img.getAttribute("src").replace("star-fill", "whitestar");
-    //     img.setAttribute("src", src);
-    //   }
-    // });
-    scoreBar.querySelector("h2").style.display = "";
-    scoreBar.querySelector(".info-rate-group").style.display = "";
-  } else {
-    scoreBar.querySelector("h2").style.display = "none";
-    scoreBar.querySelector(".info-rate-group").style.display = "none";
-  }
+for (let i = 0; i < scoreList.length; i++) {
+  totalScore += scoreList[i] * (5 - i);
 }
+score.querySelector("h2").innerText = totalScore.toFixed(1);
