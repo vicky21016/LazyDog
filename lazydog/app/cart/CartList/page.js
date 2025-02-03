@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 
-import './styles.css'
+import '../css/CartList.css';
 
 export default function CartListPage(props) {
   return (

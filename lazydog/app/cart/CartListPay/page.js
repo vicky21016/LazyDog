@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-
+import "../css/CartListPay.css";
 export default function CartListPayPage(props) {
   return (
     <>
@@ -132,6 +132,7 @@ export default function CartListPayPage(props) {
                     <span>Rs. 250,000.00</span>
                   </div>
                 </div>
+                <hr />
                 <div className="aside2">
                   <h1>付款</h1>
                   <label>
