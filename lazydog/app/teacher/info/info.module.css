@@ -1,0 +1,33 @@
+.container {
+    max-width: 1320px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .profile {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .profileImg {
+    border-radius: 50%;
+    max-width: 150px;
+  }
+
+  .type {
+    color: #ff9538;
+    font-weight: 550;
+    letter-spacing: 2px;
+  }
+  .mark{
+    background-color: white;
+    font-weight: 600;
+  }
+  .social-links a {
+    margin-right: 10px;
+    font-size: 20px;
+  }
+  .icon{
+    color: #66C5BD;
+  }
