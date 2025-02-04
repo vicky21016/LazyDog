@@ -152,7 +152,7 @@ export default function HotelEditPage(props) {
           <div className="col-md-9  mx-auto">
             <h3 className="mb-3">編輯旅館資訊</h3>
             <form id="editForm">
-              <div className="section">
+              <div className={hotelStyles.section}>
                 <h5>基本資訊</h5>
                 <div className="mb-3">
                   <label>旅館名稱</label>
@@ -184,7 +184,7 @@ export default function HotelEditPage(props) {
                   />
                 </div>
               </div>
-              <div class="section">
+              <div class={hotelStyles.section}>
                 <h5>旅館圖片</h5>
                 <div className="mb-3">
                   <label>房型</label>
@@ -228,7 +228,7 @@ export default function HotelEditPage(props) {
                       />
                       <button
                         type="button"
-                        className="btn btn-danger"
+                        className={`btn ${hotelStyles.suBtnDanger}`}
                         onClick={() => removeRoom(index)}
                       >
                         X
@@ -244,7 +244,7 @@ export default function HotelEditPage(props) {
                   </button>
                 </div>
               </div>
-              <div class="section">
+              <div class={hotelStyles.section}>
                 <h5>營業時間</h5>
                 <div className="mb-3">
                   <label>營業時間</label>
@@ -276,16 +276,21 @@ export default function HotelEditPage(props) {
                   ></textarea>
                 </div>
               </div>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm px-4"
-                onClick={() => changepage("hotel")}
-              >
-                返回
-              </button>
-              <button type="submit" className="btn btn-success btn-sm px-4">
-                儲存
-              </button>
+              <div className="d-flex justify-content-end gap-2 mt-3">
+                <button
+                  type="button"
+                  className={`btn  btn-sm px-4  ${hotelStyles.suBtnSecondary}`}
+                  onClick={() => changepage("hotel")}
+                >
+                  返回
+                </button>
+                <button
+                  type="submit"
+                  className={`btn btn-sm px-4 ${hotelStyles.suBtnSuccess}`}
+                >
+                  儲存
+                </button>
+              </div>
             </form>
           </div>
         </div>

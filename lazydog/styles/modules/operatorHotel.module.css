@@ -1,16 +1,16 @@
-
 .suFormControl,
-.formSelect {
+.suFormSelect {
   border-radius: 8px;
 }
-.btnSuccess {
-  background-color: #81eaaf;
-  color: black;
+.suBtnSuccess {
+  background-color: #f9ef2b;
+  color: #000000;
   border-radius: 5px;
   border: none;
 }
-.btnSuccess:hover {
+.suBtnSuccess:hover {
   background-color: #aaa;
+  color: white;
 }
 .btnOrange {
   background-color: #f5842b;
@@ -22,24 +22,25 @@
 .btnOrange:hover {
   background-color: #e65c00;
 }
-.btnSecondary {
+.suBtnSecondary {
   background-color: #81eaaf;
   color: black;
   border-radius: 5px;
   border: none;
 }
-.btnSecondary:hover {
+.suBtnSecondary:hover {
   background-color: #aaa;
+  color: white;
 }
 
-.btnDanger {
+.suBtnDanger {
   background-color: #dc3545;
   color: white;
   border-radius: 5px;
   border: none;
 }
 
-.btnDanger:hover {
+.suBtnDanger:hover {
   background-color: #bb2d3b;
 }
 .section {
