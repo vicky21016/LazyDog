@@ -1,16 +1,16 @@
-/* 待改 */
-.formControl,
-.formSelect {
+.suFormControl,
+.suFormSelect {
   border-radius: 8px;
 }
-.btnSuccess {
-  background-color: #81eaaf;
-  color: black;
+.suBtnSuccess {
+  background-color: #f9ef2b;
+  color: #000000;
   border-radius: 5px;
   border: none;
 }
-.btnSuccess:hover {
+.suBtnSuccess:hover {
   background-color: #aaa;
+  color: white;
 }
 .btnOrange {
   background-color: #f5842b;
@@ -22,24 +22,25 @@
 .btnOrange:hover {
   background-color: #e65c00;
 }
-.btnSecondary {
+.suBtnSecondary {
   background-color: #81eaaf;
   color: black;
   border-radius: 5px;
   border: none;
 }
-.btnSecondary:hover {
+.suBtnSecondary:hover {
   background-color: #aaa;
+  color: white;
 }
 
-.btnDanger {
+.suBtnDanger {
   background-color: #dc3545;
   color: white;
   border-radius: 5px;
   border: none;
 }
 
-.btnDanger:hover {
+.suBtnDanger:hover {
   background-color: #bb2d3b;
 }
 .section {
@@ -89,4 +90,49 @@
 }
 .deleteBtn:hover {
   background: darkred;
+}
+.hotelTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.hotelTable thead th {
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ddd;
+}
+
+.hotelTable tbody tr {
+  border-bottom: 1px solid #eee;
+}
+
+.hotelTable tbody td {
+  vertical-align: middle;
+}
+
+.hotelImg {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.hotelTable tbody td span {
+  font-size: 16px;
+}
+
+.suBtnAdd {
+  background-color: #5dc2b1 !important;
+  color: white !important;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 14px;
+  border: none;
+  white-space: nowrap;
+  min-width: 140px;
+}
+
+.suBtnAdd:hover {
+  background-color: #4daaa0 !important;
 }

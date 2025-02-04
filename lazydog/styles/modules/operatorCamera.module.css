@@ -1,11 +1,11 @@
-.avatarImg {
+.suAvatarImg {
     width: 100px;
     height: 100px;
     object-fit: cover;
     border: 3px solid #ddd;
 }
 
-.cameraIcon {
+.suCameraIcon {
     position: absolute;
     bottom: 5px;
     right: 5px;
@@ -19,16 +19,16 @@
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.cameraIconImg {
+.suCameraIconImg {
     width: 36px;
     height: 36px;
 }
 
-.dropdownMenu {
+.suDropdownMenu {
     min-width: 120px;
     text-align: center;
 }
 
-.dropdownItem {
+.suDropdownItem {
     cursor: pointer;
 }

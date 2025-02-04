@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
+import styles from "../../../styles/modules/operatorCamera.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 
@@ -60,63 +61,63 @@ const ReviewList = () => {
       <div className="row">
         {/* 左邊*/}
         <div className="col-md-3">
-          <div className="card p-3">
-            <div className="text-center">
-              <div className="position-relative d-inline-block">
-                <img
-                  ref={avatarRef}
-                  src="/images/hotel/hotel-images/page-image/Dog2.png"
-                  alt="User Avatar"
-                  className="rounded-circle avatar-img"
-                />
+            <div className="card p-3">
+              <div className="text-center">
+                <div className="position-relative d-inline-block">
+                  <img
+                    ref={avatarRef}
+                    src="/images/hotel/hotel-images/page-image/Dog2.png"
+                    alt="User Avatar"
+                    className={`rounded-circle ${styles.suAvatarImg}`}
+                  />
 
-                <div className="dropdown">
-                  <button
-                    className="btn btn-light camera-icon p-0"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <img
-                      src="/images/hotel/hotel-images/page-image/icon-camera.png"
-                      alt="相機"
-                      className="camera-icon-img"
-                    />
-                  </button>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <button
-                        className="dropdown-item text-danger"
-                        id="deletePhoto"
-                        onClick={deletePhoto}
-                      >
-                        刪除照片
-                      </button>
-                    </li>
-                    <li>
-                      <label
-                        htmlFor="uploadPhoto"
-                        className="dropdown-item"
-                        onClick={uploadPhoto}
-                      >
-                        上傳照片
-                      </label>
-                      <input
-                        type="file"
-                        id="uploadPhoto"
-                        accept="image/*"
-                        className="d-none"
-                        ref={fileInputRef}
-                        onChange={fileChange}
+                  <div className={styles.dropdownItem}>
+                    <button
+                      className={`btn btn-light ${styles.suCameraIcon}`}
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <img
+                        src="/images/hotel/hotel-images/page-image/icon-camera.png"
+                        alt="相機"
+                        className={styles.suCameraIconImg}
                       />
-                    </li>
-                  </ul>
+                    </button>
+                    <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
+                      <li>
+                        <button
+                          className={`text-danger dropdown-item ${styles.suDropdownItem}`}
+                          onClick={deletePhoto}
+                        >
+                          刪除照片
+                        </button>
+                      </li>
+                      <li>
+                        <label
+                          htmlFor="uploadPhoto"
+                          className={`dropdown-item ${styles.dropdownItem}`}
+                        >
+                          上傳照片
+                        </label>
+                        <input
+                          type="file"
+                          id="uploadPhoto"
+                          accept="image/*"
+                          className="d-none"
+                          ref={fileInputRef}
+                          onChange={fileChange}
+                        />
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+                <h5 className="mt-2">陳大方</h5>
+                <p className="text-muted">165846hote@gmail.com</p>
+                <button className="btn btn-outline-success btn-sm">
+                  已認證
+                </button>
               </div>
-              <h5 className="mt-2">陳大方</h5>
-              <p className="text-muted">165846hote@gmail.com</p>
-              <button className="btn btn-outline-success btn-sm">已認證</button>
-            </div>
 
             <hr />
             <ul className="list-unstyled text-start">

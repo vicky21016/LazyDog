@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import styles from "../../../styles/modules/hotelList.module.css";
+import ListStyles from "../../../styles/modules/operatorHotel.module.css";
+import styles from "../../../styles/modules/operatorCamera.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 
@@ -28,12 +29,12 @@ export default function PagesHotelList() {
                     ref={avatarRef}
                     src="/images/hotel/hotel-images/page-image/Dog2.png"
                     alt="User Avatar"
-                    className="rounded-circle avatar-img"
+                    className={`rounded-circle ${styles.suAvatarImg}`}
                   />
 
-                  <div className="dropdown">
+                  <div className={styles.dropdownItem}>
                     <button
-                      className="btn btn-light camera-icon p-0"
+                      className={`btn btn-light ${styles.suCameraIcon}`}
                       type="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
@@ -41,14 +42,13 @@ export default function PagesHotelList() {
                       <img
                         src="/images/hotel/hotel-images/page-image/icon-camera.png"
                         alt="相機"
-                        className="camera-icon-img"
+                        className={styles.suCameraIconImg}
                       />
                     </button>
-                    <ul className="dropdown-menu">
+                    <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
                       <li>
                         <button
-                          className="dropdown-item text-danger"
-                          id="deletePhoto"
+                          className={`text-danger dropdown-item ${styles.suDropdownItem}`}
                           onClick={deletePhoto}
                         >
                           刪除照片
@@ -57,8 +57,7 @@ export default function PagesHotelList() {
                       <li>
                         <label
                           htmlFor="uploadPhoto"
-                          className="dropdown-item"
-                          onClick={uploadPhoto}
+                          className={`dropdown-item ${styles.dropdownItem}`}
                         >
                           上傳照片
                         </label>
@@ -80,7 +79,6 @@ export default function PagesHotelList() {
                   已認證
                 </button>
               </div>
-
               <hr />
               <ul className="list-unstyled text-start">
                 <li
@@ -128,7 +126,7 @@ export default function PagesHotelList() {
           {/* 右邊 */}
           <div className="col-md-9">
             <h3 className="mb-4">旅館名稱</h3>
-            <table className="`${styles.hotelTable} table">
+            <table className={`table ${ListStyles.hotelTable}`}>
               <thead>
                 <tr>
                   <th>名稱</th>
@@ -145,7 +143,7 @@ export default function PagesHotelList() {
                   <td className="d-flex align-items-center gap-2">
                     <img
                       src="/images/hotel/hotel-uploads/30-outside.png"
-                      className={`${styles.hotelImg} rounded`}
+                      className={`${ListStyles.hotelImg} rounded`}
                       alt="寵物之星"
                     />
                     <span className="ms-3">寵物之星</span>
@@ -175,7 +173,7 @@ export default function PagesHotelList() {
                     </button>
                     <button
                       type="button"
-                      className="btn btn-danger btn-sm delete-hotel"
+                      className={`btn btn-sm ${ListStyles.suBtnDanger}`}
                       id="deleteBtn"
                     >
                       刪除
@@ -186,7 +184,7 @@ export default function PagesHotelList() {
                   <td className="d-flex align-items-center gap-2">
                     <img
                       src="/images/hotel/hotel-uploads/10-outside.png"
-                      className={`${styles.hotelImg} rounded`}
+                      className={`${ListStyles.hotelImg} rounded`}
                       alt="象山寵物旅館"
                     />
                     <span className="ms-3">象山寵物</span>
@@ -215,7 +213,7 @@ export default function PagesHotelList() {
                     </button>
                     <button
                       type="button"
-                      className="btn btn-danger btn-sm delete-hotel"
+                      className={`btn btn-sm ${ListStyles.suBtnDanger}`}
                       id="deleteBtn"
                     >
                       刪除
@@ -226,7 +224,7 @@ export default function PagesHotelList() {
             </table>
             <div className="text-end mt-3">
               <button
-                className={styles.btnAdd}
+                className={ListStyles.suBtnAdd}
                 onClick={() => changepage("hotelCreate")}
               >
                 + 新增旅館
