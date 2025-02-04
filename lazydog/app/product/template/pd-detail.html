@@ -95,9 +95,13 @@
             </div>
             <div class="info-qty-group">
               <h4>購買數量</h4>
-              <button><img src="./img/font/minus.png" alt="" /></button>
-              <input type="number" value="1" />
-              <button><img src="./img/font/plus.png" alt="" /></button>
+              <button class="qty-minus">
+                <img src="./img/font/minus.png" alt="" />
+              </button>
+              <input type="number" value="1" min="1" max="999" />
+              <button class="qty-plus">
+                <img src="./img/font/plus.png" alt="" />
+              </button>
             </div>
             <div class="info-btn-group">
               <button class="btn-buynow"><h3>立即購買</h3></button>
@@ -321,7 +325,7 @@
                 <div class="rate-card">
                   <div class="rate-card-text">
                     <div class="rate-card-user">
-                      <button>
+                      <button type="button">
                         <img src="./img/font/self.png" alt="" />
                         <h6>毛小孩</h6>
                       </button>
@@ -337,18 +341,17 @@
                       我們精選全球優質狗狗用品，從營養健康的天然飼料到讓狗狗樂在其中的趣味玩具，每一款商品都經過嚴格挑選，確保您的毛孩得到最好的照顧。
                     </h6>
                   </div>
-                  <div class="rate-card-btn">
-                    <div class="btn-group">
-                      <button><img src="./img/font/good.png" alt="" /></button>
-                      <button><img src="./img/font/share.png" alt="" /></button>
-                    </div>
+                  <div class="rate-card-btn-date">
+                    <button class="rate-card-btn">
+                      <img src="./img/font/good.png" alt="" />
+                    </button>
                     <h5>Aug 30 ,2024</h5>
                   </div>
                 </div>
                 <div class="rate-card">
                   <div class="rate-card-text">
                     <div class="rate-card-user">
-                      <button>
+                      <button type="button">
                         <img src="./img/font/self.png" alt="" />
                         <h6>毛小孩</h6>
                       </button>
@@ -364,18 +367,17 @@
                       我們精選全球優質狗狗用品，從營養健康的天然飼料到讓狗狗樂在其中的趣味玩具，每一款商品都經過嚴格挑選，確保您的毛孩得到最好的照顧。
                     </h6>
                   </div>
-                  <div class="rate-card-btn">
-                    <div class="btn-group">
-                      <button><img src="./img/font/good.png" alt="" /></button>
-                      <button><img src="./img/font/share.png" alt="" /></button>
-                    </div>
+                  <div class="rate-card-btn-date">
+                    <button class="rate-card-btn">
+                      <img src="./img/font/good.png" alt="" />
+                    </button>
                     <h5>Aug 30 ,2024</h5>
                   </div>
                 </div>
                 <div class="rate-card">
                   <div class="rate-card-text">
                     <div class="rate-card-user">
-                      <button>
+                      <button type="button">
                         <img src="./img/font/self.png" alt="" />
                         <h6>毛小孩</h6>
                       </button>
@@ -391,11 +393,10 @@
                       我們精選全球優質狗狗用品，從營養健康的天然飼料到讓狗狗樂在其中的趣味玩具，每一款商品都經過嚴格挑選，確保您的毛孩得到最好的照顧。
                     </h6>
                   </div>
-                  <div class="rate-card-btn">
-                    <div class="btn-group">
-                      <button><img src="./img/font/good.png" alt="" /></button>
-                      <button><img src="./img/font/share.png" alt="" /></button>
-                    </div>
+                  <div class="rate-card-btn-date">
+                    <button class="rate-card-btn">
+                      <img src="./img/font/good.png" alt="" />
+                    </button>
                     <h5>Aug 30 ,2024</h5>
                   </div>
                 </div>
@@ -430,8 +431,9 @@
               <button type="button" class="hover-icon favorite-btn">
                 <img src="./img/font/heart.png" alt="" />
               </button>
-              <button type="button" class="hover-icon">
+              <button type="button" class="hover-icon cart-btn">
                 <img src="./img/font/cart.png" alt="" />
+                <h2>1</h2>
               </button>
               <a href="" class="hover-icon">
                 <img src="./img/font/list.png" alt="" />
