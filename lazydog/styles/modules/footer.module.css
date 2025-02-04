@@ -1,0 +1,182 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  p {
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--White);
+  }
+  a {
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--White);
+    &:hover {
+      color: var(--Black);
+    }
+  }
+}
+
+/* ----------footer上段區域-------- */
+.footer-top {
+  img {
+    width: 100%;
+  }
+}
+
+/* ----------footer中、底段區域-------- */
+.footer-middle,
+.footer-bottom {
+  background: var(--Orange);
+}
+/* ---------------------------------- */
+/* ----------footer中段區域----------- */
+.footer-middle {
+  padding: 65px 120px;
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    color: var(--White);
+  }
+}
+/* ---------------------------------- */
+/* -------footer中段區域第1部分------- */
+.footer-list1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 37px;
+  img {
+    width: 166px;
+    height: auto;
+  }
+  article {
+    display: flex;
+    width: 514px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    gap: 50px;
+    p {
+      /* letter-spacing: 2.4px;
+      user-select: none; */
+    }
+    .address {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      align-self: stretch;
+      p {
+        color: var(--Color-4, #fdfaf5);
+        font-family: "Noto Sans TC";
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 34px; /* 170% */
+        letter-spacing: 4.8px;
+      }
+    }
+
+    .time p {
+      color: var(--Color-4, #fdfaf5);
+      font-family: "Noto Sans TC";
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 35px; /* 194.444% */
+      letter-spacing: 3.16px;
+    }
+  }
+}
+/* ---------------------------------- */
+/* ------footer中段區域第2,3部分------ */
+.footer-list2,
+.footer-list3 {
+  padding: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  h1 {
+    padding-bottom: 14px;
+    user-select: none;
+    color: var(--Color-4, #fdfaf5);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 34px; /* 106.25% */
+    letter-spacing: 7.68px;
+  }
+  a {
+    color: var(--Color-4, #fdfaf5);
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: 4.8px;
+  }
+}
+/* ---------------------------------- */
+/* -------footer中段區域第4部分------- */
+.footer-list4 {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 21px 0;
+  /* margin-block: auto; */
+  .footer-email {
+    border: 8px solid var(--Yellow);
+    width: 100%;
+    height: 80px;
+    border-radius: 100px;
+    background: var(--White);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px 0 60px;
+    input {
+      border: none;
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 2.4px;
+      background: var(--White);
+      outline: none;
+    }
+    button {
+      width: 37px;
+      height: 36px;
+      border: none;
+      background: url("../img/font/plane.png");
+    }
+  }
+  p {
+    color: var(--Color-4, #fdfaf5);
+    text-align: center;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 34px; /* 154.545% */
+    letter-spacing: 1.66px;
+  }
+  .footer-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: stretch;
+    gap: 20px;
+    padding: 70px 0 30px;
+  }
+}
+/* ---------------------------------- */
+/* -----------footer底段區域---------- */
+.footer-bottom {
+  color: var(--White);
+  text-align: center;
+  font-size: 18px;
+  line-height: 85px;
+  letter-spacing: 2.96px;
+  user-select: none;
+}
+/* ---------------------------------- */

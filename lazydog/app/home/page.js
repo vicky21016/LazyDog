@@ -1,45 +1,48 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import styles from './css/home.module.css'
+import Image from "next/image";
 
 export default function HomePage(props) {
+    
   return (
     <>
-      <div className="section1">
-        <div className="words">
-          <div className="sales">
-            <div className="sale1">
+      <div className={styles.section1}>
+        <div className={styles.words}>
+          <div className={styles.sales}>
+            <div className={styles.sale1}>
               <h2>活動倒數3天！</h2>
               <h2>熱門商品最高限時</h2>
             </div>
-            <div className="sale2">
+            <div className={styles.sale2}>
               <h2>88</h2>
-              <h2 className="discountWord">折</h2>
+              <h2 className={styles.discountWord}>折</h2>
             </div>
-            <div className="sale3">
+            <div className={styles.sale3}>
               <p>錯過這次，再等一年!</p>
               <button>Shop Now</button>
             </div>
           </div>
-          <div className="dog">
-            <img className="paw2" src="/img/paw2.png" alt="" />
-            <img
-              className="dogBackground"
+          <div className={styles.dog}>
+            <Image className={styles.paw2} src="./img/paw2.png" alt="" />
+            <Image
+              className={styles.dogBackground}
               src="./img/dogBackground.png"
               alt=""
             />
-            <img className="lines" src="/img/lines.png" alt="" />
-            <img className="dogPic" src="/img/dog.png" alt="" />
-            <img className="paw3" src="/img/paw3.png" alt="" />
+            <Image className={styles.lines} src="./img/lines.png" alt="" />
+            <Image className={styles.dogPic} src="./img/dog.png" alt="" />
+            <Image className={styles.paw3} src="./Image/paw3.png" alt="" />
           </div>
-          <div className="icons">
-            <img className="paw1" src="/img/paw1.png" alt="" />
+          <div className={styles.icons}>
+            <Image className={styles.paw1} src="./img/paw1.png" alt="" />
           </div>
         </div>
-        <div className="whiteWave">
-          <img src="/img/whiteWave.png" alt="" />
+        <div className={styles.whiteWave}>
+          <Image src="./img/whiteWave.png" alt="" />
         </div>
       </div>
 
