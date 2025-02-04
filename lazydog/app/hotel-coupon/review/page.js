@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 
@@ -162,7 +160,7 @@ const ReviewList = () => {
         <div className="col-md-9">
           <h3 className="mb-4">評論列表</h3>
           <div className="table-responsive">
-            <table className="table suttable table-striped table-hover">
+            <table className="table suTable table-striped table-hover">
               <thead className="table-light">
                 <tr>
                   <th>顧客名稱</th>

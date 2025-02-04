@@ -32,12 +32,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/bootstrap-slider.min.js"></script>
 
     <style>
-      body {
+      .suBody {
         background-color: #fff;
       }
 
       /* 搜尋欄 */
-      .search-bar {
+      .suSearch-bar {
         display: flex;
         gap: 15px;
         background: #f5d1a8;
@@ -49,7 +49,7 @@
         margin: auto;
       }
 
-      .search-group {
+      .suSearch-group {
         display: flex;
         align-items: center;
         background: white;
@@ -59,14 +59,14 @@
         max-width: 300px;
       }
 
-      .icon {
+      .suIcon {
         margin-right: 8px;
         width: 20px;
         height: 20px;
       }
 
-      .search-input,
-      .search-date {
+      .suSearch-input,
+      .suSearch-date {
         border: none;
         outline: none;
         width: 100%;
@@ -76,30 +76,30 @@
       }
 
       /* 數量 */
-      .quantity-btn {
+      .suQuantity-btn {
         background: none;
         border: none;
         cursor: pointer;
         padding: 5px;
       }
 
-      .quantity-btn img {
+      .suQuantity-btn img {
         width: 24px;
         height: 24px;
       }
 
-      .quantity-btn:hover {
+      .suQuantity-btn:hover {
         background: #f3dccc;
       }
 
-      .quantity-number {
+      .suQuantity-number {
         width: 40px;
         text-align: center;
         font-size: 16px;
       }
 
       /* 搜尋按鈕 */
-      .search-btn {
+      .suSearch-btn {
         background-color: #f5842b;
         color: white;
         padding: 12px 20px;
@@ -108,18 +108,18 @@
         border: none;
         cursor: pointer;
       }
-      .search-btn:hover {
+      .suSearch-btn:hover {
         background-color: #e65c00;
       }
-      .search-bg {
-        background: url("./hotel-images/services-banner-dog-boarding.2203041608391.jpg")
+      .suSearch-bg {
+        background: url("../../public/images/hotel/hotel-images/services-banner-dog-boarding.2203041608391.jpg")
           no-repeat center;
         background-size: cover;
         padding: 80px 0;
       }
 
       /* 地圖 */
-      .map-card {
+      .suMap-card {
         position: relative;
         width: 100%;
         max-width: 300px;
@@ -128,7 +128,7 @@
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
       }
 
-      .map-btn {
+      .suMap-btn {
         position: absolute;
         top: 10px;
         left: 50%;
@@ -143,48 +143,48 @@
         z-index: 10;
       }
 
-      .map-btn:hover {
+      .suMap-btn:hover {
         background: rgba(0, 123, 255, 1);
       }
 
-      .map-image {
+      .suMap-image {
         width: 100%;
         height: auto;
         border-radius: 10px;
       }
 
       /* 側邊篩選區 */
-      .sidebar {
+      .suSidebar {
         background: #fff;
         padding: 20px;
         border-radius: 10px;
       }
 
-      .filter-title {
+      .suFilter-title {
         font-weight: bold;
         margin-bottom: 15px;
       }
 
-      .filter-group {
+      .suFilter-group {
         padding-bottom: 10px;
         margin-bottom: 15px;
       }
 
       /* 價格篩選 */
-      .price-filter-container {
+      .suPrice-filter-container {
         background: #fff;
         padding: 20px;
         text-align: center;
       }
 
-      .price-input-group {
+      .suPrice-input-group {
         display: flex;
         justify-content: center;
         gap: 15px;
         margin-bottom: 10px;
       }
 
-      .price-input {
+      .suPrice-input {
         display: flex;
         align-items: center;
         gap: 5px;
@@ -193,7 +193,7 @@
         padding: 5px 10px;
       }
 
-      .price-input input {
+      .suPrice-input input {
         border: none;
         outline: none;
         text-align: center;
@@ -202,13 +202,13 @@
       }
 
       /* 滑桿 */
-      .range-slider {
+      .suRange-slider {
         position: relative;
         width: 100%;
         height: 40px;
       }
 
-      .range-slider input {
+      .suRange-slider input {
         position: absolute;
         width: 100%;
         height: 5px;
@@ -219,7 +219,7 @@
         appearance: none;
       }
 
-      .range-slider input::-webkit-slider-thumb {
+      .suRange-slider input::-webkit-slider-thumb {
         width: 20px;
         height: 20px;
         background: #ff9900;
@@ -230,7 +230,7 @@
       }
 
       /* 篩選按鈕 */
-      .clear-filter-btn {
+      .suClear-filter-btn {
         background: none;
         border: 2px solid #ff9900;
         color: #ff9900;
@@ -242,11 +242,11 @@
         margin-top: 10px;
       }
 
-      .clear-filter-btn:hover {
+      .suClear-filter-btn:hover {
         background: #ff9900;
         color: white;
       }
-      .show-more {
+      .suShow-more {
         cursor: pointer;
         color: #0c0c0d;
         font-weight: bold;
@@ -254,11 +254,11 @@
         margin-top: 10px;
       }
 
-      .show-more:hover {
+      .suShow-more:hover {
         text-decoration: underline;
       }
 
-      .hidden {
+      .suHidden {
         display: none;
       }
       /*自訂 Slider */
@@ -292,7 +292,7 @@
       }
 
       /* 清除搜尋按鈕 */
-      .clear-btn {
+      .suClear-btn {
         background: white;
         border: 2px solid #ff9900;
         color: #ff9900;
@@ -303,13 +303,13 @@
         cursor: pointer;
       }
 
-      .clear-btn:hover {
+      .suClear-btn:hover {
         background: #ff9900;
         color: white;
       }
 
       /* 飯店 */
-      .hotel-card {
+      .suHotel-card {
         display: flex;
         align-items: center;
         gap: 20px;
@@ -318,41 +318,41 @@
         border-bottom: 1px solid #ddd;
       }
 
-      .hotel-card img {
+      .suHotel-card img {
         width: 180px;
         height: 120px;
         object-fit: cover;
         border-radius: 10px;
       }
 
-      .hotel-info {
+      .suHotel-info {
         flex: 1;
         padding-left: 15px;
       }
 
-      .hotel-info h5 {
+      .suHotel-info h5 {
         color: #333;
         font-weight: bold;
       }
 
-      .hotel-info p {
+      .suHotel-info p {
         color: #ff6600;
         font-size: 14px;
       }
 
-      .price-box {
+      .suPrice-box {
         text-align: right;
         font-size: 18px;
         font-weight: bold;
         color: #444;
       }
 
-      .review {
+      .suReview {
         color: #008080;
         font-size: 14px;
       }
 
-      .book-btn {
+      .suBook-btn {
         background-color: #ff9900;
         color: white;
         padding: 10px 15px;
@@ -363,80 +363,86 @@
         cursor: pointer;
       }
 
-      .book-btn:hover {
+      .suBook-btn:hover {
         background-color: #ff6600;
       }
 
       /*  分頁 */
-      .pagination .page-item .page-link {
+      .suPagination .page-item .page-link {
         border-radius: 50%;
         margin: 0 5px;
         color: #333;
         border: none;
       }
 
-      .pagination .page-item.active .page-link {
+      .suPagination .page-item.active .page-link {
         background-color: #f5842b;
         color: white;
         border-radius: 50%;
       }
 
-      .pagination .page-item .page-link:hover {
+      .suPagination .page-item .page-link:hover {
         background-color: #ff9900;
         color: white;
       }
     </style>
   </head>
 
-  <body>
-    <div class="search-bg">
+  <body class="suBody">
+    <div class="suSearch-bg">
       <div class="container mt-4">
-        <div class="search-bar">
-          <div class="search-group">
+        <div class="suSearch-bar">
+          <div class="suSearch-group">
             <img
-              class="icon"
-              src="./hotel-images/page-image/icon-search.png"
+              class="suIcon"
+              src="../../public/images/hotel/hotel-images/page-image/icon-search.png"
               alt=""
             />
             <input
               type="text"
-              class="search-input"
+              class="suSearch-input"
               id="locationInput"
               placeholder="搜尋關鍵字、地區..."
               data-bs-toggle="modal"
               data-bs-target="#locationModal"
             />
           </div>
-          <div class="search-group">
+          <div class="suSearch-group">
             <img
-              class="icon"
-              src="./hotel-images/page-image/icon-Calendar.png"
+              class="suIcon"
+              src="../../public/images/hotel/hotel-images/page-image/icon-Calendar.png"
               alt=""
             />
             <input
               type="text"
               id="date-date"
-              class="search-date"
+              class="suSearch-date"
               placeholder="入住日期 → 退房日期"
             />
           </div>
 
-          <div class="search-group">
+          <div class="suSearch-group">
             <img
-              class="icon"
-              src="./hotel-images/page-image/Icon-mimi.png"
+              class="suIcon"
+              src="../../public/images/hotel/hotel-images/page-image/Icon-mimi.png"
               alt=""
             />
             <span class="text">數量</span>
-            <button class="quantity-btn" id="minus">
-              <img src="./hotel-images/page-image/Minus.png" alt="減少" />
+            <button class="suQuantity-btn" id="minus">
+              <img
+                src="../../public/images/hotel/hotel-images/page-image/Minus.png"
+                alt="減少"
+              />
             </button>
-            <span id="quantity-number">1</span>
-            <button class="quantity-btn" id="plus">
-              <img src="./hotel-images/page-image/Plus.png" alt="增加" />
+            <span id="suQuantity-number">1</span>
+            <button class="suQuantity-btn" id="plus">
+              <img
+                src="../../public/images/hotel/hotel-images/page-image/Plus.png"
+                alt="增加"
+              />
             </button>
           </div>
-          <button class="search-btn">搜尋</button>
+          <button class="suSearch-btn">搜尋</button>
         </div>
       </div>
     </div>
@@ -469,9 +475,9 @@
     <div class="container mt-4">
       <div class="row">
         <!-- 篩選-->
-        <aside class="col-lg-3 sidebar">
-          <div class="map-card">
-            <button class="btn map-btn btn-primary" onclick="openMap()">
+        <aside class="col-lg-3 suSidebar">
+          <div class="suMap-card">
+            <button class="btn suMap-btn btn-primary" onclick="openMap()">
               📍 於地圖上顯示
             </button>
             <img
@@ -479,12 +485,12 @@
                 &markers=color:blue%7Clabel:台北%7C25.0330,121.5654
                 &key="
               alt="地圖縮圖"
-              class="map-image"
+              class="suMap-image"
             />
           </div>
 
-          <div class="filter-group mt-4">
-            <h6 class="filter-title">優質住宿</h6>
+          <div class="suFilter-group mt-4">
+            <h6 class="suFilter-title">優質住宿</h6>
             <select class="form-select">
               <option>選擇類型</option>
               <option>五星級</option>
@@ -492,8 +498,8 @@
             </select>
           </div>
 
-          <div class="filter-group">
-            <h6 class="filter-title">設施</h6>
+          <div class="suFilter-group">
+            <h6 class="suFilter-title">設施</h6>
             <div class="form-check">
               <input class="form-check-input" type="checkbox" id="walk" />
               <label class="form-check-label" for="walk">免費散步</label>
@@ -507,10 +513,10 @@
               <label class="form-check-label" for="pets">戶外運動</label>
             </div>
             <!-- 顯示全部按鈕 -->
-            <span class="show-more" id="toggleBtn">顯示全部 ▼</span>
+            <span class="suShow-more" id="toggleBtn">顯示全部 ▼</span>
 
             <!-- 折疊項目 (顯示全部按鈕下方) -->
-            <div class="collapse-items hidden mt-2">
+            <div class="collapse-items hidden suHidden mt-2">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="wifi" />
                 <label class="form-check-label" for="wifi">免費 Wi-Fi</label>
@@ -527,12 +533,12 @@
           </div>
 
           <!-- 價格篩選區 -->
-          <div class="filter-group price-filter-container">
-            <h6 class="filter-title">價格篩選</h6>
+          <div class="suFilter-group suPrice-filter-container">
+            <h6 class="suFilter-title">價格篩選</h6>
 
             <!-- 價格輸入框 -->
-            <div class="price-input-group">
-              <div class="price-input">
+            <div class="suPrice-input-group">
+              <div class="suPrice-input">
                 <label for="filterMin">最少</label>
                 <input
                   id="filterMin"
@@ -543,7 +549,7 @@
                 />
                 <span>元</span>
               </div>
-              <div class="price-input">
+              <div class="suPrice-input">
                 <label for="filterMax">最多</label>
                 <input
                   id="filterMax"
@@ -567,12 +573,14 @@
             />
 
             <!-- 清除按鈕 -->
-            <button id="resetFilter" class="clear-filter-btn">清除搜尋</button>
+            <button id="resetFilter" class="suClear-filter-btn">
+              清除搜尋
+            </button>
           </div>
           <a href=""
             ><figure>
               <img
-                src="./hotel-images/page-image/hotelad2.png"
+                src="../../public/images/hotel/hotel-images/page-image/hotelad2.png"
                 alt=""
                 class="mx-4"
               /></figure
@@ -580,218 +588,223 @@
         </aside>
 
         <section class="col-lg-9">
-          <div class="hotel-card">
+          <div class="suHotel-card">
             <img
-              src="../../public/images/hotel/hotel_uploads/1-outside.png"
+              src="../../public/images/hotel/hotel-uploads/1-outside.png"
               alt="飯店圖片"
             />
-            <div class="hotel-info">
+            <div class="suHotel-info">
               <h5>烏來Spring Spa溫泉山莊</h5>
               <p>
                 烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池，舒適的客房均以不同風格裝潢...
               </p>
             </div>
-            <div class="price-box">
-              <div class="review">很棒 ⭐ 8</div>
+            <div class="price-box suPrice-box">
+              <div class="suReview">很棒 ⭐ 8</div>
               1,258 則評論
-              <button class="book-btn">查看價格</button>
+              <button class="suBook-btn">查看價格</button>
             </div>
           </div>
 
-          <div class="hotel-card">
+          <div class="suHotel-card">
             <img
-              src="../../public/images/hotel/hotel_uploads/11-outside.webp"
+              src="../../public/images/hotel/hotel-uploads/11-outside.webp"
               alt="飯店圖片"
             />
-            <div class="hotel-info">
+            <div class="suHotel-info">
               <h5>Grupotel Mayorazgo</h5>
               <p>
                 Una de las principales ventajas del Hotel Mayorazgo es su
                 magnífica ubicación en el centro de Madrid...
               </p>
             </div>
-            <div class="price-box">
-              <div class="review">很棒 ⭐ 8</div>
+            <div class="price-box suPrice-box">
+              <div class="suReview">很棒 ⭐ 8</div>
               1,258 則評論
-              <button class="book-btn">查看價格</button>
+              <button class="suBook-btn">查看價格</button>
             </div>
           </div>
-          <div class="hotel-card">
+          <div class="suHotel-card">
             <img
-              src="../../public/images/hotel/hotel_uploads/11-outside.webp"
+              src="../../public/images/hotel/hotel-uploads/11-outside.webp"
               alt="飯店圖片"
             />
-            <div class="hotel-info">
+            <div class="suHotel-info">
               <h5>Grupotel Mayorazgo</h5>
               <p>
                 Una de las principales ventajas del Hotel Mayorazgo es su
                 magnífica ubicación en el centro de Madrid...
               </p>
             </div>
-            <div class="price-box">
-              <div class="review">很棒 ⭐ 8</div>
+            <div class="price-box suPrice-box">
+              <div class="suReview">很棒 ⭐ 8</div>
               1,258 則評論
-              <button class="book-btn">查看價格</button>
+              <button class="suBook-btn">查看價格</button>
             </div>
           </div>
-          <div class="hotel-card">
+          <div class="suHotel-card">
             <img
-              src="../../public/images/hotel/hotel_uploads/11-outside.webp"
+              src="../../public/images/hotel/hotel-uploads/11-outside.webp"
               alt="飯店圖片"
             />
-            <div class="hotel-info">
+            <div class="suHotel-info">
               <h5>Grupotel Mayorazgo</h5>
               <p>
                 Una de las principales ventajas del Hotel Mayorazgo es su
                 magnífica ubicación en el centro de Madrid...
               </p>
             </div>
-            <div class="price-box">
-              <div class="review">很棒 ⭐ 8</div>
+            <div class="price-box suPrice-box">
+              <div class="suReview">很棒 ⭐ 8</div>
               1,258 則評論
-              <button class="book-btn">查看價格</button>
+              <button class="suBook-btn">查看價格</button>
             </div>
           </div>
-          <div class="hotel-card">
+          <div class="suHotel-card">
             <img
-              src="../../public/images/hotel/hotel_uploads/11-outside.webp"
+              src="../../public/images/hotel/hotel-uploads/11-outside.webp"
               alt="飯店圖片"
             />
-            <div class="hotel-info">
+            <div class="suHotel-info">
               <h5>Grupotel Mayorazgo</h5>
               <p>
                 Una de las principales ventajas del Hotel Mayorazgo es su
                 magnífica ubicación en el centro de Madrid...
               </p>
             </div>
-            <div class="price-box">
-              <div class="review">很棒 ⭐ 8</div>
+            <div class="price-box suPrice-box">
+              <div class="suReview">很棒 ⭐ 8</div>
               1,258 則評論
-              <button class="book-btn">查看價格</button>
+              <button class="suBook-btn">查看價格</button>
             </div>
           </div>
-          <div class="hotel-card">
+          <div class="suHotel-card">
             <img
-              src="../../public/images/hotel/hotel_uploads/11-outside.webp"
+              src="../../public/images/hotel/hotel-uploads/11-outside.webp"
               alt="飯店圖片"
             />
-            <div class="hotel-info">
+            <div class="suHotel-info">
               <h5>Grupotel Mayorazgo</h5>
               <p>
                 Una de las principales ventajas del Hotel Mayorazgo es su
                 magnífica ubicación en el centro de Madrid...
               </p>
             </div>
-            <div class="price-box">
-              <div class="review">很棒 ⭐ 8</div>
+            <div class="price-box suPrice-box">
+              <div class="suReview">很棒 ⭐ 8</div>
               1,258 則評論
-              <button class="book-btn">查看價格</button>
+              <button class="suBook-btn">查看價格</button>
             </div>
           </div>
-          <div class="hotel-card">
+          <div class="suHotel-card">
             <img
-              src="../../public/images/hotel/hotel_uploads/11-outside.webp"
+              src="../../public/images/hotel/hotel-uploads/11-outside.webp"
               alt="飯店圖片"
             />
-            <div class="hotel-info">
+            <div class="suHotel-info">
               <h5>Grupotel Mayorazgo</h5>
               <p>
                 Una de las principales ventajas del Hotel Mayorazgo es su
                 magnífica ubicación en el centro de Madrid...
               </p>
             </div>
-            <div class="price-box">
-              <div class="review">很棒 ⭐ 8</div>
+            <div class="price-box suPrice-box">
+              <div class="suReview">很棒 ⭐ 8</div>
               1,258 則評論
-              <button class="book-btn">查看價格</button>
+              <button class="suBook-btn">查看價格</button>
             </div>
           </div>
-          <div class="hotel-card">
+          <div class="suHotel-card">
             <img
-              src="../../public/images/hotel/hotel_uploads/11-outside.webp"
+              src="../../public/images/hotel/hotel-uploads/11-outside.webp"
               alt="飯店圖片"
             />
-            <div class="hotel-info">
+            <div class="suHotel-info">
               <h5>Grupotel Mayorazgo</h5>
               <p>
                 Una de las principales ventajas del Hotel Mayorazgo es su
                 magnífica ubicación en el centro de Madrid...
               </p>
             </div>
-            <div class="price-box">
-              <div class="review">很棒 ⭐ 8</div>
+            <div class="price-box suPrice-box">
+              <div class="suReview">很棒 ⭐ 8</div>
               1,258 則評論
-              <button class="book-btn">查看價格</button>
+              <button class="suBook-btn">查看價格</button>
             </div>
           </div>
-          <div class="hotel-card">
+          <div class="suHotel-card">
             <img
-              src="../../public/images/hotel/hotel_uploads/11-outside.webp"
+              src="../../public/images/hotel/hotel-uploads/11-outside.webp"
               alt="飯店圖片"
             />
-            <div class="hotel-info">
+            <div class="suHotel-info">
               <h5>Grupotel Mayorazgo</h5>
               <p>
                 Una de las principales ventajas del Hotel Mayorazgo es su
                 magnífica ubicación en el centro de Madrid...
               </p>
             </div>
-            <div class="price-box">
-              <div class="review">很棒 ⭐ 8</div>
+            <div class="price-box suPrice-box">
+              <div class="suReview">很棒 ⭐ 8</div>
               1,258 則評論
-              <button class="book-btn">查看價格</button>
+              <button class="suBook-btn">查看價格</button>
             </div>
           </div>
-          <div class="hotel-card">
+          <div class="suHotel-card">
             <img
-              src="../../public/images/hotel/hotel_uploads/11-outside.webp"
+              src="../../public/images/hotel/hotel-uploads/11-outside.webp"
               alt="飯店圖片"
             />
-            <div class="hotel-info">
+            <div class="suHotel-info">
               <h5>Grupotel Mayorazgo</h5>
               <p>
                 Una de las principales ventajas del Hotel Mayorazgo es su
                 magnífica ubicación en el centro de Madrid...
               </p>
             </div>
-            <div class="price-box">
-              <div class="review">很棒 ⭐ 8</div>
+            <div class="price-box suPrice-box">
+              <div class="suReview">很棒 ⭐ 8</div>
               1,258 則評論
-              <button class="book-btn">查看價格</button>
+              <button class="suBook-btn">查看價格</button>
             </div>
           </div>
         </section>
       </div>
     </div>
-    <nav aria-label="Page navigation">
-      <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li class="page-item active">
-          <a class="page-link" href="#">1</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">2</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <div class="container page">
+      <nav aria-label="Page navigation">
+        <ul
+          class="pagination suPagination justify-content-center"
+          id="pagination"
+        >
+          <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item active">
+            <a class="page-link" href="#">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">2</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
 
     <script>
       const toggleBtn = document.getElementById("toggleBtn");
       const collapseItems = document.querySelector(".collapse-items");
 
       toggleBtn.addEventListener("click", function () {
-        collapseItems.classList.toggle("hidden");
+        collapseItems.classList.toggle("suHidden");
 
-        if (collapseItems.classList.contains("hidden")) {
+        if (collapseItems.classList.contains("suHidden")) {
           toggleBtn.textContent = "顯示全部 ▼";
         } else {
           toggleBtn.textContent = "收起 ▲";
@@ -849,17 +862,18 @@
         // +-功能
         document.getElementById("plus").addEventListener("click", () => {
           let quantity = parseInt(
-            document.getElementById("quantity-number").innerText
+            document.getElementById("suQuantity-number").innerText
           );
-          document.getElementById("quantity-number").innerText = quantity + 1;
+          document.getElementById("suQuantity-number").innerText = quantity + 1;
         });
 
         document.getElementById("minus").addEventListener("click", () => {
           let quantity = parseInt(
-            document.getElementById("quantity-number").innerText
+            document.getElementById("suQuantity-number").innerText
           );
           if (quantity > 1) {
-            document.getElementById("quantity-number").innerText = quantity - 1;
+            document.getElementById("suQuantity-number").innerText =
+              quantity - 1;
           }
         });
       });
