@@ -10,6 +10,9 @@ export default function PagesHotelList() {
   const router = useRouter();
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+  const changepage = (path) => {
+    router.push(`/hotel-coupon/${path}`);
+  };
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);

@@ -1,13 +1,17 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import "../css/CartListPayFinsh.css";
+import 'bootstrap/dist/css/bootstrap.min.css'; // 引入 Bootstrap 样式
+import 'bootstrap/dist/js/bootstrap.bundle.min'; // 引入 Bootstrap 的 JS 及其依赖
+
 
 export default function CartListPayFinshPage(props) {
   return (
     <>
       <div>
         <div className="cart-img pb-5">
-          <img src="../public/Group 6.png" alt="Cart Image" />
+          <img src="cart/Group6.png" alt="Cart Image" />
         </div>
         <div className="container">
           <p className="gobacktext pt-5">3秒後回到購物畫面</p>
@@ -105,7 +109,7 @@ export default function CartListPayFinshPage(props) {
               style={{ margin: 'auto' }}
             >
               <div className="cart-img pb-5">
-                <img src="../public/image 24.png" alt="Cart Image" />
+                <img src="/image 24.png" alt="Cart Image" />
               </div>
             </aside>
           </div>
