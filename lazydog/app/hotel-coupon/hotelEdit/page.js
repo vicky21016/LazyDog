@@ -1,5 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import styles from "../../../styles/modules/operatorCamera.module.css";
+import hotelStyles from "../../../styles/modules/operatorHotel.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 
@@ -54,12 +56,12 @@ export default function HotelEditPage(props) {
                     ref={avatarRef}
                     src="/images/hotel/hotel-images/page-image/Dog2.png"
                     alt="User Avatar"
-                    className="rounded-circle avatar-img"
+                    className={`rounded-circle ${styles.suAvatarImg}`}
                   />
 
-                  <div className="dropdown">
+                  <div className={styles.dropdownItem}>
                     <button
-                      className="btn btn-light camera-icon p-0"
+                      className={`btn btn-light ${styles.suCameraIcon}`}
                       type="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
@@ -67,20 +69,23 @@ export default function HotelEditPage(props) {
                       <img
                         src="/images/hotel/hotel-images/page-image/icon-camera.png"
                         alt="相機"
-                        className="camera-icon-img"
+                        className={styles.suCameraIconImg}
                       />
                     </button>
-                    <ul className="dropdown-menu">
+                    <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
                       <li>
                         <button
-                          className="dropdown-item text-danger"
+                          className={`text-danger dropdown-item ${styles.suDropdownItem}`}
                           onClick={deletePhoto}
                         >
                           刪除照片
                         </button>
                       </li>
                       <li>
-                        <label htmlFor="uploadPhoto" className="dropdown-item">
+                        <label
+                          htmlFor="uploadPhoto"
+                          className={`dropdown-item ${styles.dropdownItem}`}
+                        >
                           上傳照片
                         </label>
                         <input
@@ -144,126 +149,132 @@ export default function HotelEditPage(props) {
           </div>
 
           {/* 右邊 */}
-          {/* 右邊 */}
-          <div className="col-md-9">
+          <div className="col-md-9  mx-auto">
             <h3 className="mb-3">編輯旅館資訊</h3>
-            <form>
-              <div className="mb-3">
-                <label>旅館名稱</label>
-                <input
-                  type="text"
-                  value={hotelName}
-                  onChange={(e) => setHotelName(e.target.value)}
-                  className="form-control"
-                />
-              </div>
+            <form id="editForm">
+              <div className="section">
+                <h5>基本資訊</h5>
+                <div className="mb-3">
+                  <label>旅館名稱</label>
+                  <input
+                    type="text"
+                    value={hotelName}
+                    onChange={(e) => setHotelName(e.target.value)}
+                    className={`form-control ${hotelStyles.suFormControl}`}
+                  />
+                </div>
 
-              <div className="mb-3">
-                <label>地址</label>
-                <input
-                  type="text"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  className="form-control"
-                />
-              </div>
+                <div className="mb-3">
+                  <label>地址</label>
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    className={`form-control ${hotelStyles.suFormControl}`}
+                  />
+                </div>
 
-              <div className="mb-3">
-                <label>電話</label>
-                <input
-                  type="text"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="form-control"
-                />
+                <div className="mb-3">
+                  <label>電話</label>
+                  <input
+                    type="text"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className={`form-control ${hotelStyles.suFormControl}`}
+                  />
+                </div>
               </div>
-
-              <div className="mb-3">
-                <label>房型</label>
-                {rooms.map((room, index) => (
-                  <div key={index} className="d-flex mb-2">
-                    <input
-                      type="text"
-                      value={room.type}
-                      onChange={(e) =>
-                        handleRoomChange(index, "type", e.target.value)
-                      }
-                      placeholder="房型"
-                      className="form-control me-2"
-                    />
-                    <input
-                      type="number"
-                      value={room.quantity}
-                      onChange={(e) =>
-                        handleRoomChange(index, "quantity", e.target.value)
-                      }
-                      placeholder="數量"
-                      className="form-control me-2"
-                    />
-                    <input
-                      type="text"
-                      value={room.price}
-                      onChange={(e) =>
-                        handleRoomChange(index, "price", e.target.value)
-                      }
-                      placeholder="價格"
-                      className="form-control me-2"
-                    />
-                    <input
-                      type="text"
-                      value={room.extra}
-                      onChange={(e) =>
-                        handleRoomChange(index, "extra", e.target.value)
-                      }
-                      placeholder="附加費"
-                      className="form-control me-2"
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={() => removeRoom(index)}
-                    >
-                      X
-                    </button>
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={addRoom}
-                >
-                  + 新增房型
-                </button>
+              <div class="section">
+                <h5>旅館圖片</h5>
+                <div className="mb-3">
+                  <label>房型</label>
+                  {rooms.map((room, index) => (
+                    <div key={index} className="d-flex mb-2">
+                      <input
+                        type="text"
+                        value={room.type}
+                        onChange={(e) =>
+                          handleRoomChange(index, "type", e.target.value)
+                        }
+                        placeholder="房型"
+                        className={`form-control me-2 ${hotelStyles.suFormControl}`}
+                      />
+                      <input
+                        type="number"
+                        value={room.quantity}
+                        onChange={(e) =>
+                          handleRoomChange(index, "quantity", e.target.value)
+                        }
+                        placeholder="數量"
+                        className={`form-control me-2 ${hotelStyles.suFormControl}`}
+                      />
+                      <input
+                        type="text"
+                        value={room.price}
+                        onChange={(e) =>
+                          handleRoomChange(index, "price", e.target.value)
+                        }
+                        placeholder="價格"
+                        className={`form-control me-2 ${hotelStyles.suFormControl}`}
+                      />
+                      <input
+                        type="text"
+                        value={room.extra}
+                        onChange={(e) =>
+                          handleRoomChange(index, "extra", e.target.value)
+                        }
+                        placeholder="附加費"
+                        className={`form-control me-2 ${hotelStyles.suFormControl}`}
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={() => removeRoom(index)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={addRoom}
+                  >
+                    + 新增房型
+                  </button>
+                </div>
               </div>
+              <div class="section">
+                <h5>營業時間</h5>
+                <div className="mb-3">
+                  <label>營業時間</label>
+                  <input
+                    type="text"
+                    value={businessHours}
+                    onChange={(e) => setBusinessHours(e.target.value)}
+                    className={`form-control ${hotelStyles.suFormControl}`}
+                  />
+                </div>
 
-              <div className="mb-3">
-                <label>營業時間</label>
-                <input
-                  type="text"
-                  value={businessHours}
-                  onChange={(e) => setBusinessHours(e.target.value)}
-                  className="form-control"
-                />
-              </div>
+                <div className="mb-3">
+                  <label>標籤</label>
+                  <input
+                    type="text"
+                    value={tags}
+                    onChange={(e) => setTags(e.target.value)}
+                    className={`form-control ${hotelStyles.suFormControl}`}
+                  />
+                </div>
 
-              <div className="mb-3">
-                <label>標籤</label>
-                <input
-                  type="text"
-                  value={tags}
-                  onChange={(e) => setTags(e.target.value)}
-                  className="form-control"
-                />
-              </div>
-
-              <div className="mb-3">
-                <label>旅館簡介</label>
-                <textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="form-control"
-                  rows="3"
-                ></textarea>
+                <div className="mb-3">
+                  <label>旅館簡介</label>
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className={`form-control ${hotelStyles.suFormControl}`}
+                    rows="3"
+                  ></textarea>
+                </div>
               </div>
               <button
                 type="button"

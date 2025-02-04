@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import styles from "../../../styles/modules/hotelList.module.css";
+// import ListStyles from "../../../styles/modules/hotelList.module.css";
+import styles from "../../../styles/modules/operatorCamera.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 
@@ -28,12 +29,12 @@ export default function PagesHotelList() {
                     ref={avatarRef}
                     src="/images/hotel/hotel-images/page-image/Dog2.png"
                     alt="User Avatar"
-                    className="rounded-circle avatar-img"
+                    className={`rounded-circle ${styles.suAvatarImg}`}
                   />
 
-                  <div className="dropdown">
+                  <div className={styles.dropdownItem}>
                     <button
-                      className="btn btn-light camera-icon p-0"
+                      className={`btn btn-light ${styles.suCameraIcon}`}
                       type="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
@@ -41,14 +42,13 @@ export default function PagesHotelList() {
                       <img
                         src="/images/hotel/hotel-images/page-image/icon-camera.png"
                         alt="相機"
-                        className="camera-icon-img"
+                        className={styles.suCameraIconImg}
                       />
                     </button>
-                    <ul className="dropdown-menu">
+                    <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
                       <li>
                         <button
-                          className="dropdown-item text-danger"
-                          id="deletePhoto"
+                          className={`text-danger dropdown-item ${styles.suDropdownItem}`}
                           onClick={deletePhoto}
                         >
                           刪除照片
@@ -57,8 +57,7 @@ export default function PagesHotelList() {
                       <li>
                         <label
                           htmlFor="uploadPhoto"
-                          className="dropdown-item"
-                          onClick={uploadPhoto}
+                          className={`dropdown-item ${styles.dropdownItem}`}
                         >
                           上傳照片
                         </label>
@@ -80,7 +79,6 @@ export default function PagesHotelList() {
                   已認證
                 </button>
               </div>
-
               <hr />
               <ul className="list-unstyled text-start">
                 <li
