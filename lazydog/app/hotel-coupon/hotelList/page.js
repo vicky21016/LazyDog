@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-// import ListStyles from "../../../styles/modules/hotelList.module.css";
+import ListStyles from "../../../styles/modules/operatorHotel.module.css";
 import styles from "../../../styles/modules/operatorCamera.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
@@ -126,7 +126,7 @@ export default function PagesHotelList() {
           {/* 右邊 */}
           <div className="col-md-9">
             <h3 className="mb-4">旅館名稱</h3>
-            <table className="`${styles.hotelTable} table">
+            <table className={`table ${ListStyles.hotelTable}`}>
               <thead>
                 <tr>
                   <th>名稱</th>
@@ -143,7 +143,7 @@ export default function PagesHotelList() {
                   <td className="d-flex align-items-center gap-2">
                     <img
                       src="/images/hotel/hotel-uploads/30-outside.png"
-                      className={`${styles.hotelImg} rounded`}
+                      className={`${ListStyles.hotelImg} rounded`}
                       alt="寵物之星"
                     />
                     <span className="ms-3">寵物之星</span>
@@ -173,7 +173,7 @@ export default function PagesHotelList() {
                     </button>
                     <button
                       type="button"
-                      className="btn btn-danger btn-sm delete-hotel"
+                      className={`btn btn-sm ${ListStyles.suBtnDanger}`}
                       id="deleteBtn"
                     >
                       刪除
@@ -184,7 +184,7 @@ export default function PagesHotelList() {
                   <td className="d-flex align-items-center gap-2">
                     <img
                       src="/images/hotel/hotel-uploads/10-outside.png"
-                      className={`${styles.hotelImg} rounded`}
+                      className={`${ListStyles.hotelImg} rounded`}
                       alt="象山寵物旅館"
                     />
                     <span className="ms-3">象山寵物</span>
@@ -213,7 +213,7 @@ export default function PagesHotelList() {
                     </button>
                     <button
                       type="button"
-                      className="btn btn-danger btn-sm delete-hotel"
+                      className={`btn btn-sm ${ListStyles.suBtnDanger}`}
                       id="deleteBtn"
                     >
                       刪除
@@ -224,7 +224,7 @@ export default function PagesHotelList() {
             </table>
             <div className="text-end mt-3">
               <button
-                className={styles.btnAdd}
+                className={ListStyles.suBtnAdd}
                 onClick={() => changepage("hotelCreate")}
               >
                 + 新增旅館
