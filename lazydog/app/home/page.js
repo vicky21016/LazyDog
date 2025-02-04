@@ -3,11 +3,10 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import styles from './css/home.module.css'
+import styles from "./css/home.module.css";
 import Image from "next/image";
 
 export default function HomePage(props) {
-    
   return (
     <>
       <div className={styles.section1}>
