@@ -162,7 +162,7 @@ const ReviewList = () => {
         <div className="col-md-9">
           <h3 className="mb-4">評論列表</h3>
           <div className="table-responsive">
-            <table className="table table-striped table-hover">
+            <table className="table suttable table-striped table-hover">
               <thead className="table-light">
                 <tr>
                   <th>顧客名稱</th>
