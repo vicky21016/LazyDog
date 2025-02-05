@@ -1,13 +1,13 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import "../css/CartListPay.css";
+import '../css/CartListPay.css'
 export default function CartListPayPage(props) {
   return (
     <>
       <div>
         <div className="cart-img">
-          <img src="../public/Frame 35909.png" alt="Cart Image" />
+          <img src="/cart/Frame 35909.png" alt="Cart Image" />
         </div>
         <div className="container">
           <h1>購買資訊</h1>
