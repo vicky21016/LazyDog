@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/modules/operatorCamera.module.css";
-import couponStyles from "../../../styles/modules/operatorCoupon.module.css";
+import couponStyles from "../../../styles/modules/userCoupon.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 
@@ -156,8 +156,20 @@ export default function ProfileCouponPage(props) {
             <h3 className="mb-3">我的優惠券</h3>
 
             <div className="suFeatureLinks mb-3">
-              <a href="#">領取免運券</a>
-              <a href="couponstatus.html">查看歷史紀錄</a>
+              <a
+                className={couponStyles.suFeatureLinks1}
+                href="#"
+                style={{ cursor: "pointer" }}
+              >
+                領取免運券
+              </a>
+              <a
+                className={couponStyles.suFeatureLinks2}
+                onClick={() => changepage("profileCouponStatus")}
+                style={{ cursor: "pointer" }}
+              >
+                查看歷史紀錄
+              </a>
             </div>
 
             <div className="coupon-input-group">
@@ -169,33 +181,30 @@ export default function ProfileCouponPage(props) {
               <button className="btn btn-primary">領取</button>
             </div>
 
-            <ul className={`nav nav-tabs mb-3 ${couponStyles.suNavTabs}`}>
+            <ul className="nav nav-tabs mb-3">
               <li className="nav-item">
-                <a
-                  className={`nav-link active ${couponStyles.suNavLink}`}
-                  href="#"
-                >
+                <a className="nav-link active" href="#">
                   全部
                 </a>
               </li>
               <li className="nav-item">
-                <a className={couponStyles.suNavLink} href="#">
+                <a className="nav-link" href="#">
                   商品優惠 (05)
                 </a>
               </li>
               <li className="nav-item">
-                <a className={couponStyles.suNavLink} href="#">
+                <a className="nav-link" href="#">
                   課程優惠 (10)
                 </a>
               </li>
               <li className="nav-item">
-                <a className={couponStyles.suNavLink} href="#">
+                <a className="nav-link" href="#">
                   旅館優惠 (10)
                 </a>
               </li>
             </ul>
 
-            <div className={couponStyles.suCouponCard}>
+            <div className="coupon-card">
               <span className="price">NT200</span>
               <div className="details">
                 <p>
