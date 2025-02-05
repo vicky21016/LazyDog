@@ -129,7 +129,7 @@ const ReviewList = () => {
                   <i className="bi bi-person-fill me-2"></i>負責人資訊
                 </a>
               </li>
-              <li className="py-2" onClick={() => changepage("operatorHotel")}>
+              <li className="py-2" onClick={() => changepage("hotel")}>
                 <a
                   className="text-decoration-none text-dark"
                   style={{ cursor: "pointer" }}

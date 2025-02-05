@@ -96,7 +96,7 @@ export default function PagesHotelList() {
                 </li>
                 <li
                   className="py-2"
-                  onClick={() => changepage("operatorHotel")}
+                  onClick={() => changepage("hotel")}
                 >
                   <a
                     className="text-decoration-none text-dark"
