@@ -18,7 +18,9 @@ const ReviewList = () => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
   const changepage = (path) => {
-    router.push(`/hotel-coupon/${path}`);
+    if (path) {
+      router.push(`/hotel-coupon/${path}`);
+    }
   };
 
   const reviews = [

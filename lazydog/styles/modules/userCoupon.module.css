@@ -10,7 +10,7 @@
     height: 80px;
     object-fit: cover;
   }
-  .featureLinks a:first-child {
+  .suFeatureLinks a:first-child {
     color: red;
   }
   
@@ -23,22 +23,22 @@
     text-decoration: none;
     margin-right: 20px;
   }
-  .navTabs {
+  .suNavTabs {
     border-bottom: 2px solid #ddd;
     font-size: 16px;
     font-weight: bold;
   }
   
-  .navTabs .navLink {
+  .suNavTabs .suNavLink {
     color: black;
     border-bottom: 2px solid transparent;
   }
   
-  .navTabs .navLink.active {
+  .suNavTabs .suNavLink.active {
     color: #f9a825;
     border-bottom: 2px solid #f9a825;
   }
-  .couponCard {
+  .suCouponCard {
     display: flex;
     align-items: center;
     justify-content: space-between;

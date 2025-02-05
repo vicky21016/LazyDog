@@ -31,7 +31,9 @@ export default function HotelEditPage(props) {
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
 
   const changepage = (path) => {
-    router.push(`/hotel-coupon/${path}`);
+    if (path) {
+      router.push(`/hotel-coupon/${path}`);
+    }
   };
 
   useEffect(() => {
