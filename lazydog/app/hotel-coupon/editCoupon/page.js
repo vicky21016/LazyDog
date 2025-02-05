@@ -10,6 +10,37 @@ export default function EditCouponPage(props) {
   const router = useRouter();
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+
+  const [couponName, setCouponName] = useState("新春折扣");
+  const [description, setDescription] = useState("適用於全館，滿 1000 減 200");
+  const [discountType, setDiscountType] = useState("滿額折扣");
+  const [minAmount, setMinAmount] = useState("1000");
+  const [usageLimit, setUsageLimit] = useState("1");
+  const [startDate, setStartDate] = useState("2024-03-01");
+  const [endDate, setEndDate] = useState("2024-03-10");
+  const [targetAudience, setTargetAudience] = useState("所有用戶");
+  const [status, setStatus] = useState("啟用");
+  const [remainingUses, setRemainingUses] = useState("1");
+  const [notes, setNotes] = useState("優惠券不得與其他折扣活動併用");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const couponData = {
+      couponName,
+      description,
+      discountType,
+      minAmount,
+      usageLimit,
+      startDate,
+      endDate,
+      targetAudience,
+      status,
+      remainingUses,
+      notes,
+    };
+    console.log("已儲存優惠券：", couponData);
+    alert("優惠券已儲存！");
+  };
+
   const changepage = (path) => {
     if (path) {
       router.push(`/hotel-coupon/${path}`);
@@ -95,10 +126,7 @@ export default function EditCouponPage(props) {
                     <i className="bi bi-person-fill me-2"></i>負責人資訊
                   </a>
                 </li>
-                <li
-                  className="py-2"
-                  onClick={() => changepage("hotel")}
-                >
+                <li className="py-2" onClick={() => changepage("hotel")}>
                   <a
                     className="text-decoration-none text-dark"
                     style={{ cursor: "pointer" }}
@@ -125,116 +153,172 @@ export default function EditCouponPage(props) {
               </ul>
             </div>
           </div>
-          <div class="col-md-9">
-            <h3 class="mb-4">編輯優惠券</h3>
-            <div class="p-4 border rounded bg-light mb-4">
-              <h5 class="mb-3">基本資訊</h5>
-              <div class="row">
-                <div class="col-md-6">
-                  <label class="form-label">優惠券名稱 *</label>
-                  <input type="text" class="form-control" value="新春折扣" />
-                </div>
-                {/* 這裡不能修改  */}
-                <div class="col-md-6">
-                  <label class="form-label">優惠券代碼 *</label>
+          <div className="col-md-9 mx-auto">
+            <h3 className="mb-4">編輯優惠券</h3>
+
+            {/* 基本資訊 */}
+            <div className="p-4 border rounded bg-light mb-4">
+              <h5 className="mb-3">基本資訊</h5>
+              <div className="row">
+                <div className="col-md-6">
+                  <label className="form-label">優惠券名稱 *</label>
                   <input
                     type="text"
-                    class="form-control"
-                    value="SWW2024"
-                    readonly
+                    className="form-control"
+                    value={couponName}
+                    onChange={(e) => setCouponName(e.target.value)}
                   />
                 </div>
-                {/* 描述  */}
-                <div class="col-md-12 mt-3">
-                  <label class="form-label">描述 *</label>
+                <div className="col-md-6">
+                  <label className="form-label">優惠券代碼 *</label>
                   <input
                     type="text"
-                    class="form-control"
-                    value="適用於全館，滿 1000 減 200"
+                    className="form-control"
+                    value="SWW2024"
+                    readOnly
+                  />
+                </div>
+                <div className="col-md-12 mt-3">
+                  <label className="form-label">描述 *</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                   />
                 </div>
               </div>
             </div>
 
-            <div class="p-4 border rounded bg-light mb-4">
-              <h5 class="mb-3">使用條件</h5>
-              <div class="row">
-                <div class="col-md-4">
-                  <label class="form-label">折扣類型</label>
-                  <select class="form-select">
-                    <option selected>滿額折扣</option>
+            {/* 使用條件 */}
+            <div className="p-4 border rounded bg-light mb-4">
+              <h5 className="mb-3">使用條件</h5>
+              <div className="row">
+                <div className="col-md-4">
+                  <label className="form-label">折扣類型</label>
+                  <select
+                    className="form-select"
+                    value={discountType}
+                    onChange={(e) => setDiscountType(e.target.value)}
+                  >
+                    <option>滿額折扣</option>
                     <option>折扣百分比</option>
                     <option>滿件折扣</option>
                   </select>
                 </div>
-                <div class="col-md-4">
-                  <label class="form-label">最低使用金額</label>
-                  <input type="text" class="form-control" value="1000" />
+                <div className="col-md-4">
+                  <label className="form-label">最低使用金額</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={minAmount}
+                    onChange={(e) => setMinAmount(e.target.value)}
+                  />
                 </div>
-                <div class="col-md-4">
-                  <label class="form-label">使用次數</label>
-                  <input type="text" class="form-control" value="1" />
-                </div>
-              </div>
-            </div>
-            <div class="p-4 border rounded bg-light mb-4">
-              <h5 class="mb-3">有效期限</h5>
-              <div class="row">
-                <div class="col-md-6">
-                  <label class="form-label">開始日期</label>
-                  <input type="date" class="form-control" value="2024-03-01" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">結束日期</label>
-                  <input type="date" class="form-control" value="2024-03-10" />
+                <div className="col-md-4">
+                  <label className="form-label">使用次數</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={usageLimit}
+                    onChange={(e) => setUsageLimit(e.target.value)}
+                  />
                 </div>
               </div>
             </div>
-            <div class="p-4 border rounded bg-light mb-4">
-              <h5 class="mb-3">其他資訊</h5>
-              <div class="row">
-                <div class="col-md-4">
-                  <label class="form-label">適用對象</label>
-                  <select class="form-select">
-                    <option selected>所有用戶</option>
+
+            {/* 有效期限 */}
+            <div className="p-4 border rounded bg-light mb-4">
+              <h5 className="mb-3">有效期限</h5>
+              <div className="row">
+                <div className="col-md-6">
+                  <label className="form-label">開始日期</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">結束日期</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 其他資訊 */}
+            <div className="p-4 border rounded bg-light mb-4">
+              <h5 className="mb-3">其他資訊</h5>
+              <div className="row">
+                <div className="col-md-4">
+                  <label className="form-label">適用對象</label>
+                  <select
+                    className="form-select"
+                    value={targetAudience}
+                    onChange={(e) => setTargetAudience(e.target.value)}
+                  >
+                    <option>所有用戶</option>
                     <option>會員限定</option>
                   </select>
                 </div>
-                <div class="col-md-4">
-                  <label class="form-label">使用狀態</label>
-                  <select class="form-select">
-                    <option selected>啟用</option>
+                <div className="col-md-4">
+                  <label className="form-label">使用狀態</label>
+                  <select
+                    className="form-select"
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                  >
+                    <option>啟用</option>
                     <option>已過期</option>
                   </select>
                 </div>
-                <div class="col-md-4">
-                  <label class="form-label">剩餘可用次數</label>
-                  <input type="text" class="form-control" value="1" />
+                <div className="col-md-4">
+                  <label className="form-label">剩餘可用次數</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={remainingUses}
+                    onChange={(e) => setRemainingUses(e.target.value)}
+                  />
                 </div>
-                <div class="col-md-12">
-                  <label class="form-label">注意事項</label>
-                  <textarea class="form-control">
-                    優惠券不得與其他折扣活動併用
-                  </textarea>
+                <div className="col-md-12">
+                  <label className="form-label">注意事項</label>
+                  <textarea
+                    className="form-control"
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                  />
                 </div>
               </div>
             </div>
-            <div class="d-flex justify-content-end gap-2">
+
+            {/* 按鈕區 */}
+            <div className="d-flex justify-content-end gap-2">
               <button
                 type="button"
-                class="btn btn-success btn-sm px-4"
-                onclick="location.href='operatorCouponList.html'"
+                className="btn btn-success btn-sm px-4"
+                onClick={() => changepage("couponList")}
               >
                 返回
               </button>
               <button
                 type="submit"
-                class="btn btn-primary btn-sm px-4"
-                onclick="location.href='operatorCouponList.html'"
+                className="btn btn-primary btn-sm px-4"
+                onClick={handleSubmit}
               >
                 儲存
               </button>
-              <button type="button" class="btn btn-danger btn-sm px-4">
+              <button
+                type="button"
+                className="btn btn-danger btn-sm px-4"
+                onClick={() => alert("優惠券已刪除！")}
+              >
                 刪除
               </button>
             </div>
