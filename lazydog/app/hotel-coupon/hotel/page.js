@@ -65,7 +65,7 @@ export default function HotelEditPage() {
                     </li>
                     <li>
                       <label
-                        htmlFor="uploadPhoto"
+                        onClick={uploadPhoto}
                         className={`dropdown-item ${styles.dropdownItem}`}
                       >
                         上傳照片
@@ -90,22 +90,34 @@ export default function HotelEditPage() {
             <hr />
             <ul className="list-unstyled text-start">
               <li className="py-2" onClick={() => changepage("operatorDetail")}>
-                <a className="text-decoration-none text-dark" style={{ cursor: "pointer" }}>
+                <a
+                  className="text-decoration-none text-dark"
+                  style={{ cursor: "pointer" }}
+                >
                   <i className="bi bi-person-fill me-2"></i>負責人資訊
                 </a>
               </li>
               <li className="py-2" onClick={() => changepage("hotel")}>
-                <a className="text-decoration-none text-dark" style={{ cursor: "pointer" }}>
+                <a
+                  className="text-decoration-none text-dark"
+                  style={{ cursor: "pointer" }}
+                >
                   <i className="bi bi-house-heart-fill me-2"></i>旅館資訊
                 </a>
               </li>
               <li className="py-2" onClick={() => changepage("review")}>
-                <a className="text-decoration-none text-dark" style={{ cursor: "pointer" }}>
+                <a
+                  className="text-decoration-none text-dark"
+                  style={{ cursor: "pointer" }}
+                >
                   <i className="bi bi-card-list me-2"></i>旅館評論
                 </a>
               </li>
               <li className="py-2" onClick={() => changepage("couponList")}>
-                <a className="text-decoration-none text-dark" style={{ cursor: "pointer" }}>
+                <a
+                  className="text-decoration-none text-dark"
+                  style={{ cursor: "pointer" }}
+                >
                   <i className="bi bi-ticket-perforated me-2"></i>旅館優惠券
                 </a>
               </li>
@@ -122,26 +134,50 @@ export default function HotelEditPage() {
                 <h5>基本資訊</h5>
                 <div className="mb-3">
                   <label className="form-label">旅館名稱 *</label>
-                  <input type="text" className="form-control" value="寵物樂園" readOnly />
+                  <input
+                    type="text"
+                    className="form-control"
+                    value="寵物樂園"
+                    readOnly
+                  />
                 </div>
                 <div className="mb-3">
                   <label className="form-label">地址 *</label>
-                  <input type="text" className="form-control" value="台北市中山區 123 號" readOnly />
+                  <input
+                    type="text"
+                    className="form-control"
+                    value="台北市中山區 123 號"
+                    readOnly
+                  />
                 </div>
                 <div className="mb-3">
                   <label className="form-label">電話 *</label>
-                  <input type="text" className="form-control" value="02-12345678" readOnly />
+                  <input
+                    type="text"
+                    className="form-control"
+                    value="02-12345678"
+                    readOnly
+                  />
                 </div>
               </div>
 
               <div className="section">
                 <h5>旅館圖片</h5>
-                <div id="imagePreviewContainer" className="d-flex flex-wrap gap-3 mb-2">
+                <div
+                  id="imagePreviewContainer"
+                  className="d-flex flex-wrap gap-3 mb-2"
+                >
                   <div className="image-card">
-                    <img src="/images/hotel/hotel-uploads/11-room.webp" alt="旅館圖片1" />
+                    <img
+                      src="/images/hotel/hotel-uploads/11-room.webp"
+                      alt="旅館圖片1"
+                    />
                   </div>
                   <div className="image-card">
-                    <img src="/images/hotel/hotel-uploads/13-s-room.jpg" alt="旅館圖片2" />
+                    <img
+                      src="/images/hotel/hotel-uploads/13-s-room.jpg"
+                      alt="旅館圖片2"
+                    />
                   </div>
                 </div>
               </div>
@@ -150,7 +186,12 @@ export default function HotelEditPage() {
                 <h5>營業時間</h5>
                 <div className="mb-3">
                   <label className="form-label">營業時間</label>
-                  <input type="text" className="form-control" value="09:00 - 20:00" readOnly />
+                  <input
+                    type="text"
+                    className="form-control"
+                    value="09:00 - 20:00"
+                    readOnly
+                  />
                 </div>
               </div>
 

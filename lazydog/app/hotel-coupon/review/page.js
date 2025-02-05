@@ -63,63 +63,61 @@ const ReviewList = () => {
       <div className="row">
         {/* 左邊*/}
         <div className="col-md-3">
-            <div className="card p-3">
-              <div className="text-center">
-                <div className="position-relative d-inline-block">
-                  <img
-                    ref={avatarRef}
-                    src="/images/hotel/hotel-images/page-image/Dog2.png"
-                    alt="User Avatar"
-                    className={`rounded-circle ${styles.suAvatarImg}`}
-                  />
+          <div className="card p-3">
+            <div className="text-center">
+              <div className="position-relative d-inline-block">
+                <img
+                  ref={avatarRef}
+                  src="/images/hotel/hotel-images/page-image/Dog2.png"
+                  alt="User Avatar"
+                  className={`rounded-circle ${styles.suAvatarImg}`}
+                />
 
-                  <div className={styles.dropdownItem}>
-                    <button
-                      className={`btn btn-light ${styles.suCameraIcon}`}
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <img
-                        src="/images/hotel/hotel-images/page-image/icon-camera.png"
-                        alt="相機"
-                        className={styles.suCameraIconImg}
+                <div className={styles.dropdownItem}>
+                  <button
+                    className={`btn btn-light ${styles.suCameraIcon}`}
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <img
+                      src="/images/hotel/hotel-images/page-image/icon-camera.png"
+                      alt="相機"
+                      className={styles.suCameraIconImg}
+                    />
+                  </button>
+                  <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
+                    <li>
+                      <button
+                        className={`text-danger dropdown-item ${styles.suDropdownItem}`}
+                        onClick={deletePhoto}
+                      >
+                        刪除照片
+                      </button>
+                    </li>
+                    <li>
+                      <label
+                        onClick={uploadPhoto}
+                        className={`dropdown-item ${styles.dropdownItem}`}
+                      >
+                        上傳照片
+                      </label>
+                      <input
+                        type="file"
+                        id="uploadPhoto"
+                        accept="image/*"
+                        className="d-none"
+                        ref={fileInputRef}
+                        onChange={fileChange}
                       />
-                    </button>
-                    <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
-                      <li>
-                        <button
-                          className={`text-danger dropdown-item ${styles.suDropdownItem}`}
-                          onClick={deletePhoto}
-                        >
-                          刪除照片
-                        </button>
-                      </li>
-                      <li>
-                        <label
-                          htmlFor="uploadPhoto"
-                          className={`dropdown-item ${styles.dropdownItem}`}
-                        >
-                          上傳照片
-                        </label>
-                        <input
-                          type="file"
-                          id="uploadPhoto"
-                          accept="image/*"
-                          className="d-none"
-                          ref={fileInputRef}
-                          onChange={fileChange}
-                        />
-                      </li>
-                    </ul>
-                  </div>
+                    </li>
+                  </ul>
                 </div>
-                <h5 className="mt-2">陳大方</h5>
-                <p className="text-muted">165846hote@gmail.com</p>
-                <button className="btn btn-outline-success btn-sm">
-                  已認證
-                </button>
               </div>
+              <h5 className="mt-2">陳大方</h5>
+              <p className="text-muted">165846hote@gmail.com</p>
+              <button className="btn btn-outline-success btn-sm">已認證</button>
+            </div>
 
             <hr />
             <ul className="list-unstyled text-start">

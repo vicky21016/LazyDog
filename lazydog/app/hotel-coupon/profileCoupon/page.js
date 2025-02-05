@@ -57,12 +57,12 @@ export default function ProfileCouponPage(props) {
                         </button>
                       </li>
                       <li>
-                        <label
-                          htmlFor="uploadPhoto"
-                          className={`dropdown-item ${styles.dropdownItem}`}
-                        >
-                          上傳照片
-                        </label>
+                      <label
+                        onClick={uploadPhoto}
+                        className={`dropdown-item ${styles.dropdownItem}`}
+                      >
+                        上傳照片
+                      </label>
                         <input
                           type="file"
                           id="uploadPhoto"

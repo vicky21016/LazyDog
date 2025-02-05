@@ -58,7 +58,7 @@ export default function OperatorDetailPage() {
                       </li>
                       <li>
                         <label
-                          htmlFor="uploadPhoto"
+                          onClick={uploadPhoto}
                           className={`dropdown-item ${styles.dropdownItem}`}
                         >
                           上傳照片

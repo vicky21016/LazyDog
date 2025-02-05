@@ -58,7 +58,7 @@ export default function PagesHotelList() {
                       </li>
                       <li>
                         <label
-                          htmlFor="uploadPhoto"
+                          onClick={uploadPhoto}
                           className={`dropdown-item ${styles.dropdownItem}`}
                         >
                           上傳照片
