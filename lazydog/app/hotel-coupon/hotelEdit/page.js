@@ -84,12 +84,12 @@ export default function HotelEditPage(props) {
                         </button>
                       </li>
                       <li>
-                        <label
-                          onClick={uploadPhoto}
-                          className={`dropdown-item ${styles.dropdownItem}`}
-                        >
-                          上傳照片
-                        </label>
+                      <label
+                        onClick={uploadPhoto}
+                        className={`dropdown-item ${styles.dropdownItem}`}
+                      >
+                        上傳照片
+                      </label>
                         <input
                           type="file"
                           id="uploadPhoto"
