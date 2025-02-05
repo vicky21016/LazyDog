@@ -2,93 +2,132 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import "nouislider/dist/nouislider.css";
+import noUiSlider from "nouislider";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
+import TwCitySelector from "tw-city-selector";
 
 export default function HotelHomePage() {
   const router = useRouter();
+  const [showMore, setShowMore] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [minPrice, setMinPrice] = useState(200);
-  const [maxPrice, setMaxPrice] = useState(1000);
-
-  useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.bundle.min.js");
-  }, []);
-
-  const changepage = (path) => {
-    if (path) {
-      router.push(`/hotel-coupon/${path}`);
-    }
-  };
-
-  const increaseQuantity = () => setQuantity((prev) => prev + 1);
-  const decreaseQuantity = () =>
-    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+  const [maxPrice, setMaxPrice] = useState(5000);
+  const [location, setLocation] = useState("");
+  const googleMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=台北,台灣&zoom=13&size=300x200&maptype=roadmap&markers=color:blue%7Clabel:台北%7C25.0330,121.5654&key=YOUR_GOOGLE_MAPS_API_KEY`;
 
   const openMap = () => {
     alert("地圖功能尚未啟用");
   };
 
+  useEffect(() => {
+    import("bootstrap/dist/js/bootstrap.bundle.min.js");
+
+    // ✅ 初始化價格滑桿
+    const sliderElement = document.getElementById("priceRange");
+    if (sliderElement && !sliderElement.noUiSlider) {
+      noUiSlider.create(sliderElement, {
+        start: [minPrice, maxPrice],
+        connect: true,
+        range: { min: 0, max: 10000 },
+        step: 100,
+        tooltips: [true, true],
+      });
+
+      sliderElement.noUiSlider.on("update", (values) => {
+        setMinPrice(Math.round(values[0]));
+        setMaxPrice(Math.round(values[1]));
+      });
+    }
+
+    // ✅ 初始化台灣地區選擇器
+    setTimeout(() => {
+      new TwCitySelector({
+        el: "#twzipcode",
+        elCounty: ".county",
+        elDistrict: ".district",
+        hasZipcode: false,
+      });
+    }, 100);
+
+    // ✅ 初始化日期選擇器
+    flatpickr("#date-date", {
+      mode: "range",
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      locale: "zh",
+    });
+  }, []);
+
+  const confirmLocation = () => {
+    const county = document.querySelector(".county")?.value || "";
+    const district = document.querySelector(".district")?.value || "";
+    setLocation(`${county} ${district}`);
+
+    const modalElement = document.getElementById("locationModal");
+    if (modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      if (modalInstance) modalInstance.hide();
+    }
+  };
   return (
     <>
       <div className="suBody">
         <div className="suSearch-bg">
-          <div className="container mt-4">
-            <div className="suSearch-bar">
-              <div className="suSearch-group">
-                <img
-                  className="suIcon"
-                  src="/images/hotel/hotel-images/page-image/icon-search.png"
-                  alt=""
-                />
-                <input
-                  type="text"
-                  className="suSearch-input"
-                  id="locationInput"
-                  placeholder="搜尋關鍵字、地區..."
-                  data-bs-toggle="modal"
-                  data-bs-target="#locationModal"
-                />
-              </div>
-              <div className="suSearch-group">
-                <img
-                  className="suIcon"
-                  src="/images/hotel/hotel-images/page-image/icon-Calendar.png"
-                  alt=""
-                />
-                <input
-                  type="text"
-                  id="date-date"
-                  className="suSearch-date"
-                  placeholder="入住日期 → 退房日期"
-                />
-              </div>
-
-              <div className="suSearch-group">
-                <img
-                  className="suIcon"
-                  src="/images/hotel/hotel-images/page-image/Icon-mimi.png"
-                  alt=""
-                />
-                <span className="text">數量</span>
-                <button className="suQuantity-btn" onClick={decreaseQuantity}>
-                  <img
-                    src="/images/hotel/hotel-images/page-image/Minus.png"
-                    alt="減少"
-                  />
-                </button>
-                <span id="suQuantity-number">{quantity}</span>
-                <button className="suQuantity-btn" onClick={increaseQuantity}>
-                  <img
-                    src="/images/hotel/hotel-images/page-image/Plus.png"
-                    alt="增加"
-                  />
-                </button>
-              </div>
-              <button className="suSearch-btn">搜尋</button>
+          <div className="suSearch-bar container">
+            <div className="suSearch-group">
+              <img
+                className="suIcon"
+                src="/images/hotel/hotel-images/page-image/icon-search.png"
+                alt=""
+              />
+              <input
+                type="text"
+                className="suSearch-input"
+                placeholder="搜尋關鍵字、地區..."
+              />
             </div>
+            <div className="suSearch-group">
+              <img
+                className="suIcon"
+                src="/images/hotel/hotel-images/page-image/icon-Calendar.png"
+                alt=""
+              />
+              <input
+                type="text"
+                id="date-date"
+                className="suSearch-date"
+                placeholder="入住日期 → 退房日期"
+              />
+            </div>
+            <div className="suSearch-group">
+              <img
+                className="suIcon"
+                src="/images/hotel/hotel-images/page-image/Icon-mimi.png"
+                alt=""
+              />
+              <span className="text">數量</span>
+              <button
+                className="suQuantity-btn"
+                onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+              >
+                -
+              </button>
+              <span>{quantity}</span>
+              <button
+                className="suQuantity-btn"
+                onClick={() => setQuantity(quantity + 1)}
+              >
+                +
+              </button>
+            </div>
+            <button className="suSearch-btn">搜尋</button>
           </div>
         </div>
-        {/* Modal */}
+
+        {/* Modal (地區選擇) */}
         <div
           className="modal fade"
           id="locationModal"
@@ -103,7 +142,6 @@ export default function HotelHomePage() {
                   type="button"
                   className="btn-close"
                   data-bs-dismiss="modal"
-                  aria-label="Close"
                 ></button>
               </div>
               <div className="modal-body">
@@ -113,7 +151,7 @@ export default function HotelHomePage() {
                 </div>
               </div>
               <div className="modal-footer">
-                <button id="confirmLocation" className="btn btn-primary">
+                <button className="btn btn-primary" onClick={confirmLocation}>
                   確定
                 </button>
               </div>
@@ -130,23 +168,13 @@ export default function HotelHomePage() {
                   📍 於地圖上顯示
                 </button>
                 <img
-                  src="https://maps.googleapis.com/maps/api/staticmap?center=台北,台灣&zoom=13&size=300x200&maptype=roadmap
-                &markers=color:blue%7Clabel:台北%7C25.0330,121.5654
-                &key="
+                  src={googleMapUrl}
                   alt="地圖縮圖"
                   className="suMap-image"
                 />
               </div>
 
-              <div className="suFilter-group mt-4">
-                <h6 className="suFilter-title">優質住宿</h6>
-                <select className="form-select">
-                  <option>選擇類型</option>
-                  <option>五星級</option>
-                  <option>四星級</option>
-                </select>
-              </div>
-
+              {/* 設施篩選 */}
               <div className="suFilter-group">
                 <h6 className="suFilter-title">設施</h6>
                 <div className="form-check">
@@ -179,59 +207,69 @@ export default function HotelHomePage() {
                     戶外運動
                   </label>
                 </div>
-                {/* 顯示全部按鈕 */}
-                <span className="suShow-more" id="toggleBtn">
-                  顯示全部 ▼
+
+                {/* 顯示更多 */}
+                <span
+                  className="suShow-more"
+                  onClick={() => setShowMore(!showMore)}
+                  style={{
+                    cursor: "pointer",
+                    color: "#007bff",
+                    display: "block",
+                    marginTop: "10px",
+                  }}
+                >
+                  {showMore ? "收起 ▲" : "顯示全部 ▼"}
                 </span>
 
-                {/* 折疊項目 (顯示全部按鈕下方) */}
-                <div className="collapse-items hidden suHidden mt-2">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      id="wifi"
-                    />
-                    <label className="form-check-label" htmlFor="wifi">
-                      免費 Wi-Fi
-                    </label>
+                {/* 額外設施選項 */}
+                {showMore && (
+                  <div className="mt-2">
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="wifi"
+                      />
+                      <label className="form-check-label" htmlFor="wifi">
+                        免費 Wi-Fi
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="spa"
+                      />
+                      <label className="form-check-label" htmlFor="spa">
+                        SPA 按摩
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="gym"
+                      />
+                      <label className="form-check-label" htmlFor="gym">
+                        健身房
+                      </label>
+                    </div>
                   </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      id="spa"
-                    />
-                    <label className="form-check-label" htmlFor="spa">
-                      SPA 按摩
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      id="gym"
-                    />
-                    <label className="form-check-label" htmlFor="gym">
-                      健身房
-                    </label>
-                  </div>
-                </div>
+                )}
               </div>
 
-              {/* 價格篩選區  */}
-              <div className="suFilter-group suPrice-filter-container">
+              {/* 價格篩選 */}
+              <div className="suFilter-group suPrice-filter-container text-center">
                 <h6 className="suFilter-title">價格篩選</h6>
-
-                {/* 價格輸入框  */}
-                <div className="suPrice-input-group">
+                <div className="d-flex justify-content-center gap-3">
                   <div className="suPrice-input">
                     <label htmlFor="filterMin">最少</label>
                     <input
                       id="filterMin"
                       type="number"
                       value={minPrice}
-                      onChange={(e) => setMinPrice(e.target.value)}
+                      readOnly
                     />
                     <span>元</span>
                   </div>
@@ -241,33 +279,33 @@ export default function HotelHomePage() {
                       id="filterMax"
                       type="number"
                       value={maxPrice}
-                      onChange={(e) => setMaxPrice(e.target.value)}
+                      readOnly
                     />
                     <span>元</span>
                   </div>
                 </div>
-
-                {/* Bootstrap Slider */}
-                <input
-                  id="priceRange"
-                  type="text"
-                  data-slider-min="0"
-                  data-slider-max="10000"
-                  data-slider-step="100"
-                  data-slider-value="[200,1000]"
-                />
-
-                {/* 清除按鈕  */}
-                <button id="resetFilter" className="suClear-filter-btn">
+                <div id="priceRange" className="mt-3"></div>
+                <button
+                  className="suClear-filter-btn btn btn-outline-danger mt-3"
+                  onClick={() => {
+                    setMinPrice(200);
+                    setMaxPrice(5000);
+                    document
+                      .getElementById("priceRange")
+                      .noUiSlider.set([200, 5000]);
+                  }}
+                >
                   清除搜尋
                 </button>
               </div>
+
+              {/* 廣告區 */}
               <a href="">
                 <figure>
                   <img
                     src="/images/hotel/hotel-images/page-image/hotelad2.png"
-                    alt=""
-                    className="mx-4"
+                    alt="廣告"
+                    className="mx-4 img-fluid"
                   />
                 </figure>
               </a>
@@ -281,174 +319,9 @@ export default function HotelHomePage() {
                 />
                 <div className="suHotel-info">
                   <h5>烏來Spring Spa溫泉山莊</h5>
-                  <p>
-                    烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池，舒適的客房均以不同風格裝潢...
-                  </p>
+                  <p>烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池...</p>
                 </div>
-                <div className="price-box suPrice-box">
-                  <div className="suReview">很棒 ⭐ 8</div>
-                  1,258 則評論
-                  <button className="suBook-btn">查看價格</button>
-                </div>
-              </div>
-
-              <div className="suHotel-card">
-                <img
-                  src="/images/hotel/hotel-uploads/11-outside.webp"
-                  alt="飯店圖片"
-                />
-                <div className="suHotel-info">
-                  <h5>Grupotel Mayorazgo</h5>
-                  <p>
-                    Una de las principales ventajas del Hotel Mayorazgo es su
-                    magnífica ubicación en el centro de Madrid...
-                  </p>
-                </div>
-                <div className="price-box suPrice-box">
-                  <div className="suReview">很棒 ⭐ 8</div>
-                  1,258 則評論
-                  <button className="suBook-btn">查看價格</button>
-                </div>
-              </div>
-              <div className="suHotel-card">
-                <img
-                  src="/images/hotel/hotel-uploads/11-outside.webp"
-                  alt="飯店圖片"
-                />
-                <div className="suHotel-info">
-                  <h5>Grupotel Mayorazgo</h5>
-                  <p>
-                    Una de las principales ventajas del Hotel Mayorazgo es su
-                    magnífica ubicación en el centro de Madrid...
-                  </p>
-                </div>
-                <div className="price-box suPrice-box">
-                  <div className="suReview">很棒 ⭐ 8</div>
-                  1,258 則評論
-                  <button className="suBook-btn">查看價格</button>
-                </div>
-              </div>
-              <div className="suHotel-card">
-                <img
-                  src="/images/hotel/hotel-uploads/11-outside.webp"
-                  alt="飯店圖片"
-                />
-                <div className="suHotel-info">
-                  <h5>Grupotel Mayorazgo</h5>
-                  <p>
-                    Una de las principales ventajas del Hotel Mayorazgo es su
-                    magnífica ubicación en el centro de Madrid...
-                  </p>
-                </div>
-                <div className="price-box suPrice-box">
-                  <div className="suReview">很棒 ⭐ 8</div>
-                  1,258 則評論
-                  <button className="suBook-btn">查看價格</button>
-                </div>
-              </div>
-              <div className="suHotel-card">
-                <img
-                  src="/images/hotel/hotel-uploads/11-outside.webp"
-                  alt="飯店圖片"
-                />
-                <div className="suHotel-info">
-                  <h5>Grupotel Mayorazgo</h5>
-                  <p>
-                    Una de las principales ventajas del Hotel Mayorazgo es su
-                    magnífica ubicación en el centro de Madrid...
-                  </p>
-                </div>
-                <div className="price-box suPrice-box">
-                  <div className="suReview">很棒 ⭐ 8</div>
-                  1,258 則評論
-                  <button className="suBook-btn">查看價格</button>
-                </div>
-              </div>
-              <div className="suHotel-card">
-                <img
-                  src="/images/hotel/hotel-uploads/11-outside.webp"
-                  alt="飯店圖片"
-                />
-                <div className="suHotel-info">
-                  <h5>Grupotel Mayorazgo</h5>
-                  <p>
-                    Una de las principales ventajas del Hotel Mayorazgo es su
-                    magnífica ubicación en el centro de Madrid...
-                  </p>
-                </div>
-                <div className="price-box suPrice-box">
-                  <div className="suReview">很棒 ⭐ 8</div>
-                  1,258 則評論
-                  <button className="suBook-btn">查看價格</button>
-                </div>
-              </div>
-              <div className="suHotel-card">
-                <img
-                  src="/images/hotel/hotel-uploads/11-outside.webp"
-                  alt="飯店圖片"
-                />
-                <div className="suHotel-info">
-                  <h5>Grupotel Mayorazgo</h5>
-                  <p>
-                    Una de las principales ventajas del Hotel Mayorazgo es su
-                    magnífica ubicación en el centro de Madrid...
-                  </p>
-                </div>
-                <div className="price-box suPrice-box">
-                  <div className="suReview">很棒 ⭐ 8</div>
-                  1,258 則評論
-                  <button className="suBook-btn">查看價格</button>
-                </div>
-              </div>
-              <div className="suHotel-card">
-                <img
-                  src="/images/hotel/hotel-uploads/11-outside.webp"
-                  alt="飯店圖片"
-                />
-                <div className="suHotel-info">
-                  <h5>Grupotel Mayorazgo</h5>
-                  <p>
-                    Una de las principales ventajas del Hotel Mayorazgo es su
-                    magnífica ubicación en el centro de Madrid...
-                  </p>
-                </div>
-                <div className="price-box suPrice-box">
-                  <div className="suReview">很棒 ⭐ 8</div>
-                  1,258 則評論
-                  <button className="suBook-btn">查看價格</button>
-                </div>
-              </div>
-              <div className="suHotel-card">
-                <img
-                  src="/images/hotel/hotel-uploads/11-outside.webp"
-                  alt="飯店圖片"
-                />
-                <div className="suHotel-info">
-                  <h5>Grupotel Mayorazgo</h5>
-                  <p>
-                    Una de las principales ventajas del Hotel Mayorazgo es su
-                    magnífica ubicación en el centro de Madrid...
-                  </p>
-                </div>
-                <div className="price-box suPrice-box">
-                  <div className="suReview">很棒 ⭐ 8</div>
-                  1,258 則評論
-                  <button className="suBook-btn">查看價格</button>
-                </div>
-              </div>
-              <div className="suHotel-card">
-                <img
-                  src="/images/hotel/hotel-uploads/11-outside.webp"
-                  alt="飯店圖片"
-                />
-                <div className="suHotel-info">
-                  <h5>Grupotel Mayorazgo</h5>
-                  <p>
-                    Una de las principales ventajas del Hotel Mayorazgo es su
-                    magnífica ubicación en el centro de Madrid...
-                  </p>
-                </div>
-                <div className="price-box suPrice-box">
+                <div className="price-box">
                   <div className="suReview">很棒 ⭐ 8</div>
                   1,258 則評論
                   <button className="suBook-btn">查看價格</button>
@@ -464,7 +337,7 @@ export default function HotelHomePage() {
               id="pagination"
             >
               <li className="page-item disabled">
-              <a
+                <a
                   className="page-link"
                   href="#"
                   aria-label="Previous"
@@ -492,7 +365,7 @@ export default function HotelHomePage() {
                 </a>
               </li>
               <li className="page-item">
-              <a
+                <a
                   className="page-link"
                   href="#"
                   aria-label="Next"

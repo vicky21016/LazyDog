@@ -1,3 +1,33 @@
+.suSearch-bg {
+  width: 100vw;
+  height: 400px;
+  background: url("/images/hotel/hotel-images/services-banner-dog-boarding.2203041608391.jpg")
+    center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.suSearch-group {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.suHotel-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid #ddd;
+  padding: 15px 0;
+}
+
+.suHotel-info {
+  flex: 1;
+}
+
 .suBody {
   background-color: #fff;
 }
@@ -13,16 +43,6 @@
   justify-content: space-between;
   max-width: 950px;
   margin: auto;
-}
-
-.suSearch-group {
-  display: flex;
-  align-items: center;
-  background: white;
-  border-radius: 8px;
-  padding: 8px 12px;
-  flex: 1;
-  max-width: 300px;
 }
 
 .suIcon {
@@ -76,12 +96,6 @@
 }
 .suSearch-btn:hover {
   background-color: #e65c00;
-}
-.suSearch-bg {
-  background: url("/images/hotel/hotel-images/services-banner-dog-boarding.2203041608391.jpg")
-    no-repeat center;
-  background-size: cover;
-  padding: 80px 0;
 }
 
 /* 地圖 */
@@ -274,26 +288,11 @@
   color: white;
 }
 
-/* 飯店 */
-.suHotel-card {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 15px 0;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #ddd;
-}
-
 .suHotel-card img {
   width: 180px;
   height: 120px;
   object-fit: cover;
   border-radius: 10px;
-}
-
-.suHotel-info {
-  flex: 1;
-  padding-left: 15px;
 }
 
 .suHotel-info h5 {
