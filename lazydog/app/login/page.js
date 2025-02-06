@@ -12,6 +12,7 @@ import axios from "axios";
 import "firebase/auth";
 import firebase from "../components/utils/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+// import styles from "./form.module.css";
 
 export default function AppPage() {
   const [email, setEmail] = useState("");
@@ -49,6 +50,7 @@ export default function AppPage() {
   return (
     <>
       <Header />
+      {/* <div className={styles.container}> */}
       <div className="login-container">
         <div className="other-accounts">
           <h4 className="form-title">登入</h4>
@@ -93,6 +95,7 @@ export default function AppPage() {
           </Link>
         </p>
       </div>
+      {/* </div> */}
     </>
   );
 }

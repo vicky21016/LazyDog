@@ -7,9 +7,11 @@ import { usePathname, useSearchParams } from "next/navigation";
 import Header from "./header"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCartShopping, faTicket, faHeart, faPen, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+// import { useAuth } from "@/hooks/use-auth"
 
 export default function MyMenu() {
   const pathname = usePathname();
+  // const {logout} = useAuth()
   const [userName, setUserName] = useState(""); // 儲存會員名字的狀態
   const searchParams = useSearchParams();
 
@@ -46,7 +48,8 @@ export default function MyMenu() {
   { name: "我的收藏", path: "/my/favorite", icon: <FontAwesomeIcon icon={faHeart} /> },
   { name: "我的文章", path: "/my/posts", icon: <FontAwesomeIcon icon={faPen} /> },
   { name: "修改密碼", path: "/pages/forgot-password", icon: <FontAwesomeIcon icon={faCirclePlus} /> },
-    { name: "登出", path: "/logout" },
+  { name: "登出", path: "/logout/"}
+    // { name: "登出", onClick:{logout} },
   ];
 
   return (
