@@ -19,9 +19,7 @@ events.forEach((event) => {
       min = document.querySelector(".range-min").value;
       let to = ((max - this.min) / (this.max - this.min)) * 100;
       let from = ((min - this.min) / (this.max - this.min)) * 100;
-      // console.log(to);
-      // console.log(from);
-      // 单值选择高亮起始位置一定是0
+
       ranges[0].style.setProperty("--to", to);
       ranges[0].style.setProperty("--from", from);
     });
