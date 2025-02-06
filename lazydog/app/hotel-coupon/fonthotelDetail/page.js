@@ -1,14 +1,16 @@
+//還沒轉moudles還沒轉moudles
+
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import "../../../html/hotel-coupon/css/fontHotelHome.css";
 import "nouislider/dist/nouislider.css";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import Image from "next/image";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
 import { useGoogleMap } from "@/hooks/useGoogleMap";
+
 
 export default function HotelHomePage() {
   const router = useRouter();

@@ -36,7 +36,7 @@
   border-bottom: 2px solid transparent;
 }
 
-.suNavTabs .suNavLink.active {
+.suNavTabs .suNavLink:hover {
   color: #f9a825;
   border-bottom: 2px solid #f9a825;
 }
@@ -50,30 +50,30 @@
   background-color: white;
   margin-bottom: 15px;
 }
-.suCouponCard .price {
+.suCouponCard .suPrice {
   font-size: 22px;
   font-weight: bold;
   color: #28a745;
 }
 
-.suCouponCard .details {
+.suCouponCard .suDetails {
   flex: 1;
   padding-left: 15px;
 }
 
-.suCouponCard .details p {
+.suCouponCard .suDetails p {
   margin: 0;
   font-size: 14px;
 }
-.suCouponCard .details .expired {
+.suCouponCard .suDetails .suExpired {
   color: red;
   font-size: 12px;
 }
 
-.suCouponCard .action {
+.suCouponCard .suAction {
   text-align: right;
 }
-.suCouponCard .action a {
+.suCouponCard .suAction a {
   color: #007bff;
   text-decoration: none;
   font-weight: bold;
@@ -92,12 +92,12 @@
   padding: 8px 0;
 }
 
-.couponInputGroup {
+.suCouponInputGroup {
   display: flex;
   margin-bottom: 20px;
 }
 
-.couponInputGroup input {
+.suCouponInputGroup input {
   flex: 1;
   border: 1px solid #ddd;
   border-radius: 8px;
