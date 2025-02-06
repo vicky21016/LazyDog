@@ -7,55 +7,28 @@ import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import { useLocationSelector } from "@/hooks/useLocationSelector";
 
 export default function HotelHomePage() {
   const router = useRouter();
-  const [showMore, setShowMore] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [minPrice, setMinPrice] = useState(200);
   const [maxPrice, setMaxPrice] = useState(5000);
-  const [location, setLocation] = useState("");
-
   const priceSliderRef = useRef(null);
-  const locationModalRef = useRef(null);
-  const twCityRef = useRef(null);
-  let modalInstance = useRef(null);
+  const [showMore, setShowMore] = useState(false);
 
-  const googleMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${
-    location || "台北,台灣"
-  }&zoom=13&size=300x200&maptype=roadmap&markers=color:blue%7Clabel:${
-    location || "台北"
-  }&key=YOUR_GOOGLE_MAPS_API_KEY`;
-
-  const openMap = () => {
-    if (!location) {
-      alert("請先選擇地區");
-      return;
-    }
-    const mapUrl = `https://www.google.com/maps?q=${location}`;
-    window.open(mapUrl, "_blank");
-  };
+  const {
+    location,
+    locationModalRef,
+    googleMapUrl,
+    openModal,
+    closeModal,
+    confirmLocation,
+    openMap,
+  } = useLocationSelector();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    import("bootstrap").then((bootstrap) => {
-      if (locationModalRef.current) {
-        modalInstance.current = new bootstrap.Modal(locationModalRef.current);
-      }
-      console.log("✅ Bootstrap 已載入");
-    });
-
-    import("tw-city-selector").then((module) => {
-      if (twCityRef.current) return;
-      twCityRef.current = new module.default({
-        el: "#twzipcode",
-        elCounty: ".county",
-        elDistrict: ".district",
-        hasZipcode: false,
-      });
-      console.log("✅ tw-city-selector 已初始化");
-    });
 
     flatpickr("#date-date", {
       mode: "range",
@@ -96,32 +69,8 @@ export default function HotelHomePage() {
         setMinPrice(parseFloat(values[0]));
         setMaxPrice(parseFloat(values[1]));
       });
-
-      console.log("✅ noUiSlider 已初始化");
     }
   }, []);
-
-  const openModal = () => {
-    if (modalInstance.current) {
-      modalInstance.current.show();
-    }
-  };
-
-  const closeModal = () => {
-    if (modalInstance.current) {
-      modalInstance.current.hide();
-    }
-  };
-
-  const confirmLocation = () => {
-    const county = document.querySelector(".county")?.value || "";
-    const district = document.querySelector(".district")?.value || "";
-    if (county && district) {
-      setLocation(`${county} ${district}`);
-    }
-    console.log("🚀 選擇的地區：", county, district);
-    closeModal();
-  };
 
   return (
     <>
@@ -374,6 +323,90 @@ export default function HotelHomePage() {
             </aside>
 
             <section className="col-lg-9">
+              <div className="suHotel-card">
+                <img src="/hotel/hotel-uploads/1-outside.png" alt="飯店圖片" />
+                <div className="suHotel-info">
+                  <h5>烏來Spring Spa溫泉山莊</h5>
+                  <p>烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池...</p>
+                </div>
+                <div className="price-box">
+                  <div className="suReview">很棒 ⭐ 8</div>
+                  1,258 則評論
+                  <button className="suBook-btn">查看價格</button>
+                </div>
+              </div>
+              <div className="suHotel-card">
+                <img src="/hotel/hotel-uploads/1-outside.png" alt="飯店圖片" />
+                <div className="suHotel-info">
+                  <h5>烏來Spring Spa溫泉山莊</h5>
+                  <p>烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池...</p>
+                </div>
+                <div className="price-box">
+                  <div className="suReview">很棒 ⭐ 8</div>
+                  1,258 則評論
+                  <button className="suBook-btn">查看價格</button>
+                </div>
+              </div>
+              <div className="suHotel-card">
+                <img src="/hotel/hotel-uploads/1-outside.png" alt="飯店圖片" />
+                <div className="suHotel-info">
+                  <h5>烏來Spring Spa溫泉山莊</h5>
+                  <p>烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池...</p>
+                </div>
+                <div className="price-box">
+                  <div className="suReview">很棒 ⭐ 8</div>
+                  1,258 則評論
+                  <button className="suBook-btn">查看價格</button>
+                </div>
+              </div>
+              <div className="suHotel-card">
+                <img src="/hotel/hotel-uploads/1-outside.png" alt="飯店圖片" />
+                <div className="suHotel-info">
+                  <h5>烏來Spring Spa溫泉山莊</h5>
+                  <p>烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池...</p>
+                </div>
+                <div className="price-box">
+                  <div className="suReview">很棒 ⭐ 8</div>
+                  1,258 則評論
+                  <button className="suBook-btn">查看價格</button>
+                </div>
+              </div>
+              <div className="suHotel-card">
+                <img src="/hotel/hotel-uploads/1-outside.png" alt="飯店圖片" />
+                <div className="suHotel-info">
+                  <h5>烏來Spring Spa溫泉山莊</h5>
+                  <p>烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池...</p>
+                </div>
+                <div className="price-box">
+                  <div className="suReview">很棒 ⭐ 8</div>
+                  1,258 則評論
+                  <button className="suBook-btn">查看價格</button>
+                </div>
+              </div>
+              <div className="suHotel-card">
+                <img src="/hotel/hotel-uploads/1-outside.png" alt="飯店圖片" />
+                <div className="suHotel-info">
+                  <h5>烏來Spring Spa溫泉山莊</h5>
+                  <p>烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池...</p>
+                </div>
+                <div className="price-box">
+                  <div className="suReview">很棒 ⭐ 8</div>
+                  1,258 則評論
+                  <button className="suBook-btn">查看價格</button>
+                </div>
+              </div>
+              <div className="suHotel-card">
+                <img src="/hotel/hotel-uploads/1-outside.png" alt="飯店圖片" />
+                <div className="suHotel-info">
+                  <h5>烏來Spring Spa溫泉山莊</h5>
+                  <p>烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池...</p>
+                </div>
+                <div className="price-box">
+                  <div className="suReview">很棒 ⭐ 8</div>
+                  1,258 則評論
+                  <button className="suBook-btn">查看價格</button>
+                </div>
+              </div>
               <div className="suHotel-card">
                 <img src="/hotel/hotel-uploads/1-outside.png" alt="飯店圖片" />
                 <div className="suHotel-info">

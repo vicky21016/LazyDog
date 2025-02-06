@@ -299,6 +299,7 @@
 
 /*  分頁 */
 .suPagination .page-item .page-link {
+  left: 150px;
   border-radius: 50%;
   margin: 0 5px;
   color: #333;
