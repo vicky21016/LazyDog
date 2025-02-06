@@ -1,103 +1,275 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "../../../html/hotel-coupon/css/fontHotelHome.css";
+import "nouislider/dist/nouislider.css";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
+import Image from "next/image";
+import { useLocationSelector } from "@/hooks/useLocationSelector";
+import { useGoogleMap } from "@/hooks/useGoogleMap";
 
-export default function HotelDetailPage() {
+export default function HotelHomePage() {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
+  const [hotel, setHotel] = useState(null);
+  const mapRef = useGoogleMap(hotel?.address);
+
+  const {
+    location,
+    locationModalRef,
+    googleMapUrl,
+    openModal,
+    closeModal,
+    confirmLocation,
+    openMap,
+  } = useLocationSelector();
 
   useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.bundle.min.js");
+    if (typeof window === "undefined") return;
+
+    flatpickr("#date-date", {
+      mode: "range",
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      locale: {
+        firstDayOfWeek: 1,
+        weekdays: {
+          shorthand: ["日", "一", "二", "三", "四", "五", "六"],
+          longhand: [
+            "星期日",
+            "星期一",
+            "星期二",
+            "星期三",
+            "星期四",
+            "星期五",
+            "星期六",
+          ],
+        },
+        rangeSeparator: " 至 ",
+      },
+    });
+    const fetchHotelData = async () => {
+      try {
+        const res = await fetch(`/api/hotels/${hotelId}`);
+        const data = await res.json();
+        setHotel(data);
+      } catch (error) {
+        console.error("獲取旅館資訊失敗:", error);
+      }
+    };
+
+    fetchHotelData();
   }, []);
+  // [hotelId]
 
   return (
-    <div className="container mt-4">
-      {/* 搜尋欄 */}
-      <div className="search-bar d-flex justify-content-center align-items-center bg-warning p-3 rounded">
-        <div className="d-flex align-items-center bg-white p-2 rounded me-2">
-          <img className="icon me-2" src="/hotel/hotel-images/page-image/icon-search.png" alt="search" />
-          <input type="text" className="form-control border-0" placeholder="搜尋關鍵字、地區..." />
+    <>
+      <div className="container mt-4">
+        <div className="suSearch-bar">
+          <div className="suSearch-group">
+            <img
+              className="suIcon"
+              src="/hotel/hotel-images/page-image/icon-search.png"
+              alt=""
+            />
+            <input
+              type="text"
+              className="suSearch-input"
+              placeholder="搜尋關鍵字、地區..."
+              value={location}
+              readOnly
+              onClick={openModal}
+            />
+          </div>
+          <div className="suSearch-group">
+            <img
+              className="suIcon"
+              src="/hotel/hotel-images/page-image/icon-Calendar.png"
+              alt=""
+            />
+            <input
+              type="text"
+              id="date-date"
+              className="suSearch-date"
+              placeholder="入住日期 → 退房日期"
+            />
+          </div>
+          <div className="suSearch-group">
+            <img
+              className="suIcon"
+              src="/hotel/hotel-images/page-image/Icon-mimi.png"
+              alt=""
+            />
+            <span className="text">數量</span>
+            <button
+              className="suQuantity-btn"
+              onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+            >
+              -
+            </button>
+            <span>{quantity}</span>
+            <button
+              className="suQuantity-btn"
+              onClick={() => setQuantity(quantity + 1)}
+            >
+              +
+            </button>
+          </div>
+          <button className="suSearch-btn">搜尋</button>
         </div>
-        <div className="d-flex align-items-center bg-white p-2 rounded me-2">
-          <img className="icon me-2" src="/hotel/hotel-images/page-image/icon-Calendar.png" alt="calendar" />
-          <input type="text" className="form-control border-0" placeholder="入住日期 → 退房日期" />
+      </div>
+
+      {/* 地區選擇 Modal */}
+      <div
+        className="modal fade"
+        ref={locationModalRef}
+        tabIndex="-1"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">選擇地區</h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                onClick={closeModal}
+              ></button>
+            </div>
+            <div className="modal-body">
+              <div id="twzipcode">
+                <select className="county"></select>
+                <select className="district"></select>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-primary" onClick={confirmLocation}>
+                確定
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="d-flex align-items-center bg-white p-2 rounded">
-          <img className="icon me-2" src="/hotel/hotel-images/page-image/Icon-mimi.png" alt="dog" />
-          <span className="me-2">數量</span>
-          <button className="btn btn-sm" onClick={() => setQuantity(quantity - 1)}>-</button>
-          <span className="mx-2">{quantity}</span>
-          <button className="btn btn-sm" onClick={() => setQuantity(quantity + 1)}>+</button>
-        </div>
-        <button className="btn btn-primary ms-2">搜尋</button>
       </div>
 
       {/* 旅館簡介 */}
-      <div className="row mt-5 align-items-center">
-        <div className="col-md-6">
-          <img src="/hotel/hotel-uploads/1-outside.png" alt="旅館主圖" className="img-fluid rounded" />
-        </div>
-        <div className="col-md-6">
-          <h2>旅館簡介</h2>
-          <p>專為寵物打造的舒適旅宿，讓您的毛孩安心入住。我們提供完善的照顧環境，確保您的毛孩入住期間，擁有最安全健康的體驗。</p>
-        </div>
-      </div>
-
-      {/* 房型選擇 */}
-      <h2 className="mt-5">房型選擇</h2>
-      <div className="row">
-        {[
-          { name: "豪華大房", price: 1000, image: "1-l-room.webp" },
-          { name: "普通房", price: 900, image: "1-m-room.webp" },
-          { name: "精緻小房", price: 750, image: "1-s-room.webp" },
-        ].map((room, index) => (
-          <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={index}>
-            <div className="card">
-              <img src={`/hotel/hotel-uploads/${room.image}`} className="card-img-top" alt={room.name} />
-              <div className="card-body text-center">
-                <h3>{room.name}</h3>
-                <p className="text-danger fw-bold">價格: {room.price}元</p>
-                <select className="form-select mb-2">
-                  <option>選擇數量</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                </select>
-                <button className="btn btn-warning w-100">BOOK</button>
-              </div>
-            </div>
+      <div className="container mt-5">
+        <div className="row align-items-center">
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item">
+                <a href="#">首頁</a>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Library
+              </li>
+            </ol>
+          </nav>
+          <div className="col-lg-6">
+            <Image
+              src="/hotel/hotel-uploads/1-outside.png"
+              alt="旅館主圖"
+              width={500}
+              height={300}
+              className="hotel-image"
+            />
           </div>
-        ))}
-      </div>
+          <div className="col-lg-6 hotel-description">
+            <h2>旅館簡介</h2>
+            <p>
+              專為寵物打造的舒適旅宿，讓您的毛孩安心入住。
+              我們提供完善的照顧環境，讓毛孩享受舒適的空間與專業的服務。
+              此外，我們的旅館設施皆採用無毒、抗菌材質，確保您的毛孩入住期間，擁有最安全健康的體驗。
+              無論是短期住宿或長期寄宿，我們的專業團隊將提供最優質的照顧服務，讓您的毛孩擁有賓至如歸的感受！
+            </p>
+          </div>
+        </div>
 
-      {/* 我們的努力 */}
-      <div className="effort-section text-center bg-light p-5 rounded mt-5">
-        <h2 className="text-warning">我們的努力，看的見</h2>
-        <p>每一次陪伴、每一小時的付出，都為毛孩創造更快樂、更健康的生活！</p>
-        <div className="row justify-content-center">
+        {/* 房型選擇 */}
+        <h2 className="mt-5">房型選擇</h2>
+        <div className="row mt-3">
           {[
-            { text: "總服務時數：8,520+ 小時", image: "Dog2.png" },
-            { text: "服務狗狗：1,200+ 隻", image: "Dog5.png" },
-            { text: "滿意度：98.7%", image: "Mask group.png" },
-          ].map((stat, index) => (
-            <div className="col-md-3 text-center" key={index}>
-              <img src={`/hotel/hotel-images/page-image/${stat.image}`} className="rounded-circle mb-2" width="70" height="70" alt="stat" />
-              <p>{stat.text}</p>
+            { name: "豪華大房", price: 1000, img: "1-l-room.webp" },
+            { name: "普通房", price: 900, img: "1-m-room.webp" },
+            { name: "精緻小房", price: 750, img: "1-s-room.webp" },
+          ].map((room, index) => (
+            <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4">
+              <div className="card room-card">
+                <Image
+                  src={`/hotel/hotel-uploads/${room.img}`}
+                  alt={room.name}
+                  width={300}
+                  height={200}
+                />
+                <div className="card-body">
+                  <h3>{room.name}</h3>
+                  <p className="room-price">價格: {room.price}元</p>
+                  <select className="form-select mb-2">
+                    <option>選擇數量</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                  </select>
+                  <button className="book-btn">BOOK</button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
-        <div className="mt-4">
-          <button className="btn btn-warning me-2">立即預約</button>
-          <button className="btn btn-outline-dark">了解更多</button>
+      </div>
+
+      {/* 我們的努力 */}
+      <div className="effort-section">
+        <div className="container text-center">
+          <h2 className="effort-title">我們的努力，看的見</h2>
+          <p className="effort-subtitle">
+            每一次陪伴、每一小時的付出，都為毛孩創造更快樂、更健康的生活！
+          </p>
+          <div className="effort-stats">
+            {[
+              { img: "Dog2.png", text: "總服務時數：8,520+ 小時" },
+              { img: "Dog5.png", text: "服務狗狗：1,200+ 隻" },
+              { img: "Mask group.png", text: "滿意度：98.7%" },
+            ].map((item, index) => (
+              <div key={index} className="stat-item">
+                <Image
+                  src={`/hotel/hotel-images/page-image/${item.img}`}
+                  alt={item.text}
+                  width={150}
+                  height={150}
+                />
+                <p>{item.text}</p>
+              </div>
+            ))}
+          </div>
+          <div className="effort-buttons">
+            <button className="btn btn-primary">立即預約</button>
+            <button className="btn btn-outline-light">了解更多</button>
+          </div>
         </div>
       </div>
 
-      {/* 地圖 */}
-      <div className="mt-5">
-        <div id="map" className="w-100" style={{ height: "500px" }}></div>
+      {/* Google 地圖 */}
+      <div className="map-container">
+        <h1 className="map-title text-center mt-5">
+          {hotel?.name || "載入中..."}
+        </h1>
+        <p className="map-title text-center mt-5">
+          地址: {hotel?.address || "無資料"}
+        </p>
+        <div ref={mapRef} style={{ height: "500px", width: "100%" }}></div>
+        <div className="wave-container">
+          <svg className="wave" viewBox="0 0 1440 320">
+            <path
+              fill="#FFA500"
+              fillOpacity="1"
+              d="M0,280 C360,260 720,300 1080,280 C1260,270 1380,250 1440,240 V320 H0 Z"
+            ></path>
+          </svg>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
