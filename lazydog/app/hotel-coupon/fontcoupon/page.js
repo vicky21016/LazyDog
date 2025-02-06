@@ -87,7 +87,7 @@ export default function CouponPage(props) {
           {/* 左側圖片  */}
           <div className="col-lg-5 col-md-5 col-sm-12 text-center">
             <img
-              src="./hotel-images/page-image/coupon/ADS product.png"
+              src="/hotel/hotel-images/page-image/coupon/ADS product.png"
               alt="促銷圖片"
               style="width: 100%; max-width: 430px; height: auto"
             />
@@ -159,7 +159,7 @@ export default function CouponPage(props) {
           </div>
           <div className="col-lg-6 col-md-6 col-sm-12 text-center">
             <img
-              src="./hotel-images/page-image/coupon/ADS-1.png"
+              src="/hotel/hotel-images/page-image/coupon/ADS-1.png"
               alt="第二張促銷DM"
               style="width: 100%; max-width: 550px; height: auto"
             />
@@ -174,7 +174,7 @@ export default function CouponPage(props) {
           <div className="col-lg-5 col-md-5 col-sm-12 text-center">
             <video
               className="coupon-video"
-              src="./hotel-images/page-image/coupon/ADS-7.mp4"
+              src="/hotel/hotel-images/page-image/coupon/ADS-7.mp4"
               alt="促銷圖片"
               style="width: 100%; max-width: 550px; height: auto"
               autoplay
@@ -227,7 +227,7 @@ export default function CouponPage(props) {
             <div className="event">
               <div className="event-icon">
                 <img
-                  src="./hotel-images/page-image/coupon/shipping-fast.png"
+                  src="/hotel/hotel-images/page-image/coupon/shipping-fast.png"
                   alt="滿額免運"
                 />
               </div>
@@ -239,7 +239,7 @@ export default function CouponPage(props) {
             <div className="event">
               <div className="event-icon">
                 <img
-                  src="./hotel-images/page-image/coupon/coins-dollar-line.png"
+                  src="/hotel/hotel-images/page-image/coupon/coins-dollar-line.png"
                   alt="購物金回饋"
                 />
               </div>

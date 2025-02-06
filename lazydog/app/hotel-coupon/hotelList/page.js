@@ -29,7 +29,7 @@ export default function PagesHotelList() {
                 <div className="position-relative d-inline-block">
                   <img
                     ref={avatarRef}
-                    src="/images/hotel/hotel-images/page-image/Dog2.png"
+                    src="/hotel/hotel-images/page-image/Dog2.png"
                     alt="User Avatar"
                     className={`rounded-circle ${styles.suAvatarImg}`}
                   />
@@ -42,7 +42,7 @@ export default function PagesHotelList() {
                       aria-expanded="false"
                     >
                       <img
-                        src="/images/hotel/hotel-images/page-image/icon-camera.png"
+                        src="/hotel/hotel-images/page-image/icon-camera.png"
                         alt="相機"
                         className={styles.suCameraIconImg}
                       />
@@ -144,7 +144,7 @@ export default function PagesHotelList() {
                 <tr className="">
                   <td className="d-flex align-items-center gap-2">
                     <img
-                      src="/images/hotel/hotel-uploads/30-outside.png"
+                      src="/hotel/hotel-uploads/30-outside.png"
                       className={`${ListStyles.hotelImg} rounded`}
                       alt="寵物之星"
                     />
@@ -185,7 +185,7 @@ export default function PagesHotelList() {
                 <tr>
                   <td className="d-flex align-items-center gap-2">
                     <img
-                      src="/images/hotel/hotel-uploads/10-outside.png"
+                      src="/hotel/hotel-uploads/10-outside.png"
                       className={`${ListStyles.hotelImg} rounded`}
                       alt="象山寵物旅館"
                     />

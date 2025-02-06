@@ -29,7 +29,7 @@ export default function ProfileCouponPage(props) {
                 <div className="position-relative d-inline-block">
                   <img
                     ref={avatarRef}
-                    src="/images/hotel/hotel-images/page-image/Dog2.png"
+                    src="/hotel/hotel-images/page-image/Dog2.png"
                     alt="User Avatar"
                     className={`rounded-circle ${styles.suAvatarImg}`}
                   />
@@ -42,7 +42,7 @@ export default function ProfileCouponPage(props) {
                       aria-expanded="false"
                     >
                       <img
-                        src="/images/hotel/hotel-images/page-image/icon-camera.png"
+                        src="/hotel/hotel-images/page-image/icon-camera.png"
                         alt="相機"
                         className={styles.suCameraIconImg}
                       />

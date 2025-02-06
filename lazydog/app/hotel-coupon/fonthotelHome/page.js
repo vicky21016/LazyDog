@@ -84,7 +84,7 @@ export default function HotelHomePage() {
             <div className="suSearch-group">
               <img
                 className="suIcon"
-                src="/images/hotel/hotel-images/page-image/icon-search.png"
+                src="/hotel/hotel-images/page-image/icon-search.png"
                 alt=""
               />
               <input
@@ -96,7 +96,7 @@ export default function HotelHomePage() {
             <div className="suSearch-group">
               <img
                 className="suIcon"
-                src="/images/hotel/hotel-images/page-image/icon-Calendar.png"
+                src="/hotel/hotel-images/page-image/icon-Calendar.png"
                 alt=""
               />
               <input
@@ -109,7 +109,7 @@ export default function HotelHomePage() {
             <div className="suSearch-group">
               <img
                 className="suIcon"
-                src="/images/hotel/hotel-images/page-image/Icon-mimi.png"
+                src="/hotel/hotel-images/page-image/Icon-mimi.png"
                 alt=""
               />
               <span className="text">數量</span>
@@ -307,7 +307,7 @@ export default function HotelHomePage() {
               <a href="">
                 <figure>
                   <img
-                    src="/images/hotel/hotel-images/page-image/hotelad2.png"
+                    src="/hotel/hotel-images/page-image/hotelad2.png"
                     alt="廣告"
                     className="mx-4 img-fluid"
                   />
@@ -318,7 +318,7 @@ export default function HotelHomePage() {
             <section className="col-lg-9">
               <div className="suHotel-card">
                 <img
-                  src="/images/hotel/hotel-uploads/1-outside.png"
+                  src="/hotel/hotel-uploads/1-outside.png"
                   alt="飯店圖片"
                 />
                 <div className="suHotel-info">

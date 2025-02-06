@@ -53,7 +53,7 @@ export default function HotelEditPage(props) {
                 <div className="position-relative d-inline-block">
                   <img
                     ref={avatarRef}
-                    src="/images/hotel/hotel-images/page-image/Dog2.png"
+                    src="/hotel/hotel-images/page-image/Dog2.png"
                     alt="User Avatar"
                     className={`rounded-circle ${styles.suAvatarImg}`}
                   />
@@ -66,7 +66,7 @@ export default function HotelEditPage(props) {
                       aria-expanded="false"
                     >
                       <img
-                        src="/images/hotel/hotel-images/page-image/icon-camera.png"
+                        src="/hotel/hotel-images/page-image/icon-camera.png"
                         alt="相機"
                         className={styles.suCameraIconImg}
                       />
@@ -175,7 +175,7 @@ export default function HotelEditPage(props) {
                 >
                   <div className="image-card">
                     <img
-                      src="https://via.placeholder.com/120"
+                      src="/hotel/hotel-images/page-image/11-room.webp"
                       alt="旅館圖片1"
                     />
                     <button type="button" className="delete-btn">
@@ -184,7 +184,7 @@ export default function HotelEditPage(props) {
                   </div>
                   <div className="image-card">
                     <img
-                      src="https://via.placeholder.com/120"
+                      src="/hotel/hotel-images/page-image/11-room.webp"
                       alt="旅館圖片2"
                     />
                     <button type="button" className="delete-btn">
