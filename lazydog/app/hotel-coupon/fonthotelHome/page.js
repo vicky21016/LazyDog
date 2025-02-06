@@ -34,11 +34,15 @@ export default function HotelHomePage() {
         range: { min: 0, max: 10000 },
         step: 100,
         tooltips: [true, true],
+        format: {
+          to: (value) => Math.round(value),
+          from: (value) => Math.round(value),
+        },
       });
 
       sliderElement.noUiSlider.on("update", (values) => {
-        setMinPrice(Math.round(values[0]));
-        setMaxPrice(Math.round(values[1]));
+        setMinPrice(values[0]);
+        setMaxPrice(values[1]);
       });
     }
 
