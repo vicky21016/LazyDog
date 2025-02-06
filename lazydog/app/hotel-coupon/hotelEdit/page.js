@@ -1,11 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "../../../styles/modules/operatorCamera.module.css";
 import hotelStyles from "../../../styles/modules/operatorHotel.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 
 export default function HotelEditPage(props) {
+  const imageUploadRef = useRef(null);
   const [hotelName, setHotelName] = useState("寵物樂園");
   const [address, setAddress] = useState("台北市中山區 123 號");
   const [phone, setPhone] = useState("02-12345678");
@@ -56,7 +57,7 @@ export default function HotelEditPage(props) {
                 <div className="position-relative d-inline-block">
                   <img
                     ref={avatarRef}
-                    src="/images/hotel/hotel-images/page-image/Dog2.png"
+                    src="/hotel/hotel-images/page-image/Dog2.png"
                     alt="User Avatar"
                     className={`rounded-circle ${styles.suAvatarImg}`}
                   />
@@ -69,7 +70,7 @@ export default function HotelEditPage(props) {
                       aria-expanded="false"
                     >
                       <img
-                        src="/images/hotel/hotel-images/page-image/icon-camera.png"
+                        src="/hotel/hotel-images/page-image/icon-camera.png"
                         alt="相機"
                         className={styles.suCameraIconImg}
                       />
@@ -84,12 +85,12 @@ export default function HotelEditPage(props) {
                         </button>
                       </li>
                       <li>
-                      <label
-                        onClick={uploadPhoto}
-                        className={`dropdown-item ${styles.dropdownItem}`}
-                      >
-                        上傳照片
-                      </label>
+                        <label
+                          onClick={uploadPhoto}
+                          className={`dropdown-item ${styles.dropdownItem}`}
+                        >
+                          上傳照片
+                        </label>
                         <input
                           type="file"
                           id="uploadPhoto"
@@ -154,7 +155,7 @@ export default function HotelEditPage(props) {
           <div className="col-md-9  mx-auto">
             <h3 className="mb-3">編輯旅館資訊</h3>
             <form id="editForm">
-              <div className={hotelStyles.section}>
+              <div className={`section ${hotelStyles.section}`}>
                 <h5>基本資訊</h5>
                 <div className="mb-3">
                   <label>旅館名稱</label>
@@ -186,7 +187,48 @@ export default function HotelEditPage(props) {
                   />
                 </div>
               </div>
-              <div class={hotelStyles.section}>
+
+              <div className={`section ${hotelStyles.section}`}>
+                <h5>旅館圖片</h5>
+                <div
+                  id="imagePreviewContainer"
+                  className="d-flex flex-wrap gap-3 mb-2"
+                >
+                  <div className="image-card">
+                    <img
+                      src="/hotel/hotel-uploads/11-room.webp"
+                      alt="旅館圖片1"
+                    />
+                    <button type="button" className="delete-btn">
+                      &times;
+                    </button>
+                  </div>
+                  <div className="image-card">
+                    <img
+                      src="/hotel/hotel-uploads/6-s-room.jpg"
+                      alt="旅館圖片2"
+                    />
+                    <button type="button" className="delete-btn">
+                      &times;
+                    </button>
+                  </div>
+                </div>
+                <input
+                  type="file"
+                  ref={imageUploadRef}
+                  className="form-control d-none"
+                  accept="image/*"
+                  multiple
+                />
+                <button
+                  type="button"
+                  className="btn btn-primary btn-sm mt-2"
+                  onClick={uploadPhoto}
+                >
+                  + 新增圖片
+                </button>
+              </div>
+              <div class={`section ${hotelStyles.section}`}>
                 <h5>旅館圖片</h5>
                 <div className="mb-3">
                   <label>房型</label>
@@ -246,7 +288,7 @@ export default function HotelEditPage(props) {
                   </button>
                 </div>
               </div>
-              <div class={hotelStyles.section}>
+              <div class={`section ${hotelStyles.section}`}>
                 <h5>營業時間</h5>
                 <div className="mb-3">
                   <label>營業時間</label>

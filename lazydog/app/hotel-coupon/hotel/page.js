@@ -8,7 +8,7 @@ import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 export default function HotelEditPage() {
   const router = useRouter();
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+    usePhotoUpload("/hotel/hotel-images/page-image/default-avatar.png");
 
   const changepage = (path) => {
     router.push(`/hotel-coupon/${path}`);
@@ -37,7 +37,7 @@ export default function HotelEditPage() {
               <div className="position-relative d-inline-block">
                 <img
                   ref={avatarRef}
-                  src="/images/hotel/hotel-images/page-image/Dog2.png"
+                  src="/hotel/hotel-images/page-image/Dog2.png"
                   alt="User Avatar"
                   className={`rounded-circle ${styles.suAvatarImg}`}
                 />
@@ -49,7 +49,7 @@ export default function HotelEditPage() {
                     aria-expanded="false"
                   >
                     <img
-                      src="/images/hotel/hotel-images/page-image/icon-camera.png"
+                      src="/hotel/hotel-images/page-image/icon-camera.png"
                       alt="相機"
                       className={styles.suCameraIconImg}
                     />
@@ -169,13 +169,13 @@ export default function HotelEditPage() {
                 >
                   <div className="image-card">
                     <img
-                      src="/images/hotel/hotel-uploads/11-room.webp"
+                      src="/hotel/hotel-uploads/11-room.webp"
                       alt="旅館圖片1"
                     />
                   </div>
                   <div className="image-card">
                     <img
-                      src="/images/hotel/hotel-uploads/13-s-room.jpg"
+                      src="/hotel/hotel-uploads/13-s-room.jpg"
                       alt="旅館圖片2"
                     />
                   </div>

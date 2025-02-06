@@ -134,7 +134,7 @@
 
 /* =================== 廣告區 (努力區塊) =================== */
 .effort-section {
-  background-image: url("/images/hotel/hotel-images/page-image/bg-hotel-01.png");
+  background-image: url("/hotel/hotel-images/page-image/bg-hotel-01.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -155,7 +155,7 @@
   margin-bottom: 25px;
 }
 
-/* ✅ 讓 "我們的努力" 在小螢幕正常排列 */
+
 .effort-stats {
   display: flex;
   justify-content: center;
@@ -228,7 +228,7 @@
 
 @media (max-width: 768px) {
   .map-container {
-    height: 300px; /* ✅ 在小螢幕上減少高度 */
+    height: 300px; 
   }
 }
 

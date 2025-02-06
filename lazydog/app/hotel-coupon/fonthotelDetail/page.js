@@ -17,15 +17,15 @@ export default function HotelDetailPage() {
       {/* 搜尋欄 */}
       <div className="search-bar d-flex justify-content-center align-items-center bg-warning p-3 rounded">
         <div className="d-flex align-items-center bg-white p-2 rounded me-2">
-          <img className="icon me-2" src="/images/hotel/hotel-images/page-image/icon-search.png" alt="search" />
+          <img className="icon me-2" src="/hotel/hotel-images/page-image/icon-search.png" alt="search" />
           <input type="text" className="form-control border-0" placeholder="搜尋關鍵字、地區..." />
         </div>
         <div className="d-flex align-items-center bg-white p-2 rounded me-2">
-          <img className="icon me-2" src="/images/hotel/hotel-images/page-image/icon-Calendar.png" alt="calendar" />
+          <img className="icon me-2" src="/hotel/hotel-images/page-image/icon-Calendar.png" alt="calendar" />
           <input type="text" className="form-control border-0" placeholder="入住日期 → 退房日期" />
         </div>
         <div className="d-flex align-items-center bg-white p-2 rounded">
-          <img className="icon me-2" src="/images/hotel/hotel-images/page-image/Icon-mimi.png" alt="dog" />
+          <img className="icon me-2" src="/hotel/hotel-images/page-image/Icon-mimi.png" alt="dog" />
           <span className="me-2">數量</span>
           <button className="btn btn-sm" onClick={() => setQuantity(quantity - 1)}>-</button>
           <span className="mx-2">{quantity}</span>
@@ -37,7 +37,7 @@ export default function HotelDetailPage() {
       {/* 旅館簡介 */}
       <div className="row mt-5 align-items-center">
         <div className="col-md-6">
-          <img src="/images/hotel/hotel-uploads/1-outside.png" alt="旅館主圖" className="img-fluid rounded" />
+          <img src="/hotel/hotel-uploads/1-outside.png" alt="旅館主圖" className="img-fluid rounded" />
         </div>
         <div className="col-md-6">
           <h2>旅館簡介</h2>
@@ -55,7 +55,7 @@ export default function HotelDetailPage() {
         ].map((room, index) => (
           <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={index}>
             <div className="card">
-              <img src={`/images/hotel/hotel-uploads/${room.image}`} className="card-img-top" alt={room.name} />
+              <img src={`/hotel/hotel-uploads/${room.image}`} className="card-img-top" alt={room.name} />
               <div className="card-body text-center">
                 <h3>{room.name}</h3>
                 <p className="text-danger fw-bold">價格: {room.price}元</p>
@@ -83,7 +83,7 @@ export default function HotelDetailPage() {
             { text: "滿意度：98.7%", image: "Mask group.png" },
           ].map((stat, index) => (
             <div className="col-md-3 text-center" key={index}>
-              <img src={`/images/hotel/hotel-images/page-image/${stat.image}`} className="rounded-circle mb-2" width="70" height="70" alt="stat" />
+              <img src={`/hotel/hotel-images/page-image/${stat.image}`} className="rounded-circle mb-2" width="70" height="70" alt="stat" />
               <p>{stat.text}</p>
             </div>
           ))}

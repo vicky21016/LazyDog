@@ -1,7 +1,7 @@
 .suSearch-bg {
   width: 100vw;
   height: 400px;
-  background: url("/images/hotel/hotel-images/services-banner-dog-boarding.2203041608391.jpg")
+  background: url("/hotel/hotel-images/services-banner-dog-boarding.2203041608391.jpg")
     center/cover no-repeat;
   display: flex;
   align-items: center;
@@ -137,7 +137,6 @@
 .suSidebar {
   background: #fff;
   padding: 20px;
-  border-radius: 10px;
 }
 
 .suFilter-title {
@@ -162,23 +161,6 @@
   justify-content: center;
   gap: 15px;
   margin-bottom: 10px;
-}
-
-.suPrice-input {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  border: 2px solid #ff9900;
-  border-radius: 20px;
-  padding: 5px 10px;
-}
-
-.suPrice-input input {
-  border: none;
-  outline: none;
-  text-align: center;
-  width: 50px;
-  font-size: 12px;
 }
 
 /* 滑桿 */
@@ -209,23 +191,6 @@
   appearance: none;
 }
 
-/* 篩選按鈕 */
-.suClear-filter-btn {
-  background: none;
-  border: 2px solid #ff9900;
-  color: #ff9900;
-  padding: 8px 20px;
-  border-radius: 30px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.suClear-filter-btn:hover {
-  background: #ff9900;
-  color: white;
-}
 .suShow-more {
   cursor: pointer;
   color: #0c0c0d;
@@ -348,5 +313,100 @@
 
 .suPagination .page-item .page-link:hover {
   background-color: #ff9900;
+  color: white;
+}
+
+/* 自訂價格篩選區塊 */
+.suPrice-filter-container {
+  background: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+/* 圓角輸入框 */
+.suPrice-input-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.suPrice-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 2px solid #ff9900;
+  border-radius: 15px;
+  padding: 6px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  background: white;
+}
+
+.suPrice-input input {
+  border: none;
+  outline: none;
+  text-align: center;
+  width: 60px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* noUiSlider 滑桿樣式 */
+.noUi-target {
+  background: #fff !important;
+  border-radius: 20px !important;
+  border: 2px solid #ff9900 !important;
+  box-shadow: none !important;
+  height: 8px !important;
+}
+
+.noUi-connect {
+  background: linear-gradient(to right, #ff8c00, #ffa500) !important;
+  border-radius: 20px !important;
+}
+
+.noUi-handle {
+  background: white !important;
+  border: 3px solid #ffa500 !important;
+  border-radius: 50% !important;
+  width: 22px !important;
+  height: 22px !important;
+  top: -8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  cursor: pointer !important;
+}
+
+/* 移除內建裝飾 */
+.noUi-handle:before,
+.noUi-handle:after {
+  display: none !important;
+}
+
+/* 讓數字提示有更好看的樣式 */
+.noUi-tooltip {
+  background: #ffa500 !important;
+  color: white !important;
+  border-radius: 5px !important;
+  font-size: 12px !important;
+  padding: 5px !important;
+  font-weight: bold !important;
+}
+
+/* 清除搜尋按鈕 */
+.suClear-filter-btn {
+  background: white;
+  border: 2px solid #ff9900;
+  color: #ff9900;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.suClear-filter-btn:hover {
+  background: #ff9900;
   color: white;
 }
