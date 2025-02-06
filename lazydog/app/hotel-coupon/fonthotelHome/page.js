@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import "../../../html/hotel-coupon/css/fontHotelHome.css";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
-import TwCitySelector from "tw-city-selector";
 
 export default function HotelHomePage() {
   const router = useRouter();
@@ -15,19 +15,72 @@ export default function HotelHomePage() {
   const [minPrice, setMinPrice] = useState(200);
   const [maxPrice, setMaxPrice] = useState(5000);
   const [location, setLocation] = useState("");
-  const googleMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=台北,台灣&zoom=13&size=300x200&maptype=roadmap&markers=color:blue%7Clabel:台北%7C25.0330,121.5654&key=YOUR_GOOGLE_MAPS_API_KEY`;
+
+  const priceSliderRef = useRef(null);
+  const locationModalRef = useRef(null);
+  const twCityRef = useRef(null);
+  let modalInstance = useRef(null);
+
+  const googleMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${
+    location || "台北,台灣"
+  }&zoom=13&size=300x200&maptype=roadmap&markers=color:blue%7Clabel:${
+    location || "台北"
+  }&key=YOUR_GOOGLE_MAPS_API_KEY`;
 
   const openMap = () => {
-    alert("地圖功能尚未啟用");
+    if (!location) {
+      alert("請先選擇地區");
+      return;
+    }
+    const mapUrl = `https://www.google.com/maps?q=${location}`;
+    window.open(mapUrl, "_blank");
   };
 
   useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.bundle.min.js");
+    if (typeof window === "undefined") return;
 
-    
-    const sliderElement = document.getElementById("priceRange");
-    if (sliderElement && !sliderElement.noUiSlider) {
-      noUiSlider.create(sliderElement, {
+    import("bootstrap").then((bootstrap) => {
+      if (locationModalRef.current) {
+        modalInstance.current = new bootstrap.Modal(locationModalRef.current);
+      }
+      console.log("✅ Bootstrap 已載入");
+    });
+
+    import("tw-city-selector").then((module) => {
+      if (twCityRef.current) return;
+      twCityRef.current = new module.default({
+        el: "#twzipcode",
+        elCounty: ".county",
+        elDistrict: ".district",
+        hasZipcode: false,
+      });
+      console.log("✅ tw-city-selector 已初始化");
+    });
+
+    flatpickr("#date-date", {
+      mode: "range",
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      locale: {
+        firstDayOfWeek: 1,
+        weekdays: {
+          shorthand: ["日", "一", "二", "三", "四", "五", "六"],
+          longhand: [
+            "星期日",
+            "星期一",
+            "星期二",
+            "星期三",
+            "星期四",
+            "星期五",
+            "星期六",
+          ],
+        },
+        rangeSeparator: " 至 ",
+      },
+    });
+
+    if (priceSliderRef.current && !priceSliderRef.current.noUiSlider) {
+      noUiSlider.create(priceSliderRef.current, {
         start: [minPrice, maxPrice],
         connect: true,
         range: { min: 0, max: 10000 },
@@ -39,101 +92,100 @@ export default function HotelHomePage() {
         },
       });
 
-      sliderElement.noUiSlider.on("update", (values) => {
-        setMinPrice(values[0]);
-        setMaxPrice(values[1]);
+      priceSliderRef.current.noUiSlider.on("update", (values) => {
+        setMinPrice(parseFloat(values[0]));
+        setMaxPrice(parseFloat(values[1]));
       });
+
+      console.log("✅ noUiSlider 已初始化");
     }
-
-    
-    setTimeout(() => {
-      new TwCitySelector({
-        el: "#twzipcode",
-        elCounty: ".county",
-        elDistrict: ".district",
-        hasZipcode: false,
-      });
-    }, 100);
-
-  
-    flatpickr("#date-date", {
-      mode: "range",
-      dateFormat: "Y-m-d",
-      minDate: "today",
-      locale: "zh",
-    });
   }, []);
+
+  const openModal = () => {
+    if (modalInstance.current) {
+      modalInstance.current.show();
+    }
+  };
+
+  const closeModal = () => {
+    if (modalInstance.current) {
+      modalInstance.current.hide();
+    }
+  };
 
   const confirmLocation = () => {
     const county = document.querySelector(".county")?.value || "";
     const district = document.querySelector(".district")?.value || "";
-    setLocation(`${county} ${district}`);
-
-    const modalElement = document.getElementById("locationModal");
-    if (modalElement) {
-      const modalInstance = bootstrap.Modal.getInstance(modalElement);
-      if (modalInstance) modalInstance.hide();
+    if (county && district) {
+      setLocation(`${county} ${district}`);
     }
+    console.log("🚀 選擇的地區：", county, district);
+    closeModal();
   };
+
   return (
     <>
       <div className="suBody">
         <div className="suSearch-bg">
-          <div className="suSearch-bar container">
-            <div className="suSearch-group">
-              <img
-                className="suIcon"
-                src="/hotel/hotel-images/page-image/icon-search.png"
-                alt=""
-              />
-              <input
-                type="text"
-                className="suSearch-input"
-                placeholder="搜尋關鍵字、地區..."
-              />
+          <div className="container mt-4">
+            <div className="suSearch-bar">
+              <div className="suSearch-group">
+                <img
+                  className="suIcon"
+                  src="/hotel/hotel-images/page-image/icon-search.png"
+                  alt=""
+                />
+                <input
+                  type="text"
+                  className="suSearch-input"
+                  placeholder="搜尋關鍵字、地區..."
+                  value={location}
+                  readOnly
+                  onClick={openModal}
+                />
+              </div>
+              <div className="suSearch-group">
+                <img
+                  className="suIcon"
+                  src="/hotel/hotel-images/page-image/icon-Calendar.png"
+                  alt=""
+                />
+                <input
+                  type="text"
+                  id="date-date"
+                  className="suSearch-date"
+                  placeholder="入住日期 → 退房日期"
+                />
+              </div>
+              <div className="suSearch-group">
+                <img
+                  className="suIcon"
+                  src="/hotel/hotel-images/page-image/Icon-mimi.png"
+                  alt=""
+                />
+                <span className="text">數量</span>
+                <button
+                  className="suQuantity-btn"
+                  onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+                >
+                  -
+                </button>
+                <span>{quantity}</span>
+                <button
+                  className="suQuantity-btn"
+                  onClick={() => setQuantity(quantity + 1)}
+                >
+                  +
+                </button>
+              </div>
+              <button className="suSearch-btn">搜尋</button>
             </div>
-            <div className="suSearch-group">
-              <img
-                className="suIcon"
-                src="/hotel/hotel-images/page-image/icon-Calendar.png"
-                alt=""
-              />
-              <input
-                type="text"
-                id="date-date"
-                className="suSearch-date"
-                placeholder="入住日期 → 退房日期"
-              />
-            </div>
-            <div className="suSearch-group">
-              <img
-                className="suIcon"
-                src="/hotel/hotel-images/page-image/Icon-mimi.png"
-                alt=""
-              />
-              <span className="text">數量</span>
-              <button
-                className="suQuantity-btn"
-                onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
-              >
-                -
-              </button>
-              <span>{quantity}</span>
-              <button
-                className="suQuantity-btn"
-                onClick={() => setQuantity(quantity + 1)}
-              >
-                +
-              </button>
-            </div>
-            <button className="suSearch-btn">搜尋</button>
           </div>
         </div>
-
-        {/* Modal (地區選擇) */}
+        {/* 地區選擇 Modal */}
         <div
           className="modal fade"
-          id="locationModal"
+          ref={locationModalRef}
           tabIndex="-1"
           aria-hidden="true"
         >
@@ -145,6 +197,7 @@ export default function HotelHomePage() {
                   type="button"
                   className="btn-close"
                   data-bs-dismiss="modal"
+                  onClick={closeModal}
                 ></button>
               </div>
               <div className="modal-body">
@@ -166,8 +219,12 @@ export default function HotelHomePage() {
           <div className="row">
             {/* 篩選 */}
             <aside className="col-lg-3 suSidebar">
-              <div className="suMap-card">
-                <button className="btn suMap-btn btn-primary" onClick={openMap}>
+              <div
+                className="suMap-card"
+                onClick={openMap}
+                style={{ cursor: "pointer" }}
+              >
+                <button className="btn suMap-btn btn-primary">
                   📍 於地圖上顯示
                 </button>
                 <img
@@ -287,15 +344,17 @@ export default function HotelHomePage() {
                     <span>元</span>
                   </div>
                 </div>
-                <div id="priceRange" className="mt-3"></div>
+                <div
+                  id="priceRange"
+                  ref={priceSliderRef}
+                  className="mt-3"
+                ></div>
                 <button
                   className="suClear-filter-btn btn btn-outline-danger mt-3"
                   onClick={() => {
                     setMinPrice(200);
                     setMaxPrice(5000);
-                    document
-                      .getElementById("priceRange")
-                      .noUiSlider.set([200, 5000]);
+                    priceSliderRef.current.noUiSlider.set([200, 5000]);
                   }}
                 >
                   清除搜尋
@@ -316,10 +375,7 @@ export default function HotelHomePage() {
 
             <section className="col-lg-9">
               <div className="suHotel-card">
-                <img
-                  src="/hotel/hotel-uploads/1-outside.png"
-                  alt="飯店圖片"
-                />
+                <img src="/hotel/hotel-uploads/1-outside.png" alt="飯店圖片" />
                 <div className="suHotel-info">
                   <h5>烏來Spring Spa溫泉山莊</h5>
                   <p>烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池...</p>
