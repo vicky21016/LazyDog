@@ -35,7 +35,9 @@ export default function HotelEditPage(props) {
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
   const changepage = (path) => {
-    router.push(`/hotel-coupon/${path}`);
+    if (path) {
+      router.push(`/hotel-coupon/${path}`);
+    }
   };
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -82,12 +84,12 @@ export default function HotelEditPage(props) {
                         </button>
                       </li>
                       <li>
-                        <label
-                          htmlFor="uploadPhoto"
-                          className={`dropdown-item ${styles.dropdownItem}`}
-                        >
-                          上傳照片
-                        </label>
+                      <label
+                        onClick={uploadPhoto}
+                        className={`dropdown-item ${styles.dropdownItem}`}
+                      >
+                        上傳照片
+                      </label>
                         <input
                           type="file"
                           id="uploadPhoto"

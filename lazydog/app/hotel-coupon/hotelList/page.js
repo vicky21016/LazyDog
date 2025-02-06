@@ -10,7 +10,9 @@ export default function PagesHotelList() {
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
   const changepage = (path) => {
-    router.push(`/hotel-coupon/${path}`);
+    if (path) {
+      router.push(`/hotel-coupon/${path}`);
+    }
   };
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
@@ -56,7 +58,7 @@ export default function PagesHotelList() {
                       </li>
                       <li>
                         <label
-                          htmlFor="uploadPhoto"
+                          onClick={uploadPhoto}
                           className={`dropdown-item ${styles.dropdownItem}`}
                         >
                           上傳照片
@@ -94,7 +96,7 @@ export default function PagesHotelList() {
                 </li>
                 <li
                   className="py-2"
-                  onClick={() => changepage("operatorHotel")}
+                  onClick={() => changepage("hotel")}
                 >
                   <a
                     className="text-decoration-none text-dark"

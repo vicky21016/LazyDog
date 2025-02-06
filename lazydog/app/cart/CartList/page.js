@@ -2,20 +2,21 @@
 
 import React, { useState, useEffect } from 'react'
 
-import '../css/CartList.css';
+import '../css/CartList.css'
+import { left } from '@popperjs/core'
 
 export default function CartListPage(props) {
   return (
     <>
       <div>
         <div className="cart-img">
-          <img src="../public/cattlist.png" alt="Cart Image" />
+          <img src="/cart/cattlist.png" alt="Cart Image" />
         </div>
         <div className="container">
           <div className="custom-table row ">
             <table
               className="col-lg-8 col-md-auto col-auto me-5 mb-5"
-              style={{ margin: 'auto' }}
+              style={{ marginLeft: 'auto' }}
             >
               <thead>
                 <tr>
@@ -29,7 +30,7 @@ export default function CartListPage(props) {
               <tbody>
                 <tr>
                   <td>
-                    <img src="../public/favicon.ico" alt />
+                    <img src="/cart/favicon.ico" alt />
                   </td>
                   <td>行 1, 欄 2</td>
                   <td>行 1, 欄 3</td>
@@ -51,7 +52,7 @@ export default function CartListPage(props) {
                 </tr>
                 <tr>
                   <td>
-                    <img src="../public/favicon.ico" alt />
+                    <img src="/cart/favicon.ico" alt />
                   </td>
                   <td>行 2, 欄 2</td>
                   <td>行 2, 欄 3</td>
@@ -74,7 +75,7 @@ export default function CartListPage(props) {
               </tbody>
             </table>
             <aside
-              className="col-lg-3 col-md-auto col-auto"
+              className="col-lg-3 col-md-auto col-auto mb-5"
               style={{ margin: 'auto' }}
             >
               <div className="aside-card ">
