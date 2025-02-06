@@ -175,7 +175,7 @@ export default function HotelEditPage(props) {
                 >
                   <div className="image-card">
                     <img
-                      src="/hotel/hotel-images/page-image/11-room.webp"
+                      src="/hotel/hotel-uploads/11-room.webp"
                       alt="旅館圖片1"
                     />
                     <button type="button" className="delete-btn">
@@ -184,7 +184,7 @@ export default function HotelEditPage(props) {
                   </div>
                   <div className="image-card">
                     <img
-                      src="/hotel/hotel-images/page-image/11-room.webp"
+                      src="/hotel/hotel-uploads/6-s-room.jpg"
                       alt="旅館圖片2"
                     />
                     <button type="button" className="delete-btn">
