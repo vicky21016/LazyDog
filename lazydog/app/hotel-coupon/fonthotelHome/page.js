@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 import flatpickr from "flatpickr";
@@ -25,7 +24,7 @@ export default function HotelHomePage() {
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
 
-    // ✅ 初始化價格滑桿
+    
     const sliderElement = document.getElementById("priceRange");
     if (sliderElement && !sliderElement.noUiSlider) {
       noUiSlider.create(sliderElement, {
@@ -46,7 +45,7 @@ export default function HotelHomePage() {
       });
     }
 
-    // ✅ 初始化台灣地區選擇器
+    
     setTimeout(() => {
       new TwCitySelector({
         el: "#twzipcode",
@@ -56,7 +55,7 @@ export default function HotelHomePage() {
       });
     }, 100);
 
-    // ✅ 初始化日期選擇器
+  
     flatpickr("#date-date", {
       mode: "range",
       dateFormat: "Y-m-d",
