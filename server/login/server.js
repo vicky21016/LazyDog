@@ -18,7 +18,7 @@ app.use(
 
 app.use("/auth", authRouter); 
 app.get("/", (req, res) => {
-  res.send("伺服器正在運行！");
+  res.json({ status: "success", data: null, message: "首頁" });
 });
 
 

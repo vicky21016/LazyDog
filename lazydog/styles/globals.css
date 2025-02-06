@@ -6,27 +6,28 @@
 @import "../html/hotel-coupon/css/fontHotelDetail.css";
 /* @import
   url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&amp;family=Oswald:wght@200..700&amp;display=swap'); */
-* {
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+}*/
 body {
-  display: flex;
+  /* display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 100vh; */
   color: #3b3330;
   font-family: Arial, sans-serif;
 }
+  /* 
 #root {
   width: 100%;
   padding: 0 10px;
   --font-noto-sans-tc: "Noto Sans TC", sans-serif;
-}
+}*/
 a {
   text-decoration: none;
-}
+} 
 
 /* header */
 header {
