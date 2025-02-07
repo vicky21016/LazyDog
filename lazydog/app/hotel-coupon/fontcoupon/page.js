@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/modules/fontCoupon.module.css";
-import { computeStyles } from "@popperjs/core";
 
 export default function CouponPage(props) {
   return (
@@ -10,12 +9,14 @@ export default function CouponPage(props) {
       <div
         className="modal fade"
         id="couponModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="couponModalLabel"
         aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered">
-          <div className={`modal-content animate__bounceIn ${styles.suModalContent}`}>
+          <div
+            className={`modal-content animate__bounceIn ${styles.suModalContent}`}
+          >
             <div className="modal-header bg-warning">
               <h5 className="modal-title fw-bold" id="couponModalLabel">
                 🎉 領取優惠券成功！
@@ -106,13 +107,19 @@ export default function CouponPage(props) {
               <img
                 src="/hotel/hotel-images/page-image/coupon/ADS product.png"
                 alt="促銷圖片"
-                style="width: 100%; max-width: 430px; height: auto"
+                style={{ width: "100%", maxWidth: "430px", height: "auto" }}
               />
             </div>
 
             {/* 右側 3 張優惠券  */}
             <div className="col-lg-6 col-md-6 col-sm-12">
-              <div className={styles.susscoupon}>
+              <div
+                className={styles.sussCoupon}
+                style={{
+                  backgroundImage:
+                    "url('/hotel/hotel-images/page-image/coupon/coupon-Y.png')",
+                }}
+              >
                 <div
                   className={`suOtherSectionContent ${styles.suCouponContent}`}
                 >
@@ -127,7 +134,13 @@ export default function CouponPage(props) {
                 </button>
               </div>
 
-              <div className={styles.susscoupon}>
+              <div
+                className={`${styles.suCoupon}${styles.sussCoupon}`}
+                style={{
+                  backgroundImage:
+                    "url('/hotel/hotel-images/page-image/coupon/coupon-Y.png')",
+                }}
+              >
                 <div
                   className={`suOtherSectionContent ${styles.suCouponContent}`}
                 >
@@ -142,7 +155,13 @@ export default function CouponPage(props) {
                 </button>
               </div>
 
-              <div className={styles.susscoupon}>
+              <div
+                className={styles.sussCoupon}
+                style={{
+                  backgroundImage:
+                    "url('/hotel/hotel-images/page-image/coupon/coupon-Y.png')",
+                }}
+              >
                 <div
                   className={`suOtherSectionContent ${styles.suCouponContent}`}
                 >
@@ -165,7 +184,13 @@ export default function CouponPage(props) {
         <div className="container">
           <div className="row">
             <div className="col-lg-5 col-md-5 col-sm-12">
-              <div className={styles.suCoupon}>
+              <div
+                className={styles.susssCoupon}
+                style={{
+                  backgroundImage:
+                    "url('/hotel/hotel-images/page-image/coupon/coupon-B.png')",
+                }}
+              >
                 <div
                   className={`other-section-content ${styles.suCouponContent}`}
                 >
@@ -180,7 +205,13 @@ export default function CouponPage(props) {
                 </button>
               </div>
 
-              <div className={styles.sussscoupon}>
+              <div
+                className={styles.susssCoupon}
+                style={{
+                  backgroundImage:
+                    "url('/hotel/hotel-images/page-image/coupon/coupon-B.png')",
+                }}
+              >
                 <div
                   className={`other-section-content ${styles.suCouponContent}`}
                 >
@@ -195,7 +226,13 @@ export default function CouponPage(props) {
                 </button>
               </div>
 
-              <div className={styles.sussscoupon}>
+              <div
+                className={styles.susssCoupon}
+                style={{
+                  backgroundImage:
+                    "url('/hotel/hotel-images/page-image/coupon/coupon-B.png')",
+                }}
+              >
                 <div
                   className={`other-section-content ${styles.suCouponContent}`}
                 >
@@ -214,7 +251,7 @@ export default function CouponPage(props) {
               <img
                 src="/hotel/hotel-images/page-image/coupon/ADS-1.png"
                 alt="第二張促銷DM"
-                style="width: 100%; max-width: 550px; height: auto"
+                style={{ width: "100%", maxWidth: "550px", height: "auto" }}
               />
             </div>
           </div>
@@ -228,9 +265,8 @@ export default function CouponPage(props) {
               <video
                 className="coupon-video"
                 src="/hotel/hotel-images/page-image/coupon/ADS-7.mp4"
-                alt="促銷圖片"
-                style="width: 100%; max-width: 550px; height: auto"
-                autoplay
+                style={{ width: "100%", maxWidth: "550px", height: "auto" }}
+                autoPlay
                 loop
               ></video>
             </div>
@@ -284,7 +320,7 @@ export default function CouponPage(props) {
         </div>
       </div>
       {/* 第五個區塊  */}
-      <div className="container-fluid fifth-section">
+      <div className={`container-fluid ${styles.suFifthSection}`}>
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
@@ -292,8 +328,12 @@ export default function CouponPage(props) {
                 <h5 className={`text-primary mt-2 ${styles.suEventTitle}`}>
                   首購會員
                 </h5>
-                <h2 className={`text-warning mt-2"${styles.suEventDiscount}`}>現折50</h2>
-                <p className={`mt-2 ${styles.suEventDesc}`}>單筆消費滿 $500 即可使用</p>
+                <h2 className={`text-warning mt-2 ${styles.suEventDiscount}`}>
+                  現折50
+                </h2>
+                <p className={`mt-2 ${styles.suEventDesc}`}>
+                  單筆消費滿 $500 即可使用
+                </p>
               </div>
             </div>
             <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
@@ -318,7 +358,7 @@ export default function CouponPage(props) {
                     alt="購物金回饋"
                   />
                 </div>
-                <h5 className={`text-warning${styles.suEventTitle}`}>
+                <h5 className={`text-warning ${styles.suEventTitle}`}>
                   購物金回饋
                 </h5>
                 <p className={styles.suEventDesc}>
