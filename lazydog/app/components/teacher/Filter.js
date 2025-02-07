@@ -3,7 +3,7 @@ import styles from '../../teacher/list/list.module.css';
 
 const Filter = () => {
     return (
-      <aside className={styles.pdFilter}>
+      <aside className={`mt-4 ${styles["pdFilter"]}`}>
         <table className={styles.pdFilterTable}>
           <tr>
             <td className={`${styles.tdTable} ${styles.searchTable}`}>
@@ -26,25 +26,33 @@ const Filter = () => {
           <tr>
             <td className={`${styles.tdTable} ${styles.checkboxTable}`}>
               <input id="eat" type="checkbox" />
-              <label htmlFor="eat" className={styles.checkboxLabel}>寵膳食育</label>
+              <label htmlFor="eat" className={styles.checkboxLabel}>
+                寵膳食育
+              </label>
             </td>
           </tr>
           <tr>
             <td className={`${styles.tdTable} ${styles.checkboxTable}`}>
               <input id="salon" type="checkbox" />
-              <label htmlFor="salon" className={styles.checkboxLabel}>寵物美容</label>
+              <label htmlFor="salon" className={styles.checkboxLabel}>
+                寵物美容
+              </label>
             </td>
           </tr>
           <tr>
             <td className={`${styles.tdTable} ${styles.checkboxTable}`}>
               <input id="beef" type="checkbox" />
-              <label htmlFor="beef" className={styles.checkboxLabel}>寵物照護</label>
+              <label htmlFor="beef" className={styles.checkboxLabel}>
+                寵物照護
+              </label>
             </td>
           </tr>
           <tr>
             <td className={`${styles.tdTable} ${styles.checkboxTable}`}>
               <input id="bussiness" type="checkbox" />
-              <label htmlFor="bussiness" className={styles.checkboxLabel}>商業思維與專業培訓</label>
+              <label htmlFor="bussiness" className={styles.checkboxLabel}>
+                商業思維與專業培訓
+              </label>
             </td>
           </tr>
           <tr>
@@ -56,13 +64,17 @@ const Filter = () => {
           <tr>
             <td className={`${styles.tdTable} ${styles.checkboxTable}`}>
               <input id="male" type="checkbox" />
-              <label htmlFor="male" className={styles.checkboxLabel}>男</label>
+              <label htmlFor="male" className={styles.checkboxLabel}>
+                男
+              </label>
             </td>
           </tr>
           <tr>
             <td className={`${styles.tdTable} ${styles.checkboxTable}`}>
               <input id="female" type="checkbox" />
-              <label htmlFor="female" className={styles.checkboxLabel}>女</label>
+              <label htmlFor="female" className={styles.checkboxLabel}>
+                女
+              </label>
             </td>
           </tr>
           <tr>

@@ -55,13 +55,19 @@ export default function MyMenu() {
   return (
     <>
       <Header />
-      <div className="menu-container">
-        <h5 className="welcome">歡迎，{userName || "會員"}！</h5>  
+      <div className="lumi-menu-container">
+        <h5 className="lumi-welcome">歡迎，{userName || "會員"}！</h5>
         <List animated selection>
           {menuItems.map((menuItem) => (
-            <List.Item key={menuItem.path} active={menuItem.path === pathname}>
-              <Link className="menu-link" href={menuItem.path}>
-              <span>{menuItem.icon}</span>{menuItem.name}</Link>
+            <List.Item
+              key={menuItem.path}
+              active={menuItem.path === pathname}
+              className="lumi-item"
+            >
+              <Link className="lumi-menu-link" href={menuItem.path}>
+                <span>{menuItem.icon}</span>
+                {menuItem.name}
+              </Link>
             </List.Item>
           ))}
         </List>

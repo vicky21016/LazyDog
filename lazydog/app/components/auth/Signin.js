@@ -45,10 +45,10 @@ export default function AppPage() {
   return (
     <>
       <Header />
-      <div className="login-container">
-        <h2 className="form-title">登入</h2>
+      <div className="lumi-login-container">
+        <h2 className="lumi-form-title">登入</h2>
 
-        <form className="login-form" onSubmit={handleLogin}>
+        <form className="lumi-login-form" onSubmit={handleLogin}>
           <InputField
             type="email"
             placeholder="電子信件或手機號碼"
@@ -64,18 +64,18 @@ export default function AppPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <a href="#" className="fogot-pass-link">
+          <a href="#" className="lumi-fogot-pass-link">
             忘記密碼？
           </a>
-          <button className="login-button">登入</button>
-          <p className="separator">
+          <button className="lumi-login-button">登入</button>
+          <p className="lumi-separator">
             <span>或使用社群帳號登入</span>
           </p>
           <SocialLogin />
         </form>
-        <p className="signup-text">
+        <p className="lumi-signup-text">
           還不是會員？{" "}
-          <Link href="/register" className="register">
+          <Link href="/register" className="lumi-register">
             註冊
           </Link>
         </p>

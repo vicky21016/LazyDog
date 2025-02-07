@@ -8,11 +8,13 @@ function App() {
   return (
     <div>
       <Header />
-      <section className='text-center'>
-      <h2>師資&課程服務</h2>
-    </section>
-      <TeacherSection />
-      <CourseSection />
+      <div className="mt-5">
+        <section className="text-center">
+          <h2>師資 & 課程服務</h2>
+        </section>
+        <TeacherSection />
+        <CourseSection />
+      </div>
     </div>
   );
 }

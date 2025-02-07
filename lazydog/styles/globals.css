@@ -29,7 +29,7 @@ body {
   text-decoration: none;
 } */
 /* header */
-/* header {
+.lumi-header {
   display: flex;
   position: absolute;
   top: 0;
@@ -41,7 +41,7 @@ body {
   background-color: transparent;
   z-index: 1000;
 }
-nav ul {
+.lumi-ul {
   list-style: none;
   display: flex;
   justify-content: center;
@@ -58,18 +58,76 @@ nav ul {
     text-decoration: none;
     color: #ff9538;
   }
-} */
-.signin {
+}
+
+.lumi-signin {
   color: #ff9538;
   font-weight: 700;
   margin: 5px;
 }
-.connect {
+.lumi-connect {
   color: #ff9538;
   font-weight: 800;
 }
+
+.lumi-header2 {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 63px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f5842b;
+  z-index: 1000;
+}
+.lumi-ul2 {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  letter-spacing: 2px;
+  gap: 73px;
+  a {
+    text-decoration: none;
+    color: rgba(59, 51, 48, 1);
+    font-weight: bold;
+  }
+  a:hover {
+    text-decoration: none;
+    color: white;
+  }
+}
+.lumi-logo2 {
+  display: flex;
+  align-items: center;
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: white;
+}
+.lumi-signin2 {
+  color: white;
+  font-weight: 700;
+  margin: 5px;
+}
+.lumi-connect2 {
+  color: white;
+  font-weight: 800;
+}
+.lumi-user-icon2 {
+  font-size: 26px;
+  margin-right: 20px;
+  color: white;
+}
+.lumi-cart-icon2 {
+  font-size: 20px;
+  color: white;
+}
 /* app-page 登入 */
-.logo {
+.lumi-logo {
   display: flex;
   align-items: center;
   font-size: 26px;
@@ -77,23 +135,23 @@ nav ul {
   letter-spacing: 2px;
   color: #ff9538;
 }
-.logo1 {
+.lumi-logo1 {
   margin-right: 20px;
   width: 60px;
 }
-.user-actions {
+.lumi-user-actions {
   display: flex;
 }
-.user-icon {
+.lumi-user-icon {
   font-size: 26px;
   margin-right: 20px;
   color: #ff9538;
 }
-.cart-icon {
+.lumi-cart-icon {
   font-size: 20px;
   color: #ff9538;
 }
-.item {
+.lumi-item {
   padding: 8px;
   a {
     color: #3b3330;
@@ -104,8 +162,14 @@ nav ul {
     font-weight: bold;
   }
 }
-
-.login-container {
+/* 登入表單 */
+.lumi-login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+}
+.lumi-login-container {
   width: 100%;
   max-width: 410px;
   margin: 0 auto;
@@ -114,19 +178,19 @@ nav ul {
   background-color: white;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
 }
-.form-title {
+.lumi-form-title {
   /* text-align: center; */
   /* font-size: 1.37rem; */
   font-weight: 600;
   margin-bottom: 32px;
   padding: 0 8px 0;
 }
-.input-wrapper {
+.lumi-input-wrapper {
   height: 54px;
   width: 100%;
   margin-bottom: 24px;
 }
-.input-filed {
+.lumi-input-filed {
   height: 100%;
   width: 100%;
   padding: 0 8px 0;
@@ -134,12 +198,12 @@ nav ul {
   border-bottom: 1px solid #ccc;
 }
 
-.input-filed:focus {
+.lumi-input-filed:focus {
   outline: none;
   border-bottom: 2px solid #ffa726;
 }
 
-.fogot-pass-link {
+.lumi-fogot-pass-link {
   /* display: block;
   width: fit-content;
   margin-top: 8px; */
@@ -150,7 +214,7 @@ nav ul {
   text-decoration: none;
 }
 
-.login-button {
+.lumi-login-button {
   width: 100%;
   height: 48px;
   cursor: pointer;
@@ -163,32 +227,32 @@ nav ul {
   margin-top: 30px;
   border-radius: 5px;
 }
-.login-button:hover {
+.lumi-login-button:hover {
   background-color: #fdf9f5;
   color: #ff9538;
   border-color: #ff9538;
 }
-.signup-text,
-.login-text {
+.lumi-signup-text,
+.lumi-login-text {
   font-size: 14px;
   text-align: center;
   margin: 12px 0 5px;
 }
 
-.agree {
+.lumi-agree {
   font-size: 12px;
   margin-top: 30px;
   /* padding: 0 8px 0; */
   text-align: center;
 }
 
-.social-login {
+.lumi-social-login {
   display: flex;
   /* gap: 1.31rem; */
   align-items: center;
   justify-content: center;
 }
-.social-button {
+.lumi-social-button {
   display: flex;
   width: 60px;
   /* gap: 0.81rem; */
@@ -201,27 +265,27 @@ nav ul {
   /* border: 1px solid; */
   /* border-radius: 0.31rem; */
 }
-.google-icon {
+.lumi-google-icon {
   width: 42px;
 }
-.line-icon {
+.lumi-line-icon {
   width: 52px;
 }
-.separator {
+.lumi-separator {
   font-size: 14px;
   margin: 36px 0 5px;
   text-align: center;
 }
 
-.register,
-.terms,
-.login {
+.lumi-register,
+.lumi-terms,
+.lumi-login {
   color: #ff9538;
   font-weight: bold;
   /* margin-left: 8px; */
   text-decoration: none;
 }
-.other-accounts {
+.lumi-other-accounts {
   display: flex;
   justify-content: space-between;
   /* gap: 10px; */
@@ -230,22 +294,32 @@ nav ul {
   /* margin: 36px 0 5px; */
   /* font-size: 14px; */
 }
-.other-accounts-link {
+.lumi-other-accounts-link {
   display: flex;
   gap: 15px;
 }
-.teacher {
+.lumi-teacher {
   color: #ff9538;
   font-size: 12px;
   margin-right: 10px;
 }
-.hotel {
+.lumi-hotel {
   color: #ff9538;
   font-size: 12px;
 }
-
+.lumi-bread {
+  color: #828282;
+}
 /* menu 基本資料 */
-.menu-container {
+.lumi-wrapper {
+  display: flex;
+  justify-content: center; 
+  align-items: flex-start; /* 頂端對齊 */
+  gap: 40px; 
+  margin: 80px auto 20px; 
+  max-width: 1320px; 
+}
+.lumi-menu-container {
   width: 100%;
   max-width: 180px;
   margin-left: 50px;
@@ -255,14 +329,19 @@ nav ul {
   text-align: center;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
-.welcome {
+.lumi-welcome {
   font-weight: 550;
 }
-.menu-link span {
+.lumi-menu-link span {
   margin-right: 12px;
 }
 /* teacher */
-.teacher-btn {
+.lumi-all-wrapper {
+  margin: 80px auto 20px; 
+  max-width: 1320px; 
+  
+}
+.lumi-teacher-btn {
   display: flex;
   width: 270px;
   padding: 10px 48px;
@@ -271,7 +350,29 @@ nav ul {
   justify-content: center;
   align-items: center;
 }
-.m-title {
+.lumi-dog-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center;  
+  background: #FFF6E8; 
+}
+
+.lumi-dog {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+.lumi-dog  div {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: #66c5bd;
+  font-size: 24px;
+font-weight: 600;
+letter-spacing: 6px
+}
+.lumi-m-title {
   color: #f5842b;
   font-size: 36px;
   font-style: normal;
@@ -279,11 +380,14 @@ nav ul {
   line-height: normal;
   letter-spacing: 6px;
 }
-.s-title {
+.lumi-s-title {
   color: #66c5bd;
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
   letter-spacing: 3px;
+}
+.lumi-teacher-team{
+  background-color: #FDFAF5;
 }

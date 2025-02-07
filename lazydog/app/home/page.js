@@ -4,10 +4,12 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "../../styles/modules/home.module.css";
+import Header from "../components/layout/header2";
 
 export default function HomePage(props) {
   return (
     <>
+    <Header />
       <div className={styles.section1}>
         <div className={styles.words}>
           <div className={styles.sales}>
