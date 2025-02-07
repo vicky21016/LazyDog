@@ -1,6 +1,6 @@
 .container {
     max-width: 1320px;
-    margin: 0 auto;
+    margin: 80px auto;
     width: 100%;
   }
 
@@ -17,7 +17,7 @@
 
   .type {
     color: #ff9538;
-    font-weight: 550;
+    font-weight: 600;
     letter-spacing: 2px;
   }
   .mark{

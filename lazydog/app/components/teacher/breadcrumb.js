@@ -14,17 +14,25 @@ const Breadcrumb = ({ paths }) => {
       aria-label="breadcrumb"
       className={styles.breadcrumb} // 使用 CSS 模組
     >
-      <ol className={`${styles.breadcrumbList} breadcrumb`} style={{ fontSize: "0.75rem" }}>
+      <ol
+        className={`${styles.breadcrumbList} breadcrumb`}
+        style={{ fontSize: "0.75rem" }}
+      >
         {paths.map((path, index) => (
           <li
             key={index}
             // 最後一層會被加上 active 樣式
-            className={`${styles.breadcrumbItem} ${index === paths.length - 1 ? 'active' : ''}`}
+            className={`${styles.breadcrumbItem} ${
+              index === paths.length - 1 ? "active fw-semibold" : ""
+            }`}
             aria-current={index === paths.length - 1 ? "page" : undefined}
           >
             {/* 若 link 存在，會渲染為一個 <Link> */}
             {path.link ? (
-              <Link className="text-decoration-none" href={path.link}>
+              <Link
+                className="text-decoration-none lumi-bread"
+                href={path.link}
+              >
                 {path.name}
               </Link>
             ) : (

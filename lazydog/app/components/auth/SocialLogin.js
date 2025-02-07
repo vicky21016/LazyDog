@@ -7,14 +7,17 @@ import Link from "next/link";
 export default function ComponentsSocialLogin(props) {
   return (
     <>
-      <div className="social-login">
-        <Link href="" className="social-button">
-          <img src="./images/Google.png" alt="google" className="google-icon" />
+      <div className="lumi-social-login">
+        <Link href="" className="lumi-social-button">
+          <img
+            src="./images/Google.png"
+            alt="google"
+            className="lumi-google-icon"
+          />
         </Link>
-        <Link href="" className="social-button">
-          <img src="./images/line.webp" alt="line" className="line-icon" />
+        <Link href="" className="lumi-social-button">
+          <img src="./images/line.webp" alt="line" className="lumi-line-icon" />
         </Link>
-
       </div>
     </>
   );

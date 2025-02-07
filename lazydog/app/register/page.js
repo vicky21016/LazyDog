@@ -62,52 +62,60 @@ export default function Register() {
   return (
     <>
       <Header />
+      <div className="lumi-login-wrapper">
+        <div className="lumi-login-container">
+          <h4 className="lumi-form-title">註冊</h4>
 
-      <div className="login-container">
-        <h4 className="form-title">註冊</h4>
+          <form
+            action="#"
+            className="lumi-login-form"
+            onSubmit={handleRegister}
+          >
+            <InputFiled
+              type="email"
+              placeholder="電子信箱"
+              icon=""
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <InputFiled
+              type="password"
+              placeholder="密碼"
+              icon=""
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <InputFiled
+              type="password"
+              placeholder="再次確認密碼"
+              icon=""
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
 
-        <form action="#" className="login-form" onSubmit={handleRegister}>
-          <InputFiled
-            type="email"
-            placeholder="電子信件或手機號碼"
-            icon=""
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <InputFiled
-            type="password"
-            placeholder="密碼"
-            icon=""
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <InputFiled
-            type="password"
-            placeholder="再次確認密碼"
-            icon=""
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-
-          <p className="agree">
-            點擊註冊，即表示您已閱讀並同意
-            <Link href="pages/about/member" className="terms">
-              會員條款
-            </Link>
-            與
-            <Link href="pages/about/customer" className="terms">
-              客戶隱私權條款
+            <p className="lumi-agree">
+              點擊註冊，即表示您已閱讀並同意
+              <Link href="pages/about/member" className="lumi-terms">
+                會員條款
+              </Link>
+              與
+              <Link href="pages/about/customer" className="lumi-terms">
+                客戶隱私權條款
+              </Link>
+            </p>
+            <button className="lumi-login-button">註冊會員</button>
+            <p className="lumi-separator">
+              <span>或使用社群帳號註冊</span>
+            </p>
+            <SocialLogin />
+          </form>
+          <p className="lumi-login-text">
+            已經有帳號了嗎？{" "}
+            <Link href="/login" className="lumi-login">
+              登入
             </Link>
           </p>
-          <button className="login-button">註冊會員</button>
-          <p className="separator">
-            <span>或使用社群帳號註冊</span>
-          </p>
-          <SocialLogin />
-        </form>
-        <p className="login-text">
-          已經有帳號了嗎？ <Link href="/login" className="login">登入</Link>
-        </p>
+        </div>
       </div>
     </>
   );

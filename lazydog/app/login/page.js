@@ -51,22 +51,26 @@ export default function AppPage() {
     <>
       <Header />
       {/* <div className={styles.container}> */}
-      <div className="login-container">
-        <div className="other-accounts">
-          <h4 className="form-title">登入</h4>
-          <div className="other-accounts-links">
-            <Link href="/register" className="teacher text-decoration-none">
+      <div className="lumi-login-wrapper">
+      <div className="lumi-login-container">
+        <div className="lumi-other-accounts">
+          <h4 className="lumi-form-title">登入</h4>
+          <div className="lumi-other-accounts-links">
+            <Link
+              href="/register"
+              className="lumi-teacher text-decoration-none"
+            >
               師資登入
             </Link>
-            <Link href="/register" className="hotel text-decoration-none">
+            <Link href="/register" className="lumi-hotel text-decoration-none">
               旅館業者登入
             </Link>
           </div>
         </div>
-        <form className="login-form" onSubmit={handleLogin}>
+        <form className="lumi-login-form" onSubmit={handleLogin}>
           <InputField
             type="email"
-            placeholder="電子信件或手機號碼"
+            placeholder="電子信件"
             icon=""
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -79,23 +83,23 @@ export default function AppPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <Link href="pages/forgot-password" className="fogot-pass-link">
+          <Link href="pages/forgot-password" className="lumi-fogot-pass-link">
             忘記密碼？
           </Link>
-          <button className="login-button">登入</button>
-          <p className="separator">
+          <button className="lumi-login-button">登入</button>
+          <p className="lumi-separator">
             <span>或使用社群帳號登入</span>
           </p>
           <SocialLogin />
         </form>
-        <p className="signup-text">
+        <p className="lumi-signup-text">
           還不是會員？{" "}
-          <Link href="/register" className="register">
+          <Link href="/register" className="lumi-register">
             註冊
           </Link>
         </p>
       </div>
-      {/* </div> */}
+      </div>
     </>
   );
 }

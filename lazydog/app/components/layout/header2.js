@@ -16,13 +16,13 @@ export default function Header(props) {
     });
   }, []);
   return (
-    <header className="lumi-header">
-      <Link href="/" className="lumi-logo text-decoration-none">
+    <header className="lumi-header2">
+      <Link href="/" className="lumi-logo2 text-decoration-none">
         <img src="/images/logo.png" alt="Logo" className="lumi-lumi-logo1" />
         LAZYDOG
       </Link>
       <nav>
-        <ul className="lumi-ul">
+        <ul className="lumi-ul2">
           <li>
             <Link href="#">關於我們</Link>
           </li>
@@ -43,10 +43,10 @@ export default function Header(props) {
       {!user ? (
         <>
           <div className="lumi-user-actions">
-            <Link href="/pages" className="lumi-user-icon text-decoration-none">
+            <Link href="/pages" className="lumi-user-icon2 text-decoration-none">
               <FontAwesomeIcon icon={faUser} />
             </Link>
-            <div href="#" className="lumi-cart-icon">
+            <div href="#" className="lumi-cart-icon2">
               <a href="" className="">
                 <img src="/images/cart.png" alt="" className="" />
               </a>
@@ -55,11 +55,11 @@ export default function Header(props) {
         </>
       ) : (
         <div>
-          <Link href="/register" className="lumi-signin text-decoration-none">
+          <Link href="/register" className="lumi-signin2 text-decoration-none">
             註冊
           </Link>
-          <span className="lumi-connect">/</span>
-          <Link href="/login" className="lumi-signin text-decoration-none">
+          <span className="lumi-connect2">/</span>
+          <Link href="/login" className="lumi-signin2 text-decoration-none">
             登入
           </Link>
         </div>

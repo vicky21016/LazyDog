@@ -5,11 +5,11 @@ import React, { useState, useEffect } from 'react'
 export default function ComponentsInputFiled({ type, placeholder, icon, value, onChange }) {
   return (
     <>
-      <div className="input-wrapper">
+      <div className="lumi-input-wrapper">
         <input
           type={type}
           placeholder={placeholder}
-          className="input-filed"
+          className="lumi-input-filed"
           required
           value={value} // 綁定 value 到狀態
           onChange={onChange}

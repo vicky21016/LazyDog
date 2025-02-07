@@ -5,8 +5,15 @@ import React, { useState } from "react";
 
 const ToggleButtons = ({ onRadioChange }) => {
     return (
-      <div className="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group">
-        <label className="btn btn-outline-secondary" style={{ pointerEvents: "none" }}>
+      <div
+        className="btn-group-vertical"
+        role="group"
+        aria-label="Vertical radio toggle button group"
+      >
+        <label
+          className="btn btn-outline-secondary p-3 pb-4"
+          style={{ pointerEvents: "none" }}
+        >
           相關資訊
         </label>
         <input
@@ -18,7 +25,10 @@ const ToggleButtons = ({ onRadioChange }) => {
           onChange={() => onRadioChange("experience")}
           defaultChecked
         />
-        <label className="btn btn-outline-secondary" htmlFor="vbtn-radio1">
+        <label
+          className="btn btn-outline-secondary px-5 py-2"
+          htmlFor="vbtn-radio1"
+        >
           經歷
         </label>
         <input
@@ -29,7 +39,10 @@ const ToggleButtons = ({ onRadioChange }) => {
           autocomplete="off"
           onChange={() => onRadioChange("courses")}
         />
-        <label className="btn btn-outline-secondary" htmlFor="vbtn-radio2">
+        <label
+          className="btn btn-outline-secondary px-5 py-2"
+          htmlFor="vbtn-radio2"
+        >
           課程
         </label>
       </div>

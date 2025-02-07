@@ -1,6 +1,6 @@
 .container {
     max-width: 1320px;
-    margin: 0 auto;
+    margin: 80px auto;
     width: 100%;
   }
 
@@ -125,7 +125,7 @@
   }
   
   .clear {
-    width: 260px;
+    width: 220px;
     height: 35px;
     padding: 6px 16px;
     align-self: stretch;
