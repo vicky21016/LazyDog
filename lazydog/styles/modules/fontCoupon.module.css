@@ -24,20 +24,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-image: url("/hotel/hotel-images/page-image/coupon/coupon-G.png");
   background-position: center;
   width: 550px;
   height: 148px;
   position: relative;
   overflow: hidden;
+  top: 20px;
+  margin-bottom: 30px;
+
 }
 
-/* 第二區塊優惠券 */
-.sussCoupon {
-  background-image: url("/hotel/hotel-images/page-image/coupon/coupon-Y.png");
-}
-.susssCoupon {
-  background-image: url("/hotel/hotel-images/page-image/coupon/coupon-B.png");
+.suCoupon img {
+  object-fit: cover;
 }
 
 .suCouponContent {
