@@ -33,11 +33,10 @@
 }
 
 /* 第二區塊優惠券 */
-.susscoupon {
+.sussCoupon {
   background-image: url("/hotel/hotel-images/page-image/coupon/coupon-Y.png");
-  margin-bottom: 30px;
 }
-.sussscoupon {
+.susssCoupon {
   background-image: url("/hotel/hotel-images/page-image/coupon/coupon-B.png");
 }
 
@@ -72,7 +71,7 @@
   font-size: 14px;
   width: 50%;
 }
-.second-section .row {
+:global(.second-section) .row {
   gap: 40px;
 }
 
@@ -108,43 +107,44 @@
   transform: translateY(-50%);
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .suCouponButton:hover {
   background-color: #ff6600;
 }
 
-.third-section .row,
-.forth-section .row {
+:global(.third-section) .row,
+:global(.forth-section) .row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 40px;
 }
 
-.third-section .coupon,
-.forth-section .coupon {
+:global(.third-section .coupon),
+:global(.forth-section .coupon) {
   margin-bottom: 30px;
 }
-
+.forth-section {
+  text-align: center;
+}
 .forth-section video {
   max-width: 100%;
   border-radius: 10px;
   display: block;
-  margin-left: 50px;
+  margin: 0 auto; /* 讓影片置中 */
 }
 @media (max-width: 768px) {
-  .third-section .row,
-  .forth-section .row {
+  :global(.third-section .row),
+  :global(.forth-section .row) {
     flex-direction: column;
     align-items: center;
-  }
-
-  .coupon {
-    width: 100%;
+    text-align: center;
   }
 }
-.fifth-section {
+
+:global(.fifth-section) {
   background-color: #fff6e8;
   padding: 50px 0;
 }
@@ -231,4 +231,3 @@
   animation: draw 0.5s ease-in-out forwards;
   animation-delay: 0.2s;
 }
-

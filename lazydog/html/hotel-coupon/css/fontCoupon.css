@@ -24,7 +24,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-image: url("/hotel/hotel-images/page-image/coupon/coupon-G.png");
+    background-image: url("/hotel/hotel-images/page-image/coupon/coupon-.png");
     background-position: center;
     width: 550px;
     height: 148px;
@@ -33,7 +33,7 @@
   }
 
   /* 第二區塊優惠券 */
-  .second-section .coupon {
+  .suSecondSection .suCoupon2 {
     background-image: url("/hotel/hotel-images/page-image/coupon/coupon-Y.png");
     margin-bottom: 30px;
   }
