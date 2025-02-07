@@ -1,0 +1,224 @@
+
+/* 滾軸樣式 */
+.scrollOrg {
+  --sb-track-color: #bcbcbcc4;
+  --sb-thumb-color: #999595;
+  --sb-size: 4px;
+}
+
+.scrollOrg::-webkit-scrollbar {
+  width: var(--sb-size)
+}
+
+.scrollOrg::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 4px;
+}
+
+.scrollOrg::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 4px;
+  /* border: 1px solid #232E33; */
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .scrollOrg {
+    scrollbar-color: var(--sb-thumb-color)
+                     var(--sb-track-color);
+  }
+}
+
+
+
+
+/* 共用 */
+/* 左邊 */
+.left{
+  margin: 0 20px;
+  .top {
+      padding: 38px;
+      .tName,.tGmail,.tTitle{
+          overflow-wrap: break-word;
+          word-wrap: break-word;
+      }
+  
+      .tName{
+          font-weight: bold;
+      }
+      .tGmail{
+          font-size: 14px;
+          letter-spacing: .5px;
+      }
+      
+  
+      .outline{
+          /* height: 35px; */
+          padding: 4px 8px;
+          border-radius: 3px;
+          border: 1px solid var(--Color-3, #66C5BD);
+          color: var(--Color-3, #66C5BD);
+          font-family: "Noto Sans TC";
+          font-size: 12px;
+          font-weight: bold;
+          letter-spacing: 1.5px;
+  
+      }
+      .outline:hover{
+          background-color:  var(--Color-3, #66C5BD);
+          color: #fff;
+      }
+  }
+  .lis {
+      border-top: 0.1px solid var(--text-Gy, #dee2e6);
+      /* padding-left: 20px; */
+  }
+
+  .lis:hover {
+      a, .icons{
+      color: #F5842B;
+      }         
+  }
+  
+  .icons{
+      color: #bcbcbc;
+  }
+  .liText {
+      color: #bcbcbc;
+      font-family: 'Noto Sans TC';
+      font-size: 15px;
+      font-style: normal;
+      font-weight: bold;
+      line-height: 30px; /* 187.5% */
+      letter-spacing: 0.96px;
+  }
+  
+}
+/* 相機 */
+.camera{
+  .avatarImg {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border: 1.5px solid #ddd;
+      }
+      
+      .cameraIcon {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background: white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+      }
+      
+      .cameraIconImg {
+      width: 18px;
+      height: auto;
+      }
+      
+      .dropdown-menu {
+      min-width: 120px;
+      text-align: center;
+      }
+      
+      .dropdown-item {
+      cursor: pointer;
+      }
+}
+  
+
+
+/* 右邊 */
+.right{
+  height: auto;
+  /* overflow-y: auto; */
+  .must{
+  color: red;
+  padding-left: 5px;
+  }
+  .example{
+      color: #bcbcbc;
+      font-size: 12px;
+      padding-left: 15px;
+  }
+
+  .controls  {
+    border-radius: 8px;
+    background-color: #bcbcbcc4;
+    border: none;
+  }  
+
+  /* 美化圖片預覽區 */
+  .imageCard {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    /* padding: 8px; */
+    cursor: pointer;
+  }
+
+  .imageCard .imgCr {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    
+  }
+
+  .imageCard .add {
+    width: 100%;
+    font-size: 12px;
+    margin-top: 5px;
+    padding: 3px;
+  }
+  /* .delete-btn {
+    position: absolute;
+    top: 4px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .delete-btn:hover {
+    background: darkred;
+  } */
+
+  
+
+  .submitBtn{
+    background-color: #F5842B;
+    border: none;
+    &:hover{
+      background-color: #e26404;
+    }
+
+    .submitBtnA{
+      color:white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  }
+}
+
+  
