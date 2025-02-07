@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/modules/fontCoupon.module.css";
+import { computeStyles } from "@popperjs/core";
 
 export default function CouponPage(props) {
   return (
@@ -14,7 +15,7 @@ export default function CouponPage(props) {
         aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content animate__bounceIn">
+          <div className={`modal-content animate__bounceIn ${styles.suModalContent}`}>
             <div className="modal-header bg-warning">
               <h5 className="modal-title fw-bold" id="couponModalLabel">
                 🎉 領取優惠券成功！
@@ -27,14 +28,17 @@ export default function CouponPage(props) {
               ></button>
             </div>
             <div className="modal-body text-center">
-              <div className="success-animation">
-                <div className="checkmark"></div>
+              <div className={styles.suSuccessAnimation}>
+                <div className={styles.suCheckmark}></div>
               </div>
 
               <p className="fs-5 fw-bold text-primary" id="couponName">
                 優惠券名稱
               </p>
-              <p className="coupon-code text-danger" id="couponCode">
+              <p
+                className={`text-danger ${styles.suCouponCode}`}
+                id="couponCode"
+              >
                 優惠券代碼：XXXXXX
               </p>
               <p className="text-muted" id="couponExpiry">
@@ -61,12 +65,14 @@ export default function CouponPage(props) {
             {/* TOP 1  */}
             <div className="col-lg-6 col-md-6 col-sm-12">
               <div className={styles.suCoupon}>
-                <div className="coupon-content">
-                  <div className="coupon-name">🐶 狗狗專屬優惠</div>
-                  <div className="coupon-code">SKUDIWEK54K64L</div>
-                  <div className="coupon-expiry">有效期限：2025/12/31</div>
+                <div className={styles.suCouponContent}>
+                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
+                  <div className={styles.suCouponCode}>SKUDIWEK54K64L</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/12/31
+                  </div>
                 </div>
-                <button className="coupon-button" type="button">
+                <button className={styles.suCouponButton} type="button">
                   點我領取
                 </button>
               </div>
@@ -75,12 +81,14 @@ export default function CouponPage(props) {
             {/* TOP 2  */}
             <div className="col-lg-6 col-md-6 col-sm-12">
               <div className={styles.suCoupon}>
-                <div className="coupon-content">
-                  <div className="coupon-name">🐶 狗狗專屬優惠</div>
-                  <div className="coupon-code">SKUDIWEK54K64L</div>
-                  <div className="coupon-expiry">有效期限：2025/12/31</div>
+                <div className={styles.suCouponContent}>
+                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
+                  <div className={styles.suCouponCode}>SKUDIWEK54K64L</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/12/31
+                  </div>
                 </div>
-                <button className="coupon-button" type="button">
+                <button className={styles.suCouponButton} type="button">
                   點我領取
                 </button>
               </div>
@@ -105,34 +113,46 @@ export default function CouponPage(props) {
             {/* 右側 3 張優惠券  */}
             <div className="col-lg-6 col-md-6 col-sm-12">
               <div className={styles.susscoupon}>
-                <div className="coupon-content other-section-content">
-                  <div className="coupon-name">🐶 狗狗專屬優惠</div>
-                  <div className="coupon-code">ABCD123456</div>
-                  <div className="coupon-expiry">有效期限：2025/12/31</div>
+                <div
+                  className={`suOtherSectionContent ${styles.suCouponContent}`}
+                >
+                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
+                  <div className={styles.suCouponCode}>ABCD123456</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/12/31
+                  </div>
                 </div>
-                <button className="coupon-button" type="button">
+                <button className={styles.suCouponButton} type="button">
                   點我領取
                 </button>
               </div>
 
               <div className={styles.susscoupon}>
-                <div className="coupon-content other-section-content">
-                  <div className="coupon-name">🎁 限時折扣</div>
-                  <div className="coupon-code">XYZ987654</div>
-                  <div className="coupon-expiry">有效期限：2025/11/30</div>
+                <div
+                  className={`suOtherSectionContent ${styles.suCouponContent}`}
+                >
+                  <div className={styles.suCouponName}>🎁 限時折扣</div>
+                  <div className={styles.suCouponCode}>XYZ987654</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/11/30
+                  </div>
                 </div>
-                <button className="coupon-button" type="button">
+                <button className={styles.suCouponButton} type="button">
                   點我領取
                 </button>
               </div>
 
               <div className={styles.susscoupon}>
-                <div className="coupon-content other-section-content">
-                  <div className="coupon-name">🛒 商店折扣券</div>
-                  <div className="coupon-code">QWER123456</div>
-                  <div className="coupon-expiry">有效期限：2025/10/15</div>
+                <div
+                  className={`suOtherSectionContent ${styles.suCouponContent}`}
+                >
+                  <div className={styles.suCouponName}>🛒 商店折扣券</div>
+                  <div className={styles.suCouponCode}>QWER123456</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/10/15
+                  </div>
                 </div>
-                <button className="coupon-button" type="button">
+                <button className={styles.suCouponButton} type="button">
                   點我領取
                 </button>
               </div>
@@ -146,34 +166,46 @@ export default function CouponPage(props) {
           <div className="row">
             <div className="col-lg-5 col-md-5 col-sm-12">
               <div className={styles.suCoupon}>
-                <div className="coupon-content other-section-content">
-                  <div className="coupon-name">🐶 狗狗專屬優惠</div>
-                  <div className="coupon-code">ABCD123456</div>
-                  <div className="coupon-expiry">有效期限：2025/12/31</div>
+                <div
+                  className={`other-section-content ${styles.suCouponContent}`}
+                >
+                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
+                  <div className={styles.suCouponCode}>ABCD123456</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/12/31
+                  </div>
                 </div>
-                <button className="coupon-button" type="button">
+                <button className={styles.suCouponButton} type="button">
                   點我領取
                 </button>
               </div>
 
               <div className={styles.sussscoupon}>
-                <div className="coupon-content other-section-content">
-                  <div className="coupon-name">🎁 限時折扣</div>
-                  <div className="coupon-code">XYZ987654</div>
-                  <div className="coupon-expiry">有效期限：2025/11/30</div>
+                <div
+                  className={`other-section-content ${styles.suCouponContent}`}
+                >
+                  <div className={styles.suCouponName}>🎁 限時折扣</div>
+                  <div className={styles.suCouponCode}>XYZ987654</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/11/30
+                  </div>
                 </div>
-                <button className="coupon-button" type="button">
+                <button className={styles.suCouponButton} type="button">
                   點我領取
                 </button>
               </div>
 
               <div className={styles.sussscoupon}>
-                <div className="coupon-content other-section-content">
-                  <div className="coupon-name">🛒 商店折扣券</div>
-                  <div className="coupon-code">QWER123456</div>
-                  <div className="coupon-expiry">有效期限：2025/10/15</div>
+                <div
+                  className={`other-section-content ${styles.suCouponContent}`}
+                >
+                  <div className={styles.suCouponName}>🛒 商店折扣券</div>
+                  <div className={styles.suCouponCode}>QWER123456</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/10/15
+                  </div>
                 </div>
-                <button className="coupon-button" type="button">
+                <button className={styles.suCouponButton} type="button">
                   點我領取
                 </button>
               </div>
@@ -204,34 +236,46 @@ export default function CouponPage(props) {
             </div>
             <div className="col-lg-6 col-md-6 col-sm-12">
               <div className={styles.suCoupon}>
-                <div className="coupon-content other-section-content">
-                  <div className="coupon-name">🐶 狗狗專屬優惠</div>
-                  <div className="coupon-code">ABCD123456</div>
-                  <div className="coupon-expiry">有效期限：2025/12/31</div>
+                <div
+                  className={`other-section-content ${styles.suCouponContent}`}
+                >
+                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
+                  <div className={styles.suCouponCode}>ABCD123456</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/12/31
+                  </div>
                 </div>
-                <button className="coupon-button" type="button">
+                <button className={styles.suCouponButton} type="button">
                   點我領取
                 </button>
               </div>
 
               <div className={styles.suCoupon}>
-                <div className="coupon-content other-section-content">
-                  <div className="coupon-name">🎁 限時折扣</div>
-                  <div className="coupon-code">XYZ987654</div>
-                  <div className="coupon-expiry">有效期限：2025/11/30</div>
+                <div
+                  className={`other-section-content ${styles.suCouponContent}`}
+                >
+                  <div className={styles.suCouponName}>🎁 限時折扣</div>
+                  <div className={styles.suCouponCode}>XYZ987654</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/11/30
+                  </div>
                 </div>
-                <button className="coupon-button" type="button">
+                <button className={styles.suCouponButton} type="button">
                   點我領取
                 </button>
               </div>
 
               <div className={styles.suCoupon}>
-                <div className="coupon-content other-section-content">
-                  <div className="coupon-name">🛒 商店折扣券</div>
-                  <div className="coupon-code">QWER123456</div>
-                  <div className="coupon-expiry">有效期限：2025/10/15</div>
+                <div
+                  className={`other-section-content ${styles.suCouponContent}`}
+                >
+                  <div className={styles.suCouponName}>🛒 商店折扣券</div>
+                  <div className={styles.suCouponCode}>QWER123456</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/10/15
+                  </div>
                 </div>
-                <button className="coupon-button" type="button">
+                <button className={styles.suCouponButton} type="button">
                   點我領取
                 </button>
               </div>
@@ -244,34 +288,40 @@ export default function CouponPage(props) {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
-              <div className="event user-event">
-                <h5 className="event-title text-primary mt-2">首購會員</h5>
-                <h2 className="event-discount text-warning mt-2">現折50</h2>
-                <p className="event-desc mt-2">單筆消費滿 $500 即可使用</p>
+              <div className={`user-event ${styles.suEvent}`}>
+                <h5 className={`text-primary mt-2 ${styles.suEventTitle}`}>
+                  首購會員
+                </h5>
+                <h2 className={`text-warning mt-2"${styles.suEventDiscount}`}>現折50</h2>
+                <p className={`mt-2 ${styles.suEventDesc}`}>單筆消費滿 $500 即可使用</p>
               </div>
             </div>
             <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
-              <div className="event">
-                <div className="event-icon">
+              <div className={styles.suEvent}>
+                <div className={styles.suEventIcon}>
                   <img
                     src="/hotel/hotel-images/page-image/coupon/shipping-fast.png"
                     alt="滿額免運"
                   />
                 </div>
-                <h5 className="event-title text-danger">滿額免運</h5>
-                <p className="event-desc">超取 $1500 / 宅配 $2000</p>
+                <h5 className={`text-danger ${styles.suEventTitle}`}>
+                  滿額免運
+                </h5>
+                <p className={styles.suEventDesc}>超取 $1500 / 宅配 $2000</p>
               </div>
             </div>
             <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
-              <div className="event">
-                <div className="event-icon">
+              <div className={styles.suEvent}>
+                <div className={styles.suEventIcon}>
                   <img
                     src="/hotel/hotel-images/page-image/coupon/coins-dollar-line.png"
                     alt="購物金回饋"
                   />
                 </div>
-                <h5 className="event-title text-warning">購物金回饋</h5>
-                <p className="event-desc">
+                <h5 className={`text-warning${styles.suEventTitle}`}>
+                  購物金回饋
+                </h5>
+                <p className={styles.suEventDesc}>
                   會員最高享 <span className="text-danger">8%</span> 回饋
                 </p>
               </div>

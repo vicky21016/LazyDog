@@ -41,8 +41,7 @@
   background-image: url("/hotel/hotel-images/page-image/coupon/coupon-B.png");
 }
 
-/* 44明天繼續 */
-.coupon-content {
+.suCouponContent {
   position: absolute;
   top: 65%;
   left: 55%;
@@ -53,7 +52,7 @@
   width: 50%;
 }
 
-.coupon-name {
+.suCouponName {
   font-size: 18px;
   font-weight: bold;
   color: #ff6600;
@@ -62,7 +61,7 @@
   padding-left: 15px;
 }
 /* 第二區塊 */
-.other-section-content {
+.suOtherSectionContent {
   position: absolute;
   top: 60%;
   left: 55%;
@@ -77,7 +76,7 @@
   gap: 40px;
 }
 
-.coupon-code {
+.suCouponCode {
   font-size: 16px;
   color: #ff6600;
   font-weight: bold;
@@ -88,7 +87,7 @@
   margin-top: 5px;
 }
 /* 到期日 */
-.coupon-expiry {
+.suCouponExpiry {
   font-size: 14px;
   color: #d32f2f;
   margin-top: 5px;
@@ -96,7 +95,7 @@
   margin-right: 10px;
 }
 
-.coupon-button {
+.suCouponButton {
   background-color: #ff9900;
   color: white;
   padding: 8px 15px;
@@ -111,7 +110,7 @@
   cursor: pointer;
 }
 
-.coupon-button:hover {
+.suCouponButton:hover {
   background-color: #ff6600;
 }
 
@@ -150,7 +149,7 @@
   padding: 50px 0;
 }
 
-.event {
+.suEvent {
   background: #fffdf7;
   padding: 25px;
   border-radius: 16px;
@@ -159,36 +158,36 @@
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   min-height: 180px;
 }
-.event:hover {
+.suEvent:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
-.event-title {
+.suEventTitle {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 8px;
 }
 
-.event-discount {
+.suEventDiscount {
   font-size: 32px;
   font-weight: bold;
   color: #ff6600;
 }
 
-.event-desc {
+.suEventDesc {
   font-size: 16px;
   color: #666;
   margin-top: 5px;
 }
 
-.event-icon img {
+.suEventIcon img {
   width: 50px;
   margin-bottom: 10px;
 }
 
 @media (max-width: 992px) {
-  .event {
+  .suEvent {
     min-height: 200px;
   }
 }
@@ -198,18 +197,18 @@
     flex-direction: column;
     text-align: center;
   }
-  .event {
+  .suEvent {
     width: 100%;
     max-width: 350px;
     margin: 0 auto;
   }
 }
-.modal-content {
+.suModalContent {
   animation: fadeInUp 0.5s ease-in-out;
   border-radius: 15px;
 }
 
-.success-animation {
+.suSuccessAnimation {
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -222,7 +221,7 @@
   position: relative;
 }
 
-.checkmark {
+.suCheckmark {
   width: 50px;
   height: 25px;
   border: solid #4caf50;
@@ -233,35 +232,3 @@
   animation-delay: 0.2s;
 }
 
-@keyframes fadeInUp {
-  from {
-    transform: translateY(50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    transform: scale(0);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes draw {
-  from {
-    width: 0;
-    height: 0;
-  }
-  to {
-    width: 50px;
-    height: 25px;
-  }
-}
