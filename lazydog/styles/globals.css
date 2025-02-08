@@ -164,7 +164,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; 
+  height: 100vh;
 }
 .lumi-login-container {
   width: 100%;
@@ -310,11 +310,11 @@ body {
 /* menu 基本資料 */
 .lumi-wrapper {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: flex-start; /* 頂端對齊 */
-  gap: 40px; 
-  margin: 80px auto 20px; 
-  max-width: 1320px; 
+  gap: 40px;
+  margin: 80px auto 20px;
+  max-width: 1320px;
 }
 .lumi-menu-container {
   width: 100%;
@@ -334,9 +334,8 @@ body {
 }
 /* teacher */
 .lumi-all-wrapper {
-  margin: 80px auto 20px; 
-  max-width: 1320px; 
-  
+  margin: 80px auto 20px;
+  max-width: 1320px;
 }
 .lumi-teacher-btn {
   display: flex;
@@ -349,25 +348,25 @@ body {
 }
 .lumi-dog-container {
   display: flex;
-  justify-content: center; 
-  align-items: center;  
-  background: #FFF6E8; 
+  justify-content: center;
+  align-items: center;
+  background: #fff6e8;
 }
 
 .lumi-dog {
   display: flex;
-  justify-content: space-between; 
-  align-items: center; 
+  justify-content: space-between;
+  align-items: center;
 }
 
-.lumi-dog  div {
+.lumi-dog div {
   display: flex;
   flex-direction: column;
   text-align: center;
   color: #66c5bd;
   font-size: 24px;
-font-weight: 600;
-letter-spacing: 6px
+  font-weight: 600;
+  letter-spacing: 6px;
 }
 .lumi-m-title {
   color: #f5842b;
@@ -385,6 +384,45 @@ letter-spacing: 6px
   line-height: normal;
   letter-spacing: 3px;
 }
-.lumi-teacher-team{
-  background-color: #FDFAF5;
+.lumi-teacher-team {
+  background-color: #fdfaf5;
 }
+/* noUiSlider 全域樣式 */
+.noUi-target {
+  background: #fff !important;
+  border-radius: 20px !important;
+  border: 2px solid #ff9900 !important;
+  box-shadow: none !important;
+  height: 8px !important;
+}
+
+.noUi-connect {
+  background: linear-gradient(to right, #ff8c00, #ffa500) !important;
+  border-radius: 20px !important;
+}
+
+.noUi-handle {
+  background: white !important;
+  border: 3px solid #ffa500 !important;
+  border-radius: 50% !important;
+  width: 22px !important;
+  height: 22px !important;
+  top: -8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  cursor: pointer !important;
+}
+
+.noUi-handle:before,
+.noUi-handle:after {
+  display: none !important;
+}
+
+.noUi-tooltip {
+  background: #ffa500 !important;
+  color: white !important;
+  border-radius: 5px !important;
+  font-size: 12px !important;
+  padding: 5px !important;
+  font-weight: bold !important;
+}
+/* noUi結束*/
