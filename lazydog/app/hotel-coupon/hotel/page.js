@@ -130,7 +130,7 @@ export default function HotelEditPage() {
           <div className="mx-auto">
             <h3 className="mb-3">旅館資訊</h3>
             <form id="hotelForm">
-              <div className="section">
+              <div className={`section ${hotelStyles.suSection}`}>
                 <h5>基本資訊</h5>
                 <div className="mb-3">
                   <label className="form-label">旅館名稱 *</label>
@@ -161,19 +161,19 @@ export default function HotelEditPage() {
                 </div>
               </div>
 
-              <div className="section">
+              <div className={`section ${hotelStyles.suSection}`}>
                 <h5>旅館圖片</h5>
                 <div
                   id="imagePreviewContainer"
                   className="d-flex flex-wrap gap-3 mb-2"
                 >
-                  <div className="image-card">
+                  <div className={hotelStyles.suImageCard}>
                     <img
                       src="/hotel/hotel-uploads/11-room.webp"
                       alt="旅館圖片1"
                     />
                   </div>
-                  <div className="image-card">
+                  <div className={hotelStyles.suImageCard}>
                     <img
                       src="/hotel/hotel-uploads/13-s-room.jpg"
                       alt="旅館圖片2"
@@ -182,7 +182,7 @@ export default function HotelEditPage() {
                 </div>
               </div>
 
-              <div className="section">
+              <div className={`section ${hotelStyles.suSection}`}>
                 <h5>營業時間</h5>
                 <div className="mb-3">
                   <label className="form-label">營業時間</label>

@@ -5,7 +5,6 @@ import hotelStyles from "../../../styles/modules/operatorHotel.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 
-
 export default function HotelEditPage(props) {
   const imageUploadRef = useRef(null);
   const [hotelName, setHotelName] = useState("寵物樂園");
@@ -156,7 +155,7 @@ export default function HotelEditPage(props) {
           <div className="col-md-9  mx-auto">
             <h3 className="mb-3">編輯旅館資訊</h3>
             <form id="editForm">
-              <div className={`section ${hotelStyles.section}`}>
+              <div className={`section ${hotelStyles.suSection}`}>
                 <h5>基本資訊</h5>
                 <div className="mb-3">
                   <label>旅館名稱</label>
@@ -189,27 +188,27 @@ export default function HotelEditPage(props) {
                 </div>
               </div>
 
-              <div className={`section ${hotelStyles.section}`}>
+              <div className={`section ${hotelStyles.suSection}`}>
                 <h5>旅館圖片</h5>
                 <div
                   id="imagePreviewContainer"
                   className="d-flex flex-wrap gap-3 mb-2"
                 >
-                  <div className="image-card">
+                  <div className={hotelStyles.suImageCard}>
                     <img
                       src="/hotel/hotel-uploads/11-room.webp"
                       alt="旅館圖片1"
                     />
-                    <button type="button" className="delete-btn">
+                    <button type="button" className={hotelStyles.suDeleteBtn}>
                       &times;
                     </button>
                   </div>
-                  <div className="image-card">
+                  <div className={hotelStyles.suImageCard}>
                     <img
                       src="/hotel/hotel-uploads/6-s-room.jpg"
                       alt="旅館圖片2"
                     />
-                    <button type="button" className="delete-btn">
+                    <button type="button" className={hotelStyles.suDeleteBtn}>
                       &times;
                     </button>
                   </div>
@@ -229,7 +228,7 @@ export default function HotelEditPage(props) {
                   + 新增圖片
                 </button>
               </div>
-              <div className={`section ${hotelStyles.section}`}>
+              <div className={`section ${hotelStyles.suSection}`}>
                 <h5>旅館圖片</h5>
                 <div className="mb-3">
                   <label>房型</label>
@@ -289,7 +288,7 @@ export default function HotelEditPage(props) {
                   </button>
                 </div>
               </div>
-              <div className={`section ${hotelStyles.section}`}>
+              <div className={`section ${hotelStyles.suSection}`}>
                 <h5>營業時間</h5>
                 <div className="mb-3">
                   <label>營業時間</label>

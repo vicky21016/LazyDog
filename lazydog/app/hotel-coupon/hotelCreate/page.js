@@ -151,7 +151,7 @@ export default function HotelEditPage(props) {
           <div className="col-md-9">
             <h3 className="mb-3">新增旅館</h3>
             <form>
-              <div className="section">
+              <div className={`section ${hotelStyles.suSection}`}>
                 <h5>基本資訊</h5>
                 <div className="mb-3">
                   <label className="form-label">旅館名稱 *</label>
@@ -167,27 +167,27 @@ export default function HotelEditPage(props) {
                 </div>
               </div>
 
-              <div className="section">
+              <div className={`section ${hotelStyles.suSection}`}>
                 <h5>旅館圖片</h5>
                 <div
                   id="imagePreviewContainer"
                   className="d-flex flex-wrap gap-3 mb-2"
                 >
-                  <div className="image-card">
+                  <div className={hotelStyles.suImageCard}>
                     <img
                       src="/hotel/hotel-uploads/11-room.webp"
                       alt="旅館圖片1"
                     />
-                    <button type="button" className="delete-btn">
+                    <button type="button" className={hotelStyles.suDeleteBtn}>
                       &times;
                     </button>
                   </div>
-                  <div className="image-card">
+                  <div className={hotelStyles.suImageCard}>
                     <img
                       src="/hotel/hotel-uploads/6-s-room.jpg"
                       alt="旅館圖片2"
                     />
-                    <button type="button" className="delete-btn">
+                    <button type="button" className={hotelStyles.suDeleteBtn}>
                       &times;
                     </button>
                   </div>
@@ -207,7 +207,7 @@ export default function HotelEditPage(props) {
                   + 新增圖片
                 </button>
               </div>
-              <div className="section">
+              <div className={`section ${hotelStyles.suSection}`}>
                 <h5>房型</h5>
                 <div id="roomContainer">
                   {rooms.map((room, index) => (
@@ -288,7 +288,7 @@ export default function HotelEditPage(props) {
                 </button>
               </div>
 
-              <div className="section">
+              <div className={`section ${hotelStyles.suSection}`}>
                 <h5>營業時間</h5>
                 <div className="mb-3">
                   <label className="form-label">營業時間</label>
@@ -308,7 +308,7 @@ export default function HotelEditPage(props) {
                   <input type="time" className="form-control" required />
                 </div>
               </div>
-              <div className="section">
+              <div className={`section ${hotelStyles.suSection}`}>
                 <h5>其他資訊</h5>
                 <div className="mb-3">
                   <label className="form-label">標籤</label>

@@ -51,7 +51,7 @@
   background: #f9f9f9;
 }
 
-.imageCard {
+.suImageCard {
   position: relative;
   width: 120px;
   height: 120px;
@@ -66,13 +66,13 @@
   text-align: center;
   padding: 8px;
 }
-.imageCard img {
+.suImageCard img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 8px;
 }
-.deleteBtn {
+.suDeleteBtn {
   position: absolute;
   top: 5px;
   right: 5px;
