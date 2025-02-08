@@ -1,0 +1,222 @@
+.mainDog {
+  width: 100%;
+  height: 416px;
+  background-image: url('/article_img/main-dog.png');
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
+}
+
+.postButton {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: end;
+}
+
+.top {
+  width: 393px;
+  height: 537px;
+  /* display: block; */
+}
+
+.middle {
+  width: 860px;
+  height: auto;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 50px;
+  position: absolute;
+  left: 452px;
+  top: 50px;
+}
+
+.bottom {
+  width: 393px;
+  height: 618px;
+  position: absolute;
+  top: 564px;
+}
+
+/* top */
+
+.top a {
+  text-decoration: none;
+  color: #9f9f9f;
+  font-size: 24px;
+}
+
+.top a:hover {
+  color: #f5842b;
+}
+
+.top select {
+  display: none;
+}
+
+.aside-category {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* middle */
+.post {
+  background-color: #ffbd00;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  width: 120px;
+  height: 30px;
+  font-size: 16px;
+}
+
+.filter {
+  background: none;
+  border: none;
+}
+
+.card {
+  width: 818.69px;
+  height: 684px;
+  border: none;
+  /* display: flex; */
+  gap: 16px;
+}
+
+.card img {
+  width: 818.69px;
+  height: 500px;
+  object-fit: cover;
+}
+
+.cardDetail {
+  display: flex;
+  gap: 50px;
+}
+
+.card p {
+  font-size: 24px;
+}
+
+.card a {
+  text-decoration: underline;
+  text-underline-offset: 12px;
+  color: black;
+}
+
+.card a:hover {
+  text-decoration: underline;
+  text-underline-offset: 12px;
+  color: #f5842b;
+}
+
+/* bottom */
+.asideRead {
+  display: flex;
+  width: 100%;
+  gap: 12px;
+  margin: 37px 0;
+}
+
+.asideRead img {
+  width: 80px;
+  height: 80px;
+}
+
+.tt {
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tt a {
+  color: black;
+  text-decoration: none;
+  max-width: 265.81px;
+  max-height: 50px;
+  overflow: hidden;
+}
+
+.tt a:hover {
+  color: #f5842b;
+  text-decoration: none;
+}
+
+.pagination .page-item .page-link {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  padding: 0;
+}
+
+.pagination .page-item .page-link {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  padding: 0;
+}
+
+.pagination .page-item {
+  margin: 0 20px;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #f5842b !important;
+  /* 設定背景顏色 */
+  border-color: #f5842b !important;
+  /* 設定邊框顏色 */
+  color: white !important;
+  /* 讓文字變白色，對比更明顯 */
+}
+.page{
+  position: relative;
+  top: 0;
+}
+
+/* @media screen */
+@media screen and (max-width: 390px) {
+  .middle {
+    width: 366px;
+    height: auto;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 50px;
+    position: absolute;
+    left: 12px;
+    top: 537px;
+  }
+
+  .bottom {
+    position: absolute;
+    top: 4250px;
+    display: block;
+  }
+
+  .post-button {
+    justify-content: center;
+  }
+  .card{
+    width: 366px;
+  }
+  .card img{
+    width: 366px;
+  }
+  .page{
+    position: relative;
+    top: 1150px;
+  }
+}
