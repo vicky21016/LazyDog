@@ -5,6 +5,7 @@ import hotelStyles from "../../../styles/modules/operatorHotel.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 
+
 export default function HotelEditPage(props) {
   const imageUploadRef = useRef(null);
   const [hotelName, setHotelName] = useState("寵物樂園");
@@ -228,7 +229,7 @@ export default function HotelEditPage(props) {
                   + 新增圖片
                 </button>
               </div>
-              <div class={`section ${hotelStyles.section}`}>
+              <div className={`section ${hotelStyles.section}`}>
                 <h5>旅館圖片</h5>
                 <div className="mb-3">
                   <label>房型</label>
@@ -288,7 +289,7 @@ export default function HotelEditPage(props) {
                   </button>
                 </div>
               </div>
-              <div class={`section ${hotelStyles.section}`}>
+              <div className={`section ${hotelStyles.section}`}>
                 <h5>營業時間</h5>
                 <div className="mb-3">
                   <label>營業時間</label>

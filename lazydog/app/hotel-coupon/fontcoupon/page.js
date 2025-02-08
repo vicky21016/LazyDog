@@ -69,8 +69,8 @@ export default function CouponPage() {
                   <Image
                     src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
                     alt="優惠券背景"
-                    fill
-                    objectFit="cover"
+                    fill={true}
+                    style={{ objectFit: "cover" }}
                   />
                   <div className={styles.suCouponContent}>
                     <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
@@ -102,13 +102,13 @@ export default function CouponPage() {
               />
             </div>
             {/* 右側 3 張優惠券 */}
-            <div className="col-lg-6 col-md-6 col-sm-12 ">
+            <div className="col-lg-6 col-md-6 col-sm-12 text-center">
               <div className={styles.suCoupon}>
                 <Image
-                  src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
+                  src="/hotel/hotel-images/page-image/coupon/coupon-B.png"
                   alt="優惠券背景"
-                  layout="fill"
-                  objectFit="cover"
+                  fill={true}
+                  style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
                   <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
@@ -123,10 +123,10 @@ export default function CouponPage() {
               </div>
               <div className={styles.suCoupon}>
                 <Image
-                  src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
+                  src="/hotel/hotel-images/page-image/coupon/coupon-B.png"
                   alt="優惠券背景"
-                  layout="fill"
-                  objectFit="cover"
+                  fill={true}
+                  style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
                   <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
@@ -141,10 +141,10 @@ export default function CouponPage() {
               </div>
               <div className={styles.suCoupon}>
                 <Image
-                  src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
+                  src="/hotel/hotel-images/page-image/coupon/coupon-B.png"
                   alt="優惠券背景"
-                  layout="fill"
-                  objectFit="cover"
+                  fill={true}
+                  style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
                   <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
@@ -166,17 +166,14 @@ export default function CouponPage() {
 
       <div className={`container-fluid  ${styles.suThirdSection}`}>
         <div className="container">
-          <div className="row">
-            <div
-              className="col-lg-5 col-md-5 col-sm-12 mt-5"
-              
-            >
+          <div className="row align-items-center justify-content-between">
+            <div className="col-lg-5 col-md-5 col-sm-12 mt-5 text-center">
               <div className={styles.suCoupon}>
                 <Image
                   src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
                   alt="優惠券背景"
-                  fill
-                  objectFit="cover"
+                  fill={true}
+                  style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
                   <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
@@ -194,8 +191,8 @@ export default function CouponPage() {
                 <Image
                   src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
                   alt="優惠券背景"
-                  layout="fill"
-                  objectFit="cover"
+                  fill={true}
+                  style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
                   <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
@@ -213,8 +210,8 @@ export default function CouponPage() {
                 <Image
                   src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
                   alt="優惠券背景"
-                  layout="fill"
-                  objectFit="cover"
+                  fill={true}
+                  style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
                   <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
@@ -236,7 +233,6 @@ export default function CouponPage() {
                   width: "100%",
                   maxWidth: "550px",
                   height: "auto",
-                  marginLeft: "150px",
                 }}
               />
             </div>
@@ -246,7 +242,7 @@ export default function CouponPage() {
       {/* 第四個區塊 */}
       <div className={`container-fluid ${styles.suForthSection}`}>
         <div className="container">
-          <div className="row" style={{ marginLeft: "150px" }}>
+          <div className="row align-items-center justify-content-between">
             <div className="col-lg-5 col-md-5 col-sm-12 text-center">
               <video
                 className="coupon-video"
@@ -254,6 +250,7 @@ export default function CouponPage() {
                 style={{ width: "100%", maxWidth: "550px", height: "auto" }}
                 autoPlay
                 loop
+                onEnded={(e) => e.target.play()}
               ></video>
             </div>
             <div className="col-lg-6 col-md-6 col-sm-12">
@@ -261,8 +258,8 @@ export default function CouponPage() {
                 <Image
                   src="/hotel/hotel-images/page-image/coupon/coupon-G.png"
                   alt="優惠券背景"
-                  fill
-                  objectFit="cover"
+                  fill={true}
+                  style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
                   <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
@@ -280,8 +277,8 @@ export default function CouponPage() {
                 <Image
                   src="/hotel/hotel-images/page-image/coupon/coupon-B.png"
                   alt="優惠券背景"
-                  fill
-                  objectFit="cover"
+                  fill={true}
+                  style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
                   <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
@@ -299,8 +296,8 @@ export default function CouponPage() {
                 <Image
                   src="/hotel/hotel-images/page-image/coupon/coupon-G.png"
                   alt="優惠券背景"
-                  fill
-                  objectFit="cover"
+                  fill={true}
+                  style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
                   <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>

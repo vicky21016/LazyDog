@@ -4,6 +4,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import "../../../html/hotel-coupon/css/fontHotelHome.css";
 import "nouislider/dist/nouislider.css";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
