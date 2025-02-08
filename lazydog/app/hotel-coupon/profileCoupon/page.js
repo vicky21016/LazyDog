@@ -207,7 +207,7 @@ export default function ProfileCouponPage(props) {
               </li>
             </ul>
 
-            <div className={couponStyles.suCouponCard}>
+            <div className={`mt-2 ${couponStyles.suCouponCard}`}>
               <span className={couponStyles.suPrice}>NT200</span>
               <div className={couponStyles.suDetails}>
                 <p>

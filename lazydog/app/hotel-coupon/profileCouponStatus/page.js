@@ -241,7 +241,9 @@ export default function ProfileCouponPage(props) {
               </li>
             </ul>
 
-            <div className={`status-filter mb-3 ${couponStyles.statusFilter}`}>
+            <div
+              className={`status-filter active mb-3 ${couponStyles.statusFilter}`}
+            >
               <button
                 className={filter === "used" ? "active" : ""}
                 onClick={() => filterStatus("used")}
@@ -270,22 +272,29 @@ export default function ProfileCouponPage(props) {
 
             {/* 優惠券清單 */}
             {filteredCoupons.map((coupon) => (
-              <div key={coupon.id} className={`coupon-card ${coupon.status}`}>
-                <span className="price">{coupon.price}</span>
-                <div className="details">
+              <div
+                key={coupon.id}
+                className={`coupon-card ${couponStyles.suCouponCard} ${
+                  styles[coupon.status]
+                }`}
+              >
+                <span className={`price ${couponStyles.suPrice}`}>
+                  {coupon.price}
+                </span>
+                <div className={`details ${couponStyles.suDetails}`}>
                   <p>
                     <strong>{coupon.description}</strong>
                   </p>
                   <p className="text-muted">有效期限: {coupon.expiry}</p>
                   {coupon.status === "expired" && (
-                    <p className="expired text-danger">⚠ 已逾期</p>
+                    <p className={couponStyles.suExpired}>⚠ 已逾期</p>
                   )}
                   {coupon.status === "used" && (
-                    <p className="expired text-danger">⚠ 已使用</p>
+                    <p className={couponStyles.suUsed}>⚠ 已使用</p>
                   )}
                 </div>
-                {coupon.status === "expired" && (
-                  <div className="expired text-danger">失效</div>
+                {coupon.status === "unused" && (
+                  <div className={couponStyles.suUnused}>尚未使用</div>
                 )}
               </div>
             ))}

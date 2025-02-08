@@ -43,12 +43,14 @@
 .suCouponCard {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  border: 1px solid #ddd;
+  justify-content: space-between ;
+  border: 1px solid #ddd ;
   border-radius: 10px;
-  padding: 15px;
-  background-color: white;
-  margin-bottom: 15px;
+  padding: 15px ;
+  background-color: white ;
+  margin-bottom: 15px ;
+  height: 100px;
+
 }
 .suCouponCard .suPrice {
   font-size: 22px;
@@ -65,9 +67,21 @@
   margin: 0;
   font-size: 14px;
 }
-.suCouponCard .suDetails .suExpired {
-  color: red;
-  font-size: 12px;
+.suUsed {
+  background-color: #d4edda;
+  font-size: 14px;
+  color: #258209;
+}
+
+.suExpired {
+  background-color: #f8d7da;
+  font-size: 14px;
+  color: #721c24;
+}
+
+.suUnused {
+  background-color: white;
+  color: rgb(97, 30, 239);
 }
 
 .suCouponCard .suAction {
@@ -106,16 +120,20 @@
 }
 
 .statusFilter button {
-  border: none;
+  border: none ;
   background: none;
   font-size: 16px;
   font-weight: bold;
   margin-right: 20px;
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
-.statusFilter .active {
-  color: #f95325;
+.statusFilter button:hover {
+  color:#f95325;
 }
+
+
+
 .suTable th,
 .suTable td {
   vertical-align: middle;
