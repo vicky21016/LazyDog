@@ -1,12 +1,11 @@
-
 /*  介紹  */
-.hotel-description {
+.suHotelDescription {
   max-width: 550px;
   line-height: 1.6;
   text-align: left;
 }
 
-.hotel-image {
+.suHotelImage {
   width: 100%;
   max-height: 400px;
   object-fit: cover;
@@ -14,7 +13,7 @@
 }
 
 /*  房型 */
-.room-card {
+.suRoomCard {
   text-align: center;
   padding: 15px;
   margin-bottom: 30px;
@@ -22,10 +21,10 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  min-height: 420px; 
+  min-height: 420px;
 }
 
-.room-card img {
+.suRoomCard img {
   width: 100%;
   height: 250px;
   object-fit: cover;
@@ -33,18 +32,18 @@
   background-color: #fff;
 }
 
-.room-card h3 {
+.suRoomCard h3 {
   font-size: 20px;
 }
 
-.room-price {
+.suRoomCard {
   font-size: 18px;
   font-weight: bold;
   color: #ff6600;
 }
 
 /* book按鈕 */
-.room-book-btn {
+.suRoomBookBtn {
   background-color: #ff9900;
   color: white;
   padding: 10px 15px;
@@ -55,12 +54,12 @@
   cursor: pointer;
 }
 
-.room-book-btn:hover {
+.suRoomBookBtn:hover {
   background-color: #ff6600;
 }
 
 /* =================== 廣告區 (努力區塊) =================== */
-.effort-section {
+.suEffortSection {
   background-image: url("/hotel/hotel-images/page-image/bg-hotel-01.png");
   background-size: cover;
   background-position: center;
@@ -69,21 +68,20 @@
   text-align: center;
 }
 
-.effort-title {
+.suEffortTitle {
   font-size: 28px;
   font-weight: bold;
   color: #ff9900;
   margin-bottom: 10px;
 }
 
-.effort-subtitle {
+.suEffortSubtitle {
   font-size: 18px;
   color: #5db2a5;
   margin-bottom: 25px;
 }
 
-
-.effort-stats {
+.suEffortStats {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,14 +89,14 @@
   flex-wrap: wrap;
 }
 
-.stat-item {
+.suStatItem {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-.stat-item img {
+.suStatItem img {
   width: 70px;
   height: 70px;
   border-radius: 50%;
@@ -106,47 +104,48 @@
   background-color: #ffcc80;
 }
 
-.stat-item p {
+.suStatItem p {
   font-size: 16px;
   color: #333;
   font-weight: 500;
 }
 
 /* 按鈕兩顆 */
-.effort-buttons {
+.suEffortButtons {
   display: flex;
   justify-content: center;
   gap: 20px;
 }
 
-.effort-buttons .btn {
+.suEffortButtons .btn {
   font-size: 16px;
   padding: 12px 24px;
   border-radius: 8px;
 }
 
-.effort-buttons .btn-primary {
+.suEffortButtons .suBtnPrimary {
   background-color: #ff9900;
+  color: white;
   border: none;
 }
 
-.effort-buttons .btn-primary:hover {
+.suEffortButtons .suBtnPrimary:hover {
   background-color: #e67e22;
 }
 
-.effort-buttons .btn-outline-light {
+.suEffortButtons .suBtnOutlineLight {
   color: #ff9900;
   border: 2px solid #ff9900;
   background: transparent;
 }
 
-.effort-buttons .btn-outline-light:hover {
+.suEffortButtons .suBtnOutlineLight:hover {
   background-color: #ff9900;
   color: white;
 }
 
-/* =================== Google 地圖 API =================== */
-.map-container {
+/*Google 地圖 API  */
+.suMapContainer {
   position: relative;
   width: 100%;
   height: 500px;
@@ -154,13 +153,13 @@
 }
 
 @media (max-width: 768px) {
-  .map-container {
-    height: 300px; 
+  .suMapContainer {
+    height: 300px;
   }
 }
 
 /* 波浪裝飾 */
-.wave-container {
+.suWaveContainer {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -168,38 +167,38 @@
   z-index: 1;
 }
 
-.wave svg {
+.suRoomWave svg {
   width: 100%;
   height: 60px;
   display: block;
 }
 
-/* =================== 響應式設計 (RWD) =================== */
+/* (RWD) */
 @media (max-width: 1024px) {
-  .search-bar {
+  .suSearchBar {
     flex-wrap: wrap;
     justify-content: center;
   }
-  .search-group {
+  .suSearchGroup {
     flex-basis: 100%;
     max-width: 100%;
   }
 
-  .effort-stats {
+  .suEffortStats {
     flex-wrap: wrap;
     justify-content: center;
   }
-  .stat-item {
+  .suStatItem {
     flex-basis: 45%;
   }
 }
 
 @media (max-width: 768px) {
-  .effort-stats {
+  .suEffortStats {
     flex-direction: column;
     gap: 20px;
   }
-  .effort-buttons {
+  .suEffortButtons {
     flex-direction: column;
   }
 }
