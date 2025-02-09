@@ -1,353 +1,305 @@
-.suBody {
-    background-color: #fff;
-  }
+/* 搜尋欄 */
+.suSearchBar {
+  display: flex;
+  gap: 15px;
+  background: #f5d1a8;
+  border-radius: 15px;
+  padding: 12px;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 950px;
+  margin: auto;
+  flex-wrap: wrap;
+}
 
-  /* 搜尋欄 */
-  .suSearch-bar {
-    display: flex;
-    gap: 15px;
-    background: #f5d1a8;
-    border-radius: 15px;
-    padding: 12px;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 950px;
-    margin: auto;
-  }
+.suSearchGroup {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 8px;
+  padding: 8px 12px;
+  flex: 1;
+  max-width: 300px;
+}
 
-  .suSearch-group {
-    display: flex;
-    align-items: center;
-    background: white;
-    border-radius: 8px;
-    padding: 8px 12px;
-    flex: 1;
-    max-width: 300px;
-  }
+.suIcon {
+  margin-right: 8px;
+  width: 20px;
+  height: 20px;
+}
 
-  .suIcon {
-    margin-right: 8px;
-    width: 20px;
-    height: 20px;
-  }
+.suSearchInput,
+.suSearchDate {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+  background: transparent;
+  cursor: pointer;
+}
 
-  .suSearch-input,
-  .suSearch-date {
-    border: none;
-    outline: none;
-    width: 100%;
-    font-size: 16px;
-    background: transparent;
-    cursor: pointer;
-  }
+/* 數量 */
+.suQuantityBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
 
-  /* 數量 */
-  .suQuantity-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-  }
+.suQuantityBtn img {
+  width: 24px;
+  height: 24px;
+}
 
-  .suQuantity-btn img {
-    width: 24px;
-    height: 24px;
-  }
+.suQuantityBtn:hover {
+  background: #f3dccc;
+}
 
-  .suQuantity-btn:hover {
-    background: #f3dccc;
-  }
+.suQuantityNumber {
+  width: 40px;
+  text-align: center;
+  font-size: 16px;
+}
 
-  .suQuantity-number {
-    width: 40px;
-    text-align: center;
-    font-size: 16px;
-  }
+/* 搜尋按鈕 */
+.suSearchBtn {
+  background-color: #f5842b;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+.suSearchBtn:hover {
+  background-color: #e65c00;
+}
+.suSearchBg {
+  background-size: cover;
+  padding: 80px 0;
+}
 
-  /* 搜尋按鈕 */
-  .suSearch-btn {
-    background-color: #f5842b;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-  }
-  .suSearch-btn:hover {
-    background-color: #e65c00;
-  }
-  .suSearch-bg {
-    background: url("../../public/images/hotel/hotel-images/services-banner-dog-boarding.2203041608391.jpg")
-      no-repeat center;
-    background-size: cover;
-    padding: 80px 0;
-  }
+/* 地圖 */
+.suMapCard {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-  /* 地圖 */
-  .suMap-card {
-    position: relative;
-    width: 100%;
-    max-width: 300px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }
+.suMapBtn {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 123, 255, 0.9);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 10;
+}
 
-  .suMap-btn {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 123, 255, 0.9);
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    z-index: 10;
-  }
+.suMapBtn:hover {
+  background: rgb(62, 228, 81);
+}
 
-  .suMap-btn:hover {
-    background: rgba(0, 123, 255, 1);
-  }
+.suMapImage {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
 
-  .suMap-image {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-  }
+/* 側邊篩選區 */
+.suSidebar {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
 
-  /* 側邊篩選區 */
-  .suSidebar {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-  }
+.suFilterTitle {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
 
-  .suFilter-title {
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
+.suFilterGroup {
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
 
-  .suFilter-group {
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-  }
+/* 價格篩選 */
+.suPriceFilterContainer {
+  background: #fff;
+  padding: 20px;
+  text-align: center;
+}
 
-  /* 價格篩選 */
-  .suPrice-filter-container {
-    background: #fff;
-    padding: 20px;
-    text-align: center;
-  }
+.suPriceInputGroup {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
 
-  .suPrice-input-group {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 10px;
-  }
+.suPriceInput {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 2px solid #ff9900;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
 
-  .suPrice-input {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    border: 2px solid #ff9900;
-    border-radius: 20px;
-    padding: 5px 10px;
-  }
+.suPriceInput input {
+  border: none;
+  outline: none;
+  text-align: center;
+  width: 50px;
+  font-size: 12px;
+}
 
-  .suPrice-input input {
-    border: none;
-    outline: none;
-    text-align: center;
-    width: 50px;
-    font-size: 12px;
-  }
+/* 篩選按鈕 */
+.suClearFilterBtn {
+  background: none;
+  border: 2px solid #ff9900;
+  color: #ff9900;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
 
-  /* 滑桿 */
-  .suRange-slider {
-    position: relative;
-    width: 100%;
-    height: 40px;
-  }
+.suClearFilterBtn:hover {
+  background: #ff9900;
+  color: white;
+}
+.suShowMore {
+  cursor: pointer;
+  color: #0c0c0d;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 10px;
+}
 
-  .suRange-slider input {
-    position: absolute;
-    width: 100%;
-    height: 5px;
-    background: #ddd;
-    border-radius: 5px;
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-  }
+.suShowMore:hover {
+  text-decoration: underline;
+}
 
-  .suRange-slider input::-webkit-slider-thumb {
-    width: 20px;
-    height: 20px;
-    background: #ff9900;
-    border-radius: 50%;
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-  }
+.suHidden {
+  display: none;
+}
 
-  /* 篩選按鈕 */
-  .suClear-filter-btn {
-    background: none;
-    border: 2px solid #ff9900;
-    color: #ff9900;
-    padding: 8px 20px;
-    border-radius: 30px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-  }
+/* 飯店 */
+.suHotelCard {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
 
-  .suClear-filter-btn:hover {
-    background: #ff9900;
-    color: white;
-  }
-  .suShow-more {
-    cursor: pointer;
-    color: #0c0c0d;
-    font-weight: bold;
-    display: inline-block;
-    margin-top: 10px;
-  }
+.suHotelCard img {
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
 
-  .suShow-more:hover {
-    text-decoration: underline;
-  }
+.suHotelInfo {
+  flex: 1;
+  padding-left: 15px;
+}
 
-  .suHidden {
-    display: none;
-  }
-  /*自訂 Slider */
-  .slider-track {
-    background: #ff9900 !important;
-    height: 5px;
-  }
+.suHotelInfo h5 {
+  color: #333;
+  font-weight: bold;
+}
 
-  .slider-selection {
-    background: #ff6600 !important;
-  }
+.suHotelInfo p {
+  color: #ff6600;
+  font-size: 14px;
+}
 
-  .slider-handle {
-    background: white !important;
-    border: 3px solid #ff9900 !important;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-  }
+.suPriceBox {
+  text-align: right;
+  font-size: 18px;
+  font-weight: bold;
+  color: #444;
+}
 
-  .slider-handle:hover {
-    background-color: #ff9900 !important;
-    border-color: #ff6600 !important;
-  }
+.suReview {
+  color: #008080;
+  font-size: 14px;
+}
 
-  .tooltip-inner {
-    background: white !important;
-    color: #333 !important;
-    font-weight: bold;
-    border: 1px solid #ccc !important;
-  }
+.suBookBtn {
+  background-color: #ff9900;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
 
-  /* 清除搜尋按鈕 */
-  .suClear-btn {
-    background: white;
-    border: 2px solid #ff9900;
-    color: #ff9900;
-    border-radius: 20px;
-    padding: 8px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-  }
+.suBookBtn:hover {
+  background-color: #ff6600;
+}
 
-  .suClear-btn:hover {
-    background: #ff9900;
-    color: white;
-  }
+/*  分頁 */
 
-  /* 飯店 */
-  .suHotel-card {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 15px 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ddd;
-  }
+.suPagination {
+  display: flex;
+  justify-content: center;
+  padding: 15px 0;
+  border-radius: 50%;
+}
 
-  .suHotel-card img {
-    width: 180px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 10px;
-  }
+/* 分頁按鈕 */
+.pageItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 50%;
+}
 
-  .suHotel-info {
-    flex: 1;
-    padding-left: 15px;
-  }
+.pageLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50% !important; /* 確保是圓形 */
+  color: #333333;
+  border: none;
+  padding: 0;
+  font-size: 16px;
+  transition: background 0.3s, color 0.3s;
+}
 
-  .suHotel-info h5 {
-    color: #333;
-    font-weight: bold;
-  }
+.pageItemActive .pageLink {
+  background-color: #f5842b;
+  color: white;
+  border-radius: 50%;
+}
+.pageItemDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+  border-radius: 50%;
+  background: #f3f3f3;
+}
 
-  .suHotel-info p {
-    color: #ff6600;
-    font-size: 14px;
-  }
-
-  .suPrice-box {
-    text-align: right;
-    font-size: 18px;
-    font-weight: bold;
-    color: #444;
-  }
-
-  .suReview {
-    color: #008080;
-    font-size: 14px;
-  }
-
-  .suBook-btn {
-    background-color: #ff9900;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-  }
-
-  .suBook-btn:hover {
-    background-color: #ff6600;
-  }
-
-  /*  分頁 */
-  .suPagination .page-item .page-link {
-    border-radius: 50%;
-    margin: 0 5px;
-    color: #333;
-    border: none;
-  }
-
-  .suPagination .page-item.active .page-link {
-    background-color: #f5842b;
-    color: white;
-    border-radius: 50%;
-  }
-
-  .suPagination .page-item .page-link:hover {
-    background-color: #ff9900;
-    color: white;
-  }
+.pageLink:hover {
+  background-color: #ff9900;
+  color: white;
+}
