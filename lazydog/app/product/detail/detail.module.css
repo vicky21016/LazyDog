@@ -1,0 +1,491 @@
+.container {
+  margin-top: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 50px;
+}
+/* --------麵包屑與標題-------- */
+.Breadcrumbs {
+  width: 242px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  a {
+    color: var(--gray);
+  }
+  .BreadcrumbsActive {
+    color: var(--Black);
+    font-weight: bold;
+  }
+}
+/* --------------------------- */
+/* ----------商品資訊---------- */
+.ProductInfo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.ProductInfoImgGroup {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+}
+.ProductInfoImgSmall {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  .ProductInfoImgSmallActive {
+    border: 4px solid var(--Orange);
+  }
+  figure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid var(--skin);
+    border-radius: 4px;
+  }
+}
+.ProductInfoDetail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  flex: 1 0 0;
+}
+.ProductInfoContent {
+  display: flex;
+  padding: 0px 10px 30px 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  .InfoProductName {
+    font-weight: bold;
+  }
+}
+.InfoFavoriteGroup {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  h4 {
+    font-weight: bold;
+    user-select: none;
+  }
+}
+.InfoOnsaleGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  .OnsaleTag {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--Orange);
+    border-radius: 30px;
+    h4 {
+      color: var(--White);
+    }
+  }
+  .OnsaleInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .OnsaleTime {
+    font-weight: bold;
+  }
+}
+.InfoRateGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.InfoPriceGroup {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  h1 {
+    font-weight: bold;
+  }
+  h2 {
+    text-decoration: line-through;
+    color: var(--gray);
+  }
+  h3 {
+    color: var(--gray);
+  }
+}
+.InfoQtyGroup {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--White);
+    width: 30px;
+    height: 30px;
+    padding: 0 8px;
+    border: 1px solid var(--Orange);
+    border-radius: 50%;
+    img {
+      width: 100%;
+    }
+  }
+  input {
+    width: 40px;
+    font-size: 20px;
+    text-align: center;
+    background: none;
+    border: none;
+    outline: none;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}
+.InfoBtnGroup {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    background: var(--orange);
+    border: 1px solid var(--orange);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    padding: 25px 55px;
+  }
+  h3 {
+    font-weight: bold;
+    color: var(--White);
+    cursor: pointer;
+  }
+  .BtnBuynow {
+    background: var(--White);
+    h3 {
+      color: var(--orange);
+    }
+  }
+}
+/* --------------------------- */
+/* ------商品詳細(手風琴)------- */
+.StickyTop {
+  background: #fff;
+  padding-block: 20px;
+  opacity: 0;
+  width: 100%;
+  ul {
+    display: flex;
+    justify-content: space-around;
+  }
+  a {
+    cursor: pointer;
+    font-weight: bold;
+  }
+}
+.ProductDetail {
+  width: 100%;
+  .AccordionButton {
+    border: 1px solid var(--skin);
+    box-shadow: none;
+    &:not(.collapsed) {
+      background: var(--Orange);
+      h3,
+      h2 {
+        color: var(--White);
+      }
+    }
+  }
+}
+.AccordionItem {
+  h3 {
+    font-weight: bold;
+  }
+}
+.AccordionBody {
+  padding: 20px 30px;
+  h4 {
+    line-height: 2;
+  }
+  figure {
+    width: 840px;
+    margin: auto;
+  }
+  img {
+    width: 100%;
+  }
+  p {
+    font-size: 16px;
+    line-height: 2;
+  }
+}
+/* ------商品評價(手風琴)------- */
+.ProductDetailRate {
+  .AccordionBody {
+    display: flex;
+    padding-bottom: 30px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+  }
+}
+.ScoreBar {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+.Score {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.StarGroup {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  img {
+    width: 18px;
+  }
+}
+.StarBarGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+  .StarGroup {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    img {
+      width: 12px;
+    }
+  }
+}
+.StarBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  p {
+    line-height: 1;
+  }
+}
+.BarArea {
+  width: 110px;
+  height: 5px;
+  background: var(--skin);
+}
+.Bar {
+  height: 100%;
+  background: var(--orange);
+}
+/* ------商品評價(卡片)------- */
+.RateCardGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+.RateCard {
+  display: flex;
+  width: 392px;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 10px;
+  border: 1px solid var(--Orange);
+}
+.RateCardText {
+  width: 100%;
+  display: flex;
+  padding: 20px 20px 5px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  .StarGroup {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    img {
+      width: 12px;
+    }
+  }
+}
+.RateCardUser {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+    }
+    h6 {
+      cursor: pointer;
+    }
+  }
+}
+.RateCardBtnDate {
+  width: 100%;
+  display: flex;
+  padding: 10px 20px 20px 20px;
+  justify-content: space-between;
+  align-items: center;
+  .RateCardBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 0.5px solid var(--skin);
+    border-radius: 50%;
+  }
+}
+.RateMore {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: var(--Orange);
+}
+/* --------------------------- */
+/* ----------也買區------------ */
+.AlsoBuy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 60px;
+  width: 100%;
+  overflow: hidden;
+}
+.AlsoBuyTitle {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.AlsoBuyList {
+  display: flex;
+  align-items: center;
+  gap: 45px;
+}
+
+/* --------------------------- */
+/* ----------他愛區------------ */
+.OtherLike {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 60px;
+  width: 100%;
+  overflow: hidden;
+}
+.OtherLikeTitle {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.OtherLikeList {
+  display: flex;
+  align-items: center;
+  gap: 45px;
+}
+/* --------------------------- */
+/* ---------card元件----------- */
+.ProductCard {
+  width: 240px;
+  position: relative;
+}
+.ProductCardHover {
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  position: absolute;
+  background: rgb(241, 213, 182, 0.7);
+  top: 0;
+  left: 0;
+  .HoverIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--White);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .CartBtn {
+    h2 {
+      display: none;
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      line-height: 1;
+      color: var(--Black);
+      text-shadow: 0 0 2px var(--White);
+      cursor: pointer;
+    }
+  }
+}
+.ProductCardImg {
+  width: 100%;
+  img {
+    width: 100%;
+  }
+}
+.ProductCardHeart {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  width: 25px;
+  img {
+    width: 100%;
+  }
+}
+.ProductCardOnsale {
+  position: absolute;
+  background: url(/img/font/onsale-bg.png) no-repeat center/cover;
+  width: 50px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--White);
+  user-select: none;
+  padding-bottom: 3px;
+}
+.ProductCardInfo {
+  padding: 0 20px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  .ProductCardName {
+    color: var(--Black);
+  }
+  .ProductCardPrice {
+    color: var(--Orange);
+  }
+}
+/* --------------------------- */
