@@ -164,7 +164,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; 
+  height: 100vh;
 }
 .lumi-login-container {
   width: 100%;
@@ -310,11 +310,11 @@ body {
 /* menu 基本資料 */
 .lumi-wrapper {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: flex-start; /* 頂端對齊 */
-  gap: 40px; 
-  margin: 80px auto 20px; 
-  max-width: 1320px; 
+  gap: 40px;
+  margin: 80px auto 20px;
+  max-width: 1320px;
 }
 .lumi-menu-container {
   width: 100%;
@@ -334,9 +334,8 @@ body {
 }
 /* teacher */
 .lumi-all-wrapper {
-  margin: 80px auto 20px; 
-  max-width: 1320px; 
-  
+  margin: 80px auto 20px;
+  max-width: 1320px;
 }
 .lumi-teacher-btn {
   display: flex;
@@ -349,25 +348,25 @@ body {
 }
 .lumi-dog-container {
   display: flex;
-  justify-content: center; 
-  align-items: center;  
-  background: #FFF6E8; 
+  justify-content: center;
+  align-items: center;
+  background: #fff6e8;
 }
 
 .lumi-dog {
   display: flex;
-  justify-content: space-between; 
-  align-items: center; 
+  justify-content: space-between;
+  align-items: center;
 }
 
-.lumi-dog  div {
+.lumi-dog div {
   display: flex;
   flex-direction: column;
   text-align: center;
   color: #66c5bd;
   font-size: 24px;
-font-weight: 600;
-letter-spacing: 6px
+  font-weight: 600;
+  letter-spacing: 6px;
 }
 .lumi-m-title {
   color: #f5842b;
@@ -385,6 +384,6 @@ letter-spacing: 6px
   line-height: normal;
   letter-spacing: 3px;
 }
-.lumi-teacher-team{
-  background-color: #FDFAF5;
+.lumi-teacher-team {
+  background-color: #fdfaf5;
 }
