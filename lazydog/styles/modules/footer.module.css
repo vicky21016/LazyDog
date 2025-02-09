@@ -1,0 +1,296 @@
+/* 設定 */
+:root {
+  * {
+    font-family: "Noto Sans TC", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
+  --Orange: #f5842b;
+  --orange: #f5842b;
+  --Skin: #f1d5b6;
+  --skin: #f1d5b6;
+  --Tiffany: #66c5bd;
+  --tiffany: #66c5bd;
+  --White: #fdfaf5;
+  --white: #fdfaf5;
+  --Yellow: #f6ce5b;
+  --yellow: #f6ce5b;
+  --Black: #3b3330;
+  --black: #3b3330;
+  --Rice: #fff6e8;
+  --rice: #fff6e8;
+  --Gray: #bcbcbc;
+  --gray: #bcbcbc;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    li {
+      list-style: none;
+      cursor: default;
+      /* user-select: none; */
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--Black);
+  }
+
+  figure {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* div {
+    margin: 0;
+    padding: 0;
+  } */
+
+  h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--Black);
+    cursor: default;
+  }
+
+  h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--Black);
+    cursor: default;
+  }
+
+  h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    color: var(--Black);
+    cursor: default;
+  }
+
+  h4 {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    color: var(--Black);
+    cursor: default;
+  }
+
+  h5 {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    color: var(--Black);
+    cursor: default;
+  }
+
+  h6 {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    color: var(--Black);
+    cursor: default;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+    margin: 0;
+    font-size: 10px;
+    color: var(--Black);
+    cursor: default;
+  }
+}
+
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  .word {
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 2.4px;
+    color: var(--White);
+  } 
+}
+
+/* ----------footer上段區域-------- */
+.footerTop {
+  .topWave {
+    width: 100%;
+  }
+}
+/* ----------footer中、底段區域-------- */
+.footerMiddle,
+.footerBottom {
+  background: var(--Orange);
+}
+/* ---------------------------------- */
+/* ----------footer中段區域----------- */
+.footerMiddle {
+  padding: 65px 120px;
+  .infos {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    color: var(--White);
+  }
+}
+
+
+/* -------footer中段區域第1部分------- */
+.footerList1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 21px 0;
+  .logoPic {
+    width: 166px;
+    height: auto;
+  }
+  .place {
+    display: flex;
+    width: 514px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 45px;
+
+    .address {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      align-self: stretch;
+      .addInfo {
+        color: var(--Color-4, #fdfaf5);
+        font-family: "Noto Sans TC";
+        font-size: 23px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 28px; /* 170% */
+        letter-spacing: 4px;
+      }
+    }
+
+    .timeInfo {
+      color: var(--Color-4, #fdfaf5);
+      font-family: "Noto Sans TC";
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 35px; /* 194.444% */
+      letter-spacing: 3.16px;
+    }
+  }
+}
+
+
+/* ------footer中段區域第2,3部分------ */
+.footerList2,
+.footerList3 {
+  padding: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 23px;
+  .clientService {
+    padding-bottom: 18px;
+    user-select: none;
+    color: var(--Color-4, #fdfaf5);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 34px; /* 106.25% */
+    letter-spacing: 7.68px;
+  }
+  .service {
+    color: var(--Color-4, #fdfaf5);
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    padding-left: 1.5px;
+    &:hover {
+      color: var(--Black);
+    }
+  }
+}
+
+
+/* -------footer中段區域第4部分------- */
+.footerList4 {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 21px 0 0;
+  /* margin-block: auto; */
+  .footerEmail {
+    border: 8px solid var(--Yellow);
+    width: 100%;
+    height: 80px;
+    border-radius: 100px;
+    background: var(--White);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px 0 60px;
+    .enterMail {
+      border: none;
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      background: var(--White);
+      outline: none;
+    }
+
+    .enterMail::placeholder{
+      color: #cac8c8;
+    }
+
+    .planeBtn {
+      width: 36px;
+      height: 35px;
+      border: none;
+      background: none;
+      /* background: url("../img/font/plane.png"); */
+    }
+  }
+  .discount {
+    color: var(--Color-4, #fdfaf5);
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 34px; /* 154.545% */
+    letter-spacing: 1.2px;
+  }
+  .footerIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: stretch;
+    gap: 20px;
+    padding: 41px 0 30px;
+    .icons{
+      cursor: pointer;
+    }
+  }
+}
+/* ---------------------------------- */
+/* -----------footer底段區域---------- */
+.footerBottom {
+  color: var(--White);
+  text-align: center;
+  font-size: 16px;
+  line-height: 85px;
+  letter-spacing: 2.56px;
+  user-select: none;
+}
+/* ---------------------------------- */

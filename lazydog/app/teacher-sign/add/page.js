@@ -19,13 +19,12 @@ export default function TeacherAddPage() {
           </div>
         </div>
 
-        <div className={`container mt-5`}>
+        <div className={`container mt-5 mb-5`}>
           <div className={`row`}>
             {/* 左邊sidebar */}
-            <div className={`col-md-3`}>
-              <div className={styles.left}>
-                <div className={`border`}>
-                  <div className={`text-center ${styles.top}`}>
+            <div className={`col-lg-3 col-md-12 col-12`}>
+              <div className={`border ${styles.left}`}>
+                  <div className={`text-center p-5 ${styles.top}`}>
                     <div className={`position-relative d-inline-block ${styles.camera}`}>
                       <img src="/course/img/25 (1).jpeg" className={`rounded-circle ${styles.avatarImg}`} alt="User Avatar" />
                       {/* 相機按鈕Dropdown) */}
@@ -51,54 +50,52 @@ export default function TeacherAddPage() {
                     <button className={`btn btn-outline btn-sm ${styles.outline}`}>已認證</button>
                   </div>
                   <ul className={`list-unstyled text-start m-0`}>
-                  <li className={`p-4 ${styles.lis}`}>
+                  <li className={` ${styles.lis}`}>
                       <a href="opTeacherInfo.html" className={`text-decoration-none ${styles.liText}`}>
-                      <i className={`bi bi-book-fill fs-6 pe-2 ${styles.icons}`}></i>我的師資
+                      <i className={`bi bi-book-fill fs-6  ${styles.icons}`}></i>我的師資
                       </a>
                     </li>
-                    <li className={`p-4 ${styles.lis}`}>
+                    <li className={`${styles.lis}`}>
                       <a href="opCourseList.html" className={`text-decoration-none ${styles.liText}`}>
-                      <i className={`bi bi-calendar-week fs-6 pe-2 ${styles.icons}`}></i>我的課程
+                      <i className={`bi bi-calendar-week fs-6  ${styles.icons}`}></i>我的課程
                       </a>
                     </li>
-                    <li className={`p-4 ${styles.lis}`}>
+                    <li className={`${styles.lis}`}>
                       <a href="opCourseList.html" className={`text-decoration-none ${styles.liText}`}>
-                      <i className={`bi bi bi-chat-left-heart fs-6 pe-2 ${styles.icons}`}></i>課程評論
+                      <i className={`bi bi bi-chat-left-heart fs-6  ${styles.icons}`}></i>課程評論
                       </a>
                     </li>
-                    <li className={`p-4 ${styles.lis}`}>
+                    <li className={`${styles.lis}`}>
                       <a href="opCoursePlace.html" className={`text-decoration-none ${styles.liText}`}>
-                      <i className={`bi bi-building-fill  fs-6 pe-2 ${styles.icons}`}></i>開課地點
+                      <i className={`bi bi-building-fill fs-6  ${styles.icons}`}></i>開課地點
                       </a>
                     </li>
-                    <li className={`p-4 ${styles.lis}`}>
+                    <li className={`${styles.lis}`}>
                       <a href="opCoursePlace.html" className={`text-decoration-none ${styles.liText}`}>
-                      <i className={`bi bi-person-fill fs-5 pe-2 ${styles.icons}`}></i>會員資料
+                      <i className={`bi bi-person-fill fs-5  ${styles.icons}`}></i>會員資料
                       </a>
                     </li>
-                    <li className={`p-4 ${styles.lis}`}>
+                    <li className={`${styles.lis}`}>
                       <a href="opCoursePlace.html" className={`text-decoration-none ${styles.liText}`}>
-                      <i className={`bi bi-box-arrow-right fs-5 pe-2 ${styles.icons}`}></i>登出
+                      <i className={`bi bi-box-arrow-right fs-5  ${styles.icons}`}></i>登出
                       </a>
                     </li>
                   </ul>
                 </div>
-              </div>
             </div>
             
             {/* 右邊 */}
-            <div className={`col-md-9`}>            
-              <div className={`border p-5 ${styles.right}`}>
+            <div className={`col-lg-9 col-md-12 col-12`}>
+              <div className={`p-5 ${styles.right}`}>
+                <h3 className={`mb-4 ${styles.tTitle}`}>新增課程</h3>
                 <form>
-                  <h3 className={`mb-4 ${styles.tTitle}`}>新增課程</h3>
-                  <div className={` mb-2`}>
-                    <div className={`row g-4`}>
+                    <section className={`row g-4 mb-4 ${styles.section1}`}>
                       <div className={`col-md-12`}>
-                        <label className={`form-label`}>課程名稱<span className={styles.must}>*</span></label>
+                        <label className={`form-label ${styles.labels}`}>課程名稱<span className={styles.must}>*</span></label>
                         <input type="text" className={`form-control  ${styles.controls}`} defaultValue={""}  />
                       </div>
-                      <div className={`col-md-6`}>
-                        <label className={`form-label`}>課程類別<span className={styles.must}>*</span></label>
+                      <div className={`col-md-6 mt-3`}>
+                        <label className={`form-label ${styles.labels}`}>課程類別<span className={styles.must}>*</span></label>
                         <select className={`form-select  ${styles.controls}`}>
                           <option selected>請選擇</option>
                           <option>寵物美容</option>
@@ -108,16 +105,30 @@ export default function TeacherAddPage() {
                           <option>商業思維與專業培訓</option>
                         </select>
                       </div>
-                      <div className={`col-md-6`}>
-                        <label className={`form-label`}>課程金額<span className={styles.must}>*</span></label>
+                      <div className={`col-md-6 mt-3`}>
+                        <label className={`form-label ${styles.labels}`}>課程金額<span className={styles.must}>*</span></label>
                         <input type="text" className={`form-control  ${styles.controls}`} defaultValue={""} placeholder />
                       </div>
-                      <div className={`col-md-6`}>
-                        <label className={`form-label`}>開課日期<span className={styles.must}>*</span></label>
+                      <div className={`col-md-6 mt-3`}>
+                        <label className={`form-label ${styles.labels}`}>總時數<span className={styles.must}>*</span></label>
                         <input type="text" className={`form-control  ${styles.controls}`} defaultValue={""} placeholder />
                       </div>
-                      <div className={`col-md-6`}>
-                        <label className={`form-label`}>開課地點<span className={styles.must}>*</span></label>
+                      <div className={`col-md-6 mt-3`}>
+                        <label className={`form-label ${styles.labels}`}>報名人數限制<span className={styles.must}>*</span></label>
+                        <input type="text" className={`form-control  ${styles.controls}`} defaultValue={""} placeholder />
+                      </div>
+                    </section>
+                    <section className={`row g-4 mb-5 ${styles.section2}`}>
+                      <div className={`col-md-12`}>
+                        <label className={`form-label ${styles.labels}`}>該梯每堂課日期<span className={styles.must}>*</span></label>
+                        <input type="text" className={`form-control  ${styles.controls}`} placeholder={`範例 :  2025 【台北】 08/17、08/24、08/31、09/07、09/14 、09/21、09/28`} />
+                      </div>
+                      <div className={`col-md-6 mt-3`}>
+                        <label className={`form-label ${styles.labels}`}>開課日期<span className={styles.must}>*</span></label>
+                        <input type="text" className={`form-control  ${styles.controls}`} defaultValue={""} placeholder />
+                      </div>
+                      <div className={`col-md-6 mt-3`}>
+                        <label className={`form-label ${styles.labels}`}>開課地點<span className={styles.must}>*</span></label>
                         <select className={`form-select  ${styles.controls}`}>
                           <option selected>請選擇</option>
                           <option>台北</option>
@@ -127,24 +138,31 @@ export default function TeacherAddPage() {
                           <option>線上預錄</option>
                         </select>
                       </div>
-                      <div className={`col-md-12 mt-4`}>
-                        <label className={`form-label`}>該梯每堂課日期<span className={styles.must}>*</span><span className={styles.example}>範例 : 第二梯 08/17、08/24、08/31、09/07、09/14 、09/21、09/28</span></label>
-                        <input type="text" className={`form-control  ${styles.controls}`} defaultValue placeholder />
+                      <div className={`col-md-12 mt-3`}>
+                        <label className={`form-label ${styles.labels}`}>上課時間<span className={styles.must}>*</span></label>
+                        <div className={`d-flex`}>
+                          <input type="text" className={`form-control  ${styles.controls}`} defaultValue={""} placeholder />
+                          <span className={`align-self-center p-2`}>~</span>
+                          <input type="text" className={`form-control  ${styles.controls}`} defaultValue={""} placeholder />
+                        </div>
+                        
                       </div>
-                      <div className={`col-md-12 mt-4`}>
-                        <label className={`form-label`}>課程介紹<span className={styles.must}>*</span></label>
+                    </section> 
+                    <section className={`row g-4 mb-5  ${styles.section3}`}>
+                      <div className={`col-md-12 mt-3`}>
+                        <label className={`form-label ${styles.labels}`}>課程介紹<span className={styles.must}>*</span></label>
                         <textarea className={`form-control  ${styles.controls} ${styles.scrollOrg}`} style={{resize: 'none'}} id="exampleFormControlTextarea1" rows={3} defaultValue={""} />
                       </div>
-                      <div className={`col-md-12 mt-4`}>
-                        <label className={`form-label`}>注意事項<span className={styles.must}>*</span></label>
+                      <div className={`col-md-12 mt-3`}>
+                        <label className={`form-label ${styles.labels}`}>注意事項</label>
                         <textarea className={`form-control  ${styles.controls} ${styles.scrollOrg}`} style={{resize: 'none'}} id="exampleFormControlTextarea1" rows={4} defaultValue={""} />
                       </div>
-                      <div className={`col-md-12 mt-4`}>
-                        <label className={`form-label`}>Q&amp;A<span className={styles.must}>*</span></label>
+                      <div className={`col-md-12 mt-3`}>
+                        <label className={`form-label ${styles.labels}`}>Q&amp;A</label>
                         <textarea className={`form-control  ${styles.controls} ${styles.scrollOrg}`} style={{resize: 'none'}} id="exampleFormControlTextarea1" rows={4} defaultValue={""} />
                       </div>
                       {/* 圖片 */}
-                      <div className={`col-md-12 my-4`}>
+                      <div className={`col-md-12 mt-4 mb-5`}>
                         <div>
                         <label className={`form-label`}>課程圖片
                           <span className={styles.must}>* </span>
@@ -170,17 +188,16 @@ export default function TeacherAddPage() {
 
                         </div>
                       </div>
+                    </section>
+                    {/* 按鈕區 */}
+                    <div className={`d-flex justify-content-end gap-3 border-top mt-5`}>
+                      <button type="button" className={`btn btn-sm px-4 mt-4 ${styles.cancleBtn}`} onclick="location.href='opCourseList.html'">
+                        <a className={styles.cancleBtnA} href="./opCourseList.html">取消</a>
+                      </button>
+                      <button type="submit" className={`btn btn-primary btn-sm px-4 mt-4 ${styles.submitBtn}`}>
+                        <a className={styles.submitBtnA} href="./opCourseList.html">儲存</a>
+                      </button>
                     </div>
-                  </div>          
-                  {/* 按鈕區 */}
-                  <div className={`d-flex justify-content-end gap-3 border-top mt-4`}>
-                    <button type="button" className={`btn btn-sm px-4 mt-4 ${styles.cancleBtn}`} onclick="location.href='opCourseList.html'">
-                      <a className={styles.cancleBtnA} href="./opCourseList.html">取消</a>
-                    </button>
-                    <button type="submit" className={`btn btn-primary btn-sm px-4 mt-4 ${styles.submitBtn}`}>
-                      <a className={styles.submitBtnA} href="./opCourseList.html">儲存</a>
-                    </button>
-                  </div>
                 </form>
               </div>
             </div>

@@ -19,13 +19,12 @@ export default function OpTeacherListPage(props) {
         </div>
       </div>
 
-      <div className={`container mt-5`}>
+      <div className={`container mt-5 mb-5`}>
         <div className={`row`}>
-          {/* 左邊sidebar */}
-          <div className={`col-md-3`}>
-              <div className={styles.left}>
-                <div className={`border`}>
-                  <div className={`text-center ${styles.top}`}>
+         {/* 左邊sidebar */}
+         <div className={`col-lg-3 col-md-12 col-12`}>
+              <div className={`border ${styles.left}`}>
+                  <div className={`text-center p-5 ${styles.top}`}>
                     <div className={`position-relative d-inline-block ${styles.camera}`}>
                       <img src="/course/img/25 (1).jpeg" className={`rounded-circle ${styles.avatarImg}`} alt="User Avatar" />
                       {/* 相機按鈕Dropdown) */}
@@ -51,46 +50,45 @@ export default function OpTeacherListPage(props) {
                     <button className={`btn btn-outline btn-sm ${styles.outline}`}>已認證</button>
                   </div>
                   <ul className={`list-unstyled text-start m-0`}>
-                    <li className={`p-4 ${styles.lis}`}>
+                  <li className={` ${styles.lis}`}>
                       <a href="opTeacherInfo.html" className={`text-decoration-none ${styles.liText}`}>
-                      <i className={`bi bi-book-fill fs-6 pe-2 ${styles.icons}`}></i>我的師資
+                      <i className={`bi bi-book-fill fs-6  ${styles.icons}`}></i>我的師資
                       </a>
                     </li>
-                    <li className={`p-4 ${styles.lis}`}>
+                    <li className={`${styles.lis}`}>
                       <a href="opCourseList.html" className={`text-decoration-none ${styles.liText}`}>
-                      <i className={`bi bi-calendar-week fs-6 pe-2 ${styles.icons}`}></i>我的課程
+                      <i className={`bi bi-calendar-week fs-6  ${styles.icons}`}></i>我的課程
                       </a>
                     </li>
-                    <li className={`p-4 ${styles.lis}`}>
+                    <li className={`${styles.lis}`}>
                       <a href="opCourseList.html" className={`text-decoration-none ${styles.liText}`}>
-                      <i className={`bi bi bi-chat-left-heart fs-6 pe-2 ${styles.icons}`}></i>課程評論
+                      <i className={`bi bi bi-chat-left-heart fs-6  ${styles.icons}`}></i>課程評論
                       </a>
                     </li>
-                    <li className={`p-4 ${styles.lis}`}>
+                    <li className={`${styles.lis}`}>
                       <a href="opCoursePlace.html" className={`text-decoration-none ${styles.liText}`}>
-                      <i className={`bi bi-building-fill  fs-6 pe-2 ${styles.icons}`}></i>開課地點
+                      <i className={`bi bi-building-fill fs-6  ${styles.icons}`}></i>開課地點
                       </a>
                     </li>
-                    <li className={`p-4 ${styles.lis}`}>
+                    <li className={`${styles.lis}`}>
                       <a href="opCoursePlace.html" className={`text-decoration-none ${styles.liText}`}>
-                      <i className={`bi bi-person-fill fs-5 pe-2 ${styles.icons}`}></i>會員資料
+                      <i className={`bi bi-person-fill fs-5  ${styles.icons}`}></i>會員資料
                       </a>
                     </li>
-                    <li className={`p-4 ${styles.lis}`}>
+                    <li className={`${styles.lis}`}>
                       <a href="opCoursePlace.html" className={`text-decoration-none ${styles.liText}`}>
-                      <i className={`bi bi-box-arrow-right fs-5 pe-2 ${styles.icons}`}></i>登出
+                      <i className={`bi bi-box-arrow-right fs-5  ${styles.icons}`}></i>登出
                       </a>
                     </li>
                   </ul>
                 </div>
-              </div>
-          </div>
+            </div>
 
           {/* 右邊 */}
-          <div className={`col-md-9`}>            
-            <div className={`border p-5 pb-3 ${styles.right}`}>
+          <div className={`col-lg-9 col-md-12 col-12`}>            
+            <div className={`p-5 pb-3 ${styles.right}`}>
               <div className={styles.top}>
-                <h3 className={`mb-4 ${styles.topTitle}`}>我的課程</h3>
+                <h3 className={`mb-4 ${styles.tTitle}`}>我的課程</h3>
                 <button type="button" className={`btn btn-primary btn-sm ${styles.addCourseBtn}`}><a className={styles.addCourse} href="./opCourseCreate.html">+ 新增</a>
                 </button>
               </div>
@@ -107,25 +105,25 @@ export default function OpTeacherListPage(props) {
                     <div className={styles.cTd2}>一對一寵物美容教學實作</div>
                     <div className={`d-none`}>上課日期</div>
                     <div className={styles.cTd3}>【台北】第一梯 11/02、11/09、11/16、11/23、11/30、12/07</div>
-                    <div className={styles.cTd4}>台北台北</div>
+                    <div className={styles.cTd4}>台北</div>
                   </div>
                   <div className={styles.cTbody}>
                     <div className={styles.cTd1}><img className={styles.courseImg} src="/course/img/7 (1).jpeg" alt /></div>
                     <div className={styles.cTd2}>一對一寵物美容教學實作</div>
                     <div className={styles.cTd3}>【台北】第一梯 11/02、11/09、11/16、11/23、11/30、12/07</div>
-                    <div className={styles.cTd4}>台北台北</div>
+                    <div className={styles.cTd4}>高雄</div>
                   </div>
                   <div className={styles.cTbody}>
                     <div className={styles.cTd1}><img className={styles.courseImg} src="/course/img/18 (1).jpeg" alt /></div>
                     <div className={styles.cTd2}>一對一寵物美容教學實作</div>
                     <div className={styles.cTd3}>【台北】第一梯 11/02、11/09、11/16、11/23、11/30、12/07</div>
-                    <div className={styles.cTd4}>台北台北</div>
+                    <div className={styles.cTd4}>線上預錄</div>
                   </div>
                   <div className={styles.cTbody}>
                     <div className={styles.cTd1}><img className={styles.courseImg} src="/course/img/25 (1).jpeg" alt /></div>
                     <div className={styles.cTd2}>一對一寵物美容教學實作</div>
                     <div className={styles.cTd3}>【台北】第一梯 11/02、11/09、11/16、11/23、11/30、12/07</div>
-                    <div className={styles.cTd4}>台北台北</div>
+                    <div className={styles.cTd4}>線上直播</div>
                   </div>
                 </div>
               </div>

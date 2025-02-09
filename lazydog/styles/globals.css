@@ -69,14 +69,20 @@ body {
 
 .lumi-header2 {
   display: flex;
-  position: absolute;
+  /* position: absolute; */
+  position: fixed;
+  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
   top: 0;
   left: 0;
   width: 100%;
   padding: 20px 63px;
   justify-content: space-between;
   align-items: center;
-  background-color: #f5842b;
+
+  background-color: #f5832b00;
+  backdrop-filter: blur(20px);
+  transition: background 0.3s ease-in-out;
+  
   z-index: 1000;
 }
 .lumi-ul2 {

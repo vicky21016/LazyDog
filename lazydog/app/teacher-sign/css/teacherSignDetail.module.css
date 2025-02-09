@@ -1,8 +1,8 @@
-
+/* 共用 */
 /* 滾軸樣式 */
 .scrollOrg {
-  --sb-track-color: #bcbcbcc4;
-  --sb-thumb-color: #999595;
+  --sb-track-color: #bcbcbc38;
+  --sb-thumb-color: #f7a96d;
   --sb-size: 4px;
 }
 
@@ -28,15 +28,25 @@
   }
 }
 
+/* .form-select:focus,
+.form-control:focus, */
+input:focus, 
+input:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #a1a1a1 !important;
+}
 
+body{
+  background: #fffef3;
+}
+  
 
-
-/* 共用 */
 /* 左邊 */
 .left{
-  margin: 0 20px;
+  background: #fff;
+  margin-right: 12px;
   .top {
-      padding: 38px;
       .tName,.tGmail,.tTitle{
           overflow-wrap: break-word;
           word-wrap: break-word;
@@ -46,8 +56,9 @@
           font-weight: bold;
       }
       .tGmail{
-          font-size: 14px;
-          letter-spacing: .5px;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: .3px;
       }
       
   
@@ -70,17 +81,18 @@
   }
   .lis {
       border-top: 0.1px solid var(--text-Gy, #dee2e6);
-      /* padding-left: 20px; */
+      padding: 20px 24px 20px 38px;
   }
 
   .lis:hover {
       a, .icons{
-      color: #F5842B;
+      color: #f7a96d;
       }         
   }
   
   .icons{
       color: #bcbcbc;
+      padding-right: 10px;
   }
   .liText {
       color: #bcbcbc;
@@ -92,8 +104,7 @@
       letter-spacing: 0.96px;
   }
   
-}
-/* 相機 */
+  /* 相機 */
 .camera{
   .avatarImg {
       width: 100px;
@@ -130,26 +141,27 @@
       cursor: pointer;
       }
 }
+}
   
 
 
 /* 右邊 */
 .right{
-  height: auto;
-  /* overflow-y: auto; */
-  .must{
-  color: red;
-  padding-left: 5px;
-  }
-  .example{
-      color: #bcbcbc;
-      font-size: 12px;
-      padding-left: 15px;
+  background: #fff;
+  overflow-y: auto;  
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  .tTitle{
+    font-weight: bold;
   }
 
+  .labels{
+    font-size: 15px;
+  }
+  
   .controls  {
     border-radius: 8px;
-    background-color: #bcbcbcc4;
+    background-color: #bcbcbc38;
     border: none;
   }  
 

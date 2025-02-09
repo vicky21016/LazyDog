@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import styles from "../../styles/modules/footer.module.css";
+import Link from "next/link";
+import styles from "../../../styles/modules/footer.module.css";
 // import styles from "../../styles/modules/footerGlobals.module.css"
 
-export default function HomePage(props) {
+export default function Footer(props) {
   return (
     <>
       <footer className={styles.footer}>
@@ -14,7 +15,7 @@ export default function HomePage(props) {
         <section className={styles.footerMiddle}>
           <ul className={styles.infos}>
             <li className={styles.footerList1}>
-              <a className={styles.connects} href><figure><img className={styles.logoPic} src="/footer/img/logo_pic(white).png"/></figure></a>
+              <Link href="/home" className={styles.connects}><figure><img className={styles.logoPic} src="/footer/img/logo_pic(white).png"/></figure></Link>
               <article className={styles.place}>
                 <div className={styles.address}>
                   <p className={styles.addInfo}>320桃園市中壢區新生路二段421號</p>
@@ -30,17 +31,17 @@ export default function HomePage(props) {
             </li>
             <li className={styles.footerList2}>
               <h1 className={styles.clientService}>客戶服務</h1>
-              <p><a className={styles.service} href>關於LAZYDOG</a></p>
-              <p><a className={styles.service} href>寵物週邊</a></p>
-              <p><a className={styles.service} href>線上訂房</a></p>
-              <p><a className={styles.service} href>寵物課程</a></p>
-              <p><a className={styles.service} href>毛孩新知</a></p>
+              <p><Link href="/home" className={styles.service} >關於LAZYDOG</Link></p>
+              <p><Link href="/product" className={styles.service} >寵物週邊</Link></p>
+              <p><Link href="/hotel-coupon" className={styles.service} >線上訂房</Link></p>
+              <p><Link href="/teacher" className={styles.service} >寵物課程</Link></p>
+              <p><Link href="/article" className={styles.service} >毛孩新知</Link></p>
             </li>
             <li className={styles.footerList3}>
               <h1 className={styles.clientService}>其他服務</h1>
-              <p><a className={styles.service} href>會員集點</a></p>
-              <p><a className={styles.service} href>優惠券</a></p>
-              <p><a className={styles.service} href>常見問題</a></p>
+              <p><Link href="/hotel-coupon" className={styles.service} >會員集點</Link></p>
+              <p><Link href="/hotel-coupon" className={styles.service} >優惠券</Link></p>
+              <p><Link href="#" className={styles.service} >常見問題</Link></p>
             </li>
             <li className={styles.footerList4}>
               <form className={styles.footerEmail} action>
@@ -49,9 +50,9 @@ export default function HomePage(props) {
               </form>
               <p className={styles.discount}>輸入Email~首次購買即可享 15% 折扣！</p>
               <div className={styles.footerIcon}>
-                <a href><img className={styles.icons} src="/footer/img/FB.png" alt /></a>
-                <a href><img className={styles.icons} src="/footer/img/IG.png" alt /></a>
-                <a href><img className={styles.icons} src="/footer/img/YT.png" alt /></a>
+                <Link href="#"><img className={styles.icons} src="/footer/img/FB.png" alt /></Link>
+                <Link href="#"><img className={styles.icons} src="/footer/img/IG.png" alt /></Link>
+                <Link href="#"><img className={styles.icons} src="/footer/img/YT.png" alt /></Link>
               </div>
             </li>
           </ul>

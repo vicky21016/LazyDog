@@ -15,53 +15,63 @@ body {
   }
   .sales {
     padding: 50px;
+    margin-top: 150px;
     box-sizing: border-box;
     z-index: 100;
   }
-  .sale1 {
-    color: var(--real-wh, #fff);
+  .sale1Word  {
+    color:  #fff;
     text-align: center;
     font-family: "Noto Sans TC", sans-serif;
     font-size: 55px;
     font-style: normal;
     font-weight: 700;
     line-height: 120%; /* 107.1px */
-    letter-spacing: 17.64px;
+    letter-spacing: 15px;
+    margin-bottom: 20px;
   }
   .sale2 {
     display: flex;
     justify-content: center;
-    align-items: center;
-    color: var(--real-wh, #fff);
+    align-items: end;
     text-align: center;
 
-    h2 {
+    .discountNum {
+      color: var(--real-wh, #fff);
       font-family: "Noto Sans TC", sans-serif;
-      font-size: 90px;
+      font-size: 120px;
       font-style: normal;
       font-weight: 900;
-      line-height: 20%; /* 157.2px */
       letter-spacing: 13.2px;
-      padding: 25px;
     }
 
     .discountWord {
-      font-size: 85px;
+      color: var(--real-wh, #fff);
+      font-size: 60px;
+      font-weight: bolder;
+      padding-bottom: 15px;
     }
   }
   .sale3 {
-    /* overflow: hidden; */
-    color: var(--Color-6, #3b3330);
     text-align: center;
-    text-overflow: ellipsis;
-    font-family: "Noto Sans TC", sans-serif;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 180%; /* 43.2px */
-    letter-spacing: 6.24px;
-    button {
+
+    .sale3Word{
+      /* overflow: hidden; */
+      color: var(--Color-6, #3b3330);
+      text-align: center;
+      text-overflow: ellipsis;
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 180%; /* 43.2px */
+      letter-spacing: 6.24px;
+      margin: 50px 0;
+    }
+    
+    .sale3Btn {
       width: 260px;
+      height: 67px;
       padding: 14px 44px;
       justify-content: center;
       align-items: center;
@@ -218,13 +228,13 @@ body {
         border: 2px solid #fec84d;
         height: 240px;
         margin-bottom: 29px;
-        img {
+        .dryfood {
           width: 100%;
           height: 100%;
           object-fit: cover;
         }
       }
-      p {
+      .p {
         overflow: hidden;
         color: #84572e;
         text-align: center;
@@ -282,7 +292,7 @@ body {
       z-index: 1;
     }
 
-    h2 {
+    .discountWord {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -297,7 +307,7 @@ body {
       line-height: 85px; /* 132.813% */
       letter-spacing: 9.6px;
     }
-    button {
+    .readmoreBtn {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -358,7 +368,7 @@ body {
       place-items: center;
       text-align: center;
 
-      h2 {
+      .h2 {
         color: var(--Color, #f5842b);
         text-align: center;
         font-family: "Noto Sans TC", sans-serif;
@@ -370,7 +380,7 @@ body {
         padding-bottom: 43px;
         margin: 0;
       }
-      p {
+      .p {
         color: #545252;
         text-align: center;
         font-family: "Noto Sans TC", sans-serif;
@@ -381,7 +391,7 @@ body {
         letter-spacing: 3.64px;
         padding-bottom: 68px;
       }
-      button {
+      .bookBtn {
         width: 230px;
         height: 70px;
         padding: 20px 40px;
@@ -410,12 +420,12 @@ body {
       border-radius: 10px;
       box-sizing: border-box;
       overflow: hidden;
-      img {
+      .dryfood {
         width: 200px;
         height: 150px;
         object-fit: cover;
       }
-      h5 {
+      .h5 {
         overflow: hidden;
         color: #84572e;
         text-align: center;
@@ -445,7 +455,7 @@ body {
     width: 100%;
     height: auto;
 
-    img {
+    .wave {
       position: absolute;
       bottom: 0;
       width: 100%;
@@ -458,8 +468,9 @@ body {
   position: relative;
   display: grid;
   place-items: center;
-  margin-bottom: 90px;
-  h2 {
+  margin-bottom: 220px;
+
+  .section4Title {
     color: var(--Color-3, #66c5bd);
     text-align: center;
     font-family: "Noto Sans TC";
@@ -468,6 +479,7 @@ body {
     font-weight: 700;
     line-height: normal;
     letter-spacing: 10.24px;
+    margin: 80px 0 120px;
   }
   .userCards {
     display: flex;
@@ -509,12 +521,12 @@ body {
         letter-spacing: 6.4px;
         margin: 0;
       }
-      h5 {
+      .card1Word {
         font-size: 14px;
-        font-weight: 400;
+        font-weight: 600;
         line-height: 27px;
         color: #000000;
-        margin: 20px 0 0 0;
+        margin: 5px 0 0 0;
       }
     }
     .card2 {
@@ -524,7 +536,7 @@ body {
         width: 60px;
         height: 60px;
       }
-      h5 {
+      .card2Word {
         color: #f5842b;
         text-align: center;
         font-size: 36px;
@@ -533,11 +545,11 @@ body {
         letter-spacing: 3.6px;
         margin: 0;
       }
-      p {
+      .card2P {
         color: #000;
         text-align: center;
         font-size: 14px;
-        font-weight: 400;
+        font-weight: 700;
         line-height: 27px; /* 192.857% */
         margin: 0;
       }
@@ -545,16 +557,16 @@ body {
     .card3 {
       padding: 31px 11px;
       gap: 10px;
-      .moneyIcon {
+      .icon {
         width: 60px;
         height: 60px;
-        img {
+        .moneyIcon {
           width: 100%;
           height: 100%;
           object-fit: contain;
         }
       }
-      h5 {
+      .card5Word {
         color: #f5842b;
         text-align: center;
         font-size: 36px;
@@ -563,24 +575,25 @@ body {
         letter-spacing: 3.6px;
         margin: 0;
       }
-      p {
+      .card5P {
         color: #000;
         text-align: center;
         font-size: 14px;
-        font-weight: 400;
+        font-weight: 700;
         line-height: 27px; /* 192.857% */
         margin: 0;
       }
-      span {
+      .discount8 {
         color: #f00;
       }
     }
     .card4 {
       padding: 31px 11px;
-      gap: 10px;
-      /* .qrcode {
-      } */
-      h4 {
+      gap: 5px;
+      .qrcode {
+        width: 100px;
+      }
+      .h4 {
         color: #f5842b;
         text-align: center;
         font-size: 36px;
@@ -589,20 +602,20 @@ body {
         letter-spacing: 3.6px;
         margin: 0;
       }
-      p {
+      .p {
         color: #000;
         text-align: center;
         font-size: 14px;
-        font-weight: 400;
-        line-height: 27px; /* 192.857% */
+        font-weight: 700;
         margin: 0;
-      }
-      span {
-        color: #f00;
       }
     }
   }
-  button {
+  .signupBtn {
+    display: block;
+    /* margin: 0 auto; */
+    text-align: center;
+    align-content: center;
     width: 480px;
     height: 73px;
     padding: 12px 48px;
@@ -621,7 +634,7 @@ body {
 }
 
 .btns {
-  button {
+  .ticketIcon, .topIcon {
     position: fixed;
     width: 63px;
     height: 63px;
@@ -631,6 +644,9 @@ body {
     cursor: pointer;
   }
   .ticketIcon {
+    display: block;
+    text-align: center;
+    align-content: center;
     right: 28px;
     bottom: 166px;
     z-index: 99;
