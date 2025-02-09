@@ -5,6 +5,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import "../../../html/hotel-coupon/css/fontHotelHome.css";
+import hotelStyles from "../../../styles/modules/fontHotelDetail.module.css";
+import styles from "../../../styles/modules/fontHotelHome.module.css";
 import "nouislider/dist/nouislider.css";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
@@ -12,13 +14,19 @@ import Image from "next/image";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
 import { useGoogleMap } from "@/hooks/useGoogleMap";
 
-
 export default function HotelHomePage() {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [hotel, setHotel] = useState(null);
   const mapRef = useGoogleMap(hotel?.address);
+  const { query } = router; //  URL 參數
 
+  const [hotelId, setHotelId] = useState(null);
+  useEffect(() => {
+    if (router?.query?.id) {
+      setHotelId(router.query.id);
+    }
+  }, [router.query]);
   const {
     location,
     locationModalRef,
@@ -53,9 +61,12 @@ export default function HotelHomePage() {
         rangeSeparator: " 至 ",
       },
     });
+    if (!hotelId) return;
+
     const fetchHotelData = async () => {
       try {
         const res = await fetch(`/api/hotels/${hotelId}`);
+        if (!res.ok) throw new Error("API 請求失敗");
         const data = await res.json();
         setHotel(data);
       } catch (error) {
@@ -64,63 +75,67 @@ export default function HotelHomePage() {
     };
 
     fetchHotelData();
-  }, []);
+  }, [hotelId]);
   // [hotelId]
-
+  const changepage = (path) => {
+    if (path) {
+      router.push(`/hotel-coupon/${path}`);
+    }
+  };
   return (
     <>
       <div className="container mt-4">
-        <div className="suSearch-bar">
-          <div className="suSearch-group">
+        <div className={styles.suSearchBar}>
+          <div className={styles.suSearchGroup}>
             <img
-              className="suIcon"
+              className={styles.suIcon}
               src="/hotel/hotel-images/page-image/icon-search.png"
               alt=""
             />
             <input
               type="text"
-              className="suSearch-input"
+              className={styles.suSearchInput}
               placeholder="搜尋關鍵字、地區..."
               value={location}
               readOnly
               onClick={openModal}
             />
           </div>
-          <div className="suSearch-group">
+          <div className={styles.suSearchGroup}>
             <img
-              className="suIcon"
+              className={styles.suIcon}
               src="/hotel/hotel-images/page-image/icon-Calendar.png"
               alt=""
             />
             <input
               type="text"
               id="date-date"
-              className="suSearch-date"
+              className={styles.suSearchDate}
               placeholder="入住日期 → 退房日期"
             />
           </div>
-          <div className="suSearch-group">
+          <div className={styles.suSearchGroup}>
             <img
-              className="suIcon"
+              className={styles.suIcon}
               src="/hotel/hotel-images/page-image/Icon-mimi.png"
               alt=""
             />
             <span className="text">數量</span>
             <button
-              className="suQuantity-btn"
+              className={styles.suQuantityBtn}
               onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
             >
               -
             </button>
-            <span>{quantity}</span>
+            <span className={styles.suQuantityNumber}>{quantity}</span>
             <button
-              className="suQuantity-btn"
+              className={styles.suQuantityBtn}
               onClick={() => setQuantity(quantity + 1)}
             >
               +
             </button>
           </div>
-          <button className="suSearch-btn">搜尋</button>
+          <button className={styles.suSearchBtn}>搜尋</button>
         </div>
       </div>
 
@@ -163,7 +178,12 @@ export default function HotelHomePage() {
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
-                <a href="#">首頁</a>
+                <a
+                  className="text-decoration-none"
+                  onClick={() => changepage("fonthotelHome")}
+                >
+                  首頁
+                </a>
               </li>
               <li className="breadcrumb-item active" aria-current="page">
                 Library
@@ -173,13 +193,13 @@ export default function HotelHomePage() {
           <div className="col-lg-6">
             <Image
               src="/hotel/hotel-uploads/1-outside.png"
-              alt="旅館主圖"
+              alt={hotel?.name || "飯店圖片"}
               width={500}
               height={300}
-              className="hotel-image"
+              className={hotelStyles.suHotelImage}
             />
           </div>
-          <div className="col-lg-6 hotel-description">
+          <div className={`col-lg-6 ${hotelStyles.suHotelDescription}`}>
             <h2>旅館簡介</h2>
             <p>
               專為寵物打造的舒適旅宿，讓您的毛孩安心入住。
@@ -199,8 +219,9 @@ export default function HotelHomePage() {
             { name: "精緻小房", price: 750, img: "1-s-room.webp" },
           ].map((room, index) => (
             <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4">
-              <div className="card room-card">
+              <div className={`card ${hotelStyles.suRoomCard}`}>
                 <Image
+                  className={hotelStyles.suRoomImage}
                   src={`/hotel/hotel-uploads/${room.img}`}
                   alt={room.name}
                   width={300}
@@ -208,14 +229,16 @@ export default function HotelHomePage() {
                 />
                 <div className="card-body">
                   <h3>{room.name}</h3>
-                  <p className="room-price">價格: {room.price}元</p>
+                  <p className={hotelStyles.suRoomPrice}>
+                    價格: {room.price}元
+                  </p>
                   <select className="form-select mb-2">
                     <option>選擇數量</option>
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
                   </select>
-                  <button className="book-btn">BOOK</button>
+                  <button className={hotelStyles.suRoomBookBtn}>BOOK</button>
                 </div>
               </div>
             </div>
@@ -224,20 +247,21 @@ export default function HotelHomePage() {
       </div>
 
       {/* 我們的努力 */}
-      <div className="effort-section">
+      <div className={hotelStyles.suEffortSection}>
         <div className="container text-center">
-          <h2 className="effort-title">我們的努力，看的見</h2>
-          <p className="effort-subtitle">
+          <h2 className={hotelStyles.suEffortTitle}>我們的努力，看的見</h2>
+          <p className={hotelStyles.suEffortSubtitle}>
             每一次陪伴、每一小時的付出，都為毛孩創造更快樂、更健康的生活！
           </p>
-          <div className="effort-stats">
+          <div className={hotelStyles.suEffortStats}>
             {[
               { img: "Dog2.png", text: "總服務時數：8,520+ 小時" },
               { img: "Dog5.png", text: "服務狗狗：1,200+ 隻" },
               { img: "Mask group.png", text: "滿意度：98.7%" },
             ].map((item, index) => (
-              <div key={index} className="stat-item">
+              <div key={index} className={hotelStyles.suStatItem}>
                 <Image
+                  className={hotelStyles.suStatImage}
                   src={`/hotel/hotel-images/page-image/${item.img}`}
                   alt={item.text}
                   width={150}
@@ -247,15 +271,21 @@ export default function HotelHomePage() {
               </div>
             ))}
           </div>
-          <div className="effort-buttons">
-            <button className="btn btn-primary">立即預約</button>
-            <button className="btn btn-outline-light">了解更多</button>
+          <div className={hotelStyles.suEffortButtons}>
+            <button className={`btn  ${hotelStyles.suBtnPrimary}`}>
+              立即預約
+            </button>
+            <button
+              className={`btn ${hotelStyles.suBtnOutlineLight}`}
+            >
+              了解更多
+            </button>
           </div>
         </div>
       </div>
 
       {/* Google 地圖 */}
-      <div className="map-container">
+      <div className={hotelStyles.suMapContainer}>
         <h1 className="map-title text-center mt-5">
           {hotel?.name || "載入中..."}
         </h1>
@@ -263,8 +293,8 @@ export default function HotelHomePage() {
           地址: {hotel?.address || "無資料"}
         </p>
         <div ref={mapRef} style={{ height: "500px", width: "100%" }}></div>
-        <div className="wave-container">
-          <svg className="wave" viewBox="0 0 1440 320">
+        <div className={hotelStyles.suWaveContainer}>
+          <svg className={hotelStyles.suRoomWave} viewBox="0 0 1440 320">
             <path
               fill="#FFA500"
               fillOpacity="1"
