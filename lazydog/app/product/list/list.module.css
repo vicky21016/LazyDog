@@ -1,0 +1,299 @@
+.container {
+  margin-block: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+}
+/* ----------廣告區---------- */
+.DmArea {
+  width: 100%;
+  img {
+    width: 100%;
+  }
+}
+/* -------------------------- */
+/* -------麵包屑與標題-------- */
+.BreadcrumbsTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 30px 0px 30px 0px;
+  gap: 60px;
+}
+/* -------------------------- */
+/* ----------麵包屑---------- */
+.Breadcrumbs {
+  width: 242px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  a {
+    color: var(--gray);
+  }
+  .BreadcrumbsActive {
+    color: var(--Black);
+    font-weight: bold;
+  }
+}
+/* -------------------------- */
+/* -----------標題----------- */
+.Title {
+  display: flex;
+  flex: auto;
+  padding: 0px 5px;
+  justify-content: space-between;
+  align-items: center;
+}
+/* -------------------------- */
+/* -------標題的篩選---------- */
+.TitleFilter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+/* -------------------------- */
+/* --------商品區域----------- */
+.PdArea {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 60px;
+}
+/* --------------------------- */
+/* ------商品區域篩選器-------- */
+.PdFilter {
+  width: 242px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+/* --------------------------- */
+/* ---------table元件--------- */
+.PdFilterTable {
+  width: 100%;
+  td {
+    height: 54px;
+    padding: 0px 25px;
+    display: flex;
+    align-items: center;
+  }
+}
+.SearchTable {
+  gap: 17px;
+  input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 16px;
+  }
+}
+.MenuTable {
+  border-bottom: 0.5px solid var(--gray);
+  h3 {
+    width: 100%;
+  }
+  button {
+    padding: 0;
+    border: none;
+    background: none;
+  }
+}
+.CheckboxTable {
+  gap: 10px;
+  label {
+    width: 100%;
+  }
+}
+/* --------------------------- */
+/* -------商品價格篩選器------- */
+.PriceFilterTable {
+  height: auto !important;
+  padding: 40px 0 !important;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+}
+.FilterGroup {
+  display: flex;
+  gap: 10px;
+}
+.PriceFilter {
+  display: flex;
+  padding: 10px 20px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  border: 1px solid var(--Orange);
+  border-radius: 100px;
+  gap: 5px;
+  input {
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: center;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}
+.RangeFilter {
+  position: relative;
+  width: 100%;
+  [type="range"] + [type="range"] {
+    background: transparent;
+  }
+  [type="range"] {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    position: absolute;
+    -webkit-appearance: none;
+    pointer-events: none;
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      pointer-events: auto;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 4px solid var(--Orange);
+      background-color: var(--White);
+      position: relative;
+      top: calc((5px - 20px) / 2);
+    }
+    &::-moz-range-thumb {
+      -webkit-appearance: none;
+      pointer-events: auto;
+    }
+    &::-webkit-slider-runnable-track {
+      display: flex;
+      align-items: center;
+      height: 5px;
+      border-radius: 2px;
+      background: linear-gradient(
+        to right,
+        var(--gray) calc(1% * var(--from)),
+        var(--Orange) calc(1% * var(--from)) calc(1% * var(--to)),
+        var(--gray) 0%
+      );
+    }
+  }
+}
+.PriceLabel {
+  width: 60px;
+  height: 40px;
+  /* position: absolute; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 5px;
+  border: 2px solid var(--gray);
+}
+/* -------------------------- */
+/* ---------商品清單---------- */
+.PdList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+/* --------------------------- */
+/* ---------商品群組----------- */
+.ProductCardGroup {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+/* --------------------------- */
+/* ---------card元件---------- */
+.ProductCard {
+  width: 100%;
+  position: relative;
+}
+.ProductCardHover {
+  background: rgb(241, 213, 182, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  .HoverIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--White);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.ProductCardImg {
+  width: 100%;
+  img {
+    width: 100%;
+  }
+}
+.ProductCardHeart {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  width: 25px;
+  img {
+    width: 100%;
+  }
+}
+.ProductCardOnsale {
+  position: absolute;
+  background: url(/img/font/onsale-bg.png) no-repeat center/cover;
+  width: 50px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--White);
+  user-select: none;
+  padding-bottom: 3px;
+}
+.ProductCardInfo {
+  padding: 0 20px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  .ProductCardName {
+    color: var(--Black);
+  }
+  .ProductCardPrice {
+    color: var(--Orange);
+  }
+}
+/* -------------------------- */
+/* ---------page元件---------- */
+.ProductListPagination {
+  display: flex;
+  gap: 15px;
+  .PageItem {
+    cursor: pointer;
+  }
+}
+.PageItem {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--Orange);
+  border-radius: 50%;
+}
+/* -------------------------- */
