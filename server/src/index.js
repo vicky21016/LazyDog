@@ -2,29 +2,32 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import authRouter from "./routes/authRoutes.js";
-import connectToDatabase from "./config/mysql.js";
+import pool from "./config/mysql.js";
+import hotelRoutes from "./routes/hotelRoutes.js";
 
 dotenv.config();
 
 const app = express();
+
+
 app.use(express.json());
 app.use(
   cors({
-    origin: "*", 
+    origin: "*",
     methods: ["GET", "POST"],
   })
 );
 
-
-app.use("/auth", authRouter); 
+app.use("/auth", authRouter);
+app.use("/api", hotelRoutes);
 app.get("/", (req, res) => {
   res.json({ status: "success", data: null, message: "首頁" });
 });
 
-
 (async () => {
   try {
-    const db = await connectToDatabase();
+    // await pool.query();
+
     console.log("資料庫已連接");
 
     app.listen(5000, () => {
