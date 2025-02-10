@@ -134,7 +134,7 @@
 /* ---------------------------------- */
 /* ----------footer中段區域----------- */
 .footerMiddle {
-  padding: 65px 120px;
+  padding: 65px 120px 25px;
   .infos {
     display: flex;
     justify-content: space-between;
@@ -152,7 +152,7 @@
   gap: 30px;
   padding: 21px 0;
   .logoPic {
-    width: 166px;
+    width: 150px;
     height: auto;
   }
   .place {
@@ -174,7 +174,7 @@
         font-family: "Noto Sans TC";
         font-size: 23px;
         font-style: normal;
-        font-weight: 500;
+        font-weight: 700;
         line-height: 28px; /* 170% */
         letter-spacing: 4px;
       }
@@ -199,21 +199,21 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 23px;
+  gap: 18px;
   .clientService {
-    padding-bottom: 18px;
+    padding: 18px 0 10px;
     user-select: none;
     color: var(--Color-4, #fdfaf5);
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 700;
     line-height: 34px; /* 106.25% */
-    letter-spacing: 7.68px;
+    letter-spacing: 5px;
   }
   .service {
     color: var(--Color-4, #fdfaf5);
-    font-size: 19px;
+    font-size: 18px;
     font-weight: 500;
-    letter-spacing: 2.5px;
+    letter-spacing: 2px;
     padding-left: 1.5px;
     &:hover {
       color: var(--Black);
@@ -234,8 +234,8 @@
   /* margin-block: auto; */
   .footerEmail {
     border: 8px solid var(--Yellow);
-    width: 100%;
-    height: 80px;
+    width: 90%;
+    height: 70px;
     border-radius: 100px;
     background: var(--White);
     display: flex;
@@ -288,9 +288,9 @@
 .footerBottom {
   color: var(--White);
   text-align: center;
-  font-size: 16px;
-  line-height: 85px;
-  letter-spacing: 2.56px;
+  font-size: 14px;
+  line-height: 65px;
+  letter-spacing: 2px;
   user-select: none;
 }
 /* ---------------------------------- */
