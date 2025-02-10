@@ -4,7 +4,7 @@ import pool from "../config/mysql.js";
 
 export const getHotels = async () => {  
     try {
-        const [hotels] = await pool.query("SELECT * FROM hotel");
+        const [hotels] = await pool.execute("SELECT * FROM hotel");
         return hotels;
         
     } catch (error) {

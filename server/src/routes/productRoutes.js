@@ -1,14 +1,14 @@
 import express from "express";
-import {getAllProducts} from "../controllers/productController.js";
+import {getAll} from "../controllers/productController.js";
 
 const router = express.Router();
 
-router.get("/products", getAllProducts);
-// router.get("/products", getAllProducts);
-// router.get("/products", getAllProducts);
+router.get("/products", getAll);
+// router.get("/products/:id", getAllProducts);
+// router.get("/products/search", getAllProducts);
 // router.post("/products", getAllProducts);
-// router.put("/products", getAllProducts);
-// router.delete("/products", getAllProducts);
+// router.put("/products/:id", getAllProducts);
+// router.delete("/products/:id", getAllProducts);
 
 // router.post
 
