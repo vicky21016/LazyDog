@@ -10,9 +10,12 @@ const TeacherCard = ({ imgSrc, col, name, text, link }) => {
         <Link href={link} passHref className="text-decoration-none">
           <div className="card" style={{ width: "18.75rem" }}>
             <img src={imgSrc} className="card-img-top" alt="..." />
-            <div className="card-body fw-medium" style={{ fontsize: "20px" }}>
+            <div className="card-body fw-medium" style={{}}>
               {name}
-              <p className="card-text" style={{fontsize: "14px" , color: "#ff9538" }}>
+              <p
+                className="card-text mt-2 "
+                style={{ fontSize: "12px", color: "#ff9538" }}
+              >
                 {text}
               </p>
             </div>
@@ -23,9 +26,14 @@ const TeacherCard = ({ imgSrc, col, name, text, link }) => {
         <Link href={link} passHref className="text-decoration-none">
           <div className="card" style={{ width: "18.75rem" }}>
             <img src={imgSrc} className="card-img-top" alt="..." />
-            <div className="card-body">
+            <div className="card-body fw-medium" style={{}}>
               {name}
-              <p className="card-text">{text}</p>
+              <p
+                className="card-text mt-2 "
+                style={{ fontSize: "12px", color: "#ff9538" }}
+              >
+                {text}
+              </p>
             </div>
           </div>
         </Link>
@@ -34,9 +42,14 @@ const TeacherCard = ({ imgSrc, col, name, text, link }) => {
         <Link href={link} passHref className="text-decoration-none">
           <div className="card" style={{ width: "18.75rem" }}>
             <img src={imgSrc} className="card-img-top" alt="..." />
-            <div className="card-body">
+            <div className="card-body fw-medium" style={{}}>
               {name}
-              <p className="card-text">{text}</p>
+              <p
+                className="card-text mt-2 "
+                style={{ fontSize: "12px", color: "#ff9538" }}
+              >
+                {text}
+              </p>
             </div>
           </div>
         </Link>

@@ -1,0 +1,35 @@
+
+.infoCard {
+    width: 200px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+  }
+  
+  .cardTitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  /* 選單項目 */
+  .menuItem {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-top: 1px solid #eee;
+    color: #454545;
+    cursor: pointer;
+  }
+
+  .menuItem:hover {
+    color: #ff9538;
+    font-weight: bold;
+  }
+    
+  .icon {
+    margin-right: 8px;
+    font-size: 16px;
+  }
