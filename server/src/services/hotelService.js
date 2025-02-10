@@ -8,4 +8,12 @@ export const getHotels = async () => {
         throw new Error(" 無法取得旅館列表：" + error.message);
     }
 };
-export default  getHotels ;
+
+export const getId = async (id) => {  
+    try {
+        const [hotels] = await pool.query("SELECT * FROM hotel WHERE id = ?", [hotelId]);
+        return hotels;
+    } catch (error) {
+        throw new Error(" 無法取得旅館列表:;" + error.message);
+    }
+};
