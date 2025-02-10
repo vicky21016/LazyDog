@@ -5,4 +5,8 @@ const router = express.Router();
 
 router.get("/products", getAllProducts);
 
+// router.post
+
+// router.put
+
 export default router;
