@@ -22,33 +22,33 @@ app.use(
 );
 
 app.use("/auth", authRouter);
-app.use("/api", hotelRoutes);
-app.use("/api/coupon", couponRoutes);
-app.use("/api/course", courseRoutes);
+app.use("/api/hotels", hotelRoutes);  // 旅館 API
+app.use("/api/coupons", couponRoutes); // 優惠券 API
+app.use("/api", courseRoutes); // 課程 API
 
 app.get("/", (req, res) => {
   res.json({ status: "success", data: null, message: "首頁" });
 });
 
-app._router.stack.forEach((layer) => {
-  if (layer.route) {
-    console.log(
-      `已載入路由: ${Object.keys(layer.route.methods)
-        .join(", ")
-        .toUpperCase()} ${layer.route.path}`
-    );
-  } else if (layer.name === "router") {
-    layer.handle.stack.forEach((subLayer) => {
-      if (subLayer.route) {
-        console.log(
-          `已載入路由: ${Object.keys(subLayer.route.methods)
-            .join(", ")
-            .toUpperCase()} ${subLayer.route.path}`
-        );
-      }
-    });
-  }
-});
+// app._router.stack.forEach((layer) => {
+//   if (layer.route) {
+//     console.log(
+//       `已載入路由: ${Object.keys(layer.route.methods)
+//         .join(", ")
+//         .toUpperCase()} ${layer.route.path}`
+//     );
+//   } else if (layer.name === "router") {
+//     layer.handle.stack.forEach((subLayer) => {
+//       if (subLayer.route) {
+//         console.log(
+//           `已載入路由: ${Object.keys(subLayer.route.methods)
+//             .join(", ")
+//             .toUpperCase()} ${subLayer.route.path}`
+//         );
+//       }
+//     });
+//   }
+// });
 
 (async () => {
   try {

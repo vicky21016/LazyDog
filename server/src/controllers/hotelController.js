@@ -11,7 +11,7 @@ export const getAllHotels = async (req, res) => {
 
 export const getByIds = async (req, res) => {
   try {
-    console.log("找到ID:", req.params.id);
+    console.log("找到旅館ID:", req.params.id);
     const id = parseInt(req.params.id, 10); //eddy的
 
     if (isNaN(id)) {
