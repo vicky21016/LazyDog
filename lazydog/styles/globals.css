@@ -26,6 +26,43 @@ a {
   text-decoration: none;
 }
 
+.lumi-signin {
+  color: #ff9538;
+  font-weight: 700;
+  margin: 5px;
+}
+.lumi-connect {
+  color: #ff9538;
+  font-weight: 800;
+}
+
+
+
+/* app-page 登入 */
+.lumi-logo {
+  display: flex;
+  align-items: center;
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #ff9538;
+}
+.lumi-logo1 {
+  margin-right: 20px;
+  width: 60px;
+}
+.lumi-user-actions {
+  display: flex;
+}
+.lumi-user-icon {
+  font-size: 26px;
+  margin-right: 20px;
+  color: #ff9538;
+}
+.lumi-cart-icon {
+  font-size: 20px;
+  color: #ff9538;
+}
 .lumi-item {
   padding: 8px;
   a {

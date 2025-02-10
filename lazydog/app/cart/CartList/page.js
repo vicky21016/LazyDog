@@ -1,9 +1,11 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 import '../css/CartList.css'
 import { left } from '@popperjs/core'
+import CartCartlist from '@/app/components/cart/cartlist'
 
 export default function CartListPage(props) {
   return (
@@ -28,7 +30,11 @@ export default function CartListPage(props) {
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <CartCartlist />
+                <CartCartlist />
+                <CartCartlist />
+                <CartCartlist />
+                {/* <tr>
                   <td>
                     <img src="/cart/favicon.ico" alt />
                   </td>
@@ -43,14 +49,14 @@ export default function CartListPage(props) {
                         backgroundColor: 'white',
                       }}
                     >
-                      <i
-                        className="fa-solid fa-trash"
+                      <FontAwesomeIcon
+                        icon={faTrashAlt}
                         style={{ color: '#f2662b' }}
                       />
                     </button>
                   </td>
-                </tr>
-                <tr>
+                </tr> */}
+                {/* <tr>
                   <td>
                     <img src="/cart/favicon.ico" alt />
                   </td>
@@ -71,7 +77,7 @@ export default function CartListPage(props) {
                       />
                     </button>
                   </td>
-                </tr>
+                </tr> */}
               </tbody>
             </table>
             <aside

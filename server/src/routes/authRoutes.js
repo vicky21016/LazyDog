@@ -34,12 +34,10 @@ router.post("/login", upload.none(), async (req, res) => {
     });
   } catch (err) {
     console.log("伺服器錯誤:", err);
-    res
-      .status(400)
-      .json({
-        status: "error",
-        message: err.message ? err.message : "伺服器錯誤",
-      });
+    res.status(400).json({
+      status: "error",
+      message: err.message ? err.message : "伺服器錯誤",
+    });
   }
 });
 
@@ -77,7 +75,7 @@ router.post("/register", upload.none(), async (req, res) => {
 
     // 取得當前時間
     const createdAt = new Date().toISOString().slice(0, 19).replace("T", " ");
-    
+
     const sql =
       "INSERT INTO `users` (`email`, `password`, `created_at`) VALUES (?, ?, ?)";
     // console.log("要插入的 email:", email);
@@ -99,5 +97,65 @@ router.post("/register", upload.none(), async (req, res) => {
     res.status(500).json({ status: "error", message: "伺服器錯誤" });
   }
 });
+
+router.post("/logout", checkToken, (req, res) => {
+  const token = jwt.sign(
+    {
+      email: "",
+    },
+    secretKey,
+    { expiresIn: "-10s" }
+  );
+  res.json({
+    status: "success",
+    data: { token },
+    message: "登出成功",
+  });
+});
+
+router.post("/api/users/status", checkToken, (req, res) => {
+  const { decoded } = req;
+
+  const token = jwt.sign(
+    {
+      id: decoded.id,
+      email: decoded.email,
+    },
+    secretKey,
+    { expiresIn: "30m" }
+  );
+  res.json({ status: "success", data: { token }, message: "登入中" });
+});
+
+function checkToken(req, res, next) {
+  let token = req.get("Authorization");
+  if (!token)
+    return res.json({
+      status: "error",
+      data: "",
+      message: "無資料",
+    });
+  console.log(token);
+  if (!token.startsWith("Bearer "))
+    return res.json({
+      status: "error",
+      data: "",
+      message: "驗證資料錯誤",
+    });
+  token = token.slice(7);
+  console.log(token);
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err)
+      return res.status(401).json({
+        status: "error",
+        data: "",
+        message: "資料失效",
+      });
+    req.decoded = decoded;
+    console.log(decoded);
+
+    next();
+  });
+}
 
 export default router;
