@@ -27,7 +27,6 @@ export const createHotels = async (hotelData) => {
   try {
     const {
       name,
-      operator_id,
       link,
       county,
       district,
@@ -47,7 +46,7 @@ export const createHotels = async (hotelData) => {
 
     const [result] = await pool.query(
       `INSERT INTO hotel 
-        (name, operator_id, link, county, district, address, phone, room_total, introduce, 
+        (name, link, county, district, address, phone, room_total, introduce, 
         status, latitude, longitude, map_link, category, 
         average_rating, total_reviews, check_in_time, check_out_time, contact_email, 
         updated_at, created_at, is_deleted) 
