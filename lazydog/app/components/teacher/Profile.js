@@ -12,7 +12,7 @@ const Profile = () => {
       <div className={`my-4 ${styles["profile"]}`}>
         <div className="row">
           <div className="col-5">
-            <img src="mark.jpg" className={styles.profileImg} alt="馬克" />
+            <img src="/teacher-img/馬克.jpg" className={styles.profileImg} alt="馬克" />
           </div>
           <div className="col-7">
             <h6 className={`mb-4 ${styles["type"]}`}>寵物訓練</h6>
