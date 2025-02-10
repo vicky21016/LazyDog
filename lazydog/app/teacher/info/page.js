@@ -46,7 +46,7 @@ const App = () => {
           </div>
           <div className="mb-4">看看其他優良師資...</div>
           <TeacherCard
-            imgSrc=""
+            imgSrc="/teacher-img/Zoe.png"
             col="col-3"
             name="Zoe"
             text="寵物訓練"
@@ -54,9 +54,21 @@ const App = () => {
           />
           <div className="mb-4">看看其他優良課程...</div>
           <div className="row mb-5">
-            <OtherCourses imgSrc="" name="狗兒的50道基礎訓練" link="/course" />
-            <OtherCourses imgSrc="" name="狗兒的50道基礎訓練" link="/course" />
-            <OtherCourses imgSrc="" name="狗兒的50道基礎訓練" link="/course" />
+            <OtherCourses
+              imgSrc="/teacher-img/course.png"
+              name="狗兒的50道基礎訓練"
+              link="/course"
+            />
+            <OtherCourses
+              imgSrc="/teacher-img/course.png"
+              name="狗兒的50道基礎訓練"
+              link="/course"
+            />
+            <OtherCourses
+              imgSrc="/teacher-img/course.png"
+              name="狗兒的50道基礎訓練"
+              link="/course"
+            />
           </div>
         </div>
       </div>

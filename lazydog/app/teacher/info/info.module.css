@@ -11,8 +11,9 @@
   }
 
   .profileImg {
-    border-radius: 50%;
-    max-width: 150px;
+    /* max-width: 150px; */
+    width: 350px;
+height: 450px;
   }
 
   .type {
