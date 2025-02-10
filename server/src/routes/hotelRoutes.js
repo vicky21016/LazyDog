@@ -7,8 +7,8 @@ import {
 
 const router = express.Router();
 
-router.get("/", getAllHotels);
-router.get("/:id", getByIds);
-router.post("/", createHotel);
+router.get("/hotels", getAllHotels);
+router.get("/hotels/:id", getByIds);
+router.post("/hotels", createHotel);
 
 export default router;
