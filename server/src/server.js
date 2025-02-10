@@ -22,9 +22,9 @@ app.use(
 );
 
 app.use("/auth", authRouter);
-app.use("/api", hotelRoutes);
-app.use("/api", couponRoutes);
-app.use("/api", courseRoutes);
+app.use("/api/hotels", hotelRoutes);
+app.use("/api/coupon", couponRoutes);
+app.use("/api/course", courseRoutes);
 
 app.get("/", (req, res) => {
   res.json({ status: "success", data: null, message: "首頁" });
