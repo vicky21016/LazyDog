@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
 import React, { useState } from "react";
-import Header from '../../components/layout/header';
-import Breadcrumb from '../../components/teacher/breadcrumb';
-import Profile from '../../components/teacher/Profile';
+import Link from "next/link";
+import Header from "../../components/layout/header";
+import Breadcrumb from "../../components/teacher/breadcrumb";
+import Profile from "../../components/teacher/Profile";
 // import SocialLinks from '../../components/teacher/SocialLinks';
-import ToggleButtons from '../../components/teacher/ToggleButtons';
-import OtherCourses from '../../components/teacher/OtherCourses';
+import ToggleButtons from "../../components/teacher/ToggleButtons";
+import OtherCourses from "../../components/teacher/OtherCourses";
 import TeacherCard from "../../components/teacher/teacherCard";
-import styles from './info.module.css';
+import styles from "./info.module.css";
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState("experience");
@@ -33,8 +34,8 @@ const App = () => {
 
           <Profile />
           {/* <SocialLinks /> */}
-          <div className={styles.profile}>
-            <div className="m-5 row">
+          <div className={`row ${styles.profile}`}>
+            <div className="my-5 ">
               <div className="">
                 <ToggleButtons onRadioChange={handleRadioChange} />
               </div>

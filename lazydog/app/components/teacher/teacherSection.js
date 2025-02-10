@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React, { useState } from "react";
+import Link from "next/link";
 
 const TeacherSection = () => {
   const [state, setState] = useState(null);
-  
+
   return (
-    <section className="text-center mb-3">
-      <div className="lumi-teacher-team p-5">
-        <h3 className="mb-3 lumi-m-title">嚴選的師資團隊</h3>
+    <section className=" mb-3">
+      <div className="lumi-teacher-team p-5 text-center">
+        <h3 className="mb-5 lumi-m-title">嚴選的師資團隊</h3>
         <div className=" mb-5">
           <p>
             我們對寵物師資的挑選份外嚴格，必須有豐富的經驗、耐心、傾聽能力、堅強的心志，才能陪伴飼主和狗狗一起經歷改變。
@@ -42,25 +42,34 @@ const TeacherSection = () => {
         </div>
       </div>
       <div className="lumi-all-wrapper pb-5">
-        <h3 className="mb-3 lumi-m-title">熱門師資</h3>
+        <h3 className="mb-5 lumi-m-title text-center">熱門師資</h3>
         <div className="row">
           {["1", "2", "3", "4"].map((_, index) => (
             <div className="col-3" key={index}>
-              <div className="card" style={{ width: "18.75rem" }}>
-                <img src="..." className="card-img-top" alt="..." />
-                <div className="card-body">
-                  <p className="card-text">
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </p>
+              <Link
+                href="/teacher/info"
+                passHref
+                className="text-decoration-none"
+              >
+                <div className="card" style={{ width: "18.75rem" }}>
+                  <img src="..." className="card-img-top" alt="..." />
+                  <div className="card-body fw-medium">
+                    Zoe
+                    <p
+                      className="card-text mt-2"
+                      style={{ fontSize: "12px", color: "#ff9538" }}
+                    >
+                      寵物訓練
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
           ))}
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default TeacherSection;
