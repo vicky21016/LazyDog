@@ -34,10 +34,36 @@ const App = () => {
                     </div>
                   </div>
                 </section>
-                <TeacherCard imgSrc="" text="" link="/teacher/info" />
-                <TeacherCard imgSrc="" text="" link="/teacher/info" />
-                <TeacherCard imgSrc="" text="" link="/teacher/info" />
-                <TeacherCard imgSrc="" text="" link="/teacher/info" />
+                <div>
+                  <TeacherCard
+                    imgSrc=""
+                    col="col-4"
+                    name="Zoe"
+                    text="寵物訓練"
+                    link="/teacher/info"
+                  />
+                  <TeacherCard
+                    imgSrc=""
+                    col="col-4"
+                    name="Zoe"
+                    text="寵物訓練"
+                    link="/teacher/info"
+                  />
+                  <TeacherCard
+                    imgSrc=""
+                    col="col-4"
+                    name="Zoe"
+                    text="寵物訓練"
+                    link="/teacher/info"
+                  />
+                  <TeacherCard
+                    imgSrc=""
+                    col="col-4"
+                    name="Zoe"
+                    text="寵物訓練"
+                    link="/teacher/info"
+                  />
+                </div>
               </div>
             </section>
           </div>

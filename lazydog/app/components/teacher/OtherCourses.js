@@ -1,16 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
-import TeacherCard from "./teacherCard";
+import Link from "next/link";
 
-const OtherCourses = ({ name }) => {
+const OtherCourses = ({ imgSrc, name, link }) => {
   return (
     <>
-      <h6 className="mb-4">看看其他{name}</h6>
-      <div className="row">
-        <TeacherCard imgSrc="..." text="Some quick example text to build on the card title and make up the bulk of the card's content."  link="" />
-        
-      </div>
+     
+        <div className="col-4">
+          <Link href={link} passHref className="text-decoration-none">
+            <div className="card" style={{ width: "20rem" }}>
+              <img src={imgSrc} className="card-img-top" alt="..." />
+              <div className="card-body">{name}</div>
+            </div>
+          </Link>
+        </div>
+     
     </>
   );
 };

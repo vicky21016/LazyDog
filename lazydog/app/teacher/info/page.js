@@ -7,6 +7,7 @@ import Profile from '../../components/teacher/Profile';
 // import SocialLinks from '../../components/teacher/SocialLinks';
 import ToggleButtons from '../../components/teacher/ToggleButtons';
 import OtherCourses from '../../components/teacher/OtherCourses';
+import TeacherCard from "../../components/teacher/teacherCard";
 import styles from './info.module.css';
 
 const App = () => {
@@ -43,8 +44,20 @@ const App = () => {
               </div>
             </div>
           </div>
-          <OtherCourses name="優良師資..." />
-          <OtherCourses name="優良課程..." />
+          <div className="mb-4">看看其他優良師資...</div>
+          <TeacherCard
+            imgSrc=""
+            col="col-3"
+            name="Zoe"
+            text="寵物訓練"
+            link="/teacher/info"
+          />
+          <div className="mb-4">看看其他優良課程...</div>
+          <div className="row mb-5">
+            <OtherCourses imgSrc="" name="狗兒的50道基礎訓練" link="/course" />
+            <OtherCourses imgSrc="" name="狗兒的50道基礎訓練" link="/course" />
+            <OtherCourses imgSrc="" name="狗兒的50道基礎訓練" link="/course" />
+          </div>
         </div>
       </div>
     </>
