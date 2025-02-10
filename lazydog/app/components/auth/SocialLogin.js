@@ -8,19 +8,17 @@ export default function ComponentsSocialLogin(props) {
   return (
     <>
       <div className="lumi-social-login">
-        <Link href="" className="lumi-social-button">
+        <Link href="/user/google-login" className="lumi-social-button">
           <img
             src="./images/Google.png"
             alt="google"
             className="lumi-google-icon"
           />
         </Link>
-        <Link href="" className="lumi-social-button">
+        <Link href="/line/google-login" className="lumi-social-button">
           <img src="./images/line.webp" alt="line" className="lumi-line-icon" />
         </Link>
       </div>
     </>
   );
 }
-// /user/google-login
-// /user/line-login
