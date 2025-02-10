@@ -1,3 +1,4 @@
+/* 共用 */
 /* 滾軸樣式 */
 .scrollOrg {
   --sb-track-color: #bcbcbc38;
@@ -26,14 +27,28 @@
                      var(--sb-track-color);
   }
 }
+
+/* .form-select:focus,
+.form-control:focus, */
+input:focus, 
+input:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #a1a1a1 !important;
+}
+
+body{
+  background: #fffef3;
+}
   
-  
-  /* 共用 */
+
 /* 左邊 */
 .left{
-  margin: 0 20px;
+  background: #fff;
+  width: 100%;
+  /* position: fixed; */
+  margin-right: 15px;
   .top {
-      padding: 38px;
       .tName,.tGmail,.tTitle{
           overflow-wrap: break-word;
           word-wrap: break-word;
@@ -43,8 +58,9 @@
           font-weight: bold;
       }
       .tGmail{
-          font-size: 14px;
-          letter-spacing: .5px;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: .3px;
       }
       
   
@@ -67,17 +83,18 @@
   }
   .lis {
       border-top: 0.1px solid var(--text-Gy, #dee2e6);
-      /* padding-left: 20px; */
+      padding: 20px 24px 20px 38px;
   }
 
   .lis:hover {
       a, .icons{
-      color: #F5842B;
+      color: #f7a96d;
       }         
   }
   
   .icons{
       color: #bcbcbc;
+      padding-right: 10px;
   }
   .liText {
       color: #bcbcbc;
@@ -89,8 +106,7 @@
       letter-spacing: 0.96px;
   }
   
-}
-/* 相機 */
+  /* 相機 */
 .camera{
   .avatarImg {
       width: 100px;
@@ -127,123 +143,141 @@
       cursor: pointer;
       }
 }
+}
+
+
+
   
-  /* 右邊 */
-  .right{
-    /* height: 95vh; */
-    overflow-y: auto;
-    .must{
-    color: red;
-    padding-left: 5px;
-    }
-    .example{
-        color: #bcbcbc;
-        font-size: 12px;
-        padding-left: 15px;
-    }
+/* 右邊 */
+.right{
+  background: #fff;
+  overflow-y: auto;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
-    .controls  {
-      border-radius: 8px;
-      background-color: #bcbcbc38;
-      border: none;
-    }  
+  .tTitle{
+    font-weight: bold;
+  }
 
-    /* 美化圖片預覽區 */
-    .imageCard {
-      position: relative;
-      width: 100px;
-      height: 100px;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #f8f9fa;
-      border: 1px solid #ddd;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-      /* padding: 8px; */
-    }
+  .must{
+  color: red;
+  padding-left: 5px;
+  }
 
-    .imageCard .imgCr {
-      width: 100%;
-      object-fit: cover;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+  .labels{
+    font-size: 15px;
+  }
 
-    .imageCard .add {
-      width: 100%;
-      font-size: 12px;
-      margin-top: 5px;
-      padding: 3px;
-    }
-    .deleteBtn {
-      position: absolute;
-      top: 4px;
-      right: 5px;
-      background: red;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .deleteBtn:hover {
-      background: darkred;
-    }
+  .controls  {
+    border-radius: 8px;
+    background-color: #fff;
+    /* border: none; */
+    border: .8px solid #e2e1e1;
+  }
+  
+  .controls::placeholder {
+    color: #bcbcbc;
+    font-size: 13px;
+    padding-left: 2px;
+    letter-spacing: 1px;
+  }
 
-    .addPicBtn{
-      width: 50px;
-      height: 25px;
-      background-color: #66C5BD;
-      border: none;
+  /* 美化圖片預覽區 */
+  .imageCard {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    /* padding: 8px; */
+  }
+
+  .imageCard .imgCr {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .imageCard .add {
+    width: 100%;
+    font-size: 12px;
+    margin-top: 5px;
+    padding: 3px;
+  }
+  .deleteBtn {
+    position: absolute;
+    top: 4px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .deleteBtn:hover {
+    background: darkred;
+  }
+
+  .addPicBtn{
+    width: 50px;
+    height: 25px;
+    background-color: #66C5BD;
+    border: none;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 0;
+    margin-left: 15px;
+    &:hover{
+      background: #20b9ad;
+  }
+}
+
+
+
+  /* 按鈕 */
+  .cancleBtn{
+    background-color: #dee2e6;
+    .cancleBtnA{
+      color:#9e9898;
+      text-decoration: none;
       font-weight: bold;
-      padding: 0;
-      margin-left: 15px;
-      &:hover{
-        background: #20b9ad;
+    }
+  }
+  .cancleBtn:hover{
+    background-color: #cecfd1;
+    font-weight: bolder;
+    .cancleBtnA{
+      color:#fff;
     }
   }
 
-
-
-    /* 按鈕 */
-    .cancleBtn{
-      background-color: #dee2e6;
-      .cancleBtnA{
-        color:#9e9898;
-        text-decoration: none;
-        font-weight: bold;
-      }
+  .submitBtn{
+    background-color: #F5842B;
+    border: none;      
+    .submitBtnA{
+      color:white;
+      text-decoration: none;
+      font-weight: bold;
     }
-    .cancleBtn:hover{
-      background-color: #cecfd1;
-      font-weight: bolder;
-      .cancleBtnA{
-        color:#fff;
-      }
-    }
-
-    .submitBtn{
-      background-color: #F5842B;
-      border: none;      
-      .submitBtnA{
-        color:white;
-        text-decoration: none;
-        font-weight: bold;
-      }
-    }
-    .submitBtn:hover{
-      background-color: #e26404;
-    }
-
   }
+  .submitBtn:hover{
+    background-color: #e26404;
+  }
+
+}
 
   
   
