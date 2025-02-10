@@ -80,7 +80,7 @@ body {
   align-items: center;
 
   background-color: #f5832b00;
-  backdrop-filter: blur(20px);
+  /* backdrop-filter: blur(20px); */
   transition: background 0.3s ease-in-out;
   
   z-index: 1000;
