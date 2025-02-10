@@ -22,41 +22,11 @@ body {
   padding: 0 10px;
   --font-noto-sans-tc: "Noto Sans TC", sans-serif;
 }*/
-/* a {
+a {
   text-decoration: none;
-} */
-/* header */
-.lumi-header {
-  display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 20px 63px;
-  justify-content: space-between;
-  align-items: center;
-  background-color: transparent;
-  z-index: 1000;
-}
-.lumi-ul {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 15px;
-  letter-spacing: 2px;
-  gap: 73px;
-  a {
-    text-decoration: none;
-    color: rgba(59, 51, 48, 1);
-    font-weight: bold;
-  }
-  a:hover {
-    text-decoration: none;
-    color: #ff9538;
-  }
 }
 
+<<<<<<< HEAD
 .lumi-signin {
   color: #ff9538;
   font-weight: 700;
@@ -154,6 +124,8 @@ body {
   font-size: 20px;
   color: #ff9538;
 }
+=======
+>>>>>>> a5db05af801da319203e99253a8236f2b2453699
 .lumi-item {
   padding: 8px;
   a {
@@ -165,6 +137,7 @@ body {
     font-weight: bold;
   }
 }
+
 /* 登入表單 */
 .lumi-login-wrapper {
   display: flex;
