@@ -7,6 +7,7 @@ import hotelRoutes from "./routes/hotelRoutes.js";
 import couponRoutes from "./routes/couponRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 
+import cartRoutes from "./routes/cartRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -22,7 +23,6 @@ app.use(
 app.use("/auth", authRouter);
 app.use("/api", hotelRoutes);
 app.use("/api", couponRoutes);
-app.use("/api", productRoutes);
 
 app.get("/", (req, res) => {
   res.json({ status: "success", data: null, message: "首頁" });
