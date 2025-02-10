@@ -5,12 +5,13 @@ import { useRouter, usePathname } from 'next/navigation'
 import { useAuthGet } from '@/services/rest-client/use-user'
 // 登入頁路由與隱私頁面路由，未登入時會檢查後跳轉至登入頁路由
 import { loginRoute, protectedRoutes } from '@/config'
-// import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const appKey = "loginWithToken";
 
 // 建立Context
 const AuthContext = createContext(null)
+const secretKey = process.env.JWT_SECRET_KET;
 
 // 提供在全域綁定的context狀態
 export const AuthProvider = ({ children }) => {
