@@ -5,7 +5,7 @@ import authRouter from "./routes/authRoutes.js";
 import pool from "./config/mysql.js";
 import hotelRoutes from "./routes/hotelRoutes.js";
 import couponRoutes from "./routes/couponRoutes.js";
-
+import cartRoutes from "./routes/cartRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -21,7 +21,7 @@ app.use(
 app.use("/auth", authRouter);
 app.use("/api", hotelRoutes);
 app.use("/api", couponRoutes);
-
+app.use("/cart", cartRoutes);
 app.get("/", (req, res) => {
   res.json({ status: "success", data: null, message: "首頁" });
 });
