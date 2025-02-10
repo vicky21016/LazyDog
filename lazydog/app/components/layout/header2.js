@@ -8,6 +8,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebase } from "../utils/firebase";
 import styles from "../../../styles/modules/header2.module.css"; // 引入 CSS 模組
 
+
 export default function Header(props) {
   const [user, setUser] = React.useState(null);
   React.useEffect(() => {
@@ -19,7 +20,7 @@ export default function Header(props) {
   return (
     <header className={styles["lumi-header2"]}>
       <Link href="/" className={styles["lumi-logo2"]}>
-        <img src="/images/logo.png" alt="Logo" />
+        <img className={styles.logo} src="/header/img/logo.png" alt="Logo" />
         <div className={styles["lumi-logo1"]}>LAZYDOG</div>
       </Link>
       <nav>
@@ -40,7 +41,7 @@ export default function Header(props) {
               </Link>
             </li>
             <div className={styles["dropdown-content"]}>
-              <Link href="#" className={styles["dropdown-link"]}>
+              <Link href="/course" className={styles["dropdown-link"]}>
                 課程
               </Link>
               <Link href="/teacher/list" className={styles["dropdown-link"]}>
@@ -61,7 +62,8 @@ export default function Header(props) {
           <div className={styles["lumi-user-actions"]}>
             <div className={styles["dropdown"]}>
               <Link href="/pages" className={styles["lumi-user-icon2"]}>
-                <FontAwesomeIcon icon={faUser} />
+                {/* <FontAwesomeIcon icon={faUser} /> */}
+                <i class="bi bi-person"></i>
               </Link>
               <div className={styles["dropdown-content"]}>
                 <Link href="/pages" className={styles["dropdown-link"]}>
@@ -74,7 +76,8 @@ export default function Header(props) {
             </div>
             <div className={styles["lumi-cart-icon2"]}>
               <a href="">
-                <img src="/images/cart.png" alt="cart" />
+                {/* <img src="/images/cart.png" alt="cart" /> */}
+                <i class="bi bi-cart2"></i>
               </a>
             </div>
           </div>
