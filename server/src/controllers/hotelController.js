@@ -11,7 +11,9 @@ export const getAllHotels = async (req, res) => {
 
 export const getById = async (req, res) => {  
   try{
-    const hotels = await getId(req.params);
+    const {id}=req.params;
+    // console.log(id);
+    const hotels = await getId(id);
     res.json(hotels);
   }catch(err){
     res.status(500).json({err:err.message})
