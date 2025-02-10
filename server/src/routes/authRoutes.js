@@ -14,14 +14,14 @@ router.post("/login", upload.none(), async (req, res) => {
   try {
     if (!email || !password) throw new Error("請提供帳號和密碼");
 
-    const db = await pool();
+    // const db = await pool();
     const sql = "SELECT * FROM `users` WHERE email = ?;";
-    const [users] = await db.execute(sql, [email]);
+    const [users] = await pool.execute(sql, [email]);
 
     if (users.length === 0) throw new Error("找不到使用者");
 
     const user = users[0];
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = bcrypt.compare(password, user.password);
     if (!isMatch) throw new Error("帳號或密碼錯誤");
 
     const token = jwt.sign({ id: user.id, email: user.email }, secretKey, {
@@ -60,10 +60,10 @@ router.post("/register", upload.none(), async (req, res) => {
   }
 
   try {
-    const db = await pool();
+    // const db = await pool();
     console.log("資料庫連線成功");
     // 檢查用戶是否已經存在
-    const [existUser] = await db.execute(
+    const [existUser] = await pool.execute(
       "SELECT * FROM users WHERE email = ?",
       [email]
     );
@@ -74,11 +74,20 @@ router.post("/register", upload.none(), async (req, res) => {
 
     // 使用 bcrypt 加密密碼
     const hashedPassword = await bcrypt.hash(password, 10);
-    const sql = "INSERT INTO `users` (`email`, `password`) VALUES (?, ?)";
+
+    // 取得當前時間
+    const createdAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+    
+    const sql =
+      "INSERT INTO `users` (`email`, `password`, `created_at`) VALUES (?, ?, ?)";
     // console.log("要插入的 email:", email);
     // console.log("要插入的 password:", password);
     // 插入新用戶資料
-    const [result] = await db.execute(sql, [email, hashedPassword]);
+    const [result] = await pool.execute(sql, [
+      email,
+      hashedPassword,
+      createdAt,
+    ]);
 
     console.log("插入結果:", result);
     // 註冊後返回成功訊息
