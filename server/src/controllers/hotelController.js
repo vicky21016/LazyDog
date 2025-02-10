@@ -1,4 +1,4 @@
-import { getHotels, getId } from "../services/hotelService.js";
+import { getHotels, getId,createHotels } from "../services/hotelService.js";
 
 export const getAllHotels = async (req, res) => {
   try {
@@ -24,7 +24,7 @@ export const getById = async (req, res) => {
 export const createHotel = async (req, res) => {
   try{
     const newHotel = req.body;
-    const hotels = await createHotel();
+    const hotels = await createHotels();
     newHotel.id = hotels.length + 1;
     hotels.push(newHotel);
     res.status(201).json(newHotel);
