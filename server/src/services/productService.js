@@ -1,11 +1,21 @@
 import pool from "../config/mysql.js";
 
-export const getProducts = async () => {
+export const getAllProducts = async () => {
   try {
-    const [products] = await pool.query("SELECT * FROM yi_product");
+    const [products] = await pool.execute("SELECT * FROM yi_product");
     return products;
   } catch (error) {
-    throw new Error(" 無法取得旅館列表：" + error.message);
+    throw new Error(" 無法取得商品列表：" + error.message);
   }
 };
-export default getProducts;
+
+export const getProductId = async (id) => {
+  try {
+    if(!id) throw new Error("請提供id");
+    const [products] = await pool.execute("SELECT * FROM yi_product",[id]);
+    return products;
+  } catch (error) {
+    throw new Error(" 無法取得商品：" + error.message);
+  }
+};
+

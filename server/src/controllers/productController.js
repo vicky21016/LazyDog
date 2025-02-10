@@ -1,12 +1,20 @@
-import {getProducts} from "../services/productService.js";
+import {getAllProducts, getProductId} from "../services/productService.js";
 
-export const getAllProducts = async (req, res) => {
+export const getAll = async (req, res) => {
   try {
-    const products = await getProducts();
+    const products = await getAllProducts();
     res.json(products);
   } catch (error) {
     res.status(500).json({error: error.message});
   }
 };
 
-export default getAllProducts;
+export const getId = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const product = await getProductId();
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({error: error.message});
+  }
+};
