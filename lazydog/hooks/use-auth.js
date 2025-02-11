@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import jwt from "jsonwebtoken";
+import jwt from "jwt-decode";
 const appKey = "loginWithToken";
 
 const AuthContext = createContext(null);
@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
   const loginRoute = "/login";
 
   const login = async (email, password) => {
-    let API = "http://localhost:3000/login";
+    let API = "http://localhost:3000/auth/login";
 
     const formData = new FormData();
     formData.append("email", email);
@@ -36,7 +36,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem(appKey, token);
     } catch (err) {
       console.log(err);
-      alert(err.message);
+      alert(`登入失敗: ${err.message}`);
     }
   };
 
