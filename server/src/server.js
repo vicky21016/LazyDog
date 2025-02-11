@@ -24,7 +24,7 @@ app.use("/auth", authRouter);
 app.use("/api/hotels", hotelRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/products", productRoutes);
-app.use("/api", courseRoutes);
+app.use("/api/course", courseRoutes);
 app.use("/api/cart",cartRoutes);
 
 app.get("/", (req, res) => {
