@@ -20,7 +20,7 @@ export default function Header(props) {
     <header className={styles["lumi-header"]}>
       <Link href="/" className={styles["lumi-logo"]}>
         <img src="/images/logo.png" alt="Logo" />
-        <div className={styles["lumi-logo1"]}>LAZYDOG</div>
+        <div className={styles.lumiLogo1}>LAZYDOG</div>
       </Link>
       <nav>
         <ul className={styles["lumi-ul"]}>
