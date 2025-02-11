@@ -19,7 +19,7 @@ const ToggleButtons = ({ onRadioChange }) => {
           </div>
         </div>
       </div>
-      <div className="col-7">
+      <div className="col-7 ps-5">
         <div className="mb-5">
           <h6>經歷 :</h6>
           <ul>

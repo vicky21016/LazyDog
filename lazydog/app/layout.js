@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import "../styles/animations.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { AuthProvider } from "@/hooks/use-auth";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,9 +30,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistSans.variable}`}>
-        {children}
-      </body>
+      <AuthProvider>
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          {children}
+        </body>
+      </AuthProvider>
     </html>
   );
 }
