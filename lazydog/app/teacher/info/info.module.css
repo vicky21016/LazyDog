@@ -1,6 +1,6 @@
 .container {
     max-width: 1320px;
-    margin: 80px auto;
+    margin: 30px auto;
     width: 100%;
   }
 
@@ -12,8 +12,8 @@
 
   .profileImg {
     /* max-width: 150px; */
-    width: 350px;
-height: 450px;
+    width: 500px;
+height: 650px;
   }
 
   .type {

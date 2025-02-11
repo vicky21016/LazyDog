@@ -8,9 +8,9 @@ function App() {
   return (
     <div>
       <Header />
-      <div className="mt-5">
+      <div className="mt-2">
         <section className="text-center">
-          <h2>師資 & 課程服務</h2>
+          <h2 className='mb-5'>師資 & 課程服務</h2>
         </section>
         <TeacherSection />
         <CourseSection />

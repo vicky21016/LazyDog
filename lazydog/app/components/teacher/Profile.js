@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Profile = () => {
   return (
     <>
-      <div className={`my-4 ${styles["profile"]}`}>
+      <div className={`my-5 ${styles["profile"]}`}>
         <div className="row">
           <div className="col-5">
             <img src="/teacher-img/馬克.jpg" className={styles.profileImg} alt="馬克" />

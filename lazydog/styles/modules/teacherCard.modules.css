@@ -1,0 +1,31 @@
+.card6 {
+  width: 180px;
+  height: 264px;
+  padding: 6px;
+  transition: 0.4s;
+  color: black;
+  background-color: #f5f5f5;
+  font-family: "Inter", sans-serif;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.card6:hover {
+  translate: 0 -10px;
+}
+
+.card6-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.card6 img {
+  height: 130px;
+  width: 100%;
+  background-color: #c9c9c9;
+  box-shadow: inset 8px 8px 10px #c3c3c3, inset -8px -8px 10px #cfcfcf;
+}
+
+.card6-description {
+  font-size: 14px;
+}

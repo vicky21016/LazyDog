@@ -45,7 +45,7 @@ const App = () => {
               </div>
             </div>
           </div>
-          <div className="mb-4">看看其他優良師資...</div>
+          <div className="my-4">看看其他優良師資...</div>
           <TeacherCard
             imgSrc="/teacher-img/Zoe.png"
             col="col-3"

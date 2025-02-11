@@ -42,7 +42,7 @@ const TeacherSection = () => {
         </div>
       </div>
       <div className="lumi-all-wrapper pb-5">
-        <h3 className="mb-5 lumi-m-title text-center">熱門師資</h3>
+        <h3 className="my-5 lumi-m-title text-center">熱門師資</h3>
         <div className="row">
           {["1", "2", "3", "4"].map((_, index) => (
             <div className="col-3" key={index}>

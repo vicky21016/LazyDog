@@ -80,7 +80,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 80vh;
 }
 .lumi-login-container {
   width: 100%;
@@ -229,7 +229,7 @@ a {
   justify-content: center;
   align-items: flex-start; /* 頂端對齊 */
   gap: 40px;
-  margin: 80px auto 20px;
+  margin: 60px auto 20px;
   max-width: 1320px;
 }
 .lumi-menu-container {
@@ -250,7 +250,7 @@ a {
 }
 /* teacher */
 .lumi-all-wrapper {
-  margin: 80px auto 20px;
+  margin: 0 auto 20px;
   max-width: 1320px;
 }
 .lumi-teacher-btn {
