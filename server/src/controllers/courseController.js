@@ -1,5 +1,5 @@
 // 用MVC架構，步驟二 Controller 處理請求 
-import { getCourses, getId ,createCourses } from "../services/courseService.js";
+import { getCourses, getId, createCourseWithSession} from "../services/courseService.js";
 
 export const getAllCourse = async (req, res) => {
   try {
@@ -10,12 +10,13 @@ export const getAllCourse = async (req, res) => {
   }
 };
 
-export const getIdCourse = async (req, res) => {  
+export const getIdCourse = async (req, res) => {
   try{
-    const {id}=req.params;
-    // console.log(id);
-    const courses = await getId(id);
-    res.json(courses);
+    const id = Number(req.params.id);
+    // console.log("找到旅館ID", id);
+
+    const [course] = await getId(id);    
+    res.json(course);
   }catch(err){
     res.status(500).json({err:err.message})
   }
@@ -23,15 +24,32 @@ export const getIdCourse = async (req, res) => {
 
 
 export const createCourse = async (req, res) => {
+  const {courseData, sessionData} = req.body;
+
   try{
-    const newCourse = req.body;
-    const courses = await createCourses();
-    newCourse.id = courses.length + 1;
-    courses.push(newCourse);
-    res.status(201).json(newCourse);
+    const result = await createCourseWithSession(courseData, sessionData)
+    console.log(result);
+
+    res.status(201).json({
+      message:"課程建立成功",
+      courseId:  result.courseId,
+      sessionId: result.sessionId
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
+// export const updateCourse = async (req, res) => {
+//   try{
+//     const newCourse = req.body;
+//     const courses = await updateCourses();
+//     newCourse.id = courses.length + 1;
+//     courses.push(newCourse);
+//     res.status(200).json(newCourse);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 

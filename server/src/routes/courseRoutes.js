@@ -4,7 +4,9 @@ import { getAllCourse,getIdCourse ,createCourse} from "../controllers/courseCont
 
 const router = express.Router();
 
-router.get("/course", getAllCourse);
-router.get("/course/:id", getIdCourse);
-router.post("/course", createCourse);
+router.get("/", getAllCourse);     // 多筆
+router.get("/:id", getIdCourse);   // 一筆
+router.post("/", createCourse); 
+// router.put("/:courseId", updateCourse);  
+// router.delete("/:courseId",);  
 export default router;
