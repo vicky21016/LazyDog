@@ -63,7 +63,7 @@ const ArticlePage = () => {
                 width="16"
                 height="16"
                 fill="currentColor"
-                class="bi bi-search"
+                className="bi bi-search"
                 viewBox="0 0 16 16"
               >
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
@@ -73,7 +73,7 @@ const ArticlePage = () => {
                 width="16"
                 height="16"
                 fill="currentColor"
-                class="bi bi-search"
+                className="bi bi-search"
                 viewBox="0 0 16 16"
               >
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
@@ -112,7 +112,7 @@ const ArticlePage = () => {
               width="16"
               height="16"
               fill="currentColor"
-              class="bi bi-filter"
+              className="bi bi-filter"
               viewBox="0 0 16 16"
             >
               <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
@@ -133,7 +133,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-person-circle"
+                  className="bi bi-person-circle"
                   viewBox="0 0 16 16"
                 >
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
@@ -150,7 +150,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-calendar"
+                  className="bi bi-calendar"
                   viewBox="0 0 16 16"
                 >
                   <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
@@ -163,7 +163,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-tag-fill"
+                  className="bi bi-tag-fill"
                   viewBox="0 0 16 16"
                 >
                   <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
@@ -190,7 +190,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-person-circle"
+                  className="bi bi-person-circle"
                   viewBox="0 0 16 16"
                 >
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
@@ -207,7 +207,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-calendar"
+                  className="bi bi-calendar"
                   viewBox="0 0 16 16"
                 >
                   <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
@@ -220,7 +220,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-tag-fill"
+                  className="bi bi-tag-fill"
                   viewBox="0 0 16 16"
                 >
                   <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
@@ -247,7 +247,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-person-circle"
+                  className="bi bi-person-circle"
                   viewBox="0 0 16 16"
                 >
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
@@ -264,7 +264,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-calendar"
+                  className="bi bi-calendar"
                   viewBox="0 0 16 16"
                 >
                   <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
@@ -277,7 +277,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-tag-fill"
+                  className="bi bi-tag-fill"
                   viewBox="0 0 16 16"
                 >
                   <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
@@ -304,7 +304,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-person-circle"
+                  className="bi bi-person-circle"
                   viewBox="0 0 16 16"
                 >
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
@@ -321,7 +321,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-calendar"
+                  className="bi bi-calendar"
                   viewBox="0 0 16 16"
                 >
                   <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
@@ -334,7 +334,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-tag-fill"
+                  className="bi bi-tag-fill"
                   viewBox="0 0 16 16"
                 >
                   <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
@@ -361,7 +361,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-person-circle"
+                  className="bi bi-person-circle"
                   viewBox="0 0 16 16"
                 >
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
@@ -378,7 +378,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-calendar"
+                  className="bi bi-calendar"
                   viewBox="0 0 16 16"
                 >
                   <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
@@ -391,7 +391,7 @@ const ArticlePage = () => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-tag-fill"
+                  className="bi bi-tag-fill"
                   viewBox="0 0 16 16"
                 >
                   <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
@@ -493,7 +493,7 @@ const ArticlePage = () => {
                     width="16"
                     height="16"
                     fill="currentColor"
-                    class="bi bi-caret-left"
+                    className="bi bi-caret-left"
                     viewBox="0 0 16 16"
                   >
                     <path d="M10 12.796V3.204L4.519 8zm-.659.753-5.48-4.796a1 1 0 0 1 0-1.506l5.48-4.796A1 1 0 0 1 11 3.204v9.592a1 1 0 0 1-1.659.753" />
@@ -510,7 +510,7 @@ const ArticlePage = () => {
               ))}
               <li className="page-item">
                 <a className="page-link" href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-right" viewBox="0 0 16 16">
   <path d="M6 12.796V3.204L11.481 8zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753"/>
 </svg>
                 </a>
