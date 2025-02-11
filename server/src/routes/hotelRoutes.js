@@ -6,6 +6,7 @@ import {
   updateHotel,
   softDeleteHotel,
 } from "../controllers/hotelController.js";
+// import { verifyToken, verifyRole   } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.get("/", getAllHotels);
 router.get("/:id", getByIds);
 router.post("/", createHotel);
 router.patch("/:id", updateHotel);
-router.patch("/softDelete/:id", softDeleteHotel);
+router.delete("/hotels/:id", softDeleteHotel); 
+// EX: ("/hotels/:id", verifyToken, verifyRole(["operator", "admin"]), softDeleteHotel)
 
 export default router;

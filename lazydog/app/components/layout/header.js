@@ -76,7 +76,7 @@ export default function Header(props) {
             <div className={styles["lumi-cart-icon"]}>
               <Link href="" className={styles["lumi-cart-icon"]}>
                 {/* <img src="/images/cart.png" alt="cart" /> */}
-                <i class="bi bi-cart2"></i>
+                <i className="bi bi-cart2"></i>
               </Link>
             </div>
           </div>

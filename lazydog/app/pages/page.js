@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 import Header from "../components/layout/header"; 
@@ -9,20 +9,20 @@ import Input from "../components/forms/Input";
 import styles from "./menu.module.css";
 
 export default function Menu() {
-    // const { isAuth, isLoading } = useAuth();
-    // const router = useRouter();
+     const [checkingAuth, setCheckingAuth] = useState(true);
+     const { user } = useAuth();
 
-    // useEffect(() => {
-    //   if (!isAuth && !isLoading) {
-    //     // 如果未登入，跳轉到登入頁
-    //     router.push("/login");
-    //   }
-    // }, [isAuth, isLoading, router]);
+     useEffect(() => {
+       if (user) setCheckingAuth(false);
+     }, [user]);
 
-    // if (isLoading) {
-    //   return <div>載入中...</div>;
-    // }
-
+     if (checkingAuth) {
+       return (
+         <div className={styles.container}>
+           <div className={styles.loader27}></div>
+         </div>
+       );
+     }
   const [formData, setFormData] = useState({
     name: "",
     gender: "",
