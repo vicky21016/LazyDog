@@ -1,3 +1,7 @@
+.list{
+  margin-top: 80px;
+}
+
 /* 活動輪播 */
 .new {
   position: relative;
@@ -21,8 +25,8 @@
     bottom: 0px;
 
     background-color: #f5842b;
-    width: 390px;
-    height: 103px;
+    width: 355px;
+    height: 93px;
     padding: 0px 32px;
     border-radius: 2px;
     box-sizing: border-box;
@@ -31,7 +35,7 @@
     color: #fff;
     text-align: center;
     font-family: "Segoe UI";
-    font-size: 36px;
+    font-size: 38px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
@@ -43,6 +47,7 @@
   }
   .arrowLW,
   .arrowRW {
+    width: 50px;
     cursor: pointer;
     background: transparent;
   }
@@ -89,19 +94,22 @@
   }
 
   .filterGroup {
-    margin-bottom: 15px;
+    margin-bottom: 65px;
   }
   .searchGroup {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 45px;
+    height: 54px;
     border-radius: 54px;
     border: 0.5px solid var(--text-Gy, #bcbcbc);
-    padding: 0 25px;
+    padding: 0 20px;
     flex: 1;
-    margin: 26px 0 69px;
+    margin: 26px 0 50px;
     overflow: hidden;
+  }
+  .searchIcon{
+    width: 21px;
   }
   .searchInput {
     border: none;
@@ -120,6 +128,7 @@
   }
   .xIcon {
     display: none;
+    width: 15px;
     cursor: pointer;
   }
   .searchInput:not(:placeholder-shown) + .xIcon {
@@ -130,30 +139,35 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 0.5px solid #bcbcbc;
-    padding: 20px 25px;
+    gap: 10px;
+    border-bottom: 0.1px solid #bcbcbc;
+    padding: 10px 25px;
+    margin-bottom: 28px;
   }
 
   .arrowDown {
     width: 12px;
     height: 8px;
   }
+  .filter {
+    padding: 0 25px;
+  }
   .checks {
-    padding: 20px 25px;
+    margin: 15px 0;
   }
-  .form-check {
-    margin: 20px 0;
-  }
-  .form-check-input {
+  .checkbox {
     transform: scale(1.5);
-    margin-right: 25px;
+    margin-right: 23px;
+    margin-top: 6px;
   }
-  .form-check-input:focus,
-  .form-check-input:active {
+  .checkbox:focus,
+  .checkboxt:active {
     box-shadow: none !important; /* 移除點擊後的藍色高亮 */
   }
-  .form-check-label {
+  .labels {
     font-size: 16px;
+    line-height: 30px;
+    font-weight: 400;
   }
 
   /* 價格篩選 */
@@ -229,7 +243,7 @@
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    margin: 69px 0;
+    margin: 100px 0 65px;
   }
 
   .clear-filter-btn:hover {
@@ -340,13 +354,14 @@
 
   /* 所有課程 */
   .right {
-    padding: 0 20px;
+    position: relative;
+    padding: 21px 28px;
   }
   .top {
-    margin: 45px 0 29px;
+    margin: 45px 0 50px;
   }
   .sTitle {
-    margin-bottom: 18px;
+    margin-bottom: 23px;
     color: var(--text-Bk, #3e3e3e);
     font-size: 32px;
     font-weight: bolder;
@@ -363,6 +378,7 @@
     display: flex;
     justify-content: space-between;
     margin: 25px 0;
+    padding: 0 3px 0 2px;
   }
 
   .count {
@@ -392,34 +408,39 @@
     max-width: 1060px;
     align-items: flex-start;
     align-content: flex-start;
-    gap: 50px 28px;
+    gap: 68px 47px;
     flex-wrap: wrap;
   }
   .courseCard {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 297px;
+    width: 280px;
   }
   .img {
-    width: 297px;
+    width: 100%;
     height: auto;
     object-fit: cover;
     border: 1px solid var(--text-Wh, #f7f7f7);
     margin-bottom: 8px;
   }
   .tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* text-align: center; */
     width: 71px;
-    padding: 3px 9px;
+    height: 23px;
+    padding-left: 1px;
     border-radius: 3px;
     background: var(--Color, #f5842b);
     color: var(--real-wh, #fff);
-    text-align: center;
     white-space: nowrap;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 1.8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
     margin: 5px 0 14px;
+    box-sizing: border-box;
   }
   .name {
     color: var(--Color, #3b3330);
@@ -427,7 +448,7 @@
     font-size: 20px;
     font-weight: bold;
     letter-spacing: 0.8px;
-    margin-bottom: 26px;
+    margin-bottom: 12px;
   }
   .intro {
     display: -webkit-box;
@@ -447,26 +468,35 @@
 }
 
 /*  分頁 */
+.navigation{
+  position: absolute;
+  right: 40%;
+  bottom: 0;
+  margin-top: auto;
+}
 .pagination {
   display: flex;
   gap: 20px;
-  padding: 66px 0;
+  /* padding: 66px 0; */
 }
 
-.pagination .page-item .page-link {
+.pageLink {
   border-radius: 50%;
   margin: 0 5px;
   color: #bcbcbc;
   border: none;
-}
-
-.pagination .page-item.active .page-link {
-  background-color: #f5842b;
-  color: white;
   border-radius: 60%;
 }
 
-.pagination .page-item .page-link:hover {
+.pageItem:active {
+  .page-link {
+    background-color: #f5842b;
+    color: white;
+    border-radius: 60%;
+  }
+}
+
+.pageLink:hover {
   background-color: #f5842b;
   color: white;
 }
