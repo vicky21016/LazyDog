@@ -108,15 +108,12 @@ export const updateHotel = async (req, res) => {
   }
 };
 
-export const deleteHotel = async (req, res) => {
+export const  softDeleteHotel = async (req, res) => {
   try {
     const { id } = req.params;
-
-    if (isNaN(Number(id))) {
-      return res.status(400).json({ error: "無效的 ID" });
-    }
-
+    
     const deletedHotel = await softDeleteHotelById(id);
+   
     if (!deletedHotel) {
       return res.status(404).json({ error: `找不到 id=${id} 或該旅館已刪除` });
     }
