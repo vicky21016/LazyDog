@@ -52,7 +52,7 @@ export default function Menu() {
   return (
     <>
       <Header />
-      <div class="lumi-wrapper">
+      <div className="lumi-wrapper">
         <MyMenu />
         <div className={`${styles["container"]}`}>
           <h4 className={`mb-4 ${styles["information"]}`}>基本資料</h4>

@@ -63,7 +63,7 @@ export default function Header(props) {
             <div className={styles["dropdown"]}>
               <Link href="/pages" className={styles["lumi-user-icon2"]}>
                 {/* <FontAwesomeIcon icon={faUser} /> */}
-                <i class="bi bi-person"></i>
+                <i className="bi bi-person"></i>
               </Link>
               <div className={styles["dropdown-content"]}>
                 <Link href="/pages" className={styles["dropdown-link"]}>
