@@ -259,8 +259,21 @@ a {
   padding: 10px 48px;
   background-color: #66c5bd;
   color: white;
+  border: 1px solid transparent;
   justify-content: center;
   align-items: center;
+}
+.lumi-teacher-btn:hover {
+  display: flex;
+  width: 270px;
+  padding: 10px 48px;
+  background-color: white;
+  color: #66c5bd;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid;
+  border-color: #66c5bd;
+  font-weight: 600;
 }
 .lumi-dog-container {
   display: flex;

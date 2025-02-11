@@ -14,7 +14,7 @@ const Profile = () => {
           <div className="col-5">
             <img src="/teacher-img/馬克.jpg" className={styles.profileImg} alt="馬克" />
           </div>
-          <div className="col-7">
+          <div className="col-7 ps-5">
             <h6 className={`mb-4 ${styles["type"]}`}>寵物訓練</h6>
             <h4 className={`mb-4 ${styles["mark"]}`}>馬克</h4>
             <p>

@@ -29,21 +29,27 @@ const TeacherSection = () => {
           </Link>
         </div>
       </div>
-      <div className="lumi-dog-container p-5">
-        <div className="lumi-dog">
-          <div>
+      <div className="lumi-dog-container p-5 text-center">
+        <div className="lumi-dog text-center">
+          <div className={` ${styles["cube"]}`}>
             <div>803</div>
             <div>蛻變的狗狗</div>
           </div>
-
-          <div>
+          <div className="">
+            <img
+              className={` ${styles["dog-image"]}`}
+              src="/teacher-img/dog.png"
+              alt=""
+            />
+          </div>
+          <div className={`ms-2 ${styles["cube"]}`}>
             <div>5525</div>
             <div>為狗狗服務時數</div>
           </div>
         </div>
       </div>
       <div className="lumi-all-wrapper pb-5">
-        <h3 className="my-5 lumi-m-title text-center">熱門師資</h3>
+        <h3 className="my-5 lumi-m-title ">熱門師資</h3>
         <div className="row">
           {["1", "2", "3", "4"].map((_, index) => (
             <div className="col-3" key={index}>

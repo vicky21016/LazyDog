@@ -46,7 +46,7 @@ const App = () => {
             </div>
           </div>
           <div className="my-4 fw-bolder">看看其他優良師資...</div>
-          <div className="row mb-5">
+          <div className="row mb-5  text-center">
             {["1", "2", "3", "4"].map((_, index) => (
               <div className="col-3" key={index}>
                 <Link
@@ -75,7 +75,7 @@ const App = () => {
             ))}
           </div>
           <div className="my-4 fw-bolder">看看其他優良課程...</div>
-          <div className="row mb-5">
+          <div className="row mb-5 text-center">
             <OtherCourses
               imgSrc="/teacher-img/course.png"
               name="狗兒的50道基礎訓練"
