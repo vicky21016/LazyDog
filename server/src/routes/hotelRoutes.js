@@ -5,7 +5,6 @@ import {
   createHotel,
   updateHotel,
   deleteHotel,
-
 } from "../controllers/hotelController.js";
 
 const router = express.Router();
