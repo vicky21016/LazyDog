@@ -2,15 +2,15 @@ import React from 'react';
 import Header from '../components/layout/header';
 import TeacherSection from '../components/teacher/teacherSection';
 import CourseSection from '../components/teacher/courseSection';
-// import './App.css'; // 引入 CSS 文件
+import styles from "../../styles/modules/toggle.module.css";
 
 function App() {
   return (
     <div>
       <Header />
-      <div className="mt-5">
+      <div className="">
         <section className="text-center">
-          <h2>師資 & 課程服務</h2>
+          <h2 className={`${styles["server"]}`}>師資 & 課程服務</h2>
         </section>
         <TeacherSection />
         <CourseSection />

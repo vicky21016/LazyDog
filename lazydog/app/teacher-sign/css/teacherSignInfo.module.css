@@ -28,8 +28,8 @@
   }
 }
 
-/* .form-select:focus,
-.form-control:focus, */
+.labels:focus,
+.controls:focus,
 input:focus, 
 input:active {
   outline: none !important;
