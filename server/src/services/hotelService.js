@@ -60,7 +60,7 @@ export const updateHotelById = async (req, res) => {
       [name, county, district, address, phone, id]
     );
 
-    if (result.affectedRows === 0) {
+    if (result.affectedRows == 0) {
       return res.status(404).json({ error: "更新失敗，找不到該旅館" });
     }
 

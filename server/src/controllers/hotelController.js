@@ -19,7 +19,7 @@ export const getAllHotels = async (req, res) => {
 export const getByIds = async (req, res) => {
   try {
     console.log("找到旅館ID:", req.params.id);
-    const id = parseInt(req.params.id, 10);
+    const id = Number(req.params.id, 10);
 
     if (isNaN(id)) {
       return res.status(400).json({ error: "無效的 ID" });
@@ -94,7 +94,7 @@ export const updateHotel = async (req, res) => {
     const { id } = req.params;
     const hotelData = req.body;
 
-    if (isNaN(parseInt(id))) {
+    if (isNaN(Number(id))) {
       return res.status(400).json({ error: "無效的 ID" });
     }
 
@@ -113,7 +113,7 @@ export const deleteHotel = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (isNaN(parseInt(id))) {
+    if (isNaN(Number(id))) {
       return res.status(400).json({ error: "無效的 ID" });
     }
 
@@ -132,7 +132,7 @@ export const restoreHotel = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (isNaN(parseInt(id))) {
+    if (isNaN(Number(id))) {
       return res.status(400).json({ error: "無效的 ID" });
     }
 
