@@ -1,3 +1,4 @@
+// 用MVC架構，步驟二 Controller 處理請求 
 import { getCourses, getId ,createCourses } from "../services/courseService.js";
 
 export const getAllCourse = async (req, res) => {
