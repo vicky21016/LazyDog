@@ -1,12 +1,28 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/router";
+import { useAuth } from "@/hooks/use-auth";
 import Header from "../components/layout/header"; 
 import MyMenu from "../components/layout/myMenu"; 
 import Input from "../components/forms/Input"; 
 import styles from "./menu.module.css";
 
 export default function Menu() {
+    // const { isAuth, isLoading } = useAuth();
+    // const router = useRouter();
+
+    // useEffect(() => {
+    //   if (!isAuth && !isLoading) {
+    //     // 如果未登入，跳轉到登入頁
+    //     router.push("/login");
+    //   }
+    // }, [isAuth, isLoading, router]);
+
+    // if (isLoading) {
+    //   return <div>載入中...</div>;
+    // }
+
   const [formData, setFormData] = useState({
     name: "",
     gender: "",
