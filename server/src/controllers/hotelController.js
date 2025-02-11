@@ -4,7 +4,6 @@ import {
   createHotels,
   updateHotelById,
   softDeleteHotelById,
-  restoreHotelById,
 } from "../services/hotelService.js";
 
 export const getAllHotels = async (req, res) => {
@@ -128,23 +127,3 @@ export const deleteHotel = async (req, res) => {
   }
 };
 
-export const restoreHotel = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    if (isNaN(Number(id))) {
-      return res.status(400).json({ error: "無效的 ID" });
-    }
-
-    const restoredHotel = await restoreHotelById(id);
-    if (!restoredHotel) {
-      return res
-        .status(404)
-        .json({ error: `找不到 id=${id} 或該旅館未被刪除` });
-    }
-
-    res.json({ message: `旅館 id=${id} 已恢復` });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};

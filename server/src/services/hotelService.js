@@ -114,20 +114,3 @@ export const softDeleteHotelById = async (softDelete) => {
   }
 };
 
-export const restoreHotelById = async (restoredHotel) => {
-  try {
-    const { id } = restoredHotel;
-    const [result] = await pool.query(
-      `UPDATE hotel SET is_deleted = 0, updated_at = NOW() WHERE id = ? AND is_deleted = 1`,
-      [id]
-    );
-
-    if (result.affectedRows === 0) {
-      console.log("恢復失敗");
-      return { error: "恢復失敗，找不到該旅館" };
-    }
-  } catch (error) {
-    console.log("恢復失敗");
-    throw new Error("無法恢復" + error.message);
-  }
-};
