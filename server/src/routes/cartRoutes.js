@@ -1,16 +1,17 @@
-import express from 'express'
-import multer from 'multer'
+import express from "express";
+import multer from "multer";
 
-const router = express.Router()
-const upload = multer()
+const router = express.Router();
+const upload = multer();
 
-router.post('/cartPay', upload.none(), async (req, res) => {
-  const { data } = req.body
+router.post("/", upload.none(), async (req, res) => {
+  const { data } = req.body;
   res.status(200).json({
-    status: 'success',
+    status: "success",
     data,
-    message: '',
-  })
-})
+    message: "",
+  });
+});
+router.post("/pay", upload.none(), async (req, res) => {});
 
-export default router
+export default router;
