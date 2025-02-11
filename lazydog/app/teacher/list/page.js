@@ -35,28 +35,28 @@ const App = () => {
               </section>
               <div>
                 <TeacherCard
-                  imgSrc=""
+                  imgSrc="/teacher-img/Zoe.png"
                   col="col-4"
                   name="Zoe"
                   text="寵物訓練"
                   link="/teacher/info"
                 />
                 <TeacherCard
-                  imgSrc=""
+                  imgSrc="/teacher-img/Zoe.png"
                   col="col-4"
                   name="Zoe"
                   text="寵物訓練"
                   link="/teacher/info"
                 />
                 <TeacherCard
-                  imgSrc=""
+                  imgSrc="/teacher-img/Zoe.png"
                   col="col-4"
                   name="Zoe"
                   text="寵物訓練"
                   link="/teacher/info"
                 />
                 <TeacherCard
-                  imgSrc=""
+                  imgSrc="/teacher-img/Zoe.png"
                   col="col-4"
                   name="Zoe"
                   text="寵物訓練"

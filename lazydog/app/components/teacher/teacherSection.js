@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import styles from "../../../styles/modules/toggle.module.css"
 
 const TeacherSection = () => {
   const [state, setState] = useState(null);
@@ -51,17 +52,21 @@ const TeacherSection = () => {
                 passHref
                 className="text-decoration-none"
               >
-                <div className="card" style={{ width: "18.75rem" }}>
-                  <img src="..." className="card-img-top" alt="..." />
-                  <div className="card-body fw-medium">
+                <div className={styles.card6} style={{ width: "18.75rem" }}>
+                  <img
+                    src="/teacher-img/Zoe.png"
+                    className="card-img-top"
+                    alt="..."
+                  />
+                  <div className={styles.card6Title} style={{}}>
                     Zoe
-                    <p
-                      className="card-text mt-2"
-                      style={{ fontSize: "12px", color: "#ff9538" }}
-                    >
-                      寵物訓練
-                    </p>
                   </div>
+                  <p
+                    className={styles.card6Description}
+                    style={{ color: "#ff9538" }}
+                  >
+                    寵物訓練
+                  </p>
                 </div>
               </Link>
             </div>
