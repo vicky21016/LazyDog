@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import styles from "../../../styles/modules/toggle.module.css"
 
 const TeacherSection = () => {
   const [state, setState] = useState(null);
@@ -28,21 +29,27 @@ const TeacherSection = () => {
           </Link>
         </div>
       </div>
-      <div className="lumi-dog-container p-5">
-        <div className="lumi-dog">
-          <div>
+      <div className="lumi-dog-container p-5 text-center">
+        <div className="lumi-dog text-center">
+          <div className={` ${styles["cube"]}`}>
             <div>803</div>
             <div>蛻變的狗狗</div>
           </div>
-
-          <div>
+          <div className="">
+            <img
+              className={` ${styles["dog-image"]}`}
+              src="/teacher-img/dog.png"
+              alt=""
+            />
+          </div>
+          <div className={`ms-2 ${styles["cube"]}`}>
             <div>5525</div>
             <div>為狗狗服務時數</div>
           </div>
         </div>
       </div>
       <div className="lumi-all-wrapper pb-5">
-        <h3 className="mb-5 lumi-m-title text-center">熱門師資</h3>
+        <h3 className="my-5 lumi-m-title ">熱門師資</h3>
         <div className="row">
           {["1", "2", "3", "4"].map((_, index) => (
             <div className="col-3" key={index}>
@@ -51,17 +58,21 @@ const TeacherSection = () => {
                 passHref
                 className="text-decoration-none"
               >
-                <div className="card" style={{ width: "18.75rem" }}>
-                  <img src="..." className="card-img-top" alt="..." />
-                  <div className="card-body fw-medium">
+                <div className={styles.card6} style={{ width: "18.75rem" }}>
+                  <img
+                    src="/teacher-img/Zoe.png"
+                    className="card-img-top"
+                    alt="..."
+                  />
+                  <div className={styles.card6Title} style={{}}>
                     Zoe
-                    <p
-                      className="card-text mt-2"
-                      style={{ fontSize: "12px", color: "#ff9538" }}
-                    >
-                      寵物訓練
-                    </p>
                   </div>
+                  <p
+                    className={styles.card6Description}
+                    style={{ color: "#ff9538" }}
+                  >
+                    寵物訓練
+                  </p>
                 </div>
               </Link>
             </div>
