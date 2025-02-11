@@ -4,8 +4,7 @@ import {
   getByIds,
   createHotel,
   updateHotel,
-  deleteHotel,
-
+  softDeleteHotel,
 } from "../controllers/hotelController.js";
 
 const router = express.Router();
@@ -14,6 +13,6 @@ router.get("/", getAllHotels);
 router.get("/:id", getByIds);
 router.post("/", createHotel);
 router.patch("/:id", updateHotel);
-router.delete("/:id", deleteHotel);
+router.patch("/softDelete/:id", softDeleteHotel);
 
 export default router;
