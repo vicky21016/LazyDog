@@ -1,5 +1,5 @@
 // 用MVC架構，步驟二 Controller 處理請求 
-import { getCourses, getId, createCourseWithSession} from "../services/courseService.js";
+import { getCourses, getId, createCourseWithSession, updateCourseWithSession, deleteCourseSession} from "../services/courseService.js";
 
 export const getAllCourse = async (req, res) => {
   try {
@@ -40,16 +40,43 @@ export const createCourse = async (req, res) => {
   }
 };
 
-// export const updateCourse = async (req, res) => {
-//   try{
-//     const newCourse = req.body;
-//     const courses = await updateCourses();
-//     newCourse.id = courses.length + 1;
-//     courses.push(newCourse);
-//     res.status(200).json(newCourse);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
+export const updateCourse = async (req, res) => {
+  const {courseId, courseData, sessionId, sessionData} = req.body;
+
+  if(!courseId || !sessionId){
+    return res.status(400).json({error: "缺少courseId 或 sessionId"})
+  }
+
+  try{
+    const result = await updateCourseWithSession(courseId, courseData, sessionId, sessionData)
+    console.log(result);
+
+    res.status(200).json({
+      message:"課程更新成功",
+      courseId,
+      sessionId
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const deleteSessionOnly = async (req, res) => {
+  const {sessionId} = req.body;
+
+  if(!sessionId){
+    return res.status(400).json({error: "缺少 sessionId"})
+  }
+
+  try{
+    await deleteCourseSession(sessionId);
+    res.status(200).json({
+      message:"該梯次已標記為刪除",
+      sessionId
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 

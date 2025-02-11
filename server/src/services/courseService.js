@@ -79,6 +79,81 @@ export const createCourseWithSession = async (courseData, sessionData) => {
   }
 };
 
+export const updateCourseWithSession = async (courseId, courseData, sessionId, sessionData) => {
+  const connection = await pool.getConnection();
+  try {
+    await connection.beginTransaction();
+
+    await connection.query(
+      `UPDATE course SET type_id = ?, img_id = ?, name = ?, description = ?, duration = ?, price = ?, notice = ?, qa = ? WHERE id = ? AND is_deleted =0`,
+      [
+        courseData.type_id,
+        courseData.img_id,
+        courseData.name,
+        courseData.description,
+        courseData.duration,
+        courseData.price,
+        courseData.notice,
+        courseData.qa,
+        courseId,
+      ]
+    );
+
+    await connection.query(
+      `UPDATE course_session SET area_id = ?, teacher_id = ?, max_people = ?, curr_people = ?, remaining_slots = ?, start_date = ?, end_date = ?, class_dates = ?, deadline_date = ?, start_time = ?, end_time = ?, update_at = NOW() WHERE course_id = ? AND id = ? AND is_deleted = 0 `,
+      [
+        sessionData.area_id,
+        sessionData.teacher_id,
+        sessionData.max_people,
+        sessionData.curr_people,
+        sessionData.remaining_slots,
+        sessionData.start_date,
+        sessionData.end_date,
+        sessionData.class_dates,
+        sessionData.deadline_date,
+        sessionData.start_time,
+        sessionData.end_time,
+        courseId,
+        sessionId,
+      ]
+    );
+
+    await connection.commit();   // 提交交易
+    return { message: "課程與梯次更新成功!" };
+  } catch (err) {
+    await connection.rollback(); // 回滾交易
+    console.log("錯誤:", err);
+    throw new Error(" 無法更新課程與梯次: " + err.message);
+  } finally {
+    connection.release();
+  }
+};
+
+export const deleteCourseSession = async (sessionId) => {
+  const connection = await pool.getConnection();
+  try {
+    await connection.beginTransaction();
+
+    // 軟刪除 course_session 記錄
+    await connection.query(
+      "UPDATE course_session SET is_deleted = 1 WHERE id = ? AND is_deleted = 0",
+      [sessionId]
+    );
+
+    await connection.commit(); // 提交交易
+    
+  } catch (err) {
+    await connection.rollback(); // 發生錯誤則回滾
+    throw err;
+    // console.error("刪除錯誤:", err);
+    // res.status(500).json({ error: "無法刪除該梯次: " + err.message });
+  } finally {
+    connection.release();
+  }
+};
+
+
+
 // 測試
 // const courseData = {
 //     type_id: 1,
@@ -108,12 +183,3 @@ export const createCourseWithSession = async (courseData, sessionData) => {
 //     .then(result => console.log("新增課程與梯次成功:", result))
 //     .catch(error => console.error("錯誤:", error));
 
-// export const updateCourses = async () =>{
-//     try{
-//         const sql = `UPDATE  (id, name, , name, mail, head) VALUES (?, ?, ?, ?, ?, ?)`;
-//         const [result] = await pool.query(sql)
-//         return result;
-//     }catch(err){
-//         throw new Error(" 無法更新課程：" + error.message);
-//     }
-// }
