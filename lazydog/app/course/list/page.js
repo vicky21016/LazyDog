@@ -4,11 +4,14 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "../../../styles/modules/courseList.module.css";
+import Header from "@/app/components/layout/header";
+import Footer from "@/app/components/layout/footer";
 
 export default function CourseListPage() {
   return (
     <>
-      <div>
+      <Header/>
+      <div className={styles.list}>
         <div className={styles.new}>
           <img className={styles.newImg} src="/course/img/18 (1).jpeg" alt />
           <div className={styles.bottom}>
@@ -56,54 +59,54 @@ export default function CourseListPage() {
                     alt
                   />
                 </div>
-                <div className={styles.checks}>
-                  <div className={`form-check`}>
+                <div className={styles.filter}>
+                  <div className={`form-check ${styles.checks}`}>
                     <input
-                      className={`form-check-input`}
+                      className={`form-check-input ${styles.checkbox}`}
                       type="checkbox"
                       id="train"
                     />
-                    <label className={`form-check-label`} htmlFor="train">
+                    <label className={`form-check-label ${styles.labels}`} htmlFor="train">
                       寵物訓練
                     </label>
                   </div>
-                  <div className={`form-check`}>
+                  <div className={`form-check ${styles.checks}`}>
                     <input
-                      className={`form-check-input`}
+                      className={`form-check-input ${styles.checkbox}`}
                       type="checkbox"
                       id="food"
                     />
-                    <label className={`form-check-label`} htmlFor="food">
+                    <label className={`form-check-label ${styles.labels}`} htmlFor="food">
                       寵膳食育
                     </label>
                   </div>
-                  <div className={`form-check`}>
+                  <div className={`form-check ${styles.checks}`}>
                     <input
-                      className={`form-check-input`}
+                      className={`form-check-input ${styles.checkbox}`}
                       type="checkbox"
                       id="beauty"
                     />
-                    <label className={`form-check-label`} htmlFor="beauty">
+                    <label className={`form-check-label ${styles.labels}`} htmlFor="beauty">
                       寵物美容
                     </label>
                   </div>
-                  <div className={`form-check`}>
+                  <div className={`form-check ${styles.checks}`}>
                     <input
-                      className={`form-check-input`}
+                      className={`form-check-input ${styles.checkbox}`}
                       type="checkbox"
                       id="takecare"
                     />
-                    <label className={`form-check-label`} htmlFor="takecare">
+                    <label className={`form-check-label ${styles.labels}`} htmlFor="takecare">
                       寵物照護
                     </label>
                   </div>
-                  <div className={`form-check`}>
+                  <div className={`form-check ${styles.checks}`}>
                     <input
-                      className={`form-check-input`}
+                      className={`form-check-input ${styles.checkbox}`}
                       type="checkbox"
                       id="profession"
                     />
-                    <label className={`form-check-label`} htmlFor="profession">
+                    <label className={`form-check-label ${styles.labels}`} htmlFor="profession">
                       商業思維與專業培訓
                     </label>
                   </div>
@@ -119,54 +122,54 @@ export default function CourseListPage() {
                     alt
                   />
                 </div>
-                <div className={styles.checks}>
-                  <div className={`form-check`}>
+                <div className={styles.filter}>
+                  <div className={`form-check ${styles.checks}`}>
                     <input
-                      className={`form-check-input`}
+                      className={`form-check-input ${styles.checkbox}`}
                       type="checkbox"
-                      id="taipei"
+                      id="train"
                     />
-                    <label className={`form-check-label`} htmlFor="taipei">
+                    <label className={`form-check-label ${styles.labels}`} htmlFor="train">
                       台北
                     </label>
                   </div>
-                  <div className={`form-check`}>
+                  <div className={`form-check ${styles.checks}`}>
                     <input
-                      className={`form-check-input`}
+                      className={`form-check-input ${styles.checkbox}`}
                       type="checkbox"
-                      id="taichung"
+                      id="food"
                     />
-                    <label className={`form-check-label`} htmlFor="taichung">
+                    <label className={`form-check-label ${styles.labels}`} htmlFor="food">
                       台中
                     </label>
                   </div>
-                  <div className={`form-check`}>
+                  <div className={`form-check ${styles.checks}`}>
                     <input
-                      className={`form-check-input`}
+                      className={`form-check-input ${styles.checkbox}`}
                       type="checkbox"
-                      id="kaoshiung"
+                      id="beauty"
                     />
-                    <label className={`form-check-label`} htmlFor="kaoshiung">
+                    <label className={`form-check-label ${styles.labels}`} htmlFor="beauty">
                       高雄
                     </label>
                   </div>
-                  <div className={`form-check`}>
+                  <div className={`form-check ${styles.checks}`}>
                     <input
-                      className={`form-check-input`}
+                      className={`form-check-input ${styles.checkbox}`}
                       type="checkbox"
-                      id="live"
+                      id="takecare"
                     />
-                    <label className={`form-check-label`} htmlFor="live">
+                    <label className={`form-check-label ${styles.labels}`} htmlFor="takecare">
                       線上直播
                     </label>
                   </div>
-                  <div className={`form-check`}>
+                  <div className={`form-check ${styles.checks}`}>
                     <input
-                      className={`form-check-input`}
+                      className={`form-check-input ${styles.checkbox}`}
                       type="checkbox"
-                      id="prevideo"
+                      id="profession"
                     />
-                    <label className={`form-check-label`} htmlFor="prevideo">
+                    <label className={`form-check-label ${styles.labels}`} htmlFor="profession">
                       線上預錄
                     </label>
                   </div>
@@ -363,27 +366,27 @@ export default function CourseListPage() {
                   </p>
                 </div>
               </div>
-              <nav aria-label="Page navigation">
-                <ul className={`pagination justify-content-center`}>
-                  <li className={`page-item ${styles.prev}`}>
-                    <a className={`page-link`} href="#" aria-label="Previous">
+              <nav className={styles.navigation} aria-label="Page navigation">
+                <ul className={`pagination justify-content-center ${styles.pagination}`}>
+                  <li className={`page-item ${styles.pageItem} `}>
+                    <a className={`page-link ${styles.pageLink}`} href="#" aria-label="Previous">
                       <span aria-hidden="true">
                         <img src="/course/img/pageArrowleft;png.png" alt />
                       </span>
                     </a>
                   </li>
-                  <li className={`page-item ${styles.active}`}>
-                    <a className={`page-link`} href="#">
+                  <li className={`page-item ${styles.pageItem}`}>
+                    <a className={`page-link ${styles.pageLink}`} href="#">
                       1
                     </a>
                   </li>
-                  <li className={`page-item`}>
-                    <a className={`page-link`} href="#">
+                  <li className={`page-item ${styles.pageItem}`}>
+                    <a className={`page-link ${styles.pageLink}`} href="#">
                       2
                     </a>
                   </li>
-                  <li className={`page-item ${styles.next}`}>
-                    <a className={`page-link`} href="#" aria-label="Next">
+                  <li className={`page-item ${styles.pageItem}`}>
+                    <a className={`page-link ${styles.pageLink}`} href="#" aria-label="Next">
                       <span aria-hidden="true">
                         <img src="/course/img/pageArrowright.png" alt />
                       </span>
@@ -465,6 +468,7 @@ export default function CourseListPage() {
           </div>
         </div>
       </div>
+      <Footer/>          
     </>
   );
 }
