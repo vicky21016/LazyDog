@@ -1,7 +1,7 @@
+// import資料庫的連線設定
 import pool from "../config/mysql.js";
 
-
-
+// 用MVC架構，步驟一 Model 負責資料庫操作 
 export const getCourses = async () => {  
     try {
         const [courses] = await pool.query("SELECT * FROM course");        
