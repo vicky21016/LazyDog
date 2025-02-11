@@ -1,10 +1,9 @@
-import { 
-  getHotels, 
-  getId, 
-  createHotels, 
-  updateHotelById, 
-  softDeleteHotelById, 
-  restoreHotelById 
+import {
+  getHotels,
+  getId,
+  createHotels,
+  updateHotelById,
+  softDeleteHotelById,
 } from "../services/hotelService.js";
 
 export const getAllHotels = async (req, res) => {
@@ -98,7 +97,7 @@ export const updateHotel = async (req, res) => {
       return res.status(400).json({ error: "無效的 ID" });
     }
 
-    const updatedHotel = await updateHotelById(id, hotelData);
+    const updatedHotel = await updateHotelById({ id, ...hotelData });
     if (!updatedHotel) {
       return res.status(404).json({ error: `找不到 id=${id} 或該旅館已刪除` });
     }
@@ -109,15 +108,12 @@ export const updateHotel = async (req, res) => {
   }
 };
 
-export const deleteHotel = async (req, res) => {
+export const  softDeleteHotel = async (req, res) => {
   try {
     const { id } = req.params;
-
-    if (isNaN(Number(id))) {
-      return res.status(400).json({ error: "無效的 ID" });
-    }
-
+    
     const deletedHotel = await softDeleteHotelById(id);
+   
     if (!deletedHotel) {
       return res.status(404).json({ error: `找不到 id=${id} 或該旅館已刪除` });
     }
@@ -128,21 +124,3 @@ export const deleteHotel = async (req, res) => {
   }
 };
 
-export const restoreHotel = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    if (isNaN(Number(id))) {
-      return res.status(400).json({ error: "無效的 ID" });
-    }
-
-    const restoredHotel = await restoreHotelById(id);
-    if (!restoredHotel) {
-      return res.status(404).json({ error: `找不到 id=${id} 或該旅館未被刪除` });
-    }
-
-    res.json({ message: `旅館 id=${id} 已恢復` });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};

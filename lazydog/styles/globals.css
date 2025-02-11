@@ -3,28 +3,20 @@
 
 /* @import
   url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&amp;family=Oswald:wght@200..700&amp;display=swap'); */
-/* * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}*/
+
 body {
-  /* display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh; */
-  color: #3b3330;
-  font-family: Arial, sans-serif;
+  * {
+    font-family: "Noto Sans TC", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
+color: #3b3330;
 }
-/* 
-#root {
-  width: 100%;
-  padding: 0 10px;
-  --font-noto-sans-tc: "Noto Sans TC", sans-serif;
-}*/
+
 a {
   text-decoration: none;
 }
+
 
 .lumi-signin {
   color: #ff9538;
@@ -35,8 +27,6 @@ a {
   color: #ff9538;
   font-weight: 800;
 }
-
-
 
 /* app-page 登入 */
 .lumi-logo {
@@ -80,7 +70,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 80vh;
 }
 .lumi-login-container {
   width: 100%;
@@ -229,7 +219,7 @@ a {
   justify-content: center;
   align-items: flex-start; /* 頂端對齊 */
   gap: 40px;
-  margin: 80px auto 20px;
+  margin: 60px auto 20px;
   max-width: 1320px;
 }
 .lumi-menu-container {
@@ -250,7 +240,7 @@ a {
 }
 /* teacher */
 .lumi-all-wrapper {
-  margin: 80px auto 20px;
+  margin: 0 auto 20px;
   max-width: 1320px;
 }
 .lumi-teacher-btn {
@@ -259,8 +249,21 @@ a {
   padding: 10px 48px;
   background-color: #66c5bd;
   color: white;
+  border: 1px solid transparent;
   justify-content: center;
   align-items: center;
+}
+.lumi-teacher-btn:hover {
+  display: flex;
+  width: 270px;
+  padding: 10px 48px;
+  background-color: white;
+  color: #66c5bd;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid;
+  border-color: #66c5bd;
+  font-weight: 600;
 }
 .lumi-dog-container {
   display: flex;
@@ -285,8 +288,8 @@ a {
   letter-spacing: 6px;
 }
 .lumi-m-title {
-  color: #f5842b;
-  font-size: 36px;
+  color: #f5842b!important;
+  font-size: 36px!important;
   font-style: normal;
   font-weight: 700;
   line-height: normal;

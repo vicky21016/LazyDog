@@ -21,7 +21,7 @@ router.post("/login", upload.none(), async (req, res) => {
     if (users.length === 0) throw new Error("找不到使用者");
 
     const user = users[0];
-    const isMatch = bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new Error("帳號或密碼錯誤");
 
     const token = jwt.sign({ id: user.id, email: user.email }, secretKey, {

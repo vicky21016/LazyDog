@@ -1,6 +1,6 @@
 .container {
     max-width: 1320px;
-    margin: 80px auto;
+    margin: 30px auto;
     width: 100%;
   }
 
@@ -12,8 +12,8 @@
 
   .profileImg {
     /* max-width: 150px; */
-    width: 350px;
-height: 450px;
+    width: 500px;
+height: 650px;
   }
 
   .type {
@@ -32,3 +32,35 @@ height: 450px;
   .icon{
     color: #66C5BD;
   }
+
+    .card6 {
+  width: 180px;
+  height: 364px;
+  transition: 0.4s;
+  color: #3b3330;
+  box-shadow: rgba(60, 60, 60, 0.35) 0px 5px 15px;
+}
+
+.card6:hover {
+  translate: 0 -10px;
+  background-color: #FFF6E8;
+}
+
+.card6Title {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 5px 0;
+  padding:10px 20px;
+}
+
+.card6 img {
+  height: 260px;
+  width: 100%;
+  background-color: #c9c9c9;
+  box-shadow: inset 8px 8px 10px #c3c3c3, inset -8px -8px 10px #cfcfcf;
+}
+
+.card6Description {
+  font-size: 14px;
+  padding:0 20px;
+}
