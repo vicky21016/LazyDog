@@ -50,7 +50,7 @@ export function AuthProvider({ children }) {
     let token = localStorage.getItem(appKey);
     try {
       if (!token) throw new Error("身分認證訊息不存在， 請重新登入");
-
+      
       const res = await fetch(API, {
         method: "POST",
         headers: {
@@ -58,10 +58,12 @@ export function AuthProvider({ children }) {
         },
       });
       const result = await res.json();
+      console.log("登出 API 回應:", result);
       if (result.status != "success") throw new Error(result.message);
-      token = result.data.token;
+      // token = result.data.token;
       localStorage.setItem(appKey, token);
       setUser(null);
+      router.push("/login");
     } catch (err) {
       console.log(err);
       alert(err.message);
