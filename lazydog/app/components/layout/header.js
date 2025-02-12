@@ -28,7 +28,7 @@ export default function Header(props) {
             <Link href="#">關於我們</Link>
           </li>
           <li>
-            <Link href="#">寵物用品</Link>
+            <Link href="/product/list">寵物用品</Link>
           </li>
           <li>
             <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>

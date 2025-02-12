@@ -10,22 +10,22 @@ export default function ListPage(props) {
         <section className={styles.DmArea}>
           <a href="">
             <figure>
-              <img src="/img/DM/DM_7.png" alt="" />
+              <img src="/product/DM/DM_7.png" alt="" />
             </figure>
           </a>
         </section>
         <section className={styles.BreadcrumbsTitle}>
           <div className={styles.Breadcrumbs}>
             <a href="">目錄</a>
-            <img src="/img/font/right.png" alt="" />
+            <img src="/product/font/right.png" alt="" />
             <a href="">罐頭</a>
-            <img src="/img/font/right.png" alt="" />
+            <img src="/product/font/right.png" alt="" />
             <h4 className={styles.BreadcrumbsActive}>主食/餐包</h4>
           </div>
           <div className={styles.Title}>
             <h2>主食/餐包</h2>
             <div className={styles.TitleFilter}>
-              <img src="/img/font/filter.png" alt="" />
+              <img src="/product/font/filter.png" alt="" />
               <h4>依熱門排序</h4>
             </div>
           </div>
@@ -36,21 +36,21 @@ export default function ListPage(props) {
               <tbody>
                 <tr>
                   <td className={styles.SearchTable}>
-                    <img src="/img/font/search.png" alt="" />
+                    <img src="/product/font/search.png" alt="" />
                     <input type="text" placeholder="搜尋商品" />
                   </td>
                 </tr>
                 <tr>
                   <td className={styles.MenuTable}>
                     <h3>本月主打</h3>
-                    <img src="/img/font/down.png" alt="" />
+                    <img src="/product/font/down.png" alt="" />
                   </td>
                 </tr>
                 <tr>
                   <td className={styles.MenuTable}>
                     <h3>口味</h3>
                     <button>
-                      <img src="/img/font/down.png" alt="" />
+                      <img src="/product/font/down.png" alt="" />
                     </button>
                   </td>
                 </tr>
@@ -82,7 +82,7 @@ export default function ListPage(props) {
                   <td className={styles.MenuTable}>
                     <h3>特殊配方</h3>
                     <button>
-                      <img src="/img/font/down.png" alt="" />
+                      <img src="/product/font/down.png" alt="" />
                     </button>
                   </td>
                 </tr>
@@ -90,7 +90,7 @@ export default function ListPage(props) {
                   <td className={styles.MenuTable}>
                     <h3>品牌</h3>
                     <button>
-                      <img src="/img/font/down.png" alt="" />
+                      <img src="/product/font/down.png" alt="" />
                     </button>
                   </td>
                 </tr>
@@ -148,7 +148,7 @@ export default function ListPage(props) {
             </table>
             <a href="">
               <figure>
-                <img src="/img/DM/DM_aside.png" alt="" />
+                <img src="/product/DM/DM_aside.png" alt="" />
               </figure>
             </a>
           </aside>
@@ -160,12 +160,12 @@ export default function ListPage(props) {
                   className={styles.ProductCardHeart}
                   style={{ display: "none" }}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </div>
                 <div className={styles.ProductCardOnsale}>-30%</div>
                 <figure className={styles.ProductCardImg}>
                   <img
-                    src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                     alt=""
                   />
                 </figure>
@@ -177,13 +177,13 @@ export default function ListPage(props) {
                 </div>
                 <div className={styles.ProductCardHover}>
                   <a href="" className={styles.HoverIcon}>
-                    <img src="/img/font/heart.png" alt="" />
+                    <img src="/product/font/heart.png" alt="" />
                   </a>
                   <a href="" className={styles.HoverIcon}>
-                    <img src="/img/font/cart.png" alt="" />
+                    <img src="/product/font/cart.png" alt="" />
                   </a>
                   <a href="" className={styles.HoverIcon}>
-                    <img src="/img/font/list.png" alt="" />
+                    <img src="/product/font/list.png" alt="" />
                   </a>
                 </div>
               </li>
@@ -193,12 +193,12 @@ export default function ListPage(props) {
                   className={styles.ProductCardHeart}
                   style={{ display: "none" }}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </div>
                 <div className={styles.ProductCardOnsale}>-30%</div>
                 <figure className={styles.ProductCardImg}>
                   <img
-                    src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                     alt=""
                   />
                 </figure>
@@ -210,13 +210,13 @@ export default function ListPage(props) {
                 </div>
                 <div className={styles.ProductCardHover}>
                   <a href="" className={styles.HoverIcon}>
-                    <img src="/img/font/heart.png" alt="" />
+                    <img src="/product/font/heart.png" alt="" />
                   </a>
                   <a href="" className={styles.HoverIcon}>
-                    <img src="/img/font/cart.png" alt="" />
+                    <img src="/product/font/cart.png" alt="" />
                   </a>
                   <a href="" className={styles.HoverIcon}>
-                    <img src="/img/font/list.png" alt="" />
+                    <img src="/product/font/list.png" alt="" />
                   </a>
                 </div>
               </li>
@@ -225,12 +225,12 @@ export default function ListPage(props) {
                   className={styles.ProductCardHeart}
                   style={{ display: "none" }}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </div>
                 <div className={styles.ProductCardOnsale}>-30%</div>
                 <figure className={styles.ProductCardImg}>
                   <img
-                    src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                     alt=""
                   />
                 </figure>
@@ -242,13 +242,13 @@ export default function ListPage(props) {
                 </div>
                 <div className={styles.ProductCardHover}>
                   <a href="" className={styles.HoverIcon}>
-                    <img src="/img/font/heart.png" alt="" />
+                    <img src="/product/font/heart.png" alt="" />
                   </a>
                   <a href="" className={styles.HoverIcon}>
-                    <img src="/img/font/cart.png" alt="" />
+                    <img src="/product/font/cart.png" alt="" />
                   </a>
                   <a href="" className={styles.HoverIcon}>
-                    <img src="/img/font/list.png" alt="" />
+                    <img src="/product/font/list.png" alt="" />
                   </a>
                 </div>
               </li>
@@ -257,12 +257,12 @@ export default function ListPage(props) {
                   className={styles.ProductCardHeart}
                   style={{ display: "none" }}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </div>
                 <div className={styles.ProductCardOnsale}>-30%</div>
                 <figure className={styles.ProductCardImg}>
                   <img
-                    src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                     alt=""
                   />
                 </figure>
@@ -274,13 +274,13 @@ export default function ListPage(props) {
                 </div>
                 <div className={styles.ProductCardHover}>
                   <a href="" className={styles.HoverIcon}>
-                    <img src="/img/font/heart.png" alt="" />
+                    <img src="/product/font/heart.png" alt="" />
                   </a>
                   <a href="" className={styles.HoverIcon}>
-                    <img src="/img/font/cart.png" alt="" />
+                    <img src="/product/font/cart.png" alt="" />
                   </a>
                   <a href="" className={styles.HoverIcon}>
-                    <img src="/img/font/list.png" alt="" />
+                    <img src="/product/font/list.png" alt="" />
                   </a>
                 </div>
               </li>
