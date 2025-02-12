@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
   const protectedRoutes = ["/pages"];
   const loginRoute = "/login";
 
+  // 登入
   const login = async (email, password) => {
     let API = "http://localhost:5000/auth/login";
 
@@ -43,6 +44,7 @@ export function AuthProvider({ children }) {
     }
   };
 
+ // 登出
   const logout = async () => {
     let API = "http://localhost:5000/auth/logout";
     let token = localStorage.getItem(appKey);
