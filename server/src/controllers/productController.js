@@ -4,46 +4,49 @@ import {
   getSearchKeyword,
   createNewItem,
   updateItemInfo,
+  deleteItemInfo,
 } from "../services/productService.js";
 
 export const getAll = async (req, res) => {
   try {
     const products = await getAllProducts();
-    if (!products.length) throw new Error("找不到商品");
+    if (!products.length) throw new Error("查無商品列表");
     res.status(200).json({
       status: "success",
       data: products,
       message: `查詢商品列表成功，共${products.length}筆資料`,
     });
   } catch (error) {
-    res.status(400).json({error: error.message});
+    res.status(400).json({ error: error.message });
   }
 };
 
 export const getId = async (req, res) => {
   try {
-    const {productID} = req.params;
+    const { productID } = req.params;
     if (!productID) throw new Error("請提供商品編號");
     const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
     if (!regForPD.test(productID)) {
       return connectError(req, res);
     }
+
     const product = await getProductId(productID);
-    if (!product.length) throw new Error(`編號：${productID}查無此商品`);
+    if (!product.length) throw new Error(`查無編號：${productID} 商品`);
     res.status(200).json({
       status: "success",
       data: product,
-      message: `${product[0].name} 查詢商品成功`,
+      message: `查詢編號：${productID} ${product[0].name} 商品成功`,
     });
   } catch (error) {
-    res.status(400).json({error: error.message});
+    res.status(400).json({ error: error.message });
   }
 };
 
 export const getSearch = async (req, res) => {
   try {
-    const {keyword} = req.query;
+    const { keyword } = req.query;
     if (!keyword) throw new Error("請提供關鍵字");
+
     const product = await getSearchKeyword(keyword);
     if (!product.length) throw new Error("查無相關商品");
     res.status(200).json({
@@ -52,13 +55,13 @@ export const getSearch = async (req, res) => {
       message: `查詢： ${keyword} 相關商品成功，共${product.length}筆資料`,
     });
   } catch (error) {
-    res.status(400).json({error: error.message});
+    res.status(400).json({ error: error.message });
   }
 };
 
 export const createNew = async (req, res) => {
   try {
-    const {cateId, name, brand, price, stock} = req.body;
+    const { cateId, name, brand, price, stock } = req.body;
     if (!cateId || !name || !brand || !price || !stock) {
       return res.status(401).json({
         status: "error",
@@ -96,7 +99,15 @@ export const createNew = async (req, res) => {
         break;
     }
     const ProductID = `PD${classNum}25`;
-    const product = await createNewItem(cateId, name, brand, price, stock, ProductID);
+
+    const product = await createNewItem(
+      cateId,
+      name,
+      brand,
+      price,
+      stock,
+      ProductID
+    );
     if (product.affectedRows == 0) {
       throw new Error("新增商品失敗");
     }
@@ -105,19 +116,18 @@ export const createNew = async (req, res) => {
       message: `新增 ${name} 商品成功`,
     });
   } catch (error) {
-    res.status(400).json({error: error.message});
+    res.status(400).json({ error: error.message });
   }
 };
 
 export const updateItem = async (req, res) => {
   try {
-    const {productID} = req.params;
+    const { productID } = req.params;
     if (!productID) throw new Error("請提供商品編號");
     const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
     if (!regForPD.test(productID)) {
       return connectError(req, res);
     }
-
     const {
       cateId,
       name,
@@ -129,11 +139,24 @@ export const updateItem = async (req, res) => {
       fullInfo,
       infoText,
       spec,
-      updateTime,
       isDeleted,
     } = req.body;
     const updateFields = [];
     const value = [];
+    const fieldNames = [
+      "category_id",
+      "name",
+      "brand",
+      "price",
+      "discount",
+      "discount_et",
+      "stock",
+      "full_info",
+      "info_text",
+      "spec",
+      "is_deleted",
+      "updated_at",
+    ];
     const updateContent = [
       cateId,
       name,
@@ -145,70 +168,54 @@ export const updateItem = async (req, res) => {
       fullInfo,
       infoText,
       spec,
-      updateTime,
       isDeleted,
+      productID,
     ];
-    return;
-    // if (cateId) {
-    //   updateFields.push(`category_id = ?`);
-    //   value.push(cateId);
-    // }
-    // if (name) {
-    //   updateFields.push(`name = ?`);
-    //   value.push(name);
-    // }
-    // if (brand) {
-    //   updateFields.push(`brand = ?`);
-    //   value.push(brand);
-    // }
-    // if (price) {
-    //   updateFields.push(`price = ?`);
-    //   value.push(price);
-    // }
-    // if (discount) {
-    //   updateFields.push(`discount = ?`);
-    //   value.push(discount);
-    // }
-    // if (discountEnd) {
-    //   updateFields.push(`discount_et = ?`);
-    //   value.push(discountEnd);
-    // }
-    // if (stock) {
-    //   updateFields.push(`stock = ?`);
-    //   value.push(stock);
-    // }
-    // if (fullInfo) {
-    //   updateFields.push(`full_info = ?`);
-    //   value.push(fullInfo);
-    // }
-    // if (infoText) {
-    //   updateFields.push(`info_text = ?`);
-    //   value.push(infoText);
-    // }
-    // if (spec) {
-    //   updateFields.push(`spec = ?`);
-    //   value.push(spec);
-    // }
-    // if (updateTime) {
-    //   updateFields.push(`updated_at = ?`);
-    //   value.push(now());
-    // }
-    // if (isDeleted) {
-    //   updateFields.push(`is_deleted = ?`);
-    //   value.push(isDeleted);
-    // }
+    for (let i = 0; i < updateContent.length; i++) {
+      if (updateContent[i]) {
+        if (i == 11) {
+          updateFields.push(`${fieldNames[i]} = ?`);
+          value.push(new Date().toISOString());
+          value.push(updateContent[i]);
+        } else {
+          updateFields.push(`${fieldNames[i]} = ?`);
+          value.push(updateContent[i]);
+        }
+      }
+    }
 
-    // value.push(productID);
-
-    // const product = await updateItemInfo(cateId, name, brand, price, stock, productID);
-    // if (!product.length) throw new Error(`編號：${productID}查無此商品`);
-    // res.status(200).json({
-    //   status: "success",
-    //   data: product,
-    //   message: `${product[0].name} 查詢商品成功`,
-    // });
+    const product = await updateItemInfo(updateFields, value);
+    if (product.affectedRows == 0) {
+      throw new Error("更新商品失敗");
+    }
+    res.status(200).json({
+      status: "success",
+      message: `更新編號：${productID} ${name} 商品成功`,
+    });
   } catch (error) {
-    res.status(400).json({error: error.message});
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const deleteItem = async (req, res) => {
+  try {
+    const { productID } = req.params;
+    if (!productID) throw new Error("請提供商品編號");
+    const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
+    if (!regForPD.test(productID)) {
+      return connectError(req, res);
+    }
+
+    const product = await deleteItemInfo(productID);
+    if (product.affectedRows == 0) {
+      throw new Error("刪除商品失敗");
+    }
+    res.status(200).json({
+      status: "success",
+      message: `刪除編號：${productID} 商品成功`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
 

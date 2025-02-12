@@ -6,13 +6,12 @@ import styles from "./detail.module.css";
 export default function DetailPage(props) {
   return (
     <>
-      <script></script>
-      <div className={`${styles.container} container`}>
+      <div className={`${styles.Container} container`}>
         <section className={styles.Breadcrumbs}>
           <a href="">目錄</a>
-          <img src="/img/font/right.png" alt="" />
+          <img src="/product/font/right.png" alt="" />
           <a href="">罐頭</a>
-          <img src="/img/font/right.png" alt="" />
+          <img src="/product/font/right.png" alt="" />
           <a href="" className={styles.BreadcrumbsActive}>
             主食/餐包
           </a>
@@ -21,32 +20,32 @@ export default function DetailPage(props) {
           <div className={styles.ProductInfoImgGroup}>
             <figure>
               <img
-                src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_(1).webp"
+                src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_(1).webp"
                 alt=""
               />
             </figure>
             <div className={styles.ProductInfoImgSmall}>
               <figure className={styles.ProductInfoImgSmallActive}>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_sm(1).webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_sm(1).webp"
                   alt=""
                 />
               </figure>
               <figure>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_sm(2).webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_sm(2).webp"
                   alt=""
                 />
               </figure>
               <figure>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_sm(1).webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_sm(1).webp"
                   alt=""
                 />
               </figure>
               <figure>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_sm(2).webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_sm(2).webp"
                   alt=""
                 />
               </figure>
@@ -56,50 +55,50 @@ export default function DetailPage(props) {
             <div className={styles.ProductInfoContent}>
               <div className={styles.InfoFavoriteGroup}>
                 <button type="button" className={styles.FavoriteBtn}>
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </button>
-                <h4>加入收藏</h4>
+                <h6>加入收藏</h6>
               </div>
               <div className={styles.InfoOnsaleGroup}>
                 <div className={styles.OnsaleTag}>
-                  <h4>-30%</h4>
+                  <h6>-30%</h6>
                 </div>
                 <div className={styles.OnsaleInfo}>
-                  <h4>限時促銷剩餘時間</h4>
-                  <h4 className={styles.OnsaleTime}>00天:08時:00分</h4>
+                  <h6>限時促銷剩餘時間</h6>
+                  <h6 className={styles.OnsaleTime}>00天:08時:00分</h6>
                 </div>
               </div>
-              <h1 className={styles.InfoProductName}>
+              <h2 className={styles.InfoProductName}>
                 法國皇家 SHNW 皇家小型幼犬濕糧MNPW 85克(1入)(狗主食餐包)
-              </h1>
+              </h2>
               <div className={styles.InfoRateGroup}>
-                <img src="/img/font/star-fill.png" alt="" />
-                <img src="/img/font/star-fill.png" alt="" />
-                <img src="/img/font/star-fill.png" alt="" />
-                <img src="/img/font/star-fill.png" alt="" />
-                <img src="/img/font/star.png" alt="" />
+                <img src="/product/font/star-fill.png" alt="" />
+                <img src="/product/font/star-fill.png" alt="" />
+                <img src="/product/font/star-fill.png" alt="" />
+                <img src="/product/font/star-fill.png" alt="" />
+                <img src="/product/font/star.png" alt="" />
               </div>
               <div className={styles.InfoPriceGroup}>
-                <h3>限時促銷價格.................................</h3>
-                <h1>NT$ 62</h1>
-                <h2>NT$ 69</h2>
+                <h5>限時促銷價格：</h5>
+                <h2>NT$ 62</h2>
+                <h4>NT$ 69</h4>
               </div>
               <div className={styles.InfoQtyGroup}>
-                <h4>購買數量</h4>
+                <h5>購買數量</h5>
                 <button className={styles.QtyMinus}>
-                  <img src="/img/font/minus.png" alt="" />
+                  <img src="/product/font/minus.png" alt="" />
                 </button>
                 <input type="number" defaultValue={1} min={1} max={999} />
                 <button className={styles.QtyPlus}>
-                  <img src="/img/font/plus.png" alt="" />
+                  <img src="/product/font/plus.png" alt="" />
                 </button>
               </div>
               <div className={styles.InfoBtnGroup}>
                 <button className={styles.BtnBuynow}>
-                  <h3>立即購買</h3>
+                  <h5>立即購買</h5>
                 </button>
                 <button>
-                  <h3>加入購物車</h3>
+                  <h5>加入購物車</h5>
                 </button>
               </div>
             </div>
@@ -108,19 +107,19 @@ export default function DetailPage(props) {
         <nav className={styles.StickyTop}>
           <ul>
             <li>
-              <h3>
+              <h5>
                 <a href="#collapse-heading1">商品詳情</a>
-              </h3>
+              </h5>
             </li>
             <li>
-              <h3>
+              <h5>
                 <a href="#collapse-heading2">商品介紹圖</a>
-              </h3>
+              </h5>
             </li>
             <li>
-              <h3>
+              <h5>
                 <a href="#collapse-heading3">商品規格</a>
-              </h3>
+              </h5>
             </li>
           </ul>
         </nav>
@@ -128,7 +127,7 @@ export default function DetailPage(props) {
           className={`${styles.ProductDetail} accordion accordion-flush`}
           id=""
         >
-          <article className={styles.AccordionItem}>
+          <article className={`accordion-item ${styles.AccordionItem}`}>
             <div className="accordion-header" id="collapse-heading1">
               <button
                 className={`accordion-button ${styles.AccordionButton}`}
@@ -138,7 +137,7 @@ export default function DetailPage(props) {
                 aria-expanded="true"
                 aria-controls="collapse1"
               >
-                <h3>商品詳情</h3>
+                <h5>商品詳情</h5>
               </button>
             </div>
             <div
@@ -147,7 +146,7 @@ export default function DetailPage(props) {
               aria-labelledby="collapse-heading1"
             >
               <div className={`accordion-body ${styles.AccordionBody}`}>
-                <h4>
+                <h6>
                   商品特色
                   <br />
                   為熟齡室內/絕育貓量身打造營養配方
@@ -155,11 +154,11 @@ export default function DetailPage(props) {
                   熟齡元氣&amp;腎臟健康符合貓咪天生偏好
                   <br />
                   備受飼主及室內貓喜愛
-                </h4>
+                </h6>
               </div>
             </div>
           </article>
-          <div className={styles.AccordionItem}>
+          <div className={`accordion-item ${styles.AccordionItem}`}>
             <div className="accordion-header" id="collapse-heading2">
               <button
                 className={`accordion-button collapsed ${styles.AccordionButton}`}
@@ -169,7 +168,7 @@ export default function DetailPage(props) {
                 aria-expanded="false"
                 aria-controls="collapse2"
               >
-                <h3>商品介紹圖</h3>
+                <h5>商品介紹圖</h5>
               </button>
             </div>
             <div
@@ -180,23 +179,23 @@ export default function DetailPage(props) {
               <div className={`accordion-body ${styles.AccordionBody}`}>
                 <figure>
                   <img
-                    src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(1).jpg"
+                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(1).jpg"
                     alt=""
                   />
                   <img
-                    src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(2).jpg"
+                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(2).jpg"
                     alt=""
                   />
                   <img
-                    src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(3).jpg"
+                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(3).jpg"
                     alt=""
                   />
                   <img
-                    src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(4).jpg"
+                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(4).jpg"
                     alt=""
                   />
                   <img
-                    src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(5).jpg"
+                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(5).jpg"
                     alt=""
                   />
                   <figcaption>
@@ -264,7 +263,7 @@ export default function DetailPage(props) {
               </div>
             </div>
           </div>
-          <article className={styles.AccordionItem}>
+          <article className={`accordion-item ${styles.AccordionItem}`}>
             <div className="accordion-header" id="collapse-heading3">
               <button
                 className={`accordion-button collapsed ${styles.AccordionButton}`}
@@ -274,7 +273,7 @@ export default function DetailPage(props) {
                 aria-expanded="false"
                 aria-controls="collapse3"
               >
-                <h3>商品規格</h3>
+                <h5>商品規格</h5>
               </button>
             </div>
             <div
@@ -292,7 +291,7 @@ export default function DetailPage(props) {
             </div>
           </article>
           <div
-            className={`${styles.AccordionItem} ${styles.ProductDetailRate}`}
+            className={`accordion-item ${styles.AccordionItem} ${styles.ProductDetailRate}`}
           >
             <div className="accordion-header" id="collapse-heading4">
               <button
@@ -303,7 +302,7 @@ export default function DetailPage(props) {
                 aria-expanded="true"
                 aria-controls="collapse4"
               >
-                <h3>商品評價</h3>
+                <h5>商品評價</h5>
               </button>
             </div>
             <div
@@ -317,21 +316,21 @@ export default function DetailPage(props) {
                     <h3>商品評價</h3>
                     <h2>4.9</h2>
                     <div className={styles.StarGroup}>
-                      <img src="/img/font/star-fill.png" alt="" />
-                      <img src="/img/font/star-fill.png" alt="" />
-                      <img src="/img/font/star-fill.png" alt="" />
-                      <img src="/img/font/star-fill.png" alt="" />
-                      <img src="/img/font/star-fill.png" alt="" />
+                      <img src="/product/font/star-fill.png" alt="" />
+                      <img src="/product/font/star-fill.png" alt="" />
+                      <img src="/product/font/star-fill.png" alt="" />
+                      <img src="/product/font/star-fill.png" alt="" />
+                      <img src="/product/font/star-fill.png" alt="" />
                     </div>
                   </div>
                   <div className={styles.StarBarGroup}>
                     <div className={styles.StarBar}>
                       <div className={styles.StarGroup}>
-                        <img src="/img/font/star-fill.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
                       </div>
                       <div className={styles.BarArea}>
                         <div className={styles.Bar} />
@@ -340,11 +339,11 @@ export default function DetailPage(props) {
                     </div>
                     <div className={styles.StarBar}>
                       <div className={styles.StarGroup}>
-                        <img src="/img/font/star.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
+                        <img src="/product/font/star.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
                       </div>
                       <div className={styles.BarArea}>
                         <div className={styles.Bar} />
@@ -353,11 +352,11 @@ export default function DetailPage(props) {
                     </div>
                     <div className={styles.StarBar}>
                       <div className={styles.StarGroup}>
-                        <img src="/img/font/star.png" alt="" />
-                        <img src="/img/font/star.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
+                        <img src="/product/font/star.png" alt="" />
+                        <img src="/product/font/star.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
                       </div>
                       <div className={styles.BarArea}>
                         <div className={styles.Bar} />
@@ -366,11 +365,11 @@ export default function DetailPage(props) {
                     </div>
                     <div className={styles.StarBar}>
                       <div className={styles.StarGroup}>
-                        <img src="/img/font/star.png" alt="" />
-                        <img src="/img/font/star.png" alt="" />
-                        <img src="/img/font/star.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
+                        <img src="/product/font/star.png" alt="" />
+                        <img src="/product/font/star.png" alt="" />
+                        <img src="/product/font/star.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
                       </div>
                       <div className={styles.BarArea}>
                         <div className={styles.Bar} />
@@ -379,11 +378,11 @@ export default function DetailPage(props) {
                     </div>
                     <div className={styles.StarBar}>
                       <div className={styles.StarGroup}>
-                        <img src="/img/font/star.png" alt="" />
-                        <img src="/img/font/star.png" alt="" />
-                        <img src="/img/font/star.png" alt="" />
-                        <img src="/img/font/star.png" alt="" />
-                        <img src="/img/font/star-fill.png" alt="" />
+                        <img src="/product/font/star.png" alt="" />
+                        <img src="/product/font/star.png" alt="" />
+                        <img src="/product/font/star.png" alt="" />
+                        <img src="/product/font/star.png" alt="" />
+                        <img src="/product/font/star-fill.png" alt="" />
                       </div>
                       <div className={styles.BarArea}>
                         <div className={styles.Bar} />
@@ -397,15 +396,15 @@ export default function DetailPage(props) {
                     <div className={styles.RateCardText}>
                       <div className={styles.RateCardUser}>
                         <button type="button">
-                          <img src="/img/font/self.png" alt="" />
+                          <img src="/product/font/self.png" alt="" />
                           <h6>毛小孩</h6>
                         </button>
                         <div className={styles.StarGroup}>
-                          <img src="/img/font/star-fill.png" alt="" />
-                          <img src="/img/font/star-fill.png" alt="" />
-                          <img src="/img/font/star-fill.png" alt="" />
-                          <img src="/img/font/star-fill.png" alt="" />
-                          <img src="/img/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
                         </div>
                       </div>
                       <h6>
@@ -414,7 +413,7 @@ export default function DetailPage(props) {
                     </div>
                     <div className={styles.RateCardBtnDate}>
                       <button className={styles.RateCardBtn}>
-                        <img src="/img/font/good.png" alt="" />
+                        <img src="/product/font/good.png" alt="" />
                       </button>
                       <h5>Aug 30 ,2024</h5>
                     </div>
@@ -423,15 +422,15 @@ export default function DetailPage(props) {
                     <div className={styles.RateCardText}>
                       <div className={styles.RateCardUser}>
                         <button type="button">
-                          <img src="/img/font/self.png" alt="" />
+                          <img src="/product/font/self.png" alt="" />
                           <h6>毛小孩</h6>
                         </button>
                         <div className={styles.StarGroup}>
-                          <img src="/img/font/star-fill.png" alt="" />
-                          <img src="/img/font/star-fill.png" alt="" />
-                          <img src="/img/font/star-fill.png" alt="" />
-                          <img src="/img/font/star-fill.png" alt="" />
-                          <img src="/img/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
                         </div>
                       </div>
                       <h6>
@@ -440,7 +439,7 @@ export default function DetailPage(props) {
                     </div>
                     <div className={styles.RateCardBtnDate}>
                       <button className={styles.RateCardBtn}>
-                        <img src="/img/font/good.png" alt="" />
+                        <img src="/product/font/good.png" alt="" />
                       </button>
                       <h5>Aug 30 ,2024</h5>
                     </div>
@@ -449,15 +448,15 @@ export default function DetailPage(props) {
                     <div className={styles.RateCardText}>
                       <div className={styles.RateCardUser}>
                         <button type="button">
-                          <img src="/img/font/self.png" alt="" />
+                          <img src="/product/font/self.png" alt="" />
                           <h6>毛小孩</h6>
                         </button>
                         <div className={styles.StarGroup}>
-                          <img src="/img/font/star-fill.png" alt="" />
-                          <img src="/img/font/star-fill.png" alt="" />
-                          <img src="/img/font/star-fill.png" alt="" />
-                          <img src="/img/font/star-fill.png" alt="" />
-                          <img src="/img/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
+                          <img src="/product/font/star-fill.png" alt="" />
                         </div>
                       </div>
                       <h6>
@@ -466,7 +465,7 @@ export default function DetailPage(props) {
                     </div>
                     <div className={styles.RateCardBtnDate}>
                       <button className={styles.RateCardBtn}>
-                        <img src="/img/font/good.png" alt="" />
+                        <img src="/product/font/good.png" alt="" />
                       </button>
                       <h5>Aug 30 ,2024</h5>
                     </div>
@@ -488,12 +487,12 @@ export default function DetailPage(props) {
                 className={styles.ProductCardHeart}
                 style={{ display: "none" }}
               >
-                <img src="/img/font/heart.png" alt="" />
+                <img src="/product/font/heart.png" alt="" />
               </div>
               <div className={styles.ProductCardOnsale}>-30%</div>
               <figure className={styles.ProductCardImg}>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                   alt=""
                 />
               </figure>
@@ -508,17 +507,17 @@ export default function DetailPage(props) {
                   type="button"
                   className={`${styles.HoverIcon} ${styles.FavoriteBtn}`}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </button>
                 <button
                   type="button"
                   className={`${styles.HoverIcon} ${styles.CartBtn}`}
                 >
-                  <img src="/img/font/cart.png" alt="" />
+                  <img src="/product/font/cart.png" alt="" />
                   <h2>1</h2>
                 </button>
                 <a href="" className={styles.HoverIcon}>
-                  <img src="/img/font/list.png" alt="" />
+                  <img src="/product/font/list.png" alt="" />
                 </a>
               </div>
             </li>
@@ -528,12 +527,12 @@ export default function DetailPage(props) {
                 className={styles.ProductCardHeart}
                 style={{ display: "none" }}
               >
-                <img src="/img/font/heart.png" alt="" />
+                <img src="/product/font/heart.png" alt="" />
               </div>
               <div className={styles.ProductCardOnsale}>-30%</div>
               <figure className={styles.ProductCardImg}>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                   alt=""
                 />
               </figure>
@@ -548,17 +547,17 @@ export default function DetailPage(props) {
                   type="button"
                   className={`${styles.HoverIcon} ${styles.FavoriteBtn}`}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </button>
                 <button
                   type="button"
                   className={`${styles.HoverIcon} ${styles.CartBtn}`}
                 >
-                  <img src="/img/font/cart.png" alt="" />
+                  <img src="/product/font/cart.png" alt="" />
                   <h2>1</h2>
                 </button>
                 <a href="" className={styles.HoverIcon}>
-                  <img src="/img/font/list.png" alt="" />
+                  <img src="/product/font/list.png" alt="" />
                 </a>
               </div>
             </li>{" "}
@@ -567,12 +566,12 @@ export default function DetailPage(props) {
                 className={styles.ProductCardHeart}
                 style={{ display: "none" }}
               >
-                <img src="/img/font/heart.png" alt="" />
+                <img src="/product/font/heart.png" alt="" />
               </div>
               <div className={styles.ProductCardOnsale}>-30%</div>
               <figure className={styles.ProductCardImg}>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                   alt=""
                 />
               </figure>
@@ -587,17 +586,17 @@ export default function DetailPage(props) {
                   type="button"
                   className={`${styles.HoverIcon} ${styles.FavoriteBtn}`}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </button>
                 <button
                   type="button"
                   className={`${styles.HoverIcon} ${styles.CartBtn}`}
                 >
-                  <img src="/img/font/cart.png" alt="" />
+                  <img src="/product/font/cart.png" alt="" />
                   <h2>1</h2>
                 </button>
                 <a href="" className={styles.HoverIcon}>
-                  <img src="/img/font/list.png" alt="" />
+                  <img src="/product/font/list.png" alt="" />
                 </a>
               </div>
             </li>{" "}
@@ -606,12 +605,12 @@ export default function DetailPage(props) {
                 className={styles.ProductCardHeart}
                 style={{ display: "none" }}
               >
-                <img src="/img/font/heart.png" alt="" />
+                <img src="/product/font/heart.png" alt="" />
               </div>
               <div className={styles.ProductCardOnsale}>-30%</div>
               <figure className={styles.ProductCardImg}>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                   alt=""
                 />
               </figure>
@@ -626,17 +625,17 @@ export default function DetailPage(props) {
                   type="button"
                   className={`${styles.HoverIcon} ${styles.FavoriteBtn}`}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </button>
                 <button
                   type="button"
                   className={`${styles.HoverIcon} ${styles.CartBtn}`}
                 >
-                  <img src="/img/font/cart.png" alt="" />
+                  <img src="/product/font/cart.png" alt="" />
                   <h2>1</h2>
                 </button>
                 <a href="" className={styles.HoverIcon}>
-                  <img src="/img/font/list.png" alt="" />
+                  <img src="/product/font/list.png" alt="" />
                 </a>
               </div>
             </li>{" "}
@@ -645,12 +644,12 @@ export default function DetailPage(props) {
                 className={styles.ProductCardHeart}
                 style={{ display: "none" }}
               >
-                <img src="/img/font/heart.png" alt="" />
+                <img src="/product/font/heart.png" alt="" />
               </div>
               <div className={styles.ProductCardOnsale}>-30%</div>
               <figure className={styles.ProductCardImg}>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                   alt=""
                 />
               </figure>
@@ -665,17 +664,17 @@ export default function DetailPage(props) {
                   type="button"
                   className={`${styles.HoverIcon} ${styles.FavoriteBtn}`}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </button>
                 <button
                   type="button"
                   className={`${styles.HoverIcon} ${styles.CartBtn}`}
                 >
-                  <img src="/img/font/cart.png" alt="" />
+                  <img src="/product/font/cart.png" alt="" />
                   <h2>1</h2>
                 </button>
                 <a href="" className={styles.HoverIcon}>
-                  <img src="/img/font/list.png" alt="" />
+                  <img src="/product/font/list.png" alt="" />
                 </a>
               </div>
             </li>
@@ -690,12 +689,12 @@ export default function DetailPage(props) {
                 className={styles.ProductCardHeart}
                 style={{ display: "none" }}
               >
-                <img src="/img/font/heart.png" alt="" />
+                <img src="/product/font/heart.png" alt="" />
               </div>
               <div className={styles.ProductCardOnsale}>-30%</div>
               <figure className={styles.ProductCardImg}>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                   alt=""
                 />
               </figure>
@@ -710,17 +709,17 @@ export default function DetailPage(props) {
                   type="button"
                   className={`${styles.HoverIcon} ${styles.FavoriteBtn}`}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </button>
                 <button
                   type="button"
                   className={`${styles.HoverIcon} ${styles.CartBtn}`}
                 >
-                  <img src="/img/font/cart.png" alt="" />
+                  <img src="/product/font/cart.png" alt="" />
                   <h2>1</h2>
                 </button>
                 <a href="" className={styles.HoverIcon}>
-                  <img src="/img/font/list.png" alt="" />
+                  <img src="/product/font/list.png" alt="" />
                 </a>
               </div>
             </li>
@@ -730,12 +729,12 @@ export default function DetailPage(props) {
                 className={styles.ProductCardHeart}
                 style={{ display: "none" }}
               >
-                <img src="/img/font/heart.png" alt="" />
+                <img src="/product/font/heart.png" alt="" />
               </div>
               <div className={styles.ProductCardOnsale}>-30%</div>
               <figure className={styles.ProductCardImg}>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                   alt=""
                 />
               </figure>
@@ -750,17 +749,17 @@ export default function DetailPage(props) {
                   type="button"
                   className={`${styles.HoverIcon} ${styles.FavoriteBtn}`}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </button>
                 <button
                   type="button"
                   className={`${styles.HoverIcon} ${styles.CartBtn}`}
                 >
-                  <img src="/img/font/cart.png" alt="" />
+                  <img src="/product/font/cart.png" alt="" />
                   <h2>1</h2>
                 </button>
                 <a href="" className={styles.HoverIcon}>
-                  <img src="/img/font/list.png" alt="" />
+                  <img src="/product/font/list.png" alt="" />
                 </a>
               </div>
             </li>{" "}
@@ -769,12 +768,12 @@ export default function DetailPage(props) {
                 className={styles.ProductCardHeart}
                 style={{ display: "none" }}
               >
-                <img src="/img/font/heart.png" alt="" />
+                <img src="/product/font/heart.png" alt="" />
               </div>
               <div className={styles.ProductCardOnsale}>-30%</div>
               <figure className={styles.ProductCardImg}>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                   alt=""
                 />
               </figure>
@@ -789,17 +788,17 @@ export default function DetailPage(props) {
                   type="button"
                   className={`${styles.HoverIcon} ${styles.FavoriteBtn}`}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </button>
                 <button
                   type="button"
                   className={`${styles.HoverIcon} ${styles.CartBtn}`}
                 >
-                  <img src="/img/font/cart.png" alt="" />
+                  <img src="/product/font/cart.png" alt="" />
                   <h2>1</h2>
                 </button>
                 <a href="" className={styles.HoverIcon}>
-                  <img src="/img/font/list.png" alt="" />
+                  <img src="/product/font/list.png" alt="" />
                 </a>
               </div>
             </li>{" "}
@@ -808,12 +807,12 @@ export default function DetailPage(props) {
                 className={styles.ProductCardHeart}
                 style={{ display: "none" }}
               >
-                <img src="/img/font/heart.png" alt="" />
+                <img src="/product/font/heart.png" alt="" />
               </div>
               <div className={styles.ProductCardOnsale}>-30%</div>
               <figure className={styles.ProductCardImg}>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                   alt=""
                 />
               </figure>
@@ -828,17 +827,17 @@ export default function DetailPage(props) {
                   type="button"
                   className={`${styles.HoverIcon} ${styles.FavoriteBtn}`}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </button>
                 <button
                   type="button"
                   className={`${styles.HoverIcon} ${styles.CartBtn}`}
                 >
-                  <img src="/img/font/cart.png" alt="" />
+                  <img src="/product/font/cart.png" alt="" />
                   <h2>1</h2>
                 </button>
                 <a href="" className={styles.HoverIcon}>
-                  <img src="/img/font/list.png" alt="" />
+                  <img src="/product/font/list.png" alt="" />
                 </a>
               </div>
             </li>{" "}
@@ -847,12 +846,12 @@ export default function DetailPage(props) {
                 className={styles.ProductCardHeart}
                 style={{ display: "none" }}
               >
-                <img src="/img/font/heart.png" alt="" />
+                <img src="/product/font/heart.png" alt="" />
               </div>
               <div className={styles.ProductCardOnsale}>-30%</div>
               <figure className={styles.ProductCardImg}>
                 <img
-                  src="/img/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
+                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
                   alt=""
                 />
               </figure>
@@ -867,17 +866,17 @@ export default function DetailPage(props) {
                   type="button"
                   className={`${styles.HoverIcon} ${styles.FavoriteBtn}`}
                 >
-                  <img src="/img/font/heart.png" alt="" />
+                  <img src="/product/font/heart.png" alt="" />
                 </button>
                 <button
                   type="button"
                   className={`${styles.HoverIcon} ${styles.CartBtn}`}
                 >
-                  <img src="/img/font/cart.png" alt="" />
+                  <img src="/product/font/cart.png" alt="" />
                   <h2>1</h2>
                 </button>
                 <a href="" className={styles.HoverIcon}>
-                  <img src="/img/font/list.png" alt="" />
+                  <img src="/product/font/list.png" alt="" />
                 </a>
               </div>
             </li>

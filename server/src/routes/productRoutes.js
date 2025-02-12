@@ -7,6 +7,7 @@ import {
   createNew,
   updateItem,
   connectError,
+  deleteItem,
 } from "../controllers/productController.js";
 
 const router = express.Router();
@@ -17,7 +18,7 @@ router.get("/search", getSearch); //search要在productID前面
 router.get("/:productID", getId);
 router.post("/", upload.none(), createNew);
 router.patch("/:productID", upload.none(), updateItem);
-// router.delete("/products/:id", getAllProducts);
+router.delete("/:productID", deleteItem);
 router.get("/*", connectError);
 
 // router.post

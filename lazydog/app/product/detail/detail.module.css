@@ -1,4 +1,4 @@
-.container {
+.Container {
   margin-top: 180px;
   display: flex;
   flex-direction: column;
@@ -68,9 +68,12 @@
   display: flex;
   align-items: center;
   gap: 30px;
-  h4 {
+  h6 {
     font-weight: bold;
     user-select: none;
+  }
+  button {
+    padding: 0;
   }
 }
 .InfoOnsaleGroup {
@@ -85,7 +88,7 @@
     align-items: center;
     background: var(--Orange);
     border-radius: 30px;
-    h4 {
+    h6 {
       color: var(--White);
     }
   }
@@ -108,14 +111,14 @@
   display: flex;
   align-items: flex-end;
   gap: 10px;
-  h1 {
+  h2 {
     font-weight: bold;
   }
-  h2 {
+  h4 {
     text-decoration: line-through;
     color: var(--gray);
   }
-  h3 {
+  h5 {
     color: var(--gray);
   }
 }
@@ -166,14 +169,14 @@
     width: 300px;
     padding: 25px 55px;
   }
-  h3 {
+  h5 {
     font-weight: bold;
     color: var(--White);
     cursor: pointer;
   }
   .BtnBuynow {
     background: var(--White);
-    h3 {
+    h5 {
       color: var(--orange);
     }
   }
@@ -190,18 +193,21 @@
     justify-content: space-around;
   }
   a {
+    color: var(--Black);
     cursor: pointer;
     font-weight: bold;
+    &:hover {
+      color: var(--Orange);
+    }
   }
 }
 .ProductDetail {
   width: 100%;
   .AccordionButton {
-    border: 1px solid var(--skin);
     box-shadow: none;
     &:not(.collapsed) {
       background: var(--Orange);
-      h3,
+      h5,
       h2 {
         color: var(--White);
       }
@@ -209,13 +215,13 @@
   }
 }
 .AccordionItem {
-  h3 {
+  h5 {
     font-weight: bold;
   }
 }
 .AccordionBody {
   padding: 20px 30px;
-  h4 {
+  h6 {
     line-height: 2;
   }
   figure {
@@ -226,7 +232,6 @@
     width: 100%;
   }
   p {
-    font-size: 16px;
     line-height: 2;
   }
 }
@@ -464,7 +469,7 @@
 }
 .ProductCardOnsale {
   position: absolute;
-  background: url(/img/font/onsale-bg.png) no-repeat center/cover;
+  background: url(/product/font/onsale-bg.png) no-repeat center/cover;
   width: 50px;
   height: 48px;
   display: flex;

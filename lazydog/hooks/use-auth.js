@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import jwt from "jwt-decode";
+// import jwtDecode from "jwt-decode";
+import jwt from "jsonwebtoken";
 const appKey = "loginWithToken";
 
 const AuthContext = createContext(null);
@@ -16,8 +17,9 @@ export function AuthProvider({ children }) {
   const protectedRoutes = ["/pages"];
   const loginRoute = "/login";
 
+  // 登入
   const login = async (email, password) => {
-    let API = "http://localhost:3000/auth/login";
+    let API = "http://localhost:5000/auth/login";
 
     const formData = new FormData();
     formData.append("email", email);
@@ -30,8 +32,10 @@ export function AuthProvider({ children }) {
       const result = await res.json();
       console.log(result);
       if (result.status != "success") throw new Error(result.message);
+
       const token = result.data.token;
       const newUser = jwt.decode(token);
+      // const newUser = jwtDecode(token);
       setUser(newUser);
       localStorage.setItem(appKey, token);
     } catch (err) {
@@ -40,8 +44,9 @@ export function AuthProvider({ children }) {
     }
   };
 
+ // 登出
   const logout = async () => {
-    let API = "http://localhost:3000/logout";
+    let API = "http://localhost:5000/auth/logout";
     let token = localStorage.getItem(appKey);
     try {
       if (!token) throw new Error("身分認證訊息不存在， 請重新登入");
@@ -74,19 +79,19 @@ export function AuthProvider({ children }) {
     let token = localStorage.getItem(appKey);
     if (!token) return;
     const fatchData = async () => {
-      let API = "http://localhost:3000/status";
+      let API = "http://localhost:5000/auth/status";
       try {
         const res = await fetch(API, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
+        },[]);
         const result = await res.json();
         if (result.status != "success") throw new Error(result.message);
         token = result.data.token;
         localStorage.setItem(appKey, token);
-        const newUser = jwt.decode(token);
+        console.log(user?.email ?? "No Email");
         setUser(newUser);
       } catch (err) {
         console.log(err);

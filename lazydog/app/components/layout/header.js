@@ -28,10 +28,10 @@ export default function Header(props) {
             <Link href="#">關於我們</Link>
           </li>
           <li>
-            <Link href="#">寵物用品</Link>
+            <Link href="/product/list">寵物用品</Link>
           </li>
           <li>
-            <Link href="#">寵物旅館</Link>
+            <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>
           </li>
           <div className={styles["dropdown"]}>
             <li>
@@ -40,7 +40,7 @@ export default function Header(props) {
               </Link>
             </li>
             <div className={styles["dropdown-content"]}>
-              <Link href="#" className={styles["dropdown-link"]}>
+              <Link href="/course/list" className={styles["dropdown-link"]}>
                 課程
               </Link>
               <Link href="/teacher/list" className={styles["dropdown-link"]}>
@@ -62,7 +62,7 @@ export default function Header(props) {
             <div className={styles["dropdown"]}>
               <Link href="/pages" className={styles["lumi-user-icon"]}>
                 {/* <FontAwesomeIcon icon={faUser} /> */}
-                <i class="bi bi-person"></i>
+                <i className="bi bi-person" />
               </Link>
               <div className={styles["dropdown-content"]}>
                 <Link href="/pages" className={styles["dropdown-link"]}>

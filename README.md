@@ -1,49 +1,63 @@
+# LazyDog 
+
+LazyDog 是一個飯店管理系統的前後端專案，使用 **Node.js + Express + MySQL**，提供飯店資料管理、優惠券管理等功能。
+
+## 📌 目錄
+
+- [server 準備](#建立-server-端要先思考)
+- [API](#restful-api)
+- [crud](#crud-資料庫操作)
+
+### 建立 server 端要先思考
+
+1.結構建立 2.需要串那些資料表 3.哪些表單需要 CRUD
+4.res.json HTTP 端顯示狀態碼是甚麼?
+
 ### Restful API###
 
-整理RESTful API CRUD
+整理 RESTful API CRUD
 
-獲取XX資料 /GET     /XX
-獲取XXID資料 /GET     /XX/1
-新增XX資料 /POST   /XX
-更新XX資料 /PATCH /XX/1 
-刪除XX資料 /DELETE /XX/1
+獲取 XX 資料 /GET /XX
+獲取 XXID 資料 /GET /XX/1
+新增 XX 資料 /POST /XX
+更新 XX 資料 /PATCH /XX/1
+刪除 XX 資料 /DELETE/XX/1
 
-POST／PUT 
+POST／PUT
 都可以用來新增
-POST是原本沒有的資料去做一筆新增的動作
+POST 是原本沒有的資料去做一筆新增的動作
 PUT 是覆寫，不管做多少次結果都是一樣的
 
 ex:
-PUT新增一個用戶aaa，假如資料表裡面原本就有aaa他會直接蓋過去還有安全性的問題，要小心使用。
-POST新增用戶時會自動產生ID
+PUT 新增一個用戶 aaa，假如資料表裡面原本就有 aaa 他會直接蓋過去還有安全性的問題，要小心使用。
+POST 新增用戶時會自動產生 ID
 
-PATCH／PUT 
+PATCH／PUT
 都可以用來修改
 
-PATCH可以更新一個裡面的資料(也可以新增沒有的欄位)
+PATCH 可以更新一個裡面的資料(也可以新增沒有的欄位)
 PUT 即使只要改一個欄位，也要傳整個物件，會整個資源覆蓋，如果某個欄位沒有包含在請求中可能會整個刪除。
 
-意思是說你要全部更新可以用PUT，但是部分要用PATCH。
-
+意思是說你要全部更新可以用 PUT，但是部分要用 PATCH。
 
 目前僅使用
-```bash
+
+````bash
 npm run dev
 
 ### hotel為例(未串middlewares未串驗證) ###
 
-獲取XX資料   /GET    /hotel
+獲取XX資料   /GET    /hotels
 
+獲取XXID資料 /GET    /hotels/1
 
-獲取XXID資料 /GET    /hotel/1
+新增XX資料   /POST   /hotels
 
-新增XX資料   /POST   /hotel
+更新XX資料   /PATCH  /hotels/1
 
-更新XX資料   /PATCH  /hotel/1
+軟刪除XX資料 /PATCH  /hotels/:id/soft-delete
 
-軟刪除XX資料 /PATCH  /hotel/1
-
-刪除XX資料   /DELETE /hotel/1
+刪除XX資料   /DELETE /hotels/1
 
 ## 狀態碼(status code)
 
@@ -55,7 +69,7 @@ POST: 201 Created
 PUT: 200 OK
 PATCH: 200 OK
 DELETE: 204 No Content
-```
+````
 
 常用的狀態碼:
 
@@ -105,3 +119,68 @@ GET /posts?limit=10&offset=20 - retrieves the third 10 posts, and so on
 ## JWT 相關
 
 - 只會加入 token 中不會被修改或更動的欄位，例如 id, username, role
+- 避免將敏感資料放入 JWT
+  不要放密碼、信用卡資訊、email，可以放 user_id, role
+- HttpOnly Cookie 儲存 Token
+  不要存 localStorage，容易被 XSS 攻擊，推薦存 HttpOnly Cookie
+- Access Token + Refresh Token
+  Access Token 短時效 (15-30 分鐘)
+  Refresh Token 長時效 (7-30 天)，存 HttpOnly Cookie
+  過期時自動刷新，提升安全性
+
+### 資料庫 CRUD
+
+# CRUD-資料庫操作
+
+## 1. CRUD 是什麼？
+
+CRUD 是一個縮寫，代表了資料庫的四個基本操作：Create（新增）、Read（讀取）、Update（更新）和 Delete（刪除）。這四個操作是資料庫管理系統（DBMS）中最基本的操作，幾乎所有的應用程式都會使用到這些操作。
+
+## 2. CRUD 操作
+
+### 2.1 Create（新增）
+
+Create 操作用於在資料庫中新增一條新的記錄。在關聯式資料庫中，Create 操作通常對應到 SQL 的 `INSERT` 語句。
+
+```sql
+INSERT INTO users (name, email) VALUES ('Alice', 'alice@test.com');
+```
+
+### 2.2 Read（讀取）
+
+Read 操作用於從資料庫中讀取記錄。在關聯式資料庫中，Read 操作通常對應到 SQL 的 `SELECT` 語句。
+
+```sql
+SELECT * FROM users;
+```
+
+### 2.3 Update（更新）
+
+Update 操作用於更新資料庫中的記錄。在關聯式資料庫中，Update 操作通常對應到 SQL 的 `UPDATE` 語句。
+
+```sql
+UPDATE users SET name = 'Bob' WHERE id = 1;
+```
+
+### 2.4 Delete（刪除）
+
+Delete 操作用於刪除資料庫中的記錄。在關聯式資料庫中，Delete 操作通常對應到 SQL 的 `DELETE` 語句。
+
+```sql
+DELETE FROM users WHERE id = 1;
+```
+
+## 3. CRUD 操作的應用
+
+CRUD 操作是應用程式與資料庫之間的橋樑，幾乎所有的應用程式都會使用到這些操作。例如，一個簡單的網站可能會有以下功能：
+
+- Create：用戶註冊
+- Read：查看用戶列表
+- Update：修改用戶資料
+- Delete：刪除用戶
+
+透過這些 CRUD 操作，應用程式可以與資料庫進行交互，實現各種功能。
+
+## 4. 總結
+
+CRUD 是資料庫管理系統中最基本的操作，幾乎所有的應用程式都會使用到這些操作。通過 Create、Read、Update 和 Delete 這四個操作，應用程式可以與資料庫進行交互，實現各種功能。
