@@ -464,7 +464,7 @@
 }
 .ProductCardOnsale {
   position: absolute;
-  background: url(/img/font/onsale-bg.png) no-repeat center/cover;
+  background: url(/product/font/onsale-bg.png) no-repeat center/cover;
   width: 50px;
   height: 48px;
   display: flex;

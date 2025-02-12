@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import "./product.css";
 import Script from "next/script";
+import Header from "../components/layout/header";
 
 export default function AppLayout({ children }) {
   return (
@@ -14,7 +15,10 @@ export default function AppLayout({ children }) {
             strategy="afterInteractive"
           />
         </head>
-        <body>{children}</body>
+        <body>
+          <Header />
+          {children}
+        </body>
       </html>
     </>
   );
