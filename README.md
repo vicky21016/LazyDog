@@ -1,3 +1,13 @@
+# LazyDog Backend
+
+LazyDog 是一個飯店管理系統的後端專案，使用 **Node.js + Express + MySQL**，提供飯店資料管理、優惠券管理等功能。
+
+## 📌 目錄
+- [server準備]( #建立-server-端要先思考)
+- [API]( #restful-api)
+- [] (#)
+
+
 ### 建立 server 端要先思考
 
 1.結構建立 2.需要串那些資料表 3.哪些表單需要 CRUD
