@@ -48,6 +48,7 @@ export default function Menu() {
     e.preventDefault();
     console.log(formData);
   };
+console.log(user.email);
 
   return (
     <>

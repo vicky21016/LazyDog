@@ -86,12 +86,12 @@ export function AuthProvider({ children }) {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
+        },[]);
         const result = await res.json();
         if (result.status != "success") throw new Error(result.message);
         token = result.data.token;
         localStorage.setItem(appKey, token);
-        const newUser = jwt.decode(token);
+        console.log(user?.email ?? "No Email");
         setUser(newUser);
       } catch (err) {
         console.log(err);
