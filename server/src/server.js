@@ -6,7 +6,9 @@ import pool from "./config/mysql.js";
 import hotelRoutes from "./routes/hotelRoutes.js";
 import couponRoutes from "./routes/couponRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
-import courseRoutes from "./routes/courseRoutes.js"
+// import courseRoutes from "./routes/courseRoutes.js";
+import articlesRoutes from "./routes/articleRoutes.js";
+
 import cartRoutes from "./routes/cartRoutes.js";
 dotenv.config();
 
@@ -24,8 +26,8 @@ app.use("/auth", authRouter);
 app.use("/api/hotels", hotelRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/products", productRoutes);
-app.use("/api/course", courseRoutes);
-app.use("/api/cart",cartRoutes);
+// app.use("/api", courseRoutes);
+app.use("/api/articles", articlesRoutes);
 
 app.get("/", (req, res) => {
   res.json({ status: "success", data: null, message: "首頁" });
