@@ -7,10 +7,12 @@ import Header from "../components/layout/header";
 import MyMenu from "../components/layout/myMenu"; 
 import Input from "../components/forms/Input"; 
 import styles from "./menu.module.css";
+// import { auth, signOut, onAuth } from "./firebase";
 
 export default function Menu() {
      const [checkingAuth, setCheckingAuth] = useState(true);
      const { user } = useAuth();   
+
      useEffect(() => {
        if (user) setCheckingAuth(false);
      }, [user]);
@@ -114,7 +116,7 @@ console.log(user.email);
                 type="email"
                 name="email"
                 placeholder="聯絡信箱"
-                value={user.email}
+                value={user ? user.email : ""}
                 onChange={handleChange}
               />
             </div>

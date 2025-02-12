@@ -10,15 +10,15 @@ const Profile = () => {
   return (
     <>
       <div className={`my-5 ${styles["profile"]}`}>
-        <div className="row">
-          <div className="col-5">
+        <div className="row g-5">
+          <div className="col-12 col-md-6 col-lg-5">
             <img
               src="/teacher-img/馬克.jpg"
               className={styles.profileImg}
               alt="馬克"
             />
           </div>
-          <div className="col-7 ps-5">
+          <div className="col-12 col-md-6 col-lg-7 ps-5">
             <h6 className={`mb-4 ${styles["type"]}`}>寵物訓練</h6>
             <h4 className={`mb-4 ${styles["mark"]}`}>馬克</h4>
             <p>
