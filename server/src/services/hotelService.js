@@ -80,12 +80,10 @@ export const updateHotelById = async (updateData) => {
       values
     );
 
-    if (result.affectedRows === 0) {
-      console.log("更新失敗，affectedRows = 0");
+    if (result.affectedRows == 0) {
       return { error: "更新失敗，找不到該旅館" };
     }
 
-    console.log(" 旅館 id=" + id + " 更新成功");
     return { message: `旅館 id=${id} 更新成功` };
   } catch (error) {
     console.error(" 更新錯誤:", error);
