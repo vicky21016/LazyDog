@@ -1,4 +1,4 @@
-.container {
+.Container {
   margin-top: 180px;
   display: flex;
   flex-direction: column;
@@ -197,7 +197,6 @@
 .ProductDetail {
   width: 100%;
   .AccordionButton {
-    border: 1px solid var(--skin);
     box-shadow: none;
     &:not(.collapsed) {
       background: var(--Orange);
