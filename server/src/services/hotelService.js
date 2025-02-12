@@ -12,6 +12,23 @@ export const getHotels = async () => {
   }
 };
 
+export const searchHotels = async (keyword) => {
+  try {
+    if (!keyword || keyword.trim() == "") {
+      return { error: "請提供有效的搜尋關鍵字" };
+    }
+    const [hotels] = await pool.execute(
+      "SELECT * FROM hotel WHERE name LIKE   ? AND is_deleted = 0",
+      [`%${keyword}%`]
+    );
+    
+    return hotels;
+  } catch (error) {
+    console.log(error);
+    throw new Error("搜尋失敗");
+  }
+};
+
 export const getId = async (id) => {
   try {
     const [hotels] = await pool.query(
@@ -48,7 +65,6 @@ export const createHotels = async (hotelData) => {
 };
 
 export const updateHotelById = async (updateData) => {
-
   try {
     // 解構賦值排除不應該更新的欄位(目前寫在{}裡的欄位) ...updateFields展開 運算值是剩下欄位
     //updateFields變成一個新的物件來存放剩餘可更新欄位

@@ -4,34 +4,50 @@ import {
   createHotels,
   updateHotelById,
   softDeleteHotelById,
+  searchHotels,
 } from "../services/hotelService.js";
 
 export const getAllHotels = async (req, res) => {
   try {
     const hotels = await getHotels();
     res.json(hotels);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ err: `找不到旅館` });
   }
 };
 
+export const getSearch = async (req, res) => {
+  try {
+    const { keyword } = req.query;
+    if (!keyword) throw new Error("找不到關鍵字");
+    const hotels = await searchHotels(keyword);
+    if (!hotels.length) throw new Error("查無相關商品");
+    res.status(200).json({
+      status: "success",
+      data: hotels,
+      message: `查詢： ${keyword} 成功，共${hotels.length}筆資料`,
+    });
+  } catch (err) {
+    res.status(500).json({ err: `找不到旅館` });
+  }
+};
 export const getByIds = async (req, res) => {
   try {
     console.log("找到旅館ID:", req.params.id);
     const id = Number(req.params.id, 10);
 
     if (isNaN(id)) {
-      return res.status(400).json({ error: "無效的 ID" });
+      return res.status(400).json({ err: "無效的 ID" });
     }
 
     const hotel = await getId(id);
     if (!hotel) {
-      return res.status(404).json({ error: `找不到 id=${id} 的旅館` });
+      return res.status(404).json({ err: `找不到 id=${id} 的旅館` });
     }
 
     res.json(hotel);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: `找不到旅館` });
   }
 };
 
@@ -82,7 +98,7 @@ export const createHotel = async (req, res) => {
 
     res.status(201).json(newHotel);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: `無法建立旅館` });
   }
 };
 
@@ -102,23 +118,22 @@ export const updateHotel = async (req, res) => {
 
     res.json({ message: `旅館 id=${id} 更新成功` });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: `找不到旅館` });
   }
 };
 
-export const  softDeleteHotel = async (req, res) => {
+export const softDeleteHotel = async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     const deletedHotel = await softDeleteHotelById(id);
-   
+
     if (!deletedHotel) {
       return res.status(404).json({ error: `找不到 id=${id} 或該旅館已刪除` });
     }
 
     res.json({ message: `旅館 id=${id} 已軟刪除` });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: `找不到旅館` });
   }
 };
-

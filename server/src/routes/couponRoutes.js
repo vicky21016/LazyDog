@@ -4,12 +4,14 @@ import {
   getCouponById,
   createCoupon,
   updateCoupon,
-  softDeleteCoupon
+  softDeleteCoupon,
+  
 } from "../controllers/couponController.js";
-
+// getSearch
 const router = express.Router();
 
 router.get("/", getAllCoupons);
+// router.get("/search", getSearch);
 router.get("/:id", getCouponById);
 router.post("/", createCoupon);
 router.patch("/:id", updateCoupon);
