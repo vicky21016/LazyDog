@@ -57,20 +57,20 @@ export default function DetailPage(props) {
                 <button type="button" className={styles.FavoriteBtn}>
                   <img src="/product/font/heart.png" alt="" />
                 </button>
-                <h4>加入收藏</h4>
+                <h6>加入收藏</h6>
               </div>
               <div className={styles.InfoOnsaleGroup}>
                 <div className={styles.OnsaleTag}>
-                  <h4>-30%</h4>
+                  <h6>-30%</h6>
                 </div>
                 <div className={styles.OnsaleInfo}>
-                  <h4>限時促銷剩餘時間</h4>
-                  <h4 className={styles.OnsaleTime}>00天:08時:00分</h4>
+                  <h6>限時促銷剩餘時間</h6>
+                  <h6 className={styles.OnsaleTime}>00天:08時:00分</h6>
                 </div>
               </div>
-              <h1 className={styles.InfoProductName}>
+              <h2 className={styles.InfoProductName}>
                 法國皇家 SHNW 皇家小型幼犬濕糧MNPW 85克(1入)(狗主食餐包)
-              </h1>
+              </h2>
               <div className={styles.InfoRateGroup}>
                 <img src="/product/font/star-fill.png" alt="" />
                 <img src="/product/font/star-fill.png" alt="" />
@@ -79,12 +79,12 @@ export default function DetailPage(props) {
                 <img src="/product/font/star.png" alt="" />
               </div>
               <div className={styles.InfoPriceGroup}>
-                <h3>限時促銷價格.................................</h3>
-                <h1>NT$ 62</h1>
-                <h2>NT$ 69</h2>
+                <h5>限時促銷價格：</h5>
+                <h2>NT$ 62</h2>
+                <h4>NT$ 69</h4>
               </div>
               <div className={styles.InfoQtyGroup}>
-                <h4>購買數量</h4>
+                <h5>購買數量</h5>
                 <button className={styles.QtyMinus}>
                   <img src="/product/font/minus.png" alt="" />
                 </button>
@@ -95,10 +95,10 @@ export default function DetailPage(props) {
               </div>
               <div className={styles.InfoBtnGroup}>
                 <button className={styles.BtnBuynow}>
-                  <h3>立即購買</h3>
+                  <h5>立即購買</h5>
                 </button>
                 <button>
-                  <h3>加入購物車</h3>
+                  <h5>加入購物車</h5>
                 </button>
               </div>
             </div>
@@ -107,19 +107,19 @@ export default function DetailPage(props) {
         <nav className={styles.StickyTop}>
           <ul>
             <li>
-              <h3>
+              <h5>
                 <a href="#collapse-heading1">商品詳情</a>
-              </h3>
+              </h5>
             </li>
             <li>
-              <h3>
+              <h5>
                 <a href="#collapse-heading2">商品介紹圖</a>
-              </h3>
+              </h5>
             </li>
             <li>
-              <h3>
+              <h5>
                 <a href="#collapse-heading3">商品規格</a>
-              </h3>
+              </h5>
             </li>
           </ul>
         </nav>
@@ -137,7 +137,7 @@ export default function DetailPage(props) {
                 aria-expanded="true"
                 aria-controls="collapse1"
               >
-                <h3>商品詳情</h3>
+                <h5>商品詳情</h5>
               </button>
             </div>
             <div
@@ -146,7 +146,7 @@ export default function DetailPage(props) {
               aria-labelledby="collapse-heading1"
             >
               <div className={`accordion-body ${styles.AccordionBody}`}>
-                <h4>
+                <h6>
                   商品特色
                   <br />
                   為熟齡室內/絕育貓量身打造營養配方
@@ -154,7 +154,7 @@ export default function DetailPage(props) {
                   熟齡元氣&amp;腎臟健康符合貓咪天生偏好
                   <br />
                   備受飼主及室內貓喜愛
-                </h4>
+                </h6>
               </div>
             </div>
           </article>
@@ -168,7 +168,7 @@ export default function DetailPage(props) {
                 aria-expanded="false"
                 aria-controls="collapse2"
               >
-                <h3>商品介紹圖</h3>
+                <h5>商品介紹圖</h5>
               </button>
             </div>
             <div
@@ -273,7 +273,7 @@ export default function DetailPage(props) {
                 aria-expanded="false"
                 aria-controls="collapse3"
               >
-                <h3>商品規格</h3>
+                <h5>商品規格</h5>
               </button>
             </div>
             <div
@@ -302,7 +302,7 @@ export default function DetailPage(props) {
                 aria-expanded="true"
                 aria-controls="collapse4"
               >
-                <h3>商品評價</h3>
+                <h5>商品評價</h5>
               </button>
             </div>
             <div
