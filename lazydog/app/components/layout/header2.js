@@ -63,7 +63,7 @@ export default function Header(props) {
             <div className={styles["dropdown"]}>
               <Link href="/pages" className={styles["lumi-user-icon2"]}>
                 {/* <FontAwesomeIcon icon={faUser} /> */}
-                <i class="bi bi-person"></i>
+                <i className="bi bi-person"></i>
               </Link>
               <div className={styles["dropdown-content"]}>
                 <Link href="/pages" className={styles["dropdown-link"]}>
@@ -75,10 +75,10 @@ export default function Header(props) {
               </div>
             </div>
             <div className={styles["lumi-cart-icon2"]}>
-              <a href="">
+              <Link href="">
                 {/* <img src="/images/cart.png" alt="cart" /> */}
-                <i class="bi bi-cart2"></i>
-              </a>
+                <i className="bi bi-cart2"></i>
+              </Link>
             </div>
           </div>
         </>

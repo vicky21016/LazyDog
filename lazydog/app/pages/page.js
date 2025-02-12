@@ -1,12 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useAuth } from "@/hooks/use-auth";
 import Header from "../components/layout/header"; 
 import MyMenu from "../components/layout/myMenu"; 
 import Input from "../components/forms/Input"; 
 import styles from "./menu.module.css";
 
 export default function Menu() {
+     const [checkingAuth, setCheckingAuth] = useState(true);
+     const { user } = useAuth();
+
+     useEffect(() => {
+       if (user) setCheckingAuth(false);
+     }, [user]);
+
+     if (checkingAuth) {
+       return (
+         <div className={styles.container}>
+           <div className={styles.loader27}></div>
+         </div>
+       );
+     }
   const [formData, setFormData] = useState({
     name: "",
     gender: "",
@@ -36,7 +52,7 @@ export default function Menu() {
   return (
     <>
       <Header />
-      <div class="lumi-wrapper">
+      <div className="lumi-wrapper">
         <MyMenu />
         <div className={`${styles["container"]}`}>
           <h4 className={`mb-4 ${styles["information"]}`}>基本資料</h4>

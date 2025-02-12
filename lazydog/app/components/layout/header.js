@@ -20,7 +20,7 @@ export default function Header(props) {
     <header className={styles["lumi-header"]}>
       <Link href="/" className={styles["lumi-logo"]}>
         <img src="/images/logo.png" alt="Logo" />
-        <div className={styles["lumi-logo1"]}>LAZYDOG</div>
+        <div className={styles.lumiLogo1}>LAZYDOG</div>
       </Link>
       <nav>
         <ul className={styles["lumi-ul"]}>
@@ -61,7 +61,8 @@ export default function Header(props) {
           <div className={styles["lumi-user-actions"]}>
             <div className={styles["dropdown"]}>
               <Link href="/pages" className={styles["lumi-user-icon"]}>
-                <FontAwesomeIcon icon={faUser} />
+                {/* <FontAwesomeIcon icon={faUser} /> */}
+                <i class="bi bi-person"></i>
               </Link>
               <div className={styles["dropdown-content"]}>
                 <Link href="/pages" className={styles["dropdown-link"]}>
@@ -73,9 +74,10 @@ export default function Header(props) {
               </div>
             </div>
             <div className={styles["lumi-cart-icon"]}>
-              <a href="">
-                <img src="/images/cart.png" alt="cart" />
-              </a>
+              <Link href="" className={styles["lumi-cart-icon"]}>
+                {/* <img src="/images/cart.png" alt="cart" /> */}
+                <i className="bi bi-cart2"></i>
+              </Link>
             </div>
           </div>
         </>

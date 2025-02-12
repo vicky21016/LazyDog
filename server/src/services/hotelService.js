@@ -7,6 +7,7 @@ export const getHotels = async () => {
     );
     return hotels;
   } catch (error) {
+    console.log("取得失敗");
     throw new Error(" 無法取得旅館list：" + error.message);
   }
 };
@@ -18,92 +19,110 @@ export const getId = async (id) => {
       [id]
     );
 
-    if (hotels.length === 0) {
+    if (hotels.length == 0) {
       throw new Error(`找不到 id=${id} 的旅館`);
     }
 
     return hotels[0];
   } catch (error) {
+    console.log("取得失敗");
     throw new Error(`無法取得 id=${id} 旅館: ` + error.message);
   }
 };
 
 export const createHotels = async (hotelData) => {
   try {
-      const {
-          name, county, district, address, phone
-      } = hotelData;
+    const { name, county, district, address, phone } = hotelData;
 
-      const [result] = await pool.query(
-          `INSERT INTO hotel 
+    const [result] = await pool.query(
+      `INSERT INTO hotel 
           (name, county, district, address, phone, 
           created_at, updated_at, is_deleted) 
-          VALUES (?, ?, ?, ?, ?, NOW(), NOW(), 0)`, 
-          [name, county, district, address, phone]
-      );
+          VALUES (?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
+      [name, county, district, address, phone]
+    );
 
-      return { id: result.insertId, name, address, phone };
+    return { id: result.insertId, name, address, phone };
   } catch (err) {
-      throw new Error("無法創立旅館：" + err.message);
+    throw new Error("無法創立旅館：" + err.message);
   }
 };
 
-export const updateHotelById = async (req, res) => {
+export const updateHotelById = async (updateData) => {
+  console.log(" PATCH 請求收到:", updateData);
+
   try {
-    const { id } = req.params;
-    const { name, county, district, address, phone } = req.body;
+    // 解構賦值排除不應該更新的欄位(目前寫在{}裡的欄位) ...updateFields展開 運算值是剩下欄位
+    //updateFields變成一個新的物件來存放剩餘可更新欄位
 
-    const [result] = await pool.query(
-      `UPDATE hotel 
-       SET name = ?, county = ?, district = ?, address = ?, phone = ?, updated_at = NOW() 
-       WHERE id = ? AND is_deleted = 0`,
-      [name, county, district, address, phone, id]
-    );
+    const { id, created_at, average_rating, total_reviews, ...updateFields } =
+      updateData;
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "更新失敗，找不到該旅館" });
+    if (!id) {
+      return { error: "缺少 id，無法更新旅館" };
     }
 
-    res.json({ message: "旅館更新成功", id });
+    // 如果 updateFields 是空的，不更新
+    if (Object.keys(updateFields).length == 0) {
+      return { error: "沒有提供更新欄位" };
+    }
+
+    console.log(" 需要更新的欄位:", updateFields);
+
+    //  動態生成 SQL **需要再研究 **
+    const keys = Object.keys(updateFields);
+    const values = Object.values(updateFields);
+    const setClause = keys.map((key) => `${key} = ?`).join(", ");
+    values.push(id);
+
+    const [result] = await pool.query(
+      `UPDATE hotel SET ${setClause}, updated_at = NOW() WHERE id = ?`,
+      values
+    );
+
+    if (result.affectedRows == 0) {
+      return { error: "更新失敗，找不到該旅館" };
+    }
+
+    return { message: `旅館 id=${id} 更新成功` };
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(" 更新錯誤:", error);
+    return { error: "無法更新旅館：" + error.message };
   }
 };
 
-export const softDeleteHotelById = async (req, res) => {
+export const softDeleteHotelById = async (id) => {
+  const connection = await pool.getConnection();
   try {
-    const { id } = req.params;
+    await connection.beginTransaction();
 
-    const [result] = await pool.query(
-      `UPDATE hotel SET is_deleted = 1, updated_at = NOW() WHERE id = ? AND is_deleted = 0`,
+    const [existingHotel] = await connection.query(
+      "SELECT * FROM hotel WHERE id = ? AND is_deleted = 0",
       [id]
     );
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "刪除失敗，找不到該旅館" });
+    if (existingHotel.length == 0) {
+      await connection.rollback();
+      return { error: `刪除失敗，找不到 id=${id} 或該旅館已刪除` };
     }
 
-    res.json({ message: "旅館已軟刪除", id });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-export const restoreHotelById = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const [result] = await pool.query(
-      `UPDATE hotel SET is_deleted = 0, updated_at = NOW() WHERE id = ? AND is_deleted = 1`,
+    // 軟刪除旅館
+    const [result] = await connection.query(
+      "UPDATE hotel SET is_deleted = 1 WHERE id = ?",
       [id]
     );
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "恢復失敗，找不到該旅館" });
+    if (result.affectedRows == 0) {
+      await connection.rollback();
+      return { error: `軟刪除失敗，找不到 id=${id}` };
     }
 
-    res.json({ message: "旅館已恢復", id });
+    await connection.commit();
+    return { message: `旅館 id=${id} 已成功軟刪除` };
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    await connection.rollback();
+    return { error: "無法刪除旅館：" + error.message };
+  } finally {
+    connection.release();
   }
 };

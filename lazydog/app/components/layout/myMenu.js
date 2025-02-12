@@ -54,7 +54,7 @@ export default function MyMenu() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div className="lumi-menu-container">
         <h5 className="lumi-welcome">歡迎，{userName || "會員"}！</h5>
         <List animated selection>

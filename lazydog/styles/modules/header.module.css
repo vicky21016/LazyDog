@@ -1,6 +1,6 @@
 .lumi-header {
   display: flex;
-  position: absolute;
+  /* position: absolute; */
   top: 0;
   left: 0;
   width: 100%;
@@ -19,7 +19,7 @@
   color: #ff9538;
   text-decoration: none;
 }
-.lumi-logo1 {
+.lumiLogo1 {
   margin-left: 20px;
   width: 60px;
 }
@@ -27,12 +27,12 @@
   display: flex;
 }
 .lumi-user-icon {
-  font-size: 26px;
+  font-size: 36px;
   margin-right: 20px;
   color: #ff9538;
 }
 .lumi-cart-icon {
-  font-size: 20px;
+  font-size: 32px;
   color: #ff9538;
 }
 .lumi-item {
@@ -75,69 +75,6 @@
   font-weight: 800;
 }
 
-.lumi-header2 {
-  display: flex;
-  /* position: absolute; */
-  position: fixed;
-  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 20px 63px;
-  justify-content: space-between;
-  align-items: center;
-
-  background-color: #f5832b00;
-  backdrop-filter: blur(20px);
-  transition: background 0.3s ease-in-out;
-  
-  z-index: 1000;
-}
-.lumi-ul2 {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 15px;
-  letter-spacing: 2px;
-  gap: 73px;
-  a {
-    text-decoration: none;
-    color: rgba(59, 51, 48, 1);
-    font-weight: bold;
-  }
-  a:hover {
-    text-decoration: none;
-    color: white;
-  }
-}
-.lumi-logo2 {
-  display: flex;
-  align-items: center;
-  font-size: 26px;
-  font-weight: bold;
-  letter-spacing: 2px;
-  color: white;
-}
-.lumi-signin2 {
-  color: white;
-  font-weight: 700;
-  margin: 5px;
-}
-.lumi-connect2 {
-  color: white;
-  font-weight: 800;
-}
-.lumi-user-icon2 {
-  font-size: 26px;
-  margin-right: 20px;
-  color: white;
-}
-.lumi-cart-icon2 {
-  font-size: 20px;
-  color: white;
-}
-
 .dropdown {
   position: relative;
   display: inline-block;
@@ -147,7 +84,8 @@
   display: none;
   position: absolute;
   background-color: #ff9538;
-  min-width: 160px;
+  min-width: 140px;
+  border-radius: 10px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
   color: white;
@@ -160,6 +98,7 @@
   display: block;
 }
 
-.dropdown-link:hover {background-color: #ffffff;}
+.dropdown-link:hover {background-color: #ffffff;
+  color : #ff9538;}
 
 .dropdown:hover .dropdown-content {display: block;}

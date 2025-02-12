@@ -4,17 +4,17 @@ import {
   getByIds,
   createHotel,
   updateHotel,
-  deleteHotel,
-  restoreHotel
+  softDeleteHotel,
 } from "../controllers/hotelController.js";
+// import { verifyToken, verifyRole   } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
 router.get("/", getAllHotels);
 router.get("/:id", getByIds);
 router.post("/", createHotel);
-router.put("/:id", updateHotel);
-router.delete("/:id", deleteHotel);
-router.patch("/:id/restore", restoreHotel);
+router.patch("/:id", updateHotel);
+router.patch("/:id/soft-delete", softDeleteHotel); 
+// EX: ("/hotels/:id", verifyToken, verifyRole(["operator", "admin"]), softDeleteHotel)
 
 export default router;
