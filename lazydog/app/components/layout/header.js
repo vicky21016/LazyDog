@@ -31,7 +31,7 @@ export default function Header(props) {
             <Link href="#">寵物用品</Link>
           </li>
           <li>
-            <Link href="#">寵物旅館</Link>
+            <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>
           </li>
           <div className={styles["dropdown"]}>
             <li>
@@ -40,7 +40,7 @@ export default function Header(props) {
               </Link>
             </li>
             <div className={styles["dropdown-content"]}>
-              <Link href="#" className={styles["dropdown-link"]}>
+              <Link href="/course/list" className={styles["dropdown-link"]}>
                 課程
               </Link>
               <Link href="/teacher/list" className={styles["dropdown-link"]}>

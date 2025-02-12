@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
   const loginRoute = "/login";
 
   const login = async (email, password) => {
-    let API = "http://localhost:3000/auth/login";
+    let API = "http://localhost:5000/auth/login";
 
     const formData = new FormData();
     formData.append("email", email);
@@ -41,7 +41,7 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    let API = "http://localhost:3000/logout";
+    let API = "http://localhost:5000/logout";
     let token = localStorage.getItem(appKey);
     try {
       if (!token) throw new Error("身分認證訊息不存在， 請重新登入");
@@ -74,7 +74,7 @@ export function AuthProvider({ children }) {
     let token = localStorage.getItem(appKey);
     if (!token) return;
     const fatchData = async () => {
-      let API = "http://localhost:3000/status";
+      let API = "http://localhost:5000/status";
       try {
         const res = await fetch(API, {
           method: "POST",

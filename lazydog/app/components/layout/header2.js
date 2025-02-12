@@ -32,7 +32,7 @@ export default function Header(props) {
             <Link href="#">寵物用品</Link>
           </li>
           <li>
-            <Link href="#">寵物旅館</Link>
+            <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>
           </li>
           <div className={styles["dropdown"]}>
             <li>

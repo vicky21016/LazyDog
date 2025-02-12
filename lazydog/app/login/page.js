@@ -61,7 +61,7 @@ export default function AppPage({ logout }) {
               </Link>
             </div>
           </div>
-          <form className="lumi-login-form">
+          <form className="lumi-login-form" onSubmit={handleLogin}>
             <InputField
               type="email"
               placeholder="電子信件"
@@ -83,7 +83,7 @@ export default function AppPage({ logout }) {
             >
               忘記密碼？
             </Link>
-            <button className="lumi-login-button" onClick={handleLogin}>
+            <button className="lumi-login-button">
               登入
             </button>
             <p className="lumi-separator">
