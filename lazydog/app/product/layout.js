@@ -15,7 +15,7 @@ export default function AppLayout({ children }) {
             strategy="afterInteractive"
           />
         </head>
-        <body>
+        <body suppressHydrationWarning>
           <Header />
           {children}
         </body>

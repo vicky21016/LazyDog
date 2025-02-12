@@ -6,7 +6,7 @@ import styles from "./list.module.css";
 export default function ListPage(props) {
   return (
     <>
-      <div className={`${styles.container} container`}>
+      <div className={`${styles.Container} container`}>
         <section className={styles.DmArea}>
           <a href="">
             <figure>
