@@ -105,3 +105,38 @@ export const updateCouponById = async (id, couponData) => {
     return { error: "無法更新優惠券：" + error.message };
   }
 };
+
+export const softDeleteCouponById = async (id) => {
+  const connection = await pool.getConnection();
+  try {
+    await connection.beginTransaction();
+
+    const [existingCoupon] = await connection.query(
+      "SELECT * FROM coupons WHERE id = ? AND is_deleted = 0",
+      [id]
+    );
+
+    if (existingCoupon.length == 0) {
+      await connection.rollback();
+      return { error: `刪除失敗，找不到 id=${id} 或者已刪除` };
+    }
+
+    // 軟刪除旅館
+    const [result] = await connection.query(
+      "UPDATE coupons SET is_deleted = 1 WHERE id = ?",
+      [id]
+    );
+
+    if (result.affectedRows == 0) {
+      await connection.rollback();
+      return { error: `軟刪除失敗，找不到 id=${id}` };
+    }
+    await connection.commit();
+    return { message: `旅館 id=${id} 已成功軟刪除` };
+  } catch (error) {
+    await connection.rollback();
+    return { error: "無法刪除：" + error.message };
+  } finally {
+    connection.release();
+  }
+};
