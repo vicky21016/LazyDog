@@ -95,41 +95,39 @@ export const updateHotelById = async (updateData) => {
   }
 };
 
-export const softDeleteHotelById = async (softDelete) => {
+export const softDeleteHotelById = async (id) => {
+  const connection = await pool.getConnection();
   try {
-    const { id } = softDelete;
+    await connection.beginTransaction();
 
-    if (!id || isNaN(Number(id))) {
-      console.log(" 無效的 ID:", id);
-      return { error: "無效的 ID，請提供正確的旅館 ID" };
-    }
-
-    const [alives] = await pool.query(
+    // 確保旅館存在且未被刪除
+    const [existingHotel] = await connection.query(
       "SELECT * FROM hotel WHERE id = ? AND is_deleted = 0",
       [id]
     );
 
-    if (alives.length === 0) {
-      console.log(`刪除失敗: 找不到 id=${id} 或該旅館已刪除`);
+    if (existingHotel.length === 0) {
+      await connection.rollback();
       return { error: `刪除失敗，找不到 id=${id} 或該旅館已刪除` };
     }
 
-    console.log(` 執行 SQL 軟刪除: id=${id}`);
-    // SQL 軟刪除
-    const [result] = await pool.query(
+    // 軟刪除旅館
+    const [result] = await connection.query(
       "UPDATE hotel SET is_deleted = 1 WHERE id = ?",
       [id]
     );
 
     if (result.affectedRows === 0) {
-      console.log(` 軟刪除失敗: id=${id}`);
+      await connection.rollback();
       return { error: `軟刪除失敗，找不到 id=${id}` };
     }
 
-    console.log(`旅館 id=${id} 已成功軟刪除`);
-    return { message: `旅館 id=${id} 已成功刪除` };
+    await connection.commit();
+    return { message: `旅館 id=${id} 已成功軟刪除` };
   } catch (error) {
-    console.error(" 軟刪除錯誤:", error);
+    await connection.rollback();
     return { error: "無法刪除旅館：" + error.message };
+  } finally {
+    connection.release();
   }
 };
