@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import authRouter from "./routes/testRouter.js";
 import pool from "./config/mysql.js";
+import hotelImagesRoutes from "./routes/hotelImagesRoutes.js"
 import hotelRoutes from "./routes/hotelRoutes.js";
 import couponRoutes from "./routes/couponRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
@@ -24,6 +25,7 @@ app.use(
 
 app.use("/auth", authRouter);
 app.use("/api/hotels", hotelRoutes);
+app.use("/api/hotel_images",hotelImagesRoutes)
 app.use("/api/coupons", couponRoutes);
 app.use("/api/products", productRoutes);
 // app.use("/api", courseRoutes);

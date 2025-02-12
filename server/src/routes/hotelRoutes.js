@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express'
 import {
   getAllHotels,
   getByIds,
@@ -6,17 +6,17 @@ import {
   updateHotel,
   softDeleteHotel,
   getSearch,
-} from "../controllers/hotelController.js";
+} from '../controllers/hotelController.js'
 // import { verifyToken, verifyRole   } from "../middlewares/authMiddleware.js";
 
-const router = express.Router();
+const router = express.Router()
 
-router.get("/", getAllHotels);
-router.get("/search", getSearch);
-router.get("/:id", getByIds);
-router.post("/", createHotel);
-router.patch("/:id", updateHotel);
-router.patch("/:id/soft-delete", softDeleteHotel);
+router.get('/', getAllHotels)
+router.get('/search', getSearch)
+router.get('/:id', getByIds)
+router.post('/', createHotel)
+router.patch('/:id', updateHotel)
+router.patch('/:id/soft-delete', softDeleteHotel)
 // EX: ("/hotels/:id", verifyToken, verifyRole(["operator", "admin"]), softDeleteHotel)
 
-export default router;
+export default router
