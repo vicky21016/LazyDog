@@ -113,7 +113,8 @@ router.post("/logout", checkToken, (req, res) => {
   });
 });
 
-router.post("/api/users/status", checkToken, (req, res) => {
+router.post("/status", checkToken, (req, res) => {
+   console.log("Status route triggered");
   const { decoded } = req;
 
   const token = jwt.sign(

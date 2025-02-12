@@ -6,8 +6,7 @@ import styles from "./detail.module.css";
 export default function DetailPage(props) {
   return (
     <>
-      <script></script>
-      <div className={`${styles.container} container`}>
+      <div className={`${styles.Container} container`}>
         <section className={styles.Breadcrumbs}>
           <a href="">目錄</a>
           <img src="/product/font/right.png" alt="" />
@@ -128,7 +127,7 @@ export default function DetailPage(props) {
           className={`${styles.ProductDetail} accordion accordion-flush`}
           id=""
         >
-          <article className={styles.AccordionItem}>
+          <article className={`accordion-item ${styles.AccordionItem}`}>
             <div className="accordion-header" id="collapse-heading1">
               <button
                 className={`accordion-button ${styles.AccordionButton}`}
@@ -159,7 +158,7 @@ export default function DetailPage(props) {
               </div>
             </div>
           </article>
-          <div className={styles.AccordionItem}>
+          <div className={`accordion-item ${styles.AccordionItem}`}>
             <div className="accordion-header" id="collapse-heading2">
               <button
                 className={`accordion-button collapsed ${styles.AccordionButton}`}
@@ -264,7 +263,7 @@ export default function DetailPage(props) {
               </div>
             </div>
           </div>
-          <article className={styles.AccordionItem}>
+          <article className={`accordion-item ${styles.AccordionItem}`}>
             <div className="accordion-header" id="collapse-heading3">
               <button
                 className={`accordion-button collapsed ${styles.AccordionButton}`}
@@ -292,7 +291,7 @@ export default function DetailPage(props) {
             </div>
           </article>
           <div
-            className={`${styles.AccordionItem} ${styles.ProductDetailRate}`}
+            className={`accordion-item ${styles.AccordionItem} ${styles.ProductDetailRate}`}
           >
             <div className="accordion-header" id="collapse-heading4">
               <button

@@ -66,13 +66,15 @@
   background-color: #f5842b;
   color: white;
   padding: 12px 20px;
+  border: 1px solid transparent;
   border-radius: 8px;
-  font-weight: bold;
-  border: none;
+  font-weight: bold; 
   cursor: pointer;
 }
 .suSearchBtn:hover {
-  background-color: #e65c00;
+  background-color: #fdf9f5;
+  color: #ff9538;
+  border-color: #ff9538;
 }
 .suSearchBg {
   background-size: cover;
@@ -105,7 +107,7 @@
 }
 
 .suMapBtn:hover {
-  background: rgb(62, 228, 81);
+  background: #66C5BD;
 }
 
 .suMapImage {
@@ -149,7 +151,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  border: 2px solid #ff9900;
+  border: 2px solid #ff9538;
   border-radius: 20px;
   padding: 5px 10px;
 }
@@ -165,8 +167,8 @@
 /* 篩選按鈕 */
 .suClearFilterBtn {
   background: none;
-  border: 2px solid #ff9900;
-  color: #ff9900;
+  border: 2px solid #ff9538;
+  color: #ff9538;
   padding: 8px 20px;
   border-radius: 30px;
   font-size: 16px;
@@ -176,7 +178,7 @@
 }
 
 .suClearFilterBtn:hover {
-  background: #ff9900;
+  background: #ff9538;
   color: white;
 }
 .suShowMore {
@@ -223,7 +225,7 @@
 }
 
 .suHotelInfo p {
-  color: #ff6600;
+  color: #ff9538;
   font-size: 14px;
 }
 
@@ -240,18 +242,20 @@
 }
 
 .suBookBtn {
-  background-color: #ff9900;
+  background-color: #ff9538;
   color: white;
   padding: 10px 15px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: bold;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
 }
 
 .suBookBtn:hover {
-  background-color: #ff6600;
+    background-color: #fdf9f5;
+  color: #ff9538;
+  border-color: #ff9538;
 }
 
 /*  分頁 */
