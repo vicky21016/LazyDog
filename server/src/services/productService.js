@@ -29,7 +29,7 @@ export const getSearchKeyword = async (keyword) => {
   try {
     const [products] = await pool.execute(
       'SELECT * FROM yi_product WHERE (name LIKE ? OR full_info LIKE ?) AND is_deleted = 0',
-      [`%${keyword}%`, `%${keyword}%`, `%${keyword}%`]
+      [`%${keyword}%`, `%${keyword}%`]
     )
     return products
   } catch (error) {
