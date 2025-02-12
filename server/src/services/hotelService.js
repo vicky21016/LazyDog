@@ -25,7 +25,6 @@ export const getId = async (id) => {
 
     return hotels[0];
   } catch (error) {
-    console.log("取得失敗");
     throw new Error(`無法取得 id=${id} 旅館: ` + error.message);
   }
 };

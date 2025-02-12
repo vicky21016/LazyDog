@@ -61,8 +61,6 @@ export const createHotel = async (req, res) => {
         error: "缺少必要欄位 (name, county, district, address, phone)",
       });
     }
-
-    console.log("收到請求資料:", req.body);
     const newHotel = await createHotels({
       name,
       link,
