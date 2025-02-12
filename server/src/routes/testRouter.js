@@ -89,7 +89,7 @@ router.post("/login", upload.none(), async (req, res) => {
     console.log(user.password);
 
     if (!isMatch) {
-      return res.status(401).json({ status: "error", message: "密碼1錯誤" });
+      return res.status(401).json({ status: "error", message: "密碼錯誤" });
     }
 
     // 產生 JWT Token*

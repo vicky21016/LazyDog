@@ -50,9 +50,9 @@ const TeacherSection = () => {
       </div>
       <div className="lumi-all-wrapper pb-5">
         <h3 className="my-5 lumi-m-title ">熱門師資</h3>
-        <div className="row">
+        <div className="row g-5">
           {["1", "2", "3", "4"].map((_, index) => (
-            <div className="col-3" key={index}>
+            <div className="col-12 col-md-6 col-lg-3" key={index}>
               <Link
                 href="/teacher/info"
                 passHref

@@ -36,28 +36,28 @@ const App = () => {
               <div>
                 <TeacherCard
                   imgSrc="/teacher-img/Zoe.png"
-                  col="col-4"
+                  col="col-12 col-md-6 col-lg-4"
                   name="Zoe"
                   text="寵物訓練"
                   link="/teacher/info"
                 />
                 <TeacherCard
                   imgSrc="/teacher-img/Zoe.png"
-                  col="col-4"
+                  col="col-12 col-md-6 col-lg-4"
                   name="Zoe"
                   text="寵物訓練"
                   link="/teacher/info"
                 />
                 <TeacherCard
                   imgSrc="/teacher-img/Zoe.png"
-                  col="col-4"
+                  col="col-12 col-md-6 col-lg-4"
                   name="Zoe"
                   text="寵物訓練"
                   link="/teacher/info"
                 />
                 <TeacherCard
                   imgSrc="/teacher-img/Zoe.png"
-                  col="col-4"
+                  col="col-12 col-md-6 col-lg-4"
                   name="Zoe"
                   text="寵物訓練"
                   link="/teacher/info"

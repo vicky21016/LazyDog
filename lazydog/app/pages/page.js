@@ -16,13 +16,13 @@ export default function Menu() {
      }, [user]);
 
 
-    //  if (checkingAuth) {
-    //    return (
-    //      <div className={styles.container2}>
-    //        <div className={styles.loader27}></div>
-    //      </div>
-    //    );
-    //  }
+     if (checkingAuth) {
+       return (
+         <div className={styles.container2}>
+           <div className={styles.loader27}></div>
+         </div>
+       );
+     }
   const [formData, setFormData] = useState({
     name: "",
     gender: "",
