@@ -19,7 +19,7 @@ export const getId = async (id) => {
       [id]
     );
 
-    if (hotels.length === 0) {
+    if (hotels.length == 0) {
       throw new Error(`找不到 id=${id} 的旅館`);
     }
 
@@ -44,7 +44,6 @@ export const createHotels = async (hotelData) => {
 
     return { id: result.insertId, name, address, phone };
   } catch (err) {
-    console.log("創立失敗");
     throw new Error("無法創立旅館：" + err.message);
   }
 };
@@ -64,7 +63,7 @@ export const updateHotelById = async (updateData) => {
     }
 
     // 如果 updateFields 是空的，不更新
-    if (Object.keys(updateFields).length === 0) {
+    if (Object.keys(updateFields).length == 0) {
       return { error: "沒有提供更新欄位" };
     }
 
@@ -81,7 +80,6 @@ export const updateHotelById = async (updateData) => {
       values
     );
 
-    
     if (result.affectedRows === 0) {
       console.log("更新失敗，affectedRows = 0");
       return { error: "更新失敗，找不到該旅館" };
@@ -105,7 +103,7 @@ export const softDeleteHotelById = async (id) => {
       [id]
     );
 
-    if (existingHotel.length === 0) {
+    if (existingHotel.length == 0) {
       await connection.rollback();
       return { error: `刪除失敗，找不到 id=${id} 或該旅館已刪除` };
     }
@@ -116,7 +114,7 @@ export const softDeleteHotelById = async (id) => {
       [id]
     );
 
-    if (result.affectedRows === 0) {
+    if (result.affectedRows == 0) {
       await connection.rollback();
       return { error: `軟刪除失敗，找不到 id=${id}` };
     }
