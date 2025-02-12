@@ -1,10 +1,15 @@
 import express from 'express'
 
-import { getHotelsImages } from '../controllers/hotelImagesController.js'
+import {
+  getHotelsImages,
+  getByIds,
+  
+} from '../controllers/hotelImagesController.js'
 const router = express.Router()
-
+// getByhotelId,
 router.get('/', getHotelsImages)
-// router.get("/:id",)
+router.get('/:id', getByIds)
+// router.get("/search", getByhotelId);
 // router.post("/",)
 // router.patch("/:id",)
 // router.delete("/:id",)
