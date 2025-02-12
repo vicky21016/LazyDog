@@ -67,29 +67,29 @@ export const createNewItem = async (
 
 export const updateItemInfo = async (updateFields, value) => {
   try {
-    console.log(value);
-    // `UPDATE yi_product SET ${updateFields.join(", ")} WHERE productID = ?  [value]`
-    // const [products] = await pool.execute(
-    //   `UPDATE yi_product SET category_id = ?, name = ?, brand = ?, price = ?, discount = ?, discount_et = ?, stock = ?, full_info = ?, info_text = ?, spec = ?, updated_at = ?, is_deleted = ? WHERE productID = ?`,
-    //   [
-    //     "9",
-    //     "123",
-    //     "111",
-    //     "123",
-    //     "0.8",
-    //     "2025-01-08T16:00:00.000Z",
-    //     "100",
-    //     "aaa",
-    //     "bbb",
-    //     "ccc",
-    //     "2025-01-08T16:00:00.000Z",
-    //     "0",
-    //     "PDHM0225159",
-    //   ]
-    // );
+    console.log(updateFields.join(", "), value);
+    const [products] = await pool.execute(
+      `UPDATE yi_product SET ${updateFields.join(", ")} WHERE productID = ? `,
+      value
+    );
+    // const [warnings] = await pool.query("SHOW WARNINGS");
+    // console.log("警告:", warnings);
     return products;
   } catch (error) {
     console.log(error);
     throw new Error("更新商品資料失敗");
+  }
+};
+
+export const deleteItemInfo = async (productID) => {
+  try {
+    const [products] = await pool.execute(
+      "DELETE FROM yi_product WHERE productID = ?",
+      [productID]
+    );
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`刪除編號：${productID}的商品資料失敗`);
   }
 };

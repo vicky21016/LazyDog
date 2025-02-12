@@ -4,12 +4,13 @@ import {
   getSearchKeyword,
   createNewItem,
   updateItemInfo,
+  deleteItemInfo,
 } from "../services/productService.js";
 
 export const getAll = async (req, res) => {
   try {
     const products = await getAllProducts();
-    if (!products.length) throw new Error("找不到商品");
+    if (!products.length) throw new Error("查無商品列表");
     res.status(200).json({
       status: "success",
       data: products,
@@ -28,12 +29,13 @@ export const getId = async (req, res) => {
     if (!regForPD.test(productID)) {
       return connectError(req, res);
     }
+
     const product = await getProductId(productID);
-    if (!product.length) throw new Error(`編號：${productID}查無此商品`);
+    if (!product.length) throw new Error(`查無編號：${productID} 商品`);
     res.status(200).json({
       status: "success",
       data: product,
-      message: `${product[0].name} 查詢商品成功`,
+      message: `查詢編號：${productID} ${product[0].name} 商品成功`,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -44,6 +46,7 @@ export const getSearch = async (req, res) => {
   try {
     const { keyword } = req.query;
     if (!keyword) throw new Error("請提供關鍵字");
+
     const product = await getSearchKeyword(keyword);
     if (!product.length) throw new Error("查無相關商品");
     res.status(200).json({
@@ -96,6 +99,7 @@ export const createNew = async (req, res) => {
         break;
     }
     const ProductID = `PD${classNum}25`;
+
     const product = await createNewItem(
       cateId,
       name,
@@ -124,7 +128,6 @@ export const updateItem = async (req, res) => {
     if (!regForPD.test(productID)) {
       return connectError(req, res);
     }
-
     const {
       cateId,
       name,
@@ -152,6 +155,7 @@ export const updateItem = async (req, res) => {
       "info_text",
       "spec",
       "is_deleted",
+      "updated_at",
     ];
     const updateContent = [
       cateId,
@@ -170,35 +174,46 @@ export const updateItem = async (req, res) => {
     for (let i = 0; i < updateContent.length; i++) {
       if (updateContent[i]) {
         if (i == 11) {
-          updateFields.push(`updated_at = ?`);
+          updateFields.push(`${fieldNames[i]} = ?`);
           value.push(new Date().toISOString());
           value.push(updateContent[i]);
         } else {
-          // else if (i == 0 || i == 3 || i == 4 || i == 6 || i == 10) {
-          //   updateFields.push(`${fieldNames[i]} = ?`);
-          //   value.push(Number(updateContent[i]));
-          // }
           updateFields.push(`${fieldNames[i]} = ?`);
           value.push(updateContent[i]);
         }
       }
     }
-    [value[value.length - 2], value[value.length - 3]] = [
-      value[value.length - 3],
-      value[value.length - 2],
-    ];
-    // console.log(updateFields, value);
-    // return;
 
     const product = await updateItemInfo(updateFields, value);
-    console.log(product);
-    return;
-    // if (!product.length) throw new Error(`編號：${productID}查無此商品`);
-    // res.status(200).json({
-    //   status: "success",
-    //   data: product,
-    //   message: `${product[0].name} 查詢商品成功`,
-    // });
+    if (product.affectedRows == 0) {
+      throw new Error("更新商品失敗");
+    }
+    res.status(200).json({
+      status: "success",
+      message: `更新編號：${productID} ${name} 商品成功`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const deleteItem = async (req, res) => {
+  try {
+    const { productID } = req.params;
+    if (!productID) throw new Error("請提供商品編號");
+    const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
+    if (!regForPD.test(productID)) {
+      return connectError(req, res);
+    }
+
+    const product = await deleteItemInfo(productID);
+    if (product.affectedRows == 0) {
+      throw new Error("刪除商品失敗");
+    }
+    res.status(200).json({
+      status: "success",
+      message: `刪除編號：${productID} 商品成功`,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
