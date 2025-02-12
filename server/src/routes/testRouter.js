@@ -34,7 +34,7 @@
   
 //       const user = users[0];
   
-//       // 檢查密碼是否已加密**
+//       // 檢查密碼是否已加密
 //       if (user.password.startsWith("$2b$")) {
 //         // 使用 bcrypt.compare() 驗證
 //         const isMatch = await bcrypt.compare(password, user.password);

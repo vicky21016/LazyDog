@@ -10,7 +10,7 @@
 //   process.exit(1);
 // }
 
-// // 驗證 Token**
+// // 驗證 Token
 // export const verifyToken = async (req, res, next) => {
 //   try {
 //     let token = req.get("Authorization");
@@ -28,7 +28,7 @@
    
 //     const decoded = jwt.verify(token, secretKey);
 
-//     // **從資料庫查詢使用者角色**
+//     // 從資料庫查詢使用者角色
 //     const [user] = await pool.execute(
 //       "SELECT id, email, role FROM users WHERE id = ?",
 //       [decoded.id]
@@ -46,7 +46,7 @@
 //   }
 // };
 
-// // **限定角色使用 API**
+// // 限定角色使用 API
 // export const verifyRole = (roles) => {
 //   return (req, res, next) => {
 //     if (!req.user || !roles.includes(req.user.role)) {

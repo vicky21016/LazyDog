@@ -81,7 +81,7 @@ export const updateHotelById = async (updateData) => {
       values
     );
 
-    //
+    
     if (result.affectedRows === 0) {
       console.log("更新失敗，affectedRows = 0");
       return { error: "更新失敗，找不到該旅館" };
@@ -100,7 +100,6 @@ export const softDeleteHotelById = async (id) => {
   try {
     await connection.beginTransaction();
 
-    // 確保旅館存在且未被刪除
     const [existingHotel] = await connection.query(
       "SELECT * FROM hotel WHERE id = ? AND is_deleted = 0",
       [id]
