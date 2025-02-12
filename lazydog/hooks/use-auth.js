@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import jwt from "jwt-decode";
+// import jwtDecode from "jwt-decode";
+import jwt from "jsonwebtoken";
 const appKey = "loginWithToken";
 
 const AuthContext = createContext(null);
@@ -30,8 +31,10 @@ export function AuthProvider({ children }) {
       const result = await res.json();
       console.log(result);
       if (result.status != "success") throw new Error(result.message);
+
       const token = result.data.token;
       const newUser = jwt.decode(token);
+      // const newUser = jwtDecode(token);
       setUser(newUser);
       localStorage.setItem(appKey, token);
     } catch (err) {
@@ -41,7 +44,7 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    let API = "http://localhost:5000/logout";
+    let API = "http://localhost:5000/auth/logout";
     let token = localStorage.getItem(appKey);
     try {
       if (!token) throw new Error("身分認證訊息不存在， 請重新登入");
@@ -74,7 +77,7 @@ export function AuthProvider({ children }) {
     let token = localStorage.getItem(appKey);
     if (!token) return;
     const fatchData = async () => {
-      let API = "http://localhost:5000/status";
+      let API = "http://localhost:5000/auth/status";
       try {
         const res = await fetch(API, {
           method: "POST",
