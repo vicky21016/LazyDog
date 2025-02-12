@@ -48,7 +48,6 @@ export const createHotels = async (hotelData) => {
 };
 
 export const updateHotelById = async (updateData) => {
-  console.log(" PATCH 請求收到:", updateData);
 
   try {
     // 解構賦值排除不應該更新的欄位(目前寫在{}裡的欄位) ...updateFields展開 運算值是剩下欄位
@@ -85,7 +84,6 @@ export const updateHotelById = async (updateData) => {
 
     return { message: `旅館 id=${id} 更新成功` };
   } catch (error) {
-    console.error(" 更新錯誤:", error);
     return { error: "無法更新旅館：" + error.message };
   }
 };

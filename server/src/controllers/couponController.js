@@ -1,11 +1,16 @@
-import { getCoupons, getId, createCoupons } from "../services/couponService.js";
+import {
+  getCoupons,
+  getId,
+  createCoupons,
+  updateCouponById,
+} from "../services/couponService.js";
 
 export const getAllCoupons = async (req, res) => {
   try {
     const coupons = await getCoupons();
     res.json(coupons);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ err: err.message });
   }
 };
 
@@ -67,5 +72,26 @@ export const createCoupon = async (req, res) => {
     res.json(newCoupon);
   } catch (err) {
     res.status(500).json({ err: err.message });
+  }
+};
+
+export const updateCoupon = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const couponData = req.body;
+
+    if (isNaN(Number(id))) {
+      return res.status(400).json({ error: "無效的 ID" });
+    }
+
+    const result = await updateCouponById(id, couponData);
+
+    if (result.error) {
+      return res.status(404).json({ error: result.error });
+    }
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
