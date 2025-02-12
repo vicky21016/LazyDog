@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./list.module.css";
+import Aside from "../_components/aside/aside";
 
 export default function ListPage(props) {
   return (
@@ -20,7 +21,7 @@ export default function ListPage(props) {
             <img src="/product/font/right.png" alt="" />
             <a href="">罐頭</a>
             <img src="/product/font/right.png" alt="" />
-            <h4 className={styles.BreadcrumbsActive}>主食/餐包</h4>
+            <h5 className={styles.BreadcrumbsActive}>主食/餐包</h5>
           </div>
           <div className={styles.Title}>
             <h2>主食/餐包</h2>
@@ -31,6 +32,7 @@ export default function ListPage(props) {
           </div>
         </section>
         <section className={styles.PdArea}>
+          <Aside />
           <aside className={styles.PdFilter}>
             <table className={styles.PdFilterTable}>
               <tbody>
@@ -152,7 +154,7 @@ export default function ListPage(props) {
               </figure>
             </a>
           </aside>
-          <main className={styles.PdList}>
+          <main className={styles.PdList} style={{ display: "none" }}>
             <ul className={styles.ProductCardGroup}>
               {/* 用這個商品卡片 */}
               <li className={styles.ProductCard}>

@@ -207,8 +207,7 @@
     box-shadow: none;
     &:not(.collapsed) {
       background: var(--Orange);
-      h5,
-      h2 {
+      h5 {
         color: var(--White);
       }
     }
@@ -232,7 +231,8 @@
     width: 100%;
   }
   p {
-    line-height: 2;
+    line-height: 1.8;
+    font-weight: 500;
   }
 }
 /* ------商品評價(手風琴)------- */
@@ -257,7 +257,15 @@
   align-items: center;
   gap: 10px;
 }
-.StarGroup {
+.StarBarGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+}
+/* ----StarGroup(備份css---- */
+/* .StarGroup {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -265,26 +273,12 @@
     width: 18px;
   }
 }
-.StarBarGroup {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 5px;
-  .StarGroup {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    img {
-      width: 12px;
-    }
-  }
-}
 .StarBar {
   display: flex;
   align-items: center;
   gap: 10px;
   p {
+    font-size: 14px;
     line-height: 1;
   }
 }
@@ -296,7 +290,7 @@
 .Bar {
   height: 100%;
   background: var(--orange);
-}
+} */
 /* ------商品評價(卡片)------- */
 .RateCardGroup {
   display: flex;
@@ -304,7 +298,15 @@
   align-items: center;
   gap: 30px;
 }
-.RateCard {
+.RateMore {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: var(--Orange);
+}
+/* ----RateCard元件(備份css---- */
+/* .RateCard {
   display: flex;
   width: 392px;
   flex-direction: column;
@@ -326,6 +328,10 @@
     img {
       width: 12px;
     }
+  }
+  p {
+    line-height: 1.5;
+    font-size: 14px;
   }
 }
 .RateCardUser {
@@ -362,14 +368,7 @@
     border: 0.5px solid var(--skin);
     border-radius: 50%;
   }
-}
-.RateMore {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  color: var(--Orange);
-}
+} */
 /* --------------------------- */
 /* ----------也買區------------ */
 .AlsoBuy {
@@ -389,7 +388,7 @@
 .AlsoBuyList {
   display: flex;
   align-items: center;
-  gap: 45px;
+  gap: 60px;
 }
 
 /* --------------------------- */
@@ -411,11 +410,11 @@
 .OtherLikeList {
   display: flex;
   align-items: center;
-  gap: 45px;
+  gap: 60px;
 }
 /* --------------------------- */
-/* ---------card元件----------- */
-.ProductCard {
+/* ---------card元件(備份css)----------- */
+/* .ProductCard {
   width: 240px;
   position: relative;
 }
@@ -463,9 +462,6 @@
   right: 12px;
   top: 10px;
   width: 25px;
-  img {
-    width: 100%;
-  }
 }
 .ProductCardOnsale {
   position: absolute;
@@ -492,5 +488,5 @@
   .ProductCardPrice {
     color: var(--Orange);
   }
-}
+} */
 /* --------------------------- */
