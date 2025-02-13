@@ -1,10 +1,8 @@
-.suSidebar {
+.Sidebar {
   width: 242px;
-  background: #fff;
   border-radius: 10px;
-}
-.suFilterGroup {
-  padding-inline: 25px;
+  display: flex;
+  flex-direction: column;
 }
 .SearchTable {
   height: 40px;
@@ -12,6 +10,7 @@
   display: flex;
   align-items: center;
   gap: 17px;
+  border-bottom: 1px solid var(--gray);
   input {
     width: 100%;
     border: none;
@@ -19,36 +18,85 @@
     font-size: 16px;
   }
 }
-.suFilterTitle {
+
+.FilterGroup {
+  width: 100%;
+  padding: 5px 25px 10px;
+  border-bottom: 1px solid var(--gray);
+  display: flex;
+  flex-direction: column;
+}
+.FilterTitle {
+  width: 100%;
   font-weight: bold;
   height: 40px;
   display: flex;
   align-items: center;
 }
-.suShowMore {
+.FormCheck {
+  width: 100%;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+  .FormCheckInput {
+    float: none;
+    margin: 0;
+    cursor: pointer;
+  }
+  input:focus {
+    box-shadow: none;
+    border-color: var(--skin);
+  }
+  input:checked {
+    background-color: var(--Orange);
+    border-color: var(--Orange);
+  }
+}
+.HotSaleGroup {
+  display: flex;
+  align-items: center;
+  padding-top: 5px;
+}
+.FormHot {
+  width: 90px;
+  text-wrap: nowrap;
+  height: 30px;
+  color: var(--Orange);
+  font-size: 18px;
+  font-weight: bold;
+  &:hover {
+    color: var(--tiffany);
+  }
+}
+.ShowMore {
   cursor: pointer;
   color: var(--Orange);
   font-weight: bold;
   display: inline-block;
 }
-.suShowMore:hover {
-  text-decoration: underline;
+.ShowMore:hover {
   color: var(--tiffany);
 }
-.suPriceFilterContainer {
-  background: #fff;
+
+.PriceFilterContainer {
   padding: 20px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
 }
-.suPriceInput {
+.PriceInput {
   display: flex;
   align-items: center;
   gap: 5px;
-  border: 2px solid #ff9538;
+  border: 2px solid var(--Orange);
   border-radius: 20px;
   padding: 5px 10px;
 }
-.suPriceInput input {
+.PriceInput input {
   border: none;
   outline: none;
   text-align: center;
@@ -61,10 +109,10 @@
     margin: 0;
   }
 }
-.suClearFilterBtn {
+.ClearFilterBtn {
   background: none;
-  border: 2px solid #ff9538;
-  color: #ff9538;
+  border: 2px solid var(--Orange);
+  color: var(--Orange);
   padding: 8px 20px;
   border-radius: 30px;
   font-size: 16px;
@@ -72,7 +120,7 @@
   cursor: pointer;
   margin-top: 10px;
 }
-.suClearFilterBtn:hover {
-  background: #ff9538;
-  color: white;
+.ClearFilterBtn:hover {
+  background: var(--Orange);
+  color: var(--White);
 }
