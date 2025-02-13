@@ -15,8 +15,8 @@ router.get('/', getAllHotels)
 router.get('/search', getSearch)
 router.get('/:id', getByIds)
 router.post('/', verifyToken, verifyRole(["operator"]), createHotel);
-router.patch('/:id', updateHotel)
-router.patch('/:id/soft-delete', softDeleteHotel)
+router.patch('/:id',verifyToken, verifyRole(["operator"]), updateHotel)
+router.patch('/:id/soft-delete',verifyToken, verifyRole(["operator"]), softDeleteHotel)
 // EX: ("/hotels/:id", verifyToken, verifyRole(["operator", "admin"]), softDeleteHotel)
 
 export default router
