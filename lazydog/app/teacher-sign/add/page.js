@@ -161,6 +161,8 @@ export default function TeacherAddPage() {
                         <label className={`form-label ${styles.labels}`}>Q&amp;A</label>
                         <textarea className={`form-control  ${styles.controls} ${styles.scrollOrg}`} style={{resize: 'none'}} id="exampleFormControlTextarea1" rows={4} defaultValue={""} />
                       </div>
+                    </section>
+                    <section className={`row g-4 mb-5  ${styles.section4}`}>
                       {/* 圖片 */}
                       <div className={`col-md-12 mt-4 mb-5`}>
                         <div>
