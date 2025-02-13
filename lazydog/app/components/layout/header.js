@@ -4,12 +4,14 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "@/hooks/use-auth";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebase } from "../utils/firebase";
-import styles from "../../../styles/modules/header.module.css"; // 引入 CSS 模組
+import styles from "../../../styles/modules/header.module.css";
 
 export default function Header(props) {
   const [user, setUser] = React.useState(null);
+  const { logout } = useAuth();
   React.useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -68,9 +70,9 @@ export default function Header(props) {
                 <Link href="/pages" className={styles["dropdown-link"]}>
                   個人資料
                 </Link>
-                <Link href="#" className={styles["dropdown-link"]}>
+                <div onClick={logout} className={styles["dropdown-link"]}>
                   登出
-                </Link>
+                </div>
               </div>
             </div>
             <div className={styles["lumi-cart-icon"]}>
