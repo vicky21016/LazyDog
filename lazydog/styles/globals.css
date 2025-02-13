@@ -64,6 +64,15 @@ a {
     font-weight: bold;
   }
 }
+.lumi-item {
+  padding: 8px;
+    color: #3b3330;
+    text-decoration: none;
+  }
+  .lumi-item:hover {
+    color: #ff9538;
+    font-weight: bold;
+  }
 
 /* 登入表單 */
 .lumi-login-wrapper {

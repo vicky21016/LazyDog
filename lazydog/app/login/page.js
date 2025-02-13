@@ -7,7 +7,7 @@ import Header from "../components/layout/header";
 import SocialLogin from "../components/auth/SocialLogin";
 import InputField from "../components/forms/InputField";
 import { useAuth } from "@/hooks/use-auth";
-
+import styles from "../pages/menu.module.css";
 export default function AppPage({ logout }) {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [email, setEmail] = useState("");
@@ -36,7 +36,13 @@ export default function AppPage({ logout }) {
   }, [user]);
 
   if (checkingAuth) {
-    return <></>; // 顯示載入中
+    return (
+      <>
+        <div className={styles.container2}>
+          <div className={styles.loader27}></div>
+        </div>
+      </>
+    ); // 顯示載入中
   }
 
   return (

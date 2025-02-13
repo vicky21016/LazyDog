@@ -2,18 +2,17 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { apiURL } from "@/config";
-// import axios from "axios";
 import Header from "../components/layout/header"; 
 import SocialLogin from "../components/auth/SocialLogin";
 import InputFiled from "../components/forms/InputField";
 import { useRouter } from "next/navigation";
-
+import { useAuth } from "@/hooks/use-auth";
 export default function Register() {
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
    const [confirmPassword, setConfirmPassword] = useState("");
-   const router = useRouter();
+    const { user, register} = useAuth();
+    const router = useRouter();
    const dateForm = () => {
 //     const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 // if (!isValidEmail(email)) {
@@ -32,29 +31,12 @@ export default function Register() {
        alert("密碼和確認密碼不一致");
        return;
      }
-
-     const url = `${apiURL}/auth/register`
-     try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password, confirmPassword }),
-      })
-
-      const resData = await res.json()
-
-     if (resData.status === "success") {
-       alert("註冊成功");
-       router.push("/pages"); // 成功後跳轉
-     } else {
-       alert("註冊失敗");
-     }
+try {
+      await register(email, password, confirmPassword);
+      router.push("/login"); 
     } catch (error) {
-      alert('發生錯誤，請稍後再試！')
-      console.error(error)
+      alert("註冊失敗！");
+      console.error(error);
     }
      
    };

@@ -4,7 +4,7 @@ import React from "react";
 import { List } from "semantic-ui-react";
 import { useAuth } from "@/hooks/use-auth";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -13,19 +13,12 @@ import {
   faHeart,
   faPen,
   faCirclePlus,
-  faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function MyMenu() {
   const pathname = usePathname();
-  const router = useRouter();
   const { user, logout } = useAuth();
 
-  // 登出並跳轉到登入頁
-  const handleLogout = async () => {
-    await logout(); // 執行登出邏輯
-    router.push("/login"); // 跳轉到登入頁
-  };
 
   const menuItems = [
     { name: "會員資料", path: "/pages", icon: faUser },
@@ -55,7 +48,7 @@ export default function MyMenu() {
           </List.Item>
         ))}
 
-        <List.Item className="lumi-item" onClick={handleLogout}>
+        <List.Item className="lumi-item" onClick={logout}>
           登出
         </List.Item>
       </List>
