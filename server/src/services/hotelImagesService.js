@@ -7,7 +7,7 @@ export const getAllHotelsImages = async () => {
     )
     return result
   } catch (err) {
-    throw new Error('無法取得圖片' + err.message)
+    throw new Error('無法取得所有圖片' + err.message)
   }
 }
 export const getById = async (id) => {
@@ -21,20 +21,17 @@ export const getById = async (id) => {
     throw new Error(`無法取得 ${id} 的圖片: ${err.message}`)
   }
 }
-// http://localhost:5000/api/hotel_images/search?hotel_id=3
-// export const searchHotelImages = async (hotel_id) => {
-//   try {
-//     if (!hotel_id || isNaN(hotel_id)) {
-//       throw new Error('請提供有效的 hotel_id')
-//     }
-
-//     const [images] = await pool.execute(
-//       'SELECT * FROM hotel_images WHERE hotel_id = ? AND is_deleted = 0',
-//       [hotel_id]
-//     )
-
-//     return images
-//   } catch (err) {
-//     throw new Error(`無法取得 hotel_id=${hotel_id} 的圖片: ${err.message}`)
-//   }
-// }
+//用這個去做搜尋 http://localhost:5000/api/hotel_images/image/1
+export const searchHotelImages = async (hotel_id) => {
+  try {
+    const [images] = await pool.execute(
+      'SELECT * FROM hotel_images WHERE hotel_id = ? AND is_deleted = 0',
+      [hotel_id]
+    )
+    return images
+  } catch (error) {
+    throw new Error(
+      `無法取得 hotel_images=${hotel_id} 的圖片: ${error.message}`
+    )
+  }
+}

@@ -3,15 +3,15 @@ import express from 'express'
 import {
   getHotelsImages,
   getByIds,
-  
+  getByHotelId,
 } from '../controllers/hotelImagesController.js'
 const router = express.Router()
-// getByhotelId,
+
 router.get('/', getHotelsImages)
 router.get('/:id', getByIds)
-// router.get("/search", getByhotelId);
+router.get('/image/:hotel_id', getByHotelId)
 // router.post("/",)
 // router.patch("/:id",)
-// router.delete("/:id",)
+// router.delete("/:id",)=>移至hotel
 
 export default router
