@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "../../../styles/modules/operatorCamera.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
-
+import Header from "../../components/layout/header";
 export default function OperatorDetailPage() {
   const modalRef = useRef(null);
   const router = useRouter();
@@ -60,6 +60,7 @@ export default function OperatorDetailPage() {
   };
   return (
     <>
+    <Header/>
       <div className="container mt-5">
         <div className="row">
           {/* 左邊*/}

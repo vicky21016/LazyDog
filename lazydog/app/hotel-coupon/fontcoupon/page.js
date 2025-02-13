@@ -3,10 +3,11 @@
 import React from "react";
 import styles from "../../../styles/modules/fontCoupon.module.css";
 import Image from "next/image";
-
+import Header from "../../components/layout/header";
 export default function CouponPage() {
   return (
     <>
+    <Header />
       <div
         className="modal fade"
         id="couponModal"

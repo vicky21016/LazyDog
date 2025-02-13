@@ -5,7 +5,7 @@ import styles from "../../../styles/modules/operatorCamera.module.css";
 import couponStyles from "../../../styles/modules/userCoupon.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
-
+import Header from "../../components/layout/header";
 export default function ProfileCouponPage(props) {
   const router = useRouter();
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
@@ -20,6 +20,7 @@ export default function ProfileCouponPage(props) {
   }, []);
   return (
     <>
+    <Header/>
       <div className="container mt-5">
         <div className="row">
           {/* 左邊*/}

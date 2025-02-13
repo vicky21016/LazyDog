@@ -9,7 +9,7 @@
   object-fit: cover;
 }
 .suFeatureLinks1 {
-  color: red;
+  color: #ff9538;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
@@ -18,7 +18,7 @@
 }
 
 .suFeatureLinks2 {
-  color: orange;
+  color: #ff9538;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
@@ -37,8 +37,8 @@
 }
 
 .suNavTabs .suNavLink:hover {
-  color: #f9a825;
-  border-bottom: 2px solid #f9a825;
+  color: #ff9538;
+  border-bottom: 2px solid #ff9538;
 }
 .suCouponCard {
   display: flex;
@@ -55,7 +55,7 @@
 .suCouponCard .suPrice {
   font-size: 22px;
   font-weight: bold;
-  color: #28a745;
+  color: #66C5BD;
 }
 
 .suCouponCard .suDetails {
@@ -70,7 +70,7 @@
 .suUsed {
   background-color: #d4edda;
   font-size: 14px;
-  color: #258209;
+  color: #66C5BD;
 }
 
 .suExpired {
@@ -81,14 +81,14 @@
 
 .suUnused {
   background-color: white;
-  color: rgb(97, 30, 239);
+  color: #ff9538;
 }
 
 .suCouponCard .suAction {
   text-align: right;
 }
 .suCouponCard .suAction a {
-  color: #007bff;
+  color: #66C5BD;
   text-decoration: none;
   font-weight: bold;
 }
@@ -129,7 +129,7 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 .statusFilter button:hover {
-  color:#f95325;
+  color:#ff9538;
 }
 
 
@@ -147,7 +147,7 @@
 }
 
 .stars {
-  color: #ffc107;
+  color: #ff9538;
 }
 
 .btnAction {

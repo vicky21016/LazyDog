@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import styles from "../../../styles/modules/operatorCamera.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
-
+import Header from "../../components/layout/header";
 export default function EditCouponPage(props) {
   const router = useRouter();
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
@@ -52,6 +52,7 @@ export default function EditCouponPage(props) {
 
   return (
     <>
+    <Header/>
       <div className="container mt-5">
         <div className="row">
           {/* 左邊*/}
