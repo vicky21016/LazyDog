@@ -4,7 +4,7 @@ import ListStyles from "../../../styles/modules/operatorHotel.module.css";
 import styles from "../../../styles/modules/operatorCamera.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
-
+import Header from "../../components/layout/header";
 export default function PagesHotelList() {
   const router = useRouter();
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
@@ -20,6 +20,7 @@ export default function PagesHotelList() {
 
   return (
     <>
+    <Header />
       <div className="container mt-5">
         <div className="row">
           {/* 左邊*/}

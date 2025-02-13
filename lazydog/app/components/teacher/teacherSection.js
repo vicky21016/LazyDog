@@ -69,7 +69,7 @@ const TeacherSection = () => {
                   </div>
                   <p
                     className={styles.card6Description}
-                    style={{ color: "#ff9538" }}
+                    
                   >
                     寵物訓練
                   </p>

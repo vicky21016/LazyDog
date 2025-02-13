@@ -13,7 +13,7 @@ import "flatpickr/dist/flatpickr.min.css";
 import Image from "next/image";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
 import { useGoogleMap } from "@/hooks/useGoogleMap";
-
+import Header from "../../components/layout/header";
 export default function HotelHomePage() {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -84,6 +84,7 @@ export default function HotelHomePage() {
   };
   return (
     <>
+    <Header />
       <div className="container mt-4">
         <div className={styles.suSearchBar}>
           <div className={styles.suSearchGroup}>
