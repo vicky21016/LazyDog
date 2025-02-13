@@ -3,45 +3,45 @@
   border-radius: 8px;
 }
 .suBtnSuccess {
-  background-color: #f9ef2b;
-  color: #000000;
+  background-color: #ff9538;
+   color: white;
   border-radius: 5px;
   border: none;
 }
 .suBtnSuccess:hover {
-  background-color: #aaa;
-  color: white;
+  background-color: #F1D5B6;
+ 
 }
 .btnOrange {
-  background-color: #f5842b;
+  background-color: #ff9538;
   color: white;
   border-radius: 5px;
   transition: background-color 0.2s ease-in-out;
   border: none;
 }
 .btnOrange:hover {
-  background-color: #e65c00;
+  background-color: #F1D5B6;
 }
 .suBtnSecondary {
-  background-color: #81eaaf;
-  color: black;
+  background-color: #66C5BD;
   border-radius: 5px;
+  color: white;
   border: none;
 }
 .suBtnSecondary:hover {
-  background-color: #aaa;
-  color: white;
+   background-color: #F1D5B6;
+ 
 }
 
 .suBtnDanger {
-  background-color: #dc3545;
+  background-color: #ff9538;
   color: white;
   border-radius: 5px;
   border: none;
 }
 
 .suBtnDanger:hover {
-  background-color: #bb2d3b;
+  background-color: #ff9538;
 }
 .suSection {
   padding: 15px;
@@ -76,7 +76,7 @@
   position: absolute;
   top: 5px;
   right: 5px;
-  background: red;
+  background: #ff9538;
   color: white;
   border: none;
   border-radius: 50%;
@@ -89,7 +89,7 @@
   cursor: pointer;
 }
 .deleteBtn:hover {
-  background: darkred;
+  background: #ff9538;
 }
 .hotelTable {
   width: 100%;
@@ -123,7 +123,7 @@
 }
 
 .suBtnAdd {
-  background-color: #5dc2b1 !important;
+  background-color: #66C5BD !important;
   color: white !important;
   border-radius: 10px;
   padding: 10px 18px;
@@ -134,5 +134,5 @@
 }
 
 .suBtnAdd:hover {
-  background-color: #4daaa0 !important;
+  background-color: #66C5BD !important;
 }

@@ -4,7 +4,7 @@ import styles from "../../../styles/modules/operatorCamera.module.css";
 import hotelStyles from "../../../styles/modules/operatorHotel.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
-
+import Header from "../../components/layout/header";
 export default function HotelEditPage(props) {
   const imageUploadRef = useRef(null);
   const [rooms, setRooms] = useState([
@@ -44,6 +44,7 @@ export default function HotelEditPage(props) {
 
   return (
     <>
+    <Header />
       <div className="container mt-5">
         <div className="row">
           {/* 左邊*/}
@@ -259,7 +260,7 @@ export default function HotelEditPage(props) {
                           type="text"
                           className="form-control"
                           name="room_extra"
-                          placeholder="定金"
+                          placeholder="訂金"
                           value={room.extra}
                           onChange={(e) =>
                             handleRoomChange(index, "extra", e.target.value)
