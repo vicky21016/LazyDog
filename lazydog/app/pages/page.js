@@ -12,18 +12,6 @@ import styles from "./menu.module.css";
 export default function Menu() {
      const [checkingAuth, setCheckingAuth] = useState(true);
      const { user } = useAuth();   
-     const router = useRouter();
-
-  // useEffect(() => {
-  //   if (user === null) {
-  //     router.push("/login");
-  //   } else {
-  //     setCheckingAuth(false);
-  //   }
-  // }, [user, router]);
-
-
-     
 
   const [formData, setFormData] = useState({
     name: "",

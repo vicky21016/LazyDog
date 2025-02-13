@@ -63,12 +63,39 @@ export function AuthProvider({ children }) {
       // token = result.data.token;
       localStorage.setItem(appKey, token);
       setUser(null);
-      router.push("/login");
     } catch (err) {
       console.log(err);
       alert(err.message);
     }
   };
+
+// 註冊
+const register = async (email, password, confirmPassword) => {
+  let API = "http://localhost:5000/auth/register";
+
+  const formData = new FormData();
+  formData.append("email", email);
+  formData.append("password", password);
+  formData.append("confirmPassword", confirmPassword);
+
+  try {
+    const res = await fetch(API, {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await res.json();
+    console.log(result);
+
+    if (result.status !== "success") throw new Error(result.message);
+
+    alert("註冊成功");
+    router.push("login"); 
+  } catch (err) {
+    console.log(err);
+    alert(`註冊失敗`,err.message);
+  }
+};
 
   useEffect(() => {
     if (!user && protectedRoutes.includes(pathname)) {
@@ -103,7 +130,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
