@@ -90,7 +90,7 @@ const register = async (email, password, confirmPassword) => {
     if (result.status !== "success") throw new Error(result.message);
 
     alert("註冊成功");
-    router.push("login"); 
+    router.push("/login"); 
   } catch (err) {
     console.log(err);
     alert(`註冊失敗`,err.message);
