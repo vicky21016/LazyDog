@@ -52,13 +52,13 @@ const TeacherSection = () => {
         <h3 className="my-5 lumi-m-title ">熱門師資</h3>
         <div className="row g-5">
           {["1", "2", "3", "4"].map((_, index) => (
-            <div className="col-12 col-md-6 col-lg-3" key={index}>
+            <div className="col-6 col-md-3" key={index}>
               <Link
                 href="/teacher/info"
                 passHref
                 className="text-decoration-none"
               >
-                <div className={styles.card6} style={{ width: "18.75rem" }}>
+                <div className={styles.card6} style={{ width: "" }}>
                   <img
                     src="/teacher-img/Zoe.png"
                     className="card-img-top"
@@ -69,7 +69,7 @@ const TeacherSection = () => {
                   </div>
                   <p
                     className={styles.card6Description}
-                    style={{ color: "#ff9538" }}
+                    
                   >
                     寵物訓練
                   </p>

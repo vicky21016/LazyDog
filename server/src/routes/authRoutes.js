@@ -24,9 +24,10 @@ router.post("/login", upload.none(), async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new Error("帳號或密碼錯誤");
 
-    const token = jwt.sign({ id: user.id, email: user.email }, secretKey, {
-      expiresIn: "1h",
+    const token = jwt.sign({ id: user.id, email: user.email , role: user.role}, secretKey, {
+      expiresIn: "10m",
     });
+    
     res.status(200).json({
       status: "success",
       data: { token },

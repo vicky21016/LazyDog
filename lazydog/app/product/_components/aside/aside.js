@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./aside.module.css";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
+import FilterGroup from "./filtergroup";
+import HotSaleGroup from "./hotsalegroup";
 
 export default function AsideAside(props) {
   const [showMore, setShowMore] = useState(false);
@@ -75,72 +77,25 @@ export default function AsideAside(props) {
     };
   }, []);
   return (
-    <aside className={`col-lg-3 ${styles.suSidebar}`}>
+    <aside className={styles.Sidebar}>
       <div className={styles.SearchTable}>
         <img src="/product/font/search.png" alt="" />
         <input type="text" placeholder="搜尋商品" />
       </div>
-      <div className={styles.suFilterGroup}>
-        <h5 className={styles.suFilterTitle}>設施</h5>
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" id="walk" />
-          <label className="form-check-label" htmlFor="walk">
-            免費散步
-          </label>
-        </div>
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" id="pool" />
-          <label className="form-check-label" htmlFor="pool">
-            游泳池z
-          </label>
-        </div>
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" id="pets" />
-          <label className="form-check-label" htmlFor="pets">
-            戶外運動
-          </label>
-        </div>
-        {showMore && (
-          <>
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" id="wifi" />
-              <label className="form-check-label" htmlFor="wifi">
-                免費 Wi-Fi
-              </label>
-            </div>
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" id="spa" />
-              <label className="form-check-label" htmlFor="spa">
-                SPA 按摩
-              </label>
-            </div>
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" id="gym" />
-              <label className="form-check-label" htmlFor="gym">
-                健身房
-              </label>
-            </div>
-          </>
-        )}
-
-        <span
-          className={styles.suShowMore}
-          onClick={() => setShowMore(!showMore)}
-        >
-          {showMore ? "收起 ▲" : "顯示全部 ▼"}
-        </span>
-      </div>
-
-      <div
-        className={` text-center ${styles.suFilterGroup} ${styles.suPriceFilterContainer}`}
-      >
-        <h5 className={styles.suFilterTitle}>價格篩選</h5>
+      <HotSaleGroup />
+      <FilterGroup />
+      <FilterGroup />
+      <div className={`text-center ${styles.PriceFilterContainer}`}>
+        <h5 className={styles.FilterTitle} style={{ justifyContent: "center" }}>
+          價格篩選
+        </h5>
         <div className="d-flex justify-content-center gap-3">
-          <div className={styles.suPriceInput}>
-            <label htmlFor="filterMin">最少</label>
+          <div className={styles.PriceInput}>
+            <label htmlFor="filterMin">$</label>
             <input
               id="filterMin"
               type="number"
+              placeholder="最少"
               value={minPrice === "" ? "" : minPrice}
               onChange={handleMinPriceChange}
               onBlur={() => {
@@ -152,11 +107,12 @@ export default function AsideAside(props) {
             />
             <span>元</span>
           </div>
-          <div className={styles.suPriceInput}>
-            <label htmlFor="filterMax">最多</label>
+          <div className={styles.PriceInput}>
+            <label htmlFor="filterMax">$</label>
             <input
               id="filterMax"
               type="number"
+              placeholder="最多"
               value={maxPrice === "" ? "" : maxPrice}
               onChange={handleMaxPriceChange}
               onBlur={() => {
@@ -171,7 +127,7 @@ export default function AsideAside(props) {
         </div>
         <div id="priceRange" ref={priceSliderRef} className="mt-3"></div>
         <button
-          className={`btn btn-outline-danger mt-3 ${styles.suClearFilterBtn}`}
+          className={`btn btn-outline-danger mt-3 ${styles.ClearFilterBtn}`}
           onClick={() => {
             setMinPrice(0);
             setMaxPrice(10000);
