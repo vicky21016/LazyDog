@@ -9,7 +9,7 @@ import noUiSlider from "nouislider";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
-
+import Header from "../../components/layout/header";
 export default function HotelHomePage() {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -115,6 +115,7 @@ export default function HotelHomePage() {
   };
   return (
     <>
+    <Header />
       <div className="suBody">
         <div
           className={styles.suSearchBg}
