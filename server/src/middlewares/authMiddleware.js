@@ -15,33 +15,22 @@ if (!secretKey) {
 export const verifyToken = async (req, res, next) => {
   try {
     let token = req.get("Authorization");
-
     if (!token) {
-      return res.status(401).json({ error: "未提供 Token，請先登入" });
+      return res.status(401).json({ status: "error", message: "未提供 Token" });
     }
-
+  
     if (!token.startsWith("Bearer ")) {
-      return res.status(400).json({ error: "驗證格式錯誤，請提供 Bearer Token" });
+      return res.status(400).json({ status: "error", message: "Token 格式錯誤" });
     }
-
-
+  
     token = token.slice(7);
-
-
-    const decoded = jwt.verify(token, secretKey);
-
-
-    const [users] = await pool.execute(
-      "SELECT id, email, role FROM users WHERE id = ?",
-      [decoded.id]
-    );
-
-    if (users.length == 0) {
-      return res.status(401).json({ error: "使用者不存在或已被刪除" });
-    }
-
-    req.user = users[0];
-    next(); 
+    jwt.verify(token, secretKey, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ status: "error", message: "Token 無效或已過期" });
+      }
+      req.user = decoded;
+      next();
+    });
   } catch (err) {
     console.error(" Token 驗證錯誤:", err);
     return res.status(401).json({ error: "Token 無效或已過期" });
