@@ -4,6 +4,7 @@
   --sb-track-color: #bcbcbc38;
   --sb-thumb-color: #f7a96d;
   --sb-size: 4px;
+
 }
 
 .scrollOrg::-webkit-scrollbar {
@@ -19,6 +20,7 @@
   background: var(--sb-thumb-color);
   border-radius: 4px;
   /* border: 1px solid #232E33; */
+  margin: 4px 0;
 }
 
 @supports not selector(::-webkit-scrollbar) {
@@ -171,7 +173,7 @@ body{
     border-radius: 8px;
     background-color: #fff;
     /* border: none; */
-    border: .8px solid #e2e1e1;
+    border: .8px solid #ecebeb;
   }
   
   .controls::placeholder {
