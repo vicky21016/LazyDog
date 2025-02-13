@@ -5,6 +5,7 @@ import hotelStyles from "../../../styles/modules/operatorHotel.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 import Header from "../../components/layout/header";
+import Menu from "../../components/hotel/menu";
 export default function HotelEditPage(props) {
   const imageUploadRef = useRef(null);
   const [rooms, setRooms] = useState([
@@ -44,10 +45,11 @@ export default function HotelEditPage(props) {
 
   return (
     <>
-    <Header />
+      <Header />
       <div className="container mt-5">
         <div className="row">
           {/* 左邊*/}
+          {/* <Menu/> */}
           <div className="col-md-3">
             <div className="card p-3">
               <div className="text-center">
@@ -106,7 +108,6 @@ export default function HotelEditPage(props) {
                   已認證
                 </button>
               </div>
-
               <hr />
               <ul className="list-unstyled text-start">
                 <li
