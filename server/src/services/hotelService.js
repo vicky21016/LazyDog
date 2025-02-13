@@ -43,20 +43,113 @@ export const getId = async (id) => {
 }
 
 export const createHotels = async (hotelData) => {
+  const connection = await pool.getConnection()
   try {
-    const { name, county, district, address, phone } = hotelData
+    await connection.beginTransaction()
 
-    const [result] = await pool.query(
+    const {
+      name,
+      link,
+      county,
+      district,
+      address,
+      phone,
+      room_total,
+      introduce,
+      status,
+      latitude,
+      longitude,
+      map_link,
+      check_in_time,
+      check_out_time,
+      contact_email,
+      url,
+    } = hotelData
+
+    console.log('收到的圖片:', url)
+
+    const [hotelResult] = await connection.query(
       `INSERT INTO hotel 
-          (name, county, district, address, phone, 
-          created_at, updated_at, is_deleted) 
-          VALUES (?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
-      [name, county, district, address, phone]
+        (name, link, county, district, address, phone, room_total, introduce, status, latitude, 
+         longitude, map_link, check_in_time, check_out_time, contact_email, created_at, updated_at, is_deleted) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
+      [
+        name,
+        link,
+        county,
+        district,
+        address,
+        phone,
+        room_total,
+        introduce,
+        status,
+        latitude,
+        longitude,
+        map_link,
+        check_in_time,
+        check_out_time,
+        contact_email,
+      ]
     )
 
-    return { id: result.insertId, name, address, phone }
+    const hotel_id = hotelResult.insertId
+    let mainImageId = null
+
+    // image_url
+    let imageList = Array.isArray(url)
+      ? url
+      : typeof url === 'string'
+      ? [url]
+      : []
+    console.log('圖片要存入 DB:', imageList)
+
+    if (imageList.length > 0) {
+      for (let i = 0; i < imageList.length; i++) {
+        const [imageResult] = await connection.query(
+          'INSERT INTO hotel_images (hotel_id, url) VALUES (?, ?)',
+          [hotel_id, imageList[i]]
+        )
+        if (i == 0) {
+          mainImageId = imageResult.insertId
+        }
+      }
+    }
+
+    console.log('設定主要圖片 ID:', mainImageId)
+
+    //更新 main_image_id
+    if (mainImageId) {
+      await connection.query(
+        'UPDATE hotel SET main_image_id = ? WHERE id = ?',
+        [mainImageId, hotel_id]
+      )
+    }
+
+    await connection.commit()
+    return {
+      id: hotel_id,
+      name,
+      link,
+      county,
+      district,
+      address,
+      phone,
+      room_total,
+      introduce,
+      status,
+      latitude,
+      longitude,
+      map_link,
+      check_in_time,
+      check_out_time,
+      contact_email,
+      url: imageList,
+    }
   } catch (err) {
+    await connection.rollback()
     throw new Error('無法創立旅館：' + err.message)
+  } finally {
+    connection.release()
   }
 }
 

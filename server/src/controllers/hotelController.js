@@ -54,6 +54,8 @@ export const getByIds = async (req, res) => {
 
 export const createHotel = async (req, res) => {
   try {
+    console.log('收到請求資料:', req.body)
+
     const {
       name,
       link,
@@ -67,17 +69,29 @@ export const createHotel = async (req, res) => {
       latitude,
       longitude,
       map_link,
-      category,
       check_in_time,
       check_out_time,
       contact_email,
+      url,
     } = req.body
 
-    if (!name || !county || !district || !address || !phone) {
-      return res.status(400).json({
-        error: '缺少必要欄位 (name, county, district, address, phone)',
-      })
+    if (
+      !name ||
+      !link ||
+      !county ||
+      !district ||
+      !address ||
+      !phone ||
+      !room_total ||
+      !introduce ||
+      !map_link ||
+      !check_in_time ||
+      !check_out_time ||
+      !contact_email
+    ) {
+      return res.status(400).json({ error: '缺少必要欄位' })
     }
+
     const newHotel = await createHotels({
       name,
       link,
@@ -91,15 +105,20 @@ export const createHotel = async (req, res) => {
       latitude,
       longitude,
       map_link,
-      category,
       check_in_time,
       check_out_time,
       contact_email,
+      url,
     })
 
-    res.status(201).json(newHotel)
+    res.status(201).json({
+      success: true,
+      message: '飯店與圖片建立成功',
+      data: newHotel,
+    })
   } catch (error) {
-    res.status(500).json({ error: `無法建立旅館` })
+    console.error('建立飯店錯誤:', error)
+    res.status(500).json({ error: '無法建立旅館', details: error.message })
   }
 }
 
