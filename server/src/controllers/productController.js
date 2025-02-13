@@ -1,7 +1,9 @@
 import {
   getAllProducts,
-  getProductId,
+  getAllProductId,
   getSearchKeyword,
+  getAllCategory,
+  getProductId,
   createNewItem,
   updateItemInfo,
   deleteItemInfo,
@@ -15,6 +17,41 @@ export const getAll = async (req, res) => {
       status: "success",
       data: products,
       message: `查詢商品列表成功，共${products.length}筆資料`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const getSearch = async (req, res) => {
+  try {
+    const { keyword } = req.query;
+    if (!keyword) throw new Error("請提供關鍵字");
+
+    const product = await getSearchKeyword(keyword);
+    if (!product.length) throw new Error("查無相關商品");
+    res.status(200).json({
+      status: "success",
+      data: product,
+      message: `查詢： ${keyword} 相關商品成功，共${product.length}筆資料`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const getCategory = async (req, res) => {
+  try {
+    const { category } = req.query;
+    const updateFields = category ? "category_id = ? AND" : "";
+    const value = category ? [category] : "";
+
+    const categorys = await getAllCategory(updateFields, value);
+    if (!categorys.length) throw new Error("查無商品分類列表");
+    res.status(200).json({
+      status: "success",
+      data: categorys,
+      message: `查詢商品分類列表成功，共${categorys.length}筆資料`,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -36,23 +73,6 @@ export const getId = async (req, res) => {
       status: "success",
       data: product,
       message: `查詢編號：${productID} ${product[0].name} 商品成功`,
-    });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-export const getSearch = async (req, res) => {
-  try {
-    const { keyword } = req.query;
-    if (!keyword) throw new Error("請提供關鍵字");
-
-    const product = await getSearchKeyword(keyword);
-    if (!product.length) throw new Error("查無相關商品");
-    res.status(200).json({
-      status: "success",
-      data: product,
-      message: `查詢： ${keyword} 相關商品成功，共${product.length}筆資料`,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -191,6 +211,31 @@ export const updateItem = async (req, res) => {
     res.status(200).json({
       status: "success",
       message: `更新編號：${productID} ${name} 商品成功`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const softDeleteItem = async (req, res) => {
+  try {
+    const { productID } = req.params;
+    if (!productID) throw new Error("請提供商品編號");
+    const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
+    if (!regForPD.test(productID)) {
+      return connectError(req, res);
+    }
+    const status = await getAllProductId(productID);
+    if (!status.length) throw new Error(`查無編號：${productID} 商品`);
+    const updateFields = ["is_deleted = ?"];
+    const value = status[0].is_deleted ? [0, productID] : [1, productID];
+    const product = await updateItemInfo(updateFields, value);
+    if (product.affectedRows == 0) {
+      throw new Error("商品軟刪除切換失敗");
+    }
+    res.status(200).json({
+      status: "success",
+      message: `編號：${productID} 商品軟刪除切換成功`,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
