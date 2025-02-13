@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 import authRouter from './routes/testRouter.js'
+import googleRouter from './controllers/googleController.js'
 // import  { verifyToken, verifyRole   } from './middlewares/authMiddleware.js'
 import pool from './config/mysql.js'
 import hotelImagesRoutes from './routes/hotelImagesRoutes.js'
@@ -23,7 +24,7 @@ app.use(
     methods: ['GET', 'POST'],
   })
 )
-
+app.use('/api/google', googleRouter)
 app.use('/auth', authRouter)
 app.use('/api/hotels', hotelRoutes)
 app.use('/api/hotel_images', hotelImagesRoutes)
@@ -35,7 +36,6 @@ app.use('/api/articles', articlesRoutes)
 app.get('/', (req, res) => {
   res.json({ status: 'success', data: null, message: '首頁' })
 })
-
 ;(async () => {
   try {
     // await pool.query();
