@@ -10,6 +10,7 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
 import Header from "../../components/layout/header";
+import Link from "next/link";
 export default function HotelHomePage() {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -113,9 +114,10 @@ export default function HotelHomePage() {
       priceSliderRef.current.noUiSlider.set([minPrice, value]);
     }
   };
+
   return (
     <>
-    <Header />
+      <Header />
       <div className="suBody">
         <div
           className={styles.suSearchBg}
@@ -399,7 +401,12 @@ export default function HotelHomePage() {
                 <div className={styles.suPriceBox}>
                   <div className={styles.suReview}>很棒 ⭐ 8</div>
                   1,258 則評論
-                  <button className={styles.suBookBtn}>查看價格</button>
+                  <Link
+                    href="/hotel-coupon/fonthotelDetail"
+                    className={styles.suBookBtn}
+                  >
+                    查看價格
+                  </Link>
                 </div>
               </div>
               <div className={styles.suHotelCard}>
@@ -530,7 +537,9 @@ export default function HotelHomePage() {
                   aria-label="Next"
                   onClick={(e) => e.preventDefault()}
                 >
-                  <span aria-hidden="true" className={styles.pageLink}>&raquo;</span>
+                  <span aria-hidden="true" className={styles.pageLink}>
+                    &raquo;
+                  </span>
                 </a>
               </li>
             </ul>
