@@ -1,0 +1,100 @@
+/* RateCard */
+.RateCard {
+  display: flex;
+  width: 392px;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 10px;
+  border: 1px solid var(--Orange);
+}
+.RateCardText {
+  width: 100%;
+  display: flex;
+  padding: 20px 20px 5px 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  .StarGroup {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    img {
+      width: 12px;
+    }
+  }
+  p {
+    line-height: 1.5;
+    font-size: 14px;
+  }
+}
+.RateCardUser {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+    }
+    h6 {
+      cursor: pointer;
+    }
+  }
+}
+.RateCardBtnDate {
+  width: 100%;
+  display: flex;
+  padding: 10px 20px 20px 20px;
+  justify-content: space-between;
+  align-items: center;
+  .RateCardBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 0.5px solid var(--skin);
+    border-radius: 50%;
+  }
+}
+/* RateStar */
+.StarGroup {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  img {
+    width: 18px;
+  }
+}
+/* StarBar */
+.StarBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  p {
+    font-size: 14px;
+    line-height: 1;
+  }
+  .StarGroup {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    img {
+      width: 12px;
+    }
+  }
+}
+.BarArea {
+  width: 110px;
+  height: 5px;
+  background: var(--skin);
+}
+.Bar {
+  height: 100%;
+  background: var(--orange);
+}
