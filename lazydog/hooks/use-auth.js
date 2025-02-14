@@ -60,7 +60,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem(appKey, token);
       switch (newUser.role) {
         case "operator":
-          router.push("/"); // 轉入operator
+          router.push("/hotel-coupon/operatorDetail"); // 轉入operator
           break;
         case "teacher":
           router.push("/"); // 轉入 teacher
