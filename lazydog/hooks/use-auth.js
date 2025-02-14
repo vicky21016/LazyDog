@@ -58,6 +58,20 @@ export function AuthProvider({ children }) {
 
       setUser(newUser);
       localStorage.setItem(appKey, token);
+      switch (newUser.role) {
+        case "operator":
+          router.push("/"); // 轉入operator
+          break;
+        case "teacher":
+          router.push("/"); // 轉入 teacher
+          break;
+        case "user":
+          router.push("/pages");
+          break;
+        default:
+          alert("出現錯誤，請通知管理員");
+          break;
+      }
     } catch (err) {
       console.log(err);
       alert(`登入失敗: ${err.message}`);
@@ -111,7 +125,7 @@ export function AuthProvider({ children }) {
       // 導向會員中心
       router.push("/pages");
     } catch (error) {
-      console.error("Google 登入錯誤:", error); 
+      console.error("Google 登入錯誤:", error);
     }
   };
 

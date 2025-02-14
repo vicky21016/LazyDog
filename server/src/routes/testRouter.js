@@ -92,9 +92,13 @@ router.post('/login', upload.none(), async (req, res) => {
     }
 
     // 產生 JWT Token*
-    const token = jwt.sign({ id: user.id, email: user.email }, secretKey, {
-      expiresIn: '5m',
-    })
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      secretKey,
+      {
+        expiresIn: '5m',
+      }
+    )
 
     res.status(200).json({
       status: 'success',
@@ -109,6 +113,14 @@ router.post('/login', upload.none(), async (req, res) => {
 
 // 使用者登出 (前端自行刪除 Token)
 router.post('/logout', (req, res) => {
+  const token = jwt.sign(
+    {
+      email: '',
+      role: '',
+    },
+    secretKey,
+    { expiresIn: '-10s' }
+  )
   res.json({
     status: 'success',
     message: '登出成功，請刪除本地 Token',
@@ -116,12 +128,13 @@ router.post('/logout', (req, res) => {
 })
 
 //驗證使用者是否登入 (Token refresh)
-router.post('/status', checkToken, (req, res) => {
+router.post('/status', checkToken, checkrole, (req, res) => {
   const { decoded } = req
 
   const token = jwt.sign(
     {
       id: decoded.id,
+      role: decoded.role,
       email: decoded.email,
     },
     secretKey,
