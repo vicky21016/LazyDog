@@ -84,18 +84,8 @@ export function AuthProvider({ children }) {
       const result = await signInWithPopup(auth, provider);
       const googleUser = result.user;
       console.log("Google 登入成功", googleUser);
-      setUser(googleUser);
 
-      // 存入 localStorage
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          uid: googleUser.uid,
-          email: googleUser.email,
-          name: googleUser.displayName,
-          avatar: googleUser.photoURL,
-        })
-      );
+      setUser(googleUser);
 
       // 傳送 Google 使用者資訊到後端
       const response = await fetch(
@@ -118,12 +108,22 @@ export function AuthProvider({ children }) {
       // 後端回傳 token，存 localStorage
       if (data.token) {
         localStorage.setItem(appKey, data.token);
+        // 存入 localStorage
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            id: data.user.id,
+            email: data.user.email,
+            name: data.user.name,
+            avatar: data.user.avatar_url,
+            role: "user",
+          })
+        );
+        // 導向會員中心
+        router.push("/pages");
       } else {
         console.warn("後端未回傳 Token");
       }
-
-      // 導向會員中心
-      router.push("/pages");
     } catch (error) {
       console.error("Google 登入錯誤:", error);
     }

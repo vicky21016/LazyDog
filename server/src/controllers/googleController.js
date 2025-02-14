@@ -13,7 +13,7 @@ router.post('/google-login', async (req, res) => {
   }
 
   try {
-    // **檢查是否已經存在**
+    // 檢查是否已經存在
     const [rows] = await pool.query('SELECT * FROM users WHERE google_id = ?', [
       google_id,
     ])
@@ -39,13 +39,14 @@ router.post('/google-login', async (req, res) => {
         email,
         name,
         avatar_url,
+        role:"user", //預設GOOGLE用戶為user
       }
 
       console.log('新用戶成功儲存:', user)
     }
 
     // **產生 JWT Token**
-    const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, {
       expiresIn: '7d',
     })
 
