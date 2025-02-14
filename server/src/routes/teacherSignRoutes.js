@@ -7,11 +7,17 @@ import multer from "multer";
 import { getCourse, createCourse} from "../controllers/teacherSignController.js";
 
 const router = express.Router();
-const upload = multer();
 const secretKey = process.env.JWT_SECRET_KEY;
+const storage = multer.diskStorage({
+  destination: "public/teacherSign/img",
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname); // 避免檔名衝突
+  },
+});
+const upload = multer({storage});
 
 router.get("/courses", checkToken, getCourse);     // 讀取該教師的多筆課程
-router.post("/add", createCourse); 
+router.post("/add",upload.fields([{ name: "mainImage" }, { name: "otherImages" }]), createCourse); 
 // router.get("/:id", getCourseId);   // 一筆
 // router.put("/:id", updateCourse); 
 // router.put("/session/:id", deleteSessionOnly); 

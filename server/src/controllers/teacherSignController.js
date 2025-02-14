@@ -26,16 +26,23 @@ export const getCourse = async (req, res) => {
 
 
 export const createCourse = async (req, res) => {
-  const {courseData, sessionData} = req.body;
-
   try{
-    const result = await createCourseWithSession(courseData, sessionData)
+    // 檢查上傳的圖片
+    const imgData = {
+      mainImage: req.files?.mainImage?.[0]? `/teacherSign/img/${req.files.mainImage[0].filename}` : null,
+      otherImages: req.files?.otherImages?  req.files.otherImages.map((file) => `/teacherSign/img/${file.filename}`) : [],
+    };
+
+    const {courseData, sessionData} = req.body;
+
+    const result = await createCourseWithSession(courseData, sessionData, imgData)
     console.log(result);
 
     res.status(201).json({
       message:"課程建立成功",
       courseId:  result.courseId,
-      sessionId: result.sessionId
+      sessionId: result.sessionId,
+      mainImageId: result.mainImageId,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
