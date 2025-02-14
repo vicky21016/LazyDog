@@ -5,17 +5,32 @@ import {
   createCoupon,
   updateCoupon,
   softDeleteCoupon,
-  // cliamCoupon
+  claimCoupon,
 } from '../controllers/couponController.js'
 import { verifyToken, verifyRole } from '../middlewares/authMiddleware.js'
+
 const router = express.Router()
 
 router.get('/', getAllCoupons)
-// router.get("/search", getSearch);
-router.get('/:id', getCouponById)
-// router.post('/cliam',verifyToken, verifyRole(["operator,teacher"]),cliamCoupon)
-router.post('/',verifyToken, verifyRole(["operator,teacher"]), createCoupon)
-router.patch('/:id',verifyToken, verifyRole(["operator,teacher"]), updateCoupon)
-router.patch('/:id/soft-delete', verifyToken, verifyRole(["operator,teacher"]),softDeleteCoupon)
+router.get(
+  '/:id',
+  verifyToken,
+  verifyRole(['operator', 'teacher']),
+  getCouponById
+)
+router.post('/claim/:id', verifyToken, verifyRole('user'), claimCoupon)
+router.post('/', verifyToken, verifyRole(['operator', 'teacher']), createCoupon)
+router.patch(
+  '/:id',
+  verifyToken,
+  verifyRole(['operator', 'teacher']),
+  updateCoupon
+)
+router.patch(
+  '/:id/soft-delete',
+  verifyToken,
+  verifyRole(['operator', 'teacher']),
+  softDeleteCoupon
+)
 
 export default router
