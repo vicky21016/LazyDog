@@ -128,7 +128,7 @@ router.post('/logout', (req, res) => {
 })
 
 //驗證使用者是否登入 (Token refresh)
-router.post('/status', checkToken, checkrole, (req, res) => {
+router.post('/status', checkToken, (req, res) => {
   const { decoded } = req
 
   const token = jwt.sign(
