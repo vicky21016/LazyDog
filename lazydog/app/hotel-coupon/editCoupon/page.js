@@ -6,6 +6,7 @@ import styles from "../../../styles/modules/operatorCamera.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 import Header from "../../components/layout/header";
+import Menu from "../../components/hotel/menu";
 export default function EditCouponPage(props) {
   const router = useRouter();
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
@@ -52,10 +53,11 @@ export default function EditCouponPage(props) {
 
   return (
     <>
-    <Header/>
+      <Header />
       <div className="container mt-5">
         <div className="row">
           {/* 左邊*/}
+          {/* <Menu/> */}
           <div className="col-md-3">
             <div className="card p-3">
               <div className="text-center">

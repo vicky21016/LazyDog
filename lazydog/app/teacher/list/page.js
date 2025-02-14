@@ -6,7 +6,7 @@ import Breadcrumb from "../../components/teacher/breadcrumb";
 import Filter from "../../components/teacher/Filter";
 import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "./list.module.css";
-
+import Page from "../../components/hotel/page";
 const App = () => {
   return (
     <>
@@ -63,6 +63,11 @@ const App = () => {
                   link="/teacher/info"
                 />
               </div>
+              <Page
+                currentPage={1}
+                totalPages={3}
+                onPageChange={(page) => console.log("切換到第", page, "頁")}
+              />
             </div>
           </section>
         </div>

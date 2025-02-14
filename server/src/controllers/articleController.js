@@ -1,4 +1,4 @@
-import { getArticlesS, getIdS, createArticlesS, deleteArticleS } from "../services/articleService.js";
+import { getArticlesS, getIdS, createArticlesS, deleteArticleS, updateArticleS,searchKeywordS } from "../services/articleService.js";
 
 // getIdS, createArticlesS, updateArticleS, deleteArticleS
 
@@ -6,8 +6,6 @@ import { getArticlesS, getIdS, createArticlesS, deleteArticleS } from "../servic
 export const getArticles = async (req, res) => {
     try {
         const articles = await getArticlesS();
-
-        res.json(articles);
         if (articles.length === 0) {
             return res.status(404).json({ error: "找不到全部文章" });
         }
@@ -60,23 +58,32 @@ export const createArticle = async (req, res) => {
 
 }
 
-// export const updateArticle = async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const {
-//             title, content, author_id, category_id
-//         } = req.body;
-//         if(!id) {
-//             return res.status(400).json({ error: "無效的 author_id" });
-//         }
-//         if (!title || !content || !author_id || !category_id) {
-//             return res.status(400).json({ error: "欄位填寫不明確" });
-//         }
-//         res.json({ message: "更新成功" });
-//     } catch (error) {
-//         res.status(500).json({ error: "伺服器錯誤", details: error.message });
-//     }
-// }
+// 編輯文章
+export const updateArticle = async (req, res) => {
+    const { id } = req.params;  // 從 URL 參數獲取文章 ID
+    const { title, content, author_id, category_id } = req.body;  // 從 body 獲取其他資料
+    console.log(id);
+    console.log(req.body);
+    // 確保必須的資料都有提供
+    if (!title || !content || !author_id || !category_id) {
+        return res.status(400).json({ error: '缺少必要的文章資訊' });
+    }
+
+    try {
+        // 調用 service 層更新文章
+        const result = await updateArticleS(id, title, content, author_id, category_id, res);
+        console.log(result);
+        if (result.success) {
+            res.json({ message: result.message, id });
+        } else {
+            res.status(404).json({ error: result.message });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: '伺服器錯誤，請稍後再試' });
+    }
+};
+
 
 // 刪除文章
 export const deleteArticle = async (req, res) => {
@@ -98,3 +105,19 @@ export const deleteArticle = async (req, res) => {
         // console.log("捕獲到的錯誤:", error);
     }
 };
+
+export const searchKeyword = async (req, res) => {
+    try {
+        const { keyword } = req.query;
+        if (!keyword) throw new Error("找不到關鍵字");
+            const articles = await searchKeywordS(keyword);
+            if (!articles.length) throw new Error("查無相關商品");
+            res.status(200).json({
+              status: "success",
+              data: articles,
+              message: `查詢： ${keyword} 成功，共${articles.length}筆資料`,
+            });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
