@@ -21,10 +21,10 @@ import {
 export default function MyMenu() {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, logout } = useAuth(); // ✅ 從 `useAuth` 獲取 `user` & `logout`
+  const { user, logout } = useAuth(); //  從 `useAuth` 獲取 `user` & `logout`
   const [profile, setProfile] = useState(null);
 
-  // ✅ 監聽 `localStorage`，確保會員資訊即時更新
+  //  監聽 `localStorage`，確保會員資訊即時更新
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -35,14 +35,14 @@ export default function MyMenu() {
   const handleLogout = async () => {
     try {
       console.log("執行登出...");
-      await signOut(auth); // ✅ Google 會員登出
-      logout(); // ✅ 清除本地 Token & `user`
+      await signOut(auth); //  Google 會員登出
+      logout(); //  清除本地 Token & `user`
       localStorage.removeItem("user");
       localStorage.removeItem("token");
-      setProfile(null); // ✅ 確保 UI 立即更新
-      router.push("/login"); // ✅ 跳轉登入頁
+      setProfile(null); //  確保 UI 立即更新
+      router.push("/login"); //  跳轉登入頁
     } catch (error) {
-      console.error("登出失敗", error);
+      
     }
   };
 
@@ -57,7 +57,7 @@ export default function MyMenu() {
 
   return (
     <div className="lumi-menu-container">
-      {/* ✅ 顯示會員頭像與名稱 */}
+      {/*  顯示會員頭像與名稱 */}
       <div className="lumi-profile-section">
         {profile?.avatar ? (
           <img
@@ -93,7 +93,7 @@ export default function MyMenu() {
           </List.Item>
         ))}
 
-        {/* ✅ Google & 一般會員通用登出按鈕 */}
+        {/* Google & 一般會員通用登出按鈕 */}
         <List.Item className="lumi-item" onClick={handleLogout}>
           <span>
             <FontAwesomeIcon icon={faRightFromBracket} />
