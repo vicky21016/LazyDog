@@ -34,7 +34,8 @@ export const getCoursesByTeacher = async (teacherId) => {
 //   }
 // };
 
-export const createCourseWithSession = async (courseData, sessionData) => {
+
+export const createCourseWithSession = async (courseData, sessionData, imgData) => {
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
@@ -78,8 +79,37 @@ export const createCourseWithSession = async (courseData, sessionData) => {
       ]
     );
 
+    
+
+    let img_id = "";
+
+     // 處理主圖
+     let mainImageId = null;
+     if (imgData?.mainImage) {
+       const [mainImgResult] = await connection.query(
+         `INSERT INTO course_img (course_id, main_pic, url) VALUES (?, ?, ?)`,
+         [courseId, 1, imgData.mainImage]
+       );
+       mainImageId = mainImgResult.insertId;
+       img_id = mainImgResult.insertId;
+ 
+       // 更新課程的 img_id 欄位
+       await connection.query(`UPDATE course SET img_id = ? WHERE id = ?`, [mainImageId, courseId]);
+     }
+ 
+     // 處理其他圖片
+     if (imgData?.otherImages?.length>0) {
+       for (const url of imgData.otherImages) {
+         await connection.query(
+           `INSERT INTO course_img (course_id, main_pic, url) VALUES (?, ?, ?)`,
+           [courseId, 0, url] // 其他圖片，main_pic = 0
+         );
+       }
+     }
+
+
     await connection.commit(); // 提交交易
-    return { courseId, sessionId: sessionResult.insertId };
+    return { courseId, sessionId: sessionResult.insertId, mainImageId};
   } catch (err) {
     console.log("錯誤:", err);
     throw new Error(" 無法建立課程：" + err.message);
