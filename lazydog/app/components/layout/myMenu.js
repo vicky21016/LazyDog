@@ -30,20 +30,18 @@ export default function MyMenu() {
     if (storedUser) {
       setProfile(JSON.parse(storedUser));
     }
-  }, [user]); // 監聽 `user` 變化
+  }, [user]); 
 
   const handleLogout = async () => {
     try {
       console.log("執行登出...");
-      await signOut(auth); //  Google 會員登出
-      logout(); //  清除本地 Token & `user`
+      await signOut(auth);
+      logout(); //  清空
       localStorage.removeItem("user");
       localStorage.removeItem("token");
-      setProfile(null); //  確保 UI 立即更新
-      router.push("/login"); //  跳轉登入頁
-    } catch (error) {
-      
-    }
+      setProfile(null); //  確保立即更新
+      router.push("/login");
+    } catch (error) {}
   };
 
   const menuItems = [

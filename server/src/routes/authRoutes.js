@@ -99,7 +99,7 @@ router.post('/register', upload.none(), async (req, res) => {
   }
 })
 
-router.post('/logout', (req, res) => {
+router.post('/logout', checkToken, (req, res) => {
   const token = jwt.sign(
     {
       email: '',
@@ -130,34 +130,31 @@ router.post('/status', checkToken, (req, res) => {
 
 function checkToken(req, res, next) {
   let token = req.get('Authorization')
-
-  if (!token) {
-    return res.status(401).json({
+  if (!token)
+    return res.json({
       status: 'error',
       data: '',
-      message: '未提供驗證資訊',
+      message: '無資料',
     })
-  }
-
-  if (!token.startsWith('Bearer ')) {
-    return res.status(401).json({
+  console.log(token)
+  if (!token.startsWith('Bearer '))
+    return res.json({
       status: 'error',
       data: '',
-      message: '驗證格式錯誤',
+      message: '驗證資料錯誤',
     })
-  }
-
-  token = token.slice(7) // 去掉 "Bearer " 字串
+  token = token.slice(7)
+  console.log(token)
   jwt.verify(token, secretKey, (err, decoded) => {
-    if (err) {
+    if (err)
       return res.status(401).json({
         status: 'error',
         data: '',
-        message: '驗證失敗或過期，請重新登入',
+        message: '資料失效',
       })
-    }
-
     req.decoded = decoded
+    console.log(decoded)
+
     next()
   })
 }
