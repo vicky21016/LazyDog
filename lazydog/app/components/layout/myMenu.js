@@ -68,7 +68,7 @@ export default function MyMenu() {
           />
         ) : (
           <img
-            src="/images/default-avatar.png"
+            src="/hotel/hotel-images/page-image/Dog5.png"
             alt="Default Avatar"
             className="lumi-avatar"
             width="50"
