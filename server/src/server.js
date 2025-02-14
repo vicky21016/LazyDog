@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import authRouter from "./routes/testRouter.js";
+import teacherSignRouter from "./routes/teacherSignRoutes.js"
 import pool from "./config/mysql.js";
 import hotelImagesRoutes from "./routes/hotelImagesRoutes.js"
 import hotelRoutes from "./routes/hotelRoutes.js";
@@ -24,6 +25,7 @@ app.use(
 );
 
 app.use("/auth", authRouter);
+app.use("/teacher", teacherSignRouter);
 app.use("/api/hotels", hotelRoutes);
 app.use("/api/hotel_images",hotelImagesRoutes)
 app.use("/api/coupons", couponRoutes);
