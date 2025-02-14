@@ -1,8 +1,9 @@
 import pool from '../config/mysql.js'
 import express from 'express'
+import jwt from 'jsonwebtoken' 
 
 const router = express.Router()
-
+const JWT_SECRET = 'your_jwt_secret'
 
 router.post('/google-login', async (req, res) => {
   const { google_id, email, name, avatar_url } = req.body
@@ -12,30 +13,36 @@ router.post('/google-login', async (req, res) => {
   }
 
   try {
-    // 檢查是否已存在
-    const [rows] = await pool.query('SELECT * FROM users WHERE google_id = ?', [
-      google_id,
-    ])
+  
+    const [rows] = await pool.query('SELECT * FROM users WHERE google_id = ?', [google_id])
+
+    let user = null
 
     if (rows.length > 0) {
-      return res.status(200).json({ message: '登入成功', user: rows[0] })
+      user = rows[0] 
+    } else {
+      const [result] = await pool.query(
+        'INSERT INTO users (google_id, email, name, avatar_url) VALUES (?, ?, ?, ?)',
+        [google_id, email, name, avatar_url]
+      )
+
+      user = {
+        id: result.insertId,
+        google_id,
+        email,
+        name,
+        avatar_url,
+      }
     }
 
-    // 插入新使用者
-    const [result] = await pool.query(
-      'INSERT INTO users (google_id, email, name, avatar_url) VALUES (?, ?, ?, ?)',
-      [google_id, email, name, avatar_url]
-    )
+    const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '7d' })
 
-    const newUser = {
-      id: result.insertId,
-      google_id,
-      email,
-      name,
-      avatar_url,
-    }
-
-    return res.status(201).json({ message: '新使用者已儲存', user: newUser })
+    return res.status(200).json({ 
+      status: 'success', 
+      message: 'Google 登入成功', 
+      user, 
+      token 
+    })
   } catch (error) {
     console.error('Google 登入錯誤:', error)
     res.status(500).json({ message: '伺服器錯誤', error })
