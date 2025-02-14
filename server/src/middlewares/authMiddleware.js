@@ -8,26 +8,21 @@ const secretKey = process.env.JWT_SECRET_KEY
 export const verifyToken = async (req, res, next) => {
   try {
     let token = req.get('Authorization')
-
     if (!token) {
       return res.status(401).json({ status: 'error', message: '未提供 Token' })
     }
-
     if (!token.startsWith('Bearer ')) {
       return res
         .status(400)
         .json({ status: 'error', message: 'Token 格式錯誤' })
     }
-
     token = token.slice(7)
-
     jwt.verify(token, secretKey, async (err, decoded) => {
       if (err) {
         return res
           .status(401)
           .json({ status: 'error', message: 'Token 無效或已過期' })
       }
-
 
       // 檢查使用者是否仍然存在於資料庫
       const [user] = await pool.execute(
@@ -56,7 +51,6 @@ export const verifyRole = (roles) => {
         .status(401)
         .json({ status: 'error', message: '未授權，請重新登入' })
     }
-
     const allowedRoles = Array.isArray(roles) ? roles : [roles]
 
     if (!allowedRoles.includes(req.user.role)) {
@@ -64,7 +58,6 @@ export const verifyRole = (roles) => {
         .status(403)
         .json({ status: 'error', message: '您沒有權限執行此操作' })
     }
-
     next()
   }
 }

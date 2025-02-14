@@ -18,7 +18,7 @@ router.get(
   verifyRole(['operator', 'teacher']),
   getCouponById
 )
-router.post('/claim/:id', verifyToken, verifyRole('user'), claimCoupon)
+router.post('/claim', verifyToken, verifyRole(['user']), claimCoupon)
 router.post('/', verifyToken, verifyRole(['operator', 'teacher']), createCoupon)
 router.patch(
   '/:id',
