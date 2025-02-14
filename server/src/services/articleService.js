@@ -1,21 +1,28 @@
 import pool from "../config/mysql.js";
 
-
-// 獲取全部文章
 export const getArticlesS = async () => {
   try {
-    const [articles] = await pool.query("SELECT * FROM articles WHERE is_deleted = 0");
+    const [articles] = await pool.query(
+      `SELECT articles.*, article_img.url AS cover_image
+       FROM articles 
+       LEFT JOIN article_img ON articles.id = article_img.article_id 
+       WHERE articles.is_deleted = 0`
+    );
     return articles;
   } catch (error) {
     throw new Error(" 無法取得所有文章：" + error.message);
   }
 };
 
-
 // 獲取指定文章
 export const getIdS = async (id) => {
   try {
-    const [articles] = await pool.query("SELECT * FROM articles WHERE id = ? AND is_deleted = 0", [id]);
+    const [articles] = await pool.query(
+      `SELECT articles.*, article_img.url AS cover_image
+       FROM articles 
+       LEFT JOIN article_img ON articles.id = article_img.article_id 
+       WHERE articles.is_deleted = 0 AND articles.id = ?`, [id]
+    );
     return articles;
   } catch (error) {
     throw new Error(`找不到 ${id} 文章，文章可能不存在或可能已被刪除：${error.message}`);
@@ -24,43 +31,125 @@ export const getIdS = async (id) => {
 }
 
 // 創建文章
+
 export const createArticlesS = async (createArticle) => {
+  const connection = await pool.getConnection();
   try {
-    const {
-      title, content, author_id, category_id
-    } = createArticle;
-    const [result] = await pool.query(
+    const { title, content, author_id, category_id, article_img } = createArticle;
+
+    // 開始事務
+    await connection.beginTransaction();
+
+    // 第一步：插入文章資料到 articles 資料表
+    const [result] = await connection.query(
       `INSERT INTO articles 
-          (title, content, author_id, category_id, 
-          created_at, updated_at, is_deleted) 
+          (title, content, author_id, category_id, created_at, updated_at, is_deleted) 
           VALUES (?, ?, ?, ?, NOW(), NOW(), 0)`,
       [title, content, author_id, category_id]
     );
 
+    // 第二步：將圖片 URL 插入 article_img 資料表，並與文章建立關聯
+    const articleId = result.insertId;  // 取得剛插入的文章的 ID
+    await connection.query(
+      `INSERT INTO article_img (article_id, url) VALUES (?, ?)`,
+      [articleId, article_img]  // 插入對應的 article_id 和圖片 URL
+    );
+
+    // 提交事務
+    await connection.commit();
+
     return {
-      id: result.insertId,
+      id: articleId,
       title,
       content,
       author_id,
-      category_id
+      category_id,
+      article_img  // 返回圖片 URL
     };
   } catch (err) {
+    // 回滾事務
+    await connection.rollback();
     throw new Error("文章創建失敗：" + err.message);
+  } finally {
+    connection.release();
   }
 };
 
-// 編輯文章
-// export const updateArticleS = async (req, res) => {
+
+
+// export const createArticlesS = async (createArticle) => {
 //   try {
-//     const id = Number(req.params.id);
-//     console.log(id);
-//     const { title, content, author_id, category_id } = req.body;
-//     console.log(id);
+//     const {
+//       title, content, author_id, category_id
+//     } = createArticle;
+//     const [result] = await pool.query(
+//       `INSERT INTO articles 
+//           (title, content, author_id, category_id, 
+//           created_at, updated_at, is_deleted) 
+//           VALUES (?, ?, ?, ?, NOW(), NOW(), 0)`,
+//       [title, content, author_id, category_id]
+//     );
 
-//     if (!title || !content || !author_id || !category_id) {
-//       return res.status(400).json({ error: "請提供完整的文章資訊" });
-//     }
+//     return {
+//       id: result.insertId,
+//       title,
+//       content,
+//       author_id,
+//       category_id
+//     };
+//   } catch (err) {
+//     throw new Error("文章創建失敗：" + err.message);
+//   }
+// };
 
+// 編輯文章
+
+export const updateArticleS = async (updateArticle) => {
+  const connection = await pool.getConnection();
+  try {
+    const { id, title, content, author_id, category_id, article_img } = updateArticle;
+
+    // 開始事務
+    await connection.beginTransaction();
+
+    // 第一步：更新 articles 資料表的文章內容
+    const [result] = await connection.query(
+      `UPDATE articles SET 
+        title = ?, content = ?, author_id = ?, category_id = ?, updated_at = NOW()
+        WHERE id = ?`,
+      [title, content, author_id, category_id, id]
+    );
+
+    // 第二步：更新 article_img 資料表中的圖片 URL（如果提供了新的圖片 URL）
+    if (article_img) {
+      await connection.query(
+        `UPDATE article_img SET url = ? WHERE article_id = ?`,
+        [article_img, id]  // 更新對應的圖片 URL
+      );
+    }
+
+    // 提交事務
+    await connection.commit();
+
+    return {
+      id,
+      title,
+      content,
+      author_id,
+      category_id,
+      article_img  // 返回更新後的圖片 URL
+    };
+  } catch (err) {
+    // 回滾事務
+    await connection.rollback();
+    throw new Error("文章更新失敗：" + err.message);
+  } finally {
+    connection.release();
+  }
+};
+
+// export const updateArticleS = async (id, title, content, author_id, category_id, res) => {
+//   try {
 //     const [result] = await pool.query(
 //       `UPDATE articles 
 //        SET title = ?, content = ?, author_id = ?, category_id = ?, updated_at = NOW() 
@@ -69,38 +158,15 @@ export const createArticlesS = async (createArticle) => {
 //     );
 
 //     if (result.affectedRows === 0) {
-//       return res.status(404).json({ error: "更新失敗，可能文章不存在或已刪除" });
+//       return res.status(404).json({ error: '找不到文章或文章已被刪除' });
 //     }
 
-//     res.json({ message: "更新成功", id });
+//     return { success: true, message: '文章更新成功' };
 //   } catch (error) {
-//     return res.status(500).json({ error: error.message });
+//     console.error(error);
+//     res.status(500).json({ error: '伺服器錯誤' });
 //   }
 // };
-
-
-// 編輯文章(版本2)
-export const updateArticleS = async (id, title, content, author_id, category_id, res) => {
-  try {
-    const [result] = await pool.query(
-      `UPDATE articles 
-       SET title = ?, content = ?, author_id = ?, category_id = ?, updated_at = NOW() 
-       WHERE id = ? AND is_deleted = 0`,
-      [title, content, author_id, category_id, id]
-    );
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: '找不到文章或文章已被刪除' });
-    }
-
-    return { success: true, message: '文章更新成功' };
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: '伺服器錯誤' });
-  }
-};
-
-
 
 // 刪除文章
 export const deleteArticleS = async (id) => {
@@ -110,14 +176,9 @@ export const deleteArticleS = async (id) => {
       `UPDATE articles SET is_deleted = 1, updated_at = NOW() WHERE id = ? AND is_deleted = 0`,
       [id]
     );
-    console.log(38);
-
     if (result.affectedRows == 0) {
       return { error: "刪除失敗，找不到該文章" };
     }
-    console.log(39);
-
-
     return { message: "以軟刪除文章", id };
   } catch (error) {
     console.error("刪除文章時出錯:", error);
@@ -132,8 +193,11 @@ export const searchKeywordS = async (keyword) => {
       return { error: "請提供有效的搜尋關鍵字" };
     }
     const [articles] = await pool.execute(
-      "SELECT * FROM articles WHERE (title LIKE ? OR content LIKE ?) AND is_deleted = 0",
-      [`%${keyword}%`,`%${keyword}%`]
+      `SELECT articles.*,article_img.url AS cover_image
+      FROM articles 
+      LEFT JOIN article_img ON articles.id = article_img.article_id 
+      WHERE (title LIKE ? OR content LIKE ?) AND is_deleted = 0`,
+      [`%${keyword}%`, `%${keyword}%`]
     );
     return articles;
   } catch (error) {
@@ -141,3 +205,18 @@ export const searchKeywordS = async (keyword) => {
     throw new Error("搜尋文章時出錯：" + error.message);
   }
 }
+// export const searchKeywordS = async (keyword) => {
+//   try {
+//     if (!keyword || keyword.trim() == "") {
+//       return { error: "請提供有效的搜尋關鍵字" };
+//     }
+//     const [articles] = await pool.execute(
+//       "SELECT * FROM articles WHERE (title LIKE ? OR content LIKE ?) AND is_deleted = 0",
+//       [`%${keyword}%`,`%${keyword}%`]
+//     );
+//     return articles;
+//   } catch (error) {
+//     console.error("搜尋文章時出錯:", error);
+//     throw new Error("搜尋文章時出錯：" + error.message);
+//   }
+// }
