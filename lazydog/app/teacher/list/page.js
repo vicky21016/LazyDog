@@ -6,7 +6,7 @@ import Breadcrumb from "../../components/teacher/breadcrumb";
 import Filter from "../../components/teacher/Filter";
 import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "./list.module.css";
-
+import Page from "../../components/hotel/page";
 const App = () => {
   return (
     <>
@@ -36,33 +36,38 @@ const App = () => {
               <div>
                 <TeacherCard
                   imgSrc="/teacher-img/Zoe.png"
-                  col="col-4"
+                  col="col-6 col-md-4"
                   name="Zoe"
                   text="寵物訓練"
                   link="/teacher/info"
                 />
                 <TeacherCard
                   imgSrc="/teacher-img/Zoe.png"
-                  col="col-4"
+                  col="col-6 col-md-4"
                   name="Zoe"
                   text="寵物訓練"
                   link="/teacher/info"
                 />
                 <TeacherCard
                   imgSrc="/teacher-img/Zoe.png"
-                  col="col-4"
+                  col="col-6 col-md-4"
                   name="Zoe"
                   text="寵物訓練"
                   link="/teacher/info"
                 />
                 <TeacherCard
                   imgSrc="/teacher-img/Zoe.png"
-                  col="col-4"
+                  col="col-6 col-md-4"
                   name="Zoe"
                   text="寵物訓練"
                   link="/teacher/info"
                 />
               </div>
+              <Page
+                currentPage={1}
+                totalPages={3}
+                onPageChange={(page) => console.log("切換到第", page, "頁")}
+              />
             </div>
           </section>
         </div>

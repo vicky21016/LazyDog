@@ -63,7 +63,7 @@
 
 /* 搜尋按鈕 */
 .suSearchBtn {
-  background-color: #f5842b;
+  background-color: #ff9538;
   color: white;
   padding: 12px 20px;
   border: 1px solid transparent;
@@ -237,7 +237,7 @@
 }
 
 .suReview {
-  color: #008080;
+  color: #66C5BD;
   font-size: 14px;
 }
 

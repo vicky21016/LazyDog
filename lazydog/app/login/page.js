@@ -7,8 +7,7 @@ import Header from "../components/layout/header";
 import SocialLogin from "../components/auth/SocialLogin";
 import InputField from "../components/forms/InputField";
 import { useAuth } from "@/hooks/use-auth";
-// import styles from "../pages/menu.module.css";
-
+import styles from "../pages/menu.module.css";
 export default function AppPage({ logout }) {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [email, setEmail] = useState("");
@@ -25,8 +24,7 @@ export default function AppPage({ logout }) {
     }
     try {
       await login(email, password); // 呼叫 useAuth 中的 login 函式
-      // alert("登入成功");
-      router.push("/pages"); // 登入成功後跳轉
+      // router.push("/pages"); // 登入成功後跳轉
     } catch (error) {
       alert("登入失敗，請檢查您的帳號或密碼！");
       console.error(error);
@@ -37,15 +35,15 @@ export default function AppPage({ logout }) {
     if (!user) setCheckingAuth(false); // 檢查登入狀態
   }, [user]);
 
-  // if (checkingAuth) {
-  //   return (
-  //     <>
-  //       <div className={styles.container2}>
-  //          <div className={styles.loader27}></div>
-  //       </div>
-  //     </>
-  //   ); // 顯示載入中
-  // }
+  if (checkingAuth) {
+    return (
+      <>
+        <div className={styles.container2}>
+          <div className={styles.loader27}></div>
+        </div>
+      </>
+    ); // 顯示載入中
+  }
 
   return (
     <>

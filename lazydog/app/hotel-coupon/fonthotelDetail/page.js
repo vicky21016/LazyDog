@@ -13,7 +13,8 @@ import "flatpickr/dist/flatpickr.min.css";
 import Image from "next/image";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
 import { useGoogleMap } from "@/hooks/useGoogleMap";
-
+import Header from "../../components/layout/header";
+import SearchBar from "../../components/hotel/search";
 export default function HotelHomePage() {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -82,63 +83,19 @@ export default function HotelHomePage() {
       router.push(`/hotel-coupon/${path}`);
     }
   };
+    const handleSearch = () => {
+      console.log("開始搜尋飯店...");
+    };
   return (
     <>
-      <div className="container mt-4">
-        <div className={styles.suSearchBar}>
-          <div className={styles.suSearchGroup}>
-            <img
-              className={styles.suIcon}
-              src="/hotel/hotel-images/page-image/icon-search.png"
-              alt=""
-            />
-            <input
-              type="text"
-              className={styles.suSearchInput}
-              placeholder="搜尋關鍵字、地區..."
-              value={location}
-              readOnly
-              onClick={openModal}
-            />
-          </div>
-          <div className={styles.suSearchGroup}>
-            <img
-              className={styles.suIcon}
-              src="/hotel/hotel-images/page-image/icon-Calendar.png"
-              alt=""
-            />
-            <input
-              type="text"
-              id="date-date"
-              className={styles.suSearchDate}
-              placeholder="入住日期 → 退房日期"
-            />
-          </div>
-          <div className={styles.suSearchGroup}>
-            <img
-              className={styles.suIcon}
-              src="/hotel/hotel-images/page-image/Icon-mimi.png"
-              alt=""
-            />
-            <span className="text">數量</span>
-            <button
-              className={styles.suQuantityBtn}
-              onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
-            >
-              -
-            </button>
-            <span className={styles.suQuantityNumber}>{quantity}</span>
-            <button
-              className={styles.suQuantityBtn}
-              onClick={() => setQuantity(quantity + 1)}
-            >
-              +
-            </button>
-          </div>
-          <button className={styles.suSearchBtn}>搜尋</button>
-        </div>
-      </div>
-
+      <Header />
+      <SearchBar
+        location={location}
+        openModal={openModal}
+        quantity={quantity}
+        setQuantity={setQuantity}
+        onSearch={handleSearch}
+      />
       {/* 地區選擇 Modal */}
       <div
         className="modal fade"
@@ -182,7 +139,7 @@ export default function HotelHomePage() {
                   className="text-decoration-none"
                   onClick={() => changepage("fonthotelHome")}
                 >
-                  首頁
+                  旅館首頁
                 </a>
               </li>
               <li className="breadcrumb-item active" aria-current="page">
@@ -275,9 +232,7 @@ export default function HotelHomePage() {
             <button className={`btn  ${hotelStyles.suBtnPrimary}`}>
               立即預約
             </button>
-            <button
-              className={`btn ${hotelStyles.suBtnOutlineLight}`}
-            >
+            <button className={`btn ${hotelStyles.suBtnOutlineLight}`}>
               了解更多
             </button>
           </div>

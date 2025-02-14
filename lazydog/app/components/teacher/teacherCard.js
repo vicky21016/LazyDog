@@ -6,10 +6,10 @@ import styles from "../../../styles/modules/toggle.module.css"
 
 const TeacherCard = ({ imgSrc, col, name, text, link }) => {
   return (
-    <div className="row mb-5">
+    <div className="row mb-5 g-5">
       <div className={col}>
         <Link href={link} passHref className="text-decoration-none">
-          <div className={styles.card6} style={{ width: "18.75rem" }}>
+          <div className={styles.card6} >
             <img src={imgSrc} className="card-img-top" alt="..." />
             <div className={styles.card6Title} style={{}}>
               {name}
@@ -22,7 +22,7 @@ const TeacherCard = ({ imgSrc, col, name, text, link }) => {
       </div>
       <div className={col}>
         <Link href={link} passHref className="text-decoration-none">
-          <div className={styles.card6} style={{ width: "18.75rem" }}>
+          <div className={styles.card6} >
             <img src={imgSrc} className="card-img-top" alt="..." />
             <div className={styles.card6Title} style={{}}>
               {name}
@@ -35,7 +35,7 @@ const TeacherCard = ({ imgSrc, col, name, text, link }) => {
       </div>
       <div className={col}>
         <Link href={link} passHref className="text-decoration-none">
-          <div className={styles.card6} style={{ width: "18.75rem" }}>
+          <div className={styles.card6} >
             <img src={imgSrc} className="card-img-top" alt="..." />
             <div className={styles.card6Title} style={{}}>
               {name}

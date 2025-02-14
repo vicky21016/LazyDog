@@ -5,8 +5,8 @@ import styles from "../../../styles/modules/toggle.module.css";
 
 const ToggleButtons = ({ onRadioChange }) => {
   return (
-    <div className="row">
-      <div className="col-5">
+    <div className="row g-5">
+      <div className="col-12 col-md-6 col-lg-5">
         <div className={styles.infoCard}>
           <h5 className={`mb-4 ${styles.cardTitle}`}>相關資訊</h5>
           <div className={`${styles.menuItem} ${styles.active}`}>
@@ -19,7 +19,7 @@ const ToggleButtons = ({ onRadioChange }) => {
           </div>
         </div>
       </div>
-      <div className="col-7 ps-5">
+      <div className="col-12 col-md-6 col-lg-7 ps-5">
         <div className="mb-5">
           <h6>經歷 :</h6>
           <ul>

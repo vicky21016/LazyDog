@@ -1,35 +1,25 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import Header from "../components/layout/header"; 
 import MyMenu from "../components/layout/myMenu"; 
 import Input from "../components/forms/Input"; 
 import styles from "./menu.module.css";
+// import { auth, signOut, onAuth } from "./firebase";
 
 export default function Menu() {
      const [checkingAuth, setCheckingAuth] = useState(true);
      const { user } = useAuth();   
-     useEffect(() => {
-       if (user) setCheckingAuth(false);
-     }, [user]);
 
-
-    //  if (checkingAuth) {
-    //    return (
-    //      <div className={styles.container2}>
-    //        <div className={styles.loader27}></div>
-    //      </div>
-    //    );
-    //  }
   const [formData, setFormData] = useState({
     name: "",
     gender: "",
     nickname: "",
     birthdate: "",
     workPhone: "",
-    email: "",
+    email:  "",
     location: "",
     city: "",
     district: "",
@@ -49,6 +39,18 @@ export default function Menu() {
     console.log(formData);
   };
 
+
+     useEffect(() => {
+       if (user) setCheckingAuth(false);
+     }, [user]);
+
+     if (checkingAuth) {
+       return (
+         <div className={styles.container2}>
+           <div className={styles.loader27}></div>
+         </div>
+       );
+     }
   return (
     <>
       <Header />
@@ -113,7 +115,7 @@ export default function Menu() {
                 type="email"
                 name="email"
                 placeholder="聯絡信箱"
-                value={user.email}
+                value={user ? user.email : ""}
                 onChange={handleChange}
               />
             </div>
