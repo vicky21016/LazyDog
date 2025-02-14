@@ -1,15 +1,16 @@
-import dotenv from "dotenv";
-import express from "express";
-import cors from "cors";
-import authRouter from "./routes/testRouter.js";
-import teacherSignRouter from "./routes/teacherSignRoutes.js"
-import pool from "./config/mysql.js";
-import hotelImagesRoutes from "./routes/hotelImagesRoutes.js"
-import hotelRoutes from "./routes/hotelRoutes.js";
-import couponRoutes from "./routes/couponRoutes.js";
-import productRoutes from "./routes/productRoutes.js";
-import courseRoutes from "./routes/courseRoutes.js";
-import articlesRoutes from "./routes/articleRoutes.js";
+import dotenv from 'dotenv'
+import express from 'express'
+import cors from 'cors'
+import authRouter from './routes/testRouter.js'
+import googleRouter from './routes/googleRouter.js'
+import teacherSignRouter from './routes/teacherSignRoutes.js'
+import pool from './config/mysql.js'
+import hotelImagesRoutes from './routes/hotelImagesRoutes.js'
+import hotelRoutes from './routes/hotelRoutes.js'
+import couponRoutes from './routes/couponRoutes.js'
+import productRoutes from './routes/productRoutes.js'
+import courseRoutes from './routes/courseRoutes.js'
+import articlesRoutes from './routes/articleRoutes.js'
 
 import cartRoutes from './routes/cartRoutes.js'
 dotenv.config()
@@ -22,16 +23,17 @@ app.use(
     origin: '*',
     methods: ['GET', 'POST'],
   })
-);
+)
 
-app.use("/auth", authRouter);
-app.use("/teacher", teacherSignRouter);
-app.use("/api/hotels", hotelRoutes);
-app.use("/api/hotel_images",hotelImagesRoutes)
-app.use("/api/coupons", couponRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/course", courseRoutes);
-app.use("/api/articles", articlesRoutes);
+app.use('/auth', authRouter)
+app.use('/api/google', googleRouter)
+app.use('/teacher', teacherSignRouter)
+app.use('/api/hotels', hotelRoutes)
+app.use('/api/hotel_images', hotelImagesRoutes)
+app.use('/api/coupons', couponRoutes)
+app.use('/api/products', productRoutes)
+app.use('/api/course', courseRoutes)
+app.use('/api/articles', articlesRoutes)
 
 app.get('/', (req, res) => {
   res.json({ status: 'success', data: null, message: '首頁' })
