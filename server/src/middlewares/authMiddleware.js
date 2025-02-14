@@ -28,7 +28,6 @@ export const verifyToken = async (req, res, next) => {
           .json({ status: 'error', message: 'Token 無效或已過期' })
       }
 
-      console.log('✅ JWT 解析結果:', decoded) // 檢查 token 內容
 
       // 檢查使用者是否仍然存在於資料庫
       const [user] = await pool.execute(
@@ -36,7 +35,7 @@ export const verifyToken = async (req, res, next) => {
         [decoded.id]
       )
 
-      if (user.length === 0) {
+      if (user.length == 0) {
         return res
           .status(401)
           .json({ status: 'error', message: '不存在或已停用' })
