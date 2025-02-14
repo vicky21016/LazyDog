@@ -2,14 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "./aside.module.css";
-import { useFetch } from "@/hooks/product/use-fetch";
 
-export default function FilterGroup(props) {
+export default function FilterGroup(category = {}) {
   const [showMore, setShowMore] = useState(false);
-
-  const url = "http://localhost:5000/api/products/category?category=乾糧";
-  const { data, loading, error } = useFetch(url);
-  console.log(data);
+  console.log(category);
   return (
     <>
       <div className={styles.FilterGroup}>

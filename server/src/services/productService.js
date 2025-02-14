@@ -39,7 +39,7 @@ export const getAllCategory = async (updateFields, value) => {
       return categorys;
     } else {
       const [categorys] = await pool.execute(
-        `SELECT * FROM yi_category_keyword WHERE is_deleted = 0`
+        `SELECT yi_category_keyword.*,yi_category.name As category FROM yi_category_keyword JOIN yi_category ON yi_category_keyword.category_id = yi_category.id WHERE yi_category_keyword.is_deleted = 0`
       );
       return categorys;
     }

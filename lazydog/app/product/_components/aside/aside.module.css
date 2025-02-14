@@ -59,11 +59,16 @@
   display: flex;
   align-items: center;
   padding-top: 5px;
+  h4 {
+    height: 50px;
+  }
 }
 .FormHot {
+  display: flex;
+  align-items: center;
   width: 90px;
   text-wrap: nowrap;
-  height: 30px;
+  height: 35px;
   color: var(--Orange);
   font-size: 18px;
   font-weight: bold;

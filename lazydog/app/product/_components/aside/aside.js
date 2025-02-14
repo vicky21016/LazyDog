@@ -6,13 +6,23 @@ import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 import FilterGroup from "./filtergroup";
 import HotSaleGroup from "./hotsalegroup";
+import useSWR from "swr";
 
 export default function AsideAside(props) {
-  const [showMore, setShowMore] = useState(false);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(10000);
   const priceSliderRef = useRef(null);
 
+  const url = "http://localhost:5000/api/products/category";
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const { data, isLoading, error, mutate } = useSWR(url, fetcher);
+  const categorys = data?.data;
+  const categoryName = [];
+  if (categorys) {
+    categorys.map((v, i) => {
+      if (!categoryName.includes(v.category)) categoryName.push(v.category);
+    });
+  }
   const handleMinPriceChange = (e) => {
     let value = e.target.value;
     if (value === "") {
@@ -83,8 +93,9 @@ export default function AsideAside(props) {
         <input type="text" placeholder="搜尋商品" />
       </div>
       <HotSaleGroup />
-      <FilterGroup />
-      <FilterGroup />
+      {categoryName?.map((v, i) => {
+        return <FilterGroup key={v} category={categorys} />;
+      })}
       <div className={`text-center ${styles.PriceFilterContainer}`}>
         <h5 className={styles.FilterTitle} style={{ justifyContent: "center" }}>
           價格篩選
