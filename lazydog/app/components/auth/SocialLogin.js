@@ -19,7 +19,7 @@ export default function SocialLogin() {
         console.log("Firebase 用戶狀態變更:", currentUser);
         setUser(currentUser);
         
-        // ✅ 確保 `localStorage` 沒有重複存入
+        // 確保 `localStorage` 沒有重複存入
         localStorage.setItem(
           "user",
           JSON.stringify({
@@ -49,7 +49,7 @@ export default function SocialLogin() {
       console.log("Google 登入成功", googleUser);
       setUser(googleUser);
 
-      // ✅ 確保 `localStorage` 存入 Google 使用者資料
+      // 確保 `localStorage` 存入 Google 使用者資料
       localStorage.setItem(
         "user",
         JSON.stringify({
@@ -60,10 +60,10 @@ export default function SocialLogin() {
         })
       );
 
-      // ✅ 傳送 Google 使用者資料到後端
+      //  傳送 Google 使用者資料到後端
       await toBackend(googleUser);
 
-      router.push("/pages"); // ✅ 轉跳會員中心
+      router.push("/pages"); //  轉跳會員中心
     } catch (error) {
       setError("Google 登入失敗，請稍後再試");
       console.error("Google 登入錯誤:", error);
@@ -91,7 +91,7 @@ export default function SocialLogin() {
       const data = await response.json();
       console.log("伺服器回應：", data);
 
-      // ✅ 後端回傳 Token，存入 localStorage
+      // 後端回傳 Token，存入 localStorage
       if (data.token) {
         localStorage.setItem("token", data.token);
       } else {
@@ -115,7 +115,7 @@ export default function SocialLogin() {
       // **確保清除後才跳轉**
       setTimeout(() => {
         router.push("/login");
-      }, 500);
+      }, 401);
     } catch (error) {
       console.error("登出失敗", error);
     }

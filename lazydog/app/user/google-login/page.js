@@ -32,35 +32,35 @@
 // }
 
 // export default GoogleSignIn;
-"use client";
+// "use client";
 
-import React, { useState } from "react";
-import { auth, provider } from "../../components/utils/firebase";
-import { signInWithPopup } from "firebase/auth"; // Correct import
-import { useRouter } from "next/navigation"; // Correct import for Next.js App Router
+// import React, { useState } from "react";
+// import { auth, provider } from "../../components/utils/firebase";
+// import { signInWithPopup } from "firebase/auth"; // Correct import
+// import { useRouter } from "next/navigation"; // Correct import for Next.js App Router
 
-function GoogleSignIn() {
-  const [error, setError] = useState(null);
-  const router = useRouter();
+// function GoogleSignIn() {
+//   const [error, setError] = useState(null);
+//   const router = useRouter();
 
-  const googleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log("Google 登入成功", user);
-      router.push("/pages");
-    } catch (error) {
-      setError(`登入失敗：${error.message}`); // Correct error handling
-      console.log(error);
-    }
-  };
+//   const googleLogin = async () => {
+//     try {
+//       const result = await signInWithPopup(auth, provider);
+//       const user = result.user;
+//       console.log("Google 登入成功", user);
+//       router.push("/pages");
+//     } catch (error) {
+//       setError(`登入失敗：${error.message}`); // Correct error handling
+//       console.log(error);
+//     }
+//   };
 
-  return (
-    <div>
-      <button onClick={googleLogin}>使用 Google 登入</button>
-      {error && <p>{error}</p>}
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <button onClick={googleLogin}>使用 Google 登入</button>
+//       {error && <p>{error}</p>}
+//     </div>
+//   );
+// }
 
-export default GoogleSignIn;
+// export default GoogleSignIn;

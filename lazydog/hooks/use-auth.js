@@ -111,8 +111,7 @@ export function AuthProvider({ children }) {
       // 導向會員中心
       router.push("/pages");
     } catch (error) {
-      console.error("Google 登入錯誤:", error);
-      alert("登入失敗，請稍後再試");
+      console.error("Google 登入錯誤:", error); 
     }
   };
 
