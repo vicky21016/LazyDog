@@ -182,6 +182,39 @@ body{
     padding-left: 2px;
     letter-spacing: 1px;
   }
+  /* 目前改不了顏色 */
+  .pleaseChoose{
+    color: #a1a1a1;
+  }
+
+  .pics{
+    display: flex;
+    margin: 0px;
+  }
+
+  .mainPic{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    border: .8px solid #ecebeb;
+    border-radius: 8px;
+    width: 290px;
+    height: 290px;
+  }
+
+  .otherPic{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    border: .8px solid #f5f3f3;
+    border-radius: 8px;
+  }
+  
 
   /* 美化圖片預覽區 */
   .imageCard {
@@ -241,7 +274,7 @@ body{
     font-weight: bold;
     letter-spacing: 1px;
     padding: 0;
-    margin-left: 15px;
+    /* margin-left: 15px; */
     &:hover{
       background: #20b9ad;
   }

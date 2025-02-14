@@ -6,6 +6,12 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "../css/teacherSignAdd.module.css";
 
 export default function TeacherAddPage() {
+  const [selectedCategory, setSelectedCategory] = useState(""); // 用來存儲當前選擇的值
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value); // 更新選中的值
+  };
+
   return (
     <>
         {/* 點擊圖片 Bs Modal (彈出視窗)  */}
@@ -96,12 +102,12 @@ export default function TeacherAddPage() {
                       </div>
                       <div className={`col-md-6 mt-3`}>
                         <label className={`form-label ${styles.labels}`}>課程類別<span className={styles.must}>*</span></label>
-                        <select className={`form-select  ${styles.controls}`}>
-                          <option selected>請選擇</option>
-                          <option>寵物美容</option>
-                          <option>寵膳食育</option>
-                          <option>寵物訓練</option>
-                          <option>寵物照護</option>
+                        <select className={`form-select  ${styles.controls}`} value={selectedCategory} onChange={handleCategoryChange}>
+                          <option className={styles.pleaseChoose} value="" disabled>請選擇</option>
+                          <option value="寵物美容">寵物美容</option>
+                          <option value="寵膳食育">寵膳食育</option>
+                          <option value="寵物訓練">寵物訓練</option>
+                          <option value="寵物照護">寵物照護</option>
                           <option>商業思維與專業培訓</option>
                         </select>
                       </div>
@@ -129,13 +135,13 @@ export default function TeacherAddPage() {
                       </div>
                       <div className={`col-md-6 mt-3`}>
                         <label className={`form-label ${styles.labels}`}>開課地點<span className={styles.must}>*</span></label>
-                        <select className={`form-select  ${styles.controls}`}>
-                          <option selected>請選擇</option>
-                          <option>台北</option>
-                          <option>台中</option>
-                          <option>高雄</option>
-                          <option>線上直播</option>
-                          <option>線上預錄</option>
+                        <select className={`form-select  ${styles.controls}`} value={selectedCategory} onChange={handleCategoryChange}>
+                          <option className={styles.optionDisabled} value="" disabled>請選擇</option>
+                          <option value="台北">台北</option>
+                          <option value="台中">台中</option>
+                          <option value="高雄">高雄</option>
+                          <option value="線上直播">線上直播</option>
+                          <option value="線上預錄">線上預錄</option>
                         </select>
                       </div>
                       <div className={`col-md-12 mt-3`}>
@@ -162,16 +168,19 @@ export default function TeacherAddPage() {
                         <textarea className={`form-control  ${styles.controls} ${styles.scrollOrg}`} style={{resize: 'none'}} id="exampleFormControlTextarea1" rows={4} defaultValue={""} />
                       </div>
                     </section>
-                    <section className={`row g-4 mb-5  ${styles.section4}`}>
+                    <section className={`row g-4 mb-5 ${styles.section4}`}>
                       {/* 圖片 */}
-                      <div className={`col-md-12 mt-4 mb-5`}>
-                        <div>
-                        <label className={`form-label`}>課程圖片
+                      <label className={`form-label`}>課程圖片
                           <span className={styles.must}>* </span>
+                      </label>
+                      <div className={`gap-3 ${styles.pics}`}>
+                        <div className={`col-md-4 mt-4 mb-5 ${styles.mainPic}`}>
                           <button type="button" className={`btn btn-primary btn-sm ${styles.addPicBtn}`} onclick="document.getElementById('imageUpload').click();">
                             新增
                           </button>
-                        </label>
+                          <input type="file" id="imageUpload" className={`form-control d-none add`} accept="image/*" multiple />
+                        </div>
+                        <div className={`col-md-7 mt-4 mb-5 ${styles.otherPic}`}>
                           <div id="imagePreviewContainer" className={`d-flex flex-wrap gap-3 mb-2`}>
                             {/* <div class="imageCard">
                             <img
@@ -182,14 +191,13 @@ export default function TeacherAddPage() {
                             <button type="button" class="deleteBtn deletPic">&times;</button>
                           </div>                          */}
                           </div>
+                          <button type="button" className={`btn btn-primary btn-sm ${styles.addPicBtn}`} onclick="document.getElementById('imageUpload').click();">
+                            新增
+                          </button>
                           <input type="file" id="imageUpload" className={`form-control d-none add`} accept="image/*" multiple />
-                          
-                          {/* <button type="button" className={`btn btn-primary btn-sm mt-2 ${styles.addPicBtn}`} onClick={()=> document.getElementById('imageUpload').click()}>
-                            + 新增
-                          </button> */}
-
                         </div>
                       </div>
+                     
                     </section>
                     {/* 按鈕區 */}
                     <div className={`d-flex justify-content-end gap-3 border-top mt-5`}>
