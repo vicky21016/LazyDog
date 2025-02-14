@@ -22,68 +22,71 @@ export const getId = async (id) => {
 }
 export const getCouponByCode = async (code, userId) => {
   try {
-    // 1️⃣ 查詢優惠券是否存在
+    // 查詢優惠券是否存在
     const [coupons] = await pool.execute(
-      "SELECT * FROM coupons WHERE code = ? AND is_deleted = 0",
+      'SELECT * FROM coupons WHERE code = ? AND is_deleted = 0',
       [code]
-    );
+    )
 
     if (coupons.length === 0) {
-      return { success: false, status: 404, message: "找不到此優惠券" };
+      return { success: false, status: 404, message: '找不到此優惠券' }
     }
 
-    const coupon = coupons[0];
+    const coupon = coupons[0]
 
-    // 2️⃣ 檢查優惠券是否過期
-    const now = new Date();
+    // 檢查優惠券是否過期
+    const now = new Date()
     if (new Date(coupon.start_time) > now) {
-      return { success: false, status: 400, message: "此優惠券尚未生效" };
+      return { success: false, status: 400, message: '此優惠券尚未生效' }
     }
     if (new Date(coupon.end_time) < now) {
-      return { success: false, status: 400, message: "此優惠券已過期" };
+      return { success: false, status: 400, message: '此優惠券已過期' }
     }
 
-    // 3️⃣ 檢查優惠券是否已達最大使用次數
-    const [usageCount] = await pool.execute(
+    // 檢查優惠券是否已達最大使用次數
+    const [usageMaxCount] = await pool.execute(
       "SELECT COUNT(*) as total_usage FROM coupon_usage WHERE coupon_id = ? AND status = 'claimed'",
       [coupon.id]
-    );
+    )
 
-    if (usageCount[0].total_usage >= coupon.max_usage) {
-      return { success: false, status: 400, message: "此優惠券已被領取完畢" };
+    if (usageMaxCount[0].total_usage >= coupon.max_usage) {
+      return { success: false, status: 400, message: '此優惠券已被領取完畢' }
     }
 
-    // 4️⃣ 檢查使用者是否已經領取過
+    // 檢查使用者是否已經領取過
     const [userClaimed] = await pool.execute(
       "SELECT COUNT(*) as user_usage FROM coupon_usage WHERE user_id = ? AND coupon_id = ? AND status = 'claimed'",
       [userId, coupon.id]
-    );
+    )
 
     if (userClaimed[0].user_usage >= coupon.max_usage_per_user) {
-      return { success: false, status: 400, message: "您已超過此優惠券的領取次數" };
+      return {
+        success: false,
+        status: 400,
+        message: '您已超過此優惠券的領取次數',
+      }
     }
 
-    return { success: true, data: coupon };
+    return { success: true, data: coupon }
   } catch (err) {
-    console.error(`無法取得優惠券 (${code}):`, err);
-    return { success: false, status: 500, message: "伺服器錯誤" };
+    console.error(`無法取得優惠券 (${code}):`, err)
+    return { success: false, status: 500, message: '伺服器錯誤' }
   }
-};
-
+}
 
 export const claimCouponByUser = async (userId, couponId) => {
   try {
     await pool.execute(
       "INSERT INTO coupon_usage (user_id, coupon_id, claimed_at, status, created_at, updated_at, is_deleted) VALUES (?, ?, NOW(), 'claimed', NOW(), NOW(), 0)",
       [userId, couponId]
-    );
+    )
 
-    return { success: true, message: "優惠券領取成功" };
+    return { success: true, message: '優惠券領取成功' }
   } catch (err) {
-    console.error("領取優惠券失敗:", err);
-    return { success: false, status: 500, message: "伺服器錯誤" };
+    console.error('領取優惠券失敗:', err)
+    return { success: false, status: 500, message: '伺服器錯誤' }
   }
-};
+}
 
 export const createCoupons = async (couponData) => {
   try {
@@ -153,7 +156,7 @@ export const updateCouponById = async (id, couponData) => {
     const setClause = keys.map((key) => `${key} = ?`).join(', ')
     const setClauseWithUpdatedAt = `${setClause}, updated_at = NOW()`
 
-    values.push(id) // id 放在最後一個參數
+    values.push(id) // id 放在最後
 
     const [result] = await pool.query(
       `UPDATE coupons SET ${setClauseWithUpdatedAt} WHERE id = ?`,
