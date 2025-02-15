@@ -233,23 +233,28 @@ export const softDeleteHotelById = async (id) => {
   try {
     await connection.beginTransaction()
 
-    const [existingHotel] = await connection.query(
+    const [LiveHotel] = await connection.query(
       'SELECT * FROM hotel WHERE id = ? AND is_deleted = 0',
       [id]
     )
 
-    if (existingHotel.length == 0) {
+    if (LiveHotel.length == 0) {
       await connection.rollback()
       return { error: `刪除失敗，找不到 id=${id} 或該旅館已刪除` }
     }
 
     // 軟刪除旅館
     const [result] = await connection.query(
-      'UPDATE hotel SET is_deleted = 1 WHERE id = ?',
+      'UPDATE hotel SET is_deleted = 1, updated_at = NOW() WHERE id = ?',
       [id]
     )
 
-    if (result.affectedRows == 0) {
+    const imageResult = await pool.query(
+      'UPDATE hotel_images SET is_deleted = 1,updated_at = NOW()  WHERE hotel_id =?',
+      [id]
+    )
+
+    if (result.affectedRows == 0 && imageResult.affectedRows == 0) {
       await connection.rollback()
       return { error: `軟刪除失敗，找不到 id=${id}` }
     }
