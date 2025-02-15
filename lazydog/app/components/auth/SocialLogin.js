@@ -1,24 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
-'use client'
 
-import React, { useState, useEffect } from 'react'
+import { useAuth } from "@/hooks/use-auth";
 import Link from "next/link";
+export default function SocialLogin() {
+  const { googleLogin } = useAuth();
 
-export default function ComponentsSocialLogin(props) {
   return (
-    <>
-      <div className="lumi-social-login">
-        <Link href="/user/google-login" className="lumi-social-button">
-          <img
-            src="./images/Google.png"
-            alt="google"
-            className="lumi-google-icon"
-          />
-        </Link>
-        <Link href="/line/google-login" className="lumi-social-button">
-          <img src="./images/line.webp" alt="line" className="lumi-line-icon" />
-        </Link>
-      </div>
-    </>
+    <div className="lumi-social-login">
+      {/* Google 登入按鈕 */}
+      <button onClick={googleLogin} className="lumi-social-button">
+        <img
+          src="/images/Google.png"
+          alt="google"
+          className="lumi-google-icon"
+        />
+      </button>
+
+      {/* LINE 登入按鈕 */}
+      <Link href="/line/google-login" className="lumi-social-button">
+        <img src="/images/line.webp" alt="line" className="lumi-line-icon" />
+      </Link>
+    </div>
   );
 }

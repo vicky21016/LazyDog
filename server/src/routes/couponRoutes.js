@@ -1,20 +1,36 @@
-import express from "express";
+import express from 'express'
 import {
   getAllCoupons,
   getCouponById,
   createCoupon,
   updateCoupon,
   softDeleteCoupon,
-  
-} from "../controllers/couponController.js";
-// getSearch
-const router = express.Router();
+  claimCoupon,
+} from '../controllers/couponController.js'
+import { verifyToken, verifyRole } from '../middlewares/authMiddleware.js'
 
-router.get("/", getAllCoupons);
-// router.get("/search", getSearch);
-router.get("/:id", getCouponById);
-router.post("/", createCoupon);
-router.patch("/:id", updateCoupon);
-router.patch("/:id/soft-delete", softDeleteCoupon);
+const router = express.Router()
 
-export default router;
+router.get('/', getAllCoupons)
+router.get(
+  '/:id',
+  verifyToken,
+  verifyRole(['operator', 'teacher']),
+  getCouponById
+)
+router.post('/claim', verifyToken, verifyRole(['user']), claimCoupon)
+router.post('/', verifyToken, verifyRole(['operator', 'teacher']), createCoupon)
+router.patch(
+  '/:id',
+  verifyToken,
+  verifyRole(['operator', 'teacher']),
+  updateCoupon
+)
+router.patch(
+  '/:id/soft-delete',
+  verifyToken,
+  verifyRole(['operator', 'teacher']),
+  softDeleteCoupon
+)
+
+export default router

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { CKEditor, useCKEditorCloud } from '@ckeditor/ckeditor5-react'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import styles from './page.module.css'
+// import styles from './page.module.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import './App.css';
 
@@ -13,7 +13,7 @@ const LICENSE_KEY =
 const CLOUD_SERVICES_TOKEN_URL =
   'https://lvbp5spmsg_j.cke-cs.com/token/dev/7678421035748de5f4d7cb5ce7e8990f29e080df40238815f29ed1dd63df?limit=10'
 
-export default function AddArticlePage(props) {
+export default function AddArticlePage() {
   const [selectedValue, setSelectedValue] = useState('')
   const editorContainerRef = useRef(null)
   const editorRef = useRef(null)
