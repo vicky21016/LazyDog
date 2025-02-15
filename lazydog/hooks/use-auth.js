@@ -84,32 +84,24 @@ export function AuthProvider({ children }) {
     try {
       const result = await signInWithPopup(auth, provider);
       const googleUser = result.user;
-      console.log("Google 登入成功", googleUser);
-
       setUser(googleUser);
-
-      // 傳送 Google 使用者資訊到後端
-      const response = await fetch(
-        "http://localhost:5000/api/google/google-login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            google_id: googleUser.uid,
-            email: googleUser.email,
-            name: googleUser.displayName,
-            avatar_url: googleUser.photoURL,
-          }),
-        }
-      );
-
+  
+      const response = await fetch("http://localhost:5000/api/google/google-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          google_id: googleUser.uid,
+          email: googleUser.email,
+          name: googleUser.displayName,
+          avatar_url: googleUser.photoURL,
+        }),
+      });
+  
       const data = await response.json();
       console.log("伺服器回應：", data);
-
-      // 後端回傳 token，存 localStorage
+  
       if (data.token) {
         localStorage.setItem(appKey, data.token);
-        // 存入 localStorage
         localStorage.setItem(
           "user",
           JSON.stringify({
@@ -118,9 +110,9 @@ export function AuthProvider({ children }) {
             name: data.user.name,
             avatar: data.user.avatar_url,
             role: "user",
+            token: data.token, 
           })
         );
-        // 導向會員中心
         router.push("/pages");
       } else {
         console.warn("後端未回傳 Token");
@@ -129,6 +121,7 @@ export function AuthProvider({ children }) {
       console.error("Google 登入錯誤:", error);
     }
   };
+  
 
   // 登出
   const logout = async () => {
@@ -189,6 +182,8 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     let token = localStorage.getItem(appKey);
+    const storedUser = localStorage.getItem("user");
+
     if (!token) return;
 
     const fetchData = async () => {

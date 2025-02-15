@@ -19,9 +19,14 @@ export const getCouponById = async (id) => {
 export const claimCoupon = async (data) => {
   return await fetchWithAuth(`${API_URL}/claim`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`, // ✅ 確保帶 Token
+    },
     body: JSON.stringify(data),
   });
 };
+
 
 //  新增優惠券
 export const createCoupon = async (data) => {
