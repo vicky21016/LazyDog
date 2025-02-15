@@ -186,6 +186,11 @@ export function AuthProvider({ children }) {
 
     if (!token) return;
 
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      return;
+    }
+
     const fetchData = async () => {
       let API = "http://localhost:5000/auth/status";
       try {
