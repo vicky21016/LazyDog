@@ -6,8 +6,8 @@ export const getAllHotelsImages = async () => {
       'SELECT * FROM hotel_images WHERE is_deleted = 0'
     )
     return result
-  } catch (err) {
-    throw new Error('無法取得所有圖片' + err.message)
+  } catch (error) {
+    throw new Error('無法取得所有圖片' + error.message)
   }
 }
 export const getById = async (id) => {
@@ -17,8 +17,8 @@ export const getById = async (id) => {
       [id]
     )
     return result
-  } catch (err) {
-    throw new Error(`無法取得 ${id} 的圖片: ${err.message}`)
+  } catch (error) {
+    throw new Error(`無法取得 ${id} 的圖片: ${error.message}`)
   }
 }
 //用這個去做搜尋 http://localhost:5000/api/hotel_images/image/1

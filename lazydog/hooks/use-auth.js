@@ -58,6 +58,7 @@ export function AuthProvider({ children }) {
 
       setUser(newUser);
       localStorage.setItem(appKey, token);
+      localStorage.setItem("user", JSON.stringify(newUser));
       switch (newUser.role) {
         case "operator":
           router.push("/hotel-coupon/operatorDetail"); // 轉入operator
@@ -83,51 +84,44 @@ export function AuthProvider({ children }) {
     try {
       const result = await signInWithPopup(auth, provider);
       const googleUser = result.user;
-      console.log("Google 登入成功", googleUser);
       setUser(googleUser);
-
-      // 存入 localStorage
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          uid: googleUser.uid,
+  
+      const response = await fetch("http://localhost:5000/api/google/google-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          google_id: googleUser.uid,
           email: googleUser.email,
           name: googleUser.displayName,
-          avatar: googleUser.photoURL,
-        })
-      );
-
-      // 傳送 Google 使用者資訊到後端
-      const response = await fetch(
-        "http://localhost:5000/api/google/google-login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            google_id: googleUser.uid,
-            email: googleUser.email,
-            name: googleUser.displayName,
-            avatar_url: googleUser.photoURL,
-          }),
-        }
-      );
-
+          avatar_url: googleUser.photoURL,
+        }),
+      });
+  
       const data = await response.json();
       console.log("伺服器回應：", data);
-
-      // 後端回傳 token，存 localStorage
+  
       if (data.token) {
         localStorage.setItem(appKey, data.token);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            id: data.user.id,
+            email: data.user.email,
+            name: data.user.name,
+            avatar: data.user.avatar_url,
+            role: "user",
+            token: data.token, 
+          })
+        );
+        router.push("/pages");
       } else {
         console.warn("後端未回傳 Token");
       }
-
-      // 導向會員中心
-      router.push("/pages");
     } catch (error) {
       console.error("Google 登入錯誤:", error);
     }
   };
+  
 
   // 登出
   const logout = async () => {
@@ -188,7 +182,14 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     let token = localStorage.getItem(appKey);
+    const storedUser = localStorage.getItem("user");
+
     if (!token) return;
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      return;
+    }
 
     const fetchData = async () => {
       let API = "http://localhost:5000/auth/status";

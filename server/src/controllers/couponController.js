@@ -4,7 +4,8 @@ import {
   createCoupons,
   updateCouponById,
   softDeleteCouponById,
-  getCouponByCode, claimCouponByUser 
+  getCouponByCode,
+  claimCouponByUser,
 } from '../services/couponService.js'
 
 export const getAllCoupons = async (req, res) => {
@@ -28,34 +29,30 @@ export const getCouponById = async (req, res) => {
 export const claimCoupon = async (req, res) => {
   try {
     const { code } = req.body;
-    const userId = req.user.id; // 透過 `verifyToken` 取得用戶 ID
-
+    const userId = req.user.id;
     if (!code) {
-      return res.status(400).json({ status: "error", message: "請提供優惠券代碼" });
+      return res
+        .status(400)
+        .json({ status: "error", message: "請提供優惠券代碼" });
     }
-
-    // 查詢優惠券 (確認 & 用戶是否已領取)
+    // 查詢優惠券
     const result = await getCouponByCode(code, userId);
-
     if (!result.success) {
       return res.status(result.status).json({ status: "error", message: result.message });
     }
-
     const coupon = result.data;
-
-
+    //  檢查使用者是否已領取過
     const claimResult = await claimCouponByUser(userId, coupon.id);
-
     if (!claimResult.success) {
       return res.status(claimResult.status).json({ status: "error", message: claimResult.message });
     }
-
     res.json({ status: "success", message: claimResult.message, data: coupon });
   } catch (err) {
     console.error("領取優惠券失敗:", err);
     res.status(500).json({ status: "error", message: "伺服器錯誤" });
   }
 };
+
 
 export const createCoupon = async (req, res) => {
   try {
