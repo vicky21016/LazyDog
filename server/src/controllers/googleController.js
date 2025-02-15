@@ -3,7 +3,7 @@ import express from 'express'
 import jwt from 'jsonwebtoken'
 
 const router = express.Router()
-const JWT_SECRET = 'your_jwt_secret'
+const secretKey = 'your_jwt_secret'
 
 router.post('/google-login', async (req, res) => {
   const { google_id, email, name, avatar_url } = req.body
@@ -46,8 +46,8 @@ router.post('/google-login', async (req, res) => {
     }
 
     // **產生 JWT Token**
-    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, {
-      expiresIn: '7d',
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, secretKey, {
+      expiresIn: '30m',
     })
 
     return res.status(200).json({

@@ -58,6 +58,7 @@ export function AuthProvider({ children }) {
 
       setUser(newUser);
       localStorage.setItem(appKey, token);
+      localStorage.setItem("user", JSON.stringify(newUser));
       switch (newUser.role) {
         case "operator":
           router.push("/hotel-coupon/operatorDetail"); // 轉入operator
