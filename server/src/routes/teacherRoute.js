@@ -33,9 +33,9 @@ app.get('/:id', async (req, res) => {
 // 新增老師
 router.post('/', async (req, res) => {
     try {
-        const { name, introduce, experience,  img } = req.body;
-        const sql = `INSERT INTO teachers (name, Introduce, experience, img) VALUES (?, ?, ?, ?)`;
-        const [result] = await pool.execute(sql, [name, introduce, experience, img]);
+        const { name, category, introduce, experience, img } = req.body;
+        const sql = `INSERT INTO teachers (name, category_id, Introduce, experience, img) VALUES (?, ?, ?, ?)`;
+        const [result] = await pool.execute(sql, [name, category, introduce, experience, img]);
 
         res.json({
             status: 'success',
