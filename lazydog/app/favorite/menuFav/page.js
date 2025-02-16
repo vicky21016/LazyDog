@@ -10,7 +10,7 @@ const favorite = ({ userId, itemId, itemType }) => {
 
     useEffect(() => {
         axios.get(`/favorites?user_id=${userId}`).then((res) => {
-            const result = res.data.some(e => e.item_id === itemId && e.item_type === itemType);
+            const result = res.data.some(e => e.item_id === itemId && e.type === itemType);
             setfavorite(result);
         });
     }, [userId, itemId, itemType]);
@@ -19,7 +19,7 @@ const favorite = ({ userId, itemId, itemType }) => {
         if (favorite) {
             await axios.delete(`/favorites/${itemId}`);
         } else {
-            await axios.post('/favorites', { user_id: userId, item_id: itemId, item_type: itemType });
+            await axios.post('/favorites', { user_id: userId, item_id: itemId, type: itemType });
         }
         setfavorite(!favorite);
     };

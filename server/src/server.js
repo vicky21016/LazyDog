@@ -12,7 +12,7 @@ import couponRoutes from './routes/couponRoutes.js'
 import productRoutes from './routes/productRoutes.js'
 import courseRoutes from './routes/courseRoutes.js'
 import articlesRoutes from './routes/articleRoutes.js'
-
+import teacherRoute from "./routes/teacherRoute.js"
 import cartRoutes from './routes/cartRoutes.js'
 dotenv.config()
 
@@ -36,6 +36,7 @@ app.use('/api/products', productRoutes)
 app.use('/api/course', courseRoutes)
 app.use('/api/articles', articlesRoutes)
 app.use('/favorite', favoriteRouter)
+app.use('/teachers', teacherRoute)
 
 app.get('/', (req, res) => {
   res.json({ status: 'success', data: null, message: '首頁' })
