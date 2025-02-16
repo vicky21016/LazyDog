@@ -1,9 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
+import { useParams } from "react-router-dom"
+import axios from "axios";
+import useTeacherDetail from "@/hooks/useTeacherDetail";
 import styles from "../../../styles/modules/toggle.module.css";
+import style from "../../pages/menu.module.css";
 
 const ToggleButtons = ({ onRadioChange }) => {
+  const { id } = useParams();
+  const [teacher, setTeacher] = useState(null);
+
+   useEffect(() => {
+        axios.get(`/teachers/${id}`)
+            .then(res => setTeacher(res.data))
+            .catch(err => console.error("取得老師詳細資訊失敗", err));
+    }, [id]);
+  
+    // if (!teacher) return 
+    // <>
+    //     <div className={style.container2}>
+    //         <div className={style.loader27}></div>
+    //        </div>
+    //      </>
+
   return (
     <div className="row g-5">
       <div className="col-12 col-md-6 col-lg-5">
@@ -21,7 +41,7 @@ const ToggleButtons = ({ onRadioChange }) => {
       </div>
       <div className="col-12 col-md-6 col-lg-7 ps-5">
         <div className="mb-5">
-          <h6>經歷 :</h6>
+          <h6>經歷 :</h6>{/* {teacher.experience} */}
           <ul>
             <li>嶺世界犬隻學習寵物表演訓練師</li>
             <li>六福村專案犬隻訓練講師</li>

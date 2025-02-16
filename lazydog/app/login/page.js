@@ -8,6 +8,7 @@ import SocialLogin from "../components/auth/SocialLogin";
 import InputField from "../components/forms/InputField";
 import { useAuth } from "@/hooks/use-auth";
 import styles from "../pages/menu.module.css";
+
 export default function AppPage({ logout }) {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [email, setEmail] = useState("");
