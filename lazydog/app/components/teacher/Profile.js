@@ -1,12 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
+import { useParams } from "react-router-dom"
+import axios from "axios";
 import styles from '../../teacher/info/info.module.css';
+import style from "../../pages/menu.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faFacebook, faInstagram, faShareFromSquare } from '@fortawesome/free-brands-svg-icons';
 // import '@fortawesome/fontawesome-svg-core/styles.css';
 
 const Profile = () => {
+    const { id } = useParams();
+    const [teacher, setTeacher] = useState(null);
+
+     useEffect(() => {
+          axios.get(`/teachers/${id}`)
+              .then(res => setTeacher(res.data))
+              .catch(err => console.error("取得老師詳細資訊失敗", err));
+      }, [id]);
+    
+      // if (!teacher) return 
+      // <>
+      //     <div className={style.container2}>
+      //         <div className={style.loader27}></div>
+      //        </div>
+      //      </>
+
   return (
     <>
       <div className={`my-5 ${styles["profile"]}`}>
@@ -16,11 +35,12 @@ const Profile = () => {
               src="/teacher-img/馬克.jpg"
               className={styles.profileImg}
               alt="馬克"
-            />
+            />{/* {teacher.img} */}{/* {teacher.name} */}
           </div>
           <div className="col-12 col-md-6 col-lg-7 ps-5">
             <h6 className={`mb-4 ${styles["type"]}`}>寵物訓練</h6>
-            <h4 className={`mb-4 ${styles["mark"]}`}>馬克</h4>
+            <h4 className={`mb-4 ${styles["mark"]}`}>馬克</h4> {/* {teacher.name} */}
+            {/* {teacher.introduce} */}
             <p>
               「在我們的生命中，有一隻無條件愛著自己的狗是何等的幸福。如果可以，我希望牠一生都快樂又逍遙。」
             </p>

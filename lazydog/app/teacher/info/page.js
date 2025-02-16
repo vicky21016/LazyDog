@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+// import { useParams } from "react-router-dom";
 import Header from "../../components/layout/header";
 import Breadcrumb from "../../components/teacher/breadcrumb";
 import Profile from "../../components/teacher/Profile";
@@ -10,12 +11,29 @@ import ToggleButtons from "../../components/teacher/ToggleButtons";
 import OtherCourses from "../../components/teacher/OtherCourses";
 import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "./info.module.css";
+// import axios from "axios";
+// import style from "../../pages/menu.module.css";
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState("experience");
+  // const { id } = useParams();
+  // const [teacher, setTeacher] = useState(null);
 
   const handleRadioChange = (tab) => {
     setSelectedTab(tab);
+
+  //   useEffect(() => {
+  //     axios.get(`/teachers/${id}`)
+  //         .then(res => setTeacher(res.data))
+  //         .catch(err => console.error("取得老師詳細資訊失敗", err));
+  // }, [id]);
+
+  // if (!teacher) return 
+  // <>
+  //     <div className={style.container2}>
+  //         <div className={style.loader27}></div>
+  //        </div>
+  //      </>
   };
 
   return (

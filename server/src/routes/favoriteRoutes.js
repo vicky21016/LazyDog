@@ -4,7 +4,7 @@ const app = express.Router()
 
 
 // 加入收藏
-app.post('/favorites', async (req, res) => {
+app.post('/', async (req, res) => {
     const { user_id, item_id, type } = req.body;
     const sql = 'INSERT INTO favorites (user_id, item_id, type) VALUES (?, ?, ?)';
    
@@ -20,7 +20,7 @@ app.post('/favorites', async (req, res) => {
 });
 
 // 移除收藏
-app.delete('/favorites/:id', async (req, res) => {
+app.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
         await pool.execute('DELETE FROM favorites WHERE id = ?', [id]);

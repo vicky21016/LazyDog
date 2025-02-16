@@ -29,3 +29,25 @@ app.get('/:id', async (req, res) => {
         message: err.message });
     }
 });
+
+// 新增老師
+router.post('/', async (req, res) => {
+    try {
+        const { name, introduce, experience,  img } = req.body;
+        const sql = `INSERT INTO teachers (name, Introduce, experience, img) VALUES (?, ?, ?, ?)`;
+        const [result] = await pool.execute(sql, [name, introduce, experience, img]);
+
+        res.json({
+            status: 'success',
+            message: '老師已成功新增',
+            teacherId: result.insertId
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: err.message
+        });
+    }
+    });
+
+    export default app
