@@ -31,7 +31,7 @@ app.get('/:id', async (req, res) => {
 });
 
 // 新增老師
-router.post('/', async (req, res) => {
+app.post('/', async (req, res) => {
     try {
         const { name, category, introduce, experience, img } = req.body;
         const sql = `INSERT INTO teachers (name, category_id, Introduce, experience, img) VALUES (?, ?, ?, ?)`;

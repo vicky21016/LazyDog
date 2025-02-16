@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import useTeachers from "../hooks/useTeachers";
+import useTeachers from "@/hooks/useTeachers";
 import Header from "../../components/layout/header";
 import Breadcrumb from "../../components/teacher/breadcrumb";
 import Filter from "../../components/teacher/Filter";
