@@ -30,7 +30,7 @@ export default function MyMenu() {
     if (storedUser) {
       setProfile(JSON.parse(storedUser));
     }
-  }, [user]); 
+  }, [user]);
 
   const handleLogout = async () => {
     try {
