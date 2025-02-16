@@ -5,24 +5,43 @@ import styles from "./aside.module.css";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 import FilterGroup from "./filtergroup";
+import FilterLinkGroup from "./filterlinkgroup";
 import HotSaleGroup from "./hotsalegroup";
 import useSWR from "swr";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function AsideAside(props) {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(10000);
   const priceSliderRef = useRef(null);
+  const pathname = usePathname();
+  const query = useSearchParams();
 
   const url = "http://localhost:5000/api/products/category";
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
   const categorys = data?.data;
   const categoryName = [];
+  const category = {};
+  const categoryClass = [];
   if (categorys) {
     categorys.map((v, i) => {
-      if (!categoryName.includes(v.category)) categoryName.push(v.category);
+      if (!categoryName.includes(v.category)) {
+        categoryName.push(v.category);
+        category[v.category] = [];
+      }
+      category[v.category].push(v);
     });
   }
+  if (category != null) {
+    console.log(category);
+    // category.map((v, i) => {
+    //   // if (!categoryClass.includes(v.class)) {
+    //   //   categoryClass.push(v.class);
+    //   // }
+    // });
+  }
+
   const handleMinPriceChange = (e) => {
     let value = e.target.value;
     if (value === "") {
@@ -86,6 +105,8 @@ export default function AsideAside(props) {
       }
     };
   }, []);
+
+  useEffect(() => {}, [pathname, query]);
   return (
     <aside className={styles.Sidebar}>
       <div className={styles.SearchTable}>
@@ -93,9 +114,20 @@ export default function AsideAside(props) {
         <input type="text" placeholder="搜尋商品" />
       </div>
       <HotSaleGroup />
-      {categoryName?.map((v, i) => {
-        return <FilterGroup key={v} category={categorys} />;
+      {pathname.includes("category")
+        ? categoryName?.map((v, i) => (
+            <FilterGroup key={i} name={v} category={category[v]} />
+          ))
+        : categoryName?.map((v, i) => (
+            <FilterLinkGroup key={i} name={v} category={category[v]} />
+          ))}
+
+      {/* {categoryName?.map((v, i) => {
+        return <FilterLinkGroup key={i} name={v} category={category[v]} />;
       })}
+      {categoryName?.map((v, i) => {
+        return <FilterGroup key={i} name={v} category={category[v]} />;
+      })} */}
       <div className={`text-center ${styles.PriceFilterContainer}`}>
         <h5 className={styles.FilterTitle} style={{ justifyContent: "center" }}>
           價格篩選

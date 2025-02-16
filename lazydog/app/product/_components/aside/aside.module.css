@@ -26,6 +26,18 @@
   display: flex;
   flex-direction: column;
 }
+.FilterLinkTitle {
+  font-size: 20px;
+  font-weight: bold;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--black);
+  &:hover {
+    color: var(--Orange);
+  }
+}
 .FilterTitle {
   width: 100%;
   font-weight: bold;
@@ -53,6 +65,17 @@
   input:checked {
     background-color: var(--Orange);
     border-color: var(--Orange);
+  }
+}
+.FormLink {
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+  height: 35px;
+  color: var(--black);
+  text-align: center;
+  &:hover {
+    color: var(--Orange);
   }
 }
 .HotSaleGroup {
@@ -86,6 +109,16 @@
   color: var(--tiffany);
 }
 
+.ShowLinkMore {
+  cursor: pointer;
+  color: var(--Orange);
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+}
+.ShowLinkMore:hover {
+  color: var(--tiffany);
+}
 .PriceFilterContainer {
   padding: 20px;
   display: flex;
