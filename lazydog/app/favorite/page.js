@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import Header from "../components/layout/header";
+import Footer from "../components/layout/footer";
 import Breadcrumb from "../components/teacher/breadcrumb";
 import styles from "./fav.module.css"
 
@@ -24,6 +25,7 @@ export default function MenuFav() {
           <h5>蒐藏旅館</h5>
           <h6 className="mt-5">看看其他精選商品...</h6>
        </div>
+       {/* <Footer/> */}
     </>
   );
 }

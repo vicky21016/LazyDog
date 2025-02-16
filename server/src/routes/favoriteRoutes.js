@@ -5,11 +5,11 @@ const app = express.Router()
 
 // 加入收藏
 app.post('/favorites', async (req, res) => {
-    const { user_id, item_id, item_type } = req.body;
-    const sql = 'INSERT INTO favorites (user_id, item_id, item_type) VALUES (?, ?, ?)';
+    const { user_id, item_id, type } = req.body;
+    const sql = 'INSERT INTO favorites (user_id, item_id, type) VALUES (?, ?, ?)';
    
     try {
-        const [result] = await pool.execute( sql, [user_id, item_id, item_type]);
+        const [result] = await pool.execute( sql, [user_id, item_id, type]);
         
         res.json({ status: 'success', favorite_id: result.insertId });
 

@@ -58,8 +58,8 @@ export default function Header(props) {
           </li>
         </ul>
       </nav>
-      {!user ? (
-        <>
+      {/* {!user ? (
+        <> */}
           <div className={styles["lumi-user-actions"]}>
             <div className={styles["dropdown"]}>
               <Link href="/pages" className={styles["lumi-user-icon"]}>
@@ -69,6 +69,9 @@ export default function Header(props) {
               <div className={styles["dropdown-content"]}>
                 <Link href="/pages" className={styles["dropdown-link"]}>
                   個人資料
+                </Link>
+                <Link href="/favorite" className={styles["dropdown-link"]}>
+                  我的收藏
                 </Link>
                 <div onClick={logout} className={styles["dropdown-link"]}>
                   登出
@@ -82,7 +85,7 @@ export default function Header(props) {
               </Link>
             </div>
           </div>
-        </>
+        {/* </>
       ) : (
         <div>
           <Link href="/register" className={styles["lumi-signin"]}>
@@ -93,7 +96,7 @@ export default function Header(props) {
             登入
           </Link>
         </div>
-      )}
+      )} */}
     </header>
   );
 }
