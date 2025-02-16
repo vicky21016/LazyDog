@@ -1,7 +1,8 @@
 import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
-import authRouter from './routes/testRouter.js'
+import authRouter from './routes/authRoutes.js'
+import favoriteRouter from './routes/favoriteRoutes.js'
 import googleRouter from './controllers/googleController.js'
 import teacherSignRouter from './routes/teacherSignRoutes.js'
 import pool from './config/mysql.js'
@@ -34,6 +35,7 @@ app.use('/api/coupons', couponRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/course', courseRoutes)
 app.use('/api/articles', articlesRoutes)
+app.use('/favorite', favoriteRouter)
 
 app.get('/', (req, res) => {
   res.json({ status: 'success', data: null, message: '首頁' })
