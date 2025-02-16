@@ -58,6 +58,7 @@ export function AuthProvider({ children }) {
 
       setUser(newUser);
       localStorage.setItem(appKey, token);
+      localStorage.setItem("user", JSON.stringify(newUser));
       switch (newUser.role) {
         case "operator":
           router.push("/hotel-coupon/operatorDetail"); // 轉入operator
@@ -83,21 +84,8 @@ export function AuthProvider({ children }) {
     try {
       const result = await signInWithPopup(auth, provider);
       const googleUser = result.user;
-      console.log("Google 登入成功", googleUser);
       setUser(googleUser);
 
-      // 存入 localStorage
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          uid: googleUser.uid,
-          email: googleUser.email,
-          name: googleUser.displayName,
-          avatar: googleUser.photoURL,
-        })
-      );
-
-      // 傳送 Google 使用者資訊到後端
       const response = await fetch(
         "http://localhost:5000/api/google/google-login",
         {
@@ -115,15 +103,23 @@ export function AuthProvider({ children }) {
       const data = await response.json();
       console.log("伺服器回應：", data);
 
-      // 後端回傳 token，存 localStorage
       if (data.token) {
         localStorage.setItem(appKey, data.token);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            id: data.user.id,
+            email: data.user.email,
+            name: data.user.name,
+            avatar: data.user.avatar_url,
+            role: "user",
+            token: data.token,
+          })
+        );
+        router.push("/pages");
       } else {
         console.warn("後端未回傳 Token");
       }
-
-      // 導向會員中心
-      router.push("/pages");
     } catch (error) {
       console.error("Google 登入錯誤:", error);
     }
@@ -185,36 +181,64 @@ export function AuthProvider({ children }) {
       alert(`註冊失敗: ${err.message}`);
     }
   };
-
   useEffect(() => {
-    let token = localStorage.getItem(appKey);
-    if (!token) return;
-
-    const fetchData = async () => {
-      let API = "http://localhost:5000/auth/status";
-      try {
-        const res = await fetch(API, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const result = await res.json();
-        if (result.status !== "success") throw new Error(result.message);
-
-        localStorage.setItem(appKey, result.data.token);
-        setUser(jwt.decode(result.data.token));
-      } catch (err) {
-        console.log(err);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            uid: currentUser.uid,
+            email: currentUser.email,
+            name: currentUser.displayName,
+            avatar: currentUser.photoURL,
+          })
+        );
+      } else {
+        setUser(null);
+        localStorage.removeItem("user");
       }
-    };
-    fetchData();
+    });
+
+    let token = localStorage.getItem(appKey);
+    if (token) {
+      const fetchData = async () => {
+        let API = "http://localhost:5000/auth/status";
+        try {
+          const res = await fetch(API, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const result = await res.json();
+          if (result.status !== "success") throw new Error(result.message);
+
+          // 更新 token
+          token = result.data.token;
+          localStorage.setItem(appKey, token);
+
+          // 解析 token 並更新 user
+          const newUser = jwt.decode(token);
+          setUser(newUser);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fetchData();
+    }
+
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
+    console.log("usr:", user);
+
     if (!user && protectedRoutes.includes(pathname)) {
       alert("請先登入");
       router.replace(loginRoute);
     }
-  }, [pathname, user]);
+  }, [user]);
+
+
 
   return (
     <AuthContext.Provider

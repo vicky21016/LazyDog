@@ -7,7 +7,6 @@ export const getHotels = async () => {
     )
     return hotels
   } catch (error) {
-    console.log('取得失敗')
     throw new Error(' 無法取得旅館list：' + error.message)
   }
 }
@@ -20,7 +19,6 @@ export const searchHotels = async (keyword) => {
     )
     return hotels
   } catch (error) {
-    console.log(error)
     throw new Error('取得相關資料失敗')
   }
 }
@@ -101,7 +99,7 @@ export const createHotels = async (hotelData) => {
       : typeof url === 'string'
       ? [url]
       : []
-    console.log('圖片要存入 DB:', imageList)
+    console.log('圖片要存入:', imageList)
 
     if (imageList.length > 0) {
       for (let i = 0; i < imageList.length; i++) {
@@ -145,9 +143,9 @@ export const createHotels = async (hotelData) => {
       contact_email,
       url: imageList,
     }
-  } catch (err) {
+  } catch (error) {
     await connection.rollback()
-    throw new Error('無法創立旅館：' + err.message)
+    throw new Error('無法創立旅館：' + error.message)
   } finally {
     connection.release()
   }
@@ -158,36 +156,73 @@ export const updateHotelById = async (updateData) => {
     // 解構賦值排除不應該更新的欄位(目前寫在{}裡的欄位) ...updateFields展開 運算值是剩下欄位
     //updateFields變成一個新的物件來存放剩餘可更新欄位
 
-    const { id, created_at, average_rating, total_reviews, ...updateFields } =
-      updateData
+    const {
+      id,
+      created_at,
+      average_rating,
+      total_reviews,
+      deleteImageIds = [],
+      newImages = [],
+      ...updateFields
+    } = updateData
 
     if (!id) {
       return { error: '缺少 id，無法更新旅館' }
     }
 
     // 如果 updateFields 是空的，不更新
-    if (Object.keys(updateFields).length == 0) {
-      return { error: '沒有提供更新欄位' }
+    if (
+      Object.keys(updateFields).length == 0 &&
+      deleteImageIds.length == 0 &&
+      newImages.length == 0
+    ) {
+      return { error: '沒有提供更新欄位或新增刪除圖片' }
     }
 
     console.log(' 需要更新的欄位:', updateFields)
 
     //  動態生成 SQL **需要再研究 **
-    const keys = Object.keys(updateFields)
-    const values = Object.values(updateFields)
-    const setClause = keys.map((key) => `${key} = ?`).join(', ')
-    values.push(id)
+    if (Object.keys(updateFields).length > 0) {
+      const keys = Object.keys(updateFields)
+      const values = Object.values(updateFields)
+      const setClause = keys.map((key) => `${key} = ?`).join(', ')
+      values.push(id)
 
-    const [result] = await pool.query(
-      `UPDATE hotel SET ${setClause}, updated_at = NOW() WHERE id = ?`,
-      values
-    )
-
-    if (result.affectedRows == 0) {
-      return { error: '更新失敗，找不到該旅館' }
+      const [result] = await pool.query(
+        `UPDATE hotel SET ${setClause}, updated_at = NOW() WHERE id = ?`,
+        values
+      )
+      if (result.affectedRows == 0) {
+        return { error: '更新失敗，找不到該旅館' }
+      }
     }
 
-    return { message: `旅館 id=${id} 更新成功` }
+    if (deleteImageIds.length > 0) {
+      await pool.query(
+        `UPDATE hotel_images SET is_deleted = 1, updated_at = NOW() WHERE id IN (${deleteImageIds
+          .map(() => '?')
+          .join(', ')})`,
+        deleteImageIds
+      )
+    }
+
+    if (newImages.length > 0) {
+      const newImageValues = newImages.map(() => '(?, ?, ?)').join(', ')
+      const newImageData = newImages.flatMap((img) => [
+        id,
+        img.url,
+        img.description,
+      ])
+
+      await pool.query(
+        `INSERT INTO hotel_images (hotel_id, url, description) VALUES ${newImageValues}`,
+        newImageData
+      )
+    }
+
+    return {
+      message: `旅館 id=${id} 更新成功,${deleteImageIds.length} 張圖片已刪除，${newImages.length} 張圖片已新增`,
+    }
   } catch (error) {
     return { error: '無法更新旅館：' + error.message }
   }
@@ -198,23 +233,28 @@ export const softDeleteHotelById = async (id) => {
   try {
     await connection.beginTransaction()
 
-    const [existingHotel] = await connection.query(
+    const [LiveHotel] = await connection.query(
       'SELECT * FROM hotel WHERE id = ? AND is_deleted = 0',
       [id]
     )
 
-    if (existingHotel.length == 0) {
+    if (LiveHotel.length == 0) {
       await connection.rollback()
       return { error: `刪除失敗，找不到 id=${id} 或該旅館已刪除` }
     }
 
     // 軟刪除旅館
     const [result] = await connection.query(
-      'UPDATE hotel SET is_deleted = 1 WHERE id = ?',
+      'UPDATE hotel SET is_deleted = 1, updated_at = NOW() WHERE id = ?',
       [id]
     )
 
-    if (result.affectedRows == 0) {
+    const imageResult = await pool.query(
+      'UPDATE hotel_images SET is_deleted = 1,updated_at = NOW()  WHERE hotel_id =?',
+      [id]
+    )
+
+    if (result.affectedRows == 0 && imageResult.affectedRows == 0) {
       await connection.rollback()
       return { error: `軟刪除失敗，找不到 id=${id}` }
     }

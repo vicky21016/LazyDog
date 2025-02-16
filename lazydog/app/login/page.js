@@ -35,15 +35,15 @@ export default function AppPage({ logout }) {
     if (!user) setCheckingAuth(false); // 檢查登入狀態
   }, [user]);
 
-  if (checkingAuth) {
-    return (
-      <>
-        <div className={styles.container2}>
-          <div className={styles.loader27}></div>
-        </div>
-      </>
-    ); // 顯示載入中
-  }
+  // if (checkingAuth) {
+  //   return (
+  //     <>
+  //       <div className={styles.container2}>
+  //         <div className={styles.loader27}></div>
+  //       </div>
+  //     </>
+  //   ); // 顯示載入中
+  // }
 
   return (
     <>

@@ -125,13 +125,18 @@ export const createHotel = async (req, res) => {
 export const updateHotel = async (req, res) => {
   try {
     const { id } = req.params
-    const hotelData = req.body
+    const { deleteImageIds, newImages, ...hotelData } = req.body
 
     if (isNaN(Number(id))) {
       return res.status(400).json({ error: '無效的 ID' })
     }
 
-    const updatedHotel = await updateHotelById({ id, ...hotelData })
+    const updatedHotel = await updateHotelById({
+      id,
+      deleteImageIds: deleteImageIds || [],
+      newImages: newImages || [],
+      ...hotelData,
+    })
     if (!updatedHotel) {
       return res.status(404).json({ error: `找不到 id=${id} 或該旅館已刪除` })
     }

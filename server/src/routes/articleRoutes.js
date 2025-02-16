@@ -7,11 +7,12 @@ const router = express.Router();
 const upload = multer();
 
 router.get('/', getArticles);
+router.get('/search', searchKeyword)//search要在productID前面
 router.get('/:id', getId);
 router.post('/', upload.none(), createArticle)
 router.delete('/:id', deleteArticle)
 router.put('/:id', upload.none(), updateArticle)
-router.get('/search', searchKeyword)
+
 
 
 export default router;
