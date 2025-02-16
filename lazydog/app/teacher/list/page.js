@@ -1,13 +1,26 @@
 "use client";
 
 import React, { useState } from "react";
+import useTeachers from "../hooks/useTeachers";
 import Header from "../../components/layout/header";
 import Breadcrumb from "../../components/teacher/breadcrumb";
 import Filter from "../../components/teacher/Filter";
 import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "./list.module.css";
 import Page from "../../components/hotel/page";
+import style from "../../pages/menu.module.css";
+
 const App = () => {
+  const { teachers, loading, error } = useTeachers();
+
+
+  // if (loading) return 
+  //     <>
+  //         <div className={style.container2}>
+  //             <div className={style.loader27}></div>
+  //            </div>
+  //          </>
+      
   return (
     <>
       <Header />
@@ -33,7 +46,7 @@ const App = () => {
                   </div>
                 </div>
               </section>
-              <div>
+              <div>{/* {teacher.img} */}{/* {teacher.name} */}{/* {teacher.category} */}
                 <TeacherCard
                   imgSrc="/teacher-img/Zoe.png"
                   col="col-6 col-md-4"

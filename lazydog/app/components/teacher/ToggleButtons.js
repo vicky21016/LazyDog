@@ -3,6 +3,7 @@
 import React, { useState, useEffect  } from "react";
 import { useParams } from "react-router-dom"
 import axios from "axios";
+import useTeacherDetail from "../hooks/useTeacherDetail";
 import styles from "../../../styles/modules/toggle.module.css";
 import style from "../../pages/menu.module.css";
 

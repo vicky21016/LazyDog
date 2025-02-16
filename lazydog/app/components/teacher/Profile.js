@@ -3,6 +3,7 @@
 import React, { useState, useEffect  } from "react";
 import { useParams } from "react-router-dom"
 import axios from "axios";
+import useTeacherDetail from "../hooks/useTeacherDetail";
 import styles from '../../teacher/info/info.module.css';
 import style from "../../pages/menu.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,7 +39,7 @@ const Profile = () => {
             />{/* {teacher.img} */}{/* {teacher.name} */}
           </div>
           <div className="col-12 col-md-6 col-lg-7 ps-5">
-            <h6 className={`mb-4 ${styles["type"]}`}>寵物訓練</h6>
+            <h6 className={`mb-4 ${styles["type"]}`}>寵物訓練</h6>{/* {teacher.category} */}
             <h4 className={`mb-4 ${styles["mark"]}`}>馬克</h4> {/* {teacher.name} */}
             {/* {teacher.introduce} */}
             <p>
