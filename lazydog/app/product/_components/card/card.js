@@ -17,9 +17,9 @@ export default function CardCard(props) {
         />
       </figure>
       <div className={styles.ProductCardInfo}>
-        <h6 className={styles.ProductCardName}>
+        <p className={styles.ProductCardName}>
           GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)
-        </h6>
+        </p>
         <h5 className={styles.ProductCardPrice}>NT$1000</h5>
       </div>
       <div className={styles.ProductCardHover}>
