@@ -50,7 +50,18 @@ export const createNewOrder = async (req, res) => {
       cancellation_policy,
       remark,
     } = req.body;
-    if (!user_id || !hotel_id || !check_in || !check_out || !total_price) {
+    if (
+      !user_id ||
+      !hotel_id ||
+      !dog_count ||
+      !check_in ||
+      !check_out ||
+      !total_price ||
+      !payment_status||
+      !payment_method||
+      !cancellation_policy||
+      !remark
+    ) {
       return res.status(400).json({ error: "缺少必要欄位" });
     }
     const order = await createNewOrders({

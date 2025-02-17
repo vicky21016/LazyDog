@@ -195,7 +195,6 @@ export const updateHotelById = async (updateData) => {
       return { error: "沒有提供更新欄位或新增刪除圖片" };
     }
 
-    console.log(" 需要更新的欄位:", updateFields);
 
     //  動態生成 SQL **需要再研究 **
     if (Object.keys(updateFields).length > 0) {
