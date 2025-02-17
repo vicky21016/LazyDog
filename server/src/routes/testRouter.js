@@ -127,6 +127,57 @@ router.post('/logout', (req, res) => {
   })
 })
 
+app.put("/:id", checkToken, upload.none(), async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  
+  const { email, name, gender, birthday } = req.body;
+
+  try {
+    if (id != req.decoded.id) throw new Error("沒有修改權限");
+    if(!email && !name && !gender && !birthday) throw new Error("請至少提供一個修改的內容");
+
+    const updateFields = [];
+    const value = [];
+
+    if (email) {
+      updateFields.push("`email` = ?");
+      value.push(email);
+    }
+    if (name) {
+      updateFields.push("`name` = ?");
+      value.push(name);
+    }
+    if (gender) {
+      updateFields.push("`gender` = ?");
+      value.push(gender);
+    }
+    if (birthday) {
+      updateFields.push("`birthday` = ?");
+      value.push(birthday);
+    }
+
+    value.push(id);
+    const sql = `UPDATE users SET ${updateFields.join(", ")} WHERE id = ?;`;
+    const [result] = await db.execute(sql, value);
+
+    if (result.affectedRows == 0) throw new Error("更新失敗");
+
+    res.status(200).json({
+      status: "success",
+      message: `更新特定 ID 的使用者: ${account}`,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      status: "error",
+      message: err.message ? err.message : "修改失敗",
+    });
+  }
+});
+
+
+
 //驗證使用者是否登入 (Token refresh)
 router.post('/status', checkToken, (req, res) => {
   const { decoded } = req
