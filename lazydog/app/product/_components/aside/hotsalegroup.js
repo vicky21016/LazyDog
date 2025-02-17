@@ -21,13 +21,13 @@ export default function FilterGroup(props) {
         {showMore && (
           <>
             <Link href="" className={styles.FormHot}>
-              免費 Wi-Fi
+              飼料齊特殺75折起
             </Link>
             <Link href="" className={styles.FormHot}>
-              免費 Wi-Fi
+              愛不釋好物5折起
             </Link>
             <Link href="" className={styles.FormHot}>
-              免費 Wi-Fi
+              小零食大滿足
             </Link>
           </>
         )}

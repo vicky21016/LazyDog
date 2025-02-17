@@ -41,7 +41,7 @@
     "script": "^0.1.4",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.5",
-    "swr": "^2.3.0",
+    "swr": "^2.3.2",
     "tw-city-selector": "^2.1.1"
   },
   "devDependencies": {
