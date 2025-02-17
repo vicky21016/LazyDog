@@ -1,18 +1,30 @@
-import { getTeacherInfo, updateTeacherInfo, getCoursesByTeacher, createCourseWithSession} from "../services/teacherSignService.js";
+import { decode } from "jsonwebtoken";
+import { 
+  getTeacherInfo, 
+  updateTeacherInfo, 
+  getCoursesByTeacher, 
+  getCoursesIdByTeacher, 
+  createCourseWithSession, 
+  updateCourseWithSession,
+  deleteCourseSession
+} from "../services/teacherSignService.js";
 
 export const getInfo = async (req, res) => {
   try {
-    const teacherId = req.decoded.id; // 從 token 中獲取教師的 ID 
-    const infos = await getTeacherInfo(teacherId);
+    const userId = req.user.id; 
+    console.log(userId);
+
+    const infos = await getTeacherInfo(userId);
     res.json({ status: "success", data: infos, message: "師資查詢成功" });
   } catch (err) {
+    console.log(1);
     res.status(500).json({ error: err.message });
   }
 };
 
 export const updateInfo = async (req, res) => {
   try {
-    const teacherId = req.decoded.id; // 從 token 中獲取教師的 ID
+    const teacherId = req.user.id; // 從 token 中獲取教師的 ID
     const updateData = req.body; // 從請求的 body 取得要更新的資料
 
     // 呼叫更新函數，傳入 teacherId 和要更新的資料
@@ -33,9 +45,25 @@ export const updateInfo = async (req, res) => {
 
 export const getCourse = async (req, res) => {
   try {
-    const teacherId = req.decoded.id; // 從 token 中獲取教師的 ID 
+    const teacherId = req.user.id;
     const courses = await getCoursesByTeacher(teacherId);
     res.json({ status: "success", data: courses, message: "課程查詢成功" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getCourseId = async (req, res) => {
+  try {
+    const {id} = req.params;
+    console.log("找到課程ID", id);
+
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "請提供有效的課程 ID" });
+    }
+
+    const course = await getCoursesIdByTeacher(id);  
+    res.json({ status: "success", data: course, message: "課程查詢成功" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -65,44 +93,44 @@ export const createCourse = async (req, res) => {
   }
 };
 
+export const updateCourse = async (req, res) => {
+  const {courseId, courseData, sessionId, sessionData} = req.body;
 
-// export const updateCourse = async (req, res) => {
-//   const {courseId, courseData, sessionId, sessionData} = req.body;
+  if(!courseId || !sessionId){
+    return res.status(400).json({error: "缺少courseId 或 sessionId"})
+  }
 
-//   if(!courseId || !sessionId){
-//     return res.status(400).json({error: "缺少courseId 或 sessionId"})
-//   }
+  try{
+    const result = await updateCourseWithSession(courseId, courseData, sessionId, sessionData)
+    console.log(result);
 
-//   try{
-//     const result = await updateCourseWithSession(courseId, courseData, sessionId, sessionData)
-//     console.log(result);
+    res.status(200).json({
+      message:"課程更新成功",
+      courseId,
+      sessionId
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-//     res.status(200).json({
-//       message:"課程更新成功",
-//       courseId,
-//       sessionId
-//     });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
+export const deleteSessionOnly = async (req, res) => {
+  const sessionId = req.params.id;
+  console.log(req.params.id);
 
-// export const deleteSessionOnly = async (req, res) => {
-//   const {sessionId} = req.body;
+  if(!sessionId){
+    return res.status(400).json({error: "缺少 sessionId"})
+  }
 
-//   if(!sessionId){
-//     return res.status(400).json({error: "缺少 sessionId"})
-//   }
-
-//   try{
-//     await deleteCourseSession(sessionId);
-//     res.status(200).json({
-//       message:"該梯次已標記為刪除",
-//       sessionId
-//     });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
+  try{
+    await deleteCourseSession(sessionId);
+    res.status(200).json({
+      message:"該梯次已標記為刪除",
+      sessionId
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 

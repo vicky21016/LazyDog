@@ -3,15 +3,15 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
-import Header from "../components/layout/header"; 
-import MyMenu from "../components/layout/myMenu"; 
-import Input from "../components/forms/Input"; 
+import Header from "../components/layout/header";
+import MyMenu from "../components/layout/myMenu";
+import Input from "../components/forms/Input";
 import styles from "./menu.module.css";
 // import { auth, signOut, onAuth } from "./firebase";
 
 export default function Menu() {
-     const [checkingAuth, setCheckingAuth] = useState(true);
-     const { user } = useAuth();   
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const { user } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -19,7 +19,7 @@ export default function Menu() {
     nickname: "",
     birthdate: "",
     workPhone: "",
-    email:  "",
+    email: "",
     location: "",
     city: "",
     district: "",
@@ -39,18 +39,17 @@ export default function Menu() {
     console.log(formData);
   };
 
+  useEffect(() => {
+    if (user) setCheckingAuth(false);
+  }, [user]);
 
-     useEffect(() => {
-       if (user) setCheckingAuth(false);
-     }, [user]);
-
-     if (checkingAuth) {
-       return (
-         <div className={styles.container2}>
-           <div className={styles.loader27}></div>
-         </div>
-       );
-     }
+  if (checkingAuth) {
+    return (
+      <div className={styles.container2}>
+        <div className={styles.loader27}></div>
+      </div>
+    );
+  }
   return (
     <>
       <Header />
@@ -66,19 +65,23 @@ export default function Menu() {
               <Input
                 name="name"
                 placeholder="姓名"
-                value={formData.name}
+                value={user ? user.name : ""}
                 onChange={handleChange}
                 required
               />
               <h6>
                 性別<span className={`${styles["important"]}`}> *</span>
               </h6>
-              <Input
+              <select
                 name="gender"
-                placeholder="性別"
                 value={formData.gender}
                 onChange={handleChange}
-              />
+                className={styles["select"]}
+              >
+                <option value="">請選擇性別</option>
+                <option value="male">男</option>
+                <option value="female">女</option>
+              </select>
             </div>
             <div className={styles.formGroup}>
               <h6>暱稱</h6>
@@ -94,7 +97,7 @@ export default function Menu() {
               <Input
                 type="date"
                 name="birthdate"
-                value={formData.birthdate}
+                value={user ? user.birthday : ""}
                 onChange={handleChange}
               />
             </div>

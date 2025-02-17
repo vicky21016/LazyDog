@@ -1,27 +1,27 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
-const useTeacherDetail = (id) => {
+export function useTeacherDetail (id) {
     const [teacher, setTeacher] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchTeacher = async () => {
+             if (!id) return; 
+             
+             let API = `http://localhost:5000/teachers/info/${id}`;
             try {
-                const res = await axios.get(`/teachers/${id}`);
-                setTeacher(res.data);
+                const res = await fetch(API);
+               if (!res.ok) {
+                 throw new Error("無法取得資料");
+               }
+               const result = await res.json(); 
+               setTeacher(result); 
             } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
+                console.log(err.message);
+            } 
         };
 
         fetchTeacher();
     }, [id]);
 
-    return { teacher, loading, error };
+    return [ teacher] ;
 };
-
-export default useTeacherDetail;

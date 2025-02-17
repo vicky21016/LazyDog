@@ -160,8 +160,51 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const save = async (name, email, birthday) => {
+    let API = "http://localhost:5000/api/users";
+    let token = localStorage.getItem(appKey);
+  
+    try {
+      const res = await fetch(API, {
+        method: "PUT",  // 確保這是你要的 HTTP 方法
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, birthday }),
+      });
+  
+      const result = await res.json();
+      console.log("儲存 API 回應:", result);
+  
+      if (result.status === "success") {
+        alert("儲存成功");
+  
+        // 重新取得使用者資料
+        const userRes = await fetch(API, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        const updatedUser = await userRes.json();
+        if (updatedUser.status === "success") {
+          setUser(updatedUser.data);
+          localStorage.setItem("user", JSON.stringify(updatedUser.data));
+        }
+      } else {
+        alert("儲存失敗");
+      }
+    } catch (err) {
+      console.log(err);
+      alert(`儲存失敗: ${err.message}`);
+    }
+  };
+  
+
   useEffect(() => {
-    console.count("useEffect00 次數");
+    // console.count("useEffect00 次數");
     // 監聽 Firebase 登入狀態*
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -201,25 +244,28 @@ export function AuthProvider({ children }) {
           // 解析 token 並更新 user
           const newUser = jwt.decode(token);
           setUser(newUser);
-          console.log("newUser:", newUser);
+          // console.log("newUser:", newUser);
           // console.log("user的:", user);  會印出舊的 state 值
+          setUserLoaded(true);
         } catch (err) {
           console.log(err);
         }
       };
       fetchData();
     }
-
-    return () => unsubscribe();
+    setUserLoaded(true);
+    // return () => unsubscribe();
   }, []);
 
   useEffect(() => {
     console.log("usr:", user);
-    console.count("useEffect 被執行次數");
+    // console.log("usr:", user);
+    // console.count("useEffect 被執行次數");
     if (!userLoaded) {
       // 先等 user 載入
       return;
     }
+
     if (!user && protectedRoutes.includes(pathname)) {
       alert("請先登入");
       router.replace(loginRoute); // 只有當 user 確認為 null 時，才會導向 /login

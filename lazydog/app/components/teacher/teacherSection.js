@@ -3,9 +3,39 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import styles from "../../../styles/modules/toggle.module.css"
-
+import OtherTeacher from "./otherTeacher";
 const TeacherSection = () => {
   const [state, setState] = useState(null);
+  const teacherData = [
+    {
+      imgSrc: "/teacher-img/Zoe.png",
+      col: "col-6 col-md-3",
+      name: "Zoe",
+      text: "寵物訓練",
+      link: "/teacher/info",
+    },
+    {
+      imgSrc: "/teacher-img/Zoe.png",
+      col: "col-6 col-md-3",
+      name: "Zoe",
+      text: "寵物訓練",
+      link: "/teacher/info",
+    },
+    {
+      imgSrc: "/teacher-img/Zoe.png",
+      col: "col-6 col-md-3",
+      name: "Zoe",
+      text: "寵物訓練",
+      link: "/teacher/info",
+    },
+    {
+      imgSrc: "/teacher-img/Zoe.png",
+      col: "col-6 col-md-3",
+      name: "Zoe",
+      text: "寵物訓練",
+      link: "/teacher/info",
+    },
+  ];
 
   return (
     <section className=" mb-3">
@@ -50,34 +80,7 @@ const TeacherSection = () => {
       </div>
       <div className="lumi-all-wrapper pb-5">
         <h3 className="my-5 lumi-m-title ">熱門師資</h3>
-        <div className="row g-5">
-          {["1", "2", "3", "4"].map((_, index) => (
-            <div className="col-6 col-md-3" key={index}>
-              <Link
-                href="/teacher/info"
-                passHref
-                className="text-decoration-none"
-              >
-                <div className={styles.card6} style={{ width: "" }}>
-                  <img
-                    src="/teacher-img/Zoe.png"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                  <div className={styles.card6Title} style={{}}>
-                    Zoe
-                  </div>
-                  <p
-                    className={styles.card6Description}
-                    
-                  >
-                    寵物訓練
-                  </p>
-                </div>
-              </Link>
-            </div>
-          ))}
-        </div>
+        <OtherTeacher cards={teacherData} />
       </div>
     </section>
   );
