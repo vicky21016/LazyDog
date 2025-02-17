@@ -161,7 +161,7 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
-    console.count("useEffect00 次數");
+    // console.count("useEffect00 次數");
     // 監聽 Firebase 登入狀態*
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -214,8 +214,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    console.log("usr:", user);
-    console.count("useEffect 被執行次數");
+    // console.log("usr:", user);
+    // console.count("useEffect 被執行次數");
     if (!userLoaded) {
       // 先等 user 載入
       return;

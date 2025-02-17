@@ -50,12 +50,12 @@ router.post('/register', upload.none(), async (req, res) => {
   const { email, password, confirmPassword } = req.body
   console.log(req.body)
   //   console.log("Email:", email);
-  // console.log("Password:", password);
-  // if (!email || !password || !confirmPassword) {
-  //   return res
-  //     .status(400)
-  //     .json({ status: "error", message: "請填寫所有必填欄位" });
-  // }
+  console.log("Password:", password);
+  if (!email || !password || !confirmPassword) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "請填寫所有必填欄位" });
+  }
   if (password !== confirmPassword) {
     return res
       .status(400)
@@ -144,7 +144,7 @@ function checkToken(req, res, next) {
       message: '驗證資料錯誤',
     })
   token = token.slice(7)
-  console.log(token)
+  // console.log(token)
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err)
       return res.status(401).json({
@@ -153,7 +153,7 @@ function checkToken(req, res, next) {
         message: '資料失效',
       })
     req.decoded = decoded
-    console.log(decoded)
+    // console.log(decoded)
 
     next()
   })
