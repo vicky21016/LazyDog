@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect  } from "react";
+import { useRouter } from "next/router";
 import { useParams } from "react-router-dom"
-import axios from "axios";
-import useTeacherDetail from "@/hooks/useTeacherDetail";
+import {useTeacherDetail }from "@/hooks/useTeacherDetail";
 import styles from '../../teacher/info/info.module.css';
 import style from "../../pages/menu.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,14 +11,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import '@fortawesome/fontawesome-svg-core/styles.css';
 
 const Profile = () => {
-    const { id } = useParams();
-    const [teacher, setTeacher] = useState(null);
+    const router = useRouter();
+    const { id } = router.query; 
 
-     useEffect(() => {
-          axios.get(`/teachers/${id}`)
-              .then(res => setTeacher(res.data))
-              .catch(err => console.error("取得老師詳細資訊失敗", err));
-      }, [id]);
+    const [teacher] = useTeacherDetail(id); 
     
       // if (!teacher) return 
       // <>
@@ -33,18 +29,15 @@ const Profile = () => {
         <div className="row g-5">
           <div className="col-12 col-md-6 col-lg-5">
             <img
-              src="/teacher-img/馬克.jpg"
+              src={`/teacher-img/${teacher.img}`}
               className={styles.profileImg}
-              alt="馬克"
-            />{/* {teacher.img} */}{/* {teacher.name} */}
+              alt={teacher.name}
+            />
           </div>
           <div className="col-12 col-md-6 col-lg-7 ps-5">
-            <h6 className={`mb-4 ${styles["type"]}`}>寵物訓練</h6>{/* {teacher.category} */}
-            <h4 className={`mb-4 ${styles["mark"]}`}>馬克</h4> {/* {teacher.name} */}
-            {/* {teacher.introduce} */}
-            <p>
-              「在我們的生命中，有一隻無條件愛著自己的狗是何等的幸福。如果可以，我希望牠一生都快樂又逍遙。」
-            </p>
+            <h6 className={`mb-4 ${styles["type"]}`}>{teacher.category}</h6>
+            <h4 className={`mb-4 ${styles["mark"]}`}> {teacher.name}</h4>{" "}
+            <p>{teacher.introduce}</p>
             <p>
               10年前，有點像是命運的洪流，把我推向動物表演訓練，讓我愛上了訓練師這份工作，也時常在思考，怎麼樣才能成為一位更好的訓練師？怎麼樣才能透過教學，讓動物過上更好的生活？
             </p>

@@ -1,27 +1,33 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
-const useTeachers = () => {
-    const [teachers, setTeachers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+export function useTeachers() {
 
-    useEffect(() => {
-        const fetchTeachers = async () => {
-            try {
-                const res = await axios.get("/teachers");
-                setTeachers(res.data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+  const [teachers, setTeachers] = useState([]);
 
-        fetchTeachers();
-    }, []);
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      let API = "http://localhost:5000/teachers/list";
+      try {
+        const res = await fetch(API);
+        
+        if (!res.ok) throw new Error("feach teacher err"); // 檢查回應是否成功
 
-    return { teachers, loading, error };
-};
+        const result = await res.json(); 
+        console.log("Fetched teachers:", result);
 
-export default useTeachers;
+       if (!Array.isArray(result)) throw new Error(result.message); 
+
+        setTeachers(result); 
+
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    fetchTeachers();
+  }, []); 
+useEffect(() => {
+
+}, [teachers]);
+  return { teachers }; // 返回 teachers 資料
+}

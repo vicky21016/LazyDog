@@ -203,6 +203,7 @@ export function AuthProvider({ children }) {
           setUser(newUser);
           console.log("newUser:", newUser);
           // console.log("user的:", user);  會印出舊的 state 值
+          setUserLoaded(true);
         } catch (err) {
           console.log(err);
         }
