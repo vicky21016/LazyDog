@@ -119,13 +119,17 @@ export default function AsideAside(props) {
       {pathname.includes("category")
         ? categoryClass[i]?.map((e) => (
             <FilterGroup
-              key={i}
+              key={`FilterGroup${i}`}
               name={e}
               category={category[categoryName[i]]}
             />
           ))
         : categoryName?.map((v, i) => (
-            <FilterLinkGroup key={i} name={v} category={category[v]} />
+            <FilterLinkGroup
+              key={`FilterLinkGroup${i}`}
+              name={v}
+              category={category[v]}
+            />
           ))}
 
       {/* {categoryName?.map((v, i) => {

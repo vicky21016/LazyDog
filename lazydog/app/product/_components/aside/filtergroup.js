@@ -22,7 +22,10 @@ export default function FilterGroup(category = {}) {
         {categoryName[category?.name].map((v, i) => {
           if (i < 3) {
             return (
-              <div key={i} className={`form-check ${styles.FormCheck}`}>
+              <div
+                key={`Filter${i}`}
+                className={`form-check ${styles.FormCheck}`}
+              >
                 <input
                   className={`form-check-input ${styles.FormCheckInput}`}
                   type="checkbox"
@@ -40,7 +43,10 @@ export default function FilterGroup(category = {}) {
             {categoryName[category?.name].map((v, i) => {
               if (i >= 3) {
                 return (
-                  <div key={i} className={`form-check ${styles.FormCheck}`}>
+                  <div
+                    key={`Filter${i}`}
+                    className={`form-check ${styles.FormCheck}`}
+                  >
                     <input
                       className={`form-check-input ${styles.FormCheckInput}`}
                       type="checkbox"

@@ -5,7 +5,21 @@
 .ProductCardHover {
   width: 100%;
   height: 100%;
-  display: none;
+  position: absolute;
+  background: rgb(241, 213, 182, 0);
+  top: 0;
+  left: 0;
+  .HoverIcon {
+    display: none;
+  }
+  .CartBtn {
+    display: none;
+  }
+}
+.ProductCardHover:hover {
+  width: 100%;
+  height: 100%;
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: 20px;
@@ -47,6 +61,9 @@
   top: 10px;
   width: 25px;
 }
+.ProductCardHeartOn {
+  display: none;
+}
 .ProductCardOnsale {
   position: absolute;
   background: url(/product/font/onsale-bg.png) no-repeat center/cover;
@@ -68,6 +85,9 @@
   gap: 10px;
   .ProductCardName {
     color: var(--Black);
+    display: flex;
+    align-items: center;
+    height: 72px;
   }
   .ProductCardPrice {
     color: var(--Orange);

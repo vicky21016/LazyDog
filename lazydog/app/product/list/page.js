@@ -15,15 +15,12 @@ export default function ListPage(props) {
   const query = useSearchParams();
   const products = data?.data;
   const productID = "";
-  console.log(products);
 
   const pageStart = 1;
   let pageNow = Number(query.get("page")) || Number(pageStart);
   let pages = "";
-  if (products) {
-    pages = Math.ceil(products.length / 24);
-  }
-  // console.log(pages);
+  if (products) pages = Math.ceil(products.length / 24);
+  const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
 
   return (
     <>
@@ -57,65 +54,16 @@ export default function ListPage(props) {
         <section className={styles.PdArea}>
           <Aside />
           <main className={styles.PdList}>
-            {/* <ul className={styles.ProductCardGroup}>
-              {products?.map((v, i) => {
-                if (0 <= i && i < 24) return <Card />;
-              })}
-            </ul> */}
             {Array.from({ length: 6 }, (value, index) => {
               return (
                 <ul className={styles.ProductCardGroup} key={index}>
-                  {products?.map((v, i) => {
-                    if (
-                      (pageNow - 1 + index) * 4 <= i &&
-                      i < (pageNow + index) * 4
-                    )
-                      return <Card product={v} />;
+                  {product?.map((v, i) => {
+                    if (index * 4 <= i && i < (index + 1) * 4)
+                      return <Card key={v.productID} product={v} />;
                   })}
                 </ul>
               );
             })}
-            {/* {products?.map((v, i) => {
-              if ((pageNow - 1) * 4 <= i && i < pageNow * 4)
-                return (
-                  <ul className={styles.ProductCardGroup} key={i}>
-                    <Card product={v} />
-                    <Card />
-                    <Card />
-                    <Card />
-                  </ul>
-                );
-            })} */}
-            {/* <ul className={styles.ProductCardGroup}>
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-            </ul>
-            <ul className={styles.ProductCardGroup}>
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-            </ul>
-            <ul className={styles.ProductCardGroup}>
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-            </ul>
-            <ul className={styles.ProductCardGroup}>
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-            </ul>
-            <ul className={styles.ProductCardGroup}>
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-            </ul> */}
             <nav>
               <ul className={styles.ProductListPagination}>
                 <li className={`${styles.PageItem} page-item`}>
@@ -127,7 +75,7 @@ export default function ListPage(props) {
                   </Link>
                 </li>
                 {Array.from({ length: pages }, (v, i) => (
-                  <li className={`${styles.PageItem} page-item`}>
+                  <li key={`li${i}`} className={`${styles.PageItem} page-item`}>
                     <Link
                       className={`${styles.PageLink} page-link`}
                       href={`http://localhost:3000/product/list?page=${i + 1}`}

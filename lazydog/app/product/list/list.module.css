@@ -65,7 +65,6 @@
 .PdList {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 50px;
 }
 /* --------------------------- */
@@ -77,8 +76,8 @@
   gap: 30px;
 }
 /* --------------------------- */
-/* ---------card元件---------- */
-.ProductCard {
+/* ---------card元件(備份)---------- */
+/* .ProductCard {
   width: 100%;
   position: relative;
 }
@@ -143,7 +142,7 @@
   .ProductCardPrice {
     color: var(--Orange);
   }
-}
+} */
 /* -------------------------- */
 /* ---------page元件---------- */
 .ProductListPagination {
