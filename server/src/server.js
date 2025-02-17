@@ -8,7 +8,7 @@ import teacherSignRouter from "./routes/teacherSignRoutes.js";
 import pool from "./config/mysql.js";
 import hotelImagesRoutes from "./routes/hotelImagesRoutes.js";
 import hotelRoutes from "./routes/hotelRoutes.js";
-import hotelOrderRouter from "./routes/hotelOrderRoutes.js";
+// import hotelOrderRouter from "./routes/hotelOrderRoutes.js";
 import couponRoutes from "./routes/couponRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import courseRoutes from "./routes/courseRoutes.js";
@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT"],
   })
 );
 
@@ -33,7 +33,7 @@ app.use("/api/google", googleRouter);
 app.use("/teacher", teacherSignRouter);
 app.use("/api/hotels", hotelRoutes);
 app.use("/api/hotel_images", hotelImagesRoutes);
-app.use("api/hotel_orders", hotelOrderRouter);
+// app.use("api/hotel_orders", hotelOrderRouter);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/course", courseRoutes);

@@ -123,11 +123,11 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
   const { id } = req.params;
   console.log(id);
   
-  const { email, name, gender, birthday } = req.body;
+  const { email, name, gender, birthday, phone } = req.body;
 
   try {
     if (id != req.decoded.id) throw new Error("沒有修改權限");
-    if (!email && !name && !gender && !birthday) throw new Error("請至少提供一個修改的內容");
+    if (!email && !name && !gender && !birthday && !phone) throw new Error("請至少提供一個修改的內容");
 
     const updateFields = [];
     const value = [];
@@ -148,12 +148,15 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
       updateFields.push("`birthday` = ?");
       value.push(birthday);
     }
+    if (phone) {
+      updateFields.push("`phone` = ?");
+      value.push(phone);
+    }
 
     value.push(id);
-   const sql = `UPDATE users SET ${updateFields.join(", ")} WHERE id = ?;`;
+    const sql = `UPDATE users SET ${updateFields.join(", ")} WHERE id = ?;`;
     console.log(sql);
     console.log(value);
-    
     
     const [result] = await pool.execute(sql, value); 
 
@@ -171,6 +174,7 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
     });
   }
 });
+
 
 
 

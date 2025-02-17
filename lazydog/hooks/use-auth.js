@@ -160,26 +160,28 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const save = async (name, email, birthday) => {
-    let API = "http://localhost:5000/api/users";
+  // 儲存
+  const save = async (id, name, email, birthday, phone) => {
+   
     let token = localStorage.getItem(appKey);
-  
+    let API = `http://localhost:5000/auth/${user.id}`;
+    console.log(id);
     try {
       const res = await fetch(API, {
-        method: "PUT",  // 確保這是你要的 HTTP 方法
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, birthday }),
+        body: JSON.stringify({ name, email, birthday, phone }),
       });
-  
+
       const result = await res.json();
       console.log("儲存 API 回應:", result);
-  
-      if (result.status === "success") {
+
+      if (result.status == "success") {
         alert("儲存成功");
-  
+
         // 重新取得使用者資料
         const userRes = await fetch(API, {
           method: "GET",
@@ -187,7 +189,7 @@ export function AuthProvider({ children }) {
             Authorization: `Bearer ${token}`,
           },
         });
-  
+
         const updatedUser = await userRes.json();
         if (updatedUser.status === "success") {
           setUser(updatedUser.data);
@@ -201,7 +203,6 @@ export function AuthProvider({ children }) {
       alert(`儲存失敗: ${err.message}`);
     }
   };
-  
 
   useEffect(() => {
     // console.count("useEffect00 次數");
@@ -258,7 +259,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    console.log("usr:", user);
+    // console.log("usr:", user);
     // console.log("usr:", user);
     // console.count("useEffect 被執行次數");
     if (!userLoaded) {
@@ -274,7 +275,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, googleLogin, logout, register }}
+      value={{ user, login, googleLogin, logout, register, save }}
     >
       {children}
     </AuthContext.Provider>

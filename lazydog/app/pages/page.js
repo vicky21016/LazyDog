@@ -11,7 +11,7 @@ import styles from "./menu.module.css";
 
 export default function Menu() {
   const [checkingAuth, setCheckingAuth] = useState(true);
-  const { user } = useAuth();
+  const { user, save } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -34,9 +34,25 @@ export default function Menu() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    console.log(user.id);
+    
     e.preventDefault();
-    console.log(formData);
+  
+    try {
+      await save(
+        user.id,
+        formData.name,
+        formData.email,
+        formData.birthdate,
+        formData.Phone
+      );
+
+      
+    } catch (error) {
+      alert("更新失敗");
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -77,20 +93,22 @@ export default function Menu() {
                 value={formData.gender}
                 onChange={handleChange}
                 className={styles["select"]}
+                required
               >
                 <option value="">請選擇性別</option>
                 <option value="male">男</option>
                 <option value="female">女</option>
+                <option value="female">其他</option>
               </select>
             </div>
             <div className={styles.formGroup}>
-              <h6>暱稱</h6>
+              {/* <h6>暱稱</h6>
               <Input
                 name="nickname"
                 placeholder="暱稱"
                 value={formData.nickname}
                 onChange={handleChange}
-              />
+              /> */}
               <h6>
                 生日<span className={`${styles["important"]}`}> *</span>
               </h6>
@@ -99,6 +117,7 @@ export default function Menu() {
                 name="birthdate"
                 value={user ? user.birthday : ""}
                 onChange={handleChange}
+                required
               />
             </div>
             <div className={`${styles.formGroup} ${styles.phone}`}>
@@ -108,8 +127,9 @@ export default function Menu() {
               <Input
                 name="workPhone"
                 placeholder="聯絡電話"
-                value={formData.workPhone}
+                value={user ? user.phone : ""}
                 onChange={handleChange}
+                required
               />
               <h6>
                 聯絡信箱<span className={`${styles["important"]}`}> *</span>
@@ -120,6 +140,7 @@ export default function Menu() {
                 placeholder="聯絡信箱"
                 value={user ? user.email : ""}
                 onChange={handleChange}
+                required
               />
             </div>
             <div className={styles.formGroup}>
@@ -184,6 +205,7 @@ export default function Menu() {
                   onChange={handleChange}
                 />
               </div>
+             
             </div>
             <button type="submit" className={styles.exStore}>
               取消
