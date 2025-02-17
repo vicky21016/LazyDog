@@ -1,15 +1,69 @@
-// import資料庫的連線設定
 import pool from "../config/mysql.js";
 
-// 用MVC架構，步驟一 Model 負責資料庫操作
+// 讀取師資
+export const getTeacherInfo = async (teacherId) => {
+  try {
+    const sql =`
+      SELECT teacher.* 
+      FROM teacher 
+      JOIN users ON teacher.id = users.teacher_id
+      WHERE users.id = ? 
+      AND teacher.is_deleted = 0
+    `;
+    const [infos] = await pool.execute(sql, [teacherId]);
+    return infos;
+  } catch (err) {
+    throw new Error(" 無法取得師資資訊：" + err.message);
+  }
+}
+
+// 編輯師資
+export const updateTeacherInfo = async (teacherId, updateData) => {
+  try {
+    const { name, category_id, skill, Introduce, Experience, img } = updateData;
+
+    const sql = `
+      UPDATE teacher
+      JOIN users ON users.teacher_id = teacher.id
+      SET 
+        teacher.name = ?, 
+        teacher.category_id = ?, 
+        teacher.skill = ?, 
+        teacher.Introduce = ?, 
+        teacher.Experience = ?, 
+        teacher.img = ?
+      WHERE users.id = ? 
+      AND teacher.is_deleted = 0
+    `;
+
+    const [result] = await pool.execute(sql, [
+      name,
+      category_id,
+      skill,
+      Introduce,
+      Experience,
+      img,
+      teacherId
+    ]);
+
+    return result.affectedRows > 0; // 如果有更新回傳 true，否則 false
+  } catch (err) {
+    throw new Error("無法更新師資資訊：" + err.message);
+  }
+};
+
+// 課程列表
 export const getCoursesByTeacher = async (teacherId) => {
   try {
     const sql =`
-       SELECT cs.*, c.*, t.name AS teacher_name 
+       SELECT cs.*, c.*, course_area.*, cs.class_dates AS class_dates, c.name AS course_name, course_area.region AS area_region, users.name AS teacher_name
        FROM course_session cs
        JOIN course c ON cs.course_id = c.id
+       JOIN course_area ON cs.area_id = course_area.id
        JOIN teacher t ON cs.teacher_id = t.id
-       WHERE cs.teacher_id = ? AND cs.is_deleted = 0
+       JOIN users ON t.id = users.teacher_id
+       WHERE users.id = ? 
+       AND cs.is_deleted = 0
     `;
     const [courses] = await pool.execute(sql, [teacherId]);
     return courses;
@@ -18,23 +72,7 @@ export const getCoursesByTeacher = async (teacherId) => {
   }
 };
 
-
-// export const getCourseIds = async (id) => {
-//   try {
-//     const [courses] = await pool.query("SELECT * FROM course WHERE id = ?", [
-//       id,
-//     ]);
-//     if (courses.length == 0){
-//         console.log("!!!!!!!!!!!");
-//     }
-//     console.log(courses);
-//     return courses;
-//   } catch (err) {
-//     throw new Error(" 無法取得 ${id} 課程:;" + err.message);
-//   }
-// };
-
-
+// 新增課程( 照片還沒完成 )
 export const createCourseWithSession = async (courseData, sessionData, imgData) => {
   const connection = await pool.getConnection();
   try {
@@ -117,6 +155,7 @@ export const createCourseWithSession = async (courseData, sessionData, imgData) 
     connection.release();
   }
 };
+
 
 // export const updateCourseWithSession = async (courseId, courseData, sessionId, sessionData) => {
 //   const connection = await pool.getConnection();
