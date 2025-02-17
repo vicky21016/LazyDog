@@ -13,6 +13,7 @@ AuthContext.displayName = "AuthContext";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [userLoaded, setUserLoaded] = useState(false); // 使用者狀態還沒載入完成
   const router = useRouter();
   const pathname = usePathname();
   const protectedRoutes = ["/pages"];
@@ -160,26 +161,26 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
-    console.count("useEffect00 次數");
+    // console.count("useEffect00 次數");
     // 監聽 Firebase 登入狀態*
 
-    // const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    //   if (currentUser) {
-    //     setUser(currentUser);
-    //     localStorage.setItem(
-    //       "user",
-    //       JSON.stringify({
-    //         uid: currentUser.uid,
-    //         email: currentUser.email,
-    //         name: currentUser.displayName,
-    //         avatar: currentUser.photoURL,
-    //       })
-    //     );
-    //   } else {
-    //     setUser(null);
-    //     localStorage.removeItem("user");
-    //   }
-    // });
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            uid: currentUser.uid,
+            email: currentUser.email,
+            name: currentUser.displayName,
+            avatar: currentUser.photoURL,
+          })
+        );
+      } else {
+        setUser(null);
+        localStorage.removeItem("user");
+      }
+    });
 
     let token = localStorage.getItem(appKey);
     if (token) {
@@ -201,7 +202,7 @@ export function AuthProvider({ children }) {
           const newUser = jwt.decode(token);
           setUser(newUser);
           console.log("newUser:", newUser);
-          console.log("user的:", user);
+          // console.log("user的:", user);  會印出舊的 state 值
         } catch (err) {
           console.log(err);
         }
@@ -209,15 +210,19 @@ export function AuthProvider({ children }) {
       fetchData();
     }
 
-    // return () => unsubscribe();
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
-    console.log("usr:", user);
-    console.count("useEffect 被執行次數");
+    // console.log("usr:", user);
+    // console.count("useEffect 被執行次數");
+    if (!userLoaded) {
+      // 先等 user 載入
+      return;
+    }
     if (!user && protectedRoutes.includes(pathname)) {
       alert("請先登入");
-      router.replace(loginRoute);
+      router.replace(loginRoute); // 只有當 user 確認為 null 時，才會導向 /login
     }
   }, [pathname, user]);
 

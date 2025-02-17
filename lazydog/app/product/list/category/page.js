@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import styles from "./list.module.css";
-import Aside from "../_components/aside/aside";
+import styles from "./category.module.css";
+import Aside from "../../_components/aside/aside";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function ListPage(props) {
+  const query = useSearchParams();
+  const category = query.get("category");
   return (
     <>
       <div className={`${styles.Container} container`}>
@@ -20,15 +23,17 @@ export default function ListPage(props) {
           <div className={styles.Breadcrumbs}>
             <Link href="http://localhost:3000">首頁</Link>
             <img src="/product/font/right.png" alt="" />
+            <Link href="http://localhost:3000/product/list"> 商品目錄 </Link>
+            <img src="/product/font/right.png" alt="" />
             <Link
               className={styles.BreadcrumbsActive}
-              href="http://localhost:3000/product/list"
+              href={`http://localhost:3000/product/list/category?category=${category}`}
             >
-              商品目錄
+              {category}
             </Link>
           </div>
           <div className={styles.Title}>
-            <h2>商品目錄</h2>
+            <h2>{category}</h2>
             <div className={styles.TitleFilter}>
               <img src="/product/font/filter.png" alt="" />
               <h4>依熱門排序</h4>
