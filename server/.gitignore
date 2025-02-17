@@ -8,7 +8,6 @@
 .yarn/install-state.gz
 public/
 hotel-images/
-uploads/
 # testing
 /coverage
 
