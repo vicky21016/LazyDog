@@ -14,6 +14,7 @@ import courseRoutes from './routes/courseRoutes.js'
 import articlesRoutes from './routes/articleRoutes.js'
 import teacherRoute from "./routes/teacherRoute.js"
 import cartRoutes from './routes/cartRoutes.js'
+import commentRoutes from './routes/commentRoutes.js'
 dotenv.config()
 
 const app = express()
@@ -37,6 +38,8 @@ app.use('/api/course', courseRoutes)
 app.use('/api/articles', articlesRoutes)
 app.use('/favorite', favoriteRouter)
 app.use('/teachers', teacherRoute)
+app.use('/api/comment', commentRoutes)
+
 
 app.get('/', (req, res) => {
   res.json({ status: 'success', data: null, message: '首頁' })
