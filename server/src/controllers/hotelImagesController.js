@@ -32,7 +32,7 @@ export const getByIds = async (req, res) => {
 
 export const getByHotelId = async (req, res) => {
   try {
-    const { hotel_id } = req.params // 來自網址的參數
+    const { hotel_id } = req.params 
     if (!hotel_id) {
       return res.status(400).json({ error: '請提供 hotel_id' })
     }
