@@ -1,7 +1,7 @@
 import express from "express";
-import { getOrders } from "../controllers/hotelOrderController.js";
+import { getOrders, getOrder } from "../controllers/hotelOrderController.js";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
-// getOrder,
+
 //   createNewOrder,
 //   updateOrder,
 //   deleteOrder,
@@ -10,8 +10,8 @@ const router = express.Router();
 // 取得所有訂單
 router.get("/", verifyToken, verifyRole(["operator"]), getOrders);
 
-// //取得特定訂單
-// router.get("/:id", verifyToken, getOrder);
+//取得特定訂單
+router.get("/:id", verifyToken, getOrder);
 
 // // 創建訂單
 // router.post("/", verifyToken, verifyRole(["user"]), createNewOrder);
