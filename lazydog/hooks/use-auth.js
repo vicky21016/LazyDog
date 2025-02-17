@@ -18,29 +18,6 @@ export function AuthProvider({ children }) {
   const protectedRoutes = ["/pages"];
   const loginRoute = "/login";
 
-  // 監聽 Firebase 登入狀態*
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            uid: currentUser.uid,
-            email: currentUser.email,
-            name: currentUser.displayName,
-            avatar: currentUser.photoURL,
-          })
-        );
-      } else {
-        setUser(null);
-        localStorage.removeItem("user");
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   // 登入
   const login = async (email, password) => {
     let API = "http://localhost:5000/auth/login";
@@ -181,24 +158,28 @@ export function AuthProvider({ children }) {
       alert(`註冊失敗: ${err.message}`);
     }
   };
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            uid: currentUser.uid,
-            email: currentUser.email,
-            name: currentUser.displayName,
-            avatar: currentUser.photoURL,
-          })
-        );
-      } else {
-        setUser(null);
-        localStorage.removeItem("user");
-      }
-    });
+    console.count("useEffect00 次數");
+    // 監聽 Firebase 登入狀態*
+
+    // const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    //   if (currentUser) {
+    //     setUser(currentUser);
+    //     localStorage.setItem(
+    //       "user",
+    //       JSON.stringify({
+    //         uid: currentUser.uid,
+    //         email: currentUser.email,
+    //         name: currentUser.displayName,
+    //         avatar: currentUser.photoURL,
+    //       })
+    //     );
+    //   } else {
+    //     setUser(null);
+    //     localStorage.removeItem("user");
+    //   }
+    // });
 
     let token = localStorage.getItem(appKey);
     if (token) {
@@ -219,6 +200,8 @@ export function AuthProvider({ children }) {
           // 解析 token 並更新 user
           const newUser = jwt.decode(token);
           setUser(newUser);
+          console.log("newUser:", newUser);
+          console.log("user的:", user);
         } catch (err) {
           console.log(err);
         }
@@ -226,19 +209,17 @@ export function AuthProvider({ children }) {
       fetchData();
     }
 
-    return () => unsubscribe();
+    // return () => unsubscribe();
   }, []);
 
   useEffect(() => {
     console.log("usr:", user);
-
+    console.count("useEffect 被執行次數");
     if (!user && protectedRoutes.includes(pathname)) {
       alert("請先登入");
       router.replace(loginRoute);
     }
-  }, [user]);
-
-
+  }, [pathname, user]);
 
   return (
     <AuthContext.Provider
