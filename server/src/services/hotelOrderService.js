@@ -22,3 +22,15 @@ export const getOrderById = async (orderId) => {
     throw new Error("無法取得該訂單" + err.message);
   }
 };
+
+export const getOpHotelId = async (operatorId) => {
+  try {
+    const [hotels] = await pool.query(
+      "SELECT id FROM hotel WHERE operator_id = ? AND is_deleted = 0",
+      [operatorId]
+    );
+    return hotels.map((hotel) => hotel.id);
+  } catch (err) {
+    throw new Error("無法取得該操作員的飯店 ID: " + err.message);
+  }
+};

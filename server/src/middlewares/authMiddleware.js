@@ -36,10 +36,6 @@ export const verifyToken = async (req, res, next) => {
           .json({ status: 'error', message: '不存在或已停用' })
       }
 
-      if (req.user.role == "operator") {
-        req.user.operator_id = user[0].operator_id; 
-      }
-
       req.user = user[0]
       next()
     })
