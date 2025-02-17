@@ -1,5 +1,5 @@
 import express from "express";
-import { getOrders, getOrder } from "../controllers/hotelOrderController.js";
+import { getOrders, getOrder,createNewOrder } from "../controllers/hotelOrderController.js";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 
 //   createNewOrder,
@@ -13,8 +13,8 @@ router.get("/", verifyToken, verifyRole(["operator"]), getOrders);
 //取得特定訂單
 router.get("/:id", verifyToken, getOrder);
 
-// // 創建訂單
-// router.post("/", verifyToken, verifyRole(["user"]), createNewOrder);
+// 創建訂單
+router.post("/", verifyToken, verifyRole(["user"]), createNewOrder);
 
 // //  更新訂單
 // router.patch("/:id", verifyToken, verifyRole(["operator"]), updateOrder);

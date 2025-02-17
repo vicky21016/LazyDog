@@ -28,3 +28,7 @@ export const getOrder = async (req, res) => {
     res.status(500).json({ error: "無法取得訂單", details: error.message });
   }
 };
+
+export const createNewOrder =async()=>{
+    
+}

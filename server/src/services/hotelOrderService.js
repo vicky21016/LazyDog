@@ -34,3 +34,7 @@ export const getOpHotelId = async (operatorId) => {
     throw new Error("無法取得該操作員的飯店 ID: " + err.message);
   }
 };
+
+export const createNewOrders=()=>{
+    
+}
