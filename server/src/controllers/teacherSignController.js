@@ -1,5 +1,35 @@
-// 用MVC架構，步驟二 Controller 處理請求 
-import { getCoursesByTeacher, createCourseWithSession} from "../services/teacherSignService.js";
+import { getTeacherInfo, updateTeacherInfo, getCoursesByTeacher, createCourseWithSession} from "../services/teacherSignService.js";
+
+export const getInfo = async (req, res) => {
+  try {
+    const teacherId = req.decoded.id; // 從 token 中獲取教師的 ID 
+    const infos = await getTeacherInfo(teacherId);
+    res.json({ status: "success", data: infos, message: "師資查詢成功" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const updateInfo = async (req, res) => {
+  try {
+    const teacherId = req.decoded.id; // 從 token 中獲取教師的 ID
+    const updateData = req.body; // 從請求的 body 取得要更新的資料
+
+    // 呼叫更新函數，傳入 teacherId 和要更新的資料
+    const success = await updateTeacherInfo(teacherId, updateData);
+
+    // 如果更新成功
+    if (success) {
+      return res.json({ status: "success", message: "師資資訊更新成功" });
+    } else {
+      // 如果沒有更新任何資料（可能是資料沒有變更或其他原因）
+      return res.status(400).json({ status: "fail", message: "更新失敗，請確認資料是否正確" });
+    }
+  } catch (err) {
+    console.error("更新師資資訊失敗：", err);
+    res.status(500).json({ status: "error", message: "內部伺服器錯誤" });
+  }
+};
 
 export const getCourse = async (req, res) => {
   try {
@@ -10,20 +40,6 @@ export const getCourse = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-// export const getCourseId = async (req, res) => {
-//   try{
-//     const id = Number(req.params.id);
-//     console.log("找到課程ID", id);
-
-//     const courses = await getCourseIds(id);
-//     res.json(courses[0]);
-//   }catch(err){
-//     res.status(500).json({error:err.message})
-//   }
-// };
-
-
 
 export const createCourse = async (req, res) => {
   try{
@@ -48,7 +64,6 @@ export const createCourse = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 
 // export const updateCourse = async (req, res) => {

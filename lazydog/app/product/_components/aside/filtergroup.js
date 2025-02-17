@@ -3,83 +3,66 @@
 import React, { useState, useEffect } from "react";
 import styles from "./aside.module.css";
 
-export default function FilterGroup(props) {
+export default function FilterGroup(category = {}) {
   const [showMore, setShowMore] = useState(false);
+  const categorys = category?.category;
+  const categoryName = {};
+  if (categorys) {
+    categorys.forEach((v) => {
+      if (!categoryName[v.class]) {
+        categoryName[v.class] = [];
+      }
+      categoryName[v.class].push(v.name);
+    });
+  }
   return (
     <>
       <div className={styles.FilterGroup}>
-        <h5 className={styles.FilterTitle}>設施</h5>
-        <div className={`form-check ${styles.FormCheck}`}>
-          <input
-            className={`form-check-input ${styles.FormCheckInput}`}
-            type="checkbox"
-            id="walk"
-          />
-          <label className="form-check-label" htmlFor="walk">
-            免費散步
-          </label>
-        </div>
-        <div className={`form-check ${styles.FormCheck}`}>
-          <input
-            className={`form-check-input ${styles.FormCheckInput}`}
-            type="checkbox"
-            id="pool"
-          />
-          <label className="form-check-label" htmlFor="pool">
-            游泳池
-          </label>
-        </div>
-        <div className={`form-check ${styles.FormCheck}`}>
-          <input
-            className={`form-check-input ${styles.FormCheckInput}`}
-            type="checkbox"
-            id="pets"
-          />
-          <label className="form-check-label" htmlFor="pets">
-            戶外運動
-          </label>
-        </div>
+        <h5 className={styles.FilterTitle}>{category?.name}</h5>
+        {categoryName[category?.name].map((v, i) => {
+          if (i < 3) {
+            return (
+              <div key={i} className={`form-check ${styles.FormCheck}`}>
+                <input
+                  className={`form-check-input ${styles.FormCheckInput}`}
+                  type="checkbox"
+                  id={v}
+                />
+                <label className="form-check-label" htmlFor={v}>
+                  {v}
+                </label>
+              </div>
+            );
+          }
+        })}
         {showMore && (
           <>
-            <div className={`form-check ${styles.FormCheck}`}>
-              <input
-                className={`form-check-input ${styles.FormCheckInput}`}
-                type="checkbox"
-                id="wifi"
-              />
-              <label className="form-check-label" htmlFor="wifi">
-                免費 Wi-Fi
-              </label>
-            </div>
-            <div className={`form-check ${styles.FormCheck}`}>
-              <input
-                className={`form-check-input ${styles.FormCheckInput}`}
-                type="checkbox"
-                id="spa"
-              />
-              <label className="form-check-label" htmlFor="spa">
-                SPA 按摩
-              </label>
-            </div>
-            <div className={`form-check ${styles.FormCheck}`}>
-              <input
-                className={`form-check-input ${styles.FormCheckInput}`}
-                type="checkbox"
-                id="gym"
-              />
-              <label className="form-check-label" htmlFor="gym">
-                健身房
-              </label>
-            </div>
+            {categoryName[category?.name].map((v, i) => {
+              if (i >= 3) {
+                return (
+                  <div key={i} className={`form-check ${styles.FormCheck}`}>
+                    <input
+                      className={`form-check-input ${styles.FormCheckInput}`}
+                      type="checkbox"
+                      id={v}
+                    />
+                    <label className="form-check-label" htmlFor={v}>
+                      {v}
+                    </label>
+                  </div>
+                );
+              }
+            })}
           </>
         )}
-
-        <span
-          className={styles.ShowMore}
-          onClick={() => setShowMore(!showMore)}
-        >
-          {showMore ? "收起 ▲" : "顯示全部 ▼"}
-        </span>
+        {categoryName[category?.name].length > 3 && (
+          <span
+            className={styles.ShowMore}
+            onClick={() => setShowMore(!showMore)}
+          >
+            {showMore ? "收起 ▲" : "顯示全部 ▼"}
+          </span>
+        )}
       </div>
     </>
   );

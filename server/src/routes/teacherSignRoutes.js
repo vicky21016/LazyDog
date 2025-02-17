@@ -1,10 +1,10 @@
-// 用MVC架構，步驟三 Route 路由設定
 import express from "express";
 import jwt from "jsonwebtoken";
 import pool from "../config/mysql.js";
 import bcrypt from "bcrypt";
 import multer from "multer";
-import { getCourse, createCourse} from "../controllers/teacherSignController.js";
+import { getInfo, updateInfo, getCourse, createCourse} from "../controllers/teacherSignController.js";
+
 
 const router = express.Router();
 const secretKey = process.env.JWT_SECRET_KEY;
@@ -16,9 +16,14 @@ const storage = multer.diskStorage({
 });
 const upload = multer({storage});
 
-router.get("/courses", checkToken, getCourse);     // 讀取該教師的多筆課程
-router.post("/add",upload.fields([{ name: "mainImage" }, { name: "otherImages" }]), createCourse); 
-// router.get("/:id", getCourseId);   // 一筆
+// 師資
+router.get("/info", checkToken, getInfo);     
+router.put("/info", checkToken, updateInfo); 
+
+// 課程    
+router.get("/mycourse", checkToken, getCourse);
+// router.get("/:id", getCourseId);   // 一筆    
+router.post("/", checkToken, upload.fields([{ name: "mainImage" }, { name: "otherImages" }]), createCourse); 
 // router.put("/:id", updateCourse); 
 // router.put("/session/:id", deleteSessionOnly); 
 
