@@ -1,61 +1,73 @@
 import {
   getHotels,
   getId,
+  getOperatorTZJ,
   createHotels,
   updateHotelById,
   softDeleteHotelById,
   searchHotels,
-} from '../services/hotelService.js'
+} from "../services/hotelService.js";
 
 export const getAllHotels = async (req, res) => {
   try {
-    const hotels = await getHotels()
-    res.json(hotels)
+    const hotels = await getHotels();
+    res.json(hotels);
   } catch (err) {
-    res.status(500).json({ err: `找不到旅館` })
+    res.status(500).json({ err: `找不到旅館` });
   }
-}
+};
 
 export const getSearch = async (req, res) => {
   try {
-    const { keyword } = req.query
-    if (!keyword) throw new Error('請提供關鍵字')
+    const { keyword } = req.query;
+    if (!keyword) throw new Error("請提供關鍵字");
 
-    const hotel = await searchHotels(keyword)
-    if (!hotel.length) throw new Error('查無')
+    const hotel = await searchHotels(keyword);
+    if (!hotel.length) throw new Error("查無");
     res.status(200).json({
-      status: 'success',
+      status: "success",
       data: hotel,
       message: `查詢： ${keyword} 相關成功，共${hotel.length}筆資料`,
-    })
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message })
+    res.status(400).json({ error: error.message });
   }
-}
+};
 export const getByIds = async (req, res) => {
   try {
-    console.log('找到旅館ID:', req.params.id)
-    const id = Number(req.params.id, 10)
+    console.log("找到旅館ID:", req.params.id);
+    const id = Number(req.params.id, 10);
 
     if (isNaN(id)) {
-      return res.status(400).json({ err: '無效的 ID' })
+      return res.status(400).json({ err: "無效的 ID" });
     }
 
-    const hotel = await getId(id)
+    const hotel = await getId(id);
     if (!hotel) {
-      return res.status(404).json({ err: `找不到 id=${id} 的旅館` })
+      return res.status(404).json({ err: `找不到 id=${id} 的旅館` });
     }
 
-    res.json(hotel)
+    res.json(hotel);
   } catch (err) {
-    res.status(500).json({ error: `找不到旅館` })
+    res.status(500).json({ error: `找不到旅館` });
   }
-}
+};
+export const getOperatorHotels = async (req, res) => {
+  try {
+    const operatorId = req.user.id;
+    const hotels = await getOperatorTZJ(operatorId);
+    res.status(200).json({ success: true, data: hotels });
+  } catch (err) {
+    res.status(500).json({ error: `無法獲取旅館` });
+  }
+};
 
 export const createHotel = async (req, res) => {
   try {
-    console.log('收到請求資料:', req.body)
+    console.log("收到請求資料:", req.body);
+    console.log("收徒確認之後會刪掉", req. files);
 
+    const operatorId = req.user.id;
     const {
       name,
       link,
@@ -65,7 +77,6 @@ export const createHotel = async (req, res) => {
       phone,
       room_total,
       introduce,
-      status,
       latitude,
       longitude,
       map_link,
@@ -73,7 +84,7 @@ export const createHotel = async (req, res) => {
       check_out_time,
       contact_email,
       url,
-    } = req.body
+    } = req.body;
 
     if (
       !name ||
@@ -89,10 +100,16 @@ export const createHotel = async (req, res) => {
       !check_out_time ||
       !contact_email
     ) {
-      return res.status(400).json({ error: '缺少必要欄位' })
+      return res.status(400).json({ error: "缺少必要欄位" });
+    }
+
+    let imageUrls = [];
+    if (req.files && req.files.length > 0) {
+      imageUrls = req.files.map((file) => `/uploads/hotel/${file.filename}`);
     }
 
     const newHotel = await createHotels({
+      operator_id: operatorId,
       name,
       link,
       county,
@@ -101,34 +118,33 @@ export const createHotel = async (req, res) => {
       phone,
       room_total,
       introduce,
-      status,
       latitude,
       longitude,
       map_link,
       check_in_time,
       check_out_time,
       contact_email,
-      url,
-    })
+      url: imageUrls,
+    });
 
     res.status(201).json({
       success: true,
-      message: '飯店與圖片建立成功',
-      data: newHotel,
-    })
+      message: "飯店與圖片建立成功",
+      data: newHotel, //確認而已可以再刪
+    });
   } catch (error) {
-    console.error('建立飯店錯誤:', error)
-    res.status(500).json({ error: '無法建立旅館', details: error.message })
+    console.error("建立飯店錯誤:", error);
+    res.status(500).json({ error: "無法建立旅館", details: error.message });
   }
-}
+};
 
 export const updateHotel = async (req, res) => {
   try {
-    const { id } = req.params
-    const { deleteImageIds, newImages, ...hotelData } = req.body
+    const { id } = req.params;
+    const { deleteImageIds, newImages, ...hotelData } = req.body;
 
     if (isNaN(Number(id))) {
-      return res.status(400).json({ error: '無效的 ID' })
+      return res.status(400).json({ error: "無效的 ID" });
     }
 
     const updatedHotel = await updateHotelById({
@@ -136,29 +152,29 @@ export const updateHotel = async (req, res) => {
       deleteImageIds: deleteImageIds || [],
       newImages: newImages || [],
       ...hotelData,
-    })
+    });
     if (!updatedHotel) {
-      return res.status(404).json({ error: `找不到 id=${id} 或該旅館已刪除` })
+      return res.status(404).json({ error: `找不到 id=${id} 或該旅館已刪除` });
     }
 
-    res.json({ message: `旅館 id=${id} 更新成功` })
+    res.json({ message: `旅館 id=${id} 更新成功` });
   } catch (error) {
-    res.status(500).json({ error: `找不到旅館` })
+    res.status(500).json({ error: `找不到旅館` });
   }
-}
+};
 
 export const softDeleteHotel = async (req, res) => {
   try {
-    const { id } = req.params
+    const { id } = req.params;
 
-    const deletedHotel = await softDeleteHotelById(id)
+    const deletedHotel = await softDeleteHotelById(id);
 
     if (!deletedHotel) {
-      return res.status(404).json({ error: `找不到 id=${id} 或該旅館已刪除` })
+      return res.status(404).json({ error: `找不到 id=${id} 或該旅館已刪除` });
     }
 
-    res.json({ message: `旅館 id=${id} 已軟刪除` })
+    res.json({ message: `旅館 id=${id} 已軟刪除` });
   } catch (error) {
-    res.status(500).json({ error: `找不到旅館` })
+    res.status(500).json({ error: `找不到旅館` });
   }
-}
+};
