@@ -52,7 +52,7 @@ function CourseSection() {
               <div className="row mt-5">
                 <img
                   className={`col-3  ${styles["person"]}`}
-                  src="/teacher-img/teacher.jpg"
+                  src="/teacher-img/DSC_9689.jpg"
                   alt=""
                 />
                 <p className="col-9 mt-4">
