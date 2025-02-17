@@ -25,7 +25,13 @@ router.post('/login', upload.none(), async (req, res) => {
     if (!isMatch) throw new Error('帳號或密碼錯誤')
 
     const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
+      {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+        birthday: user.birthday,
+      },
       secretKey,
       {
         expiresIn: '10m',
@@ -48,13 +54,13 @@ router.post('/login', upload.none(), async (req, res) => {
 
 router.post('/register', upload.none(), async (req, res) => {
   const { email, password, confirmPassword } = req.body
-  console.log(req.body)
+  // console.log(req.body)
   //   console.log("Email:", email);
-  console.log("Password:", password);
+  // console.log("Password:", password);
   if (!email || !password || !confirmPassword) {
     return res
       .status(400)
-      .json({ status: "error", message: "請填寫所有必填欄位" });
+      .json({ status: 'error', message: '請填寫所有必填欄位' })
   }
   if (password !== confirmPassword) {
     return res
@@ -113,6 +119,60 @@ router.post('/logout', checkToken, (req, res) => {
     message: '登出成功',
   })
 })
+router.put("/:id", checkToken, upload.none(), async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  
+  const { email, name, gender, birthday } = req.body;
+
+  try {
+    if (id != req.decoded.id) throw new Error("沒有修改權限");
+    if (!email && !name && !gender && !birthday) throw new Error("請至少提供一個修改的內容");
+
+    const updateFields = [];
+    const value = [];
+
+    if (email) {
+      updateFields.push("`email` = ?");
+      value.push(email);
+    }
+    if (name) {
+      updateFields.push("`name` = ?");
+      value.push(name);
+    }
+    if (gender) {
+      updateFields.push("`gender` = ?");
+      value.push(gender);
+    }
+    if (birthday) {
+      updateFields.push("`birthday` = ?");
+      value.push(birthday);
+    }
+
+    value.push(id);
+   const sql = `UPDATE users SET ${updateFields.join(", ")} WHERE id = ?;`;
+    console.log(sql);
+    console.log(value);
+    
+    
+    const [result] = await pool.execute(sql, value); 
+
+    if (result.affectedRows == 0) throw new Error("更新失敗");
+
+    res.status(200).json({
+      status: "success",
+      message: `更新特定 ID 的使用者: ${id}`,  
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      status: "error",
+      message: err.message ? err.message : "修改失敗",
+    });
+  }
+});
+
+
 
 router.post('/status', checkToken, (req, res) => {
   const { decoded } = req
@@ -121,6 +181,9 @@ router.post('/status', checkToken, (req, res) => {
     {
       id: decoded.id,
       email: decoded.email,
+      role: decoded.role,
+      name: decoded.name,
+      birthday: decoded.birthday,
     },
     secretKey,
     { expiresIn: '30m' }
@@ -136,7 +199,7 @@ function checkToken(req, res, next) {
       data: '',
       message: '無資料',
     })
-  console.log(token)
+  // console.log(token)
   if (!token.startsWith('Bearer '))
     return res.json({
       status: 'error',
