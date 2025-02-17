@@ -33,15 +33,18 @@ export default function AsideAside(props) {
       category[v.category].push(v);
     });
   }
-  if (category != null) {
-    console.log(category);
-    // category.map((v, i) => {
-    //   // if (!categoryClass.includes(v.class)) {
-    //   //   categoryClass.push(v.class);
-    //   // }
-    // });
+  if (category) {
+    categoryName.forEach((v, i) => {
+      // console.log(category[v]);
+      categoryClass[i] = [];
+      category[v].map((v) => {
+        if (!categoryClass[i].find((e) => e == v.class)) {
+          categoryClass[i].push(v.class);
+        }
+      });
+    });
   }
-
+  const i = categoryName.findIndex((v) => v == query.get("category"));
   const handleMinPriceChange = (e) => {
     let value = e.target.value;
     if (value === "") {
@@ -105,7 +108,6 @@ export default function AsideAside(props) {
       }
     };
   }, []);
-
   useEffect(() => {}, [pathname, query]);
   return (
     <aside className={styles.Sidebar}>
@@ -115,8 +117,12 @@ export default function AsideAside(props) {
       </div>
       <HotSaleGroup />
       {pathname.includes("category")
-        ? categoryName?.map((v, i) => (
-            <FilterGroup key={i} name={v} category={category[v]} />
+        ? categoryClass[i]?.map((e) => (
+            <FilterGroup
+              key={i}
+              name={e}
+              category={category[categoryName[i]]}
+            />
           ))
         : categoryName?.map((v, i) => (
             <FilterLinkGroup key={i} name={v} category={category[v]} />

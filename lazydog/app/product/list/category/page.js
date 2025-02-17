@@ -4,8 +4,11 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./category.module.css";
 import Aside from "../../_components/aside/aside";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function ListPage(props) {
+  const query = useSearchParams();
+  const category = query.get("category");
   return (
     <>
       <div className={`${styles.Container} container`}>
@@ -18,14 +21,19 @@ export default function ListPage(props) {
         </section>
         <section className={styles.BreadcrumbsTitle}>
           <div className={styles.Breadcrumbs}>
-            <Link href="http://localhost:3000/product/list">目錄</Link>
+            <Link href="http://localhost:3000">首頁</Link>
             <img src="/product/font/right.png" alt="" />
-            <a href="">罐頭</a>
+            <Link href="http://localhost:3000/product/list"> 商品目錄 </Link>
             <img src="/product/font/right.png" alt="" />
-            <h5 className={styles.BreadcrumbsActive}>主食/餐包</h5>
+            <Link
+              className={styles.BreadcrumbsActive}
+              href={`http://localhost:3000/product/list/category?category=${category}`}
+            >
+              {category}
+            </Link>
           </div>
           <div className={styles.Title}>
-            <h2>主食/餐包</h2>
+            <h2>{category}</h2>
             <div className={styles.TitleFilter}>
               <img src="/product/font/filter.png" alt="" />
               <h4>依熱門排序</h4>
