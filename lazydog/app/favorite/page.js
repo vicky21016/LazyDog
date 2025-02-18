@@ -11,21 +11,23 @@ export default function MenuFav() {
   return (
     <>
       <Header />
-      <h3 className={`text-center ${styles['text']}`}>Favorites</h3>
-      <div className="lumi-all-wrapper">
-          <Breadcrumb
-            paths={[
-              { name: "首頁 > ", link: "/" },
-              { name: "蒐藏列表" },
-            ]}
-          />
-          <h5>蒐藏商品</h5>
-          <h5>蒐藏老師</h5>
-          <h5>蒐藏課程</h5>
-          <h5>蒐藏旅館</h5>
-          <h6 className="mt-5">看看其他精選商品...</h6>
-       </div>
-       {/* <Footer/> */}
+      <div className={styles.container}>
+        <h3 className={`text-center ${styles["text"]}`}>Favorites</h3>
+      </div>
+      <div className="mt-5 lumi-all-wrapper">
+        <Breadcrumb
+          links={[
+            { label: "首頁 > ", href: "/" },
+            { label: "蒐藏列表", href: "/favorite", active: true },
+          ]}
+        />
+        <h5>蒐藏商品</h5>
+        <h5>蒐藏老師</h5>
+        <h5>蒐藏課程</h5>
+        <h5>蒐藏旅館</h5>
+        <h6 className="mt-5">看看其他精選商品...</h6>
+      </div>
+      {/* <Footer/> */}
     </>
   );
 }
