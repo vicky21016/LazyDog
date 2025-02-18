@@ -84,6 +84,15 @@ const Filter = () => {
           </tr>
         </table>
         {/* <div className={styles.con1}>廣告</div> */}
+        <a href="">
+          <figure>
+            <img
+              src="/product/DM/DM_aside.png"
+              alt="廣告"
+              className="img-fluid"
+            />
+          </figure>
+        </a>
       </aside>
     );
 };
