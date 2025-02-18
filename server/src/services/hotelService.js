@@ -1,10 +1,16 @@
 import pool from "../config/mysql.js";
 
 export const getHotels = async () => {
+  const connection = await pool.getConnection();
   try {
-    const [hotels] = await pool.query(
-      "SELECT * FROM hotel WHERE is_deleted = 0"
-    );
+    const [hotels] = await connection.query(`
+      SELECT 
+        h.*, 
+        hi.url AS main_image_url
+      FROM hotel h
+      LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
+      WHERE h.is_deleted = 0
+    `);
     return hotels;
   } catch (error) {
     throw new Error(" 無法取得旅館list：" + error.message);
@@ -169,6 +175,7 @@ export const updateHotelById = async (updateData) => {
       created_at,
       average_rating,
       total_reviews,
+      main_image_id,
       deleteImageIds = [],
       newImages = [],
       ...updateFields
@@ -182,27 +189,42 @@ export const updateHotelById = async (updateData) => {
     if (
       Object.keys(updateFields).length == 0 &&
       deleteImageIds.length == 0 &&
-      newImages.length == 0
+      newImages.length == 0 &&
+      !main_image_id
     ) {
       return { error: "沒有提供更新欄位或新增刪除圖片" };
     }
 
-    console.log(" 需要更新的欄位:", updateFields);
 
     //  動態生成 SQL **需要再研究 **
     if (Object.keys(updateFields).length > 0) {
       const keys = Object.keys(updateFields);
       const values = Object.values(updateFields);
-      const setClause = keys.map((key) => `${key} = ?`).join(", ");
+      const set = keys.map((key) => `${key} = ?`).join(", ");
       values.push(id);
 
       const [result] = await pool.query(
-        `UPDATE hotel SET ${setClause}, updated_at = NOW() WHERE id = ?`,
+        `UPDATE hotel SET ${set}, updated_at = NOW() WHERE id = ?`,
         values
       );
       if (result.affectedRows == 0) {
         return { error: "更新失敗，找不到該旅館" };
       }
+    }
+    if (main_image_id) {
+      const [imageExists] = await pool.query(
+        "SELECT id FROM hotel_images WHERE id = ? AND hotel_id = ? AND is_deleted = 0",
+        [main_image_id, id]
+      );
+
+      if (imageExists.length == 0) {
+        return { error: "選擇的 main_image_id 無效，請選擇該飯店的有效圖片" };
+      }
+
+      await pool.query(
+        "UPDATE hotel SET main_image_id = ?, updated_at = NOW() WHERE id = ?",
+        [main_image_id, id]
+      );
     }
 
     if (deleteImageIds.length > 0) {

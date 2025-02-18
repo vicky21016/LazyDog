@@ -27,6 +27,7 @@ app.use(
     methods: ["GET", "POST"],
   })
 );
+app.use('/uploads/hotel', express.static('/uploads/hotel'));
 
 app.use("/auth", authRouter);
 app.use("/api/google", googleRouter);
