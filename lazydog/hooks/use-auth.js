@@ -12,8 +12,7 @@ const AuthContext = createContext(null);
 AuthContext.displayName = "AuthContext";
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [userLoaded, setUserLoaded] = useState(false); // 使用者狀態還沒載入完成
+  const [user, setUser] = useState(-1);
   const router = useRouter();
   const pathname = usePathname();
   const protectedRoutes = ["/pages"];
@@ -21,6 +20,8 @@ export function AuthProvider({ children }) {
 
   // 登入
   const login = async (email, password) => {
+   
+
     let API = "http://localhost:5000/auth/login";
     const formData = new FormData();
     formData.append("email", email);
@@ -161,11 +162,9 @@ export function AuthProvider({ children }) {
   };
 
   // 儲存
-  const save = async (id, name, email, birthday, phone) => {
-   
+  const save = async (name, email, gender, birthday, phone) => {
     let token = localStorage.getItem(appKey);
     let API = `http://localhost:5000/auth/${user.id}`;
-    console.log(id);
     try {
       const res = await fetch(API, {
         method: "PUT",
@@ -173,9 +172,12 @@ export function AuthProvider({ children }) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, birthday, phone }),
+        body: JSON.stringify({ name, email, gender, birthday, phone }),
       });
 
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
       const result = await res.json();
       console.log("儲存 API 回應:", result);
 
@@ -183,18 +185,6 @@ export function AuthProvider({ children }) {
         alert("儲存成功");
 
         // 重新取得使用者資料
-        const userRes = await fetch(API, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const updatedUser = await userRes.json();
-        if (updatedUser.status === "success") {
-          setUser(updatedUser.data);
-          localStorage.setItem("user", JSON.stringify(updatedUser.data));
-        }
       } else {
         alert("儲存失敗");
       }
@@ -207,6 +197,11 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     // console.count("useEffect00 次數");
     // 監聽 Firebase 登入狀態*
+    let token = localStorage.getItem(appKey);
+    if (!token) {
+      setUser(null); // 確保未登入時使用是 null
+      return;
+    }
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -220,13 +215,8 @@ export function AuthProvider({ children }) {
             avatar: currentUser.photoURL,
           })
         );
-      } else {
-        setUser(null);
-        localStorage.removeItem("user");
-      }
+      } 
     });
-
-    let token = localStorage.getItem(appKey);
     if (token) {
       const fetchData = async () => {
         let API = "http://localhost:5000/auth/status";
@@ -245,31 +235,24 @@ export function AuthProvider({ children }) {
           // 解析 token 並更新 user
           const newUser = jwt.decode(token);
           setUser(newUser);
-          // console.log("newUser:", newUser);
-          // console.log("user的:", user);  會印出舊的 state 值
-          setUserLoaded(true);
         } catch (err) {
           console.log(err);
+          localStorage.removeItem(appKey);
         }
       };
+      unsubscribe();
       fetchData();
     }
-    setUserLoaded(true);
-    // return () => unsubscribe();
+
+  
   }, []);
 
   useEffect(() => {
-    // console.log("usr:", user);
-    // console.log("usr:", user);
-    // console.count("useEffect 被執行次數");
-    if (!userLoaded) {
-      // 先等 user 載入
-      return;
-    }
-
+    console.log({ user, pathname });
+    if (user == -1) return; // 等待 user 讀取完成
     if (!user && protectedRoutes.includes(pathname)) {
       alert("請先登入");
-      router.replace(loginRoute); // 只有當 user 確認為 null 時，才會導向 /login
+      router.replace(loginRoute);
     }
   }, [pathname, user]);
 

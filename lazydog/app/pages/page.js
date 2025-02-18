@@ -17,8 +17,8 @@ export default function Menu() {
     name: "",
     gender: "",
     nickname: "",
-    birthdate: "",
-    workPhone: "",
+    birthday: "",
+    phone: "",
     email: "",
     location: "",
     city: "",
@@ -33,22 +33,20 @@ export default function Menu() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  const handleCancel = (e) => {};
   const handleSubmit = async (e) => {
     console.log(user.id);
-    
+
     e.preventDefault();
-  
+
     try {
       await save(
-        user.id,
         formData.name,
         formData.email,
-        formData.birthdate,
-        formData.Phone
+        formData.gender,
+        formData.birthday,
+        formData.phone
       );
-
-      
     } catch (error) {
       alert("更新失敗");
       console.log(error);
@@ -56,7 +54,25 @@ export default function Menu() {
   };
 
   useEffect(() => {
-    if (user) setCheckingAuth(false);
+    if (user) {
+      setCheckingAuth(false);
+      setFormData({
+        name: user.name || "",
+        gender: user.gender || "",
+        nickname: user.nickname || "",
+        birthday: user.birthday || "",
+        phone: user.phone || "",
+        email: user.email || "",
+        location: user.location || "",
+        city: user.city || "",
+        district: user.district || "",
+        road: user.road || "",
+        section: user.section || "",
+        lane: user.lane || "",
+        number: user.number || "",
+        floor: user.floor || "",
+      });
+    }
   }, [user]);
 
   if (checkingAuth) {
@@ -66,6 +82,8 @@ export default function Menu() {
       </div>
     );
   }
+  const formattedDate = formData.birthday ? new Date(formData.birthday).toISOString().split('T')[0] : '';
+
   return (
     <>
       <Header />
@@ -81,10 +99,11 @@ export default function Menu() {
               <Input
                 name="name"
                 placeholder="姓名"
-                value={user ? user.name : ""}
+                value={formData.name}
                 onChange={handleChange}
                 required
               />
+
               <h6>
                 性別<span className={`${styles["important"]}`}> *</span>
               </h6>
@@ -98,39 +117,35 @@ export default function Menu() {
                 <option value="">請選擇性別</option>
                 <option value="male">男</option>
                 <option value="female">女</option>
-                <option value="female">其他</option>
+                <option value="other">其他</option>
               </select>
             </div>
+
             <div className={styles.formGroup}>
-              {/* <h6>暱稱</h6>
-              <Input
-                name="nickname"
-                placeholder="暱稱"
-                value={formData.nickname}
-                onChange={handleChange}
-              /> */}
               <h6>
                 生日<span className={`${styles["important"]}`}> *</span>
               </h6>
               <Input
                 type="date"
-                name="birthdate"
-                value={user ? user.birthday : ""}
+                name="birthday"
+                value={formattedDate}
                 onChange={handleChange}
                 required
               />
             </div>
+
             <div className={`${styles.formGroup} ${styles.phone}`}>
               <h6>
                 聯絡電話<span className={`${styles["important"]}`}> *</span>
               </h6>
               <Input
-                name="workPhone"
+                name="phone"
                 placeholder="聯絡電話"
-                value={user ? user.phone : ""}
+                value={formData.phone}
                 onChange={handleChange}
                 required
               />
+
               <h6>
                 聯絡信箱<span className={`${styles["important"]}`}> *</span>
               </h6>
@@ -138,11 +153,12 @@ export default function Menu() {
                 type="email"
                 name="email"
                 placeholder="聯絡信箱"
-                value={user ? user.email : ""}
+                value={formData.email}
                 onChange={handleChange}
                 required
               />
             </div>
+
             <div className={styles.formGroup}>
               <h6>
                 所在地區<span className={`${styles["important"]}`}> *</span>
@@ -153,6 +169,7 @@ export default function Menu() {
                 value={formData.location}
                 onChange={handleChange}
               />
+
               <div className={styles.addressRow}>
                 <select
                   name="city"
@@ -179,6 +196,7 @@ export default function Menu() {
                   onChange={handleChange}
                 />
               </div>
+
               <div className={styles.addressRow}>
                 <Input
                   name="section"
@@ -205,9 +223,13 @@ export default function Menu() {
                   onChange={handleChange}
                 />
               </div>
-             
             </div>
-            <button type="submit" className={styles.exStore}>
+
+            <button
+              type="button"
+              className={styles.exStore}
+              onClick={handleCancel}
+            >
               取消
             </button>
             <button type="submit" className={styles.store}>
