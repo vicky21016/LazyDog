@@ -3,14 +3,16 @@ import jwt from "jsonwebtoken";
 import pool from "../config/mysql.js";
 import bcrypt from "bcrypt";
 import multer from "multer";
-
-// const path = require("path");
-const app = express();
-
+import path from "path";
 const router = express.Router();
 const upload = multer();
 const secretKey = process.env.JWT_SECRET_KEY;
-// app.use("/user/img", express.static(path.join(__dirname, "public", "img")));
+
+
+// router.use(
+//   "/img",
+//   express.static(path.join(__dirname, "public", "user", "img"))
+// );
 router.post("/login", upload.none(), async (req, res) => {
   const { email, password } = req.body;
 
