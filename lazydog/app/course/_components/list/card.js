@@ -13,11 +13,9 @@ export default function Card({course = {}}) {
           src="/course/img/18 (1).jpeg"
           alt
           />
-          <h5 className={styles.tag}>寵物訓練</h5>
-          <h2 className={styles.name}>犬貓營養與動物中醫</h2>
-          <p className={styles.intro}>
-          了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提
-          </p>
+          <h5 className={styles.tag}>{course.type_id}</h5>
+          <h2 className={styles.name}>{course.name}</h2>
+          <p className={styles.intro}>{course.description}</p>
       </div>   
     </>
   )

@@ -1,13 +1,22 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import useFetch from '@/hooks/useCourse2';
+import React from 'react'
+import useCourse from '@/hooks/useCourse';
 import styles from "../courseList.module.css";
 import Card from './card';
 
 
 export default function CourseCard() {
-//   const { data, loading, error } = useFetch()     
+  const { courses=[], loading, error } = useCourse() 
+  
+  if (loading) {
+    return <div>Loading...</div>; // 顯示載入中的提示
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>; // 顯示錯誤訊息
+  }
+
   return (
     <>
        <div className={`col-lg-9 ${styles.right}`}>
@@ -25,7 +34,9 @@ export default function CourseCard() {
             </div>
             </div>
             <div className={styles.courseGroup}>
-                <Card/>
+                { courses.map((course) => {
+                    <Card key={course.id} course={course}/>
+                })}
             </div>
             <nav className={styles.navigation} aria-label="Page navigation">
             <ul className={`pagination justify-content-center ${styles.pagination}`}>

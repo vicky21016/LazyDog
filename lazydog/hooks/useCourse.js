@@ -1,33 +1,29 @@
-import { useState, useEffect } from "react";
+import {  useEffect, useState} from "react";
 
-export function useCourse() {
+// const AuthContext = createContext();
 
+export default function useCourse() {
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      let API = "http://localhost:5000/api/course/";
+    async function fetchData() {
       try {
-        const res = await fetch(API);
-        
-        if (!res.ok) throw new Error("feach course err"); // 檢查回應是否成功
-
-        const result = await res.json(); 
-        console.log("Fetched courses:", result);
-
-       if (!Array.isArray(result)) throw new Error(result.message); 
-
-       setCourses(result); 
-
+        const response = await fetch('http://localhost:5000/api/course');
+        if (!response.ok) {
+          throw new Error('Failed to fetch courses');
+        }
+        const data = await response.json();
+        setCourses(data);
       } catch (err) {
-        console.log(err.message);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    };
+    }
+    fetchData();
+  }, []);
 
-    fetchCourses();
-  }, []); 
-useEffect(() => {
-
-}, [courses]);
-  return { courses }; // 返回 courses 資料
+  return { courses, loading, error };
 }
