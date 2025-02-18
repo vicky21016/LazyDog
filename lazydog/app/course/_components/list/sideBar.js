@@ -1,7 +1,9 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import styles from "../../../styles/modules/courseList.module.css";
+import styles from "../courseList.module.css"
+
+
 
 export default function SideBar() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import styles from "../../../styles/modules/courseId.module.css";
+import styles from "../_components/courseId.module.css";
 
 export default function CourseIdPage() {
   return (
