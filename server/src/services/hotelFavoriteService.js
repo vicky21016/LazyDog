@@ -9,7 +9,7 @@ export const addFavorites = async (user_id, hotel_id) => {
     );
 
     if (existing.length > 0) {
-      return { error: "該飯店已收藏" };
+      throw new Error("該飯店已收藏");
     }
 
     const [result] = await pool.query(
@@ -17,10 +17,13 @@ export const addFavorites = async (user_id, hotel_id) => {
       [user_id, hotel_id]
     );
 
-    return { id: result.insertId, user_id, hotel_id };
+    return {
+      success: true,
+      message: "收藏成功",
+      data: { id: result.insertId, user_id, hotel_id },
+    };
   } catch (error) {
-    console.error("新增收藏錯誤:", error);
-    return null;
+    throw new Error("新增收藏錯誤：" + error.message);
   }
 };
 export const removeFavorites = async (favorite_id, user_id) => {
@@ -30,7 +33,9 @@ export const removeFavorites = async (favorite_id, user_id) => {
       [favorite_id, user_id]
     );
 
-    if (existing.length === 0) return { error: "找不到收藏紀錄" };
+    if (existing.length == 0) {
+      throw new Error("找不到收藏紀錄");
+    }
 
     await pool.query(
       "UPDATE hotel_favorites SET is_deleted = 1, updated_at = NOW() WHERE id = ?",
@@ -39,8 +44,7 @@ export const removeFavorites = async (favorite_id, user_id) => {
 
     return { success: true, message: "收藏已移除" };
   } catch (error) {
-    console.error("移除收藏錯誤:", error);
-    return null;
+    throw new Error("移除收藏錯誤：" + error.message);
   }
 };
 export const getUserFavorites = async (user_id) => {
@@ -56,9 +60,8 @@ export const getUserFavorites = async (user_id) => {
            ORDER BY hf.created_at DESC`,
       [user_id]
     );
-    return favorites;
+    return { success: true, message: "獲取收藏清單成功", data: favorites };
   } catch (error) {
-    console.error("獲取收藏清單錯誤:", error);
-    return [];
+    throw new Error("獲取收藏清單錯誤：" + error.message);
   }
 };
