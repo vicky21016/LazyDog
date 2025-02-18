@@ -1,27 +1,28 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
+import { useTeacherDetail } from "@/hooks/useTeacherDetail";
 // import { useParams } from "react-router-dom";
 import { useRouter } from "next/router";
-import Header from "../../components/layout/header";
-import Breadcrumb from "../../components/teacher/breadcrumb";
-import Profile from "../../components/teacher/Profile";
+import Header from "../../../components/layout/header";
+import Breadcrumb from "../../../components/teacher/breadcrumb";
+import Profile from "../../../components/teacher/Profile";
 // import SocialLinks from '../../components/teacher/SocialLinks';
-import ToggleButtons from "../../components/teacher/ToggleButtons";
-import OtherCourses from "../../components/teacher/OtherCourses";
+import ToggleButtons from "../../../components/teacher/ToggleButtons";
+import OtherCourses from "../../../components/teacher/OtherCourses";
 // import TeacherCard from "../../components/teacher/teacherCard";
-import styles from "./info.module.css";
-import OtherTeacher from "../../components/teacher/otherTeacher";
+import styles from "../info.module.css";
+import OtherTeacher from "../../../components/teacher/otherTeacher";
 // import style from "../../pages/menu.module.css";
 
-const App = () => {
+export default function App () {
   const [selectedTab, setSelectedTab] = useState("experience");
   const router = useRouter();
-  const { id } = router.query; 
+  const { id } = router.query;
 
-  const [teacher] = useTeacherDetail(id); 
-
+  const {teacher} = useTeacherDetail(id); 
   const teacherData = [
     {
       imgSrc: "/teacher-img/Zoe.png",
@@ -76,11 +77,15 @@ const App = () => {
       <div className="lumi-all-wrapper">
         <div className={styles.container}>
           <Breadcrumb
-            paths={[
-              { name: "首頁 > ", link: "/" },
-              { name: "師資服務 >", link: "/teacher" },
-              { name: "師資列表 >", link: "/teacher/list" },
-              { name: "師資介紹" },
+            links={[
+              { label: "首頁 ", href: "/" },
+              { label: " 師資服務", href: "/teacher" },
+              {
+                label: " 師資列表",
+                href: "/teacher/list",
+              },
+              { name: "師資介紹", href: "/teacher/info",
+                active: true, },
             ]}
           />
 
@@ -128,4 +133,3 @@ const App = () => {
   );
 };
 
-export default App;

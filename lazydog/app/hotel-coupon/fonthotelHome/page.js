@@ -14,6 +14,7 @@ import HotelCard from "@/app/components/hotel/hotelCard";
 import SearchBar from "../../components/hotel/search";
 import Aside from "../../product/_components/aside/aside"
 import Page from "../../components/hotel/page";
+import Breadcrumb from "../../components/teacher/breadcrumb";
 export default function HotelHomePage() {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -139,7 +140,17 @@ export default function HotelHomePage() {
             onSearch={handleSearch}
           />
         </div>
-
+        <div className="lumi-all-wrapper mt-5">
+          <Breadcrumb
+            links={[
+              { label: "首頁 ", href: "/" },
+              { label: "旅館列表", href: "/hotel-coupon/fonthotelHome" ,
+              
+                active: true,
+              },
+            ]}
+          />
+        </div>
         <div className="container mt-4">
           <div className="row">
             {/* 篩選 */}

@@ -71,28 +71,54 @@ export const createNewOrders = async (orderData) => {
   }
 };
 export const updateOrderById = async (orderId, updateData) => {
-    try {
-      const [result] = await pool.query(
-        "UPDATE hotel_order SET ? WHERE id = ? AND is_deleted = 0",
-        [updateData, orderId]
-      );
-      
-      return result.affectedRows > 0;
-    } catch (error) {
-      throw new Error("無法更新訂單: " + error.message);
-    }
-  };
+  try {
+    const [result] = await pool.query(
+      "UPDATE hotel_order SET ? WHERE id = ? AND is_deleted = 0",
+      [updateData, orderId]
+    );
 
-  export const softDeleteOrderById = async (orderId) => {
-    try {
-      const [result] = await pool.query(
-        "UPDATE hotel_order SET is_deleted = 1, updated_at = NOW() WHERE id = ?",
-        [orderId]
-      );
-      
-      return result.affectedRows > 0;
-    } catch (error) {
-      throw new Error("無法刪除訂單: " + error.message);
+    return result.affectedRows > 0;
+  } catch (error) {
+    throw new Error("無法更新訂單: " + error.message);
+  }
+};
+//訂單狀態
+export const updateOrderStatus = async (orderId, status) => {
+  try {
+    const statuses = ["pending", "confirmed", "completed", "cancelled"];
+    if (!statuses.includes(status)) {
+      throw new Error("無法更新訂單狀態 ");
     }
-  };
-  
+    const [result] = await pool.query(
+      "UPDATE hotel_order SET status = ?, updated_at = NOW() WHERE id = ? AND is_deleted = 0",
+      [status, orderId]
+    );
+    return result.affectedRows > 0;
+  } catch (error) {
+    throw new Error("無法更新訂單狀態: " + error.message);
+  }
+};
+//付款狀態
+export const updatePayStatus = async (orderId, payment_status) => {
+  try {
+    const [result] = await pool.query(
+      "UPDATE hotel_order SET payment_status = ? , updated_at = NOW() WHERE id = ? AND is_deleted = 0",
+      [payment_status, orderId]
+    );
+    return result.affectedRows > 0;
+  } catch (error) {
+    throw new Error("無法更新付款狀態: " + error.message);
+  }
+};
+export const softDeleteOrderById = async (orderId) => {
+  try {
+    const [result] = await pool.query(
+      "UPDATE hotel_order SET is_deleted = 1, updated_at = NOW() WHERE id = ?",
+      [orderId]
+    );
+
+    return result.affectedRows > 0;
+  } catch (error) {
+    throw new Error("無法刪除訂單: " + error.message);
+  }
+};

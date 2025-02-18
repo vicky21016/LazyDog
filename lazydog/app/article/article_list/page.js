@@ -3,17 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
-// import {
-//   faMagnifyingGlass,
-//   faFilter,
-//   FaUser,
-//   faCalendar,
-//   faTag,
-//   faChevronLeft,
-//   faChevronRight,
-// } from '@fortawesome/free-solid-svg-icons'
-// import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
-
 const ArticlePage = () => {
   // 假設的數據，可替換為真實數據
   const cards = Array(6).fill({

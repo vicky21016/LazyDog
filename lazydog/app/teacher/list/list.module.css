@@ -1,6 +1,6 @@
 .container {
     max-width: 1320px;
-    margin: 30px auto;
+    margin: auto;
     width: 100%;
   }
 
@@ -95,7 +95,7 @@
   }
   
   .tdTable {
-    height: 54px;
+    height: 50px;
     padding: 0px 25px;
     display: flex;
     align-items: center;
@@ -103,6 +103,13 @@
   
   .searchTable {
     gap: 17px;
+    /* border-bottom: 1px solid rgba(167, 166, 166, 0.521); */
+     input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 16px;
+  }
   }
   
   .searchP {
@@ -113,7 +120,11 @@
   }
   
   .menuTable {
-    border-bottom: 0.5px solid var(--gray);
+     height: 58px;
+     margin: 10px 0 0 0;
+     padding: 10px 0 0 25px ;
+    border-top: 1px solid rgba(167, 166, 166, 0.521);
+    /* border-bottom: 1px solid rgba(167, 166, 166, 0.521); */
   }
   
   .checkboxTable {
@@ -134,3 +145,7 @@
     border: 1px solid #F5842B;
     border-radius: 66px;
   }  
+  .clear:hover{
+    background-color: #ff9538;
+  color: white;
+  }

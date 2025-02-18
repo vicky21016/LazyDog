@@ -8,14 +8,10 @@ import styles from "../../../styles/modules/toggle.module.css";
 import style from "../../pages/menu.module.css";
 
 const ToggleButtons = ({ onRadioChange }) => {
+  
   const { id } = useParams();
   const [teacher, setTeacher] = useState(null);
 
-   useEffect(() => {
-        axios.get(`/teachers/${id}`)
-            .then(res => setTeacher(res.data))
-            .catch(err => console.error("取得老師詳細資訊失敗", err));
-    }, [id]);
   
     // if (!teacher) return 
     // <>
