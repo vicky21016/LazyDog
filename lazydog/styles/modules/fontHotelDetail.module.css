@@ -1,6 +1,6 @@
 /*  介紹  */
 .suHotelDescription {
-  max-width: 550px;
+  /* max-width: 550px; */
   line-height: 1.6;
   text-align: left;
 }
@@ -47,15 +47,17 @@
   background-color: #ff9538;
   color: white;
   padding: 10px 15px;
-  border-radius: 8px;
+  border: 1px solid transparent;
+  border-radius: 4px;
   font-size: 16px;
   font-weight: bold;
-  border: none;
   cursor: pointer;
 }
 
 .suRoomBookBtn:hover {
-  background-color: #ff9538;
+  background-color: #fdf9f5;
+    color: #ff9538;
+    border-color: #ff9538;
 }
 
 /* =================== 廣告區 (努力區塊) =================== */
@@ -126,11 +128,13 @@
 .suEffortButtons .suBtnPrimary {
   background-color: #ff9538;
   color: white;
-  border: none;
+  border: 1px solid transparent;
 }
 
 .suEffortButtons .suBtnPrimary:hover {
-  background-color: #ff9538;
+     background-color: #fdf9f5;
+    color: #ff9538;
+    border-color: #ff9538;
 }
 
 .suEffortButtons .suBtnOutlineLight {

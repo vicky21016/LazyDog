@@ -1,11 +1,5 @@
 /* 設定 */
 :root {
-  * {
-    font-family: "Noto Sans TC", serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-  }
   --Orange: #f5842b;
   --orange: #f5842b;
   --Skin: #f1d5b6;
@@ -42,72 +36,15 @@
     margin: 0;
     padding: 0;
   }
-
-  /* div {
-    margin: 0;
-    padding: 0;
-  } */
-
-  h1 {
-    margin: 0;
-    padding: 0;
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--Black);
-    cursor: default;
-  }
-
-  h2 {
-    margin: 0;
-    padding: 0;
-    font-size: 24px;
-    font-weight: 500;
-    color: var(--Black);
-    cursor: default;
-  }
-
-  h3 {
-    margin: 0;
-    padding: 0;
-    font-size: 20px;
-    color: var(--Black);
-    cursor: default;
-  }
-
-  h4 {
-    margin: 0;
-    padding: 0;
-    font-size: 16px;
-    color: var(--Black);
-    cursor: default;
-  }
-
-  h5 {
-    margin: 0;
-    padding: 0;
-    font-size: 14px;
-    color: var(--Black);
-    cursor: default;
-  }
-
-  h6 {
-    margin: 0;
-    padding: 0;
-    font-size: 12px;
-    color: var(--Black);
-    cursor: default;
-  }
-
-  p {
-    margin: 0;
-    padding: 0;
-    margin: 0;
-    font-size: 10px;
-    color: var(--Black);
-    cursor: default;
+  .bag{
+    background-color: #f5842b;
   }
 }
-
+.wrapper{
+   margin: 0 auto;
+  max-width: 1440px;
+  text-align: center;
+}
 
 .footer {
   display: flex;
@@ -134,12 +71,13 @@
 /* ---------------------------------- */
 /* ----------footer中段區域----------- */
 .footerMiddle {
-  padding: 65px 120px 25px;
+  /* padding: 65px 120px 25px; */
   .infos {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
     color: var(--White);
+    gap: 80px;
   }
 }
 
@@ -149,19 +87,20 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  /* width: 440px; */
   gap: 30px;
   padding: 21px 0;
   .logoPic {
-    width: 150px;
+    width: 100px;
     height: auto;
   }
   .place {
     display: flex;
-    width: 514px;
+    /* width: 514px; */
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 45px;
+    gap: 35px;
 
     .address {
       display: flex;
@@ -172,9 +111,9 @@
       .addInfo {
         color: var(--Color-4, #fdfaf5);
         font-family: "Noto Sans TC";
-        font-size: 23px;
+        font-size: 18px;
         font-style: normal;
-        font-weight: 700;
+        font-weight: 600;
         line-height: 28px; /* 170% */
         letter-spacing: 4px;
       }
@@ -183,7 +122,7 @@
     .timeInfo {
       color: var(--Color-4, #fdfaf5);
       font-family: "Noto Sans TC";
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 400;
       line-height: 35px; /* 194.444% */
       letter-spacing: 3.16px;
@@ -199,20 +138,20 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 18px;
+  gap: 8px;
   .clientService {
     padding: 18px 0 10px;
     user-select: none;
     color: var(--Color-4, #fdfaf5);
-    font-size: 30px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 600;
     line-height: 34px; /* 106.25% */
     letter-spacing: 5px;
   }
   .service {
     color: var(--Color-4, #fdfaf5);
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 16px;
+    font-weight: 400;
     letter-spacing: 2px;
     padding-left: 1.5px;
     &:hover {
@@ -224,7 +163,7 @@
 
 /* -------footer中段區域第4部分------- */
 .footerList4 {
-  width: 500px;
+  width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -235,7 +174,7 @@
   .footerEmail {
     border: 8px solid var(--Yellow);
     width: 90%;
-    height: 70px;
+    height: 60px;
     border-radius: 100px;
     background: var(--White);
     display: flex;
@@ -244,7 +183,7 @@
     padding: 0 40px 0 60px;
     .enterMail {
       border: none;
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 500;
       letter-spacing: 2px;
       background: var(--White);
@@ -266,7 +205,7 @@
   .discount {
     color: var(--Color-4, #fdfaf5);
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     line-height: 34px; /* 154.545% */
     letter-spacing: 1.2px;

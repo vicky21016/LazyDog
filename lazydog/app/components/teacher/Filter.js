@@ -17,7 +17,7 @@ const Filter = () => {
           </tr>
           <tr>
             <td className={`${styles.tdTable} ${styles.menuTable}`}>
-              <h5>課程類別</h5>
+              <h5 className="my-3">課程類別</h5>
               <img src="./img/font/down.png" alt="" />
             </td>
           </tr>
@@ -61,7 +61,7 @@ const Filter = () => {
           </tr>
           <tr>
             <td className={`${styles.tdTable} ${styles.menuTable}`}>
-              <h5>老師性別</h5>
+              <h5 className="my-3">老師性別</h5>
               <img src="./img/font/down.png" alt="" />
             </td>
           </tr>

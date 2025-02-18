@@ -6,7 +6,7 @@ function CourseSection() {
       <div className="p-5 lumi-teacher-team text-center">
         <h6 className="mb-4 fw-medium">學習與毛孩共同成長的美好過程</h6>
         <h3 className="mb-5 lumi-m-title">課堂實影</h3>
-        <div className="lumi-all-wrapper mb-5">
+        <div className="lumi-all-wrapper">
           <img
             className={` ${styles["img1"]}`}
             src="/teacher-img/img2.webp"
@@ -38,6 +38,9 @@ function CourseSection() {
             alt=""
           />
         </div>
+      </div>
+      <div>
+        <img className="" src="/teacher-img/rice2.png" alt />
       </div>
       <div className="mt-5 lumi-all-wrapper">
         <div className="row">

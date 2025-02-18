@@ -4,7 +4,7 @@ import TeacherSection from '../components/teacher/teacherSection';
 import CourseSection from '../components/teacher/courseSection';
 import styles from "../../styles/modules/toggle.module.css";
 
-function App() {
+export default function App() {
   return (
     <div>
       <Header />
@@ -19,4 +19,3 @@ function App() {
   );
 }
 
-export default App;
