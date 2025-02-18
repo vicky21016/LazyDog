@@ -103,6 +103,13 @@
   
   .searchTable {
     gap: 17px;
+    /* border-bottom: 1px solid rgba(167, 166, 166, 0.521); */
+     input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 16px;
+  }
   }
   
   .searchP {
@@ -113,7 +120,8 @@
   }
   
   .menuTable {
-    border-bottom: 0.5px solid var(--gray);
+    border-top: 1px solid rgba(167, 166, 166, 0.521);
+    /* border-bottom: 1px solid rgba(167, 166, 166, 0.521); */
   }
   
   .checkboxTable {
