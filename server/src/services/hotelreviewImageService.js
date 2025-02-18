@@ -8,8 +8,7 @@ export const addReviewImageService = async (review_id, url, description) => {
     );
     return true;
   } catch (error) {
-    console.error("新增評論圖片錯誤:", error);
-    return false;
+    throw new Error("新增評論圖片錯誤:" + error.message);
   }
 };
 export const getReviewImagesService = async (review_id) => {
@@ -20,8 +19,7 @@ export const getReviewImagesService = async (review_id) => {
     );
     return images;
   } catch (error) {
-    console.error("獲取評論圖片錯誤:", error);
-    return [];
+    throw new Error("獲取評論圖片錯誤:" + error.message);
   }
 };
 export const deleteReviewImageService = async (id, user_id) => {
@@ -33,7 +31,9 @@ export const deleteReviewImageService = async (id, user_id) => {
       [id, user_id]
     );
 
-    if (image.length === 0) return false;
+    if (image.length == 0) {
+      throw new Error("找不到圖片:" + error.message);
+    }
 
     await pool.query(
       "UPDATE hotel_review_images SET is_deleted = 1, updated_at = NOW() WHERE id = ?",
@@ -41,7 +41,6 @@ export const deleteReviewImageService = async (id, user_id) => {
     );
     return true;
   } catch (error) {
-    console.error("刪除評論圖片錯誤:", error);
-    return false;
+    throw new Error("刪除評論圖片錯誤:" + error.message);
   }
 };

@@ -32,7 +32,7 @@ router.post(
 // 取得特定HOTEL的所有評論
 router.get("/:hotel_id", getHotelReview);
 
-// 刪除自己的評論包含圖片
+// 刪除自己的評論包含圖片(只是軟刪除而已)
 router.delete("/:id", verifyToken, verifyRole(["user"]), deleteReview);
 
 export default router;
