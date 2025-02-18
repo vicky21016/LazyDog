@@ -1,20 +1,20 @@
 import express from "express";
 import {
-  getAllRoom,
-  getRoomById,
-  createRoom,
-  updateRoom,
-  deleteRoom,
+  getAllHotelRoom,
+  getHotelRoomById,
+  createHotelRoom,
+  updateHotelRoom,
+  deleteHotelRoom,
 } from "../controllers/hotelRoomTypeController.js";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 //都可以
-router.get("/", getAllRoom);
-router.get("/:id", getRoomById);
+router.get("/", getAllHotelRoom);
+router.get("/:id", getHotelRoomById);
 //operator可以
-router.post("/", verifyToken, verifyRole(["operator"]), createRoom);
-router.patch("/:id", verifyToken, verifyRole(["operator"]), updateRoom);
-router.delete("/:id", verifyToken, verifyRole(["operator"]), deleteRoom);
+router.post("/", verifyToken, verifyRole(["operator"]), createHotelRoom);
+router.patch("/:id", verifyToken, verifyRole(["operator"]), updateHotelRoom);
+router.delete("/:id", verifyToken, verifyRole(["operator"]), deleteHotelRoom);
 
 export default router;

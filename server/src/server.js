@@ -37,7 +37,7 @@ app.use("/auth", authRouter);
 app.use("/api/google", googleRouter);
 app.use("/teacher", teacherSignRouter);
 app.use("/api/hotels", hotelRoutes);
-app.use("/api/room_type", hotelRoomTypeRoutes);
+app.use("/api/hotel_room_type", hotelRoomTypeRoutes);
 app.use("/api/hotel_images", hotelImagesRoutes);
 app.use("/api/hotel_orders", hotelOrderRoutes);
 app.use("/api/hotel_favorite", hotelFavoriteRoutes);
