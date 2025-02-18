@@ -141,12 +141,18 @@ export const createHotel = async (req, res) => {
 export const updateHotel = async (req, res) => {
   try {
     const { id } = req.params;
-    const { deleteImageIds, newImages, ...hotelData } = req.body;
+    const { deleteImageIds, ...hotelData } = req.body;
 
     if (isNaN(Number(id))) {
       return res.status(400).json({ error: "無效的 ID" });
     }
-
+    let newImages = [];
+    if (req.files && req.files.length > 0) {
+      newImages = req.files.map((file) => ({
+        url: `/uploads/hotel/${file.filename}`,
+        description: null, // 預設為 null
+      }));
+    }
     const updatedHotel = await updateHotelById({
       id,
       deleteImageIds: deleteImageIds || [],
