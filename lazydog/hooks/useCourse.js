@@ -17,7 +17,7 @@ export function useCourse() {
 
        if (!Array.isArray(result)) throw new Error(result.message); 
 
-        setTeachers(result); 
+       setCourses(result); 
 
       } catch (err) {
         console.log(err.message);

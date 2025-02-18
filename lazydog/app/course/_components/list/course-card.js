@@ -1,22 +1,13 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { useCourse } from "@/hooks/useCourse";
+import useFetch from '@/hooks/useCourse2';
 import styles from "../courseList.module.css";
 import Card from './card';
 
 
 export default function CourseCard() {
-
-    const App = () => {
-        const { courses = [] } = useCourse();
-        
-        useEffect(() => {
-        
-        }, [courses]); 
-        
-        }
-        
+//   const { data, loading, error } = useFetch()     
   return (
     <>
        <div className={`col-lg-9 ${styles.right}`}>
@@ -34,11 +25,7 @@ export default function CourseCard() {
             </div>
             </div>
             <div className={styles.courseGroup}>
-                {courses.map((course)=>{
-                    return(
-                       <Card key={course.id} course={course}/>          
-                    )
-                })}
+                <Card/>
             </div>
             <nav className={styles.navigation} aria-label="Page navigation">
             <ul className={`pagination justify-content-center ${styles.pagination}`}>
@@ -72,3 +59,4 @@ export default function CourseCard() {
     </>
   )
 }
+

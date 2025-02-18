@@ -4,7 +4,11 @@ import { getCourses, getId, searchCourses} from "../services/courseService.js";
 export const getAllCourse = async (req, res) => {
   try {
     const courses = await getCourses();
-    res.json(courses);
+    res.status(200).json({
+      status: "success",
+      data: courses,
+      message: "讀取course資料表成功!"
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
