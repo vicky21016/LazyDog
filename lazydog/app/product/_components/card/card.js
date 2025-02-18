@@ -2,28 +2,51 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "./card.module.css";
+import Link from "next/link";
 
 export default function CardCard(product = {}) {
-  const [hover, setHover] = useState(false);
+  const [cardHover, setCardHover] = useState(false);
+  const [heartHover, setHeartHover] = useState(false);
+  const [heartState, setHeartState] = useState(false);
+  const [cartHover, setCartHover] = useState(false);
+  const [cartRate, setCartRate] = useState(0);
   const products = product?.product;
   const productName = products?.name;
-  const productPrice = products?.price;
-  const productDiscount = (1 - Number(products?.discount)).toFixed(2) * 100;
+  const productID = products?.productID;
 
-  console.log(products, productDiscount);
+  const productPrice = (
+    Number(products?.price) * Number(products?.discount)
+  ).toFixed(0);
+  const productDiscount = (1 - Number(products?.discount)).toFixed(2) * 100;
 
   return (
     <li
       className={styles.ProductCard}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseEnter={() => setCardHover(true)}
+      onMouseLeave={() => setCardHover(false)}
     >
-      <button
-        type="button"
-        className={hover ? styles.ProductCardHeartOn : styles.ProductCardHeart}
+      <div
+        className={
+          cardHover ? styles.ProductCardHeartOff : styles.ProductCardHeart
+        }
       >
-        <img src="/product/font/heart.png" alt="" />
-      </button>
+        <img
+          src={`/product/font/${heartState ? "heart-fill" : "heart"}.png`}
+          alt=""
+        />
+      </div>
+      <div
+        className={
+          cardHover
+            ? styles.ProductCardCartOff
+            : cartRate
+            ? styles.ProductCardCart
+            : styles.ProductCardCartOff
+        }
+      >
+        <img src={`/product/font/cart-fill-big.png`} alt="" />
+        <p>{cartRate}</p>
+      </div>
       {productDiscount > 0 && (
         <div className={styles.ProductCardOnsale}>-{productDiscount} %</div>
       )}
@@ -38,19 +61,40 @@ export default function CardCard(product = {}) {
         <button
           type="button"
           className={`${styles.HoverIcon} ${styles.FavoriteBtn}`}
+          onMouseEnter={() => setHeartHover(true)}
+          onMouseLeave={() => setHeartHover(false)}
+          onClick={() => setHeartState(!heartState)}
         >
-          <img src="/product/font/heart.png" alt="" />
+          <img
+            src={`/product/font/${
+              heartHover || heartState ? "heart-fill-big" : "heart-big"
+            }.png`}
+            alt=""
+          />
         </button>
         <button
           type="button"
-          className={`${styles.HoverIcon} ${styles.CartBtn}`}
+          className={`${styles.HoverIcon} ${
+            cartRate > 0 ? styles.CartBtn : styles.CartBtnOff
+          }`}
+          onMouseEnter={() => setCartHover(true)}
+          onMouseLeave={() => setCartHover(false)}
+          onClick={() => setCartRate(cartRate + 1)}
         >
-          <img src="/product/font/cart.png" alt="" />
-          <h2>1</h2>
+          <img
+            src={`/product/font/${
+              cartHover ? "cart-add" : cartRate ? "cart-fill" : "cart"
+            }.png`}
+            alt=""
+          />
+          <h6>{cartRate}</h6>
         </button>
-        <a href="" className={styles.HoverIcon}>
+        <Link
+          href={`/product/detail?productID=${productID}`}
+          className={styles.HoverIcon}
+        >
           <img src="/product/font/list.png" alt="" />
-        </a>
+        </Link>
       </div>
     </li>
   );

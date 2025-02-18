@@ -6,74 +6,113 @@ import ProductCard from "../_components/card/card";
 import RateCard from "../_components/rate/ratecard";
 import StarGroup from "../_components/rate/stargroup";
 import StarBar from "../_components/rate/starbar";
+import useSWR from "swr";
+import Link from "next/link";
 
-export default function DetailPage(props) {
+export default function DetailPage(productID = {}) {
+  const product = productID?.searchParams.productID;
+  const url = `http://localhost:5000/api/products/${product}`;
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const { data, isLoading, error, mutate } = useSWR(url, fetcher);
+  const productData = data?.data[0];
+  data?.data.map((v, i) => {
+    // v.comment;
+  });
+  console.log();
+  const productName = productData?.name;
+  const img = {
+    list: [],
+    img: [],
+    sm: [],
+    info: [],
+  };
+  if (productData) {
+    img["list"].push(productData?.listImg);
+    img["img"] = (productData?.img).split(",");
+    if (productData?.smImg) img["sm"] = (productData?.smImg).split(",");
+    if (productData?.infoImg) img["info"] = (productData?.infoImg).split(",");
+  }
+  const productPrice = (
+    Number(productData?.price) * Number(productData?.discount)
+  ).toFixed(0);
+  const productDiscount = (1 - Number(productData?.discount)).toFixed(2) * 100;
+
+  const deadDate = Date.parse(productData?.discount_et);
+  const deadline = () => Math.max(0, deadDate - Date.now());
+  const [countDown, setCountDown] = useState(deadline());
+
+  const deadDay = Math.floor(countDown / (1000 * 60 * 60 * 24));
+  const deadHour = Math.floor(
+    (countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const deadMin = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
+
+  console.log(productData);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountDown(deadline());
+    }, 10000);
+    setCountDown(deadline());
+    return () => clearInterval(timer);
+  }, [deadDate]);
   return (
     <div className={`${styles.Container} container`}>
       <section className={styles.Breadcrumbs}>
-        <a href="">目錄</a>
+        <Link href="http://localhost:3000">首頁</Link>
         <img src="/product/font/right.png" alt="" />
-        <a href="">罐頭</a>
+        <Link href="http://localhost:3000/product/list"> 商品目錄 </Link>
         <img src="/product/font/right.png" alt="" />
-        <a href="" className={styles.BreadcrumbsActive}>
-          主食/餐包
-        </a>
+        <Link
+          className={styles.BreadcrumbsActive}
+          href={`http://localhost:3000/product/list/category?category=${productData?.category}`}
+        >
+          {productData?.category}
+        </Link>
       </section>
       <section className={styles.ProductInfo}>
         <div className={styles.ProductInfoImgGroup}>
           <figure>
-            <img
-              src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_(1).webp"
-              alt=""
-            />
+            <img src={`/product/img/${productName}${img.img[0]}`} alt="" />
           </figure>
           <div className={styles.ProductInfoImgSmall}>
-            <figure className={styles.ProductInfoImgSmallActive}>
-              <img
-                src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_sm(1).webp"
-                alt=""
-              />
-            </figure>
-            <figure>
-              <img
-                src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_sm(2).webp"
-                alt=""
-              />
-            </figure>
-            <figure>
-              <img
-                src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_sm(1).webp"
-                alt=""
-              />
-            </figure>
-            <figure>
-              <img
-                src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_sm(2).webp"
-                alt=""
-              />
-            </figure>
+            {img.sm &&
+              img.sm.map((v, i) => {
+                if (i < 6) {
+                  return (
+                    <figure
+                      key={`smPic${i}`}
+                      className={styles.ProductInfoImgSmallActive}
+                    >
+                      <img src={`/product/img/${productName}${v}`} alt="" />
+                    </figure>
+                  );
+                }
+              })}
           </div>
         </div>
         <div className={styles.ProductInfoDetail}>
           <div className={styles.ProductInfoContent}>
             <div className={styles.InfoFavoriteGroup}>
               <button type="button" className={styles.FavoriteBtn}>
-                <img src="/product/font/heart.png" alt="" />
+                <img src="/product/font/heart-big.png" alt="" />
               </button>
               <h6>加入收藏</h6>
             </div>
-            <div className={styles.InfoOnsaleGroup}>
-              <div className={styles.OnsaleTag}>
-                <h6>-30%</h6>
+            {countDown > 0 && (
+              <div className={styles.InfoOnsaleGroup}>
+                <div className={styles.OnsaleTag}>
+                  <h5>-{productDiscount}%</h5>
+                </div>
+                <div className={styles.OnsaleInfo}>
+                  <h5>限時促銷剩餘時間</h5>
+                  <h5 className={styles.OnsaleTime}>
+                    {deadDay} 天 : {deadHour} 時 : {deadMin} 分
+                  </h5>
+                </div>
               </div>
-              <div className={styles.OnsaleInfo}>
-                <h6>限時促銷剩餘時間</h6>
-                <h6 className={styles.OnsaleTime}>00天:08時:00分</h6>
-              </div>
-            </div>
-            <h2 className={styles.InfoProductName}>
-              法國皇家 SHNW 皇家小型幼犬濕糧MNPW 85克(1入)(狗主食餐包)
-            </h2>
+            )}
+            <h2 className={styles.InfoProductName}>{productData?.name}</h2>
             <div className={styles.InfoRateGroup}>
               <img src="/product/font/star-fill.png" alt="" />
               <img src="/product/font/star-fill.png" alt="" />
@@ -82,9 +121,14 @@ export default function DetailPage(props) {
               <img src="/product/font/star.png" alt="" />
             </div>
             <div className={styles.InfoPriceGroup}>
-              <h5>限時促銷價格：</h5>
-              <h2>NT$ 62</h2>
-              <h4>NT$ 69</h4>
+              <h5>{productDiscount > 0 ? `限時促銷價格：` : `價格：`}</h5>
+              <h2>
+                NT${" "}
+                {productDiscount > 0
+                  ? Math.floor(productData?.price * productData?.discount)
+                  : productData?.price}
+              </h2>
+              {productDiscount > 0 && <h4>NT$ {productData?.price}</h4>}
             </div>
             <div className={styles.InfoQtyGroup}>
               <h5>購買數量</h5>
@@ -111,17 +155,20 @@ export default function DetailPage(props) {
         <ul>
           <li>
             <h5>
-              <a href="#collapse-heading1">商品詳情</a>
+              <Link href="#collapse-heading1">商品詳情</Link>
+              {/* <a href="#collapse-heading1"></a> */}
             </h5>
           </li>
           <li>
             <h5>
-              <a href="#collapse-heading2">商品介紹圖</a>
+              <Link href="#collapse-heading2">商品介紹圖</Link>
+              {/* <a href="#collapse-heading2">商品介紹圖</a> */}
             </h5>
           </li>
           <li>
             <h5>
-              <a href="#collapse-heading3">商品規格</a>
+              <Link href="#collapse-heading3">商品規格</Link>
+              {/* <a href="#collapse-heading3">商品規格</a> */}
             </h5>
           </li>
         </ul>
@@ -130,169 +177,101 @@ export default function DetailPage(props) {
         className={`${styles.ProductDetail} accordion accordion-flush`}
         id=""
       >
-        <div className={`accordion-item ${styles.AccordionItem}`}>
-          <div className="accordion-header" id="collapse-heading1">
-            <button
-              className={`accordion-button ${styles.AccordionButton}`}
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapse1"
-              aria-expanded="true"
-              aria-controls="collapse1"
+        {productData?.full_info && (
+          <div className={`accordion-item ${styles.AccordionItem}`}>
+            <div className="accordion-header" id="collapse-heading1">
+              <button
+                className={`accordion-button ${styles.AccordionButton}`}
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse1"
+                aria-expanded="true"
+                aria-controls="collapse1"
+              >
+                <h5>商品介紹</h5>
+              </button>
+            </div>
+            <div
+              id="collapse1"
+              className="accordion-collapse collapse show"
+              aria-labelledby="collapse-heading1"
             >
-              <h5>商品介紹</h5>
-            </button>
-          </div>
-          <div
-            id="collapse1"
-            className="accordion-collapse collapse show"
-            aria-labelledby="collapse-heading1"
-          >
-            <div className={`accordion-body ${styles.AccordionBody}`}>
-              <h6>
-                商品特色
-                <br />
-                為熟齡室內/絕育貓量身打造營養配方
-                <br />
-                熟齡元氣&amp;腎臟健康符合貓咪天生偏好
-                <br />
-                備受飼主及室內貓喜愛
-              </h6>
+              <div
+                className={`accordion-body ${styles.AccordionBody}`}
+                dangerouslySetInnerHTML={{ __html: productData?.full_info }}
+              ></div>
             </div>
           </div>
-        </div>
-        <div className={`accordion-item ${styles.AccordionItem}`}>
-          <div className="accordion-header" id="collapse-heading2">
-            <button
-              className={`accordion-button collapsed ${styles.AccordionButton}`}
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapse2"
-              aria-expanded="false"
-              aria-controls="collapse2"
+        )}
+        {(img.info || productData?.info_text) && (
+          <div className={`accordion-item ${styles.AccordionItem}`}>
+            <div className="accordion-header" id="collapse-heading2">
+              <button
+                className={`accordion-button collapsed ${styles.AccordionButton}`}
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse2"
+                aria-expanded="false"
+                aria-controls="collapse2"
+              >
+                <h5>商品介紹圖</h5>
+              </button>
+            </div>
+            <div
+              id="collapse2"
+              className="accordion-collapse collapse"
+              aria-labelledby="collapse-heading2"
             >
-              <h5>商品介紹圖</h5>
-            </button>
-          </div>
-          <div
-            id="collapse2"
-            className="accordion-collapse collapse"
-            aria-labelledby="collapse-heading2"
-          >
-            <div className={`accordion-body ${styles.AccordionBody}`}>
-              <figure>
-                <img
-                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(1).jpg"
-                  alt=""
-                />
-                <img
-                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(2).jpg"
-                  alt=""
-                />
-                <img
-                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(3).jpg"
-                  alt=""
-                />
-                <img
-                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(4).jpg"
-                  alt=""
-                />
-                <img
-                  src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_info(5).jpg"
-                  alt=""
-                />
-                <figcaption>
-                  <h4>
-                    商品成分
-                    <br />
-                    肉及相關產品、穀物、蔬菜纖維、礦物質、油脂、多
-                    <br />
-                    醣類聚合物。營養添加劑:維他命D3、鐵、碘、
-                    <br />
-                    銅、鎂、鋅、沸石等。
-                    <br />
-                    營養分析
-                    <br />
-                    蛋白質8%、脂肪6%、纖維素1%
-                    <br />
-                    灰份2%、無氮浸出物4%
-                    <br />
-                    胺基酸
-                    <br />
-                    牛磺酸(%)0.12、精氨酸(%)0.45、離胺酸(%)0.5
-                    <br />
-                    、甲硫胺酸(%)0.15、甲硫胺酸+胱胺酸(%)0.3
-                    <br />
-                    鈣(%)0.32、磷(%)0.25、鈉(%)0.21、氯(%)0.2
-                    <br />
-                    鉀(%)0.15、鎂(%)0.02
-                    <br />
-                    礦物質
-                    <br />
-                    銅(mg/kg)3.4、鐵(mg/kg)34、
-                    <br />
-                    錳(mg/kg)3.4、鋅(mg/kg)25、
-                    <br />
-                    硒(mg/kg)0.2碘(mg/kg)0.4
-                    <br />
-                    維生素
-                    <br />
-                    維生素A IU/kg)8500、維生素D3 [IU/kg)140
-                    <br />
-                    維生素E [mg/kg]150、維生素C(mg/kg)100、
-                    <br />
-                    維生素B1(硫胺)(mg/kg)2、維生素B2[核黄素](mg/kg)2、
-                    <br />
-                    維生素B5(泛酸](mg/kg)10、維生素B6 [此哆醇)(mg/kg)1、
-                    <br />
-                    維生素B12(氯鈷胺)(mg/kg)0.02、維生素B3 [菸鹼酸)(mg/kg)14、
-                    <br />
-                    生物素(mg/kg)0.05、葉酸(mg/kg)0.3、膽鹼(mg/kg)440
-                    <br />
-                    其他營養素
-                    <br />
-                    澱粉(%)3.2、膳食纖維(%)1.8、亞麻油酸(%)1.7
-                    <br />
-                    花生四烯酸(%)0.06、ω-6脂肪酸(%)1.9、ω-3脂肪酸(%)0.15
-                    <br />
-                    EPA+DHA(%)0.07、左旋肉鹼-、葉黃素[mg/kg]1.2
-                    <br />
-                    β胡蘿蔔素 (mg/kg) 1.25
-                    <br />
-                    熱量[NRC85](kcal/kg)930、熱量[NRC2006](CF)(kcal/kg)951
-                  </h4>
-                </figcaption>
-              </figure>
+              <div className={`accordion-body ${styles.AccordionBody}`}>
+                <figure>
+                  {img.info &&
+                    img.info.map((v, i) => (
+                      <img
+                        key={`infoPic${i}`}
+                        src={`/product/img/${productName}${v}`}
+                        alt=""
+                      />
+                    ))}
+                  <figcaption>
+                    <h6
+                      dangerouslySetInnerHTML={{
+                        __html: productData?.info_text,
+                      }}
+                    ></h6>
+                  </figcaption>
+                </figure>
+              </div>
             </div>
           </div>
-        </div>
-        <div className={`accordion-item ${styles.AccordionItem}`}>
-          <div className="accordion-header" id="collapse-heading3">
-            <button
-              className={`accordion-button collapsed ${styles.AccordionButton}`}
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapse3"
-              aria-expanded="false"
-              aria-controls="collapse3"
+        )}
+        {productData?.spec && (
+          <div className={`accordion-item ${styles.AccordionItem}`}>
+            <div className="accordion-header" id="collapse-heading3">
+              <button
+                className={`accordion-button collapsed ${styles.AccordionButton}`}
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse3"
+                aria-expanded="false"
+                aria-controls="collapse3"
+              >
+                <h5>商品規格</h5>
+              </button>
+            </div>
+            <div
+              id="collapse3"
+              className="accordion-collapse collapse"
+              aria-labelledby="collapse-heading3"
             >
-              <h5>商品規格</h5>
-            </button>
-          </div>
-          <div
-            id="collapse3"
-            className="accordion-collapse collapse"
-            aria-labelledby="collapse-heading3"
-          >
-            <div className={`accordion-body ${styles.AccordionBody}`}>
-              <p>適用體型：全適用</p>
-              <p>商品適用年齡：幼齡</p>
-              <p>產地：奧地利</p>
-              <p>口味：其他</p>
-              <p>容量：51-150ml</p>
+              <div
+                className={`accordion-body ${styles.AccordionBody}`}
+                dangerouslySetInnerHTML={{
+                  __html: productData?.spec,
+                }}
+              ></div>
             </div>
           </div>
-        </div>
+        )}
         <div
           className={`accordion-item ${styles.AccordionItem} ${styles.ProductDetailRate}`}
         >

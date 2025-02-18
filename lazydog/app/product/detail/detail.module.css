@@ -66,7 +66,7 @@
 .InfoFavoriteGroup {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 15px;
   h6 {
     font-weight: bold;
     user-select: none;
@@ -87,7 +87,7 @@
     align-items: center;
     background: var(--Orange);
     border-radius: 30px;
-    h6 {
+    h5 {
       color: var(--White);
     }
   }
