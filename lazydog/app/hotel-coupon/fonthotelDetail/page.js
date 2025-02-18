@@ -15,6 +15,7 @@ import { useLocationSelector } from "@/hooks/useLocationSelector";
 import { useGoogleMap } from "@/hooks/useGoogleMap";
 import Header from "../../components/layout/header";
 import SearchBar from "../../components/hotel/search";
+import Breadcrumb  from "../../components/teacher/breadcrumb";
 export default function HotelHomePage() {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -131,33 +132,27 @@ export default function HotelHomePage() {
 
       {/* 旅館簡介 */}
       <div className="container mt-5">
-        <div className="row align-items-center">
-          <nav aria-label="breadcrumb">
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item">
-                <a
-                  className="text-decoration-none"
-                  onClick={() => changepage("fonthotelHome")}
-                >
-                  旅館首頁
-                </a>
-              </li>
-              <li className="breadcrumb-item active" aria-current="page">
-                Library
-              </li>
-            </ol>
-          </nav>
+        <Breadcrumb
+          links={[
+            { label: "首頁 ", href: "/" },
+            { label: "旅館列表", href: "/hotel-coupon/fonthotelHome" },
+            {
+              label: "旅館介紹",
+              href: "/hotel-coupon/fonthotelDetail",
+              active: true,
+            },
+          ]}
+        />
+        <div className="mt-5 row ">
           <div className="col-lg-6">
-            <Image
+            <img
               src="/hotel/hotel-uploads/1-outside.png"
               alt={hotel?.name || "飯店圖片"}
-              width={500}
-              height={300}
               className={hotelStyles.suHotelImage}
             />
           </div>
-          <div className={`col-lg-6 ${hotelStyles.suHotelDescription}`}>
-            <h2>旅館簡介</h2>
+          <div className={`col-lg-6 ps-5 ${hotelStyles.suHotelDescription}`}>
+            <h2 className="mb-5">旅館簡介</h2>
             <p>
               專為寵物打造的舒適旅宿，讓您的毛孩安心入住。
               我們提供完善的照顧環境，讓毛孩享受舒適的空間與專業的服務。
@@ -168,8 +163,8 @@ export default function HotelHomePage() {
         </div>
 
         {/* 房型選擇 */}
-        <h2 className="mt-5">房型選擇</h2>
-        <div className="row mt-3">
+        <h2 className="my-5">房型選擇</h2>
+        <div className="row mt-4">
           {[
             { name: "豪華大房", price: 1000, img: "1-l-room.webp" },
             { name: "普通房", price: 900, img: "1-m-room.webp" },
@@ -189,7 +184,7 @@ export default function HotelHomePage() {
                   <p className={hotelStyles.suRoomPrice}>
                     價格: {room.price}元
                   </p>
-                  <select className="form-select mb-2">
+                  <select className="my-4 form-select ">
                     <option>選擇數量</option>
                     <option>1</option>
                     <option>2</option>

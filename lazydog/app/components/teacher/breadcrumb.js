@@ -10,8 +10,9 @@ const Breadcrumbs = ({ links }) => {
             href={link.href}
             className={link.active ? styles.BreadcrumbsActive : ""}
           >
-            {link.label}
+            {link.label}&nbsp;
           </Link>
+          &nbsp;
           {index < links.length - 1 && (
             <img src="/product/font/right.png" alt="" />
           )}

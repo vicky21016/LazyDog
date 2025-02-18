@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect  } from "react";
 import { useRouter } from "next/router";
-import { useParams } from "react-router-dom"
+import { useParams } from "next/navigation";
 import {useTeacherDetail }from "@/hooks/useTeacherDetail";
 import styles from '../../teacher/info/info.module.css';
 import style from "../../pages/menu.module.css";
@@ -11,10 +11,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import '@fortawesome/fontawesome-svg-core/styles.css';
 
 const Profile = () => {
-    const router = useRouter();
-    const { id } = router.query; 
+  const router = useRouter();
+  const { id } = router.query;
 
-    const [teacher] = useTeacherDetail(id); 
+  const [teacher] = useTeacherDetail(id); 
+
     
       // if (!teacher) return 
       // <>

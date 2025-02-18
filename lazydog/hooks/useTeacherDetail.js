@@ -13,7 +13,8 @@ export function useTeacherDetail (id) {
                if (!res.ok) {
                  throw new Error("無法取得資料");
                }
-               const result = await res.json(); 
+               const result = await res.json();
+                console.log("Fetched teachers:", result);
                setTeacher(result); 
             } catch (err) {
                 console.log(err.message);
@@ -23,5 +24,5 @@ export function useTeacherDetail (id) {
         fetchTeacher();
     }, [id]);
 
-    return [ teacher] ;
+    return { teacher } ;
 };

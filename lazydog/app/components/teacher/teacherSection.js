@@ -38,8 +38,8 @@ const TeacherSection = () => {
   ];
 
   return (
-    <section className=" mb-3">
-      <div className="lumi-teacher-team p-5 text-center">
+    <section className="">
+      <div className="lumi-teacher-team pt-5 text-center">
         <h3 className="mb-5 lumi-m-title">嚴選的師資團隊</h3>
         <div className=" mb-5">
           <p>
@@ -50,7 +50,7 @@ const TeacherSection = () => {
           </p>
         </div>
 
-        <div className="d-flex justify-content-center">
+        <div className="d-flex mb-5 justify-content-center">
           <Link
             className="lumi-teacher-btn text-center text-decoration-none"
             href="/teacher/list"
@@ -58,8 +58,12 @@ const TeacherSection = () => {
             read more
           </Link>
         </div>
+        <div>
+          <img className="" src="/teacher-img/yellow.png" alt />
+        </div>
       </div>
-      <div className="lumi-dog-container p-5 text-center">
+
+      <div className="lumi-dog-container text-center">
         <div className="lumi-dog text-center">
           <div className={` ${styles["cube"]}`}>
             <div>803</div>
@@ -78,9 +82,15 @@ const TeacherSection = () => {
           </div>
         </div>
       </div>
+      <div>
+        <img className="" src="/teacher-img/yello2.png" alt />
+      </div>
       <div className="lumi-all-wrapper pb-5">
         <h3 className="my-5 lumi-m-title ">熱門師資</h3>
         <OtherTeacher cards={teacherData} />
+      </div>
+      <div>
+        <img className="" src="/teacher-img/rice.png" alt />
       </div>
     </section>
   );
