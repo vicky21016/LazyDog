@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { getAllCoupons, claimCoupon } from "@/hooks/useCoupon"; //  引入 API
-
+//以下都測試
 //可以到F12打fetch做測試
 export default function CouponList() {
   const [coupons, setCoupons] = useState([]);
