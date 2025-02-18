@@ -1,6 +1,10 @@
 import express from "express";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
-import { addFavorite, removeFavorite, getUserFavorites } from "../controllers/hotelFavoriteController.js";
+import {
+  addFavorite,
+  removeFavorite,
+  getUserFavorite,
+} from "../controllers/hotelFavoriteController.js";
 
 const router = express.Router();
 
@@ -11,6 +15,6 @@ router.post("/", verifyToken, verifyRole(["user"]), addFavorite);
 router.delete("/:id", verifyToken, verifyRole(["user"]), removeFavorite);
 
 // 取得使用者的收藏清單
-router.get("/", verifyToken, verifyRole(["user"]), getUserFavorites);
+router.get("/", verifyToken, verifyRole(["user"]), getUserFavorite);
 
 export default router;
