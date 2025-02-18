@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36" version="26.0.14">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="1969" dy="2127" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
+    <mxGraphModel dx="1154" dy="1743" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -552,7 +552,7 @@
         <mxCell id="eLThqhARwQMKMWSYmHJ4-280" value="category" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;labelBackgroundColor=none;fontColor=#143642;strokeColor=default;" parent="eLThqhARwQMKMWSYmHJ4-264" vertex="1">
           <mxGeometry y="416" width="160" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="eLThqhARwQMKMWSYmHJ4-281" value="cover_image" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;labelBackgroundColor=none;fontColor=#143642;strokeColor=default;" parent="eLThqhARwQMKMWSYmHJ4-264" vertex="1">
+        <mxCell id="eLThqhARwQMKMWSYmHJ4-281" value="main_image_id" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;labelBackgroundColor=none;fontColor=#143642;strokeColor=default;" parent="eLThqhARwQMKMWSYmHJ4-264" vertex="1">
           <mxGeometry y="442" width="160" height="26" as="geometry" />
         </mxCell>
         <mxCell id="eLThqhARwQMKMWSYmHJ4-282" value="average_rating" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;labelBackgroundColor=none;fontColor=#143642;strokeColor=default;" parent="eLThqhARwQMKMWSYmHJ4-264" vertex="1">
@@ -1469,6 +1469,17 @@
             <Array as="points">
               <mxPoint x="910" y="1017" />
               <mxPoint x="910" y="519" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m24z3Fb6z34uiZYvayf9-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.999;exitY=0.232;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="eLThqhARwQMKMWSYmHJ4-281" target="eLThqhARwQMKMWSYmHJ4-291">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2230" y="830" as="sourcePoint" />
+            <mxPoint x="2250" y="60" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="2220" y="830" />
+              <mxPoint x="2240" y="830" />
+              <mxPoint x="2240" y="59" />
             </Array>
           </mxGeometry>
         </mxCell>
