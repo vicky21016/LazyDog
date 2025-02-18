@@ -12,6 +12,7 @@ import CourseCard from "../_components/list/course-card";
 import OtherCourseCard from "../_components/list/other-course-card";
 
 export default function CourseListPage() {
+
   return (
     <>
       <Header/>

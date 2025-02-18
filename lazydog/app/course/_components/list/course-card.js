@@ -1,10 +1,22 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useCourse } from "@/hooks/useCourse";
 import styles from "../courseList.module.css";
+import Card from './card';
 
 
 export default function CourseCard() {
+
+    const App = () => {
+        const { courses = [] } = useCourse();
+        
+        useEffect(() => {
+        
+        }, [courses]); 
+        
+        }
+        
   return (
     <>
        <div className={`col-lg-9 ${styles.right}`}>
@@ -22,114 +34,11 @@ export default function CourseCard() {
             </div>
             </div>
             <div className={styles.courseGroup}>
-            <div className={styles.courseCard}>
-                <img
-                className={styles.img}
-                src="/course/img/18 (1).jpeg"
-                alt
-                />
-                <h5 className={styles.tag}>寵物訓練</h5>
-                <h2 className={styles.name}>犬貓營養與動物中醫</h2>
-                <p className={styles.intro}>
-                了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提
-                </p>
-            </div>
-            <div className={styles.courseCard}>
-                <img
-                className={styles.img}
-                src="/course/img/18 (1).jpeg"
-                alt
-                />
-                <h5 className={styles.tag}>寵物訓練</h5>
-                <h2 className={styles.name}>犬貓營養與動物中醫</h2>
-                <p className={styles.intro}>
-                了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提
-                </p>
-            </div>
-            <div className={styles.courseCard}>
-                <img
-                className={styles.img}
-                src="/course/img/18 (1).jpeg"
-                alt
-                />
-                <h5 className={styles.tag}>寵物訓練</h5>
-                <h2 className={styles.name}>犬貓營養與動物中醫</h2>
-                <p className={styles.intro}>
-                了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提
-                </p>
-            </div>
-            <div className={styles.courseCard}>
-                <img
-                className={styles.img}
-                src="/course/img/18 (1).jpeg"
-                alt
-                />
-                <h5 className={styles.tag}>寵物訓練</h5>
-                <h2 className={styles.name}>犬貓營養與動物中醫</h2>
-                <p className={styles.intro}>
-                了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提
-                </p>
-            </div>
-            <div className={styles.courseCard}>
-                <img
-                className={styles.img}
-                src="/course/img/18 (1).jpeg"
-                alt
-                />
-                <h5 className={styles.tag}>寵物訓練</h5>
-                <h2 className={styles.name}>犬貓營養與動物中醫</h2>
-                <p className={styles.intro}>
-                了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提
-                </p>
-            </div>
-            <div className={styles.courseCard}>
-                <img
-                className={styles.img}
-                src="/course/img/18 (1).jpeg"
-                alt
-                />
-                <h5 className={styles.tag}>寵物訓練</h5>
-                <h2 className={styles.name}>犬貓營養與動物中醫</h2>
-                <p className={styles.intro}>
-                了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提
-                </p>
-            </div>
-            <div className={styles.courseCard}>
-                <img
-                className={styles.img}
-                src="/course/img/18 (1).jpeg"
-                alt
-                />
-                <h5 className={styles.tag}>寵物訓練</h5>
-                <h2 className={styles.name}>犬貓營養與動物中醫</h2>
-                <p className={styles.intro}>
-                了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提
-                </p>
-            </div>
-            <div className={styles.courseCard}>
-                <img
-                className={styles.img}
-                src="/course/img/18 (1).jpeg"
-                alt
-                />
-                <h5 className={styles.tag}>寵物訓練</h5>
-                <h2 className={styles.name}>犬貓營養與動物中醫</h2>
-                <p className={styles.intro}>
-                了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提
-                </p>
-            </div>
-            <div className={styles.courseCard}>
-                <img
-                className={styles.img}
-                src="/course/img/18 (1).jpeg"
-                alt
-                />
-                <h5 className={styles.tag}>寵物訓練</h5>
-                <h2 className={styles.name}>犬貓營養與動物中醫</h2>
-                <p className={styles.intro}>
-                了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提了解犬貓基礎六大營養需求，及營養不足或過多造成疾病。自製鮮食如何計算毛孩需要的熱量、營養成分、提
-                </p>
-            </div>
+                {courses.map((course)=>{
+                    return(
+                       <Card key={course.id} course={course}/>          
+                    )
+                })}
             </div>
             <nav className={styles.navigation} aria-label="Page navigation">
             <ul className={`pagination justify-content-center ${styles.pagination}`}>
