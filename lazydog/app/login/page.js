@@ -9,13 +9,15 @@ import InputField from "../components/forms/InputField";
 import { useAuth } from "@/hooks/use-auth";
 import styles from "../pages/menu.module.css";
 
+
+const appKey = "loginWithToken";
 export default function AppPage({ logout }) {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { user, login } = useAuth();
   const router = useRouter();
-
+  const [usr, setUser] = useState(-1);
   // 點擊登入按鈕時的處理函式
   const handleLogin = async (e) => {
     e.preventDefault(); // 防止表單提交
@@ -31,6 +33,31 @@ export default function AppPage({ logout }) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    const existingToken = localStorage.getItem(appKey);
+    console.log(existingToken);
+    
+    if (existingToken) {
+      const newUser = JSON.parse(localStorage.getItem("user"));
+      setUser(newUser);
+      switch (newUser.role) {
+        case "operator":
+          router.push("/hotel-coupon/operatorDetail"); // 轉入 operator
+          break;
+        case "teacher":
+          router.push("/"); // 轉入 teacher
+          break;
+        case "user":
+          router.push("/pages");
+          break;
+        default:
+          alert("出現錯誤，請通知管理員");
+          break;
+      }
+      return;
+    }
+  }, []);
 
   useEffect(() => {
     if (!user) setCheckingAuth(false); // 檢查登入狀態
@@ -90,9 +117,7 @@ export default function AppPage({ logout }) {
             >
               忘記密碼？
             </Link>
-            <button className="lumi-login-button">
-              登入
-            </button>
+            <button className="lumi-login-button">登入</button>
             <p className="lumi-separator">
               <span>或使用社群帳號登入</span>
             </p>
