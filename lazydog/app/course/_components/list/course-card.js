@@ -1,21 +1,15 @@
 'use client'
 
 import React from 'react'
-import useCourse from '@/hooks/useCourse';
+import { useFetch } from '@/hooks/product/use-fetch';
 import styles from "../courseList.module.css";
 import Card from './card';
 
 
 export default function CourseCard() {
-  const { courses=[], loading, error } = useCourse() 
-  
-  if (loading) {
-    return <div>Loading...</div>; // 顯示載入中的提示
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>; // 顯示錯誤訊息
-  }
+  const url = "http://localhost:5000/api/course"
+  const { data, loading, error } = useFetch(url) 
+  console.log(data?.data);
 
   return (
     <>
@@ -34,8 +28,10 @@ export default function CourseCard() {
             </div>
             </div>
             <div className={styles.courseGroup}>
-                { courses.map((course) => {
+                { data?.data?.map((course) => {
+                    return(
                     <Card key={course.id} course={course}/>
+                    )
                 })}
             </div>
             <nav className={styles.navigation} aria-label="Page navigation">
