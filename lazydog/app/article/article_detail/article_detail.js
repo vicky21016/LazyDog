@@ -5,7 +5,6 @@ import React from 'react'
 import Link from 'next/link'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import styles from './page.module.css' // Import the CSS module
 

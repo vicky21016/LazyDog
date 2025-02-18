@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT"],
   })
 );
 app.use("/uploads/hotel", express.static("/uploads/hotel"));
