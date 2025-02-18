@@ -7,12 +7,11 @@ export const usePhotoUpload = (
   const fileInputRef = useRef(null);
   const avatarRef = useRef(null);
 
-
   const uploadPhoto = () => {
     fileInputRef.current.click();
   };
 
-  const fileChange = (event) => {
+  const fileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -22,6 +21,25 @@ export const usePhotoUpload = (
         }
       };
       reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        const resresponse = await fetch(
+          "http://localhost:5000/api/upload-hotel-image",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        const data = await response.json();
+        if (data.filename) {
+          console.log("圖片上傳成功:", data.filename);
+        }
+      } catch (error) {
+        console.error("圖片上船失敗", error);
+      }
     }
   };
 
