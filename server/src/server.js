@@ -11,7 +11,7 @@ import hotelRoutes from "./routes/hotelRoutes.js";
 import hotelOrderRoutes from "./routes/hotelOrderRoutes.js";
 import hotelFavoriteRoutes from "./routes/hotelFavoriteRoutes.js";
 import hotelReviewRoutes from "./routes/hotelReviewRoutes.js";
-import userCouponsRoutes from "./routes/userCouponsRoutes.js";
+import userCouponsRoutes from "./routes/couponUsageRoutes.js";
 import couponRoutes from "./routes/couponRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import courseRoutes from "./routes/courseRoutes.js";

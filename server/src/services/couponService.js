@@ -76,19 +76,7 @@ export const getCouponByCode = async (code, userId) => {
   }
 };
 
-export const claimCouponByUser = async (userId, couponId) => {
-  try {
-    await pool.execute(
-      "INSERT INTO coupon_usage (user_id, coupon_id, claimed_at, status, created_at, updated_at, is_deleted) VALUES (?, ?, NOW(), 'claimed', NOW(), NOW(), 0)",
-      [userId, couponId]
-    );
 
-    return { success: true, message: "優惠券領取成功" };
-  } catch (err) {
-    console.error("領取優惠券失敗:", err);
-    return { success: false, status: 500, message: "伺服器錯誤" };
-  }
-};
 
 export const createCoupons = async (couponData) => {
   try {

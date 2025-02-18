@@ -5,7 +5,7 @@ import {
   createCoupon,
   updateCoupon,
   softDeleteCoupon,
-  claimCoupon,
+
 } from '../controllers/couponController.js'
 import { verifyToken, verifyRole } from '../middlewares/authMiddleware.js'
 
@@ -18,7 +18,6 @@ router.get(
   verifyRole(['operator', 'teacher']),
   getCouponById
 )
-router.post('/claim', verifyToken, verifyRole(['user']), claimCoupon)
 router.post('/', verifyToken, verifyRole(['operator', 'teacher']), createCoupon)
 router.patch(
   '/:id',

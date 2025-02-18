@@ -3,7 +3,7 @@ import {
     getUserCoupons,
     useUserCoupon,
     deleteUserCoupon
-  } from "../services/userCouponService.js";
+  } from "../services/couponUsageService.js";
   
   export const claimCoupon = async (req, res) => {
     try {
