@@ -4,6 +4,8 @@ import {
   getOpHotelId,
   createNewOrders,
   updateOrderById,
+  updateOrderStatus,
+  updatePayStatus,
   softDeleteOrderById,
 } from "../services/hotelOrderService.js";
 
@@ -57,9 +59,9 @@ export const createNewOrder = async (req, res) => {
       !check_in ||
       !check_out ||
       !total_price ||
-      !payment_status||
-      !payment_method||
-      !cancellation_policy||
+      !payment_status ||
+      !payment_method ||
+      !cancellation_policy ||
       !remark
     ) {
       return res.status(400).json({ error: "缺少必要欄位" });
@@ -97,6 +99,64 @@ export const updateOrder = async (req, res) => {
   }
 };
 
+export const changeStauts = async (req, res) => {
+  try {
+    const orderId = parseInt(req.params.id, 10);
+    const { status } = req.body;
+
+    if (!["pending", "confirmed", "completed", "cancelled"].includes(status)) {
+      return res.status(400).json({ error: "無效的訂單狀態" });
+    }
+    const order = await getOrderById(orderId);
+    if (!order) return res.status(404).json({ error: "找不到該訂單" });
+
+    if (req.user.role == "operator") {
+      const operatorHotelIds = await getOpHotelId(req.user.id);
+      if (!operatorHotelIds.includes(order.hotel_id)) {
+        return res.status(403).json({ error: "你無權更改這間飯店的訂單" });
+      }
+    }
+    const success = await updateOrderStatus(orderId, status);
+    if (!success) return res.status(404).json({ error: "找不到該訂單" });
+
+    res.status(200).json({
+      success: true,
+      message: `訂單 id=${orderId} 狀態更新為 ${status}`,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "無法更新訂單狀態", details: error.message });
+  }
+};
+export const updatePay = async (req, res) => {
+  try {
+    const orderId = parseInt(req.params.id, 10);
+    const { payment_status } = req.body;
+
+    if (!["paid", "unpaid", "partial"].includes(payment_status)) {
+      return res.status(400).json({ error: "無效的付款狀態" });
+    }
+    const order = await getOrderById(orderId);
+    if (!order) return res.status(404).json({ error: "找不到該訂單" });
+    if (req.user.role !== "operator") {
+      return res.status(403).json({ error: "只有業者可以更改付款狀態" });
+    }
+    const operatorHotelIds = await getOpHotelId(req.user.id);
+    if (!operatorHotelIds.includes(order.hotel_id)) {
+      return res.status(403).json({ error: "你無權更改這間飯店的付款狀態" });
+    }
+    const success = await updatePayStatus(orderId, payment_status);
+    if (!success) return res.status(404).json({ error: "找不到該訂單" });
+
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: `訂單 id=${orderId} 付款狀態更新為 ${payment_status}`,
+      });
+  } catch (error) {
+    res.status(500).json({ error: "無法更新付款狀態", details: error.message });
+  }
+};
 export const deleteOrder = async (req, res) => {
   try {
     const orderId = parseInt(req.params.id, 10);
