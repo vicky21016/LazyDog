@@ -4,7 +4,11 @@ import pool from "../config/mysql.js";
 // 用MVC架構，步驟一 Model 負責資料庫操作
 export const getCourses = async () => {
   try {
-    const [courses] = await pool.query("SELECT * FROM course");
+    const [courses] = await pool.execute(`
+      SELECT course.*, course_type.name AS type_name 
+      FROM course 
+      JOIN course_type ON course.type_id = course_type.type_id; 
+      `);
     return courses;
   } catch (err) {
     throw new Error(" 無法取得課程列表：" + err.message);
