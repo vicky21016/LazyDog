@@ -79,6 +79,27 @@ export const createArticle = async (req, res) => {
 
 }
 
+// 處理創建文章時的圖片上傳
+
+// controllers/uploadController.js
+export const uploadController = {
+  handleUpload: (req, res) => {
+    try {
+      // multer 成功後，檔案資訊會放在 req.file
+      // 這裡可以做：存 DB、記錄、或其他商業邏輯
+      const filePath = `/article_img/${req.file.filename}`
+
+      // 最後回傳給前端
+      res.status(200).json({
+        link: filePath, 
+      })
+    } catch (err) {
+      res.status(500).json({ error: err.message })
+    }
+  },
+}
+
+
 // 編輯文章
 
 export const updateArticle = async (req, res) => {
