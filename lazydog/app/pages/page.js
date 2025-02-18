@@ -33,7 +33,25 @@ export default function Menu() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const handleCancel = (e) => {};
+  const handleCancel = (e) => {
+    setFormData({
+      name: user?.name || "",
+      gender: user?.gender || "",
+      nickname: user?.nickname || "",
+      birthday: user?.birthday || "",
+      phone: user?.phone || "",
+      email: user?.email || "",
+      location: user?.location || "",
+      city: user?.city || "",
+      district: user?.district || "",
+      road: user?.road || "",
+      section: user?.section || "",
+      lane: user?.lane || "",
+      number: user?.number || "",
+      floor: user?.floor || "",
+    });
+    router.push("/dashboard");
+  };
   const handleSubmit = async (e) => {
     console.log(user.id);
 
@@ -82,7 +100,9 @@ export default function Menu() {
       </div>
     );
   }
-  const formattedDate = formData.birthday ? new Date(formData.birthday).toISOString().split('T')[0] : '';
+  const formattedDate = formData.birthday
+    ? new Date(formData.birthday).toISOString().split("T")[0]
+    : "";
 
   return (
     <>
