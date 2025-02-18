@@ -57,18 +57,22 @@ useEffect(() => {
             </div>
           </section>
           <section className={styles.pdArea}>
-            <Filter />
-            <div>
-              {/* <section className={styles.breadcrumbsTitle}>
-                <div className={styles.teaTitle}>
-                  <h4 className={styles.list}>師資列表</h4>
-                  <div className={styles.titleFilter}>
-                    <img src="./img/font/filter.png" alt="" />
-                    <h6>依熱門排序</h6>
+            <div className="row">
+              <div className={`col-3 ${styles.asideContainer}`}>
+                <Filter />
+                {/* <div>
+                <section className={styles.breadcrumbsTitle}>
+                  <div className={styles.teaTitle}>
+                    <h4 className={styles.list}>師資列表</h4>
+                    <div className={styles.titleFilter}>
+                      <img src="./img/font/filter.png" alt="" />
+                      <h6>依熱門排序</h6>
+                    </div>
                   </div>
-                </div>
-              </section> */}
-              <div>
+                </section>
+                <div> */}
+              </div>
+              <div className="col-9">
                 <div className="row my-1 g-5">
                   {Array.isArray(teachers) &&
                     teachers.map((teacher) => (

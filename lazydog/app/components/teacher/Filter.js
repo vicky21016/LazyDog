@@ -7,8 +7,12 @@ const Filter = () => {
         <table className={styles.pdFilterTable}>
           <tr>
             <td className={`${styles.tdTable} ${styles.searchTable}`}>
-              <img src="./img/font/search.png" alt="" />
-              <p className={styles.searchP}>搜尋商品</p>
+              <img src="/product/font/search.png" alt="" />
+              <input
+                className={styles.searchP}
+                type="text"
+                placeholder="搜尋商品"
+              />
             </td>
           </tr>
           <tr>
