@@ -76,11 +76,15 @@ const App = () => {
       <div className="lumi-all-wrapper">
         <div className={styles.container}>
           <Breadcrumb
-            paths={[
-              { name: "首頁 > ", link: "/" },
-              { name: "師資服務 >", link: "/teacher" },
-              { name: "師資列表 >", link: "/teacher/list" },
-              { name: "師資介紹" },
+            links={[
+              { label: "首頁 ", href: "/" },
+              { label: " 師資服務", href: "/teacher" },
+              {
+                label: " 師資列表",
+                href: "/teacher/list",
+              },
+              { name: "師資介紹", href: "/teacher/info",
+                active: true, },
             ]}
           />
 
