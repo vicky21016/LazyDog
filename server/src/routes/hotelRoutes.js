@@ -9,19 +9,7 @@ import {
   getSearch,
 } from "../controllers/hotelController.js";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
-import multer from "multer";
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/hotel/");
-  },
-  filename: function (req, file, cb) {
-    const datePrefix = new Date().toISOString().split("T")[0].replace(/-/g, ""); // YYYYMMDD
-    cb(null, `${datePrefix}_${file.originalname}`);
-  },
-});
-
-const upload = multer({ storage: storage });
+import { upload } from "../middlewares/upload.js";
 
 const router = express.Router();
 
@@ -47,7 +35,13 @@ router.post(
   upload.array("images", 5),
   createHotel
 );
-router.patch("/:id", verifyToken, verifyRole(["operator"]), updateHotel);
+router.patch(
+  "/:id",
+  verifyToken,
+  verifyRole(["operator"]),
+  upload.array("newImages", 5),
+  updateHotel
+);
 router.patch(
   "/:id/soft-delete",
   verifyToken,
