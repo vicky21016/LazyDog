@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./detail.module.css";
 import ProductCard from "../_components/card/card";
 import RateCard from "../_components/rate/ratecard";
@@ -10,15 +10,12 @@ import useSWR from "swr";
 import Link from "next/link";
 
 export default function DetailPage(productID = {}) {
+  const [amount, setAmount] = useState(1);
   const product = productID?.searchParams.productID;
   const url = `http://localhost:5000/api/products/${product}`;
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
   const productData = data?.data[0];
-  data?.data.map((v, i) => {
-    // v.comment;
-  });
-  console.log();
   const productName = productData?.name;
   const img = {
     list: [],
@@ -36,18 +33,52 @@ export default function DetailPage(productID = {}) {
     Number(productData?.price) * Number(productData?.discount)
   ).toFixed(0);
   const productDiscount = (1 - Number(productData?.discount)).toFixed(2) * 100;
-
   const deadDate = Date.parse(productData?.discount_et);
   const deadline = () => Math.max(0, deadDate - Date.now());
   const [countDown, setCountDown] = useState(deadline());
-
   const deadDay = Math.floor(countDown / (1000 * 60 * 60 * 24));
   const deadHour = Math.floor(
     (countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
   );
   const deadMin = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
 
-  console.log(productData);
+  const [scrollY, setScrollY] = useState(0);
+  useEffect(() => {
+    const scrollNow = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener("scroll", scrollNow);
+    return () => {
+      window.removeEventListener("scroll", scrollNow);
+    };
+  }, []);
+  const elementRef = useRef(null);
+  const [offset, setOffset] = useState(0);
+  useEffect(() => {
+    if (elementRef.current) {
+      setOffset(elementRef.current.offsetTop);
+    }
+  }, []);
+
+  const rateData = {
+    rate: [],
+    comment: [],
+  };
+  let rateAvg = 0;
+  if (data?.data) {
+    data?.data.map((v, i) => {
+      rateData["rate"].push(v.rate);
+      rateData["comment"].push(v.comment);
+    });
+    let rateSum = 0;
+    for (let i = 0; i < rateData["rate"].length; i++) {
+      rateSum += rateData["rate"][i];
+    }
+    rateAvg = (rateSum / rateData["rate"].length).toFixed(1);
+  }
+  const [int, dec] = rateAvg.toString().split(".");
+  // console.log(int, dec);
+  // console.log(productData);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -114,11 +145,26 @@ export default function DetailPage(productID = {}) {
             )}
             <h2 className={styles.InfoProductName}>{productData?.name}</h2>
             <div className={styles.InfoRateGroup}>
-              <img src="/product/font/star-fill.png" alt="" />
-              <img src="/product/font/star-fill.png" alt="" />
-              <img src="/product/font/star-fill.png" alt="" />
-              <img src="/product/font/star-fill.png" alt="" />
-              <img src="/product/font/star.png" alt="" />
+              {int > 0 && (
+                <>
+                  {[...Array(Number(int))].map((v, i) => (
+                    <img
+                      key={`starFill${i}`}
+                      src="/product/font/star-fill.png"
+                      alt=""
+                    />
+                  ))}
+                  <img
+                    src={`/product/font/${
+                      dec > 7 ? "star-fill" : dec > 2 ? "star-half" : "star"
+                    }.png`}
+                    alt=""
+                  />
+                  {[...Array(4 - Number(int))].map((v, i) => (
+                    <img key={`star${i}`} src="/product/font/star.png" alt="" />
+                  ))}
+                </>
+              )}
             </div>
             <div className={styles.InfoPriceGroup}>
               <h5>{productDiscount > 0 ? `限時促銷價格：` : `價格：`}</h5>
@@ -132,11 +178,17 @@ export default function DetailPage(productID = {}) {
             </div>
             <div className={styles.InfoQtyGroup}>
               <h5>購買數量</h5>
-              <button className={styles.QtyMinus}>
+              <button
+                className={styles.QtyMinus}
+                onClick={() => setAmount(amount <= 1 ? 1 : amount - 1)}
+              >
                 <img src="/product/font/minus.png" alt="" />
               </button>
-              <input type="number" defaultValue={1} min={1} max={999} />
-              <button className={styles.QtyPlus}>
+              <input type="number" defaultValue={amount} min={1} max={999} />
+              <button
+                className={styles.QtyPlus}
+                onClick={() => setAmount(amount >= 999 ? 999 : amount + 1)}
+              >
                 <img src="/product/font/plus.png" alt="" />
               </button>
             </div>
@@ -151,29 +203,31 @@ export default function DetailPage(productID = {}) {
           </div>
         </div>
       </section>
-      <nav className={styles.StickyTop}>
+      <nav
+        className={`sticky-top ${
+          scrollY >= offset + 250 ? styles.StickyTop : styles.StickyTopOff
+        }`}
+      >
         <ul>
           <li>
             <h5>
               <Link href="#collapse-heading1">商品詳情</Link>
-              {/* <a href="#collapse-heading1"></a> */}
             </h5>
           </li>
           <li>
             <h5>
               <Link href="#collapse-heading2">商品介紹圖</Link>
-              {/* <a href="#collapse-heading2">商品介紹圖</a> */}
             </h5>
           </li>
           <li>
             <h5>
               <Link href="#collapse-heading3">商品規格</Link>
-              {/* <a href="#collapse-heading3">商品規格</a> */}
             </h5>
           </li>
         </ul>
       </nav>
       <section
+        ref={elementRef}
         className={`${styles.ProductDetail} accordion accordion-flush`}
         id=""
       >
@@ -296,23 +350,25 @@ export default function DetailPage(productID = {}) {
               <div className={styles.ScoreBar}>
                 <div className={styles.Score}>
                   <h5>商品評價</h5>
-                  <h2>4.9</h2>
-                  <StarGroup />
+                  <h2>{rateAvg}</h2>
+                  <StarGroup rate={rateAvg} />
                 </div>
                 <div className={styles.StarBarGroup}>
-                  <StarBar />
-                  <StarBar />
-                  <StarBar />
-                  <StarBar />
-                  <StarBar />
+                  {[...Array(5)].map((v, i) => (
+                    <StarBar
+                      key={`starBar${i}`}
+                      index={5 - i}
+                      rate={rateData["rate"]}
+                    />
+                  ))}
                 </div>
               </div>
               <div className={styles.RateCardGroup}>
                 {/* ----評分卡片-------------------------------- */}
-                <RateCard />
+                <RateCard rate={rateData} />
                 {/* -------------------------------------------- */}
-                <RateCard />
-                <RateCard />
+                <RateCard rate={rateData} />
+                <RateCard rate={rateData} />
               </div>
               <button type="button" className={styles.RateMore}>
                 顯示更多評價

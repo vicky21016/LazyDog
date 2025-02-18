@@ -54,7 +54,7 @@ export default function ListPage(props) {
         <section className={styles.PdArea}>
           <Aside />
           <main className={styles.PdList}>
-            {Array.from({ length: 6 }, (value, index) => {
+            {[...Array(6)].map((value, index) => {
               return (
                 <ul className={styles.ProductCardGroup} key={index}>
                   {product?.map((v, i) => {
@@ -74,7 +74,7 @@ export default function ListPage(props) {
                     1
                   </Link>
                 </li>
-                {Array.from({ length: pages }, (v, i) => (
+                {[...Array(pages)].map((v, i) => (
                   <li key={`li${i}`} className={`${styles.PageItem} page-item`}>
                     <Link
                       className={`${styles.PageLink} page-link`}

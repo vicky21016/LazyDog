@@ -131,13 +131,6 @@ export default function AsideAside(props) {
               category={category[v]}
             />
           ))}
-
-      {/* {categoryName?.map((v, i) => {
-        return <FilterLinkGroup key={i} name={v} category={category[v]} />;
-      })}
-      {categoryName?.map((v, i) => {
-        return <FilterGroup key={i} name={v} category={category[v]} />;
-      })} */}
       <div className={`text-center ${styles.PriceFilterContainer}`}>
         <h5 className={styles.FilterTitle} style={{ justifyContent: "center" }}>
           價格篩選

@@ -10,7 +10,7 @@
   margin: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 15px;
   a {
     color: var(--gray);
   }
@@ -185,7 +185,6 @@
 .StickyTop {
   background: #fff;
   padding-block: 20px;
-  opacity: 0;
   width: 100%;
   ul {
     display: flex;
@@ -199,6 +198,9 @@
       color: var(--Orange);
     }
   }
+}
+.StickyTopOff {
+  display: none;
 }
 .ProductDetail {
   width: 100%;
@@ -303,6 +305,9 @@
   justify-content: flex-end;
   align-items: center;
   color: var(--Orange);
+  &:hover {
+    color: var(--skin);
+  }
 }
 /* ----RateCard元件(備份css---- */
 /* .RateCard {

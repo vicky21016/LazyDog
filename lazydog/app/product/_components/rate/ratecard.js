@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import styles from "./rate.module.css";
 import StarGroup from "./stargroup";
 
-export default function RatecardRatecard(props) {
+export default function RatecardRatecard(rate = {}) {
+  // console.log(rate);
   return (
     <div className={styles.RateCard}>
       <div className={styles.RateCardText}>
