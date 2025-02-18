@@ -21,13 +21,19 @@ export default function CouponList() {
   }, []);
 
   const handleClaim = async (couponId) => {
+    if (!couponId) {
+      alert("錯誤：未提供 couponId");
+      return;
+    }
+  
     try {
-      const result = await claimCoupon({ id: couponId });
+      const result = await claimCoupon(couponId);
       alert(result.message);
     } catch (error) {
       console.error("領取優惠券失敗:", error);
     }
   };
+  
 
   return (
     <div>
