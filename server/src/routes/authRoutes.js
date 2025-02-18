@@ -4,14 +4,13 @@ import pool from "../config/mysql.js";
 import bcrypt from "bcrypt";
 import multer from "multer";
 
-const express = require("express");
-const path = require("path");
+// const path = require("path");
 const app = express();
 
 const router = express.Router();
 const upload = multer();
 const secretKey = process.env.JWT_SECRET_KEY;
-app.use("/user/img", express.static(path.join(__dirname, "public", "img")));
+// app.use("/user/img", express.static(path.join(__dirname, "public", "img")));
 router.post("/login", upload.none(), async (req, res) => {
   const { email, password } = req.body;
 
