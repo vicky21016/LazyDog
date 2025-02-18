@@ -115,7 +115,7 @@ export const createHotels = async (hotelData) => {
       ? [url]
       : [];
     console.log("圖片要存入:", imageList);
-
+    //預設是上船的第一張圖片為main_image
     if (imageList.length > 0) {
       for (let i = 0; i < imageList.length; i++) {
         const [imageResult] = await connection.query(
@@ -236,6 +236,7 @@ export const updateHotelById = async (updateData) => {
           newImageData
         );
       }
+      //這邊是換main_image_id
       if (main_image_id) {
         const [imageExists] = await connection.query(
           "SELECT id FROM hotel_images WHERE id = ? AND hotel_id = ? AND is_deleted = 0",
