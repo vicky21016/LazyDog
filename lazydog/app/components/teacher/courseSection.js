@@ -1,12 +1,14 @@
 import React from 'react';
+import Link from "next/link";
 import styles from "../../../styles/modules/toggle.module.css";
+import style from "../../../styles/modules/teacher.module.css";
 function CourseSection() {
   return (
     <section>
       <div className="p-5 lumi-teacher-team text-center">
         <h6 className="mb-4 fw-medium">學習與毛孩共同成長的美好過程</h6>
         <h3 className="mb-5 lumi-m-title">課堂實影</h3>
-        <div className="lumi-all-wrapper mb-5">
+        <div className="lumi-all-wrapper">
           <img
             className={` ${styles["img1"]}`}
             src="/teacher-img/img2.webp"
@@ -39,6 +41,9 @@ function CourseSection() {
           />
         </div>
       </div>
+      <div>
+        <img className="" src="/teacher-img/rice2.png" alt />
+      </div>
       <div className="mt-5 lumi-all-wrapper">
         <div className="row">
           <div className="col-6">
@@ -55,9 +60,17 @@ function CourseSection() {
                   src="/teacher-img/DSC_9689.jpg"
                   alt=""
                 />
-                <p className="col-9 mt-4">
+                <p className="col-9 my-4">
                   我非常推薦寵膳食育課程！老師深知每隻毛孩的需求，並且透過生動的教學方式，帶領飼主們一起動手做健康的餐點，讓毛孩享受新鮮、美味且營養豐富的食物。
                 </p>
+              </div>
+              <div className="mt-5">
+                <Link
+                  className={`block mx-auto text-center text-decoration-none ${style.teacherBtn}`}
+                  href="/course/list"
+                >
+                  read more
+                </Link>
               </div>
             </div>
           </div>

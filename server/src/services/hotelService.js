@@ -3,6 +3,7 @@ import pool from "../config/mysql.js";
 export const getHotels = async () => {
   const connection = await pool.getConnection();
   try {
+    //hi=hotel_images 
     const [hotels] = await connection.query(`
       SELECT 
         h.*, 
@@ -306,4 +307,5 @@ export const softDeleteHotelById = async (id) => {
   } finally {
     connection.release();
   }
+  
 };

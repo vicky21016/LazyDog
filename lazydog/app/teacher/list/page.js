@@ -11,7 +11,7 @@ import Page from "../../components/hotel/page";
 import style from "../../pages/menu.module.css";
 import style1 from "../../product/list/list.module.css";
 
-const App = () => {
+export default function App (){
   const { teachers = [] } = useTeachers();
 
 useEffect(() => {
@@ -86,12 +86,12 @@ useEffect(() => {
                       />
                     ))}
                 </div>
+                <Page
+                  currentPage={1}
+                  totalPages={3}
+                  onPageChange={(page) => console.log("切換到第", page, "頁")}
+                />
               </div>
-              <Page
-                currentPage={1}
-                totalPages={3}
-                onPageChange={(page) => console.log("切換到第", page, "頁")}
-              />
             </div>
           </section>
         </div>
@@ -99,5 +99,3 @@ useEffect(() => {
     </>
   );
 };
-
-export default App;

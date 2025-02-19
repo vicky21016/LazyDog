@@ -1,27 +1,26 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
+import { useTeacherDetail } from "@/hooks/useTeacherDetail";
 // import { useParams } from "react-router-dom";
 import { useRouter } from "next/router";
-import Header from "../../components/layout/header";
-import Breadcrumb from "../../components/teacher/breadcrumb";
-import Profile from "../../components/teacher/Profile";
+import Header from "../../../components/layout/header";
+import Breadcrumb from "../../../components/teacher/breadcrumb";
+import Profile from "../../../components/teacher/Profile";
 // import SocialLinks from '../../components/teacher/SocialLinks';
-import ToggleButtons from "../../components/teacher/ToggleButtons";
-import OtherCourses from "../../components/teacher/OtherCourses";
+import ToggleButtons from "../../../components/teacher/ToggleButtons";
+import OtherCourses from "../../../components/teacher/OtherCourses";
 // import TeacherCard from "../../components/teacher/teacherCard";
-import styles from "./info.module.css";
-import OtherTeacher from "../../components/teacher/otherTeacher";
+import styles from "../info.module.css";
+import OtherTeacher from "../../../components/teacher/otherTeacher";
 // import style from "../../pages/menu.module.css";
 
-const App = () => {
+export default function App () {
   const [selectedTab, setSelectedTab] = useState("experience");
-  const router = useRouter();
-  const { id } = router.query; 
-
-  const [teacher] = useTeacherDetail(id); 
-
+  const [teacherId, setTeacherId] = useState({}); 
+  const { teacher } = useTeacherDetail(teacherId);
   const teacherData = [
     {
       imgSrc: "/teacher-img/Zoe.png",
@@ -56,18 +55,18 @@ const App = () => {
   const handleRadioChange = (tab) => {
     setSelectedTab(tab);
 
-  //   useEffect(() => {
-  //     axios.get(`/teachers/${id}`)
-  //         .then(res => setTeacher(res.data))
-  //         .catch(err => console.error("取得老師詳細資訊失敗", err));
-  // }, [id]);
+    //   useEffect(() => {
+    //     axios.get(`/teachers/${id}`)
+    //         .then(res => setTeacher(res.data))
+    //         .catch(err => console.error("取得老師詳細資訊失敗", err));
+    // }, [id]);
 
-  // if (!teacher) return 
-  // <>
-  //     <div className={style.container2}>
-  //         <div className={style.loader27}></div>
-  //        </div>
-  //      </>
+    // if (!teacher) return
+    // <>
+    //     <div className={style.container2}>
+    //         <div className={style.loader27}></div>
+    //        </div>
+    //      </>
   };
 
   return (
@@ -83,8 +82,7 @@ const App = () => {
                 label: " 師資列表",
                 href: "/teacher/list",
               },
-              { name: "師資介紹", href: "/teacher/info",
-                active: true, },
+              { name: "師資介紹", href: "/teacher/info", active: true },
             ]}
           />
 
@@ -132,4 +130,3 @@ const App = () => {
   );
 };
 
-export default App;

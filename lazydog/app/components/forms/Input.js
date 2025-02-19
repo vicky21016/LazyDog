@@ -12,7 +12,6 @@ export default function ComponentsInputFiled({ type, name, placeholder, icon, va
           name={name}
           placeholder={placeholder}
           className={` p-2 rounded ${styles['filed']}`}
-          required
           value={value} // 綁定 value 到狀態
           onChange={onChange}
         />

@@ -51,9 +51,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
   font-size: 15px;
   letter-spacing: 2px;
-  gap: 73px;
+  gap: 60px;
   a {
     text-decoration: none;
     color: rgba(59, 51, 48, 1);
@@ -102,3 +103,10 @@
   color : #ff9538;}
 
 .dropdown:hover .dropdown-content {display: block;}
+
+@media (max-width: 768px) {
+  .lumiLogo1 {
+    display: none;
+  }
+  
+}

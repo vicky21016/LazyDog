@@ -95,7 +95,7 @@
   }
   
   .tdTable {
-    height: 54px;
+    height: 50px;
     padding: 0px 25px;
     display: flex;
     align-items: center;
@@ -120,6 +120,9 @@
   }
   
   .menuTable {
+     height: 58px;
+     margin: 10px 0 0 0;
+     padding: 10px 0 0 25px ;
     border-top: 1px solid rgba(167, 166, 166, 0.521);
     /* border-bottom: 1px solid rgba(167, 166, 166, 0.521); */
   }
@@ -142,3 +145,7 @@
     border: 1px solid #F5842B;
     border-radius: 66px;
   }  
+  .clear:hover{
+    background-color: #ff9538;
+  color: white;
+  }

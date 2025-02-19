@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styles from '../../teacher/list/list.module.css';
+import Link from "next/link";
 
-const Filter = () => {
+export default function Filter () {
     return (
       <aside className={`mt-4 ${styles["pdFilter"]}`}>
         <table className={styles.pdFilterTable}>
@@ -17,7 +18,7 @@ const Filter = () => {
           </tr>
           <tr>
             <td className={`${styles.tdTable} ${styles.menuTable}`}>
-              <h5>課程類別</h5>
+              <h5 className="my-3">課程類別</h5>
               <img src="./img/font/down.png" alt="" />
             </td>
           </tr>
@@ -61,7 +62,7 @@ const Filter = () => {
           </tr>
           <tr>
             <td className={`${styles.tdTable} ${styles.menuTable}`}>
-              <h5>老師性別</h5>
+              <h5 className="my-3">老師性別</h5>
               <img src="./img/font/down.png" alt="" />
             </td>
           </tr>
@@ -88,17 +89,15 @@ const Filter = () => {
           </tr>
         </table>
         {/* <div className={styles.con1}>廣告</div> */}
-        <a href="">
           <figure>
-            <img
-              src="/product/DM/DM_aside.png"
-              alt="廣告"
-              className="img-fluid"
-            />
+            <Link href="/product/list">
+              <img
+                src="/product/DM/DM_aside.png"
+                alt="廣告"
+                className="img-fluid"
+              />
+            </Link>
           </figure>
-        </a>
       </aside>
     );
 };
-
-export default Filter;

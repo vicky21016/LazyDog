@@ -34,6 +34,7 @@
     "next": "^14.2.23",
     "nouislider": "^15.8.1",
     "react": "^18.3.1",
+    "react-avatar-editor": "^13.0.2",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^18.3.1",
     "react-froala-wysiwyg": "^4.4.0",
