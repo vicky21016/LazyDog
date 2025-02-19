@@ -7,7 +7,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  padding: 15px 63px;
+  padding: 20px 63px;
   justify-content: space-between;
   align-items: center;
   background-color: #f5832b00;
@@ -21,13 +21,13 @@
   justify-content: center;
   align-items: center;
   margin: 0;
-  font-size: 18px;
+  font-size: 15px;
   letter-spacing: 2px;
   gap: 60px;
   a {
     text-decoration: none;
     color: rgba(59, 51, 48, 1);
-    font-weight: bolder;
+    font-weight: bold;
   }
   a:hover {
     text-decoration: none;
@@ -48,7 +48,7 @@
 }
 .lumi-logo1{
   color: #fff;
-  font-size: 32px;
+  /* font-size: 32px; */
   font-weight: bold;
   /* font-family: "Noto Sans TC", sans-serif; */
   letter-spacing: 2px;

@@ -1,13 +1,13 @@
 import React, { useRef } from "react";
 import styles from "../../../styles/modules/operatorCamera.module.css";
-const ProfileCard = ({
+export default function ProfileCard  ({
   avatar,
   name,
   email,
   onUpload,
   onDelete,
   changepage,
-}) => {
+}){
   const fileInputRef = useRef(null);
 
   return (
@@ -83,4 +83,3 @@ const ProfileCard = ({
   );
 };
 
-export default ProfileCard;
