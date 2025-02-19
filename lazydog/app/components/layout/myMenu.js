@@ -16,12 +16,13 @@ import {
   faPen,
   faCirclePlus,
   faRightFromBracket,
+  faCamera,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function MyMenu() {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, logout } = useAuth(); //  從 `useAuth` 獲取 `user` & `logout`
+  const { user, logout, updateAvatar } = useAuth(); //  從 `useAuth` 獲取 `user` & `logout`
   const [profile, setProfile] = useState(null);
 
   //  監聽 `localStorage`，確保會員資訊即時更新
@@ -32,6 +33,18 @@ export default function MyMenu() {
     }
   }, [user]);
 
+  const handleClick = () => {
+    // 觸發檔案選擇框
+    document.getElementById("avatarInput").click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      updateAvatar(file);
+      console.log(file);
+    }
+  };
   const handleLogout = async () => {
     try {
       console.log("執行登出...");
@@ -62,8 +75,20 @@ export default function MyMenu() {
           alt="User Avatar"
           className="lumi-avatar"
           width="50"
-
         />
+        <FontAwesomeIcon
+          icon={faCamera}
+          onClick={handleClick}
+          style={{ cursor: "pointer" }} 
+        />
+        <input
+          id="avatarInput"
+          type="file"
+          style={{ display: "none" }} 
+          onChange={handleFileChange} 
+          accept="image/*" 
+        />
+
         <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5>
       </div>
 

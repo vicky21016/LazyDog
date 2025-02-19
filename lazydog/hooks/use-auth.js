@@ -20,8 +20,6 @@ export function AuthProvider({ children }) {
 
   // 登入
   const login = async (email, password) => {
-   
-
     let API = "http://localhost:5000/auth/login";
     const formData = new FormData();
     formData.append("email", email);
@@ -30,7 +28,7 @@ export function AuthProvider({ children }) {
     try {
       const res = await fetch(API, { method: "POST", body: formData });
       const result = await res.json();
-      
+
       if (result.status !== "success") throw new Error(result.message);
 
       const token = result.data.token;
@@ -194,6 +192,47 @@ export function AuthProvider({ children }) {
       alert(`儲存失敗: ${err.message}`);
     }
   };
+  // 更新大頭照
+  const updateAvatar = async (avatarFile) => {
+    let token = localStorage.getItem(appKey);
+    let API = `http://localhost:5000/auth/upload`;
+
+    if (!avatarFile) {
+      console.error("請提供圖片檔案");
+      return;
+    }
+
+    try {
+      // 準備 FormData
+      let formData = new FormData();
+      formData.append("myFile", avatarFile);
+
+      let response = await fetch(API, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // "Content-Type": "application/json",
+        },
+        body: formData,
+      });
+
+      let result = await response.json();
+
+      if (response.ok) {
+        console.log("上傳成功:", result);
+        // const user = JSON.parse(localStorage.getItem("user"));
+        // user.avatar = result.fileUrl; // ��存��片網址
+        // localStorage.setItem("user", JSON.stringify(user));
+        // // 重新取得使用者資料
+      
+        return result.fileUrl; // 回傳圖片網址
+      } else {
+        return console.error("上傳失敗:", result.message);
+      }
+    } catch (error) {
+      return console.log("請求錯誤:", error);
+    }
+  };
 
   useEffect(() => {
     // console.count("useEffect00 次數");
@@ -216,7 +255,7 @@ export function AuthProvider({ children }) {
             avatar: currentUser.photoURL,
           })
         );
-      } 
+      }
     });
     if (token) {
       const fetchData = async () => {
@@ -244,8 +283,6 @@ export function AuthProvider({ children }) {
       unsubscribe();
       fetchData();
     }
-
-  
   }, []);
 
   useEffect(() => {
@@ -259,7 +296,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, googleLogin, logout, register, save }}
+      value={{ user, login, googleLogin, logout, register, save ,updateAvatar}}
     >
       {children}
     </AuthContext.Provider>

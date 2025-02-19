@@ -3,11 +3,22 @@ import jwt from "jsonwebtoken";
 import pool from "../config/mysql.js";
 import bcrypt from "bcrypt";
 import multer from "multer";
-
-import { dirname, resolve } from "path";
+import { resolve, dirname, extname } from "path";
+import { rename } from "node:fs/promises";
 import { fileURLToPath } from "url";
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    const timeStamp = Date.now();
+    cb(null, `${timeStamp}${extname(file.originalname).toLowerCase()}`);
+  },
+});
+
 const router = express.Router();
-const upload = multer();
+const upload = multer({ storage });
 const secretKey = process.env.JWT_SECRET_KEY;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -197,7 +208,6 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
         birthday: user.birthday,
         gender: user.gender,
         phone: user.phone,
-        avatar,
       },
       secretKey,
       { expiresIn: "10m" }
@@ -217,7 +227,61 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
   }
 });
 
-router.post("/status", checkToken,  (req, res) => {
+router.post(
+  "/upload",
+  upload.single("myFile"),
+  checkToken,
+  async (req, res) => {
+    const { file } = req;
+    if (!file) {
+      return res.status(400).json({ status: "error", message: "請上傳圖片" });
+    }
+
+    // 驗證檔案格式
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+      return res
+        .status(400)
+        .json({ status: "error", message: "上傳的圖片格式不正確" });
+    }
+
+    const newFileName = `${Date.now()}${extname(
+      file.originalname
+    ).toLowerCase()}`;
+    const newPath = resolve(__dirname, "../../public/user/img", newFileName);
+
+    try {
+      // 移動檔案
+      await rename(file.path, newPath);
+
+      // 先更新 users 資料表
+      const sql = "UPDATE users SET `user_img` = ? WHERE id = ?;";
+      await pool.execute(sql, [newFileName, req.decoded.id]);
+      const token = jwt.sign(
+        {
+          id: req.decoded.id,
+          email: req.decoded.email,
+          role: req.decoded.role,
+          name: req.decoded.name,
+          birthday: req.decoded.birthday,
+          gender: req.decoded.gender,
+          phone: req.decoded.phone,
+          avatar: newFileName,
+        },
+        secretKey,
+        { expiresIn: "30m" }
+      );
+      // 再回應成功 JSON
+      res.status(200).json({
+        fileUrl: `/user/img/${newFileName}`,
+        data: { token },
+      });
+    } catch (err) {
+      console.error("上傳錯誤:", err);
+      return res.status(500).json({ status: "error", message: "檔案儲存失敗" });
+    }
+  }
+);
+router.post("/status", checkToken, (req, res) => {
   const { decoded } = req;
   // const avatar = await getAvatar(user.img);
   const token = jwt.sign(
@@ -229,7 +293,7 @@ router.post("/status", checkToken,  (req, res) => {
       birthday: decoded.birthday,
       gender: decoded.gender,
       phone: decoded.phone,
-      avatar:decoded.avatar,
+      avatar: decoded.avatar,
     },
     secretKey,
     { expiresIn: "30m" }
