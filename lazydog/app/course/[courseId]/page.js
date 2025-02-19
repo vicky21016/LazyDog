@@ -23,7 +23,8 @@ export default function CourseIdPage() {
   const { data, loading, error } = useFetch(
     `http://localhost:5000/api/course/${courseCode}`
   )
-  console.log(data);
+
+  // console.log(data);
 
   return (
     <>
