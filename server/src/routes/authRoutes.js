@@ -3,16 +3,14 @@ import jwt from "jsonwebtoken";
 import pool from "../config/mysql.js";
 import bcrypt from "bcrypt";
 import multer from "multer";
-import path from "path";
+
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
 const router = express.Router();
 const upload = multer();
 const secretKey = process.env.JWT_SECRET_KEY;
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-
-// router.use(
-//   "/img",
-//   express.static(path.join(__dirname, "public", "user", "img"))
-// );
 router.post("/login", upload.none(), async (req, res) => {
   const { email, password } = req.body;
 
@@ -26,9 +24,10 @@ router.post("/login", upload.none(), async (req, res) => {
     if (users.length === 0) throw new Error("找不到使用者");
 
     const user = users[0];
+    if (user.is_deleted == 1) throw new Error("找不到使用者");
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new Error("帳號或密碼錯誤");
-    const avatar = await getAvatar(user.img);
+    const avatar = await getAvatar(user.user_img);
     const token = jwt.sign(
       {
         id: user.id,
@@ -126,6 +125,7 @@ router.post("/logout", checkToken, (req, res) => {
       birthday: "",
       gender: "",
       phone: "",
+      avatar: "",
     },
     secretKey,
     { expiresIn: "-10s" }
@@ -197,6 +197,7 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
         birthday: user.birthday,
         gender: user.gender,
         phone: user.phone,
+        avatar,
       },
       secretKey,
       { expiresIn: "10m" }
@@ -216,9 +217,9 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
   }
 });
 
-router.post("/status", checkToken, (req, res) => {
+router.post("/status", checkToken,  (req, res) => {
   const { decoded } = req;
-
+  // const avatar = await getAvatar(user.img);
   const token = jwt.sign(
     {
       id: decoded.id,
@@ -228,13 +229,14 @@ router.post("/status", checkToken, (req, res) => {
       birthday: decoded.birthday,
       gender: decoded.gender,
       phone: decoded.phone,
+      avatar:decoded.avatar,
     },
     secretKey,
     { expiresIn: "30m" }
   );
   res.json({ status: "success", data: { token }, message: "登入中" });
 });
-
+router.use(express.static(resolve(__dirname, "../../public", "user", "img")));
 function checkToken(req, res, next) {
   let token = req.get("Authorization");
   if (!token)
@@ -268,9 +270,9 @@ function checkToken(req, res, next) {
 
 async function getAvatar(img) {
   if (!img) {
-    return "http://localhost:5000/user/img/default-avatar.jpg";
+    return "http://localhost:5000/auth/default-avatar.jpg";
   }
-  return `http://localhost:5000/user/img/${img}`;
+  return `http://localhost:5000/auth/${img}`;
 }
 
 export default router;
