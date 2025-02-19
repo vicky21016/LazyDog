@@ -76,7 +76,6 @@ export const getCouponByCode = async (code, userId) => {
   }
 };
 
-
 export const createCoupons = async (couponData) => {
   try {
     const {
@@ -187,6 +186,10 @@ export const softDeleteCouponById = async (id) => {
       await connection.rollback();
       return { error: `軟刪除失敗，找不到 id=${id}` };
     }
+    await connection.query(
+      "UPDATE coupon_restrictions SET is_deleted = 1, updated_at = NOW() WHERE coupon_id = ?",
+      [id]
+    );
     await connection.commit();
     return { message: `旅館 id=${id} 已成功軟刪除` };
   } catch (error) {
@@ -194,5 +197,27 @@ export const softDeleteCouponById = async (id) => {
     return { error: "無法刪除：" + error.message };
   } finally {
     connection.release();
+  }
+};
+
+export const getCouponRestrictions = async (couponId) => {
+  try {
+    const [restrictions] = await pool.query(
+      `SELECT cr.*, 
+        CASE 
+          WHEN cr.restricted_table = 'course' THEN c.name
+          WHEN cr.restricted_table = 'yi_product' THEN p.name
+          WHEN cr.restricted_table = 'hotel' THEN h.name
+        END AS restricted_name
+      FROM coupon_restrictions cr
+      LEFT JOIN course c ON cr.restricted_id = c.id AND cr.restricted_table = 'course'
+      LEFT JOIN yi_product p ON cr.restricted_id = p.id AND cr.restricted_table = 'yi_product'
+      LEFT JOIN hotel h ON cr.restricted_id = h.id AND cr.restricted_table = 'hotel'
+      WHERE cr.coupon_id = ? AND cr.is_deleted = 0`,
+      [couponId]
+    );
+    return restrictions;
+  } catch (error) {
+    throw new Error(`無法取得優惠券限制：` + error.message);
   }
 };
