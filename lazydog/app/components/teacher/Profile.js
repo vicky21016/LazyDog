@@ -3,7 +3,7 @@
 import React, { useState, useEffect  } from "react";
 import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
-import {useTeacherDetail } from "@/hooks/useTeacherDetail";
+import {useTeacherDetail } from "../../../hooks/useTeacherDetail";
 import styles from '../../teacher/info/info.module.css';
 import style from "../../pages/menu.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import '@fortawesome/fontawesome-svg-core/styles.css';
 
 export default function Profile () {
-
+ const { id } = useParams();
+    const { teacher } = useTeacherDetail(id);
 
   // if (!teacher) return
   // <>
@@ -32,9 +33,9 @@ export default function Profile () {
             />
           </div>
           <div className="col-12 col-md-6 col-lg-7 ps-5">
-            <h6 className={`mb-4 ${styles["type"]}`}>{teacher.category}</h6>
+            <h6 className={`mb-4 ${styles["type"]}`}>{teacher.category_name}</h6>
             <h4 className={`mb-4 ${styles["mark"]}`}> {teacher.name}</h4>{" "}
-            <p>{teacher.introduce}</p>
+            <p>{teacher.Introduce}</p>
             <p>
               10年前，有點像是命運的洪流，把我推向動物表演訓練，讓我愛上了訓練師這份工作，也時常在思考，怎麼樣才能成為一位更好的訓練師？怎麼樣才能透過教學，讓動物過上更好的生活？
             </p>

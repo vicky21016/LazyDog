@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect  } from "react";
 import { useParams } from "react-router-dom"
+import {useTeacherDetail } from "../../../hooks/useTeacherDetail";
 import axios from "axios";
 // import useTeacherDetail from "@/hooks/useTeacherDetail";
 import styles from "../../../styles/modules/toggle.module.css";
@@ -9,6 +10,8 @@ import style from "../../pages/menu.module.css";
 
 const ToggleButtons = ({ onRadioChange }) => {
 
+  const { id } = useParams();
+  const { teacher } = useTeacherDetail(id);
     // if (!teacher) return 
     // <>
     //     <div className={style.container2}>
@@ -35,7 +38,7 @@ const ToggleButtons = ({ onRadioChange }) => {
         <div className="mb-5">
           <h6>經歷 :</h6>{/* {teacher.experience} */}
           <ul>
-            <li>嶺世界犬隻學習寵物表演訓練師</li>
+            <li>{teacher.Experience}</li>
             <li>六福村專案犬隻訓練講師</li>
             <li>曾指導許多知名大戲劇</li>
           </ul>
