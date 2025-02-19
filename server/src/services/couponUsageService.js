@@ -98,20 +98,24 @@ export const getUserCoupons = async (userId) => {
   }
 };
 
-export const useUserCoupon = async (userId, couponId, orderId) => {
+export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
 
-    console.log("收到請求 - userId:", userId, "couponId:", couponId, "orderId:", orderId);
+    console.log("收到請求 - userId:", userId, "couponId:", couponId, "orderId:", orderId, "orderTable:", orderTable);
 
-    // 🔎 檢查 `hotel_order` 是否存在
+    // 🔎 確保 `orderTable` 是合法值
+    const validTables = ["hotel_order", "course_orders", "yi_orderlist"];
+    if (!validTables.includes(orderTable)) {
+      throw new Error("無效的訂單類型");
+    }
+
+    // 🔎 檢查對應 `order_table` 是否存在
     const [[order]] = await connection.query(
-      `SELECT id FROM hotel_order WHERE id = ?`,
-      [orderId]
+      `SELECT id FROM ${orderTable} WHERE id = ? AND user_id = ?`,
+      [orderId, userId]
     );
-
-    console.log("查詢結果:", order);
 
     if (!order) throw new Error("找不到對應的訂單");
 
@@ -121,28 +125,26 @@ export const useUserCoupon = async (userId, couponId, orderId) => {
       [userId, couponId]
     );
 
-    console.log("優惠券查詢結果:", coupon);
-
     if (!coupon) throw new Error("優惠券無法使用或已使用");
 
-    // ✅ **更新 `coupon_usage`，標記為 `used` 並關聯 `order_id`**
+    // ✅ **更新 `coupon_usage`，標記為 `used` 並關聯 `order_id` 和 `order_table`**
     await connection.query(
       `UPDATE coupon_usage 
-       SET status = 'used', used_at = NOW(), updated_at = NOW(), order_id = ? 
+       SET status = 'used', used_at = NOW(), updated_at = NOW(), order_id = ?, order_table = ? 
        WHERE user_id = ? AND coupon_id = ? AND status = 'claimed' AND is_deleted = 0`,
-      [orderId, userId, couponId]
+      [orderId, orderTable, userId, couponId]
     );
 
     await connection.commit();
     return { success: true, message: "優惠券已成功使用" };
   } catch (error) {
     await connection.rollback();
-    console.error("錯誤:", error.message);
     throw new Error(error.message);
   } finally {
     connection.release();
   }
 };
+
 
 export const deleteUserCoupon = async (userId, couponId) => {
   try {
