@@ -38,8 +38,8 @@ export const getOpHotelId = async (operatorId) => {
 export const createNewOrders = async (orderData) => {
   try {
     const {
-      user_id,
       hotel_id,
+      user_id,
       dog_count,
       check_in,
       check_out,
@@ -49,23 +49,32 @@ export const createNewOrders = async (orderData) => {
       cancellation_policy,
       remark,
     } = orderData;
+    //預設折扣薇玲
+    const discount_amount = 0;
+    const final_amount = total_price;
+
     const [result] = await pool.query(
-      `INSERT INTO hotel_order (user_id, hotel_id, dog_count, check_in, check_out, total_price, status, payment_status, payment_method, cancellation_policy, remark, created_at, updated_at, is_deleted) 
-       VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, NOW(), NOW(), 0)`,
+      `INSERT INTO hotel_order 
+      (hotel_id, user_id, dog_count, check_in, check_out, status, discount_amount, 
+       total_price, final_amount, payment_status, payment_method, 
+       cancellation_policy, remark, created_at, updated_at, is_deleted) 
+       VALUES (?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
       [
-        user_id,
         hotel_id,
+        user_id,
         dog_count,
         check_in,
         check_out,
+        discount_amount,
         total_price,
+        final_amount,
         payment_status,
         payment_method,
         cancellation_policy,
         remark,
       ]
     );
-    return { id: result.insertId, ...orderData, status: "pending" };
+    return { id: result.insertId, ...orderData, status: "pending", discount_amount: 0, final_amount: total_price };
   } catch (err) {
     throw new Error("無法創建訂單: " + err.message);
   }
