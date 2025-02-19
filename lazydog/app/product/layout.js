@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import "./product.css";
 import Script from "next/script";
 import Header from "../components/layout/header";
+import Footer from "../components/layout/footer";
 
 export default function AppLayout({ children }) {
   return (
@@ -18,6 +19,7 @@ export default function AppLayout({ children }) {
         <body suppressHydrationWarning>
           <Header />
           {children}
+          <Footer />
         </body>
       </html>
     </>

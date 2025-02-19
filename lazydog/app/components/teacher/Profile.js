@@ -3,26 +3,22 @@
 import React, { useState, useEffect  } from "react";
 import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
-import {useTeacherDetail }from "@/hooks/useTeacherDetail";
+import {useTeacherDetail } from "@/hooks/useTeacherDetail";
 import styles from '../../teacher/info/info.module.css';
 import style from "../../pages/menu.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faFacebook, faInstagram, faShareFromSquare } from '@fortawesome/free-brands-svg-icons';
 // import '@fortawesome/fontawesome-svg-core/styles.css';
 
-const Profile = () => {
-  const router = useRouter();
-  const { id } = router.query;
+export default function Profile () {
 
-  const [teacher] = useTeacherDetail(id); 
 
-    
-      // if (!teacher) return 
-      // <>
-      //     <div className={style.container2}>
-      //         <div className={style.loader27}></div>
-      //        </div>
-      //      </>
+  // if (!teacher) return
+  // <>
+  //     <div className={style.container2}>
+  //         <div className={style.loader27}></div>
+  //        </div>
+  //      </>
 
   return (
     <>
@@ -60,5 +56,3 @@ const Profile = () => {
     </>
   );
 };
-
-export default Profile;

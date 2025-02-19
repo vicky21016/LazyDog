@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { useTeacherDetail } from "@/hooks/useTeacherDetail";
+import { useTeacherDetail } from "@/hooks/useTeachers";
 // import { useParams } from "react-router-dom";
 import { useRouter } from "next/router";
 import Header from "../../../components/layout/header";
@@ -19,10 +19,7 @@ import OtherTeacher from "../../../components/teacher/otherTeacher";
 
 export default function App () {
   const [selectedTab, setSelectedTab] = useState("experience");
-  const router = useRouter();
-  const { id } = router.query;
 
-  const {teacher} = useTeacherDetail(id); 
   const teacherData = [
     {
       imgSrc: "/teacher-img/Zoe.png",
@@ -57,18 +54,18 @@ export default function App () {
   const handleRadioChange = (tab) => {
     setSelectedTab(tab);
 
-  //   useEffect(() => {
-  //     axios.get(`/teachers/${id}`)
-  //         .then(res => setTeacher(res.data))
-  //         .catch(err => console.error("取得老師詳細資訊失敗", err));
-  // }, [id]);
+    //   useEffect(() => {
+    //     axios.get(`/teachers/${id}`)
+    //         .then(res => setTeacher(res.data))
+    //         .catch(err => console.error("取得老師詳細資訊失敗", err));
+    // }, [id]);
 
-  // if (!teacher) return 
-  // <>
-  //     <div className={style.container2}>
-  //         <div className={style.loader27}></div>
-  //        </div>
-  //      </>
+    // if (!teacher) return
+    // <>
+    //     <div className={style.container2}>
+    //         <div className={style.loader27}></div>
+    //        </div>
+    //      </>
   };
 
   return (
@@ -84,12 +81,11 @@ export default function App () {
                 label: " 師資列表",
                 href: "/teacher/list",
               },
-              { name: "師資介紹", href: "/teacher/info",
-                active: true, },
+              { name: "師資介紹", href: "/teacher/info", active: true },
             ]}
           />
 
-          <Profile teacher={teacher} />
+          <Profile teacher={teacher}/>
           {/* <SocialLinks /> */}
           <div className={`row ${styles.profile}`}>
             <div className="my-5 ">

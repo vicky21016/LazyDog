@@ -17,62 +17,6 @@ a {
   text-decoration: none;
 }
 
-.lumi-signin {
-  color: #ff9538;
-  font-weight: 700;
-  margin: 5px;
-}
-.lumi-connect {
-  color: #ff9538;
-  font-weight: 800;
-}
-
-/* app-page 登入 */
-.lumi-logo {
-  display: flex;
-  align-items: center;
-  font-size: 26px;
-  font-weight: bold;
-  letter-spacing: 2px;
-  color: #ff9538;
-}
-.lumi-logo1 {
-  margin-right: 20px;
-  width: 60px;
-}
-.lumi-user-actions {
-  display: flex;
-}
-.lumi-user-icon {
-  font-size: 26px;
-  margin-right: 20px;
-  color: #ff9538;
-}
-.lumi-cart-icon {
-  font-size: 20px;
-  color: #ff9538;
-}
-.lumi-item {
-  padding: 8px;
-  a {
-    color: #3b3330;
-    text-decoration: none;
-  }
-  a:hover {
-    color: #ff9538;
-    font-weight: bold;
-  }
-}
-.lumi-item {
-  padding: 8px;
-  color: #3b3330;
-  text-decoration: none;
-}
-.lumi-item:hover {
-  color: #ff9538;
-  font-weight: bold;
-}
-
 /* 登入表單 */
 .lumi-login-wrapper {
   display: flex;
@@ -90,8 +34,6 @@ a {
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
 }
 .lumi-form-title {
-  /* text-align: center; */
-  /* font-size: 1.37rem; */
   font-weight: 600;
   margin-bottom: 32px;
   padding: 0 8px 0;
@@ -115,13 +57,9 @@ a {
 }
 
 .lumi-fogot-pass-link {
-  /* display: block;
-  width: fit-content;
-  margin-top: 8px; */
   font-size: 12px;
   color: #ff9538;
   font-weight: bold;
-  /* margin-left: 8px; */
   text-decoration: none;
 }
 
@@ -166,17 +104,12 @@ a {
 .lumi-social-button {
   display: flex;
   width: 60px;
-  /* gap: 0.81rem; */
-  /* font-size: 1rem; */
-  /* font-weight: 500; */
   padding: 12px 0;
   align-items: center;
   justify-content: center;
   border: none;
   background-color: #ffff;
-  /* cursor: pointer; */
-  /* border: 1px solid; */
-  /* border-radius: 0.31rem; */
+  cursor: pointer;
 }
 .lumi-google-icon {
   width: 42px;
@@ -195,17 +128,11 @@ a {
 .lumi-login {
   color: #ff9538;
   font-weight: bold;
-  /* margin-left: 8px; */
   text-decoration: none;
 }
 .lumi-other-accounts {
   display: flex;
   justify-content: space-between;
-  /* gap: 10px; */
-  /* justify-content: center;
-  align-items: center;  */
-  /* margin: 36px 0 5px; */
-  /* font-size: 14px; */
 }
 .lumi-other-accounts-link {
   display: flex;
@@ -223,80 +150,13 @@ a {
 .lumi-bread {
   color: #828282;
 }
-/* menu 基本資料 */
-.lumi-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* 頂端對齊 */
-  gap: 40px;
-  margin: 60px auto 20px;
-  max-width: 1320px;
-}
-.lumi-menu-container {
-  width: 100%;
-  max-width: 180px;
-  margin-left: 50px;
-  border-radius: 8px;
-  padding: 24px 0;
-  background-color: white;
-  text-align: center;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-}
-.lumi-welcome {
-  font-weight: 550;
-}
-.lumi-menu-link span {
-  margin-right: 12px;
-}
+
 /* teacher */
 .lumi-all-wrapper {
   margin: 0 auto 20px;
   max-width: 1320px;
 }
-.lumi-teacher-btn {
-  display: flex;
-  width: 270px;
-  padding: 10px 48px;
-  background-color: #66c5bd;
-  color: white;
-  border: 1px solid transparent;
-  justify-content: center;
-  align-items: center;
-}
-.lumi-teacher-btn:hover {
-  display: flex;
-  width: 270px;
-  padding: 10px 48px;
-  background-color: white;
-  color: #66c5bd;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid;
-  border-color: #66c5bd;
-  font-weight: 600;
-}
-.lumi-dog-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #fff6e8;
-}
 
-.lumi-dog {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.lumi-dog div {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  color: #66c5bd;
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: 6px;
-}
 .lumi-m-title {
   color: #f5842b !important;
   font-size: 36px !important;
@@ -316,6 +176,7 @@ a {
 .lumi-teacher-team {
   background-color: #fdfaf5;
 }
+
 /* noUiSlider 全域樣式 */
 .noUi-target {
   background: #fff !important;

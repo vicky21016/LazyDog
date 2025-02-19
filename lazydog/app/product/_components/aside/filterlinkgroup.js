@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./aside.module.css";
 import Link from "next/link";
 
-export default function FilterGroup(category = {}) {
+export default function FilterLinkGroup(category = {}) {
   const [showMore, setShowMore] = useState(false);
   const categorys = category?.category;
   const categoryClass = [];
@@ -28,7 +28,7 @@ export default function FilterGroup(category = {}) {
               <Link
                 href={`http://localhost:3000/product/list/category?category=${category?.name}`}
                 className={styles.FormLink}
-                key={i}
+                key={`FilterLink${i}`}
               >
                 {v}
               </Link>
@@ -43,7 +43,7 @@ export default function FilterGroup(category = {}) {
                   <Link
                     href={`http://localhost:3000/product/list/category?category=${category?.name}`}
                     className={styles.FormLink}
-                    key={i}
+                    key={`FilterLink${i}`}
                   >
                     {v}
                   </Link>

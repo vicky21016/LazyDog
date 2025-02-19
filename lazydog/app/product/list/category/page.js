@@ -33,10 +33,10 @@ export default function ListPage(props) {
             </Link>
           </div>
           <div className={styles.Title}>
-            <h2>{category}</h2>
+            <h5>{category}</h5>
             <div className={styles.TitleFilter}>
               <img src="/product/font/filter.png" alt="" />
-              <h4>依熱門排序</h4>
+              <h6>依熱門排序</h6>
             </div>
           </div>
         </section>
