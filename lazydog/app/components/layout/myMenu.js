@@ -58,10 +58,11 @@ export default function MyMenu() {
       {/*  顯示會員頭像與名稱 */}
       <div className="lumi-profile-section">
         <img
-          src={"http://localhost:5000/user/img/default-avatar.jpg"}
+          src={profile?.avatar}
           alt="User Avatar"
           className="lumi-avatar"
           width="50"
+
         />
         <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5>
       </div>
