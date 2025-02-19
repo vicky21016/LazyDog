@@ -1,35 +1,42 @@
-import express from 'express'
+import express from "express";
 import {
   getAllCoupons,
   getCouponById,
+  getCouponByCode,
   createCoupon,
   updateCoupon,
   softDeleteCoupon,
+} from "../controllers/couponController.js";
+import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 
-} from '../controllers/couponController.js'
-import { verifyToken, verifyRole } from '../middlewares/authMiddleware.js'
+const router = express.Router();
 
-const router = express.Router()
-
-router.get('/', getAllCoupons)
+router.get("/", getAllCoupons);
 router.get(
-  '/:id',
+  "/:id",
   verifyToken,
-  verifyRole(['operator', 'teacher']),
+  verifyRole(["operator", "teacher"]),
   getCouponById
-)
-router.post('/', verifyToken, verifyRole(['operator', 'teacher']), createCoupon)
-router.patch(
-  '/:id',
+);
+//提供查詢
+router.get("/code/:code", getCouponByCode);
+router.post(
+  "/",
   verifyToken,
-  verifyRole(['operator', 'teacher']),
+  verifyRole(["operator", "teacher"]),
+  createCoupon
+);
+router.patch(
+  "/:id",
+  verifyToken,
+  verifyRole(["operator", "teacher"]),
   updateCoupon
-)
+);
 router.patch(
-  '/:id/soft-delete',
+  "/:id/soft-delete",
   verifyToken,
-  verifyRole(['operator', 'teacher']),
+  verifyRole(["operator", "teacher"]),
   softDeleteCoupon
-)
+);
 
-export default router
+export default router;
