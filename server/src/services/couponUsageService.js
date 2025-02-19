@@ -43,6 +43,48 @@ export const claimUserCoupon = async (userId, couponId) => {
     connection.release();
   }
 };
+export const claimUserCouponByCode = async (userId, code) => {
+  const connection = await pool.getConnection();
+  try {
+    await connection.beginTransaction();
+    const [[coupon]] = await connection.query(
+      `SELECT * FROM coupons WHERE code = ? AND is_deleted = 0`,
+      [code]
+    );
+    if (!coupon) throw new Error("優惠券代碼無效或已刪除");
+
+    const couponId = coupon.id;
+    const now = new Date();
+    if (new Date(coupon.start_time) > now) throw new Error("優惠券尚未開始");
+    if (new Date(coupon.end_time) < now) throw new Error("優惠券已過期");
+
+    const [[totalUsage]] = await connection.query(
+      `SELECT COUNT(*) AS total FROM coupon_usage WHERE coupon_id = ? AND is_deleted = 0`,
+      [couponId]
+    );
+    if (totalUsage.total >= coupon.max_usage)
+      throw new Error("此優惠券已被領取完畢");
+    const [[userClaimed]] = await connection.query(
+      `SELECT COUNT(*) AS count FROM coupon_usage WHERE user_id = ? AND coupon_id = ? AND is_deleted = 0`,
+      [userId, couponId]
+    );
+    if (userClaimed.count >= coupon.max_usage_per_user)
+      throw new Error("您已達此優惠券的領取上限");
+    await connection.query(
+      `INSERT INTO coupon_usage (user_id, coupon_id, status, claimed_at, created_at, updated_at, is_deleted) 
+       VALUES (?, ?, 'claimed', NOW(), NOW(), NOW(), 0)`,
+      [userId, couponId]
+    );
+
+    await connection.commit();
+    return { success: true, message: "優惠券領取成功" };
+  } catch (error) {
+    await connection.rollback();
+    throw new Error(error.message);
+  } finally {
+    connection.release();
+  }
+};
 
 export const getUserCoupons = async (userId) => {
   try {
