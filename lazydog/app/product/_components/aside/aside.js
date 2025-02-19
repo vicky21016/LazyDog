@@ -119,21 +119,18 @@ export default function AsideAside(props) {
       {pathname.includes("category")
         ? categoryClass[i]?.map((e) => (
             <FilterGroup
-              key={i}
+              key={`FilterGroup${i}`}
               name={e}
               category={category[categoryName[i]]}
             />
           ))
         : categoryName?.map((v, i) => (
-            <FilterLinkGroup key={i} name={v} category={category[v]} />
+            <FilterLinkGroup
+              key={`FilterLinkGroup${i}`}
+              name={v}
+              category={category[v]}
+            />
           ))}
-
-      {/* {categoryName?.map((v, i) => {
-        return <FilterLinkGroup key={i} name={v} category={category[v]} />;
-      })}
-      {categoryName?.map((v, i) => {
-        return <FilterGroup key={i} name={v} category={category[v]} />;
-      })} */}
       <div className={`text-center ${styles.PriceFilterContainer}`}>
         <h5 className={styles.FilterTitle} style={{ justifyContent: "center" }}>
           價格篩選

@@ -48,7 +48,7 @@ export default function MyMenu() {
   const menuItems = [
     { name: "會員資料", path: "/pages", icon: faUser },
     { name: "訂單紀錄", path: "/my/orders", icon: faCartShopping },
-    { name: "我的優惠", path: "/my/coupons", icon: faTicket },
+    { name: "我的優惠", path: "/hotel-coupon/couponList", icon: faTicket },
     { name: "我的收藏", path: "/my/favorite", icon: faHeart },
     { name: "我的文章", path: "/my/posts", icon: faPen },
     { name: "修改密碼", path: "/pages/forgot-password", icon: faCirclePlus },

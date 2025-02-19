@@ -6,7 +6,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "../../styles/modules/home.module.css";
 import Header from "../components/layout/header2";
-import Footer from "../components/layout/footer";
 
 export default function HomePage(props) {
   return (
@@ -25,7 +24,9 @@ export default function HomePage(props) {
             </div>
             <div className={styles.sale3}>
               <p className={styles.sale3Word}>錯過這次，再等一年!</p>
-              <Link href="/product" className={styles.sale3Btn}>Shop Now</Link>
+              <Link href="/product/list" className={styles.sale3Btn}>
+                Shop Now
+              </Link>
             </div>
           </div>
           <div className={styles.dog}>
@@ -68,7 +69,11 @@ export default function HomePage(props) {
         <div className={styles.productCards}>
           <div className={styles.card}>
             <div className={styles.pdPics}>
-              <img className={styles.dryfood} src="/home/img/dryfood (2).jpeg" alt="" />
+              <img
+                className={styles.dryfood}
+                src="/home/img/dryfood (2).jpeg"
+                alt=""
+              />
             </div>
             <div className={styles.pdWords}>
               <p className={styles.p}>超能狗主食罐</p>
@@ -77,7 +82,11 @@ export default function HomePage(props) {
           </div>
           <div className={styles.card}>
             <div className={styles.pdPics}>
-              <img className={styles.dryfood} src="/home/img/dryfood (2).jpeg" alt="" />
+              <img
+                className={styles.dryfood}
+                src="/home/img/dryfood (2).jpeg"
+                alt=""
+              />
             </div>
             <div className={styles.pdWords}>
               <p className={styles.p}>超能狗主食罐</p>
@@ -86,7 +95,11 @@ export default function HomePage(props) {
           </div>
           <div className={styles.card}>
             <div className={styles.pdPics}>
-              <img className={styles.dryfood} src="/home/img/dryfood (2).jpeg" alt="" />
+              <img
+                className={styles.dryfood}
+                src="/home/img/dryfood (2).jpeg"
+                alt=""
+              />
             </div>
             <div className={styles.pdWords}>
               <p className={styles.p}>超能狗主食罐</p>
@@ -95,7 +108,11 @@ export default function HomePage(props) {
           </div>
           <div className={styles.card}>
             <div className={styles.pdPics}>
-              <img className={styles.dryfood} src="/home/img/dryfood (2).jpeg" alt="" />
+              <img
+                className={styles.dryfood}
+                src="/home/img/dryfood (2).jpeg"
+                alt=""
+              />
             </div>
             <div className={styles.pdWords}>
               <p className={styles.p}>超能狗主食罐</p>
@@ -104,7 +121,11 @@ export default function HomePage(props) {
           </div>
           <div className={styles.card}>
             <div className={styles.pdPics}>
-              <img className={styles.dryfood} src="/home/img/dryfood (2).jpeg" alt="" />
+              <img
+                className={styles.dryfood}
+                src="/home/img/dryfood (2).jpeg"
+                alt=""
+              />
             </div>
             <div className={styles.pdWords}>
               <p className={styles.p}>超能狗主食罐</p>
@@ -127,7 +148,9 @@ export default function HomePage(props) {
             alt=""
           />
           <h2 className={styles.discountWord}>優惠的折扣</h2>
-          <Link href="#" className={styles.readmoreBtn}>Read More</Link>
+          <Link href="#" className={styles.readmoreBtn}>
+            Read More
+          </Link>
           <div className={styles.circle}>
             20%
             <br />
@@ -140,11 +163,19 @@ export default function HomePage(props) {
           </div>
           <div className={styles.hotelWords}>
             <h2 className={styles.h2}>毛孩的度假天堂</h2>
-            <p className={styles.p}>立即下訂，為您的毛孩子預約一個愉快的假期！</p>
-            <Link href="/hotel-coupon" className={styles.bookBtn}>Book Now</Link>
+            <p className={styles.p}>
+              立即下訂，為您的毛孩子預約一個愉快的假期！
+            </p>
+            <Link href="/hotel-coupon/fonthotelHome" className={styles.bookBtn}>
+              Book Now
+            </Link>
           </div>
           <div className={styles.hotelViews}>
-            <img className={styles.dryfood} src="/home/img/dryfood (5).jpeg" alt="" />
+            <img
+              className={styles.dryfood}
+              src="/home/img/dryfood (5).jpeg"
+              alt=""
+            />
             <h5 className={styles.h5}>汪汪星球</h5>
           </div>
         </div>
@@ -171,18 +202,26 @@ export default function HomePage(props) {
           <div className={`${styles.card} ${styles.card1}`}>
             <p className={styles.p1}>首購會員</p>
             <p className={styles.p2}>現折50</p>
-            <h5  className={styles.card1Word}>單筆消費滿 $ 500 即可使用</h5>
+            <h5 className={styles.card1Word}>單筆消費滿 $ 500 即可使用</h5>
           </div>
           <div className={`${styles.card} ${styles.card2}`}>
             <div className={styles.shipIcon}>
-              <img className={styles.shipIcon} src="/home/img/shipIcon.png" alt="" />
+              <img
+                className={styles.shipIcon}
+                src="/home/img/shipIcon.png"
+                alt=""
+              />
             </div>
             <h5 className={styles.card2Word}>滿額免運</h5>
             <p className={styles.card2P}>超取 $ 1500 / 宅配 $ 2000</p>
           </div>
           <div className={`${styles.card} ${styles.card3}`}>
             <div className={styles.icon}>
-              <img className={styles.moneyIcon} src="/home/img/moneyIcon.png" alt="" />
+              <img
+                className={styles.moneyIcon}
+                src="/home/img/moneyIcon.png"
+                alt=""
+              />
             </div>
             <h5 className={styles.card5Word}>購物金回饋</h5>
             <p className={styles.card5P}>
@@ -190,14 +229,20 @@ export default function HomePage(props) {
             </p>
           </div>
           <div className={`${styles.card} ${styles.card4}`}>
-            <div >
-              <img className={styles.qrcode} src="/home/img/qrcode.png" alt="" />
+            <div>
+              <img
+                className={styles.qrcode}
+                src="/home/img/qrcode.png"
+                alt=""
+              />
             </div>
             <h4 className={styles.h4}>加入好友</h4>
             <p className={styles.p}>獲得最新優惠資訊</p>
           </div>
         </div>
-        <Link href="/register" className={styles.signupBtn}>立即加入會員</Link>
+        <Link href="/register" className={styles.signupBtn}>
+          立即加入會員
+        </Link>
         <div className={styles.yellowPaws}>
           <img src="/home/img/yellowPaws.png" alt="" />
         </div>
@@ -211,7 +256,6 @@ export default function HomePage(props) {
           <img src="/home/img/topIcon.png" alt="" />
         </button>
       </div>
-      <Footer/>
     </>
   );
 }

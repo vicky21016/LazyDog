@@ -32,3 +32,22 @@
 .suDropdownItem {
     cursor: pointer;
 }
+.suBtnSecondary {
+  background-color: #66C5BD;
+  border-radius: 5px;
+  color: white;
+  border: 1px solid transparent;
+}
+.suBtnSecondary:hover {
+   background-color: white;
+  color: #66c5bd;
+  border: 2px solid;
+  border-color: #66c5bd;
+ 
+}
+.secondary {
+  background-color: #66C5BD;
+  border-radius: 5px;
+  color: white;
+  border: 1px solid transparent;
+}

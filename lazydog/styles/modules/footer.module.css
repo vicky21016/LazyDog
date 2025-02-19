@@ -1,47 +1,8 @@
-/* 設定 */
-:root {
-  --Orange: #f5842b;
-  --orange: #f5842b;
-  --Skin: #f1d5b6;
-  --skin: #f1d5b6;
-  --Tiffany: #66c5bd;
-  --tiffany: #66c5bd;
-  --White: #fdfaf5;
-  --white: #fdfaf5;
-  --Yellow: #f6ce5b;
-  --yellow: #f6ce5b;
-  --Black: #3b3330;
-  --black: #3b3330;
-  --Rice: #fff6e8;
-  --rice: #fff6e8;
-  --Gray: #bcbcbc;
-  --gray: #bcbcbc;
-
-  ul {
-    margin: 0;
-    padding: 0;
-    li {
-      list-style: none;
-      cursor: default;
-      /* user-select: none; */
-    }
-  }
-
-  a {
-    text-decoration: none;
-    color: var(--Black);
-  }
-
-  figure {
-    margin: 0;
-    padding: 0;
-  }
-  .bag{
-    background-color: #f5842b;
-  }
+.bag {
+  background-color: #f5842b;
 }
-.wrapper{
-   margin: 0 auto;
+.wrapper {
+  margin: 0 auto;
   max-width: 1440px;
   text-align: center;
 }
@@ -54,7 +15,7 @@
     font-weight: 500;
     letter-spacing: 2.4px;
     color: var(--White);
-  } 
+  }
 }
 
 /* ----------footer上段區域-------- */
@@ -80,7 +41,6 @@
     gap: 80px;
   }
 }
-
 
 /* -------footer中段區域第1部分------- */
 .footerList1 {
@@ -130,7 +90,6 @@
   }
 }
 
-
 /* ------footer中段區域第2,3部分------ */
 .footerList2,
 .footerList3 {
@@ -159,7 +118,6 @@
     }
   }
 }
-
 
 /* -------footer中段區域第4部分------- */
 .footerList4 {
@@ -190,7 +148,7 @@
       outline: none;
     }
 
-    .enterMail::placeholder{
+    .enterMail::placeholder {
       color: #cac8c8;
     }
 
@@ -217,7 +175,7 @@
     align-self: stretch;
     gap: 20px;
     padding: 41px 0 30px;
-    .icons{
+    .icons {
       cursor: pointer;
     }
   }

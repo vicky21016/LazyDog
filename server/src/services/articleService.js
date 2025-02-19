@@ -41,7 +41,7 @@ export const getIdS = async (id) => {
        LEFT JOIN users AS comment_users ON comment.user_id = comment_users.id
        WHERE articles.is_deleted = 0 AND users.is_deleted = 0 AND articles.id = ?`, [id]
     );
-    console.log(articles)
+    // console.log(articles)
     return articles;
   } catch (error) {
     throw new Error(`找不到 ${id} 文章，文章可能不存在或可能已被刪除：${error.message}`);

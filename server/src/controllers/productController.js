@@ -3,6 +3,7 @@ import {
   getAllProductId,
   getSearchKeyword,
   getAllCategory,
+  getAllOrder,
   getProductId,
   createNewItem,
   updateItemInfo,
@@ -58,6 +59,41 @@ export const getCategory = async (req, res) => {
   }
 };
 
+export const getOrder = async (req, res) => {
+  try {
+    const orders = await getAllOrder();
+    if (!orders.length) throw new Error("查無訂單列表");
+    console.log(orders);
+    const productCount = {};
+    orders.forEach((order) => {
+      const products = order.productID_list.split(",");
+      products.forEach((product) => {
+        productCount[product] = (productCount[product] || 0) + 1;
+      });
+    });
+    const sortedProducts = Object.entries(productCount)
+      .map(([productID, count]) => ({ productID, count }))
+      .sort((a, b) => b.count - a.count);
+    console.log(sortedProducts);
+    // PDFD01;
+    // PDFD02;
+    // PDFD03;
+    // PDSU01;
+    // PDPT01;
+    // PDPT02;
+    // PDOD01;
+    // PDHM01;
+    // PDHM02;
+    res.status(200).json({
+      status: "success",
+      data: sortedProducts,
+      message: `查詢訂單列表成功，共${sortedProducts.length}筆資料`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 export const getId = async (req, res) => {
   try {
     const { productID } = req.params;
@@ -81,8 +117,8 @@ export const getId = async (req, res) => {
 
 export const createNew = async (req, res) => {
   try {
-    const { cateId, name, brand, price, stock } = req.body;
-    if (!cateId || !name || !brand || !price || !stock) {
+    const { cateId, name, brand, price, stock, listImg, img } = req.body;
+    if (!cateId || !name || !brand || !price || !stock || !listImg || !img) {
       return res.status(401).json({
         status: "error",
         message: "請從正規管道進入此頁面",
@@ -126,6 +162,8 @@ export const createNew = async (req, res) => {
       brand,
       price,
       stock,
+      listImg,
+      img,
       ProductID
     );
     if (product.affectedRows == 0) {
@@ -160,9 +198,15 @@ export const updateItem = async (req, res) => {
       infoText,
       spec,
       isDeleted,
+      listImg,
+      infoImg,
+      img,
+      smImg,
     } = req.body;
     const updateFields = [];
     const value = [];
+    const updateImgsFields = [];
+    const imgs = [];
     const fieldNames = [
       "category_id",
       "name",
@@ -174,6 +218,15 @@ export const updateItem = async (req, res) => {
       "full_info",
       "info_text",
       "spec",
+      "is_deleted",
+      "updated_at",
+    ];
+    const imgNames = [
+      "name",
+      "list_img",
+      "info_img",
+      "lg_img",
+      "sm_img",
       "is_deleted",
       "updated_at",
     ];
@@ -191,6 +244,15 @@ export const updateItem = async (req, res) => {
       isDeleted,
       productID,
     ];
+    const updateImgs = [
+      name,
+      listImg,
+      infoImg,
+      img,
+      smImg,
+      isDeleted,
+      productID,
+    ];
     for (let i = 0; i < updateContent.length; i++) {
       if (updateContent[i]) {
         if (i == 11) {
@@ -203,8 +265,25 @@ export const updateItem = async (req, res) => {
         }
       }
     }
+    for (let i = 0; i < updateImgs.length; i++) {
+      if (updateImgs[i]) {
+        if (i == 6) {
+          updateImgsFields.push(`${imgNames[i]} = ?`);
+          imgs.push(new Date().toISOString());
+          imgs.push(updateImgs[i]);
+        } else {
+          updateImgsFields.push(`${imgNames[i]} = ?`);
+          imgs.push(updateImgs[i]);
+        }
+      }
+    }
 
-    const product = await updateItemInfo(updateFields, value);
+    const product = await updateItemInfo(
+      updateFields,
+      value,
+      updateImgsFields,
+      imgs
+    );
     if (product.affectedRows == 0) {
       throw new Error("更新商品失敗");
     }
@@ -228,8 +307,15 @@ export const softDeleteItem = async (req, res) => {
     const status = await getAllProductId(productID);
     if (!status.length) throw new Error(`查無編號：${productID} 商品`);
     const updateFields = ["is_deleted = ?"];
+    const updateImgsFields = updateFields;
     const value = status[0].is_deleted ? [0, productID] : [1, productID];
-    const product = await updateItemInfo(updateFields, value);
+    const imgs = value;
+    const product = await updateItemInfo(
+      updateFields,
+      value,
+      updateImgsFields,
+      imgs
+    );
     if (product.affectedRows == 0) {
       throw new Error("商品軟刪除切換失敗");
     }
