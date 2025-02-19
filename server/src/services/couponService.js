@@ -22,15 +22,23 @@ export const getId = async (id) => {
     throw new Error(`無法取得 ${id} 的優惠券:` + err.message);
   }
 };
-export const getCouponByCode = async (code, userId) => {
+export const getCouponByCodes = async (code, userId) => {
   try {
+    if (!code) {
+      return { success: false, status: 400, message: "請提供優惠券代碼" };
+    }
+
+    if (!userId) {
+      return { success: false, status: 400, message: "缺少 userId" };
+    }
+
     // 查詢優惠券是否存在
     const [coupons] = await pool.execute(
       "SELECT * FROM coupons WHERE code = ? AND is_deleted = 0",
       [code]
     );
 
-    if (coupons.length === 0) {
+    if (coupons.length == 0) {
       return { success: false, status: 404, message: "找不到此優惠券" };
     }
 
@@ -68,7 +76,22 @@ export const getCouponByCode = async (code, userId) => {
         message: "您已超過此優惠券的領取次數",
       };
     }
+    if (coupon.is_global) {
+      return { success: true, data: coupon, message: "此優惠券為全館適用" };
+    }
+    const [restrictions] = await pool.execute(
+      "SELECT * FROM coupon_restrictions WHERE coupon_id = ? AND is_deleted = 0",
+      [coupon.id]
+    );
 
+    if (restrictions.length > 0) {
+      return {
+        success: true,
+        data: coupon,
+        restrictions,
+        message: "此優惠券有限制使用範圍",
+      };
+    }
     return { success: true, data: coupon };
   } catch (err) {
     console.error(`無法取得優惠券 (${code}):`, err);
@@ -81,6 +104,7 @@ export const createCoupons = async (couponData) => {
     const {
       name,
       type,
+      is_global,
       content,
       value,
       min_order_value,
@@ -94,12 +118,13 @@ export const createCoupons = async (couponData) => {
 
     const [result] = await pool.query(
       `INSERT INTO coupons 
-          (name, type, content, value, min_order_value, start_time,end_time,status, max_usage, max_usage_per_user, code, 
+          (name, type,is_global, content, value, min_order_value, start_time,end_time,status, max_usage, max_usage_per_user, code, 
           created_at, updated_at, is_deleted) 
           VALUES (?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
       [
         name,
         type,
+        is_global,
         content,
         value,
         min_order_value,
@@ -191,7 +216,7 @@ export const softDeleteCouponById = async (id) => {
       [id]
     );
     await connection.commit();
-    return { message: `旅館 id=${id} 已成功軟刪除` };
+    return { message: `優惠券 id=${id} 已成功軟刪除` };
   } catch (error) {
     await connection.rollback();
     return { error: "無法刪除：" + error.message };
@@ -200,24 +225,3 @@ export const softDeleteCouponById = async (id) => {
   }
 };
 
-export const getCouponRestrictions = async (couponId) => {
-  try {
-    const [restrictions] = await pool.query(
-      `SELECT cr.*, 
-        CASE 
-          WHEN cr.restricted_table = 'course' THEN c.name
-          WHEN cr.restricted_table = 'yi_product' THEN p.name
-          WHEN cr.restricted_table = 'hotel' THEN h.name
-        END AS restricted_name
-      FROM coupon_restrictions cr
-      LEFT JOIN course c ON cr.restricted_id = c.id AND cr.restricted_table = 'course'
-      LEFT JOIN yi_product p ON cr.restricted_id = p.id AND cr.restricted_table = 'yi_product'
-      LEFT JOIN hotel h ON cr.restricted_id = h.id AND cr.restricted_table = 'hotel'
-      WHERE cr.coupon_id = ? AND cr.is_deleted = 0`,
-      [couponId]
-    );
-    return restrictions;
-  } catch (error) {
-    throw new Error(`無法取得優惠券限制：` + error.message);
-  }
-};
