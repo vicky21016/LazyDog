@@ -17,6 +17,7 @@ import {
   faCirclePlus,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import styles from "../../../styles/modules/menu.module.css"
 
 export default function MyMenu() {
   const pathname = usePathname();
@@ -54,16 +55,17 @@ export default function MyMenu() {
   ];
 
   return (
-    <div className="lumi-menu-container">
+    <div className={`${styles.container}`}>
       {/*  顯示會員頭像與名稱 */}
       <div className="lumi-profile-section">
         <img
-          src={"http://localhost:5000/user/img/default-avatar.jpg"}
+          src={profile?.avatar}
           alt="User Avatar"
           className="lumi-avatar"
           width="50"
+
         />
-        <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5>
+        <h5 className={`${styles.welcome}`}>歡迎，{profile?.name || "會員"}！</h5>
       </div>
 
       <List animated selection>
@@ -71,9 +73,9 @@ export default function MyMenu() {
           <List.Item
             key={menuItem.path}
             active={menuItem.path === pathname}
-            className="lumi-item"
+            className={`${styles.item}`}
           >
-            <Link className="lumi-menu-link" href={menuItem.path}>
+            <Link className={`${styles.link}`} href={menuItem.path}>
               <span>
                 <FontAwesomeIcon icon={menuItem.icon} />
               </span>{" "}
@@ -83,7 +85,7 @@ export default function MyMenu() {
         ))}
 
         {/* Google & 一般會員通用登出按鈕 */}
-        <List.Item className="lumi-item" onClick={handleLogout}>
+        <List.Item className={`${styles.item}`} onClick={handleLogout}>
           <span>
             <FontAwesomeIcon icon={faRightFromBracket} />
           </span>{" "}
