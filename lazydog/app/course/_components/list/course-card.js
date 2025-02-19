@@ -4,12 +4,13 @@ import React from 'react'
 import { useFetch } from '@/hooks/product/use-fetch';
 import styles from "../courseList.module.css";
 import Card from './card';
+import Pagination from './pagination';
 
 
 export default function CourseCard() {
   const url = "http://localhost:5000/api/course"
   const { data, loading, error } = useFetch(url) 
-  console.log(data?.data);
+//   console.log(data?.data);
 
   return (
     <>
@@ -20,7 +21,7 @@ export default function CourseCard() {
             </div>
             <div className={styles.medium}>
             <div className={styles.count}>
-                共計 <span className={styles.countNum}>42</span> 堂課
+                共計 <span className={styles.countNum}>{data?.data?.length}</span> 堂課
             </div>
             <div className={styles.hot}>
                 <img src="/course/img/sort.png" alt />
@@ -34,34 +35,7 @@ export default function CourseCard() {
                     )
                 })}
             </div>
-            <nav className={styles.navigation} aria-label="Page navigation">
-            <ul className={`pagination justify-content-center ${styles.pagination}`}>
-                <li className={`page-item ${styles.pageItem} `}>
-                <a className={`page-link ${styles.pageLink}`} href="#" aria-label="Previous">
-                    <span aria-hidden="true">
-                    <img src="/course/img/pageArrowleft;png.png" alt />
-                    </span>
-                </a>
-                </li>
-                <li className={`page-item ${styles.pageItem}`}>
-                <a className={`page-link ${styles.pageLink}`} href="#">
-                    1
-                </a>
-                </li>
-                <li className={`page-item ${styles.pageItem}`}>
-                <a className={`page-link ${styles.pageLink}`} href="#">
-                    2
-                </a>
-                </li>
-                <li className={`page-item ${styles.pageItem}`}>
-                <a className={`page-link ${styles.pageLink}`} href="#" aria-label="Next">
-                    <span aria-hidden="true">
-                    <img src="/course/img/pageArrowright.png" alt />
-                    </span>
-                </a>
-                </li>
-            </ul>
-            </nav>
+            <Pagination/>
         </div> 
     </>
   )

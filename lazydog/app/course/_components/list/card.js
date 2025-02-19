@@ -9,11 +9,11 @@ export default function Card({course}) {
   
   return (
     <>
-      <Link className={styles.courseCard} href={"#"}>
+      <Link className={styles.courseCard} href={`/course/${course.id}`}>
           <img
           className={styles.img}
-          src="/course/img/18 (1).jpeg"
-          alt="Course Image" 
+          src={`/course/img/${course.img_url}`}
+          alt={course.name} 
           />
           <h5 className={styles.tag}>{course.type_name}</h5>
           <h2 className={styles.name}>{course.name}</h2>

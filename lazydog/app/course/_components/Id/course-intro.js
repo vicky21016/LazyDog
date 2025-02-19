@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react'
 import styles from "../courseId.module.css";
 
-export default function CourseIntro(props) {
+export default function CourseIntro({data}) {
+  
   return (
     <>
       <div className={styles.courseIntro}>
