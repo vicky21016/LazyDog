@@ -77,7 +77,7 @@ export default function FroalaEditorWrapper() {
               buttons: ['undo', 'redo', 'fullscreen', 'html', 'help'],
             },
           },
-          pluginsEnabled: null,
+          pluginsEnabled: [ 'italic', 'underline', 'strikeThrough'],
           imageUploadURL: '/api/froala-upload?type=image',
           videoUploadURL: '/api/froala-upload?type=video',
           fileUploadURL: '/api/froala-upload?type=file',
