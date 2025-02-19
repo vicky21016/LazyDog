@@ -3,6 +3,7 @@ import {
   getAllProductId,
   getSearchKeyword,
   getAllCategory,
+  getAllOrder,
   getProductId,
   createNewItem,
   updateItemInfo,
@@ -52,6 +53,41 @@ export const getCategory = async (req, res) => {
       status: "success",
       data: categorys,
       message: `查詢商品分類列表成功，共${categorys.length}筆資料`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const getOrder = async (req, res) => {
+  try {
+    const orders = await getAllOrder();
+    if (!orders.length) throw new Error("查無訂單列表");
+    console.log(orders);
+    const productCount = {};
+    orders.forEach((order) => {
+      const products = order.productID_list.split(",");
+      products.forEach((product) => {
+        productCount[product] = (productCount[product] || 0) + 1;
+      });
+    });
+    const sortedProducts = Object.entries(productCount)
+      .map(([productID, count]) => ({ productID, count }))
+      .sort((a, b) => b.count - a.count);
+    console.log(sortedProducts);
+    // PDFD01;
+    // PDFD02;
+    // PDFD03;
+    // PDSU01;
+    // PDPT01;
+    // PDPT02;
+    // PDOD01;
+    // PDHM01;
+    // PDHM02;
+    res.status(200).json({
+      status: "success",
+      data: sortedProducts,
+      message: `查詢訂單列表成功，共${sortedProducts.length}筆資料`,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });

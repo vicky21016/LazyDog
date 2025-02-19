@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 50px;
+  margin-bottom: 150px;
 }
 /* --------麵包屑與標題-------- */
 .Breadcrumbs {
@@ -295,7 +296,8 @@
 /* ------商品評價(卡片)------- */
 .RateCardGroup {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: start;
   align-items: center;
   gap: 30px;
 }

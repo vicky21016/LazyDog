@@ -66,30 +66,56 @@ export default function ListPage(props) {
             })}
             <nav>
               <ul className={styles.ProductListPagination}>
-                <li className={`${styles.PageItem} page-item`}>
+                <li>
                   <Link
-                    className={`${styles.PageLink} page-link`}
-                    href="http://localhost:3000/product/list?page=1"
+                    href={`http://localhost:3000/product/list?page=${
+                      pageNow - 1
+                    }`}
                   >
-                    1
+                    <img src="/product/font/left(orange).png" alt="" />
                   </Link>
                 </li>
-                {[...Array(pages)].map((v, i) => (
-                  <li key={`li${i}`} className={`${styles.PageItem} page-item`}>
-                    <Link
-                      className={`${styles.PageLink} page-link`}
-                      href={`http://localhost:3000/product/list?page=${i + 1}`}
-                    >
-                      {i + 1}
-                    </Link>
-                  </li>
-                ))}
-                <li className={`${styles.PageItem} page-item`}>
+                {[...Array(pages)].map((v, i) => {
+                  if (
+                    i == 0 ||
+                    i == pageNow - 3 ||
+                    i == pageNow - 2 ||
+                    i == pageNow - 1 ||
+                    i == pageNow ||
+                    i == pageNow + 1 ||
+                    i == pages - 1
+                  ) {
+                    return (
+                      <>
+                        <li
+                          key={`li${i}`}
+                          className={`${styles.PageItem} page-item ${
+                            i + 1 == pageNow ? styles.PageItemActive : ""
+                          }`}
+                        >
+                          <Link
+                            className={`${styles.PageLink} page-link `}
+                            href={`http://localhost:3000/product/list?page=${
+                              i + 1
+                            }`}
+                          >
+                            {i + 1}
+                          </Link>
+                        </li>
+                        {/* {i + 1 != pages && (
+                          <h5 style={{ color: "var(--orange)" }}>...</h5>
+                        )} */}
+                      </>
+                    );
+                  }
+                })}
+                <li>
                   <Link
-                    className={`${styles.PageLink} page-link`}
-                    href={`http://localhost:3000/product/list?page=${pages}`}
+                    href={`http://localhost:3000/product/list?page=${
+                      pageNow + 1
+                    }`}
                   >
-                    {pages}
+                    <img src="/product/font/right(orange).png" alt="" />
                   </Link>
                 </li>
               </ul>

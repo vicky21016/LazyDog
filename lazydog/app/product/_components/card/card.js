@@ -12,13 +12,16 @@ export default function CardCard(product = {}) {
   const [cartRate, setCartRate] = useState(0);
   const products = product?.product;
   const productName = products?.name;
+  const [cardPic, setCardPic] = useState(
+    `/product/img/${productName}_title.webp`
+  );
   const productID = products?.productID;
 
   const productPrice = (
     Number(products?.price) * Number(products?.discount)
   ).toFixed(0);
   const productDiscount = (1 - Number(products?.discount)).toFixed(2) * 100;
-
+  // console.log(products);
   return (
     <li
       className={styles.ProductCard}
@@ -51,7 +54,11 @@ export default function CardCard(product = {}) {
         <div className={styles.ProductCardOnsale}>-{productDiscount} %</div>
       )}
       <figure className={styles.ProductCardImg}>
-        <img src={`/product/img/${productName}_title.webp`} alt="" />
+        <img
+          src={cardPic}
+          alt=""
+          onError={() => setCardPic("/product/img/default.png")}
+        />
       </figure>
       <div className={styles.ProductCardInfo}>
         <p className={styles.ProductCardName}>{productName}</p>
@@ -87,7 +94,7 @@ export default function CardCard(product = {}) {
             }.png`}
             alt=""
           />
-          <h6>{cartRate}</h6>
+          {/* <h6>{cartRate}</h6> */}
         </button>
         <Link
           href={`/product/detail?productID=${productID}`}

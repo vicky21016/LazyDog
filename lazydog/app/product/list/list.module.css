@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   gap: 50px;
+  margin-bottom: 150px;
 }
 /* ----------廣告區---------- */
 .DmArea {
@@ -147,6 +148,8 @@
 /* ---------page元件---------- */
 .ProductListPagination {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 15px;
   .PageItem {
     cursor: pointer;
@@ -170,6 +173,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  &.PageItemActive {
+    background: var(--Orange);
+    color: var(--White);
   }
 }
 /* -------------------------- */

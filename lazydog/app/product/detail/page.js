@@ -10,11 +10,19 @@ import useSWR from "swr";
 import Link from "next/link";
 
 export default function DetailPage(productID = {}) {
+  const [rate, setRate] = useState(3);
   const [amount, setAmount] = useState(1);
   const product = productID?.searchParams.productID;
   const url = `http://localhost:5000/api/products/${product}`;
+  const url2 = "http://localhost:5000/api/products/order";
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
+  const {
+    data: orderData,
+    isLoading: orderLoading,
+    error: orderError,
+    mutate: orderMutate,
+  } = useSWR(url2, fetcher);
   const productData = data?.data[0];
   const productName = productData?.name;
   const img = {
@@ -41,7 +49,13 @@ export default function DetailPage(productID = {}) {
     (countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
   );
   const deadMin = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
-
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountDown(deadline());
+    }, 10000);
+    setCountDown(deadline());
+    return () => clearInterval(timer);
+  }, [deadDate]);
   const [scrollY, setScrollY] = useState(0);
   useEffect(() => {
     const scrollNow = () => {
@@ -63,12 +77,16 @@ export default function DetailPage(productID = {}) {
   const rateData = {
     rate: [],
     comment: [],
+    user: [],
+    date: [],
   };
   let rateAvg = 0;
   if (data?.data) {
     data?.data.map((v, i) => {
       rateData["rate"].push(v.rate);
       rateData["comment"].push(v.comment);
+      rateData["user"].push(v.user);
+      rateData["date"].push(v.commentTime);
     });
     let rateSum = 0;
     for (let i = 0; i < rateData["rate"].length; i++) {
@@ -76,17 +94,21 @@ export default function DetailPage(productID = {}) {
     }
     rateAvg = (rateSum / rateData["rate"].length).toFixed(1);
   }
-  const [int, dec] = rateAvg.toString().split(".");
-  // console.log(int, dec);
-  // console.log(productData);
+  let int, dec;
+  if (rateAvg) {
+    [int, dec] = rateAvg.toString().split(".");
+    if (!dec) dec = 0;
+  }
+  const orders = orderData?.data;
+  const hotSale = [];
+  const sameBuy = [];
+  const sameCategory = data?.data[0].productID.slice(0, 6);
+  orders?.map((v, i) => {
+    if (i < 10) hotSale.push(v.productID);
+    if (sameBuy.length <= 10 && v.productID.includes(sameCategory))
+      sameBuy.push(v.productID);
+  });
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCountDown(deadline());
-    }, 10000);
-    setCountDown(deadline());
-    return () => clearInterval(timer);
-  }, [deadDate]);
   return (
     <div className={`${styles.Container} container`}>
       <section className={styles.Breadcrumbs}>
@@ -145,24 +167,33 @@ export default function DetailPage(productID = {}) {
             )}
             <h2 className={styles.InfoProductName}>{productData?.name}</h2>
             <div className={styles.InfoRateGroup}>
-              {int > 0 && (
+              {int && (
                 <>
-                  {[...Array(Number(int))].map((v, i) => (
+                  {int > 0 &&
+                    int <= 5 &&
+                    [...Array(Number(int))].map((v, i) => (
+                      <img
+                        key={`starFill${i}`}
+                        src="/product/font/star-fill.png"
+                        alt=""
+                      />
+                    ))}
+                  {int < 5 && (
                     <img
-                      key={`starFill${i}`}
-                      src="/product/font/star-fill.png"
+                      src={`/product/font/${
+                        dec > 7 ? "star-fill" : dec > 2 ? "star-half" : "star"
+                      }.png`}
                       alt=""
                     />
-                  ))}
-                  <img
-                    src={`/product/font/${
-                      dec > 7 ? "star-fill" : dec > 2 ? "star-half" : "star"
-                    }.png`}
-                    alt=""
-                  />
-                  {[...Array(4 - Number(int))].map((v, i) => (
-                    <img key={`star${i}`} src="/product/font/star.png" alt="" />
-                  ))}
+                  )}
+                  {int < 4 &&
+                    [...Array(4 - Number(int))].map((v, i) => (
+                      <img
+                        key={`star${i}`}
+                        src="/product/font/star.png"
+                        alt=""
+                      />
+                    ))}
                 </>
               )}
             </div>
@@ -187,11 +218,18 @@ export default function DetailPage(productID = {}) {
               <input type="number" defaultValue={amount} min={1} max={999} />
               <button
                 className={styles.QtyPlus}
-                onClick={() => setAmount(amount >= 999 ? 999 : amount + 1)}
+                onClick={() =>
+                  setAmount(
+                    amount >= productData?.stock
+                      ? productData?.stock
+                      : amount + 1
+                  )
+                }
               >
                 <img src="/product/font/plus.png" alt="" />
               </button>
             </div>
+            <p>庫存數量 : {productData?.stock}</p>
             <div className={styles.InfoBtnGroup}>
               <button className={styles.BtnBuynow}>
                 <h5>立即購買</h5>
@@ -209,21 +247,27 @@ export default function DetailPage(productID = {}) {
         }`}
       >
         <ul>
-          <li>
-            <h5>
-              <Link href="#collapse-heading1">商品詳情</Link>
-            </h5>
-          </li>
-          <li>
-            <h5>
-              <Link href="#collapse-heading2">商品介紹圖</Link>
-            </h5>
-          </li>
-          <li>
-            <h5>
-              <Link href="#collapse-heading3">商品規格</Link>
-            </h5>
-          </li>
+          {productData?.full_info && (
+            <li>
+              <h5>
+                <Link href="#collapse-heading1">商品介紹</Link>
+              </h5>
+            </li>
+          )}
+          {(img.info || productData?.info_text) && (
+            <li>
+              <h5>
+                <Link href="#collapse-heading2">商品詳細</Link>
+              </h5>
+            </li>
+          )}
+          {productData?.spec && (
+            <li>
+              <h5>
+                <Link href="#collapse-heading3">商品規格</Link>
+              </h5>
+            </li>
+          )}
         </ul>
       </nav>
       <section
@@ -268,7 +312,7 @@ export default function DetailPage(productID = {}) {
                 aria-expanded="false"
                 aria-controls="collapse2"
               >
-                <h5>商品介紹圖</h5>
+                <h5>商品詳細</h5>
               </button>
             </div>
             <div
@@ -364,15 +408,43 @@ export default function DetailPage(productID = {}) {
                 </div>
               </div>
               <div className={styles.RateCardGroup}>
-                {/* ----評分卡片-------------------------------- */}
-                <RateCard rate={rateData} />
-                {/* -------------------------------------------- */}
-                <RateCard rate={rateData} />
-                <RateCard rate={rateData} />
+                {rateData.rate &&
+                  rateData.rate.map((v, i) => {
+                    if (i < rate) {
+                      return (
+                        <RateCard
+                          key={`rateCard${i}`}
+                          rate={v}
+                          comment={rateData.comment[i]}
+                          user={rateData.user[i]}
+                          date={rateData.date[i]}
+                        />
+                      );
+                    }
+                  })}
               </div>
-              <button type="button" className={styles.RateMore}>
-                顯示更多評價
-              </button>
+              {rateData.rate && rateData.rate.length > rate && (
+                <button
+                  type="button"
+                  className={styles.RateMore}
+                  onClick={() => {
+                    setRate(rate + 3);
+                  }}
+                >
+                  顯示更多評價
+                </button>
+              )}
+              {rateData.rate && rateData.rate.length <= rate && (
+                <button
+                  type="button"
+                  className={styles.RateMore}
+                  onClick={() => {
+                    setRate(3);
+                  }}
+                >
+                  隱藏額外評價
+                </button>
+              )}
             </div>
           </div>
         </div>
