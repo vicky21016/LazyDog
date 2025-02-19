@@ -7,6 +7,7 @@ import Header from "../components/layout/header";
 import MyMenu from "../components/layout/myMenu";
 import Input from "../components/forms/Input";
 import styles from "./menu.module.css";
+import style from "../../styles/modules/menu.module.css"
 // import { auth, signOut, onAuth } from "./firebase";
 
 export default function Menu() {
@@ -107,7 +108,7 @@ export default function Menu() {
   return (
     <>
       <Header />
-      <div className="lumi-wrapper">
+      <div className={`${style.wrapper}`}>
         <MyMenu />
         <div className={`${styles["container"]}`}>
           <h4 className={`mb-4 ${styles["information"]}`}>基本資料</h4>

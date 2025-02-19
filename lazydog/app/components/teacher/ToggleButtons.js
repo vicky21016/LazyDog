@@ -9,8 +9,8 @@ import style from "../../pages/menu.module.css";
 
 const ToggleButtons = ({ onRadioChange }) => {
   
-  const { id } = useParams();
-  const [teacher, setTeacher] = useState(null);
+  const [teacherId, setTeacherId] = useState({}); 
+  const { teacher } = useTeacherDetail(teacherId);
 
   
     // if (!teacher) return 
