@@ -30,6 +30,7 @@ export function AuthProvider({ children }) {
     try {
       const res = await fetch(API, { method: "POST", body: formData });
       const result = await res.json();
+      
       if (result.status !== "success") throw new Error(result.message);
 
       const token = result.data.token;

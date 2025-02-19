@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import styles from "../../../styles/modules/toggle.module.css"
 import OtherTeacher from "./otherTeacher";
-const TeacherSection = () => {
+import style from "../../../styles/modules/teacher.module.css"
+export default function TeacherSection () {
   const [state, setState] = useState(null);
   const teacherData = [
     {
@@ -52,7 +53,9 @@ const TeacherSection = () => {
 
         <div className="d-flex mb-5 justify-content-center">
           <Link
-            className="lumi-teacher-btn text-center text-decoration-none"
+            className={` text-center text-decoration-none ${
+              style.teacherBtn
+            }`}
             href="/teacher/list"
           >
             read more
@@ -63,8 +66,8 @@ const TeacherSection = () => {
         </div>
       </div>
 
-      <div className="lumi-dog-container text-center">
-        <div className="lumi-dog text-center">
+      <div className={` text-center ${style.container}`}>
+        <div className={` text-center ${style.dog}`}>
           <div className={` ${styles["cube"]}`}>
             <div>803</div>
             <div>蛻變的狗狗</div>
@@ -95,5 +98,3 @@ const TeacherSection = () => {
     </section>
   );
 };
-
-export default TeacherSection;
