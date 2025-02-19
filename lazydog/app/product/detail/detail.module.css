@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 50px;
+  margin-bottom: 150px;
 }
 /* --------麵包屑與標題-------- */
 .Breadcrumbs {
@@ -10,7 +11,7 @@
   margin: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 15px;
   a {
     color: var(--gray);
   }
@@ -66,7 +67,7 @@
 .InfoFavoriteGroup {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 15px;
   h6 {
     font-weight: bold;
     user-select: none;
@@ -87,7 +88,7 @@
     align-items: center;
     background: var(--Orange);
     border-radius: 30px;
-    h6 {
+    h5 {
       color: var(--White);
     }
   }
@@ -185,7 +186,6 @@
 .StickyTop {
   background: #fff;
   padding-block: 20px;
-  opacity: 0;
   width: 100%;
   ul {
     display: flex;
@@ -199,6 +199,9 @@
       color: var(--Orange);
     }
   }
+}
+.StickyTopOff {
+  display: none;
 }
 .ProductDetail {
   width: 100%;
@@ -293,7 +296,8 @@
 /* ------商品評價(卡片)------- */
 .RateCardGroup {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: start;
   align-items: center;
   gap: 30px;
 }
@@ -303,6 +307,9 @@
   justify-content: flex-end;
   align-items: center;
   color: var(--Orange);
+  &:hover {
+    color: var(--skin);
+  }
 }
 /* ----RateCard元件(備份css---- */
 /* .RateCard {
