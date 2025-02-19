@@ -11,11 +11,11 @@ body {
     justify-content: center;
     align-items: center;
     gap: 50px;
-    padding: 65px 0 250px;
+    padding: 50px 0 200px;
   }
   .sales {
     padding: 50px;
-    margin-top: 180px;
+    margin-top: 150px;
     box-sizing: border-box;
     z-index: 100;
   }
@@ -23,7 +23,7 @@ body {
     color:  #fff;
     text-align: center;
     font-family: "Noto Sans TC", sans-serif;
-    font-size: 65px;
+    font-size: 54px;
     font-style: normal;
     font-weight: 700;
     line-height: 120%; /* 107.1px */
@@ -39,7 +39,7 @@ body {
     .discountNum {
       color: var(--real-wh, #fff);
       font-family: "Noto Sans TC", sans-serif;
-      font-size: 150px;
+      font-size: 100px;
       font-style: normal;
       font-weight: 900;
       letter-spacing: 13.2px;
@@ -66,7 +66,7 @@ body {
       font-weight: 600;
       line-height: 180%; /* 43.2px */
       letter-spacing: 6.24px;
-      margin: 75px 0 60px;
+      margin: 60px 0 60px;
     }
     
     .sale3Btn {
@@ -88,6 +88,12 @@ body {
       line-height: 39px; /* 162.5% */
       letter-spacing: 1.2px;
       cursor: pointer;
+    }
+    .sale3Btn:hover{
+      background-color: white;
+  border: 10px solid;
+  border-color: #f6ce5b;
+}
     }
   }
   .dog {
@@ -151,7 +157,7 @@ body {
       z-index: 0;
     }
   }
-}
+
 
 .section2 {
   display: flex;
@@ -168,21 +174,21 @@ body {
       color: var(--Color-3, #66c5bd);
       /* leading-trim: both;
         text-edge: cap; */
-      font-family: "Roboto Slab";
-      font-size: 40px;
+      font-size: 32px;
       font-style: normal;
-      font-weight: 600;
+      font-weight: 500;
       line-height: 52px;
       margin: 30px;
+      letter-spacing: 2px;
     }
     .today {
       color: var(--Color, #f5842b);
-      font-family: "Roboto Slab";
-      font-size: 56px;
+      font-size: 48px;
       font-style: normal;
-      font-weight: 800;
+      font-weight: 600;
       line-height: 67px;
       margin: 30px;
+      letter-spacing: 3px;
     }
   }
 
@@ -372,7 +378,7 @@ body {
         color: var(--Color, #f5842b);
         text-align: center;
         font-family: "Noto Sans TC", sans-serif;
-        font-size: 64px;
+        font-size: 48px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
@@ -384,7 +390,7 @@ body {
         color: #545252;
         text-align: center;
         font-family: "Noto Sans TC", sans-serif;
-        font-size: 28px;
+        font-size: 24px;
         font-style: normal;
         font-weight: 400;
         line-height: normal;
@@ -407,6 +413,12 @@ body {
         font-weight: 700;
         line-height: normal;
         cursor: pointer;
+      }
+      .bookBtn:hover{
+        background-color: white;
+  color: #f5842b;
+  border: 2px solid;
+  border-color: #f5842b;
       }
     }
     .hotelViews {
@@ -474,11 +486,11 @@ body {
     color: var(--Color-3, #66c5bd);
     text-align: center;
     font-family: "Noto Sans TC";
-    font-size: 64px;
+    font-size: 58px;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 600;
     line-height: normal;
-    letter-spacing: 10.24px;
+    letter-spacing: 8px;
     margin: 80px 0 120px;
   }
   .userCards {
@@ -631,6 +643,12 @@ body {
     right: 10px;
     bottom: -172px;
   }
+}
+.signupBtn:hover{
+  background-color: white;
+  color: #66c5bd;
+  border: 2px solid;
+  border-color: #66c5bd;
 }
 
 .btns {

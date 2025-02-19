@@ -27,7 +27,7 @@ export default function Header(props) {
       <nav>
         <ul className={styles["lumi-ul"]}>
           <li>
-            <Link href="#">關於我們</Link>
+            <Link href="/home">關於我們</Link>
           </li>
           <li>
             <Link href="/product/list">寵物用品</Link>

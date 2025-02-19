@@ -3,16 +3,12 @@
 import React, { useState, useEffect  } from "react";
 import { useParams } from "react-router-dom"
 import axios from "axios";
-import useTeacherDetail from "@/hooks/useTeacherDetail";
+// import useTeacherDetail from "@/hooks/useTeacherDetail";
 import styles from "../../../styles/modules/toggle.module.css";
 import style from "../../pages/menu.module.css";
 
 const ToggleButtons = ({ onRadioChange }) => {
-  
-  const [teacherId, setTeacherId] = useState({}); 
-  const { teacher } = useTeacherDetail(teacherId);
 
-  
     // if (!teacher) return 
     // <>
     //     <div className={style.container2}>

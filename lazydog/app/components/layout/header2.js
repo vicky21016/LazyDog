@@ -28,10 +28,10 @@ export default function Header(props) {
       <nav>
         <ul className={styles["lumi-ul2"]}>
           <li>
-            <Link href="#">關於我們</Link>
+            <Link href="/home">關於我們</Link>
           </li>
           <li>
-            <Link href="#">寵物用品</Link>
+            <Link href="/product/list">寵物用品</Link>
           </li>
           <li>
             <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>
@@ -43,7 +43,7 @@ export default function Header(props) {
               </Link>
             </li>
             <div className={styles["dropdown-content"]}>
-              <Link href="/course" className={styles["dropdown-link"]}>
+              <Link href="/course/list" className={styles["dropdown-link"]}>
                 課程
               </Link>
               <Link href="/teacher/list" className={styles["dropdown-link"]}>
@@ -61,32 +61,32 @@ export default function Header(props) {
       </nav>
       {/* {!user ? (
         <> */}
-          <div className={styles["lumi-user-actions"]}>
-            <div className={styles["dropdown"]}>
-              <Link href="/pages" className={styles["lumi-user-icon2"]}>
-                {/* <FontAwesomeIcon icon={faUser} /> */}
-                <i className="bi bi-person"></i>
-              </Link>
-              <div className={styles["dropdown-content"]}>
-                <Link href="/pages" className={styles["dropdown-link"]}>
-                  個人資料
-                </Link>
-                <Link href="/favorite" className={styles["dropdown-link"]}>
-                  我的收藏
-                </Link>
-                <div onClick={logout} className={styles["dropdown-link"]}>
-                  登出
-                </div>
-              </div>
-            </div>
-            <div className={styles["lumi-cart-icon2"]}>
-              <Link href="">
-                {/* <img src="/images/cart.png" alt="cart" /> */}
-                <i className="bi bi-cart2"></i>
-              </Link>
+      <div className={styles["lumi-user-actions"]}>
+        <div className={styles["dropdown"]}>
+          <Link href="/pages" className={styles["lumi-user-icon2"]}>
+            {/* <FontAwesomeIcon icon={faUser} /> */}
+            <i className="bi bi-person"></i>
+          </Link>
+          <div className={styles["dropdown-content"]}>
+            <Link href="/pages" className={styles["dropdown-link"]}>
+              個人資料
+            </Link>
+            <Link href="/favorite" className={styles["dropdown-link"]}>
+              我的收藏
+            </Link>
+            <div onClick={logout} className={styles["dropdown-link"]}>
+              登出
             </div>
           </div>
-        {/* </>
+        </div>
+        <div className={styles["lumi-cart-icon2"]}>
+          <Link href="" className={styles["lumi-cart-icon2"]}>
+            {/* <img src="/images/cart.png" alt="cart" /> */}
+            <i className="bi bi-cart2"></i>
+          </Link>
+        </div>
+      </div>
+      {/* </>
       ) : (
         <div>
           <Link href="/register" className={styles["lumi-signin2"]}>

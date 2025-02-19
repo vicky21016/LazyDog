@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { useTeacherDetail } from "@/hooks/useTeacherDetail";
+import { useTeacherDetail } from "@/hooks/useTeachers";
 // import { useParams } from "react-router-dom";
 import { useRouter } from "next/router";
 import Header from "../../../components/layout/header";
@@ -19,8 +19,7 @@ import OtherTeacher from "../../../components/teacher/otherTeacher";
 
 export default function App () {
   const [selectedTab, setSelectedTab] = useState("experience");
-  const [teacherId, setTeacherId] = useState({}); 
-  const { teacher } = useTeacherDetail(teacherId);
+
   const teacherData = [
     {
       imgSrc: "/teacher-img/Zoe.png",
@@ -86,7 +85,7 @@ export default function App () {
             ]}
           />
 
-          <Profile teacher={teacher} />
+          <Profile teacher={teacher}/>
           {/* <SocialLinks /> */}
           <div className={`row ${styles.profile}`}>
             <div className="my-5 ">

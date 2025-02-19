@@ -3,7 +3,7 @@
 import React, { useState, useEffect  } from "react";
 import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
-import {useTeacherDetail }from "@/hooks/useTeacherDetail";
+import {useTeacherDetail } from "@/hooks/useTeacherDetail";
 import styles from '../../teacher/info/info.module.css';
 import style from "../../pages/menu.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,12 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import '@fortawesome/fontawesome-svg-core/styles.css';
 
 export default function Profile () {
-  const [teacherId, setTeacherId] = useState({});
-  console.log("teacherId:", teacherId);
-  const { teacher } = useTeacherDetail(teacherId);
 
-  
-  console.log("渲染時的 teacher:", teacher); 
 
   // if (!teacher) return
   // <>

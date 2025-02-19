@@ -4,10 +4,12 @@ export default async function MemberPage(props) {
     return (
       <>
         <Header />
-        <div className="container-fluid lumi-all-wrapper">
+        <div className="container-fluid lumi-all-wrapper my-3">
           <div className="row flex-nowrap">
             <div className="col py-3">
-              <h3 className="mb-5">條款與細則</h3>
+              <h3 className="mb-5">
+                會員條款條款與細則
+              </h3>
               <div className="mb-5">
                 <h5 className="my-4">一、認知與接受條款</h5>
                 <p className="lead">
