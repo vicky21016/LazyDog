@@ -22,15 +22,23 @@ export const getId = async (id) => {
     throw new Error(`無法取得 ${id} 的優惠券:` + err.message);
   }
 };
-export const getCouponByCode = async (code, userId) => {
+export const getCouponByCodes = async (code, userId) => {
   try {
+    if (!code) {
+      return { success: false, status: 400, message: "請提供優惠券代碼" };
+    }
+
+    if (!userId) {
+      return { success: false, status: 400, message: "缺少 userId" };
+    }
+
     // 查詢優惠券是否存在
     const [coupons] = await pool.execute(
       "SELECT * FROM coupons WHERE code = ? AND is_deleted = 0",
       [code]
     );
 
-    if (coupons.length === 0) {
+    if (coupons.length == 0) {
       return { success: false, status: 404, message: "找不到此優惠券" };
     }
 
@@ -68,7 +76,22 @@ export const getCouponByCode = async (code, userId) => {
         message: "您已超過此優惠券的領取次數",
       };
     }
+    if (coupon.is_global) {
+      return { success: true, data: coupon, message: "此優惠券為全館適用" };
+    }
+    const [restrictions] = await pool.execute(
+      "SELECT * FROM coupon_restrictions WHERE coupon_id = ? AND is_deleted = 0",
+      [coupon.id]
+    );
 
+    if (restrictions.length > 0) {
+      return {
+        success: true,
+        data: coupon,
+        restrictions,
+        message: "此優惠券有限制使用範圍",
+      };
+    }
     return { success: true, data: coupon };
   } catch (err) {
     console.error(`無法取得優惠券 (${code}):`, err);
@@ -76,13 +99,12 @@ export const getCouponByCode = async (code, userId) => {
   }
 };
 
-
-
 export const createCoupons = async (couponData) => {
   try {
     const {
       name,
       type,
+      is_global,
       content,
       value,
       min_order_value,
@@ -96,12 +118,13 @@ export const createCoupons = async (couponData) => {
 
     const [result] = await pool.query(
       `INSERT INTO coupons 
-          (name, type, content, value, min_order_value, start_time,end_time,status, max_usage, max_usage_per_user, code, 
+          (name, type,is_global, content, value, min_order_value, start_time,end_time,status, max_usage, max_usage_per_user, code, 
           created_at, updated_at, is_deleted) 
           VALUES (?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
       [
         name,
         type,
+        is_global,
         content,
         value,
         min_order_value,
@@ -188,8 +211,12 @@ export const softDeleteCouponById = async (id) => {
       await connection.rollback();
       return { error: `軟刪除失敗，找不到 id=${id}` };
     }
+    await connection.query(
+      "UPDATE coupon_restrictions SET is_deleted = 1, updated_at = NOW() WHERE coupon_id = ?",
+      [id]
+    );
     await connection.commit();
-    return { message: `旅館 id=${id} 已成功軟刪除` };
+    return { message: `優惠券 id=${id} 已成功軟刪除` };
   } catch (error) {
     await connection.rollback();
     return { error: "無法刪除：" + error.message };
@@ -197,3 +224,4 @@ export const softDeleteCouponById = async (id) => {
     connection.release();
   }
 };
+
