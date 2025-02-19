@@ -99,17 +99,48 @@ export const getUserCoupons = async (userId) => {
 };
 
 export const useUserCoupon = async (userId, couponId, orderId) => {
+  const connection = await pool.getConnection();
   try {
-    const [coupon] = await pool.query(
-      `UPDATE coupon_usage SET status = 'used', used_at = NOW(), updated_at = NOW(), order_id = ? WHERE user_id = ? AND coupon_id = ? AND status = 'claimed' AND is_deleted = 0`,
+    await connection.beginTransaction();
+
+    console.log("收到請求 - userId:", userId, "couponId:", couponId, "orderId:", orderId);
+
+    // 🔎 檢查 `hotel_order` 是否存在
+    const [[order]] = await connection.query(
+      `SELECT id FROM hotel_order WHERE id = ?`,
+      [orderId]
+    );
+
+    console.log("查詢結果:", order);
+
+    if (!order) throw new Error("找不到對應的訂單");
+
+    // 🔎 確保 `coupon_usage` 存在且處於 `claimed` 狀態
+    const [[coupon]] = await connection.query(
+      `SELECT * FROM coupon_usage WHERE user_id = ? AND coupon_id = ? AND status = 'claimed' AND is_deleted = 0`,
+      [userId, couponId]
+    );
+
+    console.log("優惠券查詢結果:", coupon);
+
+    if (!coupon) throw new Error("優惠券無法使用或已使用");
+
+    // ✅ **更新 `coupon_usage`，標記為 `used` 並關聯 `order_id`**
+    await connection.query(
+      `UPDATE coupon_usage 
+       SET status = 'used', used_at = NOW(), updated_at = NOW(), order_id = ? 
+       WHERE user_id = ? AND coupon_id = ? AND status = 'claimed' AND is_deleted = 0`,
       [orderId, userId, couponId]
     );
 
-    if (coupon.affectedRows == 0) throw new Error("優惠券無法使用或已使用");
-
+    await connection.commit();
     return { success: true, message: "優惠券已成功使用" };
   } catch (error) {
+    await connection.rollback();
+    console.error("錯誤:", error.message);
     throw new Error(error.message);
+  } finally {
+    connection.release();
   }
 };
 

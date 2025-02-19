@@ -44,8 +44,13 @@ export const getCoupons = async (req, res) => {
 export const useCoupon = async (req, res) => {
   try {
     const { couponId } = req.params;
+    const { orderId } = req.body;
     const userId = req.user.id;
-    const result = await useUserCoupon(userId, couponId);
+    console.log("收到請求 - userId:", userId, "couponId:", couponId, "orderId:", orderId);
+    if (!couponId || !orderId) {
+      return res.status(400).json({ error: "缺少 couponId 或 orderId" });
+    }
+    const result = await useUserCoupon(userId, couponId, orderId);
     res.status(200).json(result);
   } catch (error) {
     res.status(400).json({ error: error.message });
