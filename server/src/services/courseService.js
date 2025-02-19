@@ -5,10 +5,11 @@ import pool from "../config/mysql.js";
 export const getCourses = async () => {
   try {
     const [courses] = await pool.execute(`
-      SELECT course.*, course_type.name AS type_name 
+      SELECT course.*, course_type.name AS type_name, course_img.url AS img_url       
       FROM course 
-      JOIN course_type ON course.type_id = course_type.type_id; 
-      `);
+      JOIN course_type ON course.type_id = course_type.type_id
+      JOIN course_img ON course.id = course_img.course_id AND course_img.main_pic = 1
+      ;`);
     return courses;
   } catch (err) {
     throw new Error(" 無法取得課程列表：" + err.message);
