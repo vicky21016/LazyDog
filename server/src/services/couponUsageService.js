@@ -163,7 +163,6 @@ export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
         [discountAmount, finalAmount, couponId, orderId]
       );
     } else if (orderTable == "yi_orderlist") {
-      // `yi_orderlist` 沒有 `final_amount`，只更新 `discount_amount`
       await connection.query(
         `UPDATE yi_orderlist SET discount_amount = ? , final_amount = ?, coupon_id = ? WHERE id = ?`,
         [discountAmount, finalAmount, couponId, orderId]
