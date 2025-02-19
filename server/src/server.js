@@ -7,8 +7,13 @@ import googleRouter from "./controllers/googleController.js";
 import teacherSignRouter from "./routes/teacherSignRoutes.js";
 import pool from "./config/mysql.js";
 import hotelImagesRoutes from "./routes/hotelImagesRoutes.js";
+import readRoutes from "./routes/readRoutes.js";
 import hotelRoutes from "./routes/hotelRoutes.js";
+import hotelTagsRoutes from "./routes/hotelTagsRoutes.js";
+import hotelRoomTypeRoutes from "./routes/hotelRoomTypeRoutes.js";
+import roomInventoryRoutes from "./routes/roomInventoryRoutes.js";
 import hotelOrderRoutes from "./routes/hotelOrderRoutes.js";
+import orderDogsRoutes from "./routes/orderDogsRoutes.js";
 import hotelFavoriteRoutes from "./routes/hotelFavoriteRoutes.js";
 import hotelReviewRoutes from "./routes/hotelReviewRoutes.js";
 import userCouponsRoutes from "./routes/couponUsageRoutes.js";
@@ -27,7 +32,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST", "PUT"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })
 );
 app.use("/uploads/hotel", express.static("/uploads/hotel"));
@@ -35,9 +40,14 @@ app.use("/uploads/hotel", express.static("/uploads/hotel"));
 app.use("/auth", authRouter);
 app.use("/api/google", googleRouter);
 app.use("/teacher", teacherSignRouter);
+app.use("/api/read", readRoutes);
 app.use("/api/hotels", hotelRoutes);
+app.use("/api/hotel_tags", hotelTagsRoutes);
+app.use("/api/hotel_room_type", hotelRoomTypeRoutes);
+app.use("/api/room_inventory", roomInventoryRoutes);
 app.use("/api/hotel_images", hotelImagesRoutes);
 app.use("/api/hotel_orders", hotelOrderRoutes);
+app.use("/api/order_dogs", orderDogsRoutes);
 app.use("/api/hotel_favorite", hotelFavoriteRoutes);
 app.use("/api/hotel_review", hotelReviewRoutes);
 app.use("/api/coupons", couponRoutes);
