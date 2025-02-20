@@ -1,28 +1,32 @@
 import React, { useRef } from "react";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { List } from "semantic-ui-react";
+import Link from "next/link";
 import styles from "../../../styles/modules/operatorCamera.module.css";
+import style from "../../../styles/modules/menu.module.css"
 export default function My() {
-     const router = useRouter();
+  const pathname = usePathname();
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
 
-      const changepage = (path) => {
-        if (path) {
-          router.push(`/hotel-coupon/${path}`);
-        }
-      };
-      
+     const menuItems = [
+         { name: "業者資訊", path: "/hotel-coupon/operatorDetail", icon: <i className="bi bi-person-fill me-2"></i> },
+         { name: "旅館資訊", path: "/hotel-coupon/hotel", icon: <i className="bi bi-house-heart-fill me-2"></i> },
+         { name: "旅館評論", path: "/hotel-coupon/review", icon:<i className="bi bi-card-list me-2"></i>  },
+         { name: "旅館優惠", path: "/hotel-coupon/couponList", icon:<i className="bi bi-ticket-perforated me-2"></i> },
+       
+       ]; 
   return (
     <div className="col-md-3">
-      <div className="card p-3">
+      <div className={` p-3 ${style.container}`}>
         <div className="text-center">
           <div className="position-relative d-inline-block">
             <img
               ref={avatarRef}
               src="/hotel/hotel-images/page-image/Dog2.png"
               alt="User Avatar"
-              className={`rounded-circle ${styles.suAvatarImg}`}
+              className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
             />
 
             <div className={styles.dropdownItem}>
@@ -75,40 +79,22 @@ export default function My() {
           </button>
         </div>
         <hr />
-        <ul className="list-unstyled text-start">
-          <li className="py-2" onClick={() => changepage("operatorDetail")}>
-            <a
-              className="text-decoration-none text-dark"
-              style={{ cursor: "pointer" }}
-            >
-              <i className="bi bi-person-fill me-2"></i>負責人資訊
-            </a>
-          </li>
-          <li className="py-2" onClick={() => changepage("hotel")}>
-            <a
-              className="text-decoration-none text-dark"
-              style={{ cursor: "pointer" }}
-            >
-              <i className="bi bi-house-heart-fill me-2"></i>旅館資訊
-            </a>
-          </li>
-          <li className="py-2" onClick={() => changepage("review")}>
-            <a
-              className="text-decoration-none text-dark"
-              style={{ cursor: "pointer" }}
-            >
-              <i className="bi bi-card-list me-2"></i>旅館評論
-            </a>
-          </li>
-          <li className="py-2" onClick={() => changepage("couponList")}>
-            <a
-              className="text-decoration-none text-dark"
-              style={{ cursor: "pointer" }}
-            >
-              <i className="bi bi-ticket-perforated me-2"></i>旅館優惠券
-            </a>
-          </li>
-        </ul>
+        <List animated selection>
+        {menuItems.map((menuItem) => (
+          <List.Item
+            key={menuItem.path}
+            active={menuItem.path === pathname}
+            className={`${style.item}`}
+          >
+            <Link className={`${style.link}`} href={menuItem.path}>
+              <span>
+              {menuItem.icon} 
+              </span>{" "}
+              {menuItem.name}
+            </Link>
+          </List.Item>
+          ))}
+          </List>
       </div>
     </div>
   );

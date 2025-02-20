@@ -30,13 +30,6 @@ export const getCouponByCode = async (req, res) => {
     const { code } = req.params;
     const { userId } = req.query;
 
-    if (!code) {
-      return res.status(400).json({ error: "請提供優惠券代碼" });
-    }
-
-    if (!userId) {
-      return res.status(400).json({ error: "缺少 userId" });
-    }
     const result = await getCouponByCodes(code, userId);
     res.status(result.status || 200).json(result);
   } catch (err) {

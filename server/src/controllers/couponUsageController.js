@@ -44,19 +44,20 @@ export const getCoupons = async (req, res) => {
 export const useCoupon = async (req, res) => {
   try {
     const { couponId } = req.params;
-    const { orderId, orderTable } = req.body;
-    const userId = req.user.id;
+    const { userId, orderId, orderTable } = req.body;
 
-    console.log("收到請求 - userId:", userId, "couponId:", couponId, "orderId:", orderId, "orderTable:", orderTable);
+    if (!userId || !couponId || !orderId || !orderTable) {
+      return res.status(400).json({ error: "缺少必要欄位" });
+    }
 
-    if (!couponId || !orderId || !orderTable) {
-      return res.status(400).json({ error: "缺少 couponId, orderId 或 orderTable" });
+    if (!["hotel_order", "course_orders", "yi_orderlist"].includes(orderTable)) {
+      return res.status(400).json({ error: "無效的訂單類型" });
     }
 
     const result = await useUserCoupon(userId, couponId, orderId, orderTable);
-    res.status(200).json(result);
+    res.json(result);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
