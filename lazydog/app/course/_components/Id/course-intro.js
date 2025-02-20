@@ -3,12 +3,42 @@
 import React, { useState, useEffect } from 'react'
 import styles from "../courseId.module.css";
 
-export default function CourseIntro({data}) {
-  const course = data?.[0]
-  // console.log(data?.[0].
-  //   description
-  //   );
-  console.log(course);
+export default function CourseIntro({course, session, place}) {
+  const c = course?.[0]
+  const s = session?.[0]
+
+  // const defaultTeachImg = "/course/img/user.jpg"
+
+  // console.log(s);
+  // console.log("CourseIntro - Course:", course);
+  // console.log("CourseIntro - Session:", session);
+  // console.log("CourseIntro - Place:", place);
+  
+
+  
+  const [selectDate, setSelectDate] = useState(""); // 選擇的日期
+  const [filterSession, setFilterSession] = useState([]); // 過濾後的時段
+
+  // 過濾出唯一的 class_dates 作為日期選單
+  const uniqueDates = [...new Set(session.map((ss) => ss.class_dates))];
+
+  // 當選擇日期時，過濾對應的時段
+  const dateChange = (e) => {
+    const selected = e.target.value;
+    setSelectDate(selected);
+    
+    // 過濾出該日期的所有時段
+    const times = session
+      .filter((ss) => ss.class_dates === selected)
+      .map((ss) => {
+        const start = ss.start_time.split(":").slice(0, 2).join(":");
+        const end = ss.end_time.split(":").slice(0, 2).join(":");
+        return `${start}~${end}`
+      });
+    
+      setFilterSession(times);
+  };
+  
   
 
   return (
@@ -16,28 +46,28 @@ export default function CourseIntro({data}) {
       <div className={styles.courseIntro}>
               <img
                 className={styles.mainPic}
-                src="/course/img/3 (1).jpeg"
+                src={`/course/img/${c?.img_url}`}
                 alt
               />
               <div className={styles.courseName}>
-                <h2 className={styles.name}>{course?.name}</h2>
+                <h2 className={styles.name}>{c?.name}</h2>
                 <img
                   className={styles.heartIcon}
                   src="/course/img/heartIcon.svg"
                   alt
                 />
               </div>
-              <h2 className={styles.price}>NT$ {course?.price}</h2>
-              <p className={styles.description}>{course?.description}</p>
+              <p className={styles.description}>{c?.description}</p>
+              <h2 className={styles.price}>NT$ <span className={styles.number}>{Number(c?.price).toLocaleString("zh-Tw")}</span></h2>
               <div className={styles.teacher}>
                 <h2 className={styles.teachTitle}>關於講師</h2>
                 <a href="#" className={`d-flex gap-3 ${styles.tConnect}`}>
                   <img
                     className={styles.teachPic}
-                    src="/course/img/1 (2).png"
-                    alt
+                    src={`/teacher-img/${s?.teacher_img}`}
+                    alt={s?.teacher_name}
                   />
-                  <h5 className={styles.teachName}>馬克</h5>
+                  <h5 className={styles.teachName}>{s?.teacher_name}</h5>
                   </a>
               </div>
               <div className={styles.info}>
@@ -46,74 +76,57 @@ export default function CourseIntro({data}) {
               <div className={styles.startDate}>
                 <img src="/course/img/flagIcon.svg" alt />
                 <h5 className={styles.dateTitle}>近期開課</h5>
-                <p className={styles.date}>2025/12/20 </p>
+                <p className={styles.date}>{s?.start_date  ? new Date(s.start_date).toISOString().split('T')[0] : ''}</p>
               </div>
               <div className={styles.duration}>
                 <img src="/course/img/timeIcon.svg" alt />
                 <h5 className={styles.durTitle}>課堂時數</h5>
-                <p className={styles.hours}>{course?.duration}小時</p>
+                <p className={styles.hours}>{c?.duration}小時</p>
               </div>
               <div className={styles.area}>
                 <img src="/course/img/flagIcon.svg" alt />
                 <h5 className={styles.areaTitle}>上課地點</h5>
-                <p className={styles.place}>台北 / 台中 / 高雄 / 線上直播</p>
+                {[...new Set(session.map((ss) => ss.region))].map((region, index, array) => (
+                  <>
+                    <p className={styles.place} key={index}>{region}</p>
+                    {index < array.length - 1 && '/'}
+                  </>
+                ))}
+                
               </div>
-              {/* <div className={styles.area}>
-                <img src="/course/img/flagIcon.svg" alt />
-                <h5 className={styles.areaTitle}>講師資訊</h5>
-                <img
-                    className={styles.teachPic}
-                    src="/course/img/1 (2).png"
-                    alt
-                  />
-                <p className={styles.place}>馬克</p>
-              </div> */}
-
+              
+              
+              {/* 日期 */}
               <select
                 id="classdate"
+                value={selectDate}
                 className={`form-select ${styles.selects}`}
                 aria-label="Default select example"
-                // onChange={()=>{}}
+                onChange={dateChange}
               >
-                <option selected readOnly>
-                 請選擇梯次
+                <option value="" selected disabled>
+                請選擇梯次
                 </option>
-                <option value>
-                  【線上直播】第一梯 03/23
-                  、03/30、04/20、04/13、04/27、05/04、05/11
-                </option>
-                <option value>
-                  【台北】第一梯 03/09、03/16、03/23、03/30、04/13、04/20、04/27
-                </option>
-                <option value>
-                  【台北】第二梯 06/29、07/06、07/13、07/20、07/27、08/03、08/10
-                </option>
-                <option value>
-                  【台北】第三梯 11/16、11/23、11/30、12/07、12/14、12/21、12/28
-                </option>
-                <option value>
-                  【台中】第二梯 10/19、10/26、11/02、11/23、11/16、11/09、11/30
-                </option>
-                <option value>
-                  【高雄】第一梯 02/09、02/16、02/23、03/09、03/16、03/23、03/30
-                </option>
-                <option value>
-                  【高雄】第二梯 08/17、08/24、08/31、09/07、09/14
-                  、09/21、09/28
-                </option>
+                {uniqueDates.map((date, index) => (
+                  <option className={`${styles.options}`} key={index} value={date}>{date}</option>
+                ))}
               </select>
+              
+              {/* 時間 */}
               <select
                 id="classtime"
                 className={`form-select ${styles.selects}`}
                 aria-label="Default select example"
-                // onChange={()=>{}}
+                
               >
-                <option selected readOnly>
-                 請選擇日期
+                <option value="" selected disabled>
+                請選擇時間
                 </option>
-                <option value>9:00~12:00</option>
-                <option value>14:00~17:00</option>
+                {filterSession.map((time, index) => (
+                  <option key={index} value={time}>{time}</option>
+                ))}
               </select>
+              
 
               <button className={styles.cartBtn}>加入購物車</button>
               <div className={styles.ps}>
@@ -148,7 +161,7 @@ export default function CourseIntro({data}) {
                             aria-label="Close"
                           />
                         </div>
-                        <div className={`modal-body`}>{course?.notice}</div>
+                        <div className={`modal-body`}>{c?.notice}</div>
                         <div className={`modal-footer`}>
                           <button
                             type="button"
@@ -193,7 +206,7 @@ export default function CourseIntro({data}) {
                             aria-label="Close"
                           />
                         </div>
-                        <div className={`modal-body`}>{course?.qa}</div>
+                        <div className={`modal-body`}>{c?.qa}</div>
                         <div className={`modal-footer`}>
                           <button
                             type="button"
@@ -241,36 +254,12 @@ export default function CourseIntro({data}) {
                         <div className={`modal-body`}>
                           <div className={`container-fluid`}>
                             <h5>上課地點</h5>
-                            <div className={`row`}>
-                              <div className={`col-5 col-md-2`}>台北</div>
-                              <div className={`col-7 col-md-4`}>
-                                台北市內湖區環山路二段141號一樓
-                              </div>
+                            {place?.map((p)=>(
+                              <div className={`row`}>
+                              <div className={`col-5 col-md-2`}>{p.region}</div>
+                              <div className={`col-7 col-md-4`}>{p.address}</div>
                             </div>
-                            <div className={styles.row}>
-                              <div className={`col-5 col-md-2`}>台中</div>
-                              <div className={`col-7 col-md-4`}>
-                                台中市烏日區大同九街73號
-                              </div>
-                            </div>
-                            <div className={styles.row}>
-                              <div className={`col-5 col-md-2`}>高雄</div>
-                              <div className={`col-7 col-md-4`}>
-                                高雄市前金區中正四路215號
-                              </div>
-                            </div>
-                            <div className={styles.row}>
-                              <div className={`col-5 col-md-2`}>線上直播</div>
-                              <div className={`col-7 col-md-4`}>
-                                <a href>ZOOM線上直播</a>
-                              </div>
-                            </div>
-                            <div className={styles.row}>
-                              <div className={`col-5 col-md-2`}>線上預錄</div>
-                              <div className={`col-7 col-md-4`}>
-                                <a href>ZOOM線上影片</a>
-                              </div>
-                            </div>
+                            ))}
                           </div>
                         </div>
                         <div className={`modal-footer`}>
