@@ -41,6 +41,7 @@ app.use("/uploads/hotel", express.static("/uploads/hotel"));
 app.use("/auth", authRouter);
 app.use("/api/auth/google", googleRouter);
 app.use("/teacher", teacherSignRouter);
+
 app.use("/api/read", readRoutes);
 app.use("/api/hotels", hotelRoutes);
 app.use("/api/hotel_tags", hotelTagsRoutes);
