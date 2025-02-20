@@ -39,7 +39,7 @@ app.use(
 app.use("/uploads/hotel", express.static("/uploads/hotel"));
 
 app.use("/auth", authRouter);
-app.use("/api/google", googleRouter);
+app.use("/api/auth/google", googleRouter);
 app.use("/teacher", teacherSignRouter);
 app.use("/api/read", readRoutes);
 app.use("/api/hotels", hotelRoutes);
@@ -51,9 +51,9 @@ app.use("/api/hotel_orders", hotelOrderRoutes);
 app.use("/api/order_dogs", orderDogsRoutes);
 app.use("/api/hotel_favorites", hotelFavoriteRoutes);
 app.use("/api/hotel_review", hotelReviewRoutes);
-app.use("/api/coupons", couponRoutes);
-app.use("/api/coupon_restrictions", couponRestrictionRoutes);
-app.use("/api/coupon_usage", userCouponsRoutes);
+app.use("/api/coupon", couponRoutes);
+app.use("/api/coupon/restrictions", couponRestrictionRoutes);
+app.use("/api/coupon/usage", userCouponsRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/course", courseRoutes);
 app.use("/api/articles", articlesRoutes);
