@@ -12,12 +12,13 @@ const ToggleButtons = ({ onRadioChange }) => {
 
   const { id } = useParams();
   const { teacher } = useTeacherDetail(id);
-    // if (!teacher) return 
-    // <>
-    //     <div className={style.container2}>
-    //         <div className={style.loader27}></div>
-    //        </div>
-    //      </>
+
+    if (!teacher) return 
+    <>
+        <div className={style.container2}>
+            <div className={style.loader27}></div>
+           </div>
+         </>
 
   return (
     <div className="row g-5">

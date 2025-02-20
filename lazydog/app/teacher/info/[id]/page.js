@@ -16,7 +16,7 @@ import OtherCourses from "../../../components/teacher/OtherCourses";
 // import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "../info.module.css";
 import OtherTeacher from "../../../components/teacher/otherTeacher";
-// import style from "../../pages/menu.module.css";
+import style from "../../../pages/menu.module.css";
 
 export default function App () {
   const [selectedTab, setSelectedTab] = useState("experience");
@@ -58,18 +58,12 @@ export default function App () {
   const handleRadioChange = (tab) => {
     setSelectedTab(tab);
 
-    //   useEffect(() => {
-    //     axios.get(`/teachers/${id}`)
-    //         .then(res => setTeacher(res.data))
-    //         .catch(err => console.error("取得老師詳細資訊失敗", err));
-    // }, [id]);
-
-    // if (!teacher) return
-    // <>
-    //     <div className={style.container2}>
-    //         <div className={style.loader27}></div>
-    //        </div>
-    //      </>
+    if (!teacher) return
+    <>
+        <div className={style.container2}>
+            <div className={style.loader27}></div>
+           </div>
+         </>
   };
 
   return (
