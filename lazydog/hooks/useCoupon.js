@@ -18,7 +18,7 @@ export const getAllCoupons = async () => {
     },
   });
 
-  if (res.status === 401) {
+  if (res.status == 401) {
     console.warn("未授權，請重新登入");
     window.location.href = "/login";
     return null;
