@@ -149,7 +149,7 @@
 .ProductListPagination {
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   gap: 15px;
   .PageItem {
     cursor: pointer;
@@ -177,6 +177,13 @@
   &.PageItemActive {
     background: var(--Orange);
     color: var(--White);
+  }
+}
+.PageArrow {
+  display: flex;
+  align-items: center;
+  img {
+    display: block;
   }
 }
 /* -------------------------- */

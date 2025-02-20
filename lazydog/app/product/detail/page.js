@@ -10,12 +10,24 @@ import useSWR from "swr";
 import Link from "next/link";
 
 export default function DetailPage(productID = {}) {
+  const [picNow, setPicNow] = useState(0);
+  const [heartHover, setHeartHover] = useState(false);
+  const [heartState, setHeartState] = useState(false);
   const [rate, setRate] = useState(3);
   const [amount, setAmount] = useState(1);
   const product = productID?.searchParams.productID;
   const url = `http://localhost:5000/api/products/${product}`;
   const url2 = "http://localhost:5000/api/products/order";
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const fetcher = async (url) => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("資料要求失敗");
+      return res.json();
+    } catch (err) {
+      console.error("資料要求失敗:", err);
+      throw err;
+    }
+  };
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
   const {
     data: orderData,
@@ -74,6 +86,13 @@ export default function DetailPage(productID = {}) {
     }
   }, []);
 
+  const collapseRef = useRef(null);
+  const simulateClick = () => {
+    if (collapseRef.current) {
+      collapseRef.current.click();
+    }
+  };
+
   const rateData = {
     rate: [],
     comment: [],
@@ -105,10 +124,10 @@ export default function DetailPage(productID = {}) {
   const sameCategory = data?.data[0].productID.slice(0, 6);
   orders?.map((v, i) => {
     if (i < 10) hotSale.push(v.productID);
-    if (sameBuy.length <= 10 && v.productID.includes(sameCategory))
+    if (sameBuy.length < 10 && v.productID.includes(sameCategory))
       sameBuy.push(v.productID);
   });
-
+  // console.log(hotSale, sameBuy);
   return (
     <div className={`${styles.Container} container`}>
       <section className={styles.Breadcrumbs}>
@@ -126,29 +145,60 @@ export default function DetailPage(productID = {}) {
       <section className={styles.ProductInfo}>
         <div className={styles.ProductInfoImgGroup}>
           <figure>
-            <img src={`/product/img/${productName}${img.img[0]}`} alt="" />
+            <img src={`/product/img/${productName}${img.img[picNow]}`} alt="" />
           </figure>
           <div className={styles.ProductInfoImgSmall}>
+            <button
+              type="button"
+              className={styles.ProductInfoImgSmallBtn}
+              onClick={() =>
+                setPicNow(picNow - 1 < 0 ? img?.sm.length - 1 : picNow - 1)
+              }
+            >
+              <img src="/product/font/left(orange).png" alt="" />
+            </button>
             {img.sm &&
               img.sm.map((v, i) => {
-                if (i < 6) {
+                if (i < 5) {
                   return (
                     <figure
                       key={`smPic${i}`}
-                      className={styles.ProductInfoImgSmallActive}
+                      className={`${styles.ProductInfoImgSmall}  ${
+                        i == picNow ? styles.ProductInfoImgSmallActive : ""
+                      }`}
                     >
                       <img src={`/product/img/${productName}${v}`} alt="" />
                     </figure>
                   );
                 }
               })}
+            <button
+              type="button"
+              className={styles.ProductInfoImgSmallBtn}
+              onClick={() =>
+                setPicNow(picNow + 1 > img.sm.length - 1 ? 0 : picNow + 1)
+              }
+            >
+              <img src="/product/font/right(orange).png" alt="" />
+            </button>
           </div>
         </div>
         <div className={styles.ProductInfoDetail}>
           <div className={styles.ProductInfoContent}>
             <div className={styles.InfoFavoriteGroup}>
-              <button type="button" className={styles.FavoriteBtn}>
-                <img src="/product/font/heart-big.png" alt="" />
+              <button
+                type="button"
+                className={styles.FavoriteBtn}
+                onMouseEnter={() => setHeartHover(true)}
+                onMouseLeave={() => setHeartHover(false)}
+                onClick={() => setHeartState(!heartState)}
+              >
+                <img
+                  src={`/product/font/${
+                    heartHover || heartState ? "heart-fill-big" : "heart-big"
+                  }.png`}
+                  alt=""
+                />
               </button>
               <h6>加入收藏</h6>
             </div>
@@ -302,7 +352,10 @@ export default function DetailPage(productID = {}) {
           </div>
         )}
         {(img.info || productData?.info_text) && (
-          <div className={`accordion-item ${styles.AccordionItem}`}>
+          <div
+            className={`accordion-item ${styles.AccordionItem}`}
+            onClick={simulateClick}
+          >
             <div className="accordion-header" id="collapse-heading2">
               <button
                 className={`accordion-button collapsed ${styles.AccordionButton}`}
@@ -311,6 +364,7 @@ export default function DetailPage(productID = {}) {
                 data-bs-target="#collapse2"
                 aria-expanded="false"
                 aria-controls="collapse2"
+                ref={collapseRef}
               >
                 <h5>商品詳細</h5>
               </button>
@@ -452,25 +506,19 @@ export default function DetailPage(productID = {}) {
       <section className={styles.AlsoBuy}>
         <h4 className={styles.AlsoBuyTitle}>其他人也買了...</h4>
         <ul className={styles.AlsoBuyList}>
-          {/* 用這個商品卡片 -------------------------------------------------------*/}
-          <ProductCard />
-          {/* 用這個商品卡片 ----------------------------------------------------*/}
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          {sameBuy.length > 0 &&
+            sameBuy?.map((v, i) => (
+              <ProductCard key={`ProductCard${i}`} productID={v} />
+            ))}
         </ul>
       </section>
       <section className={styles.OtherLike}>
         <h4 className={styles.OtherLikeTitle}>看看其他好物...</h4>
         <ul className={styles.OtherLikeList}>
-          {/* 用這個商品卡片 -------------------------------------------------------*/}
-          <ProductCard />
-          {/* 用這個商品卡片 ----------------------------------------------------*/}
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          {hotSale.length > 0 &&
+            hotSale?.map((v, i) => (
+              <ProductCard key={`ProductCard${i}`} productID={v} />
+            ))}
         </ul>
       </section>
     </div>

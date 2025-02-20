@@ -31,6 +31,7 @@
   display: flex;
   flex-direction: column;
   flex: 1 0 0;
+  gap: 15px;
 }
 .ProductInfoImgSmall {
   display: flex;
@@ -45,6 +46,12 @@
     align-items: center;
     border: 3px solid var(--skin);
     border-radius: 4px;
+  }
+  .ProductInfoImgSmallBtn {
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    height: 100%;
   }
 }
 .ProductInfoDetail {

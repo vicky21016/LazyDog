@@ -18,7 +18,16 @@ export default function AsideAside(props) {
   const query = useSearchParams();
 
   const url = "http://localhost:5000/api/products/category";
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const fetcher = async (url) => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("資料要求失敗");
+      return res.json();
+    } catch (err) {
+      console.error("資料要求失敗:", err);
+      throw err;
+    }
+  };
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
   const categorys = data?.data;
   const categoryName = [];
