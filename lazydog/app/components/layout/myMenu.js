@@ -44,7 +44,9 @@ export default function MyMenu() {
     if (file) {
       updateAvatar(file);
       console.log(file);
+    
     }
+
   };
   const handleLogout = async () => {
     try {
@@ -90,7 +92,7 @@ export default function MyMenu() {
           accept="image/*" 
         />
 
-        <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5>
+        {/* <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5> */}
         <h5 className={`${styles.welcome}`}>歡迎，{profile?.name || "會員"}！</h5>
       </div>
 
