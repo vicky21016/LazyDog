@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 import { auth } from "@/app/components/utils/firebase";
+import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -45,6 +46,9 @@ export default function MyMenu() {
     } catch (error) {}
   };
 
+  const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
+      usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+
   const menuItems = [
     { name: "會員資料", path: "/pages", icon: faUser },
     { name: "訂單紀錄", path: "/my/orders", icon: faCartShopping },
@@ -57,15 +61,56 @@ export default function MyMenu() {
   return (
     <div className={`${styles.container}`}>
       {/*  顯示會員頭像與名稱 */}
-      <div className="lumi-profile-section">
+      <div className="lumi-profile-section position-relative d-inline-block">
         <img
+        ref={avatarRef}
           src={profile?.avatar}
           alt="User Avatar"
-          className="lumi-avatar"
+          className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
           width="50"
 
         />
-        <h5 className={`${styles.welcome}`}>歡迎，{profile?.name || "會員"}！</h5>
+           <div className={styles.dropdownItem}>
+              <button
+                className={`btn btn-light ${styles.suCameraIcon}`}
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  src="/hotel/hotel-images/page-image/icon-camera.png"
+                  alt="相機"
+                  className={styles.suCameraIconImg}
+                />
+              </button>
+              <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
+                <li>
+                  <button
+                    className={`text-danger dropdown-item ${styles.suDropdownItem}`}
+                    onClick={deletePhoto}
+                  >
+                    刪除照片
+                  </button>
+                </li>
+                <li>
+                  <label
+                    onClick={uploadPhoto}
+                    className={`dropdown-item ${styles.dropdownItem}`}
+                  >
+                    上傳照片
+                  </label>
+                  <input
+                    type="file"
+                    id="uploadPhoto"
+                    accept="image/*"
+                    className="d-none"
+                    ref={fileInputRef}
+                    onChange={fileChange}
+                  />
+                </li>
+              </ul>
+            </div>
+        <h5 className={`mb-4 ${styles.welcome}`}>歡迎，{profile?.name || "會員"}！</h5>
       </div>
 
       <List animated selection>
