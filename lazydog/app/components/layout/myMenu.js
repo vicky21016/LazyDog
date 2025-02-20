@@ -61,11 +61,11 @@ export default function MyMenu() {
         <img
           src={profile?.avatar}
           alt="User Avatar"
-          className="lumi-avatar"
+          className="mb-4 lumi-avatar"
           width="50"
 
         />
-        <h5 className={`${styles.welcome}`}>歡迎，{profile?.name || "會員"}！</h5>
+        <h5 className={`mb-4 ${styles.welcome}`}>歡迎，{profile?.name || "會員"}！</h5>
       </div>
 
       <List animated selection>
