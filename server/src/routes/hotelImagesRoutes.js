@@ -11,7 +11,7 @@ const router = express.Router()
 router.get('/', getHotelsImages)
 router.get('/:id', getByIds)
 router.get(
-  '/image/:hotel_id/images',
+  '/hotel/:hotel_id',
   verifyToken,
   verifyRole(['operator']),
   getByHotelId
