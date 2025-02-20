@@ -33,8 +33,8 @@ export default function Profile () {
             />
           </div>
           <div className="col-12 col-md-6 col-lg-7 ps-5">
-            <h6 className={`mb-4 ${styles["type"]}`}>{teacher.category_name}</h6>
-            <h4 className={`mb-4 ${styles["mark"]}`}> {teacher.name}</h4>{" "}
+            <h5 className={`mb-4 ${styles["type"]}`}>{teacher.category_name}</h5>
+            <h3 className={`mb-4 ${styles["mark"]}`}> {teacher.name}</h3>{" "}
             <p>{teacher.Introduce}</p>
             <p>
               10年前，有點像是命運的洪流，把我推向動物表演訓練，讓我愛上了訓練師這份工作，也時常在思考，怎麼樣才能成為一位更好的訓練師？怎麼樣才能透過教學，讓動物過上更好的生活？
