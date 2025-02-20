@@ -31,7 +31,6 @@ export const getCouponByCodes = async (code, userId) => {
     if (!userId) {
       return { success: false, status: 400, message: "缺少 userId" };
     }
-
     // 查詢優惠券是否存在
     const [coupons] = await pool.execute(
       "SELECT * FROM coupons WHERE code = ? AND is_deleted = 0",
@@ -52,7 +51,14 @@ export const getCouponByCodes = async (code, userId) => {
     if (new Date(coupon.end_time) < now) {
       return { success: false, status: 400, message: "此優惠券已過期" };
     }
-
+    //低消
+    if (coupon.min_order_value && orderTotal < coupon.min_order_value) {
+      return {
+        success: false,
+        status: 400,
+        message: `此優惠券需消費滿 ${coupon.min_order_value} 元才可使用`,
+      };
+    }
     // 檢查優惠券是否已達最大使用次數
     const [usageMaxCount] = await pool.execute(
       "SELECT COUNT(*) as total_usage FROM coupon_usage WHERE coupon_id = ? AND status = 'claimed'",
@@ -76,6 +82,7 @@ export const getCouponByCodes = async (code, userId) => {
         message: "您已超過此優惠券的領取次數",
       };
     }
+    //是不是全站
     if (coupon.is_global) {
       return { success: true, data: coupon, message: "此優惠券為全館適用" };
     }
