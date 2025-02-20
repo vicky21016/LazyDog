@@ -9,13 +9,13 @@ import StarBar from "../_components/rate/starbar";
 import useSWR from "swr";
 import Link from "next/link";
 
-export default function DetailPage(productID = {}) {
+export default function DetailPage({ searchParams = {} }) {
   const [picNow, setPicNow] = useState(0);
   const [heartHover, setHeartHover] = useState(false);
   const [heartState, setHeartState] = useState(false);
   const [rate, setRate] = useState(3);
   const [amount, setAmount] = useState(1);
-  const product = productID?.searchParams.productID;
+  const product = searchParams.productID;
   const url = `http://localhost:5000/api/products/${product}`;
   const url2 = "http://localhost:5000/api/products/order";
   const fetcher = async (url) => {

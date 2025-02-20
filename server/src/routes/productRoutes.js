@@ -2,6 +2,7 @@ import express from "express";
 import multer from "multer";
 import {
   getAll,
+  getAllCategory,
   getSearch,
   getCategory,
   getOrder,
@@ -18,7 +19,8 @@ const upload = multer();
 
 router.get("/", getAll);
 router.get("/search", getSearch); //search要在productID前面
-router.get("/category", getCategory);
+router.get("/category", getAllCategory);
+router.get("/categoryName", getCategory);
 router.get("/order", getOrder);
 router.get("/:productID", getId);
 router.post("/", upload.none(), createNew);

@@ -3,17 +3,17 @@
 import React, { useState, useEffect } from "react";
 import styles from "./rate.module.css";
 
-export default function RateStarbar(rate = {}) {
-  const star = rate?.index;
-  const rates = rate?.rate;
+export default function RateStarbar({ rate = "", index = "" }) {
+  const star = index;
+  const rates = rate;
   const stars = rates.filter((e) => e == star);
   return (
     <div className={styles.StarBar}>
       <div className={styles.StarGroup}>
-        {[...Array(5 - Number(rate?.index))].map((v, i) => (
+        {[...Array(5 - Number(index))].map((v, i) => (
           <img key={`star${i}`} src="/product/font/star.png" alt="" />
         ))}
-        {[...Array(Number(rate?.index))].map((v, i) => (
+        {[...Array(Number(index))].map((v, i) => (
           <img key={`starFill${i}`} src="/product/font/star-fill.png" alt="" />
         ))}
       </div>

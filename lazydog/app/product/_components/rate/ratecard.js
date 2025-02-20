@@ -4,11 +4,16 @@ import React, { useState, useEffect } from "react";
 import styles from "./rate.module.css";
 import StarGroup from "./stargroup";
 
-export default function RatecardRatecard(rate = {}) {
-  const rateNum = rate?.rate.toString();
-  const years = rate?.date.slice(0, 4);
-  const months = rate?.date.slice(5, 7);
-  const days = rate?.date.slice(8, 10);
+export default function RatecardRatecard({
+  rate = "",
+  date = "",
+  user = "",
+  comment = "",
+}) {
+  const rateNum = rate.toString();
+  const years = date.slice(0, 4);
+  const months = date.slice(5, 7);
+  const days = date.slice(8, 10);
   const [hover, setHover] = useState(false);
   const [good, setGood] = useState(false);
   // console.log(years, months, days);
@@ -18,13 +23,13 @@ export default function RatecardRatecard(rate = {}) {
         <div className={styles.RateCardUser}>
           <button type="button">
             <img src="/product/font/self.png" alt="" />
-            <h6>{rate?.user}</h6>
+            <h6>{user}</h6>
           </button>
           <div className={styles.StarGroup}>
             <StarGroup rate={rateNum} />
           </div>
         </div>
-        <p>{rate?.comment}</p>
+        <p>{comment}</p>
       </div>
       <div className={styles.RateCardBtnDate}>
         <button

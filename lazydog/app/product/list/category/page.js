@@ -9,10 +9,53 @@ import Card from "../../_components/card/card";
 import useSWR from "swr";
 
 export default function ListPage(props) {
+  // http://localhost:5000/api/products/search?category=乾糧&main=乾糧&type=主食&age=全年齡&feature=強效潔牙&flavor=牛肉,鴨肉&cereal=無穀&size=全適用
+  const [keyword, setKeyword] = useState({
+    主分類: [],
+    種類: [],
+    適用年齡: [],
+    功能: [],
+    口味: [],
+    穀類: [],
+    適用體型: [],
+  });
+  // console.log(keyword);
+
   const query = useSearchParams();
   const category = query.get("category");
-
-  const url = "http://localhost:5000/api/products";
+  const [newUrl, setNewUrl] = useState(
+    `http://localhost:5000/api/products/category?category=${category}`
+  );
+  const changeUrl = (newUrl) => {
+    setNewUrl(newUrl);
+  };
+  useEffect(() => {
+    if (
+      keyword?.主分類.length == 0 &&
+      keyword?.種類.length == 0 &&
+      keyword?.適用年齡.length == 0 &&
+      keyword?.功能.length == 0 &&
+      keyword?.口味.length == 0 &&
+      keyword?.穀類.length == 0 &&
+      keyword?.適用體型.length == 0
+    ) {
+      changeUrl(
+        `http://localhost:5000/api/products/category?category=${category}`
+      );
+      return;
+    }
+    changeUrl(
+      `http://localhost:5000/api/products/search?category=${category}&main=${keyword?.主分類.join(
+        ","
+      )}&type=${keyword?.種類.join(",")}&age=${keyword?.適用年齡.join(
+        ","
+      )}&feature=${keyword?.功能.join(",")}&flavor=${keyword?.口味.join(
+        ","
+      )}&cereal=${keyword?.穀類.join(",")}&size=${keyword?.適用體型.join(",")}`
+    );
+    console.log(newUrl);
+  }, [keyword]);
+  // const url = `http://localhost:5000/api/products/category?category=${category}`;
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
@@ -23,7 +66,7 @@ export default function ListPage(props) {
       throw err;
     }
   };
-  const { data, isLoading, error, mutate } = useSWR(url, fetcher);
+  const { data, isLoading, error, mutate } = useSWR(newUrl, fetcher);
   const products = data?.data;
   const productID = "";
 
@@ -32,6 +75,7 @@ export default function ListPage(props) {
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
+
   return (
     <>
       <div className={`${styles.Container} container`}>
@@ -64,7 +108,11 @@ export default function ListPage(props) {
           </div>
         </section>
         <section className={styles.PdArea}>
-          <Aside />
+          <Aside
+            changeUrl={changeUrl}
+            keyword={keyword}
+            setKeyword={setKeyword}
+          />
           <main className={styles.PdList}>
             {[...Array(6)].map((value, index) => {
               return (
@@ -80,7 +128,7 @@ export default function ListPage(props) {
               <ul className={styles.ProductListPagination}>
                 <li className={`${styles.PageArrow}`}>
                   <Link
-                    href={`http://localhost:3000/product/list?page=${
+                    href={`http://localhost:3000/product/list/category?category=${category}&page=${
                       pageNow - 1
                     }`}
                   >
@@ -98,29 +146,27 @@ export default function ListPage(props) {
                     i == pages - 1
                   ) {
                     return (
-                      <>
-                        <li
-                          key={`li${i}`}
-                          className={`${styles.PageItem} page-item ${
-                            i + 1 == pageNow ? styles.PageItemActive : ""
+                      <li
+                        key={`li${i}`}
+                        className={`${styles.PageItem} page-item ${
+                          i + 1 == pageNow ? styles.PageItemActive : ""
+                        }`}
+                      >
+                        <Link
+                          className={`${styles.PageLink} page-link `}
+                          href={`http://localhost:3000/product/list/category?category=${category}&page=${
+                            i + 1
                           }`}
                         >
-                          <Link
-                            className={`${styles.PageLink} page-link `}
-                            href={`http://localhost:3000/product/list?page=${
-                              i + 1
-                            }`}
-                          >
-                            {i + 1}
-                          </Link>
-                        </li>
-                      </>
+                          {i + 1}
+                        </Link>
+                      </li>
                     );
                   }
                 })}
                 <li className={`${styles.PageArrow}`}>
                   <Link
-                    href={`http://localhost:3000/product/list?page=${
+                    href={`http://localhost:3000/product/list/category?category=${category}&page=${
                       pageNow + 1
                     }`}
                   >

@@ -5,10 +5,9 @@ import styles from "./card.module.css";
 import Link from "next/link";
 import useSWR from "swr";
 
-export default function CardCard(product = {}) {
-  // console.log(product);
-  const url = product
-    ? `http://localhost:5000/api/products/${product?.productID}`
+export default function CardCard({ productID = "" }) {
+  const url = productID
+    ? `http://localhost:5000/api/products/${productID}`
     : null;
   const fetcher = async (url) => {
     try {
@@ -29,7 +28,6 @@ export default function CardCard(product = {}) {
   const products = data?.data[0];
   const productName = products?.name;
   const [cardPic, setCardPic] = useState("/product/img/default.webp");
-  const productID = products?.productID;
   const productPrice = (
     Number(products?.price) * Number(products?.discount)
   ).toFixed(0);

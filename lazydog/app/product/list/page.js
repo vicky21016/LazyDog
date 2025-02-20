@@ -9,7 +9,11 @@ import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
 
 export default function ListPage(props) {
-  const url = "http://localhost:5000/api/products";
+  const [newUrl, setNewUrl] = useState("http://localhost:5000/api/products");
+  const changeUrl = (newUrl) => {
+    setNewUrl(newUrl);
+  };
+  const url = newUrl;
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
@@ -61,7 +65,7 @@ export default function ListPage(props) {
           </div>
         </section>
         <section className={styles.PdArea}>
-          <Aside />
+          <Aside changeUrl={changeUrl} />
           <main className={styles.PdList}>
             {[...Array(6)].map((value, index) => {
               return (
