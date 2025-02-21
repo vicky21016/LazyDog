@@ -13,7 +13,8 @@ import {
 
 export const getAll = async (req, res) => {
   try {
-    const products = await getAllProducts();
+    const { min, max } = req.query;
+    const products = await getAllProducts(min, max);
     if (!products.length) throw new Error("查無商品列表");
     res.status(200).json({
       status: "success",
@@ -27,8 +28,8 @@ export const getAll = async (req, res) => {
 
 export const getAllCategory = async (req, res) => {
   try {
-    const { category } = req.query;
-    const products = await getAllCategoryName(category);
+    const { category, min, max } = req.query;
+    const products = await getAllCategoryName(category, min, max);
     if (!products.length) throw new Error("查無商品類別列表");
     res.status(200).json({
       status: "success",
@@ -52,19 +53,54 @@ export const getSearch = async (req, res) => {
       flavor,
       cereal,
       size,
+      min,
+      max,
     } = req.query;
     let all = [
-      ...(main || "").split(","),
-      ...(type || "").split(","),
-      ...(age || "").split(","),
-      ...(feature || "").split(","),
-      ...(flavor || "").split(","),
-      ...(cereal || "").split(","),
-      ...(size || "").split(","),
-    ];
+      main && main.split(","),
+      type && type.split(","),
+      age && age.split(","),
+      feature && feature.split(","),
+      flavor && flavor.split(","),
+      cereal && cereal.split(","),
+      size && size.split(","),
+    ].filter(Boolean);
     if (!main && !type && !age && !feature && !flavor && !cereal && !size)
       all = [];
-    const product = await getSearchKeyword(category, keyword, all);
+    let field = [];
+    let value = [];
+    if (all.length > 0) {
+      for (let i = 0; i < all.length; i++) {
+        if (all[i].length == 1) {
+          field.push("(name LIKE ? OR full_info LIKE ? OR spec LIKE ?)");
+          value.push(`%${all[i]}%`);
+          value.push(`%${all[i]}%`);
+          value.push(`%${all[i]}%`);
+        } else {
+          // (name LIKE ? OR full_info LIKE ? OR name LIKE ? OR full_info LIKE ?)
+          let pluralField = [];
+          all[i].forEach((e) => {
+            pluralField.push(
+              `(name LIKE ? OR full_info LIKE ? OR spec LIKE ?)`
+            );
+            value.push(`%${e}%`);
+            value.push(`%${e}%`);
+            value.push(`%${e}%`);
+          });
+          pluralField = `(${pluralField.join(" OR ")})`;
+          field.push(pluralField);
+        }
+      }
+      field = field.join(" AND ");
+    }
+    const product = await getSearchKeyword(
+      category,
+      keyword,
+      field,
+      value,
+      min,
+      max
+    );
     if (!product.length) throw new Error("查無相關商品");
     res.status(200).json({
       status: "success",
