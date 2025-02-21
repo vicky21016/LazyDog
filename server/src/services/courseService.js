@@ -27,9 +27,24 @@ export const getCourses = async () => {
       LIMIT 6
       ;`);
     if (latest.length == 0){
-      console.log("課程列表不存在");
+      console.log("近期開課不存在");
     }
-    return {courses, latest};
+    const [newest] = await pool.execute(`
+      SELECT c.id AS courseId, c.name AS courseName, cm.url AS img_url, cs.start_date AS startdate, cs.created_at AS created       
+      FROM course_session cs 
+      JOIN course c ON cs.course_id = c.id
+      JOIN course_img cm ON c.id = cm.course_id
+      WHERE cs.created_at
+      AND cs.is_deleted = 0
+      AND cm.main_pic = 1
+      GROUP BY c.id
+      ORDER BY cs.created_at ASC
+      LIMIT 6
+      ;`);
+    if (newest.length == 0){
+      console.log("最新建立課程不存在");
+    }
+    return {courses, latest, newest};
   } catch (err) {
     throw new Error(" 無法取得課程列表：" + err.message);
   }

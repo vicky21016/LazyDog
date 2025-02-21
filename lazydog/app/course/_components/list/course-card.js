@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, {useState} from 'react'
 import { useFetch } from '@/hooks/product/use-fetch';
 import styles from "../courseList.module.css";
 import Card from './card';
@@ -11,6 +11,14 @@ export default function CourseCard() {
   const url = "http://localhost:5000/api/course"
   const { data, loading, error } = useFetch(url) 
   const course =data?.data?.courses;
+
+  // 分頁
+  const [currPage, setCurrPage] = useState(1);
+  const perPage = 9;
+  const totalPages =  Math.max(1, Math.ceil((course?.length || 0) / perPage));
+
+  const startIndex = (currPage - 1) * perPage;
+  const currentCourses = course?.slice(startIndex, startIndex + perPage);
 
   return (
     <>
@@ -31,13 +39,13 @@ export default function CourseCard() {
             </div>
             </div>
             <div className={styles.courseGroup}>
-                {course?.map((course) => {
+                {currentCourses?.map((course) => {
                     return(
                     <Card key={course.id} course={course}/>
                     )
                 })}
             </div>
-            <Pagination/>
+            <Pagination totalPages={totalPages} currPage={currPage} setCurrPage={setCurrPage}/>
         </div> 
     </>
   )
