@@ -1,13 +1,67 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../../../styles/modules/fontCoupon.module.css";
 import Image from "next/image";
 import Header from "../../components/layout/header";
+import { claimCoupon } from "@/services/couponService";
+
 export default function CouponPage() {
+  // 儲存 API 回傳的優惠券資訊
+  const [selectedCoupon, setSelectedCoupon] = useState({
+    name: "",
+    code: "",
+    expiry: "",
+  });
+  const [bootstrapModal, setBootstrapModal] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && !window.bootstrap) {
+      import("bootstrap/dist/js/bootstrap.bundle.min.js").then((bootstrap) => {
+        window.bootstrap = bootstrap;
+        const modalElement = document.getElementById("couponModal");
+        if (modalElement) {
+          setBootstrapModal(new bootstrap.Modal(modalElement));
+        }
+      });
+    }
+  }, []);
+
+  const handleClaimCoupon = async (couponId) => {
+    try {
+      const response = await claimCoupon(couponId);
+      console.log("領取 API 回應：", response);
+
+      if (!response || !response.success) {
+        throw new Error(response?.message || "領取失敗");
+      }
+
+      const coupon = response.coupon;
+      if (!coupon || !coupon.name) {
+        throw new Error("回傳的優惠券資料有誤");
+      }
+
+      setSelectedCoupon({
+        name: coupon.name,
+        code: coupon.code,
+        expiry: coupon.expiry,
+      });
+
+      // **手動初始化 Bootstrap Modal**
+      if (bootstrapModal) {
+        bootstrapModal.show();
+      } else {
+        console.error("Bootstrap Modal 尚未初始化");
+      }
+    } catch (error) {
+      console.error("領取優惠券失敗", error);
+      alert(error.message || "發生錯誤，請稍後再試");
+    }
+  };
+
   return (
     <>
-    <Header />
+      <Header />
       <div
         className="modal fade"
         id="couponModal"
@@ -41,10 +95,10 @@ export default function CouponPage() {
                 className={`text-danger ${styles.suCouponCode}`}
                 id="couponCode"
               >
-                優惠券代碼：XXXXXX
+                優惠券代碼：{selectedCoupon.code}
               </p>
               <p className="text-muted" id="couponExpiry">
-                有效期限：2025/12/31
+                有效期限：{selectedCoupon.expiry}
               </p>
             </div>
             <div className="modal-footer justify-content-center">
@@ -64,32 +118,57 @@ export default function CouponPage() {
       <div className={`container-fluid ${styles.suCouponContainer}`}>
         <div className="container">
           <div className="row d-flex justify-content-center">
-            {[...Array(2)].map((_, index) => (
-              <div key={index} className="col-lg-6 col-md-6 col-sm-12">
-                <div className={styles.suCoupon}>
-                  <Image
-                    src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
-                    alt="優惠券背景"
-                    fill="true"
-                    style={{ objectFit: "cover" }}
-                  />
-                  <div className={styles.suCouponContent}>
-                    <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
-                    <div className={styles.suCouponCode}>SKUDIWEK54K64L</div>
-                    <div className={styles.suCouponExpiry}>
-                      有效期限：2025/12/31
-                    </div>
+            <div className="col-lg-6 col-md-6 col-sm-12">
+              <div className={styles.suCoupon}>
+                <Image
+                  src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
+                  alt="優惠券背景"
+                  fill={true}
+                  style={{ objectFit: "cover" }}
+                />
+                <div className={styles.suCouponContent}>
+                  <div className={styles.suCouponName}>🐶 全館優惠</div>
+                  <div className={styles.suCouponCode}>NA5W5I9Q4C</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/07/05
                   </div>
-                  <button className={styles.suCouponButton} type="button">
-                    點我領取
-                  </button>
                 </div>
+                <button
+                  className={styles.suCouponButton}
+                  type="button"
+                  onClick={() => handleClaimCoupon("40")}
+                >
+                  點我領取
+                </button>
               </div>
-            ))}
+            </div>
+            <div className="col-lg-6 col-md-6 col-sm-12">
+              <div className={styles.suCoupon}>
+                <Image
+                  src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
+                  alt="優惠券背景"
+                  fill={true}
+                  style={{ objectFit: "cover" }}
+                />
+                <div className={styles.suCouponContent}>
+                  <div className={styles.suCouponName}>🐶 全館優惠</div>
+                  <div className={styles.suCouponCode}>NA5W5I9Q4C</div>
+                  <div className={styles.suCouponExpiry}>
+                    有效期限：2025/07/05
+                  </div>
+                </div>
+                <button
+                  className={styles.suCouponButton}
+                  type="button"
+                  onClick={() => handleClaimCoupon("40")}
+                >
+                  點我領取
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
       {/* 第二個區塊 (促銷圖片 + 3 張優惠券) */}
       <div className={`container-fluid ${styles.suSecondSection}`}>
         <div className="container">
@@ -112,13 +191,17 @@ export default function CouponPage() {
                   style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
-                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
-                  <div className={styles.suCouponCode}>SKUDIWEK54K64L</div>
+                  <div className={styles.suCouponName}>🐶 商品優惠</div>
+                  <div className={styles.suCouponCode}>現折500元</div>
                   <div className={styles.suCouponExpiry}>
-                    有效期限：2025/12/31
+                    有效期限：2025/06/30
                   </div>
                 </div>
-                <button className={styles.suCouponButton} type="button">
+                <button
+                  className={styles.suCouponButton}
+                  type="button"
+                  onClick={() => handleClaimCoupon("8")}
+                >
                   點我領取
                 </button>
               </div>
@@ -130,13 +213,17 @@ export default function CouponPage() {
                   style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
-                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
-                  <div className={styles.suCouponCode}>SKUDIWEK54K64L</div>
+                  <div className={styles.suCouponName}>🐶 商品優惠</div>
+                  <div className={styles.suCouponCode}>現折200元</div>
                   <div className={styles.suCouponExpiry}>
-                    有效期限：2025/12/31
+                    有效期限：2025/06/06
                   </div>
                 </div>
-                <button className={styles.suCouponButton} type="button">
+                <button
+                  className={styles.suCouponButton}
+                  type="button"
+                  onClick={() => handleClaimCoupon("7")}
+                >
                   點我領取
                 </button>
               </div>
@@ -148,13 +235,17 @@ export default function CouponPage() {
                   style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
-                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
-                  <div className={styles.suCouponCode}>SKUDIWEK54K64L</div>
+                  <div className={styles.suCouponName}>🐶 商品優惠</div>
+                  <div className={styles.suCouponCode}>現折300元</div>
                   <div className={styles.suCouponExpiry}>
-                    有效期限：2025/12/31
+                    有效期限：2025/05/05
                   </div>
                 </div>
-                <button className={styles.suCouponButton} type="button">
+                <button
+                  className={styles.suCouponButton}
+                  type="button"
+                  onClick={() => handleClaimCoupon("10")}
+                >
                   點我領取
                 </button>
               </div>
@@ -183,7 +274,11 @@ export default function CouponPage() {
                     有效期限：2025/12/31
                   </div>
                 </div>
-                <button className={styles.suCouponButton} type="button">
+                <button
+                  className={styles.suCouponButton}
+                  type="button"
+                  onClick={() => handleClaimCoupon("COUPON_ID_1")}
+                >
                   點我領取
                 </button>
               </div>
@@ -202,7 +297,11 @@ export default function CouponPage() {
                     有效期限：2025/12/31
                   </div>
                 </div>
-                <button className={styles.suCouponButton} type="button">
+                <button
+                  className={styles.suCouponButton}
+                  type="button"
+                  onClick={() => handleClaimCoupon("COUPON_ID_1")}
+                >
                   點我領取
                 </button>
               </div>
@@ -221,7 +320,11 @@ export default function CouponPage() {
                     有效期限：2025/12/31
                   </div>
                 </div>
-                <button className={styles.suCouponButton} type="button">
+                <button
+                  className={styles.suCouponButton}
+                  type="button"
+                  onClick={() => handleClaimCoupon("COUPON_ID_1")}
+                >
                   點我領取
                 </button>
               </div>
@@ -269,7 +372,11 @@ export default function CouponPage() {
                     有效期限：2025/12/31
                   </div>
                 </div>
-                <button className={styles.suCouponButton} type="button">
+                <button
+                  className={styles.suCouponButton}
+                  type="button"
+                  onClick={() => handleClaimCoupon("COUPON_ID_1")}
+                >
                   點我領取
                 </button>
               </div>
@@ -288,7 +395,11 @@ export default function CouponPage() {
                     有效期限：2025/12/31
                   </div>
                 </div>
-                <button className={styles.suCouponButton} type="button">
+                <button
+                  className={styles.suCouponButton}
+                  type="button"
+                  onClick={() => handleClaimCoupon("COUPON_ID_1")}
+                >
                   點我領取
                 </button>
               </div>
@@ -307,7 +418,11 @@ export default function CouponPage() {
                     有效期限：2025/12/31
                   </div>
                 </div>
-                <button className={styles.suCouponButton} type="button">
+                <button
+                  className={styles.suCouponButton}
+                  type="button"
+                  onClick={() => handleClaimCoupon("COUPON_ID_1")}
+                >
                   點我領取
                 </button>
               </div>
