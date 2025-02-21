@@ -12,7 +12,7 @@ export default function ToggleButtons (){
   const { id } = useParams();
   const { teacher } = useTeacherDetail(id);
 
-  const [activeTab, setActiveTab] = useState("exps"); // 控制顯示內容
+  const [activeTab, setActiveTab] = useState("exps"); // 控制顯示內容 預設顯示經歷
 
   if (!teacher) {
     return (
@@ -26,15 +26,15 @@ export default function ToggleButtons (){
     <div className="row g-5">
       <div className="col-12 col-md-6 col-lg-5">
         <div className={styles.infoCard}>
-          <h3 className={`mb-4 ${styles.cardTitle}`}>相關資訊</h3>
+          <h3 className={`mt-2 mb-4 ms-2 ${styles.cardTitle}`}>相關資訊</h3>
           <div
             className={`${styles.menuItem} ${
               activeTab == "exps" ? styles.active : ""
             }`}
             onClick={() => setActiveTab("exps")}
           >
-            <i className={styles.icon}>👤</i>
-            <span>經歷</span>
+            <i className={`"bi bi-person-fill ${styles.icon}`}></i>
+            <span className="ms-1">經歷</span>
           </div>
           <div
             className={`${styles.menuItem} ${
@@ -42,8 +42,8 @@ export default function ToggleButtons (){
             }`}
             onClick={() => setActiveTab("course")}
           >
-            <i className={styles.icon}>🎟️</i>
-            <span>課程</span>
+            <i className={`bi bi-mortarboard-fill ${styles.icon}`}></i>
+            <span className="ms-1">課程</span>
           </div>
         </div>
       </div>
