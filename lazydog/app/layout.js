@@ -5,8 +5,7 @@ import "../styles/animations.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { AuthProvider } from "@/hooks/use-auth";
-import Footer from "./components/layout/footer";
-
+import { CartProvider } from "@/hooks/use-cart";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -47,12 +46,13 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <AuthProvider>
-          {children}
-          <Footer className="mt-5" />
-        </AuthProvider>
-      </body>
+      <AuthProvider>
+        <CartProvider>
+          <body className={`${geistSans.variable} ${geistMono.variable}`}>
+            {children}
+          </body>
+        </CartProvider>
+      </AuthProvider>
     </html>
   );
 }
