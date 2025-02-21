@@ -10,17 +10,20 @@ export default function CouponCard({ coupon, onClaim }) {
         <Image
           src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
           alt="優惠券背景"
-          fill={true}
+          fill
           style={{ objectFit: "cover" }}
         />
         <div className={styles.suCouponContent}>
           <div className={styles.suCouponName}>{coupon.name}</div>
           <div className={styles.suCouponCode}>{coupon.code}</div>
           <div className={styles.suCouponExpiry}>
-            有效期限：{coupon.expiry_date}
+          有效期限：{coupon.expiry_date ? coupon.expiry_date : "無期限"}
           </div>
         </div>
-        <button className={styles.suCouponButton} onClick={() => onClaim(coupon.id)}>
+        <button
+          className={styles.suCouponButton}
+          onClick={() => onClaim(coupon.id)}
+        >
           點我領取
         </button>
       </div>

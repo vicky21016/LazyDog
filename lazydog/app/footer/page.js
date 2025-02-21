@@ -9,7 +9,7 @@ export default function HomePage(props) {
     <>
       <footer className={styles.footer}>
         <section className={styles.footerTop}>
-          <img className={styles.topWave} src="/footer/img/footer_top.png" alt />
+          <img className={styles.topWave} src="/footer/img/footer_top.png"   alt="" />
         </section>
         <section className={styles.footerMiddle}>
           <ul className={styles.infos}>
@@ -43,15 +43,15 @@ export default function HomePage(props) {
               <p><a className={styles.service} href>常見問題</a></p>
             </li>
             <li className={styles.footerList4}>
-              <form className={styles.footerEmail} action>
+              <form className={styles.footerEmail} action="">
                 <input className={styles.enterMail} type="text" placeholder="Enter your email" />
                 <button className={styles.planeBtn}><img src="/footer/img/plane.png" alt="" /></button>
               </form>
               <p className={styles.discount}>輸入Email~首次購買即可享 15% 折扣！</p>
               <div className={styles.footerIcon}>
-                <a href><img className={styles.icons} src="/footer/img/FB.png" alt /></a>
-                <a href><img className={styles.icons} src="/footer/img/IG.png" alt /></a>
-                <a href><img className={styles.icons} src="/footer/img/YT.png" alt /></a>
+                <a href><img className={styles.icons} src="/footer/img/FB.png"   alt="" /></a>
+                <a href><img className={styles.icons} src="/footer/img/IG.png"   alt="" /></a>
+                <a href><img className={styles.icons} src="/footer/img/YT.png"   alt="" /></a>
               </div>
             </li>
           </ul>

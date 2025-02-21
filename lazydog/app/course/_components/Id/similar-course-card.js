@@ -17,12 +17,17 @@ export default function SimilarCourseCard({simiCourse}) {
                   <img
                     className={styles.arrowLeft}
                     src="/course/img/arrow-left.png"
+
                     alt={`往左箭頭`}
+
+
                   />
                   <img
                     className={styles.arrowRight}
                     src="/course/img/arrow-right.png"
+
                     alt={`往右箭頭`}
+
                   />
                 </div>
               </div>
@@ -32,7 +37,9 @@ export default function SimilarCourseCard({simiCourse}) {
                   <img
                     className={styles.cardImg}
                     src={`/course/img/${simi?.img_url}`}
+
                     alt={simi.courseName}
+
                   />
                   <h5 className={styles.cardName}>{simi.courseName}</h5>
                 </Link>

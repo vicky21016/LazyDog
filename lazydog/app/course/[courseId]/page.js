@@ -63,7 +63,7 @@ export default function CourseIdPage() {
           <img
             className={styles.brownWave}
             src="/course/img/brownWave.png"
-            alt
+            alt=""
           />
           <SimilarCourseCard simiCourse={simiCourse}/>
         </div>

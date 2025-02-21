@@ -13,7 +13,7 @@ export default function Footer(props) {
           <img
             className={styles.topWave}
             src="/footer/img/footer_top.png"
-            alt
+            alt=""
           />
         </section>
         <div className={`pb-4 ${styles.bag}`}>
@@ -97,7 +97,7 @@ export default function Footer(props) {
                 </p>
               </li>
               <li className={styles.footerList4}>
-                <form className={styles.footerEmail} action>
+                <form className={styles.footerEmail} action="">
                   <input
                     className={styles.enterMail}
                     type="text"
@@ -115,21 +115,21 @@ export default function Footer(props) {
                     <img
                       className={styles.icons}
                       src="/footer/img/FB.png"
-                      alt
+                      alt=""
                     />
                   </Link>
                   <Link href="#">
                     <img
                       className={styles.icons}
                       src="/footer/img/IG.png"
-                      alt
+                      alt=""
                     />
                   </Link>
                   <Link href="#">
                     <img
                       className={styles.icons}
                       src="/footer/img/YT.png"
-                      alt
+                      alt=""
                     />
                   </Link>
                 </div>

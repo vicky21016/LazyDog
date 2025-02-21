@@ -13,7 +13,7 @@ export default function CouponPage() {
         id="couponModal"
         tabIndex="-1"
         aria-labelledby="couponModalLabel"
-        aria-hidden="true"
+        aria-hidden={true}
       >
         <div className="modal-dialog modal-dialog-centered">
           <div

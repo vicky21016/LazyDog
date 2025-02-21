@@ -31,12 +31,16 @@ export default function OtherCourseCard() {
                 <img
                   className={styles.arrowLeft}
                   src="/course/img/arrow-left.png"
+
                   alt={`往左箭頭`}
+
                 />
                 <img
                   className={styles.arrowRight}
                   src="/course/img/arrow-right.png"
+
                   alt={`往右箭頭`}
+
                 />
               </div>
             </div>
@@ -46,7 +50,9 @@ export default function OtherCourseCard() {
                   <img
                       className={styles.cardImg}
                       src={`/course/img/${la.img_url}`}
+
                       alt={la.courseName}
+
                   />
                   <h5 className={styles.cardName}>{la.courseName}</h5>
                 </Link>

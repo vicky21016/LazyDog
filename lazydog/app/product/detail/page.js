@@ -333,7 +333,7 @@ export default function DetailPage({ searchParams = {} }) {
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#collapse1"
-                aria-expanded="true"
+                aria-expanded={true}
                 aria-controls="collapse1"
               >
                 <h5>商品介紹</h5>
@@ -433,7 +433,7 @@ export default function DetailPage({ searchParams = {} }) {
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#collapse4"
-              aria-expanded="true"
+              aria-expanded={true}
               aria-controls="collapse4"
             >
               <h5>商品評價</h5>

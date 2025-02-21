@@ -47,7 +47,7 @@ export default function CourseIntro({course, session, place}) {
               <img
                 className={styles.mainPic}
                 src={`/course/img/${c?.img_url}`}
-                alt
+                alt=""
               />
               <h2 className={styles.price}>NT$ <span className={styles.number}>{Number(c?.price).toLocaleString("zh-Tw")}</span></h2>
               <div className={styles.courseName}>
@@ -55,7 +55,7 @@ export default function CourseIntro({course, session, place}) {
                 <img
                   className={styles.heartIcon}
                   src="/course/img/heartIcon.svg"
-                  alt
+                    alt=""
                 />
               </div>
               <p className={styles.description}>{c?.description}</p>
@@ -75,17 +75,17 @@ export default function CourseIntro({course, session, place}) {
                 <h2 className={styles.infoTitle}>課程資訊</h2>
               </div>
               <div className={styles.startDate}>
-                <img src="/course/img/flagIcon.svg" alt />
+                <img src="/course/img/flagIcon.svg"   alt="" />
                 <h5 className={styles.dateTitle}>近期開課</h5>
                 <p className={styles.date}>{s?.start_date  ? new Date(s.start_date).toISOString().split('T')[0] : ''}</p>
               </div>
               <div className={styles.duration}>
-                <img src="/course/img/timeIcon.svg" alt />
+                <img src="/course/img/timeIcon.svg"   alt="" />
                 <h5 className={styles.durTitle}>課堂時數</h5>
                 <p className={styles.hours}>{c?.duration}小時</p>
               </div>
               <div className={styles.area}>
-                <img src="/course/img/flagIcon.svg" alt />
+                <img src="/course/img/flagIcon.svg"   alt="" />
                 <h5 className={styles.areaTitle}>上課地點</h5>
                 {[...new Set(session.map((ss) => ss.region))].map((region, index, array) => (
                   <>
@@ -138,7 +138,7 @@ export default function CourseIntro({course, session, place}) {
                   data-bs-target="#noticeModal"
                 >
                   <h5 className={styles.noticeTitle}>注意事項</h5>
-                  <img src="/course/img/rightBlack.svg" alt />
+                  <img src="/course/img/rightBlack.svg"   alt="" />
                   {/* Modal */}
                   <div
                     className={`modal ${styles.fade}`}
@@ -183,7 +183,7 @@ export default function CourseIntro({course, session, place}) {
                   data-bs-target="#qaModal"
                 >
                   <h5 className={styles.qaTitle}>Q&amp;A</h5>
-                  <img src="/course/img/rightBlack.svg" alt />
+                  <img src="/course/img/rightBlack.svg"   alt="" />
                   {/* Modal */}
                   <div
                     className={`modal ${styles.fade}`}
@@ -228,7 +228,7 @@ export default function CourseIntro({course, session, place}) {
                   data-bs-target="#otherModal"
                 >
                   <h5 className={styles.otherTitle}>其他</h5>
-                  <img src="/course/img/rightBlack.svg" alt />
+                  <img src="/course/img/rightBlack.svg"  alt="" />
                   {/* Modal */}
                   <div
                     className={`modal ${styles.fade}`}
