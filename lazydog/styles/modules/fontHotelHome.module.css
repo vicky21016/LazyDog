@@ -152,8 +152,8 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
-  width: 300px; /* 設定固定寬度，確保兩個框框大小一致 */
-  height: 35px; /* 高度一致 */
+  width: 300px;
+  height: 35px; 
   border: 2px solid #ff9538;
   border-radius: 15px;
   padding: 5px 10px;
@@ -162,7 +162,7 @@
 
 .suPriceInput span {
   flex: 1;
-  text-align: center; /* 讓數字在框內置中 */
+  text-align: center;
 }
 
 .suPriceInput input {
