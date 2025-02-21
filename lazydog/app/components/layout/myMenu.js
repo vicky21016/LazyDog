@@ -26,7 +26,7 @@ export default function MyMenu() {
   const router = useRouter();
   const { user, logout, updateAvatar } = useAuth(); //  從 `useAuth` 獲取 `user` & `logout`
   const [profile, setProfile] = useState(null);
-  const [image, setImage] = useState(profile?.avatar);
+
   //  監聽 `localStorage`，確保會員資訊即時更新
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -65,7 +65,7 @@ export default function MyMenu() {
   const menuItems = [
     { name: "會員資料", path: "/pages", icon: faUser },
     { name: "訂單紀錄", path: "/my/orders", icon: faCartShopping },
-    { name: "我的優惠", path: "/hotel-coupon/profileCoupon", icon: faTicket },
+    { name: "我的優惠", path: "/hotel-coupon/couponList", icon: faTicket },
     { name: "我的收藏", path: "/my/favorite", icon: faHeart },
     { name: "我的文章", path: "/my/posts", icon: faPen },
     { name: "修改密碼", path: "/pages/forgot-password", icon: faCirclePlus },
