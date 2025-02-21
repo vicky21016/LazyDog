@@ -104,9 +104,21 @@
 
 .dropdown:hover .dropdown-content {display: block;}
 
+  .mobleMenu{
+    display: none;
+  }
 @media (max-width: 768px) {
   .lumiLogo1 {
     display: none;
   }
-  
+  .mobleMenu{
+    display: block;
+    color: #ff9538;
+  }
+  .lumi-ul{
+    display: none;
+  }
+  .lumi-user-actions{
+    display: none;
+  }
 }

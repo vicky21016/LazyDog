@@ -11,6 +11,7 @@ import styles from "../../../styles/modules/header.module.css";
 
 export default function Header(props) {
   const [user, setUser] = React.useState(null);
+  const [menuOpen, setMenuOpen] = useState(false); // 控制選單展開
   const { logout } = useAuth();
   React.useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -60,32 +61,43 @@ export default function Header(props) {
       </nav>
       {/* {!user ? (
         <> */}
-          <div className={styles["lumi-user-actions"]}>
-            <div className={styles["dropdown"]}>
-              <Link href="/pages" className={styles["lumi-user-icon"]}>
-                {/* <FontAwesomeIcon icon={faUser} /> */}
-                <i className="bi bi-person" />
-              </Link>
-              <div className={styles["dropdown-content"]}>
-                <Link href="/pages" className={styles["dropdown-link"]}>
-                  個人資料
-                </Link>
-                <Link href="/favorite" className={styles["dropdown-link"]}>
-                  我的收藏
-                </Link>
-                <div onClick={logout} className={styles["dropdown-link"]}>
-                  登出
-                </div>
-              </div>
-            </div>
-            <div className={styles["lumi-cart-icon"]}>
-              <Link href="/cart/CartList" className={styles["lumi-cart-icon"]}>
-                {/* <img src="/images/cart.png" alt="cart" /> */}
-                <i className="bi bi-cart2"></i>
-              </Link>
+      <div className={styles["lumi-user-actions"]}>
+        <div className={styles["dropdown"]}>
+          <Link href="/pages" className={styles["lumi-user-icon"]}>
+            {/* <FontAwesomeIcon icon={faUser} /> */}
+            <i className="bi bi-person" />
+          </Link>
+          <div className={styles["dropdown-content"]}>
+            <Link href="/pages" className={styles["dropdown-link"]}>
+              個人資料
+            </Link>
+            <Link href="/favorite" className={styles["dropdown-link"]}>
+              我的收藏
+            </Link>
+            <div onClick={logout} className={styles["dropdown-link"]}>
+              登出
             </div>
           </div>
-        {/* </>
+        </div>
+        <div className={styles["lumi-cart-icon"]}>
+          <Link href="/cart/CartList" className={styles["lumi-cart-icon"]}>
+            {/* <img src="/images/cart.png" alt="cart" /> */}
+            <i className="bi bi-cart2"></i>
+          </Link>
+        </div>
+      </div>
+      <div
+        className={`${styles.mobleMenu}`}
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        <i
+          className={`${styles.menu} ${
+            menuOpen ? "bi bi-x-lg" : "bi bi-list"
+          }`}
+        ></i>
+      </div>
+      
+      {/* </>
       ) : (
         <div>
           <Link href="/register" className={styles["lumi-signin"]}>
