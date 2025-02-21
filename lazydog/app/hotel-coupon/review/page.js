@@ -126,7 +126,7 @@ const ReviewList = () => {
           id="reviewModal"
           tabIndex="-1"
           aria-labelledby="reviewModalLabel"
-          aria-hidden={true}
+          aria-hidden="true"
         >
           <div className="modal-dialog">
             <div className="modal-content">
