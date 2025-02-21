@@ -129,9 +129,8 @@ export function AuthProvider({ children }) {
       localStorage.removeItem(appKey);
       localStorage.removeItem("user");
 
-      setUser(null);
-
       window.location.href = "/login";
+      setUser(-1);
     } catch (err) {
       console.log(err);
       alert(err.message);
@@ -161,7 +160,7 @@ export function AuthProvider({ children }) {
   };
 
   // 儲存
-  const save = async (name, email, gender, birthday, phone) => {
+  const save = async (name, email, gender, birthday, phone, avatar) => {
     let token = localStorage.getItem(appKey);
     let API = `http://localhost:5000/auth/${user.id}`;
     try {
@@ -171,7 +170,7 @@ export function AuthProvider({ children }) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, gender, birthday, phone }),
+        body: JSON.stringify({ name, email, gender, birthday, phone, avatar }),
       });
 
       if (!res.ok) {
@@ -182,7 +181,13 @@ export function AuthProvider({ children }) {
 
       if (result.status == "success") {
         alert("儲存成功");
+        const token = result.data.token;
+        const newUser = jwt.decode(token);
+        console.log(newUser);
 
+        setUser(newUser);
+        localStorage.setItem(appKey, token);
+        localStorage.setItem("user", JSON.stringify(newUser));
         // 重新取得使用者資料
       } else {
         alert("儲存失敗");
@@ -220,11 +225,11 @@ export function AuthProvider({ children }) {
 
       if (response.ok) {
         console.log("上傳成功:", result);
-        // const user = JSON.parse(localStorage.getItem("user"));
-        // user.avatar = result.fileUrl; // ��存��片網址
-        // localStorage.setItem("user", JSON.stringify(user));
-        // // 重新取得使用者資料
-      
+
+        const newUser = jwt.decode(token);
+        setUser(newUser);
+        localStorage.setItem(appKey, token);
+        localStorage.setItem("user", JSON.stringify(newUser));
         return result.fileUrl; // 回傳圖片網址
       } else {
         return console.error("上傳失敗:", result.message);
@@ -296,7 +301,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, googleLogin, logout, register, save ,updateAvatar}}
+      value={{ user, login, googleLogin, logout, register, save, updateAvatar }}
     >
       {children}
     </AuthContext.Provider>

@@ -208,6 +208,7 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
         birthday: user.birthday,
         gender: user.gender,
         phone: user.phone,
+        avatar: await getAvatar(user.user_img),
       },
       secretKey,
       { expiresIn: "10m" }
