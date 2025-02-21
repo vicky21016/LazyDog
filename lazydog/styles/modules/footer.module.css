@@ -40,6 +40,7 @@
     align-items: flex-start;
     color: White;
     gap: 80px;
+    margin: 0;
   }
 }
 
@@ -50,10 +51,20 @@
   align-items: flex-start;
   /* width: 440px; */
   gap: 15px;
-  padding: 21px 0;
+  padding: 21px 0 0 0;
+  margin: 0 80px 0 0;
+  figure{
+    margin: 0 0 10px 0;
+  }
   .logoPic {
-    width: 100px;
+    width: 60px;
     height: auto;
+  }
+  .lazydog{
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 3px;
   }
   .place {
     display: flex;
@@ -61,7 +72,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 15px;
+    gap: 30px;
 
     .address {
       display: flex;
@@ -71,21 +82,23 @@
       align-self: stretch;
       .addInfo {
         color: var(--Color-4, #fdfaf5);
-        font-size: 18px;
+        font-size: 16px;
         font-style: normal;
         font-weight: 600;
         line-height: 28px; /* 170% */
         letter-spacing: 4px;
+        margin: 10px 0 0 0;
       }
     }
 
     .timeInfo {
       color: var(--Color-4, #fdfaf5);
       font-family: "Noto Sans TC";
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 400;
       line-height: 35px; /* 194.444% */
       letter-spacing: 3.16px;
+      margin: 0;
     }
   }
 }
@@ -97,15 +110,19 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 18px;
   .clientService {
-    padding: 18px 0 10px;
+    padding: 5px 0 15px;
     user-select: none;
     color: var(--Color-4, #fdfaf5);
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
     line-height: 34px; /* 106.25% */
     letter-spacing: 5px;
+    margin: 0;
+  }
+  p{
+    margin: 0;
   }
   .service {
     color: var(--Color-4, #fdfaf5);
@@ -131,7 +148,7 @@
   /* margin-block: auto; */
   .footerEmail {
     border: 8px solid #f6ce5b;
-    width: 90%;
+    width: 80%;
     height: 60px;
     border-radius: 100px;
     background: White;
@@ -185,7 +202,7 @@
 .footerBottom {
   color: White;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 65px;
   letter-spacing: 2px;
   user-select: none;
