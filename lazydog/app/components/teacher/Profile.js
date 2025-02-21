@@ -14,12 +14,14 @@ export default function Profile () {
  const { id } = useParams();
     const { teacher } = useTeacherDetail(id);
 
-  if (!teacher) return
-  <>
-      <div className={style.container2}>
-          <div className={style.loader27}></div>
-         </div>
-       </>
+ if (!teacher) {
+   return (
+     <div className={style.container2}>
+       <div className={style.loader27}></div>
+     </div>
+   );
+ }
+
 
   return (
     <>
