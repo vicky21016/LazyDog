@@ -187,7 +187,7 @@ export default function OpTeacherListPage(props) {
                       <img
                         className={styles.courseImg}
                         src="/course/img/3 (1).jpeg"
-                        alt
+                          alt=""
                       />
                     </div>
                     <div className={styles.cTd2}>一對一寵物美容教學實作</div>
@@ -202,7 +202,7 @@ export default function OpTeacherListPage(props) {
                       <img
                         className={styles.courseImg}
                         src="/course/img/7 (1).jpeg"
-                        alt
+                         alt=""
                       />
                     </div>
                     <div className={styles.cTd2}>一對一寵物美容教學實作</div>
@@ -216,7 +216,7 @@ export default function OpTeacherListPage(props) {
                       <img
                         className={styles.courseImg}
                         src="/course/img/18 (1).jpeg"
-                        alt
+                          alt=""
                       />
                     </div>
                     <div className={styles.cTd2}>一對一寵物美容教學實作</div>
@@ -230,7 +230,7 @@ export default function OpTeacherListPage(props) {
                       <img
                         className={styles.courseImg}
                         src="/course/img/25 (1).jpeg"
-                        alt
+                          alt=""
                       />
                     </div>
                     <div className={styles.cTd2}>一對一寵物美容教學實作</div>

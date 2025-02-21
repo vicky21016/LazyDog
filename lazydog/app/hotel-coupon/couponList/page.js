@@ -58,14 +58,14 @@ export default function CouponListPage() {
 
   return (
     <>
-    <Header/>
+      <Header />
       <div className="container mt-5">
         <div className="row">
           {/* 左邊*/}
-         <My/>
+          <My />
 
           {/* 右邊 */}
-          <div className="col-md-9">
+          <div className="col-12 col-md-9">
             <h3 className="mb-4">優惠券列表</h3>
             <div className="table-responsive">
               <table className="table table-striped table-hover">

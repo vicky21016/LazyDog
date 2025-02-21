@@ -7,10 +7,10 @@ export function useGoogleMap(address) {
   useEffect(() => {
     if (!address) return;
 
-    const geocodeAddress = async () => {
+    const codeAd = async () => {
       const apiKey = "YOUR_GOOGLE_MAPS_API_KEY"; // 🔥 替換成你的 Google Maps API Key
-      const encodedAddress = encodeURIComponent(address);
-      const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`;
+      const endAddress = encodeURIComponent(address);
+      const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${endAddress}&key=${apiKey}`;
 
       try {
         const response = await fetch(url);
@@ -27,7 +27,7 @@ export function useGoogleMap(address) {
       }
     };
 
-    geocodeAddress();
+    codeAd();
   }, [address]);
 
   useEffect(() => {

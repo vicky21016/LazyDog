@@ -15,7 +15,7 @@ export default function SideBar() {
           <img
             className={styles.searchIcon}
             src="/course/img/searchIcon.png"
-            alt
+              alt={`搜尋課程內容`}
           />
           <input
             type="text"
@@ -23,7 +23,7 @@ export default function SideBar() {
             id="courseInput"
             placeholder="搜尋課程"
           />
-          <img className={styles.xIcon} src="/course/img/x.png" alt />
+          <img className={styles.xIcon} src="/course/img/x.png" alt={`清除搜尋內容`} />
         </div>
         {/* 課程類別 */}
         <div className={styles.filterGroup}>
@@ -32,7 +32,7 @@ export default function SideBar() {
             <img
               className={styles.arrowDown}
               src="/course/img/arrow-down.png"
-              alt
+                alt={`點選看更多 課程類別`}
             />
           </div>
           <div className={styles.filter}>
@@ -110,7 +110,7 @@ export default function SideBar() {
             <img
               className={styles.arrowDown}
               src="/course/img/arrow-down.png"
-              alt
+              alt={`點選看更多 上課地點`}
             />
           </div>
           <div className={styles.filter}>
@@ -234,7 +234,7 @@ export default function SideBar() {
           <p className={styles.adWords}>最新課程優惠中!</p>
           <button className={styles.buynow}>BUY NOW</button>
           <Link href="/product/list">
-            <img className src="/course/img/girlPic.png" alt />
+            <img src="/course/img/girlPic.png" alt={`最新課程優惠中`} />
           </Link>
         </div>
 

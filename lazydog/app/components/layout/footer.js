@@ -8,24 +8,25 @@ import styles from "../../../styles/modules/footer.module.css";
 export default function Footer(props) {
   return (
     <>
-      <footer className={styles.footer}>
+      <footer className={`mt-5 ${styles.footer}`}>
         <section className={styles.footerTop}>
           <img
             className={styles.topWave}
             src="/footer/img/footer_top.png"
-            alt
+            alt=""
           />
         </section>
-        <div className={styles.bag}>
+        <div className={`pb-4 ${styles.bag}`}>
           <section className={`${styles.wrapper} ${styles.footerMiddle}`}>
             <ul className={styles.infos}>
               <li className={styles.footerList1}>
-                <Link href="/home" className={styles.connects}>
+                <Link href="/home" className={`${styles.connects}`}>
                   <figure>
                     <img
                       className={styles.logoPic}
                       src="/footer/img/logo_pic(white).png"
                     />
+                    <span className={`ms-3 ${styles.lazydog}`}>LAZYDOG</span>
                   </figure>
                 </Link>
                 <article className={styles.place}>
@@ -39,13 +40,15 @@ export default function Footer(props) {
                     <p className={styles.timeInfo}>
                       營業期間：09:30-19:30
                       <br />
-                      入住時間：15:00-19:00<br/>退房時間：11:00-14:00
+                      入住時間：15:00-19:00
+                      <br />
+                      退房時間：11:00-14:00
                     </p>
                   </div>
                 </article>
               </li>
               <li className={styles.footerList2}>
-                <h1 className={styles.clientService}>客戶服務</h1>
+                <h2 className={styles.clientService}>客戶服務</h2>
                 <p>
                   <Link href="/home" className={styles.service}>
                     關於LAZYDOG
@@ -57,7 +60,10 @@ export default function Footer(props) {
                   </Link>
                 </p>
                 <p>
-                  <Link href="/hotel-coupon" className={styles.service}>
+                  <Link
+                    href="/hotel-coupon/fonthotelHome"
+                    className={styles.service}
+                  >
                     線上訂房
                   </Link>
                 </p>
@@ -91,7 +97,7 @@ export default function Footer(props) {
                 </p>
               </li>
               <li className={styles.footerList4}>
-                <form className={styles.footerEmail} action>
+                <form className={styles.footerEmail} action="">
                   <input
                     className={styles.enterMail}
                     type="text"
@@ -109,28 +115,28 @@ export default function Footer(props) {
                     <img
                       className={styles.icons}
                       src="/footer/img/FB.png"
-                      alt
+                      alt=""
                     />
                   </Link>
                   <Link href="#">
                     <img
                       className={styles.icons}
                       src="/footer/img/IG.png"
-                      alt
+                      alt=""
                     />
                   </Link>
                   <Link href="#">
                     <img
                       className={styles.icons}
                       src="/footer/img/YT.png"
-                      alt
+                      alt=""
                     />
                   </Link>
                 </div>
               </li>
             </ul>
           </section>
-          <section className={styles.footerBottom}>
+          <section className={`mt-3 ${styles.footerBottom}`}>
             COPYRIGHT © 2024 &nbsp;LAZYDOG&nbsp;
           </section>
         </div>

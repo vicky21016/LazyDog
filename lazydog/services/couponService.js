@@ -127,7 +127,9 @@ export const claimCoupon = async (couponId) => {
     body: JSON.stringify({ couponId }),
   });
 
-  return await res.json();
+  const response = await res.json();
+  console.log("API 回傳結果:", response);
+  return response;
 };
 // 透過code領取優惠券(打字領)
 export const claimCouponByCode = async (code) => {

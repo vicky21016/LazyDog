@@ -1,12 +1,14 @@
 import pool from "../config/mysql.js";
 
-export const claimUserCoupon = async (userId, couponId) => {
+//order_table 只有在 useUserCoupon 使用優惠券時，才會真正綁定訂單 未使用狀態就是ALL
+export const claimUserCoupon = async (userId, couponId, orderTable = "ALL") => {
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
 
     const [[coupon]] = await connection.query(
-      `SELECT * FROM coupons WHERE id = ? AND is_deleted = 0`,
+      `SELECT id, name, code, end_time, type, is_global, max_usage, max_usage_per_user 
+       FROM coupons WHERE id = ? AND is_deleted = 0`,
       [couponId]
     );
     if (!coupon) throw new Error("優惠券不存在或已刪除");
@@ -29,13 +31,34 @@ export const claimUserCoupon = async (userId, couponId) => {
     if (userClaimed.count >= coupon.max_usage_per_user)
       throw new Error("您已達此優惠券的領取上限");
 
+    const isGlobalCoupon = coupon.is_global == 1;
+
+    if (isGlobalCoupon) {
+      console.log("此優惠券為全站適用");
+    } else {
+      console.log("此優惠券為特定店家適用，類型：", coupon.type);
+    }
     await connection.query(
-      `INSERT INTO coupon_usage (user_id, coupon_id, status, claimed_at, created_at, updated_at, is_deleted)      VALUES (?, ?, 'claimed', NOW(), NOW(), NOW(), 0)`,
-      [userId, couponId]
+      `INSERT INTO coupon_usage (user_id, coupon_id, status, claimed_at, created_at, updated_at, is_deleted, is_global, order_table) 
+       VALUES (?, ?, 'claimed', NOW(), NOW(), NOW(), 0, ?, ?)`,
+      [userId, couponId, isGlobalCoupon ? 1 : 0, orderTable]
     );
 
     await connection.commit();
-    return { success: true, message: "優惠券領取成功" };
+
+    return {
+      success: true,
+      message: "優惠券領取成功",
+      coupon: {
+        id: coupon.id,
+        name: coupon.name,
+        code: coupon.code,
+        expiry: coupon.end_time.toISOString().split("T")[0],
+        type: coupon.type,
+        is_global: isGlobalCoupon ? 1 : 0,
+        order_table: orderTable,
+      },
+    };
   } catch (error) {
     await connection.rollback();
     throw new Error(error.message);

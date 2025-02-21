@@ -4,7 +4,7 @@ body {
 }
 
 .breadcrumbs {
-  padding: 50px 5px 0;
+  padding: 50px 265px 0;
 }
 
 .breadcrumbs ul {
@@ -28,21 +28,22 @@ body {
   /* flex-wrap: wrap; */
   justify-content: center;
   align-items: flex-start;
-  gap: 20px;
-  padding: 50px 200px 182px;
+  gap: 40px;
+  padding: 50px 264px 182px;
   .left {
-    /* width: 100%; */
-    /* box-sizing: border-box; */
+    width: 100%;
+    box-sizing: border-box;
     .pics {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color: #fff6e8;
       width: 100%;
-      max-width: 600px;
+      min-width: 450px;
+      max-width: 580px;
       height: auto;
-      gap: 15px;
+      gap: 30px;
+      padding-top: 5px;
       img {
         object-fit: cover;
         width: 100%;
@@ -62,24 +63,23 @@ body {
       justify-content: center;
       align-items: center;
       width: 660px;
-      /* border: 1px solid lightslategray; */
       color: var(--text-Bk, #3e3e3e);
       font-family: 'Noto Sans TC', sans-serif;
       font-style: normal;
-      padding: 0 55px;
+      padding: 0 60px;
       gap: 16px;
     }
     .mainPic {
       width: 100%;
-      height: 300px;
-      object-fit: contain;
+      height: 320px;
+      object-fit: cover;
     }
     .courseName {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      padding: 30px 5px 13px;
+      padding: 0px 0px 0px;
       align-self: stretch;
     }
     .name {
@@ -94,10 +94,10 @@ body {
     .price {
       font-size: 32px;
       font-weight: 700;
-      line-height: 67px;
+      line-height: 50px;
       color: #f5842b;
       align-self: stretch;
-      margin: 0;
+      margin: 100px 0 0 0;
     }
     .number{
       padding-left: 20px;
@@ -107,23 +107,24 @@ body {
       font-size: 15px;
       font-weight: 400;
       line-height: 30px;
+      /* padding: 0 8px; */
     }
     .teacher {
       display: flex;
       align-items: center;
       gap: 26px;
       align-self: stretch;
-      margin: 10px 0 0;
+      margin: 50px 0 5px;
       .teachTitle {
         align-content: center;
         color: #3e3e3e;
         height: 27px;
         font-size: 20px;
         font-weight: 700;
-        letter-spacing: 0.6px;
-        padding-left: 15px;
+        letter-spacing: 0.8px;
+        padding-left: 12px;
         border-left: 4px solid var(--Color, #f5842b);
-        margin: 0;
+        margin: 0 0 0 3px;
         align-self: center;
       }
       .tConnect{
@@ -142,9 +143,9 @@ body {
         color: #3e3e3e;
         /* height: 27px;
         line-height: 28px; */
-        font-size: 16px;
+        font-size: 17px;
         font-weight: 700;
-        letter-spacing: .8px;
+        letter-spacing: 1.5px;
         margin: 0;
       }
     }
@@ -157,10 +158,10 @@ body {
         height: 27px;
         font-size: 20px;
         font-weight: 700;
-        letter-spacing: 0.6px;
-        padding-left: 15px;
+        letter-spacing: .8px;
+        padding-left: 12px;
         border-left: 4px solid var(--Color, #f5842b);
-        margin: 0;
+        margin: 0 0 8px 3px;
         align-self: center;
       }
     }
@@ -176,7 +177,8 @@ body {
       align-items: center;
       gap: 10px;
       align-self: stretch;
-      margin-bottom: 3px;
+      margin-left: 3px;
+      margin-bottom: 8px;
 
       .dateTitle {
         font-size: 16px;
@@ -184,7 +186,6 @@ body {
         font-weight: 400;
         line-height: 27px;
         margin-bottom: 3px;
-
       }
 
       .date {
@@ -192,9 +193,9 @@ body {
         font-style: normal;
         font-weight: 400;
         line-height: 27px;
-        letter-spacing: .5px;
+        letter-spacing: 1.2px;
+        margin-left: 8px;
         margin-bottom: 3px;
-
       }
     }
 
@@ -204,6 +205,8 @@ body {
       text-align: center;
       gap: 10px;
       align-self: stretch;
+      margin-left: 3px;
+      margin-bottom: 8px;
 
       .durTitle {
         font-size: 16px;
@@ -218,7 +221,8 @@ body {
         font-style: normal;
         font-weight: 400;
         line-height: 27px;
-        margin: 0;
+        letter-spacing: 1.2px;
+        margin: 0 0 0 8px;
       }
     }
     .area {
@@ -227,6 +231,7 @@ body {
       text-align: center;
       gap: 10px;
       align-self: stretch;
+      margin-left: 3px;
       margin-bottom: 40px;
 
       .areaTitle {
@@ -242,7 +247,7 @@ body {
         font-style: normal;
         font-weight: 400;
         line-height: 27px;
-        margin: 0;
+        margin: 0 0 0 8px;
       }
     }
     .selects {
@@ -260,7 +265,7 @@ body {
     }
     .cartBtn {
       display: flex;
-      height: 50px;
+      height: 55px;
       flex-direction: column;
       justify-content: center;
       align-items: center;
@@ -270,10 +275,11 @@ body {
       border: 1px solid var(--Color, #f5842b);
       background: var(--Color, #f5842b);
       color: var(--Color-4, #fdfaf5);
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 500;
       letter-spacing: 3px;
       line-height: 27px;
+      margin-top: 10px;
       margin-bottom: 56px;
     }
     .ps {
@@ -363,11 +369,12 @@ body {
     }
     .sCards {
       display: flex;
-      padding: 13px 0px;
+      padding: 13px 3px;
       align-items: flex-start;
-      gap: 60px;
+      gap: 88px;
       align-self: stretch;
       overflow: hidden;
+      text-align: center;
       .sCard {
         /* cursor: pointer; */
       }
@@ -375,13 +382,19 @@ body {
         width: 240px;
         height: 240px;
         margin-bottom: 27px;
+        border: .1px solid #f7efef;
       }
       .cardName {
-        /* overflow: hidden; */
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        -webkit-line-clamp: 1;
+        word-wrap: break-word;
         color: var(--Color, #3b3330);
-        /* text-overflow: ellipsis; */
-        font-size: 18px;
+        text-overflow: ellipsis;
+        font-size: 17px;
         font-weight: bold;
+        letter-spacing: 1.2px;
         margin: 0;
       }
     }

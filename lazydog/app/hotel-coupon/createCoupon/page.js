@@ -41,7 +41,7 @@ export default function CreateCouponPage() {
         <div className="row">
           {/* 左邊*/}
           <My />
-          <div className="col-md-9">
+          <div className="col-12 col-md-9">
             <h3 className="mb-4">新增優惠券</h3>
             <div className="p-4 border rounded bg-light mb-4">
               <h5 className="mb-3">基本資訊</h5>
