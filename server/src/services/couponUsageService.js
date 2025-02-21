@@ -53,7 +53,7 @@ export const claimUserCoupon = async (userId, couponId, orderTable = "ALL") => {
         id: coupon.id,
         name: coupon.name,
         code: coupon.code,
-        expiry: coupon.end_time,
+        expiry: coupon.end_time.toISOString().split("T")[0],
         type: coupon.type,
         is_global: isGlobalCoupon ? 1 : 0,
         order_table: orderTable,

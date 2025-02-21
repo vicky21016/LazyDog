@@ -152,15 +152,15 @@ export default function CouponPage() {
                 />
                 <div className={styles.suCouponContent}>
                   <div className={styles.suCouponName}>🐶 全館優惠</div>
-                  <div className={styles.suCouponCode}>NA5W5I9Q4C</div>
+                  <div className={styles.suCouponCode}>AC5K3K0C3J</div>
                   <div className={styles.suCouponExpiry}>
-                    有效期限：2025/07/05
+                    有效期限：2025/04/17
                   </div>
                 </div>
                 <button
                   className={styles.suCouponButton}
                   type="button"
-                  onClick={() => handleClaimCoupon("40")}
+                  onClick={() => handleClaimCoupon("68")}
                 >
                   點我領取
                 </button>
@@ -268,16 +268,16 @@ export default function CouponPage() {
                   style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
-                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
-                  <div className={styles.suCouponCode}>SKUDIWEK54K64L</div>
+                  <div className={styles.suCouponName}>🐶 課程折扣優惠</div>
+                  <div className={styles.suCouponCode}>DN3Z9Y7U7J</div>
                   <div className={styles.suCouponExpiry}>
-                    有效期限：2025/12/31
+                    有效期限：2025/04/30
                   </div>
                 </div>
                 <button
                   className={styles.suCouponButton}
                   type="button"
-                  onClick={() => handleClaimCoupon("COUPON_ID_1")}
+                  onClick={() => handleClaimCoupon("42")}
                 >
                   點我領取
                 </button>
@@ -291,16 +291,16 @@ export default function CouponPage() {
                   style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
-                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
-                  <div className={styles.suCouponCode}>SKUDIWEK54K64L</div>
+                  <div className={styles.suCouponName}>🐶 課程超值優惠</div>
+                  <div className={styles.suCouponCode}>QX6P9W5Z3Z</div>
                   <div className={styles.suCouponExpiry}>
-                    有效期限：2025/12/31
+                    有效期限：2025/07/18
                   </div>
                 </div>
                 <button
                   className={styles.suCouponButton}
                   type="button"
-                  onClick={() => handleClaimCoupon("COUPON_ID_1")}
+                  onClick={() => handleClaimCoupon("33")}
                 >
                   點我領取
                 </button>
@@ -314,16 +314,16 @@ export default function CouponPage() {
                   style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
-                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
-                  <div className={styles.suCouponCode}>SKUDIWEK54K64L</div>
+                  <div className={styles.suCouponName}>🐶 課程限時優惠</div>
+                  <div className={styles.suCouponCode}>XN8P4P5X8R</div>
                   <div className={styles.suCouponExpiry}>
-                    有效期限：2025/12/31
+                    有效期限：2025/04/01
                   </div>
                 </div>
                 <button
                   className={styles.suCouponButton}
                   type="button"
-                  onClick={() => handleClaimCoupon("COUPON_ID_1")}
+                  onClick={() => handleClaimCoupon("36")}
                 >
                   點我領取
                 </button>
@@ -366,16 +366,16 @@ export default function CouponPage() {
                   style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
-                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
-                  <div className={styles.suCouponCode}>SKUDIWEK54K64L</div>
+                  <div className={styles.suCouponName}>🐶 旅館專屬優惠</div>
+                  <div className={styles.suCouponCode}>HL2B5L5M7L</div>
                   <div className={styles.suCouponExpiry}>
-                    有效期限：2025/12/31
+                    有效期限：2025/07/16
                   </div>
                 </div>
                 <button
                   className={styles.suCouponButton}
                   type="button"
-                  onClick={() => handleClaimCoupon("COUPON_ID_1")}
+                  onClick={() => handleClaimCoupon("101")}
                 >
                   點我領取
                 </button>
@@ -389,16 +389,16 @@ export default function CouponPage() {
                   style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
-                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
-                  <div className={styles.suCouponCode}>SKUDIWEK54K64L</div>
+                  <div className={styles.suCouponName}>🐶 限時旅館優惠</div>
+                  <div className={styles.suCouponCode}>HL4X1W9H5X</div>
                   <div className={styles.suCouponExpiry}>
-                    有效期限：2025/12/31
+                    有效期限：2025/04/10
                   </div>
                 </div>
                 <button
                   className={styles.suCouponButton}
                   type="button"
-                  onClick={() => handleClaimCoupon("COUPON_ID_1")}
+                  onClick={() => handleClaimCoupon("136")}
                 >
                   點我領取
                 </button>
@@ -412,16 +412,16 @@ export default function CouponPage() {
                   style={{ objectFit: "cover" }}
                 />
                 <div className={styles.suCouponContent}>
-                  <div className={styles.suCouponName}>🐶 狗狗專屬優惠</div>
-                  <div className={styles.suCouponCode}>SKUDIWEK54K64L</div>
+                  <div className={styles.suCouponName}>🐶 超激旅館優惠</div>
+                  <div className={styles.suCouponCode}>DP6G3G0K9M</div>
                   <div className={styles.suCouponExpiry}>
-                    有效期限：2025/12/31
+                    有效期限：2025/04/26
                   </div>
                 </div>
                 <button
                   className={styles.suCouponButton}
                   type="button"
-                  onClick={() => handleClaimCoupon("COUPON_ID_1")}
+                  onClick={() => handleClaimCoupon("137")}
                 >
                   點我領取
                 </button>
