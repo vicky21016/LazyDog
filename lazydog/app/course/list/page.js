@@ -5,7 +5,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "../_components/courseList.module.css"
 import Header from "@/app/components/layout/header";
-import Footer from "@/app/components/layout/footer";
 import News from "../_components/list/news";
 import SideBar from "../_components/list/sideBar";
 import CourseCard from "../_components/list/course-card";
@@ -28,7 +27,6 @@ export default function CourseListPage() {
           <OtherCourseCard/>
         </div>
       </main>
-      <Footer/>          
     </>
   );
 }

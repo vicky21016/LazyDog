@@ -8,7 +8,7 @@ export default function CartCartlist(props) {
     <>
       <tr>
         <td>
-          <img src="/cart/favicon.ico" alt />
+          <img src="/cart/favicon.ico" alt="" />
         </td>
         <td>行 1, 欄 2</td>
         <td>行 1, 欄 3</td>
