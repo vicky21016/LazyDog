@@ -10,15 +10,28 @@ import HotSaleGroup from "./hotsalegroup";
 import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
 
-export default function AsideAside(props) {
+export default function AsideAside({
+  changeUrl = () => {},
+  keyword = {},
+  setKeyword = () => {},
+}) {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(10000);
   const priceSliderRef = useRef(null);
   const pathname = usePathname();
   const query = useSearchParams();
-
-  const url = "http://localhost:5000/api/products/category";
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  // console.log(changeUrl);
+  const url = "http://localhost:5000/api/products/categoryName";
+  const fetcher = async (url) => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("資料要求失敗");
+      return res.json();
+    } catch (err) {
+      console.error("資料要求失敗:", err);
+      throw err;
+    }
+  };
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
   const categorys = data?.data;
   const categoryName = [];
@@ -109,31 +122,45 @@ export default function AsideAside(props) {
     };
   }, []);
   useEffect(() => {}, [pathname, query]);
+
   return (
     <aside className={styles.Sidebar}>
       <div className={styles.SearchTable}>
         <img src="/product/font/search.png" alt="" />
-        <input type="text" placeholder="搜尋商品" />
+        <input
+          type="text"
+          placeholder="搜尋商品"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              changeUrl(
+                `http://localhost:5000/api/products/search?${
+                  query.get("category")
+                    ? `category=${query.get("category")}&`
+                    : ""
+                }keyword=${e.target.value}`
+              );
+            }
+          }}
+        />
       </div>
       <HotSaleGroup />
       {pathname.includes("category")
         ? categoryClass[i]?.map((e) => (
             <FilterGroup
-              key={i}
+              key={`FilterGroup${i}`}
               name={e}
               category={category[categoryName[i]]}
+              keyword={keyword}
+              setKeyword={setKeyword}
             />
           ))
         : categoryName?.map((v, i) => (
-            <FilterLinkGroup key={i} name={v} category={category[v]} />
+            <FilterLinkGroup
+              key={`FilterLinkGroup${i}`}
+              name={v}
+              category={category[v]}
+            />
           ))}
-
-      {/* {categoryName?.map((v, i) => {
-        return <FilterLinkGroup key={i} name={v} category={category[v]} />;
-      })}
-      {categoryName?.map((v, i) => {
-        return <FilterGroup key={i} name={v} category={category[v]} />;
-      })} */}
       <div className={`text-center ${styles.PriceFilterContainer}`}>
         <h5 className={styles.FilterTitle} style={{ justifyContent: "center" }}>
           價格篩選

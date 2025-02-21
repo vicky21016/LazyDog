@@ -7,7 +7,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  padding: 15px 63px;
+  padding: 20px 63px;
   justify-content: space-between;
   align-items: center;
   background-color: #f5832b00;
@@ -20,13 +20,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 18px;
+  margin: 0;
+  font-size: 15px;
   letter-spacing: 2px;
-  gap: 73px;
+  gap: 60px;
   a {
     text-decoration: none;
     color: rgba(59, 51, 48, 1);
-    font-weight: bolder;
+    font-weight: bold;
   }
   a:hover {
     text-decoration: none;
@@ -47,7 +48,7 @@
 }
 .lumi-logo1{
   color: #fff;
-  font-size: 32px;
+  /* font-size: 32px; */
   font-weight: bold;
   /* font-family: "Noto Sans TC", sans-serif; */
   letter-spacing: 2px;
@@ -105,3 +106,10 @@
 }
 
 .dropdown:hover .dropdown-content {display: block;}
+
+@media (max-width: 768px) {
+  .lumi-logo1 {
+    display: none;
+  }
+  
+}

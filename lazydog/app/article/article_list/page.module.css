@@ -186,6 +186,40 @@
   top: 0;
 }
 
+.ArticlePage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  .PageItem {
+    cursor: pointer;
+  }
+}
+.PageItem {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid orange;
+  border-radius: 50%;
+  &:hover {
+    background: orange;
+    color: White;
+  }
+  .PageLink {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  /* &.PageItemActive {
+    background: var(--Orange);
+    color: var(--White);
+  } */
+}
+
 /* @media screen */
 @media screen and (max-width: 390px) {
   .middle {

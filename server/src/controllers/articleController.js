@@ -20,7 +20,7 @@ export const getId = async (req, res) => {
     const { id } = req.params;
     try {
         const results = await getIdS(id)
-        // console.log(results)
+        console.log(results)
         if (!results || results.length === 0) {
             return res.status(404).json({ message: "文章不存在" });
         }
@@ -30,8 +30,9 @@ export const getId = async (req, res) => {
             title: results[0].title,
             content: results[0].content,
             cover_image: results[0].cover_image,
-            author_name: results[0].author_name,
+            author_name: results[0].name,
             category_name: results[0].category_name,
+            created_at: results[0].created_at,
             comments: []
         };
         // console.log(article)

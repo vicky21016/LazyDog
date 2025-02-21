@@ -6,10 +6,13 @@
   background-color: #ff9538;
    color: white;
   border-radius: 5px;
-  border: none;
+  border: 1px solid transparent;
 }
 .suBtnSuccess:hover {
-  background-color: #F1D5B6;
+    background-color: white;
+  color: #ff9538;
+  border: 2px solid;
+  border-color: #ff9538;
  
 }
 .btnOrange {
@@ -26,10 +29,13 @@
   background-color: #66C5BD;
   border-radius: 5px;
   color: white;
-  border: none;
+  border: 1px solid transparent;
 }
 .suBtnSecondary:hover {
-   background-color: #F1D5B6;
+   background-color: white;
+  color: #66c5bd;
+  border: 2px solid;
+  border-color: #66c5bd;
  
 }
 

@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 
 export function useTeacherDetail (id) {
-    const [teacher, setTeacher] = useState(null);
-
+    const [teacher, setTeacher] = useState([]);
     useEffect(() => {
+        // console.log("useEffect 觸發，id:", id);
+        //  if (!id) {
+        //    setTeacher(null);
+        //    return;
+        //  } 
+
         const fetchTeacher = async () => {
-             if (!id) return; 
-             
              let API = `http://localhost:5000/teachers/info/${id}`;
             try {
                 const res = await fetch(API);

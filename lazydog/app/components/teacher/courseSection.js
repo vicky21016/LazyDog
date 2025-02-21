@@ -1,5 +1,7 @@
 import React from 'react';
+import Link from "next/link";
 import styles from "../../../styles/modules/toggle.module.css";
+import style from "../../../styles/modules/teacher.module.css";
 function CourseSection() {
   return (
     <section>
@@ -58,9 +60,17 @@ function CourseSection() {
                   src="/teacher-img/DSC_9689.jpg"
                   alt=""
                 />
-                <p className="col-9 mt-4">
+                <p className="col-9 my-4">
                   我非常推薦寵膳食育課程！老師深知每隻毛孩的需求，並且透過生動的教學方式，帶領飼主們一起動手做健康的餐點，讓毛孩享受新鮮、美味且營養豐富的食物。
                 </p>
+              </div>
+              <div className="mt-5">
+                <Link
+                  className={`block mx-auto text-center text-decoration-none ${style.teacherBtn}`}
+                  href="/course/list"
+                >
+                  read more
+                </Link>
               </div>
             </div>
           </div>

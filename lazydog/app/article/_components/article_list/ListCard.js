@@ -2,15 +2,15 @@
 
 import { useEffect,useState } from "react";
 import Link from "next/link";
-import styles from "./listCard.module.css";
+import styles from "./ListCard.module.css";
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
-export default function ListCard() {
-
-
-  <>
+export default function ListCard({ title,name,category_name,created_at,cover_image }) {
+  return(
+    <>
     <div className={styles.card}>
       <img
-        src="/article_img/02c0a9ae-33e0-4004-bae4-557aa330b090.webp"
+        src={cover_image}
         alt="文章封面"
       />
 
@@ -30,7 +30,7 @@ export default function ListCard() {
               d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
             />
           </svg>{' '}
-          Tom
+          {name}
         </div>
         <div className={styles.time}>
           <svg
@@ -43,7 +43,7 @@ export default function ListCard() {
           >
             <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
           </svg>{' '}
-          2025-01-01
+          {created_at}
         </div>
         <div className={styles.category}>
           <svg
@@ -56,14 +56,13 @@ export default function ListCard() {
           >
             <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
           </svg>{' '}
-          保健與營養
+          {category_name}
         </div>
       </div>
 
-      <p>為什麼你該幫家裡的貓狗梳毛？——為毛孩梳毛的 6 大好處</p>
-      <a href="#">
-        <p>Read more</p>
-      </a>
+      <p>{title}</p>
+        <Link href="/about" className={styles.customLink}>Read more</Link>
     </div>
   </>
+  )
 }

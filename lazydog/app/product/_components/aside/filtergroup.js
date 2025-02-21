@@ -3,9 +3,14 @@
 import React, { useState, useEffect } from "react";
 import styles from "./aside.module.css";
 
-export default function FilterGroup(category = {}) {
+export default function FilterGroup({
+  category = {},
+  name = {},
+  keyword = {},
+  setKeyword = () => {},
+}) {
   const [showMore, setShowMore] = useState(false);
-  const categorys = category?.category;
+  const categorys = category;
   const categoryName = {};
   if (categorys) {
     categorys.forEach((v) => {
@@ -15,18 +20,33 @@ export default function FilterGroup(category = {}) {
       categoryName[v.class].push(v.name);
     });
   }
+
   return (
     <>
       <div className={styles.FilterGroup}>
-        <h5 className={styles.FilterTitle}>{category?.name}</h5>
-        {categoryName[category?.name].map((v, i) => {
+        <h5 className={styles.FilterTitle}>{name}</h5>
+        {categoryName[name].map((v, i) => {
           if (i < 3) {
             return (
-              <div key={i} className={`form-check ${styles.FormCheck}`}>
+              <div
+                key={`Filter${i}`}
+                className={`form-check ${styles.FormCheck}`}
+              >
                 <input
                   className={`form-check-input ${styles.FormCheckInput}`}
                   type="checkbox"
                   id={v}
+                  onChange={() => {
+                    const newKeyword = { ...keyword };
+                    if (!newKeyword[name].includes(v)) {
+                      newKeyword[name].push(v);
+                    } else {
+                      newKeyword[name] = newKeyword[name].filter(
+                        (e) => e !== v
+                      );
+                    }
+                    setKeyword(newKeyword);
+                  }}
                 />
                 <label className="form-check-label" htmlFor={v}>
                   {v}
@@ -37,10 +57,13 @@ export default function FilterGroup(category = {}) {
         })}
         {showMore && (
           <>
-            {categoryName[category?.name].map((v, i) => {
+            {categoryName[name].map((v, i) => {
               if (i >= 3) {
                 return (
-                  <div key={i} className={`form-check ${styles.FormCheck}`}>
+                  <div
+                    key={`Filter${i}`}
+                    className={`form-check ${styles.FormCheck}`}
+                  >
                     <input
                       className={`form-check-input ${styles.FormCheckInput}`}
                       type="checkbox"
@@ -55,7 +78,7 @@ export default function FilterGroup(category = {}) {
             })}
           </>
         )}
-        {categoryName[category?.name].length > 3 && (
+        {categoryName[name].length > 3 && (
           <span
             className={styles.ShowMore}
             onClick={() => setShowMore(!showMore)}

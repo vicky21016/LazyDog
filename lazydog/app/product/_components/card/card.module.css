@@ -1,11 +1,25 @@
 .ProductCard {
-  width: 240px;
+  width: 225px;
   position: relative;
 }
 .ProductCardHover {
   width: 100%;
   height: 100%;
-  display: none;
+  position: absolute;
+  background: rgb(241, 213, 182, 0);
+  top: 0;
+  left: 0;
+  .HoverIcon {
+    display: none;
+  }
+  .CartBtn {
+    display: none;
+  }
+}
+.ProductCardHover:hover {
+  width: 100%;
+  height: 100%;
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: 20px;
@@ -21,17 +35,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+  }
+  .CartBtnOff {
+    h6 {
+      display: none;
+    }
   }
   .CartBtn {
-    h2 {
-      display: none;
+    h6 {
       position: absolute;
-      width: 24px;
-      height: 24px;
-      line-height: 1;
       color: var(--Black);
       text-shadow: 0 0 2px var(--White);
       cursor: pointer;
+      top: 0;
     }
   }
 }
@@ -45,7 +62,25 @@
   position: absolute;
   right: 12px;
   top: 10px;
-  width: 25px;
+}
+.ProductCardHeartOff {
+  display: none;
+}
+.ProductCardCart {
+  position: absolute;
+  right: 6px;
+  top: 300px;
+  p {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 7px;
+    left: 2px;
+    color: var(--White);
+  }
+}
+.ProductCardCartOff {
+  display: none;
 }
 .ProductCardOnsale {
   position: absolute;
@@ -68,6 +103,10 @@
   gap: 10px;
   .ProductCardName {
     color: var(--Black);
+    display: flex;
+    align-items: start;
+    height: 72px;
+    overflow: hidden;
   }
   .ProductCardPrice {
     color: var(--Orange);
