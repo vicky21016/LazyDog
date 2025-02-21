@@ -24,7 +24,9 @@ export default function CourseCard() {
                 共計 <span className={styles.countNum}>{course?.length}</span> 堂課
             </div>
             <div className={styles.hot}>
-                <img src="/course/img/sort.png"   alt="" />
+
+                <img src="/course/img/sort.png" alt={`依熱門程度排序`} />
+
                 依熱門程度排序
             </div>
             </div>
