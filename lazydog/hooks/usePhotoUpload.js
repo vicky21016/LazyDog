@@ -34,14 +34,14 @@ export const usePhotoUpload = (
     const formData = new FormData();
     formData.append("name", hotelData.name);
     formData.append("location", hotelData.location);
-    selectedFiles.forEach((file) => formData.append("images", file)); // ✅ 把選擇的圖片放入 FormData
+    selectedFiles.forEach((file) => formData.append("images", file)); // 把選擇的圖片放入 FormData
 
     try {
       let response;
       if (hotelId) {
-        response = await updateHotel(hotelId, formData); // ✅ 更新旅館
+        response = await updateHotel(hotelId, formData);
       } else {
-        response = await createHotel(formData); // ✅ 創建旅館
+        response = await createHotel(formData);
       }
 
       if (response.success) {
