@@ -1,51 +1,67 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { createHotel, updateHotel } from "@/services/hotelService";
 
 export const usePhotoUpload = (
   defaultAvatar = "/images/hotel/hotel-images/page-image/default-avatar.png"
 ) => {
   const fileInputRef = useRef(null);
   const avatarRef = useRef(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   const uploadPhoto = () => {
     fileInputRef.current.click();
   };
 
-  const fileChange = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
+  const fileChange = (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length > 0) {
+      setSelectedFiles(files);
+
+      // 預覽第一張圖片
       const reader = new FileReader();
       reader.onload = () => {
         if (avatarRef.current) {
           avatarRef.current.src = reader.result;
         }
       };
-      reader.readAsDataURL(file);
-      const formData = new FormData();
-      formData.append("image", file);
-
-      try {
-        const resresponse = await fetch(
-          "http://localhost:5000/api/upload-hotel-image",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        const data = await response.json();
-        if (data.filename) {
-          console.log("圖片上傳成功:", data.filename);
-        }
-      } catch (error) {
-        console.error("圖片上船失敗", error);
-      }
+      reader.readAsDataURL(files[0]);
     }
   };
 
+  // 送出飯店資訊（新增或更新）
+  const submitHotel = async (hotelData, hotelId = null) => {
+    const formData = new FormData();
+    formData.append("name", hotelData.name);
+    formData.append("location", hotelData.location);
+    selectedFiles.forEach((file) => formData.append("images", file)); // ✅ 把選擇的圖片放入 FormData
+
+    try {
+      let response;
+      if (hotelId) {
+        response = await updateHotel(hotelId, formData); // ✅ 更新旅館
+      } else {
+        response = await createHotel(formData); // ✅ 創建旅館
+      }
+
+      if (response.success) {
+        console.log("成功:", response);
+      } else {
+        console.error("失敗:", response.message);
+      }
+    } catch (error) {
+      console.error("API 錯誤", error);
+    }
+  };
+
+  // 刪除已選擇的圖片
   const deletePhoto = () => {
     if (avatarRef.current) {
       avatarRef.current.src = defaultAvatar;
+    }
+    setSelectedFiles([]);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -55,5 +71,6 @@ export const usePhotoUpload = (
     uploadPhoto,
     fileChange,
     deletePhoto,
+    submitHotel,
   };
 };
