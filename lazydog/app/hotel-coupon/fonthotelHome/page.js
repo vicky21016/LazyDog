@@ -103,7 +103,7 @@ export default function HotelHomePage() {
 
   const handleMaxPriceChange = (e) => {
     let value = e.target.value;
-    if (value === "") {
+    if (value == "") {
       setMaxPrice(""); // 清空
       return;
     }

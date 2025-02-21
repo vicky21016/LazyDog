@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import styles from "../../../styles/modules/fontCoupon.module.css";
+import styles from "../../styles/modules/fontCoupon.module.css";
 import Image from "next/image";
-import Header from "../../components/layout/header";
+import Header from "../components/layout/header";
 import { claimCoupon } from "@/services/couponService";
 
 export default function CouponPage() {

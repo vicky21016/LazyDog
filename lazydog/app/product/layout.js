@@ -19,7 +19,7 @@ export default function AppLayout({ children }) {
         <body suppressHydrationWarning>
           <Header />
           {children}
-          <Footer />
+          {/* <Footer /> */}
         </body>
       </html>
     </>

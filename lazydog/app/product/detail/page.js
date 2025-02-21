@@ -52,22 +52,22 @@ export default function DetailPage({ searchParams = {} }) {
   const productPrice = (
     Number(productData?.price) * Number(productData?.discount)
   ).toFixed(0);
-  const productDiscount = (1 - Number(productData?.discount)).toFixed(2) * 100;
+  const productDiscount = 0;
   const deadDate = Date.parse(productData?.discount_et);
   const deadline = () => Math.max(0, deadDate - Date.now());
-  const [countDown, setCountDown] = useState(deadline());
+  const [countDown, setCountDown] = useState(0);
   const deadDay = Math.floor(countDown / (1000 * 60 * 60 * 24));
   const deadHour = Math.floor(
     (countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
   );
   const deadMin = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCountDown(deadline());
-    }, 10000);
-    setCountDown(deadline());
-    return () => clearInterval(timer);
-  }, [deadDate]);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setCountDown(deadline());
+  //   }, 10000);
+  //   setCountDown(deadline());
+  //   return () => clearInterval(timer);
+  // }, [deadDate]);
   const [scrollY, setScrollY] = useState(0);
   useEffect(() => {
     const scrollNow = () => {
@@ -249,12 +249,7 @@ export default function DetailPage({ searchParams = {} }) {
             </div>
             <div className={styles.InfoPriceGroup}>
               <h5>{productDiscount > 0 ? `限時促銷價格：` : `價格：`}</h5>
-              <h2>
-                NT${" "}
-                {productDiscount > 0
-                  ? Math.floor(productData?.price * productData?.discount)
-                  : productData?.price}
-              </h2>
+              <h2>NT$ {productData?.price}</h2>
               {productDiscount > 0 && <h4>NT$ {productData?.price}</h4>}
             </div>
             <div className={styles.InfoQtyGroup}>
