@@ -18,7 +18,7 @@ export default function CourseListPage() {
       <News/>
       <main className={styles.list}>
         <div className={`container ${styles.section1}`}>
-          <div className={`row`}>
+          <div className={`row `}>
             <SideBar/>
             <CourseCard/>
           </div>
