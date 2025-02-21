@@ -3,7 +3,11 @@ import styles from "../../../styles/modules/fontHotelHome.module.css";
 
 const HotelSearchBar = ({
   location,
+  locationModalRef,
   openModal,
+  address,
+  closeModal,
+  confirmLocation,
   quantity,
   setQuantity,
   onSearch,
@@ -20,8 +24,8 @@ const HotelSearchBar = ({
           <input
             type="text"
             className={styles.suSearchInput}
-            placeholder="搜尋關鍵字、地區..."
-            value={location}
+            placeholder="搜尋關鍵地區..."
+            value={address}
             readOnly
             onClick={openModal}
           />
@@ -63,6 +67,39 @@ const HotelSearchBar = ({
         <button className={styles.suSearchBtn} onClick={onSearch}>
           搜尋
         </button>
+        <div
+          className="modal fade"
+          ref={locationModalRef}
+          tabIndex="-1"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">選擇地區</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={closeModal}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <div id="twzipcode">
+                  <select className="county"></select>
+                  <select className="district"></select>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  className={styles.suSearchBtn}
+                  onClick={() => confirmLocation()}
+                >
+                  確定
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
