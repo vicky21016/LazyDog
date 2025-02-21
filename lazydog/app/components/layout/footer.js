@@ -60,7 +60,10 @@ export default function Footer(props) {
                   </Link>
                 </p>
                 <p>
-                  <Link href="/hotel-coupon" className={styles.service}>
+                  <Link
+                    href="/hotel-coupon/fonthotelHome"
+                    className={styles.service}
+                  >
                     線上訂房
                   </Link>
                 </p>

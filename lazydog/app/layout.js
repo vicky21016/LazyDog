@@ -47,12 +47,12 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <AuthProvider>
-        <body className={`mb-5 ${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <AuthProvider>
           {children}
-        </body>
-        <Footer/>
-      </AuthProvider>
+          <Footer className="mt-5" />
+        </AuthProvider>
+      </body>
     </html>
   );
 }
