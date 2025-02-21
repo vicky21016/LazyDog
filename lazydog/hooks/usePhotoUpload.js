@@ -16,7 +16,7 @@ export const usePhotoUpload = (
     if (files.length > 0) {
       setSelectedFiles(files);
 
-      // 预览第一张图片
+      // 預覽第一張圖片
       const reader = new FileReader();
       reader.onload = () => {
         if (avatarRef.current) {

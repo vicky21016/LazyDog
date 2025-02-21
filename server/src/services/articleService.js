@@ -1,6 +1,5 @@
 import pool from "../config/mysql.js";
 
-
 // 獲取全部文章
 export const getArticlesS = async () => {
   try {
@@ -20,7 +19,7 @@ export const getArticlesS = async () => {
     throw new Error(" 無法取得所有文章：" + error.message);
   }
 };
-
+getArticlesS();
 // 獲取指定文章
 export const getIdS = async (id) => {
   try {
