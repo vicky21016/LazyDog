@@ -4,57 +4,73 @@ import { getArticlesS, getIdS, createArticlesS, deleteArticleS, updateArticleS, 
 
 // 獲取所有文章
 export const getArticles = async (req, res) => {
-    try {
-        const articles = await getArticlesS();
-        if (articles.length === 0) {
-            return res.status(404).json({ error: "找不到全部文章" });
-        }
-        res.json(articles);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+  try {
+      const articles = await getArticlesS();
+      if (articles.length === 0) {
+          return res.status(404).json({ error: "找不到全部文章" });
+      }
+
+      // 強制將 created_at 和 updated_at 轉換為 YYYY-MM-DD
+      const formattedArticles = articles.map(article => ({
+          ...article,
+          created_at: new Date(article.created_at).toISOString().split('T')[0], // 只取日期
+          updated_at: new Date(article.updated_at).toISOString().split('T')[0]  // 只取日期
+      }));
+
+      res.json(formattedArticles);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
 };
+
+
 
 // 取得指定文章
 export const getId = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const results = await getIdS(id)
-        console.log(results)
-        if (!results || results.length === 0) {
-            return res.status(404).json({ message: "文章不存在" });
-        }
-        // 組合資料
-        const article = {
-            id: results[0].id,
-            title: results[0].title,
-            content: results[0].content,
-            cover_image: results[0].cover_image,
-            author_name: results[0].name,
-            category_name: results[0].category_name,
-            created_at: results[0].created_at,
-            comments: []
-        };
-        // console.log(article)
+  const { id } = req.params;
+  try {
+      const results = await getIdS(id);
+      console.log(results);
 
-        const commentMap = new Map(); // 用 Map 避免重複
+      if (!results || results.length === 0) {
+          return res.status(404).json({ message: "文章不存在" });
+      }
 
-        results.forEach(row => {
-            if (row.comment_id && !commentMap.has(row.comment_id)) {
-                commentMap.set(row.comment_id, {
-                    content: row.comment_content,
-                    author: row.commenter_name,
-                    author_img:row.commenter_img
-                });
-            }
-        });
+      // 格式化日期（只顯示 YYYY-MM-DD）
+      const formatDate = (date) => date ? new Date(date).toISOString().split('T')[0] : null;
 
-        article.comments = Array.from(commentMap.values());
-        res.json(article);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+      // 組合文章資料
+      const article = {
+          id: results[0].id,
+          title: results[0].title,
+          content: results[0].content,
+          cover_image: results[0].cover_image,
+          author_name: results[0].name,
+          category_name: results[0].category_name,
+          created_at: formatDate(results[0].created_at),
+          updated_at: formatDate(results[0].updated_at), // 確保 updated_at 也被格式化
+          comments: []
+      };
+
+      const commentMap = new Map(); // 用 Map 避免重複
+
+      results.forEach(row => {
+          if (row.comment_id && !commentMap.has(row.comment_id)) {
+              commentMap.set(row.comment_id, {
+                  content: row.comment_content,
+                  author: row.commenter_name,
+                  author_img: row.commenter_img
+              });
+          }
+      });
+
+      article.comments = Array.from(commentMap.values());
+      res.json(article);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
 };
+
 
 // 創建文章
 
@@ -194,36 +210,41 @@ export const deleteArticle = async (req, res) => {
 
 
 export const searchKeyword = async (req, res) => {
-  const { keyword } = req.query;  // 从请求中获取搜索关键字
+  const { keyword } = req.query;  // 從請求中獲取搜索關鍵字
   
   try {
-    // 调用搜索函数获取文章数据
+    // 調用搜索函數獲取文章數據
     const articles = await searchKeywordS(keyword);
 
     if (articles.length === 0) {
-      return res.status(404).json({ message: "没有找到相关的文章。" });
+      return res.status(404).json({ message: "沒有找到相關的文章。" });
     }
 
-    // 使用一个对象来去重文章，文章的 id 作为键
+    // 格式化日期函式（YYYY-MM-DD）
+    const formatDate = (date) => date ? new Date(date).toISOString().split('T')[0] : null;
+
+    // 使用一個物件來去重文章，文章的 id 作為鍵
     const uniqueArticles = {};
 
-    // 遍历所有文章，去除重复的文章
+    // 遍歷所有文章，去除重複的文章
     articles.forEach(article => {
       if (!uniqueArticles[article.id]) {
-        // 如果文章没有重复，就加入到 uniqueArticles 对象中
+        // 如果文章沒有重複，就加入到 uniqueArticles 物件中
         uniqueArticles[article.id] = {
           id: article.id,
           title: article.title,
           content: article.content,
           cover_image: article.cover_image,
           category_name: article.category_name,
+          created_at: formatDate(article.created_at), // 只顯示日期
+          updated_at: formatDate(article.updated_at), // 只顯示日期
           comments: []
         };
       }
 
-      // 处理文章的评论
+      // 處理文章的評論
       if (article.comment_id) {
-        // 将评论信息添加到对应文章的评论列表中
+        // 將評論信息添加到對應文章的評論列表中
         uniqueArticles[article.id].comments.push({
           content: article.comment_content,
           author: article.commenter_name,
@@ -232,13 +253,13 @@ export const searchKeyword = async (req, res) => {
       }
     });
 
-    // 返回去重后的文章数据
+    // 返回去重後的文章數據
     const result = Object.values(uniqueArticles);
 
     return res.status(200).json(result);
 
   } catch (error) {
-    console.error("搜索文章时出错:", error);
-    return res.status(500).json({ error: "搜索文章时出错：" + error.message });
+    console.error("搜索文章時出錯:", error);
+    return res.status(500).json({ error: "搜索文章時出錯：" + error.message });
   }
 };

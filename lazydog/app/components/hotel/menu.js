@@ -11,7 +11,7 @@ export default function ProfileCard  ({
   const fileInputRef = useRef(null);
 
   return (
-    <div className="col-md-3">
+    <div className="d-none d-md-block col-md-3">
       <div className="card p-3 text-center">
         <div className="position-relative d-inline-block">
           <img

@@ -23,7 +23,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                 if (currentPage > 1) onPageChange(currentPage - 1);
               }}
             >
-              <span aria-hidden={true}>&laquo;</span>
+              <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
           {Array.from({ length: totalPages }, (_, i) => (
@@ -59,7 +59,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                 if (currentPage < totalPages) onPageChange(currentPage + 1);
               }}
             >
-              <span aria-hidden={true}>&raquo;</span>
+              <span aria-hidden="true">&raquo;</span>
             </a>
           </li>
         </ul>
