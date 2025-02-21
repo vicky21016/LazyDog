@@ -14,7 +14,7 @@ const TeacherCard = ({ cards }) => {
               <img src={card.imgSrc} className="card-img-top" alt={card.name} />
               <div className={styles.card6Title}>{card.name}</div>
               <p
-                className={`ms-3 ${styles.card6Description}`}
+                className={` ${styles.card6Description}`}
                 style={{ }}
               >
                 {card.text}
