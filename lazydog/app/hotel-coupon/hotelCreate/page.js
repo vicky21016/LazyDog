@@ -51,10 +51,10 @@ export default function HotelEditPage(props) {
         <div className="row">
           {/* 左邊*/}
           {/* <Menu/> */}
-        <My/>
+          <My />
 
           {/* 右邊 */}
-          <div className="col-md-9">
+          <div className="col-12 col-md-9">
             <h3 className="mb-3">新增旅館</h3>
             <form>
               <div className={`section ${hotelStyles.suSection}`}>

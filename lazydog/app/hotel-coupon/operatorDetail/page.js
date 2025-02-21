@@ -63,7 +63,7 @@ export default function OperatorDetailPage() {
         <div className="row">
           {/* 左邊*/}
           <My />
-          <div className="col-md-9">
+          <div className="col-12 col-md-9">
             <div className="card p-4">
               <h5 className="mb-3">負責人資訊</h5>
               <div className="row">

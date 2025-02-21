@@ -56,8 +56,8 @@ export default function EditCouponPage(props) {
       <Header />
       <div className="container mt-5">
         <div className="row">
-<My/>
-          <div className="col-md-9 mx-auto">
+          <My />
+          <div className="col-12 col-md-9 mx-auto">
             <h3 className="mb-4">編輯優惠券</h3>
 
             {/* 基本資訊 */}

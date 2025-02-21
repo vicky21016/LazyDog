@@ -26,7 +26,7 @@ export default function PagesHotelList() {
           <My />
 
           {/* 右邊 */}
-          <div className="col-md-9">
+          <div className="col-12 col-md-9">
             <h3 className="mb-4">旅館名稱</h3>
             <table className={`table ${ListStyles.hotelTable}`}>
               <thead>

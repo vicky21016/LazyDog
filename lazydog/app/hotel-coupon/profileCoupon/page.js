@@ -21,15 +21,15 @@ export default function ProfileCouponPage(props) {
   }, []);
   return (
     <>
-    <Header/>
+      <Header />
       <div className="container mt-5">
         <div className="row">
           {/* 左邊*/}
           <div className="col-md-3">
-           <MyMenu/>
+            <MyMenu />
           </div>
           {/* 右邊 */}
-          <div className="col-md-9 coupon-section">
+          <div className=" col-12 col-md-9 coupon-section">
             <h3 className="mb-3">我的優惠券</h3>
 
             <div className="suFeatureLinks mb-3">
