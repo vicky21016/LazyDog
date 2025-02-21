@@ -9,6 +9,8 @@ import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
 
 export default function ListPage(props) {
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(30000);
   const [newUrl, setNewUrl] = useState("http://localhost:5000/api/products");
   const changeUrl = (newUrl) => {
     setNewUrl(newUrl);
@@ -27,10 +29,8 @@ export default function ListPage(props) {
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
   const query = useSearchParams();
   const products = data?.data;
-  const productID = "";
 
-  const pageStart = 1;
-  let pageNow = Number(query.get("page")) || Number(pageStart);
+  const [pageNow, setPageNow] = useState(1);
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
@@ -65,7 +65,14 @@ export default function ListPage(props) {
           </div>
         </section>
         <section className={styles.PdArea}>
-          <Aside changeUrl={changeUrl} />
+          <Aside
+            changeUrl={changeUrl}
+            setPageNow={setPageNow}
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+            setMinPrice={setMinPrice}
+          />
           <main className={styles.PdList}>
             {[...Array(6)].map((value, index) => {
               return (
@@ -81,8 +88,11 @@ export default function ListPage(props) {
               <ul className={styles.ProductListPagination}>
                 <li className={`${styles.PageArrow}`}>
                   <Link
+                    onClick={() =>
+                      setPageNow(pageNow - 1 == 0 ? 1 : pageNow - 1)
+                    }
                     href={`http://localhost:3000/product/list?page=${
-                      pageNow - 1
+                      pageNow - 1 == 0 ? 1 : pageNow - 1
                     }`}
                   >
                     <img src="/product/font/left(orange).png" alt="" />
@@ -107,6 +117,7 @@ export default function ListPage(props) {
                           }`}
                         >
                           <Link
+                            onClick={() => setPageNow(i + 1)}
                             className={`${styles.PageLink} page-link `}
                             href={`http://localhost:3000/product/list?page=${
                               i + 1
@@ -121,8 +132,11 @@ export default function ListPage(props) {
                 })}
                 <li className={`${styles.PageArrow}`}>
                   <Link
+                    onClick={() => {
+                      setPageNow(pageNow + 1 > pages ? pageNow : pageNow + 1);
+                    }}
                     href={`http://localhost:3000/product/list?page=${
-                      pageNow + 1
+                      pageNow + 1 > pages ? pageNow : pageNow + 1
                     }`}
                   >
                     <img src="/product/font/right(orange).png" alt="" />

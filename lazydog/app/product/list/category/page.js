@@ -1,14 +1,17 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
+import { useRouter } from "next/router";
 import styles from "./category.module.css";
 import Aside from "../../_components/aside/aside";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, redirect } from "next/navigation";
 import Card from "../../_components/card/card";
 import useSWR from "swr";
 
 export default function ListPage(props) {
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(30000);
   // http://localhost:5000/api/products/search?category=乾糧&main=乾糧&type=主食&age=全年齡&feature=強效潔牙&flavor=牛肉,鴨肉&cereal=無穀&size=全適用
   const [keyword, setKeyword] = useState({
     主分類: [],
@@ -20,11 +23,13 @@ export default function ListPage(props) {
     適用體型: [],
   });
   // console.log(keyword);
-
-  const query = useSearchParams();
-  const category = query.get("category");
+  const queryPath = useSearchParams();
+  const category = queryPath.get("category");
   const [newUrl, setNewUrl] = useState(
-    `http://localhost:5000/api/products/category?category=${category}`
+    `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}`
+  );
+  const [page, setPage] = useState(
+    `http://localhost:3000/product/list/category?category=${category}&page=1&min=${minPrice}&max=${maxPrice}`
   );
   const changeUrl = (newUrl) => {
     setNewUrl(newUrl);
@@ -40,10 +45,11 @@ export default function ListPage(props) {
       keyword?.適用體型.length == 0
     ) {
       changeUrl(
-        `http://localhost:5000/api/products/category?category=${category}`
+        `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}`
       );
       return;
     }
+
     changeUrl(
       `http://localhost:5000/api/products/search?category=${category}&main=${keyword?.主分類.join(
         ","
@@ -51,11 +57,14 @@ export default function ListPage(props) {
         ","
       )}&feature=${keyword?.功能.join(",")}&flavor=${keyword?.口味.join(
         ","
-      )}&cereal=${keyword?.穀類.join(",")}&size=${keyword?.適用體型.join(",")}`
+      )}&cereal=${keyword?.穀類.join(",")}&size=${keyword?.適用體型.join(
+        ","
+      )}&min=${minPrice}&max=${maxPrice}`
     );
-    console.log(newUrl);
+    setPageNow(1);
   }, [keyword]);
-  // const url = `http://localhost:5000/api/products/category?category=${category}`;
+  useEffect(() => {}, [minPrice, maxPrice]);
+
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
@@ -68,14 +77,13 @@ export default function ListPage(props) {
   };
   const { data, isLoading, error, mutate } = useSWR(newUrl, fetcher);
   const products = data?.data;
-  const productID = "";
 
-  const pageStart = 1;
-  let pageNow = Number(query.get("page")) || Number(pageStart);
+  const [pageNow, setPageNow] = useState(1);
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
 
+  console.log(minPrice, maxPrice);
   return (
     <>
       <div className={`${styles.Container} container`}>
@@ -112,6 +120,11 @@ export default function ListPage(props) {
             changeUrl={changeUrl}
             keyword={keyword}
             setKeyword={setKeyword}
+            setPageNow={setPageNow}
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+            setMinPrice={setMinPrice}
           />
           <main className={styles.PdList}>
             {[...Array(6)].map((value, index) => {
@@ -128,8 +141,11 @@ export default function ListPage(props) {
               <ul className={styles.ProductListPagination}>
                 <li className={`${styles.PageArrow}`}>
                   <Link
+                    onClick={() =>
+                      setPageNow(pageNow - 1 == 0 ? 1 : pageNow - 1)
+                    }
                     href={`http://localhost:3000/product/list/category?category=${category}&page=${
-                      pageNow - 1
+                      pageNow - 1 == 0 ? 1 : pageNow - 1
                     }`}
                   >
                     <img src="/product/font/left(orange).png" alt="" />
@@ -153,6 +169,7 @@ export default function ListPage(props) {
                         }`}
                       >
                         <Link
+                          onClick={() => setPageNow(i + 1)}
                           className={`${styles.PageLink} page-link `}
                           href={`http://localhost:3000/product/list/category?category=${category}&page=${
                             i + 1
@@ -166,8 +183,11 @@ export default function ListPage(props) {
                 })}
                 <li className={`${styles.PageArrow}`}>
                   <Link
+                    onClick={() => {
+                      setPageNow(pageNow + 1 > pages ? pageNow : pageNow + 1);
+                    }}
                     href={`http://localhost:3000/product/list/category?category=${category}&page=${
-                      pageNow + 1
+                      pageNow + 1 > pages ? pageNow : pageNow + 1
                     }`}
                   >
                     <img src="/product/font/right(orange).png" alt="" />
