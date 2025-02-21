@@ -19,13 +19,13 @@
   display: flex;
   align-items: center;
   padding: 30px 0px 30px 0px;
-  gap: 60px;
+  /* gap: 60px; */
 }
 /* -------------------------- */
 /* ----------麵包屑---------- */
 .Breadcrumbs {
   width: 242px;
-  width: 350px;
+  width: 336px;
   margin: 0;
   display: flex;
   align-items: center;

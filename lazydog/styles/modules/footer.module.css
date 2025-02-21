@@ -5,6 +5,7 @@
   margin: 0 auto;
   max-width: 1440px;
   text-align: center;
+  
 }
 
 .footer {
@@ -14,7 +15,7 @@
     font-size: 20px;
     font-weight: 500;
     letter-spacing: 2.4px;
-    color: var(--White);
+    color: White;
   }
 }
 
@@ -27,7 +28,7 @@
 /* ----------footer中、底段區域-------- */
 .footerMiddle,
 .footerBottom {
-  background: var(--Orange);
+  background: #f5842b;
 }
 /* ---------------------------------- */
 /* ----------footer中段區域----------- */
@@ -37,7 +38,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    color: var(--White);
+    color: White;
     gap: 80px;
   }
 }
@@ -48,7 +49,7 @@
   flex-direction: column;
   align-items: flex-start;
   /* width: 440px; */
-  gap: 30px;
+  gap: 15px;
   padding: 21px 0;
   .logoPic {
     width: 100px;
@@ -60,17 +61,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 35px;
+    gap: 15px;
 
     .address {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 10px;
+      /* gap: 10px; */
       align-self: stretch;
       .addInfo {
         color: var(--Color-4, #fdfaf5);
-        font-family: "Noto Sans TC";
         font-size: 18px;
         font-style: normal;
         font-weight: 600;
@@ -114,7 +114,7 @@
     letter-spacing: 2px;
     padding-left: 1.5px;
     &:hover {
-      color: var(--Black);
+      color: #3b3330;
     }
   }
 }
@@ -126,15 +126,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
+  gap: 35px;
   padding: 21px 0 0;
   /* margin-block: auto; */
   .footerEmail {
-    border: 8px solid var(--Yellow);
+    border: 8px solid #f6ce5b;
     width: 90%;
     height: 60px;
     border-radius: 100px;
-    background: var(--White);
+    background: White;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -144,7 +144,7 @@
       font-size: 16px;
       font-weight: 500;
       letter-spacing: 2px;
-      background: var(--White);
+      background: White;
       outline: none;
     }
 
@@ -174,7 +174,7 @@
     justify-content: center;
     align-self: stretch;
     gap: 20px;
-    padding: 41px 0 30px;
+    /* padding: 41px 0 30px; */
     .icons {
       cursor: pointer;
     }
@@ -183,7 +183,7 @@
 /* ---------------------------------- */
 /* -----------footer底段區域---------- */
 .footerBottom {
-  color: var(--White);
+  color: White;
   text-align: center;
   font-size: 14px;
   line-height: 65px;
