@@ -31,6 +31,7 @@ export default function HotelHomePage() {
   }, [router.query]);
   const {
     location,
+    address,
     locationModalRef,
     googleMapUrl,
     openModal,
@@ -92,43 +93,16 @@ export default function HotelHomePage() {
       <Header />
       <SearchBar
         location={location}
-        openModal={openModal}
-        quantity={quantity}
-        setQuantity={setQuantity}
-        onSearch={handleSearch}
+            address={address}
+            openModal={openModal}
+            closeModal={closeModal}
+            locationModalRef={locationModalRef}
+            quantity={quantity}
+            confirmLocation={confirmLocation}
+            setQuantity={setQuantity}
+            onSearch={handleSearch}
       />
-      {/* 地區選擇 Modal */}
-      <div
-        className="modal fade"
-        ref={locationModalRef}
-        tabIndex="-1"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">選擇地區</h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                onClick={closeModal}
-              ></button>
-            </div>
-            <div className="modal-body">
-              <div id="twzipcode">
-                <select className="county"></select>
-                <select className="district"></select>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button className="btn btn-primary" onClick={confirmLocation}>
-                確定
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+     
 
       {/* 旅館簡介 */}
       <div className="container mt-5">
@@ -243,15 +217,6 @@ export default function HotelHomePage() {
           地址: {hotel?.address || "無資料"}
         </p>
         <div ref={mapRef} style={{ height: "500px", width: "100%" }}></div>
-        <div className={hotelStyles.suWaveContainer}>
-          <svg className={hotelStyles.suRoomWave} viewBox="0 0 1440 320">
-            <path
-              fill="#FFA500"
-              fillOpacity="1"
-              d="M0,280 C360,260 720,300 1080,280 C1260,270 1380,250 1440,240 V320 H0 Z"
-            ></path>
-          </svg>
-        </div>
       </div>
     </>
   );

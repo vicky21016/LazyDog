@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { getHotelById } from "@/services/hotelService";
 
-export function useLocationSelector() {
+export function useLocationSelector(hotelId) {
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState("");
   const locationModalRef = useRef(null);
@@ -30,7 +30,7 @@ export function useLocationSelector() {
       fetchHotelLocation();
     }
   }, [hotelId]);
-  const fetchHotelLocation = async () => {
+  const fetchHotelLocation = async (hotelId) => {
     try {
       const hotelData = await getHotelById(hotelId);
       if (hotelData) {
@@ -88,6 +88,7 @@ export function useLocationSelector() {
     address,
     locationModalRef,
     googleMapUrl,
+    closeModal,
     openModal,
     confirmLocation,
     openMap,
