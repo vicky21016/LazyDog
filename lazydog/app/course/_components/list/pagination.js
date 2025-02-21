@@ -13,7 +13,7 @@ export default function Pagination() {
                     <li className={`page-item ${styles.pageItem} `}>
                     <a className={`page-link ${styles.pageLink}`} aria-label="Previous">
                         <span aria-hidden="true">
-                        <img src="/course/img/pageArrowleft;png.png" alt />
+                        <img src="/course/img/pageArrowleft;png.png"   alt="" />
                         </span>
                     </a>
                     </li>
@@ -30,7 +30,7 @@ export default function Pagination() {
                     <li className={`page-item ${styles.pageItem}`}>
                     <a className={`page-link ${styles.pageLink}`} href="#" aria-label="Next">
                         <span aria-hidden="true">
-                        <img src="/course/img/pageArrowright.png" alt />
+                        <img src="/course/img/pageArrowright.png"   alt="" />
                         </span>
                     </a>
                     </li>

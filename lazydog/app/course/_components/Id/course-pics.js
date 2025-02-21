@@ -14,7 +14,7 @@ export default function CoursePics({imgs}) {
       <div className={styles.left}>
             <div className={styles.pics}>
               {imgs?.map((img)=>(
-                <img src={`/course/img/${img?.url}`} alt />
+                <img src={`/course/img/${img?.url}`}   alt="" />
               ))}
             </div>
           </div>
