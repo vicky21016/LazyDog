@@ -8,7 +8,7 @@ import styles from "../../../styles/modules/footer.module.css";
 export default function Footer(props) {
   return (
     <>
-      <footer className={styles.footer}>
+      <footer className={`mt-5 ${styles.footer}`}>
         <section className={styles.footerTop}>
           <img
             className={styles.topWave}
