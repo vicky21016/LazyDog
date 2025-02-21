@@ -128,13 +128,6 @@ export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
     if (order.coupon_id) {
       throw new Error("此訂單已使用其他優惠券");
     }
-    //  claimed
-    const [[couponUsage]] = await connection.query(
-      `SELECT * FROM coupon_usage WHERE user_id = ? AND coupon_id = ? AND status = 'claimed' AND is_deleted = 0`,
-      [userId, couponId]
-    );
-
-    if (!couponUsage) throw new Error("優惠券無法使用或已使用");
 
     const [[coupon]] = await connection.query(
       `SELECT * FROM coupons WHERE id = ? AND is_deleted = 0`,
@@ -143,6 +136,22 @@ export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
 
     if (!coupon) throw new Error("優惠券不存在或已刪除");
 
+    //  claimed
+    const [[couponUsage]] = await connection.query(
+      `SELECT * FROM coupon_usage WHERE user_id = ? AND coupon_id = ? AND status = 'claimed' AND is_deleted = 0`,
+      [userId, couponId]
+    );
+
+    if (!couponUsage) throw new Error("優惠券無法使用或已使用");
+    if (!coupon.is_global && couponUsage.order_table !== orderTable) {
+      throw new Error(
+        `此優惠券僅適用於 ${couponUsage.order_table}，不可用於 ${orderTable}`
+      );
+    }
+    //低蕭
+    if (coupon.min_order_value && order.total_price < coupon.min_order_value) {
+      throw new Error(`此優惠券需消費滿 ${coupon.min_order_value} 元才可使用`);
+    }
     // 計算折扣後的價格
     const orderTotalPrice = order.total_price || 0;
     const discountAmount = Math.min(coupon.value, orderTotalPrice);
@@ -174,7 +183,7 @@ export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
       success: true,
       message: "優惠券已成功使用",
       discountAmount,
-       finalAmount,
+      finalAmount,
     };
   } catch (error) {
     await connection.rollback();
