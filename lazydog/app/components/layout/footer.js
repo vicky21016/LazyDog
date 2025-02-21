@@ -16,16 +16,17 @@ export default function Footer(props) {
             alt
           />
         </section>
-        <div className={styles.bag}>
+        <div className={`pb-4 ${styles.bag}`}>
           <section className={`${styles.wrapper} ${styles.footerMiddle}`}>
             <ul className={styles.infos}>
               <li className={styles.footerList1}>
-                <Link href="/home" className={styles.connects}>
+                <Link href="/home" className={`${styles.connects}`}>
                   <figure>
                     <img
                       className={styles.logoPic}
                       src="/footer/img/logo_pic(white).png"
                     />
+                    <span className={`ms-3 ${styles.lazydog}`}>LAZYDOG</span>
                   </figure>
                 </Link>
                 <article className={styles.place}>
@@ -39,13 +40,15 @@ export default function Footer(props) {
                     <p className={styles.timeInfo}>
                       營業期間：09:30-19:30
                       <br />
-                      入住時間：15:00-19:00<br/>退房時間：11:00-14:00
+                      入住時間：15:00-19:00
+                      <br />
+                      退房時間：11:00-14:00
                     </p>
                   </div>
                 </article>
               </li>
               <li className={styles.footerList2}>
-                <h1 className={styles.clientService}>客戶服務</h1>
+                <h2 className={styles.clientService}>客戶服務</h2>
                 <p>
                   <Link href="/home" className={styles.service}>
                     關於LAZYDOG
@@ -130,7 +133,7 @@ export default function Footer(props) {
               </li>
             </ul>
           </section>
-          <section className={styles.footerBottom}>
+          <section className={`mt-3 ${styles.footerBottom}`}>
             COPYRIGHT © 2024 &nbsp;LAZYDOG&nbsp;
           </section>
         </div>
