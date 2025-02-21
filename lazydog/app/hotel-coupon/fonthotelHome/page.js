@@ -12,7 +12,7 @@ import { useLocationSelector } from "@/hooks/useLocationSelector";
 import Header from "../../components/layout/header";
 import HotelCard from "@/app/components/hotel/hotelCard";
 import SearchBar from "../../components/hotel/search";
-import Aside from "../../product/_components/aside/aside";
+import Aside from "@/app/components/hotel/sideBar";
 import Page from "../../components/hotel/page";
 import Breadcrumb from "../../components/teacher/breadcrumb";
 export default function HotelHomePage() {
@@ -171,7 +171,7 @@ export default function HotelHomePage() {
                 review="8"
                 reviewCount="1,258"
                 link="/hotel-coupon/fonthotelDetail"
-              />          
+              />
             </section>
           </div>
         </div>
