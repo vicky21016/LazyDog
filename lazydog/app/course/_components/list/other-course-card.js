@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import styles from "../courseList.module.css";
 import Link from 'next/link';
 
@@ -13,10 +13,7 @@ export default function OtherCourseCard() {
     fetch(`http://localhost:5000/api/course/`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.data.latest);
-
         setLatest(data.data.latest);
-
       })
       .catch((err) => {
         console.error("Error fetching data:", err);
@@ -34,30 +31,27 @@ export default function OtherCourseCard() {
                 <img
                   className={styles.arrowLeft}
                   src="/course/img/arrow-left.png"
-                  alt
+                  alt={`往左箭頭`}
                 />
                 <img
                   className={styles.arrowRight}
                   src="/course/img/arrow-right.png"
-                  alt
+                  alt={`往右箭頭`}
                 />
               </div>
             </div>
             <div className={styles.sCards}>
               {latest?.map((la)=>(
-                <Link className={styles.sCard} href={`/course/${la.courseId}`}>
+                <Link className={styles.sCard} key={la.courseId} href={`/course/${la.courseId}`}>
                   <img
                       className={styles.cardImg}
                       src={`/course/img/${la.img_url}`}
-                      alt
+                      alt={la.courseName}
                   />
                   <h5 className={styles.cardName}>{la.courseName}</h5>
                 </Link>
               ))}
-              
-            
             </div>
-            
        </div>    
     </>
   )
