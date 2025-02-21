@@ -6,7 +6,7 @@ import styles from "../courseId.module.css";
 
 export default function CoursePics({imgs}) {
 
-  // console.log("CoursePics - Img:", imgs);
+  console.log("CoursePics - Img:", imgs);
 
 
   return (
