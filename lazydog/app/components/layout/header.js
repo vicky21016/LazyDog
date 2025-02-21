@@ -87,7 +87,7 @@ export default function Header(props) {
         </div>
       </div>
       <div
-        className={`${styles.mobleMenu}`}
+        className={`${styles.mobileMenu}`}
         onClick={() => setMenuOpen(!menuOpen)}
       >
         <i
@@ -95,7 +95,42 @@ export default function Header(props) {
             menuOpen ? "bi bi-x-lg" : "bi bi-list"
           }`}
         ></i>
+        <nav className={styles["mobileMenubar"]}>
+        <ul className={`${styles.mobileDrop} ${styles.lumiUl} ${menuOpen ? styles.show : ""}`}>
+          <li>
+            <Link href="/home">關於我們</Link>
+          </li>
+          <li>
+            <Link href="/product/list">寵物用品</Link>
+          </li>
+          <li>
+            <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>
+          </li>
+          <div className={styles["dropdown"]}>
+            <li>
+              <Link href="/teacher" className={styles["dropbtn"]}>
+                寵物課程
+              </Link>
+            </li>
+            <div className={styles["dropdown-content"]}>
+              <Link href="/course/list" className={styles["dropdown-link"]}>
+                課程
+              </Link>
+              <Link href="/teacher/list" className={styles["dropdown-link"]}>
+                師資
+              </Link>
+              <Link href="#" className={styles["dropdown-link"]}>
+                常見 Q&A
+              </Link>
+            </div>
+          </div>
+          <li>
+            <Link href="#">毛孩文章</Link>
+          </li>
+        </ul>
+      </nav>
       </div>
+      
       
       {/* </>
       ) : (
