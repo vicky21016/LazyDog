@@ -71,7 +71,7 @@ const HotelSearchBar = ({
           className="modal fade"
           ref={locationModalRef}
           tabIndex="-1"
-          aria-hidden={true}
+          aria-hidden="true"
         >
           <div className="modal-dialog">
             <div className="modal-content">

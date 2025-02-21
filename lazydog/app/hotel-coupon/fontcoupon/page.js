@@ -13,7 +13,7 @@ export default function CouponPage() {
         id="couponModal"
         tabIndex="-1"
         aria-labelledby="couponModalLabel"
-        aria-hidden={true}
+        aria-hidden="true"
       >
         <div className="modal-dialog modal-dialog-centered">
           <div
@@ -70,7 +70,7 @@ export default function CouponPage() {
                   <Image
                     src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
                     alt="優惠券背景"
-                    fill={true}
+                    fill="true"
                     style={{ objectFit: "cover" }}
                   />
                   <div className={styles.suCouponContent}>
