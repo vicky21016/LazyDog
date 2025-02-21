@@ -12,7 +12,7 @@ import { useLocationSelector } from "@/hooks/useLocationSelector";
 import Header from "../../components/layout/header";
 import HotelCard from "@/app/components/hotel/hotelCard";
 import SearchBar from "../../components/hotel/search";
-import Aside from "../../product/_components/aside/aside"
+import Aside from "../../product/_components/aside/aside";
 import Page from "../../components/hotel/page";
 import Breadcrumb from "../../components/teacher/breadcrumb";
 export default function HotelHomePage() {
@@ -25,6 +25,7 @@ export default function HotelHomePage() {
 
   const {
     location,
+    address,
     locationModalRef,
     googleMapUrl,
     openModal,
@@ -34,7 +35,7 @@ export default function HotelHomePage() {
   } = useLocationSelector();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window == "undefined") return;
 
     flatpickr("#date-date", {
       mode: "range",
@@ -82,7 +83,7 @@ export default function HotelHomePage() {
   }, []);
   const handleMinPriceChange = (e) => {
     let value = e.target.value;
-    if (value === "") {
+    if (value == "") {
       setMinPrice(""); // 清空
       return;
     }
@@ -118,9 +119,9 @@ export default function HotelHomePage() {
       priceSliderRef.current.noUiSlider.set([minPrice, value]);
     }
   };
- const handleSearch = () => {
-   console.log("開始搜尋飯店...");
- };
+  const handleSearch = () => {
+    console.log("開始搜尋飯店...");
+  };
   return (
     <>
       <Header />
@@ -134,8 +135,12 @@ export default function HotelHomePage() {
           {" "}
           <SearchBar
             location={location}
+            address={address}
             openModal={openModal}
+            closeModal={closeModal}
+            locationModalRef={locationModalRef}
             quantity={quantity}
+            confirmLocation={confirmLocation}
             setQuantity={setQuantity}
             onSearch={handleSearch}
           />
@@ -144,8 +149,9 @@ export default function HotelHomePage() {
           <Breadcrumb
             links={[
               { label: "首頁 ", href: "/" },
-              { label: "旅館列表", href: "/hotel-coupon/fonthotelHome" ,
-              
+              {
+                label: "旅館列表",
+                href: "/hotel-coupon/fonthotelHome",
                 active: true,
               },
             ]}
@@ -165,63 +171,7 @@ export default function HotelHomePage() {
                 review="8"
                 reviewCount="1,258"
                 link="/hotel-coupon/fonthotelDetail"
-              />
-              <HotelCard
-                image="/hotel/hotel-uploads/1-outside.png"
-                name="烏來Spring Spa溫泉山莊"
-                description="烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池..."
-                review="8"
-                reviewCount="1,258"
-                link="/hotel-coupon/fonthotelDetail"
-              />
-              <HotelCard
-                image="/hotel/hotel-uploads/1-outside.png"
-                name="烏來Spring Spa溫泉山莊"
-                description="烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池..."
-                review="8"
-                reviewCount="1,258"
-                link="/hotel-coupon/fonthotelDetail"
-              />
-              <HotelCard
-                image="/hotel/hotel-uploads/1-outside.png"
-                name="烏來Spring Spa溫泉山莊"
-                description="烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池..."
-                review="8"
-                reviewCount="1,258"
-                link="/hotel-coupon/fonthotelDetail"
-              />
-              <HotelCard
-                image="/hotel/hotel-uploads/1-outside.png"
-                name="烏來Spring Spa溫泉山莊"
-                description="烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池..."
-                review="8"
-                reviewCount="1,258"
-                link="/hotel-coupon/fonthotelDetail"
-              />
-              <HotelCard
-                image="/hotel/hotel-uploads/1-outside.png"
-                name="烏來Spring Spa溫泉山莊"
-                description="烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池..."
-                review="8"
-                reviewCount="1,258"
-                link="/hotel-coupon/fonthotelDetail"
-              />
-              <HotelCard
-                image="/hotel/hotel-uploads/1-outside.png"
-                name="烏來Spring Spa溫泉山莊"
-                description="烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池..."
-                review="8"
-                reviewCount="1,258"
-                link="/hotel-coupon/fonthotelDetail"
-              />
-              <HotelCard
-                image="/hotel/hotel-uploads/1-outside.png"
-                name="烏來Spring Spa溫泉山莊"
-                description="烏來溫泉山莊位於烏來，設有水療中心和溫泉浴池..."
-                review="8"
-                reviewCount="1,258"
-                link="/hotel-coupon/fonthotelDetail"
-              />
+              />          
             </section>
           </div>
         </div>

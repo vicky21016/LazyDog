@@ -8,9 +8,28 @@ export const getCourses = async () => {
       SELECT course.*, course_type.name AS type_name, course_img.url AS img_url       
       FROM course 
       JOIN course_type ON course.type_id = course_type.type_id
-      JOIN course_img ON course.id = course_img.course_id AND course_img.main_pic = 1
+      JOIN course_img ON course.id = course_img.course_id 
+      AND course_img.main_pic = 1
       ;`);
-    return courses;
+    if (courses.length == 0){
+      console.log("課程列表不存在");
+    }
+    const [latest] = await pool.execute(`
+      SELECT c.id AS courseId, c.name AS courseName, cm.url AS img_url       
+      FROM course_session cs 
+      JOIN course c ON cs.course_id = c.id
+      JOIN course_img cm ON c.id = cm.course_id
+      WHERE cs.start_date >= CURDATE()
+      AND cs.is_deleted = 0
+      AND cm.main_pic = 1
+      GROUP BY c.id
+      ORDER BY cs.start_date ASC
+      LIMIT 6
+      ;`);
+    if (latest.length == 0){
+      console.log("課程列表不存在");
+    }
+    return {courses, latest};
   } catch (err) {
     throw new Error(" 無法取得課程列表：" + err.message);
   }
