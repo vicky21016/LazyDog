@@ -49,6 +49,7 @@ export default function CourseIntro({course, session, place}) {
                 src={`/course/img/${c?.img_url}`}
                 alt
               />
+              <h2 className={styles.price}>NT$ <span className={styles.number}>{Number(c?.price).toLocaleString("zh-Tw")}</span></h2>
               <div className={styles.courseName}>
                 <h2 className={styles.name}>{c?.name}</h2>
                 <img
@@ -58,7 +59,7 @@ export default function CourseIntro({course, session, place}) {
                 />
               </div>
               <p className={styles.description}>{c?.description}</p>
-              <h2 className={styles.price}>NT$ <span className={styles.number}>{Number(c?.price).toLocaleString("zh-Tw")}</span></h2>
+              
               <div className={styles.teacher}>
                 <h2 className={styles.teachTitle}>關於講師</h2>
                 <a href="#" className={`d-flex gap-3 ${styles.tConnect}`}>

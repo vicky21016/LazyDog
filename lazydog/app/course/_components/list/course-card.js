@@ -10,7 +10,7 @@ import Pagination from './pagination';
 export default function CourseCard() {
   const url = "http://localhost:5000/api/course"
   const { data, loading, error } = useFetch(url) 
-//   console.log(data?.data);
+  const course =data?.data?.courses;
 
   return (
     <>
@@ -21,7 +21,7 @@ export default function CourseCard() {
             </div>
             <div className={styles.medium}>
             <div className={styles.count}>
-                共計 <span className={styles.countNum}>{data?.data?.length}</span> 堂課
+                共計 <span className={styles.countNum}>{course?.length}</span> 堂課
             </div>
             <div className={styles.hot}>
                 <img src="/course/img/sort.png" alt />
@@ -29,7 +29,7 @@ export default function CourseCard() {
             </div>
             </div>
             <div className={styles.courseGroup}>
-                { data?.data?.map((course) => {
+                {course?.map((course) => {
                     return(
                     <Card key={course.id} course={course}/>
                     )
