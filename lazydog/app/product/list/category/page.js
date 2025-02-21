@@ -5,10 +5,77 @@ import styles from "./category.module.css";
 import Aside from "../../_components/aside/aside";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import Card from "../../_components/card/card";
+import useSWR from "swr";
 
 export default function ListPage(props) {
+  // http://localhost:5000/api/products/search?category=乾糧&main=乾糧&type=主食&age=全年齡&feature=強效潔牙&flavor=牛肉,鴨肉&cereal=無穀&size=全適用
+  const [keyword, setKeyword] = useState({
+    主分類: [],
+    種類: [],
+    適用年齡: [],
+    功能: [],
+    口味: [],
+    穀類: [],
+    適用體型: [],
+  });
+  // console.log(keyword);
+
   const query = useSearchParams();
   const category = query.get("category");
+  const [newUrl, setNewUrl] = useState(
+    `http://localhost:5000/api/products/category?category=${category}`
+  );
+  const changeUrl = (newUrl) => {
+    setNewUrl(newUrl);
+  };
+  useEffect(() => {
+    if (
+      keyword?.主分類.length == 0 &&
+      keyword?.種類.length == 0 &&
+      keyword?.適用年齡.length == 0 &&
+      keyword?.功能.length == 0 &&
+      keyword?.口味.length == 0 &&
+      keyword?.穀類.length == 0 &&
+      keyword?.適用體型.length == 0
+    ) {
+      changeUrl(
+        `http://localhost:5000/api/products/category?category=${category}`
+      );
+      return;
+    }
+    changeUrl(
+      `http://localhost:5000/api/products/search?category=${category}&main=${keyword?.主分類.join(
+        ","
+      )}&type=${keyword?.種類.join(",")}&age=${keyword?.適用年齡.join(
+        ","
+      )}&feature=${keyword?.功能.join(",")}&flavor=${keyword?.口味.join(
+        ","
+      )}&cereal=${keyword?.穀類.join(",")}&size=${keyword?.適用體型.join(",")}`
+    );
+    console.log(newUrl);
+  }, [keyword]);
+  // const url = `http://localhost:5000/api/products/category?category=${category}`;
+  const fetcher = async (url) => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("資料要求失敗");
+      return res.json();
+    } catch (err) {
+      console.error("資料要求失敗:", err);
+      throw err;
+    }
+  };
+  const { data, isLoading, error, mutate } = useSWR(newUrl, fetcher);
+  const products = data?.data;
+  const productID = "";
+
+  const pageStart = 1;
+  let pageNow = Number(query.get("page")) || Number(pageStart);
+  let pages = "";
+  if (products) pages = Math.ceil(products.length / 24);
+  const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
+
   return (
     <>
       <div className={`${styles.Container} container`}>
@@ -23,7 +90,7 @@ export default function ListPage(props) {
           <div className={styles.Breadcrumbs}>
             <Link href="http://localhost:3000">首頁</Link>
             <img src="/product/font/right.png" alt="" />
-            <Link href="http://localhost:3000/product/list"> 商品目錄 </Link>
+            <Link href="http://localhost:3000/product/list">商品目錄</Link>
             <img src="/product/font/right.png" alt="" />
             <Link
               className={styles.BreadcrumbsActive}
@@ -41,156 +108,70 @@ export default function ListPage(props) {
           </div>
         </section>
         <section className={styles.PdArea}>
-          <Aside />
-          <main className={styles.PdList} style={{ display: "none" }}>
-            <ul className={styles.ProductCardGroup}>
-              {/* 用這個商品卡片 */}
-              <li className={styles.ProductCard}>
-                <div
-                  className={styles.ProductCardHeart}
-                  style={{ display: "none" }}
-                >
-                  <img src="/product/font/heart.png" alt="" />
-                </div>
-                <div className={styles.ProductCardOnsale}>-30%</div>
-                <figure className={styles.ProductCardImg}>
-                  <img
-                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
-                    alt=""
-                  />
-                </figure>
-                <div className={styles.ProductCardInfo}>
-                  <h4 className={styles.ProductCardName}>
-                    我們相信，毛小孩不僅是寵物，更是家人。
-                  </h4>
-                  <h4 className={styles.ProductCardPrice}>NT$1000</h4>
-                </div>
-                <div className={styles.ProductCardHover}>
-                  <a href="" className={styles.HoverIcon}>
-                    <img src="/product/font/heart.png" alt="" />
-                  </a>
-                  <a href="" className={styles.HoverIcon}>
-                    <img src="/product/font/cart.png" alt="" />
-                  </a>
-                  <a href="" className={styles.HoverIcon}>
-                    <img src="/product/font/list.png" alt="" />
-                  </a>
-                </div>
-              </li>
-              {/* 用這個商品卡片 */}
-              <li className={styles.ProductCard}>
-                <div
-                  className={styles.ProductCardHeart}
-                  style={{ display: "none" }}
-                >
-                  <img src="/product/font/heart.png" alt="" />
-                </div>
-                <div className={styles.ProductCardOnsale}>-30%</div>
-                <figure className={styles.ProductCardImg}>
-                  <img
-                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
-                    alt=""
-                  />
-                </figure>
-                <div className={styles.ProductCardInfo}>
-                  <h4 className={styles.ProductCardName}>
-                    我們相信，毛小孩不僅是寵物，更是家人。
-                  </h4>
-                  <h4 className={styles.ProductCardPrice}>NT$1000</h4>
-                </div>
-                <div className={styles.ProductCardHover}>
-                  <a href="" className={styles.HoverIcon}>
-                    <img src="/product/font/heart.png" alt="" />
-                  </a>
-                  <a href="" className={styles.HoverIcon}>
-                    <img src="/product/font/cart.png" alt="" />
-                  </a>
-                  <a href="" className={styles.HoverIcon}>
-                    <img src="/product/font/list.png" alt="" />
-                  </a>
-                </div>
-              </li>
-              <li className={styles.ProductCard}>
-                <div
-                  className={styles.ProductCardHeart}
-                  style={{ display: "none" }}
-                >
-                  <img src="/product/font/heart.png" alt="" />
-                </div>
-                <div className={styles.ProductCardOnsale}>-30%</div>
-                <figure className={styles.ProductCardImg}>
-                  <img
-                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
-                    alt=""
-                  />
-                </figure>
-                <div className={styles.ProductCardInfo}>
-                  <h4 className={styles.ProductCardName}>
-                    我們相信，毛小孩不僅是寵物，更是家人。
-                  </h4>
-                  <h4 className={styles.ProductCardPrice}>NT$1000</h4>
-                </div>
-                <div className={styles.ProductCardHover}>
-                  <a href="" className={styles.HoverIcon}>
-                    <img src="/product/font/heart.png" alt="" />
-                  </a>
-                  <a href="" className={styles.HoverIcon}>
-                    <img src="/product/font/cart.png" alt="" />
-                  </a>
-                  <a href="" className={styles.HoverIcon}>
-                    <img src="/product/font/list.png" alt="" />
-                  </a>
-                </div>
-              </li>
-              <li className={styles.ProductCard}>
-                <div
-                  className={styles.ProductCardHeart}
-                  style={{ display: "none" }}
-                >
-                  <img src="/product/font/heart.png" alt="" />
-                </div>
-                <div className={styles.ProductCardOnsale}>-30%</div>
-                <figure className={styles.ProductCardImg}>
-                  <img
-                    src="/product/temp/GOMO PET FOOD 狗罐160公克【秘制茄紅牛蛋鮮】(1入)(狗主食罐頭)_title.webp"
-                    alt=""
-                  />
-                </figure>
-                <div className={styles.ProductCardInfo}>
-                  <h4 className={styles.ProductCardName}>
-                    我們相信，毛小孩不僅是寵物，更是家人。
-                  </h4>
-                  <h4 className={styles.ProductCardPrice}>NT$1000</h4>
-                </div>
-                <div className={styles.ProductCardHover}>
-                  <a href="" className={styles.HoverIcon}>
-                    <img src="/product/font/heart.png" alt="" />
-                  </a>
-                  <a href="" className={styles.HoverIcon}>
-                    <img src="/product/font/cart.png" alt="" />
-                  </a>
-                  <a href="" className={styles.HoverIcon}>
-                    <img src="/product/font/list.png" alt="" />
-                  </a>
-                </div>
-              </li>
-            </ul>
+          <Aside
+            changeUrl={changeUrl}
+            keyword={keyword}
+            setKeyword={setKeyword}
+          />
+          <main className={styles.PdList}>
+            {[...Array(6)].map((value, index) => {
+              return (
+                <ul className={styles.ProductCardGroup} key={index}>
+                  {product?.map((v, i) => {
+                    if (index * 4 <= i && i < (index + 1) * 4)
+                      return <Card key={v.productID} productID={v.productID} />;
+                  })}
+                </ul>
+              );
+            })}
             <nav>
               <ul className={styles.ProductListPagination}>
-                <li className={`${styles.PageItem} page-item`}>
-                  <a className={`${styles.PageLink} page-link`} href="">
-                    1
-                  </a>
+                <li className={`${styles.PageArrow}`}>
+                  <Link
+                    href={`http://localhost:3000/product/list/category?category=${category}&page=${
+                      pageNow - 1
+                    }`}
+                  >
+                    <img src="/product/font/left(orange).png" alt="" />
+                  </Link>
                 </li>
-                <li className={`${styles.PageItem} page-item`}>
-                  <a className={`${styles.PageLink} page-link`} href="">
-                    2
-                  </a>
-                </li>
-                <li className={`${styles.PageItem} page-item`}>
-                  <a className={`${styles.PageLink} page-link`} href="">
-                    3
-                  </a>
+                {[...Array(pages)].map((v, i) => {
+                  if (
+                    i == 0 ||
+                    i == pageNow - 3 ||
+                    i == pageNow - 2 ||
+                    i == pageNow - 1 ||
+                    i == pageNow ||
+                    i == pageNow + 1 ||
+                    i == pages - 1
+                  ) {
+                    return (
+                      <li
+                        key={`li${i}`}
+                        className={`${styles.PageItem} page-item ${
+                          i + 1 == pageNow ? styles.PageItemActive : ""
+                        }`}
+                      >
+                        <Link
+                          className={`${styles.PageLink} page-link `}
+                          href={`http://localhost:3000/product/list/category?category=${category}&page=${
+                            i + 1
+                          }`}
+                        >
+                          {i + 1}
+                        </Link>
+                      </li>
+                    );
+                  }
+                })}
+                <li className={`${styles.PageArrow}`}>
+                  <Link
+                    href={`http://localhost:3000/product/list/category?category=${category}&page=${
+                      pageNow + 1
+                    }`}
+                  >
+                    <img src="/product/font/right(orange).png" alt="" />
+                  </Link>
                 </li>
               </ul>
             </nav>

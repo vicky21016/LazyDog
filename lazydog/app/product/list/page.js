@@ -9,8 +9,21 @@ import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
 
 export default function ListPage(props) {
-  const url = "http://localhost:5000/api/products";
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const [newUrl, setNewUrl] = useState("http://localhost:5000/api/products");
+  const changeUrl = (newUrl) => {
+    setNewUrl(newUrl);
+  };
+  const url = newUrl;
+  const fetcher = async (url) => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("資料要求失敗");
+      return res.json();
+    } catch (err) {
+      console.error("資料要求失敗:", err);
+      throw err;
+    }
+  };
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
   const query = useSearchParams();
   const products = data?.data;
@@ -52,21 +65,21 @@ export default function ListPage(props) {
           </div>
         </section>
         <section className={styles.PdArea}>
-          <Aside />
+          <Aside changeUrl={changeUrl} />
           <main className={styles.PdList}>
             {[...Array(6)].map((value, index) => {
               return (
                 <ul className={styles.ProductCardGroup} key={index}>
                   {product?.map((v, i) => {
                     if (index * 4 <= i && i < (index + 1) * 4)
-                      return <Card key={v.productID} product={v} />;
+                      return <Card key={v.productID} productID={v.productID} />;
                   })}
                 </ul>
               );
             })}
             <nav>
               <ul className={styles.ProductListPagination}>
-                <li>
+                <li className={`${styles.PageArrow}`}>
                   <Link
                     href={`http://localhost:3000/product/list?page=${
                       pageNow - 1
@@ -102,14 +115,11 @@ export default function ListPage(props) {
                             {i + 1}
                           </Link>
                         </li>
-                        {/* {i + 1 != pages && (
-                          <h5 style={{ color: "var(--orange)" }}>...</h5>
-                        )} */}
                       </>
                     );
                   }
                 })}
-                <li>
+                <li className={`${styles.PageArrow}`}>
                   <Link
                     href={`http://localhost:3000/product/list?page=${
                       pageNow + 1

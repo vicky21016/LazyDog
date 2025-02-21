@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./aside.module.css";
 import Link from "next/link";
 
-export default function FilterGroup(props) {
+export default function FilterGroup() {
   const [showMore, setShowMore] = useState(false);
   return (
     <>
