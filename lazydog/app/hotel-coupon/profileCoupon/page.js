@@ -25,7 +25,7 @@ export default function ProfileCouponPage(props) {
       <div className="container mt-5">
         <div className="row">
           {/* 左邊*/}
-          <div className="col-md-3">
+          <div className="d-none d-md-block col-md-3">
             <MyMenu />
           </div>
           {/* 右邊 */}
