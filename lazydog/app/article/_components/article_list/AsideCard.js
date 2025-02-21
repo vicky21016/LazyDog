@@ -16,7 +16,7 @@ export default function AsideCard({ title,cover_image,created_at }) {
                     className={styles.tt}
                     style={{ display: 'flex', justifyContent: 'center' }}
                 >
-                    <Link href="#">{title}</Link>
+                    <Link href="">{title}</Link>
                     <p style={{ color: '#9F9F9F' }}>{created_at}</p>
                 </div>
             </div>

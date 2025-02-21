@@ -12,6 +12,14 @@ import {
   uploadController,
 } from "../controllers/articleController.js";
 
+import { dirname, resolve } from "path";
+
+import { fileURLToPath } from "url";
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+
+
+
 const router = express.Router();
 
 // 用於處理一般表單資料，不包含檔案
@@ -32,7 +40,9 @@ const fileUpload = multer({
     fileSize: 100 * 1024 * 1024, 
   },
 });
+console.log(resolve(__dirname, "../../public", "article_img","0c68b190-ebe5-11ee-bb73-635f232238eb.webp"));
 
+router.use(express.static(resolve(__dirname, "../../public", "article_img")));
 router.get("/", getArticles);
 router.get("/search", searchKeyword); // search 要在 :id 前面
 router.get("/:id", getId);
