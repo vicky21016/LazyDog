@@ -70,7 +70,7 @@ export default function CouponPage() {
                   <Image
                     src="/hotel/hotel-images/page-image/coupon/coupon-Y.png"
                     alt="優惠券背景"
-                    fill={true}
+                    fill="true"
                     style={{ objectFit: "cover" }}
                   />
                   <div className={styles.suCouponContent}>

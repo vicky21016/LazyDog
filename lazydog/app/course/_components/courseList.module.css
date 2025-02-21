@@ -544,25 +544,32 @@
     }
     .sCards {
       display: flex;
-      padding: 13px 0px;
+      padding: 13px 3px;
       align-items: flex-start;
-      gap: 60px;
+      gap: 88px;
       align-self: stretch;
       overflow: hidden;
+      text-align: center;
       .sCard {
-        cursor: pointer;
+        /* cursor: pointer; */
       }
       .cardImg {
         width: 240px;
         height: 240px;
         margin-bottom: 27px;
+        border: .1px solid #f7efef;
       }
       .cardName {
-        /* overflow: hidden; */
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        -webkit-line-clamp: 1;
+        word-wrap: break-word;
         color: var(--Color, #3b3330);
-        /* text-overflow: ellipsis; */
-        font-size: 18px;
+        text-overflow: ellipsis;
+        font-size: 17px;
         font-weight: bold;
+        letter-spacing: 1.2px;
         margin: 0;
       }
     }
