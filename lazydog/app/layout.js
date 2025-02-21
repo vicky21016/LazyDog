@@ -50,8 +50,9 @@ export default function RootLayout({ children }) {
       <AuthProvider>
         <body className={`mb-5 ${geistSans.variable} ${geistMono.variable}`}>
           {children}
+          <Footer/>
         </body>
-        <Footer/>
+        
       </AuthProvider>
     </html>
   );
