@@ -1,20 +1,28 @@
 import pool from "../config/mysql.js";
 
-export const getHotels = async () => {
+export const getHotels = async (minRating = 0) => {
   const connection = await pool.getConnection();
   try {
-    //hi=hotel_images 
     const [hotels] = await connection.query(`
       SELECT 
         h.*, 
-        hi.url AS main_image_url
+        hi.url AS main_image_url,
+        IFNULL(r.avg_rating, 0) AS avg_rating
       FROM hotel h
       LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
-      WHERE h.is_deleted = 0
-    `);
+      LEFT JOIN (
+        SELECT hotel_id, ROUND(AVG(rating), 1) AS avg_rating
+        FROM hotel_reviews
+        GROUP BY hotel_id
+      ) r ON h.id = r.hotel_id
+      WHERE h.is_deleted = 0 AND IFNULL(r.avg_rating, 0) >= ?
+    `, [minRating]);
+
     return hotels;
   } catch (error) {
     throw new Error(" 無法取得旅館list：" + error.message);
+  } finally {
+    connection.release();
   }
 };
 
