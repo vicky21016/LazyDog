@@ -25,6 +25,7 @@
     "classnames": "^2.5.1",
     "cors": "^2.8.5",
     "dom": "^0.0.3",
+    "dompurify": "^3.2.4",
     "dotenv": "^16.4.7",
     "firebase": "^11.3.0",
     "flatpickr": "^4.6.13",

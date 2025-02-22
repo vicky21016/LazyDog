@@ -31,11 +31,27 @@
 .auther{
   width: 48px;
 }
- 
 
-/* img{
-  width: 100%;  
+.articleContent img{
+  width: 100%;
+  margin:20px 0 ;
+}
+ 
+.customLink {
+  text-underline-offset: 12px;
+  color: black;
+}
+
+.customLink:hover {
+  text-underline-offset: 12px;
+  color: #f5842b;
+}
+
+/* :global(img) {
+  width: 100%;
+  margin:20px 0 ;
 } */
+
 @media screen and (min-width: 390px) {
     .chat{
         width: 390px;

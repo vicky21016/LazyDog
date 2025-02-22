@@ -5,12 +5,13 @@ import { useState, useEffect } from 'react'
 const API_URL = 'http://localhost:5000/api/articles'
 
 function useArticles() {
-    const [articles, setArticles] = useState([]) // 文章列表
-    const [comments, setComments] = useState([]);// 取得留言
+    const [articles, setArticles] = useState([])
+    const [article, setArticle] = useState(null)
+    const [comments, setComments] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
-    // **取得所有文章**
+    // 取得所有文章（列表用）
     const getArticles = async () => {
         setLoading(true)
         try {
@@ -25,27 +26,40 @@ function useArticles() {
         }
     }
 
-    // **取得單篇文章**
+    // 取得單篇文章（詳情用）
     const getArticle = async (id) => {
         if (!id) {
-            setArticles(null);
-            setComments([]);
-            return;
+            setArticle(null)
+            setComments([])
+            return
         }
+        
+        let isCurrentRequestValid = true // 競態條件控制
+        
         try {
             setLoading(true)
-            setError(null);
+            setError(null)
+            
             const response = await fetch(`${API_URL}/${id}`)
-            if (!response.ok) throw new Error('無法取得文章')
-            const data = await response.json();
-            setArticles(data.article || null);
-            setComments(data.comments || []);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+            
+            const data = await response.json()
+            
+            // 重要修正：直接使用 data 而非 data.article
+            if (isCurrentRequestValid) {
+                setArticle(data)         // 直接設定整個 data 到 article
+                setComments(data.comments || []) // 從 data 取 comments
+            }
         } catch (err) {
-            setError(err.message)
-            return null
+            if (isCurrentRequestValid) {
+                setError(err.message)
+                setArticle(null)
+            }
         } finally {
-            setLoading(false)
+            if (isCurrentRequestValid) setLoading(false)
         }
+
+        return () => { isCurrentRequestValid = false } // 清除陳舊請求
     }
 
     // 新增文章
@@ -110,14 +124,12 @@ function useArticles() {
 
     return {
         articles,
+        article,
+        comments,
         loading,
         error,
-        comments,
+        getArticles,
         getArticle,
-        createArticle,
-        updateArticle,
-        deleteArticle,
-        setComments
     }
 }
 

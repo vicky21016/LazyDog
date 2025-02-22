@@ -5,7 +5,7 @@ import Link from "next/link";
 import styles from "./ListCard.module.css";
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
-export default function ListCard({ title,name,category_name,created_at,cover_image }) {
+export default function ListCard({ id,title,name,category_name,created_at,cover_image }) {
   return(
     <>
     <div className={styles.card}>
@@ -61,7 +61,7 @@ export default function ListCard({ title,name,category_name,created_at,cover_ima
       </div>
 
       <p>{title}</p>
-        <Link href="/about" className={styles.customLink}>Read more</Link>
+        <Link  href={{ pathname: `/article/detail/${id}`, query: { list: "true" } }} className={styles.customLink}>Read more</Link>
     </div>
   </>
   )
