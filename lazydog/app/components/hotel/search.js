@@ -1,5 +1,7 @@
 import React from "react";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
+import { useDatePicker } from "@/hooks/useDatePicker";
+
 
 const HotelSearchBar = ({
   location,
@@ -12,6 +14,7 @@ const HotelSearchBar = ({
   setQuantity,
   onSearch,
 }) => {
+  const dateRef = useDatePicker();
   return (
     <div className="container mt-4">
       <div className={styles.suSearchBar}>
@@ -38,7 +41,7 @@ const HotelSearchBar = ({
           />
           <input
             type="text"
-            id="date-date"
+            ref={dateRef}
             className={styles.suSearchDate}
             placeholder="入住日期 → 退房日期"
           />
