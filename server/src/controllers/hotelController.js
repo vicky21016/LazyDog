@@ -10,10 +10,12 @@ import {
 
 export const getAllHotels = async (req, res) => {
   try {
-    const hotels = await getHotels();
+    const minRating = req.query.min_rating ? parseFloat(req.query.min_rating) : 0;
+    const hotels = await getHotels(minRating);
     res.json(hotels);
-  } catch (err) {
-    res.status(500).json({ err: `找不到旅館` });
+  } catch (error) {
+    console.error("獲取飯店列表失敗:", error);
+    res.status(500).json({ message: "無法獲取飯店列表" });
   }
 };
 

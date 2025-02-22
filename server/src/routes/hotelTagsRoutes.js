@@ -3,6 +3,7 @@ import {
   getHotelTag,
   addHotelTag,
   removeHotelTag,
+  getAllHotelTags,
 } from "../controllers/hotelTagsController.js";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 
@@ -19,5 +20,6 @@ router.delete(
   verifyRole(["operator"]),
   removeHotelTag
 );
+router.get("/", getAllHotelTags);
 
 export default router;

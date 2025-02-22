@@ -66,8 +66,14 @@ export const softDeleteHotel = async (id) => {
 
 //標籤C
 export const getAllTags = async () => {
-  const res = await fetch(HOTEL_TAGS_URL, { method: "GET" });
-  return await res.json();
+  try {
+    const res = await fetch(`HOTEL_TAGS_URL`, { method: "GET" });
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    return await res.json();
+  } catch (error) {
+    console.error("獲取標籤失敗:", error);
+    return []; // API 失敗時回傳空陣列，避免前端崩潰
+  }
 };
 export const getHotelTags = async (hotelId) => {
   const res = await fetch(`${HOTEL_TAGS_URL}/${hotelId}`, { method: "GET" });
@@ -134,17 +140,17 @@ export const getRoomInventory = async () => {
 };
 //OP ONLY
 export const updateRoomInventory = async (roomInventoryId, updateData) => {
-    const token = getToken();
-    const res = await fetch(`${ROOM_INVENTORY_URL}/${roomInventoryId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(updateData),
-    });
-    return await res.json();
-  };
+  const token = getToken();
+  const res = await fetch(`${ROOM_INVENTORY_URL}/${roomInventoryId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(updateData),
+  });
+  return await res.json();
+};
 //OP END
 
 //hotel的圖C
@@ -364,4 +370,18 @@ export const deleteHotelReview = async (reviewId) => {
     headers: { Authorization: `Bearer ${token}` },
   });
   return await res.json();
+};
+export const ratingAv = async () => {
+  try {
+    const res = await fetch(`${HOTEL_REVIEW_URL}/average`, { method: "GET" });
+
+    if (!res.ok) {
+      throw new Error(`獲取評分失敗: ${res.status} ${res.statusText}`);
+    }
+
+    return await res.json(); // 確保返回的是 Array
+  } catch (error) {
+    console.error("獲取飯店評分時發生錯誤:", error.message);
+    return [];
+  }
 };
