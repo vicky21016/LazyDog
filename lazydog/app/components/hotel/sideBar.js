@@ -144,10 +144,10 @@ export default function SideBar({ hotelId, onSearch }) {
           ) : (
             <>
               <button
-                className={`btn btn-secondary`}
+                className={`btn btn-primary ${styles.suMapBtn}`}
                 onClick={() => setShowGoogleMaps(false)}
               >
-                返回 Google Maps 縮圖
+                返回縮圖
               </button>
               {/*  使用 Google Maps 動態地圖 */}
               <GoogleMapComponent hotels={hotels} />

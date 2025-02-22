@@ -23,14 +23,15 @@ const GoogleMapComponent = ({ hotels }) => {
   useEffect(() => {
     if (!isApiLoaded || !hotels.length || !mapRef.current) return;
 
-
     const google = window.google;
     const map = new google.maps.Map(mapRef.current, {
       center: { lat: 23.6978, lng: 120.9605 }, // 台灣中心點
       zoom: 7,
+      mapTypeControl: false,
+      streetViewControl: false,
     });
 
-    const infoWindow = new google.maps.InfoWindow(); // 🔥 新增 InfoWindow
+    const infoWindow = new google.maps.InfoWindow(); // 新增 InfoWindow
 
     hotels.forEach((hotel, index) => {
       if (hotel.latitude && hotel.longitude) {
@@ -48,17 +49,19 @@ const GoogleMapComponent = ({ hotels }) => {
         });
 
         // 帶入飯店縮圖 (假設 hotel.image_url 是 API 傳回的圖片)
-        const imageUrl = hotel.image_url
-          ? hotel.image_url
-          : "/hotel/loding.jpg"; // 預設圖片
+        const imageUrl =
+          hotel.main_image_url && hotel.main_image_url !== "null"
+            ? hotel.main_image_url
+            : "/hotel/loading.jpg";
 
         // 設置 InfoWindow 的 HTML 內容
         const contentString = `
-          <div style="max-width: 200px">
-            <img src="${imageUrl}" alt="${hotel.name}" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 5px;">
-            <span>${hotel.name}</span>
-            </div>
-        `;
+        <div style="max-width: 250px; max-height: 200px; padding: 10px; text-align: center; overflow: hidden;">
+          <img src="${imageUrl}" alt="${hotel.name}" 
+            style="width: 100%; max-height: 150px; height: auto; border-radius: 8px; margin-bottom: 8px;">
+          <h5 style="margin: 5px 0; font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${hotel.name}</h5>
+        </div>
+      `;
 
         marker.addListener("click", () => {
           infoWindow.setContent(contentString);

@@ -41,7 +41,10 @@ export const searchHotels = async (keyword) => {
 export const getId = async (id) => {
   try {
     const [hotels] = await pool.query(
-      "SELECT * FROM hotel WHERE id = ? AND is_deleted = 0",
+      `SELECT h.*, hi.image_url
+       FROM hotel h
+       LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
+       WHERE h.id = ? AND h.is_deleted = 0`,
       [id]
     );
 
