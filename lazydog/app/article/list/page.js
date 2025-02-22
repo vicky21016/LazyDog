@@ -5,8 +5,8 @@ import styles from './page.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import useArticles from '@/hooks/useArticle';
-import MainCard from '../_components/article_list/ListCard';
-import AsideCard from '../_components/article_list/AsideCard';
+import MainCard from '../_components/list/ListCard';
+import AsideCard from '../_components/list/AsideCard';
 
 const ArticlePage = () => {
   const { articles, loading, error } = useArticles();
@@ -31,7 +31,7 @@ const ArticlePage = () => {
     setPage(1); // 切換分類時重置頁碼
   };
 
-  // 分頁數字生成（保持原樣）
+  // 分頁數字生成
   const generatePageNumbers = () => {
     if (totalPages <= 3) {
       return [...Array(totalPages)].map((_, i) => i + 1);
@@ -44,6 +44,12 @@ const ArticlePage = () => {
         return [page - 1, page, page + 1];
       }
     }
+  };
+
+  // 分頁切換處理
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return; // 限制頁碼範圍
+    setPage(newPage);
   };
 
   return (
@@ -98,8 +104,6 @@ const ArticlePage = () => {
             <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(3); }}>
               <p>善終</p>
             </a>
-                
-            
           </div>
         </div>
 
@@ -121,6 +125,7 @@ const ArticlePage = () => {
           {currentArticles.map((article) => (
             <MainCard key={article.id} {...article} />
           ))}
+         
         </div>
 
         {/* 左側欄延伸閱讀 */}
@@ -143,9 +148,9 @@ const ArticlePage = () => {
               <a
                 className={`${styles.PageLink} page-link`}
                 href="#"
-                onClick={() => handlePageChange(page - 1)}
+                onClick={(e) => { e.preventDefault(); handlePageChange(page - 1); }}
               >
-                <i class="bi bi-arrow-left"></i>
+                <i className="bi bi-arrow-left"></i>
               </a>
             </li>
             {generatePageNumbers().map((pageNumber) => (
@@ -153,7 +158,7 @@ const ArticlePage = () => {
                 <a
                   className={`${styles.PageLink} page-link`}
                   href="#"
-                  onClick={() => handlePageChange(pageNumber)}
+                  onClick={(e) => { e.preventDefault(); handlePageChange(pageNumber); }}
                   style={page === pageNumber ? { fontWeight: 'bold' } : {}}
                 >
                   {pageNumber}
@@ -164,9 +169,9 @@ const ArticlePage = () => {
               <a
                 className={`${styles.PageLink} page-link`}
                 href="#"
-                onClick={() => handlePageChange(page + 1)}
+                onClick={(e) => { e.preventDefault(); handlePageChange(page + 1); }}
               >
-                <i class="bi bi-arrow-right"></i>
+                <i className="bi bi-arrow-right"></i>
               </a>
             </li>
           </ul>

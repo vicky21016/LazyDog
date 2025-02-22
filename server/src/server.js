@@ -46,7 +46,7 @@ app.use("/api/auth/google", googleRouter);
 app.use("/teacher", teacherSignRouter);
 
 app.use("/api/read", readRoutes);
-app.use("/api/hotels", hotelRoutes);
+app.use("/hotel", hotelRoutes);
 app.use("/api/hotel_tags", hotelTagsRoutes);
 app.use("/api/hotel_room_types", hotelRoomTypeRoutes);
 app.use("/api/room_inventory", roomInventoryRoutes);
@@ -54,7 +54,7 @@ app.use("/api/hotel_images", hotelImagesRoutes);
 app.use("/api/hotel_orders", hotelOrderRoutes);
 app.use("/api/order_dogs", orderDogsRoutes);
 app.use("/api/hotel_favorites", hotelFavoriteRoutes);
-app.use("/api/hotel_review", hotelReviewRoutes);
+app.use("/review", hotelReviewRoutes);
 
 app.use("/api/coupon", couponRoutes);
 app.use("/api/coupon/restrictions", couponRestrictionRoutes);
