@@ -3,15 +3,26 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/modules/fontHotelHome.module.css";
 import Link from "next/link";
+import { getHotelTags, ratingAv } from "@/services/hotelService";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 
-export default function SideBar() {
+export default function SideBar({ hotelId }) {
   const [showAllFacilities, setShowAllFacilities] = useState(false);
+  const [hotelTags, setHotelTags] = useState([]);
+  const [ratings, setRatings] = useState([]);
+  const [selectedRating, setSelectedRating] = useState("");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(10000);
-  const [isSearching, setIsSearching] = useState(true); // 搜尋/清除狀態
+  const [isSearching, setIsSearching] = useState(true);
   const priceSliderRef = useRef(null);
+
+  useEffect(() => {
+    if (hotelId) {
+      fetchHotelTags();
+    }
+    fetchRatings();
+  }, [hotelId]); // 監聽 hotelId 變化，確保 hotelTags 會更新
 
   useEffect(() => {
     if (!priceSliderRef.current) return;
@@ -41,17 +52,49 @@ export default function SideBar() {
     }
   }, [minPrice, maxPrice]);
 
+  const fetchHotelTags = async () => {
+    try {
+      if (!hotelId) {
+        console.warn("Hotel ID 未提供，無法獲取標籤");
+        return;
+      }
+      const tags = await getHotelTags(hotelId);
+      setHotelTags(tags || []);
+    } catch (error) {
+      console.error("獲取飯店標籤失敗:", error);
+    }
+  };
+
+  const fetchRatings = async () => {
+    try {
+      const ratingList = await ratingAv();
+      setRatings(ratingList || []);
+    } catch (error) {
+      console.error("獲取飯店評分失敗:", error);
+    }
+  };
+
   const toggleFacilities = () => {
     setShowAllFacilities((prev) => !prev);
   };
 
-  const openMap = () => {
-    alert("地圖功能待實作");
-  };
-
-  const handleSearch = () => {
+  const handleSearch = async () => {
     console.log("開始搜尋...");
-    setIsSearching(false); // 切換到清除狀態
+
+    const query = selectedRating ? `?min_rating=${selectedRating}` : "";
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/hotels${query}`);
+      const data = await res.json();
+
+      console.log("搜尋結果:", data);
+      // 這裡可以把搜尋結果存進 state，然後更新畫面
+      setHotels(data);
+    } catch (error) {
+      console.error("搜尋失敗:", error);
+    }
+
+    setIsSearching(false);
   };
 
   const handleClear = () => {
@@ -59,17 +102,18 @@ export default function SideBar() {
     setMinPrice(0);
     setMaxPrice(10000);
     priceSliderRef.current?.noUiSlider.set([0, 10000]);
-    setIsSearching(true); // 切換回搜尋狀態
+    setIsSearching(true);
   };
 
   return (
     <>
+      {/* //固定 */}
       <aside className={`container col-lg-3${styles.suSidebar}`}>
         {/* 地圖區塊 */}
         <div className={styles.suMapCard}>
           <button
             className={`btn ${styles.suMapBtn} btn-primary`}
-            onClick={openMap}
+            onClick={() => alert("地圖功能待實作")}
           >
             📍 於地圖上顯示
           </button>
@@ -84,35 +128,32 @@ export default function SideBar() {
 
         {/* 優質住宿篩選 */}
         <div className={styles.suFilterGroup}>
-          <h6 className={styles.suFilterTitle}>優質住宿</h6>
-          <select className="form-select">
-            <option>選擇類型</option>
-            <option>五星級</option>
-            <option>四星級</option>
+          <h6 className={styles.suFilterTitle}>飯店評分</h6>
+          <select
+            className="form-select"
+            value={selectedRating}
+            onChange={(e) => setSelectedRating(e.target.value)}
+          >
+            <option value="">全部</option>
+            {[5, 4, 3, 2, 1].map((rating) => (
+              <option key={rating} value={rating}>
+                {rating} ★ 以上
+              </option>
+            ))}
           </select>
         </div>
 
         {/* 設施篩選 */}
         <div className={styles.suFilterGroup}>
           <h6 className={styles.suFilterTitle}>設施</h6>
-          <div className="form-check">
-            <input className="form-check-input" type="checkbox" id="walk" />
-            <label className="form-check-label" htmlFor="walk">
-              免費散步
-            </label>
-          </div>
-          <div className="form-check">
-            <input className="form-check-input" type="checkbox" id="pool" />
-            <label className="form-check-label" htmlFor="pool">
-              游泳池
-            </label>
-          </div>
-          <div className="form-check">
-            <input className="form-check-input" type="checkbox" id="pets" />
-            <label className="form-check-label" htmlFor="pets">
-              戶外運動
-            </label>
-          </div>
+          {hotelTags.slice(0, 3).map((tag, index) => (
+            <div className="form-check" key={index}>
+              <input className="form-check-input" type="checkbox" id={tag} />
+              <label className="form-check-label" htmlFor={tag}>
+                {tag}
+              </label>
+            </div>
+          ))}
 
           <span className={styles.suShowMore} onClick={toggleFacilities}>
             {showAllFacilities ? "收起 ▲" : "顯示全部 ▼"}
@@ -120,28 +161,21 @@ export default function SideBar() {
 
           {showAllFacilities && (
             <div className={`${styles.suHidden} mt-2`}>
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="wifi" />
-                <label className="form-check-label" htmlFor="wifi">
-                  免費 Wi-Fi
-                </label>
-              </div>
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="spa" />
-                <label className="form-check-label" htmlFor="spa">
-                  SPA 按摩
-                </label>
-              </div>
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="gym" />
-                <label className="form-check-label" htmlFor="gym">
-                  健身房
-                </label>
-              </div>
+              {hotelTags.slice(3).map((tag, index) => (
+                <div className="form-check" key={index}>
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id={tag}
+                  />
+                  <label className="form-check-label" htmlFor={tag}>
+                    {tag}
+                  </label>
+                </div>
+              ))}
             </div>
           )}
         </div>
-
         {/* 價格篩選 */}
         <div className={styles.suFilterGroup}>
           <h6 className={styles.suFilterTitle}>價格篩選</h6>
