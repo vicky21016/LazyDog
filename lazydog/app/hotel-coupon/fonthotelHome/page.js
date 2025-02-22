@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
 import Header from "../../components/layout/header";
 import HotelCard from "@/app/components/hotel/hotelCard";
 import SearchBar from "../../components/hotel/search";
@@ -27,9 +29,10 @@ export default function HotelHomePage() {
   } = useLocationSelector();
 
   useEffect(() => {
-    if (typeof window == "undefined") return;
-
+    if (typeof window === "undefined") return;
+  
     import("flatpickr").then(({ default: flatpickr }) => {
+      console.log("flatpickr 載入成功！");
       flatpickr("#date-date", {
         mode: "range",
         dateFormat: "Y-m-d",
@@ -51,9 +54,11 @@ export default function HotelHomePage() {
           rangeSeparator: " 至 ",
         },
       });
+    }).catch((error) => {
+      console.error("flatpickr 載入失敗:", error);
     });
   }, []);
-
+  
   return (
     <>
       <Header />
