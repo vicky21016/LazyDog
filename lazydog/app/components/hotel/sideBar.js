@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/modules/fontHotelHome.module.css";
-import {openMap} from "@/hooks/useLocationSelector"
+import GoogleMapComponent from "../../components/hotel/GoogleMapComponent";
 import Link from "next/link";
 import { getHotelTags, ratingAv } from "@/services/hotelService";
 import "nouislider/dist/nouislider.css";
@@ -10,6 +10,7 @@ import noUiSlider from "nouislider";
 
 export default function SideBar({ hotelId, onSearch }) {
   const [showAllFacilities, setShowAllFacilities] = useState(false);
+  const [hotels, setHotels] = useState([]);
   const [hotelTags, setHotelTags] = useState([]);
   const [ratings, setRatings] = useState([]);
   const [selectedRating, setSelectedRating] = useState("");
@@ -17,13 +18,12 @@ export default function SideBar({ hotelId, onSearch }) {
   const [maxPrice, setMaxPrice] = useState(10000);
   const [isSearching, setIsSearching] = useState(true);
   const priceSliderRef = useRef(null);
+  const [showGoogleMaps, setShowGoogleMaps] = useState(false);
 
   useEffect(() => {
-    if (hotelId) {
-      fetchHotelTags();
-    }
+    fetchHotels();
     fetchRatings();
-  }, [hotelId]); 
+  }, []);
 
   useEffect(() => {
     if (!priceSliderRef.current) return;
@@ -52,6 +52,15 @@ export default function SideBar({ hotelId, onSearch }) {
       priceSliderRef.current.noUiSlider.set([minPrice, maxPrice]);
     }
   }, [minPrice, maxPrice]);
+  const fetchHotels = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/hotels");
+      const data = await res.json();
+      setHotels(data || []);
+    } catch (error) {
+      console.error("獲取所有飯店失敗:", error);
+    }
+  };
 
   const fetchHotelTags = async () => {
     try {
@@ -118,19 +127,32 @@ export default function SideBar({ hotelId, onSearch }) {
       <aside className={`container col-lg-3${styles.suSidebar}`}>
         {/* 地圖區塊 */}
         <div className={styles.suMapCard}>
-          <button
-            className={`btn ${styles.suMapBtn} btn-primary`}
-            onClick={openMap}
-          >
-            📍 於地圖上顯示
-          </button>
-          <img
-            src="https://maps.googleapis.com/maps/api/staticmap?center=台北,台灣&zoom=13&size=300x200&maptype=roadmap
-                &markers=color:blue%7Clabel:台北%7C25.0330,121.5654
-                &key=AIzaSyDfCdeVzmet4r4U6iU5M1C54K9ooF3WrV4"
-            alt="地圖縮圖"
-            className={styles.suMapImage}
-          />
+          {!showGoogleMaps ? (
+            <>
+              <button
+                className={`btn btn-primary ${styles.suMapBtn}`}
+                onClick={() => setShowGoogleMaps(true)}
+              >
+                📍 於地圖上顯示
+              </button>
+              <img
+                src={`https://maps.googleapis.com/maps/api/staticmap?center=台灣&zoom=7&size=300x200&maptype=roadmap&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
+                alt="地圖縮圖"
+                className={styles.suMapImage}
+              />
+            </>
+          ) : (
+            <>
+              <button
+                className={`btn btn-secondary`}
+                onClick={() => setShowGoogleMaps(false)}
+              >
+                返回 Google Maps 縮圖
+              </button>
+              {/*  使用 Google Maps 動態地圖 */}
+              <GoogleMapComponent hotels={hotels} />
+            </>
+          )}
         </div>
 
         {/* 優質住宿篩選 */}
