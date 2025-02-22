@@ -127,6 +127,25 @@ export default function Header(props) {
           <li>
             <Link href="#">毛孩文章</Link>
           </li>
+          <div className={styles["dropdown"]}>
+          <li>
+            <Link href="/pages">會員中心</Link>
+          </li>
+          <div className={styles["dropdown-content"]}>
+            <Link href="/pages" className={styles["dropdown-link"]}>
+              個人資料
+            </Link>
+            <Link href="/favorite" className={styles["dropdown-link"]}>
+              我的收藏
+            </Link>
+            <div onClick={logout} className={styles["dropdown-link"]}>
+              登出
+            </div>
+          </div>
+          </div>
+          <div>
+            <Link href="/cart/CartList"><i className="bi bi-cart2"></i>購物車</Link>
+          </div>
         </ul>
       </nav>
       </div>
