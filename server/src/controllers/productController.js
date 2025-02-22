@@ -1,8 +1,9 @@
 import {
   getAllProducts,
+  getAllCategoryName,
   getAllProductId,
   getSearchKeyword,
-  getAllCategory,
+  getCategoryName,
   getAllOrder,
   getProductId,
   createNewItem,
@@ -24,12 +25,46 @@ export const getAll = async (req, res) => {
   }
 };
 
+export const getAllCategory = async (req, res) => {
+  try {
+    const { category } = req.query;
+    const products = await getAllCategoryName(category);
+    if (!products.length) throw new Error("查無商品類別列表");
+    res.status(200).json({
+      status: "success",
+      data: products,
+      message: `查詢商品類別列表成功，共${products.length}筆資料`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 export const getSearch = async (req, res) => {
   try {
-    const { keyword } = req.query;
-    if (!keyword) throw new Error("請提供關鍵字");
-
-    const product = await getSearchKeyword(keyword);
+    const {
+      category,
+      keyword,
+      main,
+      type,
+      age,
+      feature,
+      flavor,
+      cereal,
+      size,
+    } = req.query;
+    let all = [
+      ...(main || "").split(","),
+      ...(type || "").split(","),
+      ...(age || "").split(","),
+      ...(feature || "").split(","),
+      ...(flavor || "").split(","),
+      ...(cereal || "").split(","),
+      ...(size || "").split(","),
+    ];
+    if (!main && !type && !age && !feature && !flavor && !cereal && !size)
+      all = [];
+    const product = await getSearchKeyword(category, keyword, all);
     if (!product.length) throw new Error("查無相關商品");
     res.status(200).json({
       status: "success",
@@ -46,8 +81,7 @@ export const getCategory = async (req, res) => {
     const { category } = req.query;
     const updateFields = category ? "category_id = ? AND" : "";
     const value = category ? [category] : "";
-
-    const categorys = await getAllCategory(updateFields, value);
+    const categorys = await getCategoryName(updateFields, value);
     if (!categorys.length) throw new Error("查無商品分類列表");
     res.status(200).json({
       status: "success",
@@ -63,7 +97,6 @@ export const getOrder = async (req, res) => {
   try {
     const orders = await getAllOrder();
     if (!orders.length) throw new Error("查無訂單列表");
-    console.log(orders);
     const productCount = {};
     orders.forEach((order) => {
       const products = order.productID_list.split(",");
@@ -74,16 +107,6 @@ export const getOrder = async (req, res) => {
     const sortedProducts = Object.entries(productCount)
       .map(([productID, count]) => ({ productID, count }))
       .sort((a, b) => b.count - a.count);
-    console.log(sortedProducts);
-    // PDFD01;
-    // PDFD02;
-    // PDFD03;
-    // PDSU01;
-    // PDPT01;
-    // PDPT02;
-    // PDOD01;
-    // PDHM01;
-    // PDHM02;
     res.status(200).json({
       status: "success",
       data: sortedProducts,

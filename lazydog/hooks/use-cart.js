@@ -1,3 +1,5 @@
+
+"use client";
 // 1.建⽴與導出它
 import { createContext, useContext, useState, useEffect } from 'react'
 

@@ -104,8 +104,9 @@
   .ProductCardName {
     color: var(--Black);
     display: flex;
-    align-items: center;
+    align-items: start;
     height: 72px;
+    overflow: hidden;
   }
   .ProductCardPrice {
     color: var(--Orange);

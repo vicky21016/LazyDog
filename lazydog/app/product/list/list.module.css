@@ -19,12 +19,13 @@
   display: flex;
   align-items: center;
   padding: 30px 0px 30px 0px;
-  gap: 60px;
+  /* gap: 60px; */
 }
 /* -------------------------- */
 /* ----------麵包屑---------- */
 .Breadcrumbs {
-  width: 350px;
+  width: 242px;
+  width: 336px;
   margin: 0;
   display: flex;
   align-items: center;
@@ -149,7 +150,7 @@
 .ProductListPagination {
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   gap: 15px;
   .PageItem {
     cursor: pointer;
@@ -177,6 +178,13 @@
   &.PageItemActive {
     background: var(--Orange);
     color: var(--White);
+  }
+}
+.PageArrow {
+  display: flex;
+  align-items: center;
+  img {
+    display: block;
   }
 }
 /* -------------------------- */

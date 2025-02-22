@@ -1,10 +1,16 @@
 import React from "react";
-import Link from "next/link";
-import styles from "../../../styles/modules/fontHotelHome.module.css"; 
+import styles from "../../../styles/modules/fontHotelHome.module.css";
+import { useRouter } from "next/navigation";
 
 const HotelCard = ({ image, name, description, review, reviewCount, link }) => {
+  const router = useRouter();
+
   return (
-    <Link href="/hotel-coupon/fonthotelDetail" className={styles.suHotelCard}>
+    <div
+      className={styles.suHotelCard}
+      onClick={() => router.push(link)}
+      style={{ cursor: "pointer" }}
+    >
       <img src={image} alt={name} />
       <div className={styles.suHotelInfo}>
         <h5>{name}</h5>
@@ -13,11 +19,17 @@ const HotelCard = ({ image, name, description, review, reviewCount, link }) => {
       <div className={styles.suPriceBox}>
         <div className={`mb-3 ${styles.suReview}`}>很棒 ⭐ {review}</div>
         {reviewCount} 則評論
-        <Link href={link} className={`ms-3 ${styles.suBookBtn}`}>
+        <button
+          className={`ms-3 ${styles.suBookBtn}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push(link);
+          }}
+        >
           查看價格
-        </Link>
+        </button>
       </div>
-    </Link>
+    </div>
   );
 };
 

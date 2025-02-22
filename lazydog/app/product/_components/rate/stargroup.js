@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./rate.module.css";
 
-export default function RatecardStarbar(rate = {}) {
-  const rateNum = rate?.rate;
+export default function RatecardStarbar({ rate = "" }) {
+  const rateNum = rate;
   let int, dec;
   if (rateNum) {
     [int, dec] = rateNum.split(".");

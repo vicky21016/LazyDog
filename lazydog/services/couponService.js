@@ -156,7 +156,7 @@ export const useCoupon = async (couponId) => {
 
   return await res.json();
 };
-// 刪除使用者優惠券
+// 刪除使用者優惠券 //可以考慮不要用
 export const deleteUserCoupon = async (couponId) => {
   const token = getToken();
   const res = await fetch(`${COUPON_USAGE_URL}/delete/${couponId}`, {
@@ -196,19 +196,16 @@ export const createCouponRestriction = async (couponId, data) => {
 
   return await res.json();
 };
-//delete 同上
-export const deleteCouponRestriction = async (couponId, restrictionId) => {
+//delete 同上 ...待測試
+export const deleteCouponRestriction = async (restrictionId) => {
   const token = getToken();
-  const res = await fetch(
-    `${COUPON_RESTRICTION_URL}/${couponId}/restrictions/${restrictionId}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const res = await fetch(`${COUPON_RESTRICTION_URL}/${restrictionId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   return await res.json();
 };

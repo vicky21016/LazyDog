@@ -8,9 +8,28 @@ export const getCourses = async () => {
       SELECT course.*, course_type.name AS type_name, course_img.url AS img_url       
       FROM course 
       JOIN course_type ON course.type_id = course_type.type_id
-      JOIN course_img ON course.id = course_img.course_id AND course_img.main_pic = 1
+      JOIN course_img ON course.id = course_img.course_id 
+      AND course_img.main_pic = 1
       ;`);
-    return courses;
+    if (courses.length == 0){
+      console.log("課程列表不存在");
+    }
+    const [latest] = await pool.execute(`
+      SELECT c.id AS courseId, c.name AS courseName, cm.url AS img_url       
+      FROM course_session cs 
+      JOIN course c ON cs.course_id = c.id
+      JOIN course_img cm ON c.id = cm.course_id
+      WHERE cs.start_date >= CURDATE()
+      AND cs.is_deleted = 0
+      AND cm.main_pic = 1
+      GROUP BY c.id
+      ORDER BY cs.start_date ASC
+      LIMIT 6
+      ;`);
+    if (latest.length == 0){
+      console.log("課程列表不存在");
+    }
+    return {courses, latest};
   } catch (err) {
     throw new Error(" 無法取得課程列表：" + err.message);
   }
@@ -18,13 +37,60 @@ export const getCourses = async () => {
 
 export const getId = async (id) => {
   try {
-    const [courses] = await pool.query("SELECT * FROM course WHERE id = ?", [
-      id,
-    ]);
-    if (courses.length == 0){
-        console.log("!!!!!!!!!!!");
+    const [course] = await pool.query(`
+      SELECT c.* , cm.url AS img_url
+      FROM course c
+      JOIN course_img cm ON c.id = cm.course_id
+      WHERE c.id = ?
+      AND cm.main_pic = 1`, 
+      [id]);
+    if (course.length == 0){
+        console.log("課程不存在");
     }
-    return courses;
+    const [session] = await pool.query(`
+      SELECT 
+        cs.*, 
+        cs.id AS session_id , 
+        t.name AS teacher_name , 
+        t.img AS teacher_img, 
+        ca.region AS region,
+        ca.address AS address
+      FROM course_session cs 
+      JOIN teacher t ON cs.teacher_id = t.id
+      JOIN course_area ca ON cs.area_id = ca.id
+      WHERE cs.course_id = ? 
+      AND cs.is_deleted = 0 
+      AND cs.start_date >= CURDATE() 
+      ORDER BY cs.start_date ASC, cs.id ASC;
+      `,
+      [id,]);
+    if (session.length == 0){
+        console.log("梯次不存在");
+    }
+    const [place] = await pool.query("SELECT * FROM course_area");
+    if (course.length == 0){
+        console.log("上課地點不存在");
+    }
+    const [imgs] = await pool.query(`
+      SELECT * 
+      FROM course_img 
+      WHERE course_id = ? 
+      AND main_pic = 0;
+      `,[id]);
+    if (course.length == 0){
+        console.log("課程照片不存在");
+    }
+    const [simiCourse] = await pool.query(`
+      SELECT c.id AS courseId, c.name AS courseName, cm.url AS img_url 
+      FROM course c 
+      JOIN course_img cm ON c.id = cm.course_id
+      WHERE c.type_id = (SELECT type_id FROM course WHERE id = ?) 
+      AND cm.main_pic = 1;
+      `,[id]);
+    if (course.length == 0){
+        console.log("相關課程的資料不存在");
+    }
+    return {course, session, place, imgs, simiCourse};
   } catch (err) {
     throw new Error(" 無法取得 ${id} 課程:;" + err.message);
   }

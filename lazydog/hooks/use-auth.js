@@ -163,7 +163,7 @@ export function AuthProvider({ children }) {
   };
 
   // 儲存
-  const save = async (name, email, gender, birthday, phone) => {
+  const save = async (name, email, gender, birthday, phone, avatar) => {
     let token = localStorage.getItem(appKey);
     let API = `http://localhost:5000/auth/${user.id}`;
     try {
@@ -173,7 +173,7 @@ export function AuthProvider({ children }) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, gender, birthday, phone }),
+        body: JSON.stringify({ name, email, gender, birthday, phone, avatar }),
       });
       console.log("🚀 取得的 token:", token);
       console.log("🆔 取得的 user.id:", user?.id);
@@ -185,7 +185,13 @@ export function AuthProvider({ children }) {
 
       if (result.status == "success") {
         alert("儲存成功");
+        const token = result.data.token;
+        const newUser = jwt.decode(token);
+        console.log(newUser);
 
+        setUser(newUser);
+        localStorage.setItem(appKey, token);
+        localStorage.setItem("user", JSON.stringify(newUser));
         // 重新取得使用者資料
         // setUser(JSON.parse(localStorage.getItem("user"))); 
         // 若為 operator，��重新��向 operator ��面
@@ -302,7 +308,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, googleLogin, logout, register, save ,updateAvatar}}
+      value={{ user, login, googleLogin, logout, register, save, updateAvatar }}
     >
       {children}
     </AuthContext.Provider>

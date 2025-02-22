@@ -19,7 +19,7 @@ import {
   faRightFromBracket,
   faCamera,
 } from "@fortawesome/free-solid-svg-icons";
-import styles from "../../../styles/modules/menu.module.css"
+import styles from "../../../styles/modules/menu.module.css";
 
 export default function MyMenu() {
   const pathname = usePathname();
@@ -62,7 +62,7 @@ export default function MyMenu() {
   };
 
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-      usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
 
   const menuItems = [
     { name: "會員資料", path: "/pages", icon: faUser },
@@ -78,7 +78,7 @@ export default function MyMenu() {
       {/*  顯示會員頭像與名稱 */}
       <div className="lumi-profile-section position-relative d-inline-block">
         <img
-        ref={avatarRef}
+          ref={avatarRef}
           src={profile?.avatar}
           alt="User Avatar"
           className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
@@ -87,17 +87,18 @@ export default function MyMenu() {
         <FontAwesomeIcon
           icon={faCamera}
           onClick={handleClick}
-          style={{ cursor: "pointer" }} 
+          style={{ cursor: "pointer" }}
         />
         <input
           id="avatarInput"
           type="file"
-          style={{ display: "none" }} 
-          onChange={handleFileChange} 
-          accept="image/*" 
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+          accept="image/*"
         />
 
-        {/* <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5> */}
+        <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5>
+=========
            <div className={styles.dropdownItem}>
               <button
                 className={`btn btn-light ${styles.suCameraIcon}`}
@@ -139,6 +140,7 @@ export default function MyMenu() {
               </ul>
             </div>
         <h5 className={`mb-4 ${styles.welcome}`}>歡迎，{profile?.name || "會員"}！</h5>
+>>>>>>>>> Temporary merge branch 2
       </div>
 
       <List animated selection>

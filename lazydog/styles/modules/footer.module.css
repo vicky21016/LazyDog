@@ -5,6 +5,7 @@
   margin: 0 auto;
   max-width: 1440px;
   text-align: center;
+  
 }
 
 .footer {
@@ -14,7 +15,7 @@
     font-size: 20px;
     font-weight: 500;
     letter-spacing: 2.4px;
-    color: var(--White);
+    color: White;
   }
 }
 
@@ -27,7 +28,7 @@
 /* ----------footer中、底段區域-------- */
 .footerMiddle,
 .footerBottom {
-  background: var(--Orange);
+  background: #f5842b;
 }
 /* ---------------------------------- */
 /* ----------footer中段區域----------- */
@@ -37,8 +38,9 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    color: var(--White);
+    color: White;
     gap: 80px;
+    margin: 0;
   }
 }
 
@@ -48,11 +50,21 @@
   flex-direction: column;
   align-items: flex-start;
   /* width: 440px; */
-  gap: 30px;
-  padding: 21px 0;
+  gap: 15px;
+  padding: 21px 0 0 0;
+  margin: 0 100px 0 0;
+  figure{
+    margin: 0 0 10px 0;
+  }
   .logoPic {
-    width: 100px;
+    width: 60px;
     height: auto;
+  }
+  .lazydog{
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 3px;
   }
   .place {
     display: flex;
@@ -60,32 +72,33 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 35px;
+    gap: 30px;
 
     .address {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 10px;
+      /* gap: 10px; */
       align-self: stretch;
       .addInfo {
         color: var(--Color-4, #fdfaf5);
-        font-family: "Noto Sans TC";
-        font-size: 18px;
+        font-size: 16px;
         font-style: normal;
         font-weight: 600;
         line-height: 28px; /* 170% */
         letter-spacing: 4px;
+        margin: 10px 0 0 0;
       }
     }
 
     .timeInfo {
       color: var(--Color-4, #fdfaf5);
       font-family: "Noto Sans TC";
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 400;
       line-height: 35px; /* 194.444% */
       letter-spacing: 3.16px;
+      margin: 0;
     }
   }
 }
@@ -97,15 +110,19 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 18px;
   .clientService {
-    padding: 18px 0 10px;
+    padding: 5px 0 15px;
     user-select: none;
     color: var(--Color-4, #fdfaf5);
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
     line-height: 34px; /* 106.25% */
     letter-spacing: 5px;
+    margin: 0;
+  }
+  p{
+    margin: 0;
   }
   .service {
     color: var(--Color-4, #fdfaf5);
@@ -114,7 +131,7 @@
     letter-spacing: 2px;
     padding-left: 1.5px;
     &:hover {
-      color: var(--Black);
+      color: #3b3330;
     }
   }
 }
@@ -126,15 +143,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
+  gap: 35px;
   padding: 21px 0 0;
   /* margin-block: auto; */
   .footerEmail {
-    border: 8px solid var(--Yellow);
-    width: 90%;
+    border: 8px solid #f6ce5b;
+    width: 80%;
     height: 60px;
     border-radius: 100px;
-    background: var(--White);
+    background: White;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -144,7 +161,7 @@
       font-size: 16px;
       font-weight: 500;
       letter-spacing: 2px;
-      background: var(--White);
+      background: White;
       outline: none;
     }
 
@@ -174,7 +191,7 @@
     justify-content: center;
     align-self: stretch;
     gap: 20px;
-    padding: 41px 0 30px;
+    /* padding: 41px 0 30px; */
     .icons {
       cursor: pointer;
     }
@@ -183,9 +200,9 @@
 /* ---------------------------------- */
 /* -----------footer底段區域---------- */
 .footerBottom {
-  color: var(--White);
+  color: White;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 65px;
   letter-spacing: 2px;
   user-select: none;

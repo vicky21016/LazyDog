@@ -1,13 +1,50 @@
-import styles from './page.module.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import 'bootstrap-icons/font/bootstrap-icons.css'
-import useArticles from '@/hooks/useArticle'
+"use client";
+
+import { useState } from "react";
+import styles from './page.module.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import useArticles from '@/hooks/useArticle';
+import MainCard from '../_components/article_list/ListCard';
+import AsideCard from '../_components/article_list/AsideCard';
 
 const ArticlePage = () => {
   const { articles, loading, error } = useArticles();
+  const [page, setPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState(null); // 新增分類狀態
+  const itemsPerPage = 5;
+
   if (loading) return <p>載入中...</p>;
-  if (error) return <p>錯誤: {error}</p>
+  if (error) return <p className="text-red-500">錯誤：{error}</p>;
+
+  // 過濾文章
+  const filteredArticles = selectedCategory
+    ? articles.filter(article => article.category_id === selectedCategory)
+    : articles;
+
+  const totalPages = Math.ceil(filteredArticles.length / itemsPerPage);
+  const currentArticles = filteredArticles.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+
+  // 處理分類選擇
+  const handleCategorySelect = (categoryId) => {
+    setSelectedCategory(categoryId);
+    setPage(1); // 切換分類時重置頁碼
+  };
+
+  // 分頁數字生成（保持原樣）
+  const generatePageNumbers = () => {
+    if (totalPages <= 3) {
+      return [...Array(totalPages)].map((_, i) => i + 1);
+    } else {
+      if (page === 1) {
+        return [1, 2, 3];
+      } else if (page === totalPages) {
+        return [totalPages - 2, totalPages - 1, totalPages];
+      } else {
+        return [page - 1, page, page + 1];
+      }
+    }
+  };
 
   return (
     <>
@@ -24,29 +61,13 @@ const ArticlePage = () => {
 
         {/* 左側欄 */}
         <div className={styles.top}>
-          <div
-            className="input-group my-3"
-            style={{ border: '.2px solid grey', borderRadius: '5px' }}
-          >
+          <div className="input-group my-3" style={{ border: '.2px solid grey', borderRadius: '5px' }}>
             <input
               type="text"
               className="form-control"
               style={{ border: 'none', height: '40px', borderRadius: '5px' }}
             />
-            <label
-              className="input-group-text"
-              style={{ background: 'none', border: 'none' }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-search"
-                viewBox="0 0 16 16"
-              >
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-              </svg>
+            <label className="input-group-text" style={{ background: 'none', border: 'none' }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -61,26 +82,25 @@ const ArticlePage = () => {
           </div>
 
           <div className={styles.asideCategory}>
-            <h2>類別</h2>
-            {['保健與營養', '開箱', '行為知識', '食譜', '善終'].map(
-              (category, index) => (
-                <a key={index} href="#">
-                  <p>{category}</p>
-                </a>
-              )
-            )}
+            <h2 className='mb-3'>類別</h2>
+            <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(null); }}>
+              <p>全部</p>
+            </a>
+            <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(1); }}>
+              <p>保健與營養</p>
+            </a>
+            <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(5); }}>
+              <p>開箱</p>
+            </a>
+            <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(2); }}>
+              <p>食譜</p>
+            </a>
+            <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(3); }}>
+              <p>善終</p>
+            </a>
+                
+            
           </div>
-
-          <select className="form-select form-select-lg">
-            <option>類別</option>
-            {['保健與營養', '開箱', '行為知識', '食譜', '善終'].map(
-              (option, index) => (
-                <option key={index} value={index + 1}>
-                  {option}
-                </option>
-              )
-            )}
-          </select>
         </div>
 
         {/* 主要內容 */}
@@ -98,408 +118,62 @@ const ArticlePage = () => {
             </svg>{' '}
             依時間排序
           </button>
-          
-          <div className={styles.card}>
-            <img
-              src={articles.cover_image}
-              alt="文章封面"
-            />
-
-            <div className={styles.cardDetail} style={{ color: '#9F9F9F' }}>
-              <div className={styles.author}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-person-circle"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                  <path
-                    fill-rule="evenodd"
-                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
-                  />
-                </svg>{' '}
-                {articles.name}
-              </div>
-              <div className={styles.time}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-calendar"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
-                </svg>{' '}
-                {articles.created_at}
-              </div>
-              <div className={styles.category}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-tag-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-                </svg>{' '}
-                {articles.category_name}
-              </div>
-            </div>
-
-            <p>{articles.title}</p>
-            <a href="#">
-              <p>Read more</p>
-            </a>
-          </div>
-          <div className={styles.card}>
-            <img
-              src="/article_img/02c0a9ae-33e0-4004-bae4-557aa330b090.webp"
-              alt="文章封面"
-            />
-
-            <div className={styles.cardDetail} style={{ color: '#9F9F9F' }}>
-              <div className={styles.author}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-person-circle"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                  <path
-                    fill-rule="evenodd"
-                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
-                  />
-                </svg>{' '}
-                Tom
-              </div>
-              <div className={styles.time}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-calendar"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
-                </svg>{' '}
-                2025-01-01
-              </div>
-              <div className={styles.category}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-tag-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-                </svg>{' '}
-                保健與營養
-              </div>
-            </div>
-
-            <p>為什麼你該幫家裡的貓狗梳毛？——為毛孩梳毛的 6 大好處</p>
-            <a href="#">
-              <p>Read more</p>
-            </a>
-          </div>
-          <div className={styles.card}>
-            <img
-              src="/article_img/02c0a9ae-33e0-4004-bae4-557aa330b090.webp"
-              alt="文章封面"
-            />
-
-            <div className={styles.cardDetail} style={{ color: '#9F9F9F' }}>
-              <div className={styles.author}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-person-circle"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                  <path
-                    fill-rule="evenodd"
-                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
-                  />
-                </svg>{' '}
-                Tom
-              </div>
-              <div className={styles.time}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-calendar"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
-                </svg>{' '}
-                2025-01-01
-              </div>
-              <div className={styles.category}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-tag-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-                </svg>{' '}
-                保健與營養
-              </div>
-            </div>
-
-            <p>為什麼你該幫家裡的貓狗梳毛？——為毛孩梳毛的 6 大好處</p>
-            <a href="#">
-              <p>Read more</p>
-            </a>
-          </div>
-          <div className={styles.card}>
-            <img
-              src="/article_img/02c0a9ae-33e0-4004-bae4-557aa330b090.webp"
-              alt="文章封面"
-            />
-
-            <div className={styles.cardDetail} style={{ color: '#9F9F9F' }}>
-              <div className={styles.author}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-person-circle"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                  <path
-                    fill-rule="evenodd"
-                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
-                  />
-                </svg>{' '}
-                Tom
-              </div>
-              <div className={styles.time}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-calendar"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
-                </svg>{' '}
-                2025-01-01
-              </div>
-              <div className={styles.category}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-tag-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-                </svg>{' '}
-                保健與營養
-              </div>
-            </div>
-
-            <p>為什麼你該幫家裡的貓狗梳毛？——為毛孩梳毛的 6 大好處</p>
-            <a href="#">
-              <p>Read more</p>
-            </a>
-          </div>
-          <div className={styles.card}>
-            <img
-              src="/article_img/02c0a9ae-33e0-4004-bae4-557aa330b090.webp"
-              alt="文章封面"
-            />
-
-            <div className={styles.cardDetail} style={{ color: '#9F9F9F' }}>
-              <div className={styles.author}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-person-circle"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                  <path
-                    fill-rule="evenodd"
-                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
-                  />
-                </svg>{' '}
-                Tom
-              </div>
-              <div className={styles.time}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-calendar"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
-                </svg>{' '}
-                2025-01-01
-              </div>
-              <div className={styles.category}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-tag-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-                </svg>{' '}
-                保健與營養
-              </div>
-            </div>
-
-            <p>為什麼你該幫家裡的貓狗梳毛？——為毛孩梳毛的 6 大好處</p>
-            <a href="#">
-              <p>Read more</p>
-            </a>
-          </div>
+          {currentArticles.map((article) => (
+            <MainCard key={article.id} {...article} />
+          ))}
         </div>
 
-        {/* 右側欄 */}
+        {/* 左側欄延伸閱讀 */}
         <div className={styles.bottom}>
           <h4>延伸閱讀</h4>
-          <div className={styles.asideRead}>
-            <img
-              src="/article_img/02c0a9ae-33e0-4004-bae4-557aa330b090.webp"
-              alt="寵物四合一快速檢測"
-            />
-            <div
-              className={styles.tt}
-              style={{ display: 'flex', justifyContent: 'center' }}
-            >
-              <a href="#">「寵物四合一快速檢測」測什麼？.......</a>
-              <p style={{ color: '#9F9F9F' }}>2025-01-01</p>
-            </div>
-          </div>
-          <div className={styles.asideRead}>
-            <img
-              src="/article_img/02c0a9ae-33e0-4004-bae4-557aa330b090.webp"
-              alt="寵物四合一快速檢測"
-            />
-            <div
-              className={styles.tt}
-              style={{ display: 'flex', justifyContent: 'center' }}
-            >
-              <a href="#">「寵物四合一快速檢測」測什麼？.......</a>
-              <p style={{ color: '#9F9F9F' }}>2025-01-01</p>
-            </div>
-          </div>
-          <div className={styles.asideRead}>
-            <img
-              src="/article_img/02c0a9ae-33e0-4004-bae4-557aa330b090.webp"
-              alt="寵物四合一快速檢測"
-            />
-            <div
-              className={styles.tt}
-              style={{ display: 'flex', justifyContent: 'center' }}
-            >
-              <a href="#">「寵物四合一快速檢測」測什麼？.......</a>
-              <p style={{ color: '#9F9F9F' }}>2025-01-01</p>
-            </div>
-          </div>
-          <div className={styles.asideRead}>
-            <img
-              src="/article_img/02c0a9ae-33e0-4004-bae4-557aa330b090.webp"
-              alt="寵物四合一快速檢測"
-            />
-            <div
-              className={styles.tt}
-              style={{ display: 'flex', justifyContent: 'center' }}
-            >
-              <a href="#">「寵物四合一快速檢測」測什麼？.......</a>
-              <p style={{ color: '#9F9F9F' }}>2025-01-01</p>
-            </div>
-          </div>
-          <div className={styles.asideRead}>
-            <img
-              src="/article_img/02c0a9ae-33e0-4004-bae4-557aa330b090.webp"
-              alt="寵物四合一快速檢測"
-            />
-            <div
-              className={styles.tt}
-              style={{ display: 'flex', justifyContent: 'center' }}
-            >
-              <a href="#">「寵物四合一快速檢測」測什麼？.......</a>
-              <p style={{ color: '#9F9F9F' }}>2025-01-01</p>
-            </div>
-          </div>
+          {articles
+            .sort(() => Math.random() - 0.5) // 亂數排序
+            .slice(0, 5) // 取前五篇
+            .map((article) => (
+              <AsideCard key={article.id} {...article} />
+            ))}
         </div>
       </div>
 
       {/* 分頁 */}
-      <div
-        className={'container d-flex justify-content-center'}
-        style={{ position: 'relative', top: '3200px' }}
-      >
-        <div className={styles.page}>
-          <nav aria-label="Page navigation">
-            <ul className="pagination pagination-lg">
-              <li className="page-item disabled">
-                <span className="page-link">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="bi bi-caret-left"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M10 12.796V3.204L4.519 8zm-.659.753-5.48-4.796a1 1 0 0 1 0-1.506l5.48-4.796A1 1 0 0 1 11 3.204v9.592a1 1 0 0 1-1.659.753" />
-                  </svg>
-                </span>
-              </li>
-              {[1, 2, 3].map((page) => (
-                <li
-                  key={page}
-                  className={`page-item ${page === 1 ? 'active' : ''}`}
+      <div className={'container d-flex justify-content-center'} style={{ position: 'relative', top: '3200px' }}>
+        <nav>
+          <ul className={styles.ArticlePage}>
+            <li className={`${styles.PageItem} page-item`}>
+              <a
+                className={`${styles.PageLink} page-link`}
+                href="#"
+                onClick={() => handlePageChange(page - 1)}
+              >
+                <i class="bi bi-arrow-left"></i>
+              </a>
+            </li>
+            {generatePageNumbers().map((pageNumber) => (
+              <li key={pageNumber} className={`${styles.PageItem} page-item`}>
+                <a
+                  className={`${styles.PageLink} page-link`}
+                  href="#"
+                  onClick={() => handlePageChange(pageNumber)}
+                  style={page === pageNumber ? { fontWeight: 'bold' } : {}}
                 >
-                  <span className="page-link">{page}</span>
-                </li>
-              ))}
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-right" viewBox="0 0 16 16">
-                    <path d="M6 12.796V3.204L11.481 8zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753" />
-                  </svg>
+                  {pageNumber}
                 </a>
               </li>
-            </ul>
-          </nav>
-        </div>
+            ))}
+            <li className={`${styles.PageItem} page-item`}>
+              <a
+                className={`${styles.PageLink} page-link`}
+                href="#"
+                onClick={() => handlePageChange(page + 1)}
+              >
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ArticlePage
+export default ArticlePage;

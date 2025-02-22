@@ -62,7 +62,7 @@ export default function TeacherSection () {
           </Link>
         </div>
         <div>
-          <img className="" src="/teacher-img/yellow.png" alt />
+          <img className="" src="/teacher-img/yellow.png" alt="" />
         </div>
       </div>
 
@@ -86,14 +86,14 @@ export default function TeacherSection () {
         </div>
       </div>
       <div>
-        <img className="" src="/teacher-img/yello2.png" alt />
+        <img className="" src="/teacher-img/yello2.png" alt="" />
       </div>
       <div className="lumi-all-wrapper pb-5">
         <h3 className="my-5 lumi-m-title ">熱門師資</h3>
         <OtherTeacher cards={teacherData} />
       </div>
       <div>
-        <img className="" src="/teacher-img/rice.png" alt />
+        <img className="" src="/teacher-img/rice.png" alt="" />
       </div>
     </section>
   );

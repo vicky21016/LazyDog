@@ -4,14 +4,18 @@ import React, { useState, useEffect } from 'react'
 import styles from "../courseId.module.css";
 
 
-export default function CoursePics(props) {
+export default function CoursePics({imgs}) {
+
+  console.log("CoursePics - Img:", imgs);
+
+
   return (
     <>
       <div className={styles.left}>
             <div className={styles.pics}>
-              <img src="/course/img/3 (2).jpeg" alt />
-              <img src="/course/img/3 (3).jpeg" alt />
-              <img src="/course/img/3 (4).jpeg" alt />
+              {imgs?.map((img)=>(
+                <img src={`/course/img/${img?.url}`}   alt="" />
+              ))}
             </div>
           </div>
     </>

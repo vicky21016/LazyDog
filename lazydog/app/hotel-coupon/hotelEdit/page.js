@@ -50,14 +50,14 @@ export default function HotelEditPage(props) {
 
   return (
     <>
-    <Header />
+      <Header />
       <div className="container my-5">
         <div className="row">
           {/* 左邊*/}
-         <My/>
+          <My />
 
           {/* 右邊 */}
-          <div className="col-md-9  mx-auto">
+          <div className="col-12 col-md-9  mx-auto">
             <h3 className="mb-3">編輯旅館資訊</h3>
             <form id="editForm">
               <div className={`section ${hotelStyles.suSection}`}>

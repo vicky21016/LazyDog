@@ -15,7 +15,7 @@ export default function SideBar() {
           <img
             className={styles.searchIcon}
             src="/course/img/searchIcon.png"
-            alt
+              alt=""
           />
           <input
             type="text"
@@ -32,7 +32,7 @@ export default function SideBar() {
             <img
               className={styles.arrowDown}
               src="/course/img/arrow-down.png"
-              alt
+                alt=""
             />
           </div>
           <div className={styles.filter}>
@@ -110,7 +110,7 @@ export default function SideBar() {
             <img
               className={styles.arrowDown}
               src="/course/img/arrow-down.png"
-              alt
+                alt=""
             />
           </div>
           <div className={styles.filter}>

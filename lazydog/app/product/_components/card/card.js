@@ -3,25 +3,43 @@
 import React, { useState, useEffect } from "react";
 import styles from "./card.module.css";
 import Link from "next/link";
+import useSWR from "swr";
 
-export default function CardCard(product = {}) {
+export default function CardCard({ productID = "" }) {
+  const url = productID
+    ? `http://localhost:5000/api/products/${productID}`
+    : null;
+  const fetcher = async (url) => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("資料要求失敗");
+      return res.json();
+    } catch (err) {
+      console.error("資料要求失敗:", err);
+      throw err;
+    }
+  };
+  const { data, isLoading, error, mutate } = useSWR(url, fetcher);
   const [cardHover, setCardHover] = useState(false);
   const [heartHover, setHeartHover] = useState(false);
   const [heartState, setHeartState] = useState(false);
   const [cartHover, setCartHover] = useState(false);
   const [cartRate, setCartRate] = useState(0);
-  const products = product?.product;
+  const products = data?.data[0];
   const productName = products?.name;
-  const [cardPic, setCardPic] = useState(
-    `/product/img/${productName}_title.webp`
-  );
-  const productID = products?.productID;
-
+  const [cardPic, setCardPic] = useState("/product/img/default.webp");
   const productPrice = (
     Number(products?.price) * Number(products?.discount)
   ).toFixed(0);
   const productDiscount = (1 - Number(products?.discount)).toFixed(2) * 100;
-  // console.log(products);
+  useEffect(() => {
+    if (productName) {
+      const img = new Image();
+      img.src = `/product/img/${productName}_title.webp`;
+      img.onload = () => setCardPic(img.src);
+      img.onerror = () => setCardPic("/product/img/default.webp");
+    }
+  }, [productName]);
   return (
     <li
       className={styles.ProductCard}
@@ -54,11 +72,13 @@ export default function CardCard(product = {}) {
         <div className={styles.ProductCardOnsale}>-{productDiscount} %</div>
       )}
       <figure className={styles.ProductCardImg}>
-        <img
-          src={cardPic}
-          alt=""
-          onError={() => setCardPic("/product/img/default.png")}
-        />
+        {productName && (
+          <img
+            src={cardPic}
+            alt=""
+            onError={() => setCardPic("/product/img/default.webp")}
+          />
+        )}
       </figure>
       <div className={styles.ProductCardInfo}>
         <p className={styles.ProductCardName}>{productName}</p>
@@ -67,7 +87,7 @@ export default function CardCard(product = {}) {
       <div className={styles.ProductCardHover}>
         <button
           type="button"
-          className={`${styles.HoverIcon} ${styles.FavoriteBtn}`}
+          className={`${styles.HoverIcon} `}
           onMouseEnter={() => setHeartHover(true)}
           onMouseLeave={() => setHeartHover(false)}
           onClick={() => setHeartState(!heartState)}

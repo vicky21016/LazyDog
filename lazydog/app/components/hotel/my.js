@@ -18,7 +18,7 @@ export default function My() {
        
        ]; 
   return (
-    <div className="col-md-3">
+    <div className=" d-none d-md-block col-md-3">
       <div className={` p-3 ${style.container}`}>
         <div className="text-center">
           <div className="position-relative d-inline-block">
@@ -80,21 +80,18 @@ export default function My() {
         </div>
         <hr />
         <List animated selection>
-        {menuItems.map((menuItem) => (
-          <List.Item
-            key={menuItem.path}
-            active={menuItem.path === pathname}
-            className={`${style.item}`}
-          >
-            <Link className={`${style.link}`} href={menuItem.path}>
-              <span>
-              {menuItem.icon} 
-              </span>{" "}
-              {menuItem.name}
-            </Link>
-          </List.Item>
+          {menuItems.map((menuItem) => (
+            <List.Item
+              key={menuItem.path}
+              active={menuItem.path === pathname}
+              className={`${style.item}`}
+            >
+              <Link className={`${style.link}`} href={menuItem.path}>
+                <span>{menuItem.icon}</span> {menuItem.name}
+              </Link>
+            </List.Item>
           ))}
-          </List>
+        </List>
       </div>
     </div>
   );

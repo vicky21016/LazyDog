@@ -66,8 +66,7 @@
 .PdList {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 30px;
+  gap: 50px;
 }
 /* --------------------------- */
 /* ---------商品群組----------- */
@@ -78,8 +77,8 @@
   gap: 30px;
 }
 /* --------------------------- */
-/* ---------card元件---------- */
-.ProductCard {
+/* ---------card元件(備份)---------- */
+/* .ProductCard {
   width: 100%;
   position: relative;
 }
@@ -144,11 +143,13 @@
   .ProductCardPrice {
     color: var(--Orange);
   }
-}
+} */
 /* -------------------------- */
 /* ---------page元件---------- */
 .ProductListPagination {
   display: flex;
+  justify-content: center;
+  /* align-items: center; */
   gap: 15px;
   .PageItem {
     cursor: pointer;
@@ -162,5 +163,27 @@
   align-items: center;
   border: 1px solid var(--Orange);
   border-radius: 50%;
+  &:hover {
+    background: var(--Orange);
+    color: var(--White);
+  }
+  .PageLink {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &.PageItemActive {
+    background: var(--Orange);
+    color: var(--White);
+  }
+}
+.PageArrow {
+  display: flex;
+  align-items: center;
+  img {
+    display: block;
+  }
 }
 /* -------------------------- */
