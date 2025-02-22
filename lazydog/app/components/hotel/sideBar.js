@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/modules/fontHotelHome.module.css";
+import {openMap} from "@/hooks/useLocationSelector"
 import Link from "next/link";
 import { getHotelTags, ratingAv } from "@/services/hotelService";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 
-export default function SideBar({ hotelId }) {
+export default function SideBar({ hotelId, onSearch }) {
   const [showAllFacilities, setShowAllFacilities] = useState(false);
   const [hotelTags, setHotelTags] = useState([]);
   const [ratings, setRatings] = useState([]);
@@ -22,7 +23,7 @@ export default function SideBar({ hotelId }) {
       fetchHotelTags();
     }
     fetchRatings();
-  }, [hotelId]); // 監聽 hotelId 變化，確保 hotelTags 會更新
+  }, [hotelId]); 
 
   useEffect(() => {
     if (!priceSliderRef.current) return;
@@ -88,8 +89,10 @@ export default function SideBar({ hotelId }) {
       const data = await res.json();
 
       console.log("搜尋結果:", data);
-      // 這裡可以把搜尋結果存進 state，然後更新畫面
-      setHotels(data);
+
+      if (onSearch) {
+        onSearch(data); //props 更新搜尋結果
+      }
     } catch (error) {
       console.error("搜尋失敗:", error);
     }
@@ -103,6 +106,10 @@ export default function SideBar({ hotelId }) {
     setMaxPrice(10000);
     priceSliderRef.current?.noUiSlider.set([0, 10000]);
     setIsSearching(true);
+
+    if (onSearch) {
+      onSearch([]); // 清空篩選結果
+    }
   };
 
   return (
@@ -113,7 +120,7 @@ export default function SideBar({ hotelId }) {
         <div className={styles.suMapCard}>
           <button
             className={`btn ${styles.suMapBtn} btn-primary`}
-            onClick={() => alert("地圖功能待實作")}
+            onClick={openMap}
           >
             📍 於地圖上顯示
           </button>

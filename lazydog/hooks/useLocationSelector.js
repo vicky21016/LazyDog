@@ -69,12 +69,12 @@ export function useLocationSelector(hotelId) {
   };
 
   const googleMapUrl = location
-    ? `https://maps.googleapis.com/maps/api/staticmap?center=${location.lat},${location.lng}&zoom=15&size=300x200&maptype=roadmap&markers=color:blue%7Clabel:H%7C${location.lat},${location.lng}&key=YOUR_GOOGLE_MAPS_API_KEY`
+    ? `https://maps.googleapis.com/maps/api/staticmap?center=${location.lat},${location.lng}&zoom=15&size=300x200&maptype=roadmap&markers=color:blue%7Clabel:H%7C${location.lat},${location.lng}&key=AIzaSyDfCdeVzmet4r4U6iU5M1C54K9ooF3WrV4`
     : `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(
         address || "台北,台灣"
       )}&zoom=13&size=300x200&maptype=roadmap&markers=color:blue%7Clabel:H%7C${encodeURIComponent(
         address || "台北"
-      )}&key=YOUR_GOOGLE_MAPS_API_KEY`;
+      )}&key=AIzaSyDfCdeVzmet4r4U6iU5M1C54K9ooF3WrV4`;
 
   const openMap = () => {
     const query = location

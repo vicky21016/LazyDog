@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 import authRouter from "./routes/authRoutes.js";
 import favoriteRouter from "./routes/favoriteRoutes.js";
 import googleRouter from "./controllers/googleController.js";
@@ -36,7 +38,8 @@ app.use(
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })
 );
-app.use("/uploads/hotel", express.static("/uploads/hotel"));
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use("/auth", authRouter);
 app.use("/api/auth/google", googleRouter);
