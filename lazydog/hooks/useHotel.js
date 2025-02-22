@@ -5,7 +5,7 @@ export function useHotel (id) {
     useEffect(() => {
 
         const fetchHotel = async () => {
-             let API = `http://localhost:5000/hotel/${id}`;
+             let API = `http://localhost:5000/api/hotels/${id}`;
             try {
                 const res = await fetch(API);
                if (!res.ok) {

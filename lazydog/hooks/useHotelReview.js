@@ -5,7 +5,7 @@ export function useHotelReview (id) {
     useEffect(() => {
 
         const fetchReview = async () => {
-             let API = `http://localhost:5000/review/${id}`;
+             let API = `http://localhost:5000/api/hotel_review/${id}`;
             try {
                 const res = await fetch(API);
                if (!res.ok) {
