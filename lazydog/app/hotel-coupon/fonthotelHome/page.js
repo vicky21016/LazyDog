@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "../../../styles/modules/fontHotelHome.module.css";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
-import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
+import styles from "../../../styles/modules/fontHotelHome.module.css";
 import Header from "../../components/layout/header";
 import HotelCard from "@/app/components/hotel/hotelCard";
 import SearchBar from "../../components/hotel/search";
@@ -25,40 +23,8 @@ export default function HotelHomePage() {
     address,
     closeModal,
     confirmLocation,
-    onSearch,
   } = useLocationSelector();
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-  
-    import("flatpickr").then(({ default: flatpickr }) => {
-      console.log("flatpickr 載入成功！");
-      flatpickr("#date-date", {
-        mode: "range",
-        dateFormat: "Y-m-d",
-        minDate: "today",
-        locale: {
-          firstDayOfWeek: 1,
-          weekdays: {
-            shorthand: ["日", "一", "二", "三", "四", "五", "六"],
-            longhand: [
-              "星期日",
-              "星期一",
-              "星期二",
-              "星期三",
-              "星期四",
-              "星期五",
-              "星期六",
-            ],
-          },
-          rangeSeparator: " 至 ",
-        },
-      });
-    }).catch((error) => {
-      console.error("flatpickr 載入失敗:", error);
-    });
-  }, []);
-  
   return (
     <>
       <Header />
@@ -99,7 +65,7 @@ export default function HotelHomePage() {
           <div className="row">
             {/* 側邊篩選欄 */}
             <aside className={`col-lg-3 ${styles.suSidebar}`}>
-            <Aside onSearch={setFilteredHotels} />
+              <Aside onSearch={setFilteredHotels} />
             </aside>
 
             {/* 飯店列表 */}
@@ -108,9 +74,9 @@ export default function HotelHomePage() {
                 filteredHotels.map((hotel) => (
                   <HotelCard
                     key={hotel.id}
-                    image={hotel.main_image_url || "/hotel/default.png"}
+                    image={hotel.main_image_url || "/hotel/loding.jpg"}
                     name={hotel.name}
-                    description={hotel.description}
+                    introduce={hotel.introduce}
                     review={hotel.avg_rating || "無評分"}
                     reviewCount={hotel.review_count || 0}
                     link={`/hotel-coupon/${hotel.id}`}
