@@ -25,7 +25,7 @@ export const getHotelById = async (id) => {
   return await res.json();
 };
 
-const fetchHotelsCount = async () => {
+export const fetchHotelsCount = async () => {
   try {
     const res = await fetch(`${API_URL}/count`);
     if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
@@ -39,7 +39,7 @@ const fetchHotelsCount = async () => {
   }
 };
 
-const getPaginatedHotels = async (page = 1, limit = 10) => {
+export const getPaginatedHotels = async (page = 1, limit = 10) => {
   try {
     const offset = (page - 1) * limit;
     const res = await fetch(`${API_URL}/paginated?limit=${limit}&offset=${offset}`);

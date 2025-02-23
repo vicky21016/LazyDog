@@ -14,10 +14,11 @@ import Breadcrumb from "../../components/teacher/breadcrumb";
 
 export default function HotelHomePage() {
   const router = useRouter();
-  const [filteredHotels, setFilteredHotels] = useState([]); // 存篩選後的飯店資料
+  const [hotels, setHotels] = useState([]); // 存放所有飯店數據
+  const [filteredHotels, setFilteredHotels] = useState([]); // 存放篩選後的飯店數據
   const [quantity, setQuantity] = useState(1);
-  const [hotels, setHotels] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const hotelsPerPage = 10; // 每頁顯示的飯店數量
 
   const {
     location,
@@ -33,27 +34,31 @@ export default function HotelHomePage() {
       try {
         const hotelData = await getAllHotels();
         setHotels(hotelData);
-        setFilteredHotels(hotelData); // 一開始有資料
+        setFilteredHotels(hotelData); // 初次載入時設定篩選數據
       } catch (error) {
-        console.error(" 獲取飯店失敗:", error);
+        console.error("獲取飯店失敗:", error);
       }
     };
-  
+
     fetchHotels();
   }, []);
-  
+
+  // 計算當前頁面的飯店數據
+  const indexOfLastHotel = currentPage * hotelsPerPage;
+  const indexOfFirstHotel = indexOfLastHotel - hotelsPerPage;
+  const currentHotels = filteredHotels.slice(indexOfFirstHotel, indexOfLastHotel);
 
   return (
     <>
       <Header />
       <div className="suBody">
+        {/* 搜尋欄背景 */}
         <div
           className={styles.suSearchBg}
           style={{
             backgroundImage: `url("/hotel/hotel-images/services-banner-dog-boarding.2203041608391.jpg")`,
           }}
         >
-          {" "}
           <SearchBar
             location={location}
             address={address}
@@ -66,19 +71,18 @@ export default function HotelHomePage() {
             onSearch={setFilteredHotels}
           />
         </div>
+
+        {/* 麵包屑導航 */}
         <div className="lumi-all-wrapper mt-5">
           <Breadcrumb
             links={[
-              { label: "首頁 ", href: "/" },
-              {
-                label: "旅館列表",
-                href: "/hotel-coupon/fonthotelHome",
-                active: true,
-              },
+              { label: "首頁", href: "/" },
+              { label: "旅館列表", href: "/hotel-coupon/fonthotelHome", active: true },
             ]}
           />
         </div>
 
+        {/* 主要內容 */}
         <div className="container mt-4">
           <div className="row">
             {/* 側邊篩選欄 */}
@@ -88,8 +92,8 @@ export default function HotelHomePage() {
 
             {/* 飯店列表 */}
             <section className="col-lg-9">
-              {filteredHotels.length > 0 ? (
-                filteredHotels.map((hotel) => (
+              {currentHotels.length > 0 ? (
+                currentHotels.map((hotel) => (
                   <HotelCard
                     key={hotel.id}
                     image={hotel.main_image_url || "/hotel/loding.jpg"}
@@ -106,10 +110,12 @@ export default function HotelHomePage() {
             </section>
           </div>
         </div>
+
+        {/* 分頁功能 */}
         <Page
-          currentPage={1}
-          totalPages={3}
-          onPageChange={(page) => console.log("切換到第", page, "頁")}
+          currentPage={currentPage}
+          totalPages={Math.ceil(filteredHotels.length / hotelsPerPage)}
+          onPageChange={(page) => setCurrentPage(page)}
         />
       </div>
     </>

@@ -1,53 +1,81 @@
 import pool from "../config/mysql.js";
 
-export const getHotels = async (minRating = 0, minPrice = 0, maxPrice = 10000, roomTypeId = null, tags = []) => {
+export const getHotels = async (
+  minRating = 0,
+  minPrice = 0,
+  maxPrice = 10000,
+  roomTypeId = null,
+  tags = "[]"
+) => {
   const connection = await pool.getConnection();
   try {
-      let query = `
-          SELECT 
-              h.*, 
-              hi.url AS main_image_url,
-              IFNULL(r.avg_rating, 0) AS avg_rating
-          FROM hotel h
-          LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
-          LEFT JOIN (
-              SELECT hotel_id, ROUND(AVG(rating), 1) AS avg_rating
-              FROM hotel_reviews
-              GROUP BY hotel_id
-          ) r ON h.id = r.hotel_id
-          JOIN room_base_price rbp ON h.id = rbp.hotel_id
-          WHERE h.is_deleted = 0 
-              AND IFNULL(r.avg_rating, 0) >= ?
-              AND rbp.base_price BETWEEN ? AND ?
-              AND rbp.is_deleted = 0
-      `;
+    let parsedTags = [];
+    try {
+      parsedTags = JSON.parse(tags); // **解析 tags**
+    } catch (e) {
+      console.error("標籤解析失敗:", e);
+    }
 
-      let queryParams = [minRating, minPrice, maxPrice];
+    let query = `
+      SELECT h.*, 
+             hi.url AS main_image_url,
+             IFNULL(r.avg_rating, 0) AS avg_rating,
+             IFNULL(rbp.min_price, 0) AS min_price
+      FROM hotel h
+      LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
+      LEFT JOIN (
+          SELECT hotel_id, ROUND(AVG(rating), 1) AS avg_rating
+          FROM hotel_reviews
+          GROUP BY hotel_id
+      ) r ON h.id = r.hotel_id
+      LEFT JOIN (
+          SELECT hotel_id, MIN(base_price) AS min_price
+          FROM room_base_price 
+          WHERE is_deleted = 0
+          GROUP BY hotel_id
+      ) rbp ON h.id = rbp.hotel_id
+      WHERE h.is_deleted = 0 
+        AND IFNULL(r.avg_rating, 0) >= ?
+        AND IFNULL(rbp.min_price, 0) BETWEEN ? AND ?
+    `;
 
-      if (roomTypeId) {
-          query += " AND rbp.room_type_id = ?";
-          queryParams.push(roomTypeId);
-      }
+    let queryParams = [
+      minRating,
+      minPrice,
+      maxPrice,
+      roomTypeId,
+      ...parsedTags,
+    ];
 
-      if (tags.length > 0) {
-          query += ` AND h.id IN (
-              SELECT hotel_id FROM hotel_tags WHERE tag_id IN (${tags.map(() => "?").join(", ")})
-          )`;
-          queryParams.push(...tags);
-      }
+    if (roomTypeId !== null) {
+      query += ` AND EXISTS (
+          SELECT 1 FROM room_base_price WHERE room_type_id = ? AND hotel_id = h.id
+      )`;
+      queryParams.push(roomTypeId);
+    }
 
-      query += " GROUP BY h.id"; // 避免重複
+    if (parsedTags.length > 0) {
+      query += ` AND h.id IN (
+          SELECT hotel_id FROM hotel_tags WHERE tag_id IN (${parsedTags
+            .map(() => "?")
+            .join(", ")})
+      )`;
+      queryParams.push(...parsedTags);
+    }
 
-      const [hotels] = await connection.query(query, queryParams);
-      return hotels;
+    query += " GROUP BY h.id";
+
+    console.log("執行 SQL 查詢:", query);
+    console.log("查詢參數:", queryParams);
+
+    const [hotels] = await connection.query(query, queryParams);
+    return hotels;
   } catch (error) {
-      throw new Error("無法取得旅館列表：" + error.message);
+    throw new Error("無法取得旅館列表：" + error.message);
   } finally {
-      connection.release();
+    connection.release();
   }
 };
-
-
 
 export const searchHotels = async (keyword) => {
   try {
@@ -64,7 +92,7 @@ export const searchHotels = async (keyword) => {
 export const getId = async (id) => {
   try {
     const [hotels] = await pool.query(
-      `SELECT h.*, hi.image_url
+      `SELECT h.*, hi.url AS main_image_url
        FROM hotel h
        LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
        WHERE h.id = ? AND h.is_deleted = 0`,
@@ -341,5 +369,4 @@ export const softDeleteHotelById = async (id) => {
   } finally {
     connection.release();
   }
-  
 };

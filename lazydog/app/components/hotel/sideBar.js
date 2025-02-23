@@ -86,16 +86,24 @@ export default function SideBar({ hotelId, onSearch }) {
     if (priceSliderRef.current && priceSliderRef.current.noUiSlider) {
       priceSliderRef.current.noUiSlider.set([minPrice, maxPrice]);
     }
-  }, [minPrice, maxPrice]);  
+  }, [minPrice, maxPrice]);
   const fetchHotels = async () => {
     const query = new URLSearchParams();
   
-    // 確保使用當前 UI 設定的篩選條件
-    if (selectedRating) query.append("min_rating", selectedRating);
+    if (selectedRating) query.append("min_rating", Number(selectedRating));
     query.append("min_price", minPrice);
     query.append("max_price", maxPrice);
-    if (selectedRoomType) query.append("room_type_id", selectedRoomType);
-    if (selectedTags.length > 0) query.append("tags", selectedTags.join(",")); // 加入標籤篩選
+  
+    if (selectedRoomType && selectedRoomType !== "") {
+      query.append("room_type_id", selectedRoomType);
+    }
+    
+  
+    // **確保標籤是數字陣列**
+    const numericTags = selectedTags.map(tag => Number(tag)).filter(tag => !isNaN(tag));
+    if (numericTags.length > 0) {
+      query.append("tags", JSON.stringify(numericTags)); // **轉成 JSON 字串，確保後端能解析**
+    }
   
     const apiUrl = `http://localhost:5000/api/hotels?${query.toString()}`;
     console.log("發送 API 請求:", apiUrl);
@@ -103,15 +111,15 @@ export default function SideBar({ hotelId, onSearch }) {
     try {
       const res = await fetch(apiUrl);
       const data = await res.json();
-      console.log(" API 回應的飯店數據:", data);
+      console.log("API 回應:", data);
       setHotels(data || []);
     } catch (error) {
-      console.error(" 獲取所有飯店失敗:", error);
+      console.error("獲取飯店失敗:", error);
     }
   };
   
-
-
+  
+  
   const fetchTags = async () => {
     try {
       const allTags = await getAllTags();
@@ -138,12 +146,12 @@ export default function SideBar({ hotelId, onSearch }) {
       } else {
         priceData = await getGlobalPriceRange();
       }
-  
+
       const min = priceData?.min_price ?? 0;
       const max = priceData?.max_price ?? 10000;
-  
+
       console.log("從後端獲取的新價格範圍:", min, max);
-  
+
       // 只有當 `overrideDefault` 為 false 時，才更新價格範圍
       if (!overrideDefault) {
         setMinPrice(min);
@@ -153,49 +161,57 @@ export default function SideBar({ hotelId, onSearch }) {
       console.error("獲取價格範圍失敗:", error);
     }
   };
-  
-
-  
 
   const toggleFacilities = () => {
     setShowAllFacilities((prev) => !prev);
   };
   const handleTagChange = (tagId) => {
     if (!tagId && tagId !== 0) return;
+
+    const numericTagId = Number(tagId); // 確保是數字
+    if (isNaN(numericTagId)) return; // 過濾非數字的值
+
     setSelectedTags((prev) => {
-      return prev.includes(tagId)
-        ? prev.filter((t) => t !== tagId)
-        : [...prev, tagId];
+      return prev.includes(numericTagId)
+        ? prev.filter((t) => t !== numericTagId)
+        : [...prev, numericTagId];
     });
   };
 
   const handleSearch = async () => {
     console.log("開始搜尋...", minPrice, maxPrice, selectedRoomType);
-
+  
     const query = new URLSearchParams();
     if (selectedRating) query.append("min_rating", selectedRating);
     query.append("min_price", minPrice);
     query.append("max_price", maxPrice);
     if (selectedRoomType) query.append("room_type_id", selectedRoomType);
-
+  
+    const numericTags = selectedTags.map(tag => Number(tag)).filter(tag => !isNaN(tag));
+    if (numericTags.length > 0) {
+      query.append("tags", JSON.stringify(numericTags)); 
+    }
+  
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/hotels?${query.toString()}`
-      );
+      const res = await fetch(`http://localhost:5000/api/hotels?${query.toString()}`);
       const data = await res.json();
+      console.log("搜尋結果:", data);
+  
       if (onSearch) {
-        onSearch(data);
+        onSearch(data); // **確保篩選結果正確更新**
       }
     } catch (error) {
       console.error("搜尋失敗:", error);
     }
-
+  
     setIsSearching(false);
   };
+  
+  
 
   const handleClear = async () => {
     console.log("清除篩選條件開始");
-  
+
     // **重置 UI 狀態**
     setSelectedTags([]);
     setSelectedRating("");
@@ -203,11 +219,11 @@ export default function SideBar({ hotelId, onSearch }) {
     setMinPrice(0);
     setMaxPrice(10000);
     setIsSearching(true);
-  
+
     if (priceSliderRef.current?.noUiSlider) {
       priceSliderRef.current.noUiSlider.set([0, 10000]);
     }
-  
+
     try {
       // 不讓 `fetchPriceRange()` 影響 UI
       const priceRange = await fetchPriceRange(true);
@@ -215,20 +231,16 @@ export default function SideBar({ hotelId, onSearch }) {
     } catch (error) {
       console.error(" 重置價格範圍失敗:", error);
     }
-  
+
     setTimeout(() => {
       console.log(" 重新獲取所有飯店列表...");
       fetchHotels();
     }, 300);
-  
+
     if (onSearch) {
-      
       onSearch([]);
     }
-  
-  
   };
-  
 
   return (
     <>
