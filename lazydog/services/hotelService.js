@@ -3,6 +3,8 @@
 const API_URL = "http://localhost:5000/api/hotels";
 const HOTEL_TAGS_URL = "http://localhost:5000/api/hotel_tags";
 const HOTEL_ROOM_TYPES_URL = "http://localhost:5000/api/hotel_room_types";
+const ROOM_BASE_PRICE_URL = "http://localhost:5000/api/room_base_price";
+const ROOM_TYPES_URL = "http://localhost:5000/api/read/room_types"; 
 const ROOM_INVENTORY_URL = "http://localhost:5000/api/room_inventory";
 const HOTEL_IMAGES_URL = "http://localhost:5000/api/hotel_images";
 const HOTEL_ORDERS_URL = "http://localhost:5000/api/hotel_orders";
@@ -101,11 +103,56 @@ export const removeHotelTag = async (hotelId, tagId) => {
     return { success: false, message: "刪除標籤失敗" };
   }
 };
-//房型跟庫存
-export const getAllRoomTypes = async () => {
-  const res = await fetch(HOTEL_ROOM_TYPES_URL, { method: "GET" });
-  return await res.json();
+//價格
+// 取得所有房型價格
+export const getRoomBasePrices = async () => {
+  try {
+    const res = await fetch(`${ROOM_BASE_PRICE_URL}`);
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    return await res.json();
+  } catch (error) {
+    console.error("獲取房型價格失敗:", error);
+    return [];
+  }
 };
+
+// 取得特定飯店價格範圍
+export const getHotelPriceRange = async (hotelId) => {
+  try {
+    const res = await fetch(`${ROOM_BASE_PRICE_URL}/range/${hotelId}`);
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    return await res.json();
+  } catch (error) {
+    console.error(`獲取飯店 (${hotelId}) 價格範圍失敗:`, error);
+    return {};
+  }
+};
+
+// 取得所有飯店的價格範圍
+export const getGlobalPriceRange = async () => {
+  try {
+    const res = await fetch(`${ROOM_BASE_PRICE_URL}/range`);
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    return await res.json();
+  } catch (error) {
+    console.error("獲取所有飯店價格範圍失敗:", error);
+    return { min_price: 0, max_price: 10000 };
+  }
+};
+
+//房型跟庫存
+
+export const getAllRoomTypes = async () => {
+  try {
+    const res = await fetch(ROOM_TYPES_URL);
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    return await res.json();
+  } catch (error) {
+    console.error("獲取房型失敗:", error);
+    return []; // 返回空陣列，避免前端崩潰
+  }
+};
+
 export const getHotelRoomById = async (roomId) => {
   const res = await fetch(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, {
     method: "GET",

@@ -2,6 +2,7 @@ import {
   fetchCouponRestrictions,
   fetchTags,
   fetchHotelTags,
+  fetchRoomTypes,
 } from "../services/readService.js";
 
 export const fetchCouponRestriction = async (req, res) => {
@@ -26,5 +27,13 @@ export const fetchHotelTag = async (req, res) => {
     res.status(200).json(hotelTags);
   } catch (error) {
     res.status(500).json({ error: "無法取得飯店標籤：" + error.message });
+  }
+};
+export const fetchRoomType = async (req, res) => {
+  try {
+    const roomTypes = await fetchRoomTypes();
+    res.json(roomTypes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

@@ -4,17 +4,21 @@ import {
   getGlobalPriceRange,
   addRoomBasePrice,
   updateRoomBasePrice,
-  softDeleteRoomBasePrice
+  softDeleteRoomBasePrice,
+  getRoomBasePrices,  // 取得所有房型價格
 } from "../controllers/roomBasePriceController.js";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
+// 取得所有房型價格
+router.get("/", getRoomBasePrices);
+
 // 取得所有飯店價格範圍
-router.get("/", getGlobalPriceRange);
+router.get("/range", getGlobalPriceRange);
 
 // 取得特定飯店價格範圍
-router.get("/:hotelId", getHotelPriceRange);
+router.get("/range/:hotelId", getHotelPriceRange);
 
 // 新增房型價格 (限 Operator)
 router.post("/", verifyToken, verifyRole(["operator"]), addRoomBasePrice);

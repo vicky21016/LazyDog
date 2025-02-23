@@ -1,30 +1,52 @@
 import pool from "../config/mysql.js";
 
-export const getHotels = async (minRating = 0) => {
+export const getHotels = async (minRating = 0, minPrice = 0, maxPrice = 10000, roomTypeId = null) => {
   const connection = await pool.getConnection();
   try {
-    const [hotels] = await connection.query(`
-      SELECT 
-        h.*, 
-        hi.url AS main_image_url,
-        IFNULL(r.avg_rating, 0) AS avg_rating
-      FROM hotel h
-      LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
-      LEFT JOIN (
-        SELECT hotel_id, ROUND(AVG(rating), 1) AS avg_rating
-        FROM hotel_reviews
-        GROUP BY hotel_id
-      ) r ON h.id = r.hotel_id
-      WHERE h.is_deleted = 0 AND IFNULL(r.avg_rating, 0) >= ?
-    `, [minRating]);
+      let query = `
+          SELECT 
+              h.*, 
+              hi.url AS main_image_url,
+              IFNULL(r.avg_rating, 0) AS avg_rating
+          FROM hotel h
+          LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
+          LEFT JOIN (
+              SELECT hotel_id, ROUND(AVG(rating), 1) AS avg_rating
+              FROM hotel_reviews
+              GROUP BY hotel_id
+          ) r ON h.id = r.hotel_id
+          JOIN room_base_price rbp ON h.id = rbp.hotel_id
+          WHERE h.is_deleted = 0 
+              AND IFNULL(r.avg_rating, 0) >= ?
+              AND rbp.base_price BETWEEN ? AND ?
+              AND rbp.is_deleted = 0
+      `;
 
-    return hotels;
+      let queryParams = [minRating, minPrice, maxPrice];
+
+      if (roomTypeId) {
+          query += " AND rbp.room_type_id = ?";
+          queryParams.push(roomTypeId);
+      }
+
+      query += " GROUP BY h.id"; // 避免重複
+
+      console.log("執行 SQL:", query);
+      console.log("查詢參數:", queryParams);
+
+      const [hotels] = await connection.query(query, queryParams);
+      
+      console.log("後端查詢結果筆數:", hotels.length);
+
+      return hotels;
   } catch (error) {
-    throw new Error(" 無法取得旅館list：" + error.message);
+      throw new Error("無法取得旅館列表：" + error.message);
   } finally {
-    connection.release();
+      connection.release();
   }
 };
+
+
 
 export const searchHotels = async (keyword) => {
   try {
