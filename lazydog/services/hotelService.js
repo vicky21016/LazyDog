@@ -67,8 +67,8 @@ export const softDeleteHotel = async (id) => {
 //標籤C
 export const getAllTags = async () => {
   try {
-    const res = await fetch(`HOTEL_TAGS_URL`, { method: "GET" });
-    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    const res = await fetch(HOTEL_TAGS_URL, { method: "GET" });
+    if (!res.ok) throw new Error(`錯誤! Status: ${res.status}`);
     return await res.json();
   } catch (error) {
     console.error("獲取標籤失敗:", error);
@@ -76,16 +76,31 @@ export const getAllTags = async () => {
   }
 };
 export const getHotelTags = async (hotelId) => {
-  const res = await fetch(`${HOTEL_TAGS_URL}/${hotelId}`, { method: "GET" });
-  return await res.json();
-};
-export const removeHotelTag = async (hotelId, tagId) => {
-  const res = await fetch(`${HOTEL_TAGS_URL}/${hotelId}/${tagId}`, {
-    method: "DELETE",
-  });
-  return await res.json();
+  try {
+    const res = await fetch(`${HOTEL_TAGS_URL}/${hotelId}`, { method: "GET" });
+    if (!res.ok) throw new Error(`錯誤! Status: ${res.status}`);
+    return await res.json();
+  } catch (error) {
+    console.error(`獲取飯店 (${hotelId}) 標籤失敗:`, error);
+    return [];
+  }
 };
 
+export const removeHotelTag = async (hotelId, tagId) => {
+  try {
+    const res = await fetch(`${HOTEL_TAGS_URL}/${hotelId}/${tagId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) throw new Error(`錯誤! Status: ${res.status}`);
+    return await res.json();
+  } catch (error) {
+    console.error(`刪除標籤失敗 (${hotelId}, ${tagId}):`, error);
+    return { success: false, message: "刪除標籤失敗" };
+  }
+};
 //房型跟庫存
 export const getAllRoomTypes = async () => {
   const res = await fetch(HOTEL_ROOM_TYPES_URL, { method: "GET" });

@@ -9,7 +9,7 @@ const GoogleMapComponent = ({ hotels }) => {
   useEffect(() => {
     if (typeof window !== "undefined" && !window.google) {
       const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDfCdeVzmet4r4U6iU5M1C54K9ooF3WrV4&libraries=places`;
       script.async = true;
       script.onload = () => {
         setIsApiLoaded(true);

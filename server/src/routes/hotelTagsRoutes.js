@@ -10,6 +10,7 @@ import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 router.get("/:hotelId", getHotelTag);
+router.get("/", getAllHotelTags);
 
 router.post("/", verifyToken, verifyRole(["operator"]), addHotelTag);
 
@@ -20,6 +21,5 @@ router.patch(
   verifyRole(["operator"]),
   removeHotelTag
 );
-router.get("/", getAllHotelTags);
 
 export default router;

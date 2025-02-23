@@ -4,14 +4,15 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/modules/fontHotelHome.module.css";
 import GoogleMapComponent from "../../components/hotel/GoogleMapComponent";
 import Link from "next/link";
-import { getHotelTags, ratingAv } from "@/services/hotelService";
+import {  ratingAv, getAllTags } from "@/services/hotelService";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 
 export default function SideBar({ hotelId, onSearch }) {
   const [showAllFacilities, setShowAllFacilities] = useState(false);
   const [hotels, setHotels] = useState([]);
-  const [hotelTags, setHotelTags] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [ratings, setRatings] = useState([]);
   const [selectedRating, setSelectedRating] = useState("");
   const [minPrice, setMinPrice] = useState(0);
@@ -22,6 +23,7 @@ export default function SideBar({ hotelId, onSearch }) {
 
   useEffect(() => {
     fetchHotels();
+    fetchTags();
     fetchRatings();
   }, []);
 
@@ -62,16 +64,13 @@ export default function SideBar({ hotelId, onSearch }) {
     }
   };
 
-  const fetchHotelTags = async () => {
+  const fetchTags = async () => {
     try {
-      if (!hotelId) {
-        console.warn("Hotel ID 未提供，無法獲取標籤");
-        return;
-      }
-      const tags = await getHotelTags(hotelId);
-      setHotelTags(tags || []);
+      const tagsData = await getAllTags();
+      setTags(tagsData || []);
     } catch (error) {
-      console.error("獲取飯店標籤失敗:", error);
+      console.error("獲取標籤失敗:", error);
+      setTags([]); // 失敗時預設為空陣列
     }
   };
 
@@ -87,7 +86,11 @@ export default function SideBar({ hotelId, onSearch }) {
   const toggleFacilities = () => {
     setShowAllFacilities((prev) => !prev);
   };
-
+  const handleTagChange = (tagId) => {
+    setSelectedTags((prev) =>
+      prev.includes(tagId) ? prev.filter((t) => t !== tagId) : [...prev, tagId]
+    );
+  };
   const handleSearch = async () => {
     console.log("開始搜尋...");
 
@@ -113,6 +116,8 @@ export default function SideBar({ hotelId, onSearch }) {
     console.log("篩選條件已清除");
     setMinPrice(0);
     setMaxPrice(10000);
+    setSelectedTags([]);
+    setSelectedRating("");
     priceSliderRef.current?.noUiSlider.set([0, 10000]);
     setIsSearching(true);
 
@@ -136,7 +141,7 @@ export default function SideBar({ hotelId, onSearch }) {
                 📍 於地圖上顯示
               </button>
               <img
-                src={`https://maps.googleapis.com/maps/api/staticmap?center=台灣&zoom=7&size=300x200&maptype=roadmap&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
+                src={`https://maps.googleapis.com/maps/api/staticmap?center=台灣&zoom=7&size=300x200&maptype=roadmap&key=AIzaSyDfCdeVzmet4r4U6iU5M1C54K9ooF3WrV4`}
                 alt="地圖縮圖"
                 className={styles.suMapImage}
               />
@@ -158,11 +163,7 @@ export default function SideBar({ hotelId, onSearch }) {
         {/* 優質住宿篩選 */}
         <div className={styles.suFilterGroup}>
           <h6 className={styles.suFilterTitle}>飯店評分</h6>
-          <select
-            className="form-select"
-            value={selectedRating}
-            onChange={(e) => setSelectedRating(e.target.value)}
-          >
+          <select className="form-select" value={selectedRating} onChange={(e) => setSelectedRating(e.target.value)}>
             <option value="">全部</option>
             {[5, 4, 3, 2, 1].map((rating) => (
               <option key={rating} value={rating}>
@@ -175,30 +176,38 @@ export default function SideBar({ hotelId, onSearch }) {
         {/* 設施篩選 */}
         <div className={styles.suFilterGroup}>
           <h6 className={styles.suFilterTitle}>設施</h6>
-          {hotelTags.slice(0, 3).map((tag, index) => (
-            <div className="form-check" key={index}>
-              <input className="form-check-input" type="checkbox" id={tag} />
-              <label className="form-check-label" htmlFor={tag}>
-                {tag}
+          {tags.slice(0, 3).map((tag) => (
+            <div className="form-check" key={tag.id}>
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id={`tag-${tag.id}`}
+                checked={selectedTags.includes(tag.id)}
+                onChange={() => handleTagChange(tag.id)}
+              />
+              <label className="form-check-label" htmlFor={`tag-${tag.id}`}>
+                {tag.name}
               </label>
             </div>
           ))}
 
-          <span className={styles.suShowMore} onClick={toggleFacilities}>
+          <span className={styles.suShowMore} onClick={() => setShowAllFacilities(!showAllFacilities)}>
             {showAllFacilities ? "收起 ▲" : "顯示全部 ▼"}
           </span>
 
           {showAllFacilities && (
             <div className={`${styles.suHidden} mt-2`}>
-              {hotelTags.slice(3).map((tag, index) => (
-                <div className="form-check" key={index}>
+              {tags.slice(3).map((tag) => (
+                <div className="form-check" key={tag.id}>
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    id={tag}
+                    id={`tag-${tag.id}`}
+                    checked={selectedTags.includes(tag.id)}
+                    onChange={() => handleTagChange(tag.id)}
                   />
-                  <label className="form-check-label" htmlFor={tag}>
-                    {tag}
+                  <label className="form-check-label" htmlFor={`tag-${tag.id}`}>
+                    {tag.name}
                   </label>
                 </div>
               ))}

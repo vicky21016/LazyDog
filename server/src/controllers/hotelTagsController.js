@@ -1,3 +1,4 @@
+import pool from "../config/mysql.js";
 import {
   getHotelTags,
   addHotelTags,
@@ -36,10 +37,14 @@ export const removeHotelTag = async (req, res) => {
 //懶得寫後面
 export const getAllHotelTags = async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM hotel_tags");
+    const [rows] = await pool.query(`
+      SELECT ht.hotel_id, t.id as tag_id, t.name, t.description
+      FROM hotel_tags ht
+      JOIN tags t ON ht.tag_id = t.id
+      WHERE ht.is_deleted = 0
+    `);
     res.json(rows);
-  } catch (error) {
-    console.error("取得標籤失敗:", error);
-    res.status(500).json({ message: "無法取得標籤" });
+  } catch (error) {   
+    res.status(500).json({ message: "無法取得標籤", error: error.message });
   }
 };
