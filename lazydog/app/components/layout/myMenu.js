@@ -97,8 +97,7 @@ export default function MyMenu() {
           accept="image/*"
         />
 
-        <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5>
-=========
+        {/* <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5> */}
            <div className={styles.dropdownItem}>
               <button
                 className={`btn btn-light ${styles.suCameraIcon}`}
@@ -140,7 +139,6 @@ export default function MyMenu() {
               </ul>
             </div>
         <h5 className={`mb-4 ${styles.welcome}`}>歡迎，{profile?.name || "會員"}！</h5>
->>>>>>>>> Temporary merge branch 2
       </div>
 
       <List animated selection>
