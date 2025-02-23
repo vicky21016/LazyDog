@@ -4,7 +4,7 @@ const API_URL = "http://localhost:5000/api/hotels";
 const HOTEL_TAGS_URL = "http://localhost:5000/api/hotel_tags";
 const HOTEL_ROOM_TYPES_URL = "http://localhost:5000/api/hotel_room_types";
 const ROOM_BASE_PRICE_URL = "http://localhost:5000/api/room_base_price";
-const ROOM_TYPES_URL = "http://localhost:5000/api/read/room_types"; 
+const ROOM_TYPES_URL = "http://localhost:5000/api/read/room_types";
 const ROOM_INVENTORY_URL = "http://localhost:5000/api/room_inventory";
 const HOTEL_IMAGES_URL = "http://localhost:5000/api/hotel_images";
 const HOTEL_ORDERS_URL = "http://localhost:5000/api/hotel_orders";
@@ -42,7 +42,9 @@ export const fetchHotelsCount = async () => {
 export const getPaginatedHotels = async (page = 1, limit = 10) => {
   try {
     const offset = (page - 1) * limit;
-    const res = await fetch(`${API_URL}/paginated?limit=${limit}&offset=${offset}`);
+    const res = await fetch(
+      `${API_URL}/paginated?limit=${limit}&offset=${offset}`
+    );
 
     if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
 
@@ -54,7 +56,13 @@ export const getPaginatedHotels = async (page = 1, limit = 10) => {
     return [];
   }
 };
-
+//暫放
+export const getFilteredHotels = async (params) => {
+  const query = new URLSearchParams(params).toString();
+  const response = await fetch(`${API_URL}/all?${query}`);
+  if (!response.ok) throw new Error("獲取飯店失敗");
+  return response.json();
+};
 
 export const getSearch = async () => {
   const res = await fetch(`${API_URL}/search`, { method: "GET" });
@@ -169,9 +177,6 @@ export const getHotelPriceRange = async (hotelId) => {
     return {};
   }
 };
-
-
-
 
 //房型跟庫存
 

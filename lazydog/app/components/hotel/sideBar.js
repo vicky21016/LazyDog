@@ -178,7 +178,7 @@ export default function SideBar({ hotelId, onSearch }) {
     });
   };
 
-  const handleSearch = async () => {
+  const handleApplyFilters = async () => {
     console.log("開始搜尋...", minPrice, maxPrice, selectedRoomType);
   
     const query = new URLSearchParams();
@@ -206,6 +206,7 @@ export default function SideBar({ hotelId, onSearch }) {
   
     setIsSearching(false);
   };
+  
   
   
 
@@ -358,7 +359,7 @@ export default function SideBar({ hotelId, onSearch }) {
           {/* 搜尋 / 清除篩選 按鈕 */}
           <button
             className={`btn btn-sm btn-outline-danger mt-3 ${styles.suClearFilterBtn}`}
-            onClick={isSearching ? handleSearch : handleClear}
+            onClick={isSearching ? handleApplyFilters : handleClear}
           >
             {isSearching ? "搜尋" : "清除篩選"}
           </button>

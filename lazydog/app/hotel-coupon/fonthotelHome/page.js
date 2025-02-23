@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
-import { getAllHotels } from "@/services/hotelService";
+import { getAllHotels, getFilteredHotels } from "@/services/hotelService";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
 import Header from "../../components/layout/header";
 import HotelCard from "@/app/components/hotel/hotelCard";
@@ -19,7 +19,7 @@ export default function HotelHomePage() {
   const [quantity, setQuantity] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const hotelsPerPage = 10; // 每頁顯示的飯店數量
-
+  const [searchParams, setSearchParams] = useState({});
   const {
     location,
     locationModalRef,
@@ -42,7 +42,33 @@ export default function HotelHomePage() {
 
     fetchHotels();
   }, []);
+ // 搜尋欄觸發的搜尋
+ const handleSearchBarSubmit = async (params) => {
+  console.log("🔍 觸發搜尋條件:", params);
+  setSearchParams(params); // 存儲搜尋條件
 
+  try {
+    const data = await getFilteredHotels(params); //  傳遞條件給 API
+    setFilteredHotels(data); // 更新篩選後的飯店數據
+    setCurrentPage(1); // 重設到第 1 頁
+  } catch (error) {
+    console.error("搜尋飯店失敗:", error);
+  }
+};
+
+// 篩選器觸發的搜尋
+const handleSearchFromFilters = async (params) => {
+  console.log("🔍 篩選條件:", params);
+  setSearchParams((prev) => ({ ...prev, ...params })); // 合併篩選條件
+
+  try {
+    const data = await getFilteredHotels({ ...searchParams, ...params });
+    setFilteredHotels(data);
+    setCurrentPage(1);
+  } catch (error) {
+    console.error("篩選飯店失敗:", error);
+  }
+};
   // 計算當前頁面的飯店數據
   const indexOfLastHotel = currentPage * hotelsPerPage;
   const indexOfFirstHotel = indexOfLastHotel - hotelsPerPage;
@@ -68,7 +94,7 @@ export default function HotelHomePage() {
             quantity={quantity}
             confirmLocation={confirmLocation}
             setQuantity={setQuantity}
-            onSearch={setFilteredHotels}
+            onSearch={handleSearchBarSubmit}
           />
         </div>
 
@@ -87,7 +113,7 @@ export default function HotelHomePage() {
           <div className="row">
             {/* 側邊篩選欄 */}
             <aside className={`col-lg-3 ${styles.suSidebar}`}>
-              <Aside onSearch={setFilteredHotels} />
+            <Aside onSearch={handleSearchFromFilters} />
             </aside>
 
             {/* 飯店列表 */}

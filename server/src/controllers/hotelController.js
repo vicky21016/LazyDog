@@ -6,6 +6,7 @@ import {
   updateHotelById,
   softDeleteHotelById,
   searchHotels,
+  getFilteredHotel,
 } from "../services/hotelService.js";
 import pool from "../config/mysql.js";
 export const getAllHotels = async (req, res) => {
@@ -224,3 +225,22 @@ export const getPaginatedHotels = async (req, res) => {
     res.status(500).json({ error: "伺服器錯誤" });
   }
 };
+
+export const getFilteredHotels = async (req, res) => {
+  try {
+    const filters = {
+      min_rating: req.query.min_rating ? Number(req.query.min_rating) : 0,
+      min_price: req.query.min_price ? Number(req.query.min_price) : 0,
+      max_price: req.query.max_price ? Number(req.query.max_price) : 10000,
+      room_type_id: req.query.room_type_id ? Number(req.query.room_type_id) : null,
+      tags: req.query.tags ? req.query.tags.split(",").map(Number) : [],
+    };
+
+    const hotels = await getFilteredHotel(filters);
+    res.json(hotels);
+  } catch (error) {
+    console.error("獲取篩選飯店失敗:", error);
+    res.status(500).json({ error: "獲取飯店失敗" });
+  }
+};
+

@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
 import { useDatePicker } from "@/hooks/useDatePicker";
-
 
 const HotelSearchBar = ({
   location,
@@ -15,6 +14,21 @@ const HotelSearchBar = ({
   onSearch,
 }) => {
   const dateRef = useDatePicker();
+  const [selectedDate, setSelectedDate] = useState("");
+
+ 
+  const handleSearchBarSubmit = () => {
+    console.log("🔍 搜尋欄條件:", { address, quantity, selectedDate });
+
+    if (onSearch) {
+      onSearch({
+        address,
+        quantity,
+        selectedDate,
+      });
+    }
+  };
+
   return (
     <div className="container mt-4">
       <div className={styles.suSearchBar}>
@@ -24,14 +38,9 @@ const HotelSearchBar = ({
             src="/hotel/hotel-images/page-image/icon-search.png"
             alt=""
           />
-          <input
-            type="text"
-            className={styles.suSearchInput}
-            placeholder="搜尋關鍵地區..."
-            value={address}
-            readOnly
-            onClick={openModal}
-          />
+          <button className={styles.suSearchInput} onClick={openModal}>
+            {address ? address : "選擇地區"}
+          </button>
         </div>
         <div className={styles.suSearchGroup}>
           <img
@@ -44,6 +53,7 @@ const HotelSearchBar = ({
             ref={dateRef}
             className={styles.suSearchDate}
             placeholder="入住日期 → 退房日期"
+            onChange={(e) => setSelectedDate(e.target.value)}
           />
         </div>
         <div className={styles.suSearchGroup}>
@@ -67,7 +77,8 @@ const HotelSearchBar = ({
             +
           </button>
         </div>
-        <button className={styles.suSearchBtn} onClick={onSearch}>
+         {/* 使用 `handleSearchBarSubmit` 作為搜尋函數 */}
+         <button className={styles.suSearchBtn} onClick={handleSearchBarSubmit}>
           搜尋
         </button>
         <div
