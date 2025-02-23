@@ -5,6 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import "../css/CartList.css";
 import { useCart } from "@/hooks/use-cart";
+import Header from "../../components/layout/header"
+import Other from "../../components/teacher/otherTeacher";
+import Thead from "../../components/cart/thead"
+import Tbody from "../../components/cart/tbody"
+import Breadcrumb from "../../components/teacher/breadcrumb";
+
 
 export default function CartListPage(props) {
   const { productItems, courseItems, hotelItems, totalProductAmount, totalProductQty, totalCourseAmount, totalCourseQty, totalHotelAmount, totalHotelQty, onIncrease, onDecrease, onRemove } = useCart();
