@@ -127,10 +127,13 @@ export function AuthProvider({ children }) {
 
       // 清除 localStorage
       localStorage.removeItem(appKey);
+      setUser(-1);
       localStorage.removeItem("user");
 
+
+
       window.location.href = "/login";
-      setUser(-1);
+      
     } catch (err) {
       console.log(err);
       alert(err.message);
@@ -172,7 +175,8 @@ export function AuthProvider({ children }) {
         },
         body: JSON.stringify({ name, email, gender, birthday, phone, avatar }),
       });
-
+      console.log("🚀 取得的 token:", token);
+      console.log("🆔 取得的 user.id:", user?.id);
       if (!res.ok) {
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
@@ -189,6 +193,9 @@ export function AuthProvider({ children }) {
         localStorage.setItem(appKey, token);
         localStorage.setItem("user", JSON.stringify(newUser));
         // 重新取得使用者資料
+        // setUser(JSON.parse(localStorage.getItem("user"))); 
+        // 若為 operator，��重新��向 operator ��面
+
       } else {
         alert("儲存失敗");
       }
@@ -225,11 +232,11 @@ export function AuthProvider({ children }) {
 
       if (response.ok) {
         console.log("上傳成功:", result);
-
-        const newUser = jwt.decode(token);
-        setUser(newUser);
-        localStorage.setItem(appKey, token);
-        localStorage.setItem("user", JSON.stringify(newUser));
+        // const user = JSON.parse(localStorage.getItem("user"));
+        // user.avatar = result.fileUrl; 
+        // localStorage.setItem("user", JSON.stringify(user));
+        // // 重新取得使用者資料
+      
         return result.fileUrl; // 回傳圖片網址
       } else {
         return console.error("上傳失敗:", result.message);
