@@ -104,6 +104,17 @@ export const removeHotelTag = async (hotelId, tagId) => {
   }
 };
 //價格
+// 取得所有飯店的價格範圍
+export const getGlobalPriceRange = async () => {
+  try {
+    const res = await fetch(`${ROOM_BASE_PRICE_URL}/range`);
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    return await res.json();
+  } catch (error) {
+    console.error("獲取所有飯店價格範圍失敗:", error);
+    return { min_price: 0, max_price: 10000 };
+  }
+};
 // 取得所有房型價格
 export const getRoomBasePrices = async () => {
   try {
@@ -128,17 +139,7 @@ export const getHotelPriceRange = async (hotelId) => {
   }
 };
 
-// 取得所有飯店的價格範圍
-export const getGlobalPriceRange = async () => {
-  try {
-    const res = await fetch(`${ROOM_BASE_PRICE_URL}/range`);
-    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-    return await res.json();
-  } catch (error) {
-    console.error("獲取所有飯店價格範圍失敗:", error);
-    return { min_price: 0, max_price: 10000 };
-  }
-};
+
 
 
 //房型跟庫存

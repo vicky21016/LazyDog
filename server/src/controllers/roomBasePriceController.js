@@ -43,7 +43,6 @@ export const getGlobalPriceRange = async () => {
       return { min_price: 0, max_price: 10000 }; // 正確返回物件
     }
 
-    console.log("查詢成功，價格範圍:", rows[0]);
     return rows[0]; // 返回物件，而不是 `res.json()`
   } catch (error) {
     console.error("獲取所有飯店的價格範圍失敗：", error);
@@ -51,10 +50,14 @@ export const getGlobalPriceRange = async () => {
   }
 };
 
-
-
 // 新增房型價格 (含房間總數)
-export const addRoomBasePrice = async (hotelId, roomTypeId, basePrice, totalRooms, currency = "TWD") => {
+export const addRoomBasePrice = async (
+  hotelId,
+  roomTypeId,
+  basePrice,
+  totalRooms,
+  currency = "TWD"
+) => {
   try {
     const [result] = await pool.execute(
       `INSERT INTO room_base_price (hotel_id, room_type_id, base_price, total_rooms, currency) 
