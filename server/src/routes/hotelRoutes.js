@@ -7,12 +7,18 @@ import {
   updateHotel,
   softDeleteHotel,
   getSearch,
+  getHotelsCount,
+  getPaginatedHotels,
 } from "../controllers/hotelController.js";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 import { upload } from "../middlewares/upload.js";
 
 const router = express.Router();
+// 獲取飯店總數
+router.get("/count", getHotelsCount);
 
+// 獲取分頁飯店
+router.get("/", getPaginatedHotels);
 //  所有人都可以查詢hotel+search
 router.get("/", getAllHotels);
 router.get("/search", getSearch);

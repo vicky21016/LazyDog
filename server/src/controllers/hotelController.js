@@ -7,7 +7,7 @@ import {
   softDeleteHotelById,
   searchHotels,
 } from "../services/hotelService.js";
-
+import pool from "../config/mysql.js";
 export const getAllHotels = async (req, res) => {
   try {
     // 解析查詢參數，確保為數字型態
@@ -197,5 +197,47 @@ export const softDeleteHotel = async (req, res) => {
     res.json({ message: `旅館 id=${id} 已軟刪除` });
   } catch (error) {
     res.status(500).json({ error: `找不到旅館` });
+  }
+};
+export const getHotelsCount = async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT COUNT(*) AS total FROM hotel WHERE is_deleted = 0`
+    );
+
+    console.log(" 獲取飯店總數:", rows[0].total);
+    res.json({ total: rows[0].total || 0 }); // 確保回傳數據
+  } catch (error) {
+    console.error("無法獲取飯店總數:", error);
+    res.status(500).json({ error: "伺服器錯誤" });
+  }
+};
+export const getPaginatedHotels = async (req, res) => {
+  try {
+    const { limit = 10, offset = 0 } = req.query;
+    const query = `
+      SELECT h.*, 
+             hi.url AS main_image_url,
+             IFNULL(r.avg_rating, 0) AS avg_rating
+      FROM hotel h
+      LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
+      LEFT JOIN (
+          SELECT hotel_id, ROUND(AVG(rating), 1) AS avg_rating
+          FROM hotel_reviews
+          GROUP BY hotel_id
+      ) r ON h.id = r.hotel_id
+      WHERE h.is_deleted = 0
+      GROUP BY h.id
+      ORDER BY h.id DESC
+      LIMIT ? OFFSET ?;
+    `;
+
+    const [hotels] = await pool.query(query, [parseInt(limit), parseInt(offset)]);
+
+    console.log(` 取得第 ${(offset / limit) + 1} 頁的飯店數量:`, hotels.length);
+    res.json(hotels);
+  } catch (error) {
+    console.error(" 獲取飯店清單失敗:", error);
+    res.status(500).json({ error: "伺服器錯誤" });
   }
 };
