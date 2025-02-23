@@ -10,7 +10,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           id="pagination"
         >
           <li
-            className={`page-item ${currentPage === 1 ? "disabled" : ""} ${
+            className={`page-item ${currentPage == 1 ? "disabled" : ""} ${
               styles.pageItem
             }`}
           >

@@ -63,12 +63,12 @@ export default function OperatorDetailPage() {
         <div className="row">
           {/* 左邊*/}
           <My />
-          <div className="col-md-9">
+          <div className="col-12 col-md-9">
             <div className="card p-4">
               <h5 className="mb-3">負責人資訊</h5>
               <div className="row">
                 <div className="col-md-6">
-                  <label className="fw-bold">姓名 *</label>
+                  <label className="fw-bold">姓名 <span style={{color:'red'}}>*</span></label>
                   <p
                     className="form-control-plaintext border-bottom"
                     id="ownerName"
@@ -77,7 +77,7 @@ export default function OperatorDetailPage() {
                   </p>
                 </div>
                 <div className="col-md-6">
-                  <label className="fw-bold">許可證號 *</label>
+                  <label className="fw-bold">許可證號 <span style={{color:'red'}}>*</span></label>
                   <p
                     className="form-control-plaintext border-bottom"
                     id="licenseNumber"
@@ -88,7 +88,7 @@ export default function OperatorDetailPage() {
               </div>
               <div className="row mt-3">
                 <div className="col-md-6">
-                  <label className="fw-bold">電話 *</label>
+                  <label className="fw-bold">電話 <span style={{color:'red'}}>*</span></label>
                   <p
                     className="form-control-plaintext border-bottom"
                     id="phoneNumber"
@@ -97,7 +97,7 @@ export default function OperatorDetailPage() {
                   </p>
                 </div>
                 <div className="col-md-6">
-                  <label className="fw-bold">信箱 *</label>
+                  <label className="fw-bold">信箱 <span style={{color:'red'}}>*</span></label>
                   <p
                     className="form-control-plaintext border-bottom"
                     id="email"

@@ -5,7 +5,6 @@ import { useFetch } from "@/hooks/product/use-fetch";
 import { useParams } from "next/navigation";
 import styles from "../_components/courseId.module.css";
 import Header from "@/app/components/layout/header";
-import Footer from "@/app/components/layout/footer";
 import Breadcrumb from "../_components/Id/breadcrumb";
 import CoursePics from "../_components/Id/course-pics";
 import SimilarCourseCard from "../_components/Id/similar-course-card";
@@ -64,12 +63,11 @@ export default function CourseIdPage() {
           <img
             className={styles.brownWave}
             src="/course/img/brownWave.png"
-            alt
+            alt=""
           />
           <SimilarCourseCard simiCourse={simiCourse}/>
         </div>
       </div>
-      <Footer/>
     </>
   );
 }

@@ -17,22 +17,29 @@ export default function SimilarCourseCard({simiCourse}) {
                   <img
                     className={styles.arrowLeft}
                     src="/course/img/arrow-left.png"
-                    alt
+
+                    alt={`往左箭頭`}
+
+
                   />
                   <img
                     className={styles.arrowRight}
                     src="/course/img/arrow-right.png"
-                    alt
+
+                    alt={`往右箭頭`}
+
                   />
                 </div>
               </div>
               <div className={styles.sCards}>
               {simiCourse?.map((simi)=>(
-                <Link className={styles.sCard} href={`/course/${simi.courseId}`}>
+                <Link className={styles.sCard} key={simi.courseId} href={`/course/${simi.courseId}`}>
                   <img
                     className={styles.cardImg}
                     src={`/course/img/${simi?.img_url}`}
-                    alt
+
+                    alt={simi.courseName}
+
                   />
                   <h5 className={styles.cardName}>{simi.courseName}</h5>
                 </Link>

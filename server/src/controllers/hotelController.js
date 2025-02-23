@@ -10,12 +10,26 @@ import {
 
 export const getAllHotels = async (req, res) => {
   try {
-    const hotels = await getHotels();
+    console.log("收到的查詢參數:", req.query); // ✅ Debug 看看前端是否正確傳遞參數
+
+    // 解析查詢參數，確保為數字型態
+    const minRating = req.query.min_rating ? parseFloat(req.query.min_rating) : 0;
+    const minPrice = req.query.min_price ? parseFloat(req.query.min_price) : 0;
+    const maxPrice = req.query.max_price ? parseFloat(req.query.max_price) : 10000;
+    const roomTypeId = req.query.room_type_id ? parseInt(req.query.room_type_id) : null;
+
+    console.log("查詢條件: ", { minRating, minPrice, maxPrice, roomTypeId });
+
+    // 傳遞完整的查詢參數給 `getHotels`
+    const hotels = await getHotels(minRating, minPrice, maxPrice, roomTypeId);
+
     res.json(hotels);
-  } catch (err) {
-    res.status(500).json({ err: `找不到旅館` });
+  } catch (error) {
+    console.error("獲取飯店列表失敗:", error);
+    res.status(500).json({ message: "無法獲取飯店列表" });
   }
 };
+
 
 export const getSearch = async (req, res) => {
   try {

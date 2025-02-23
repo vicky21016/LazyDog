@@ -73,7 +73,7 @@ useEffect(() => {
                 <div> */}
               </div>
               <div className="col-9">
-                <div className="row my-1 g-5">
+                <div className="row mt-1 g-5 mb-5">
                   {Array.isArray(teachers) &&
                     teachers.map((teacher) => (
                       <TeacherCard

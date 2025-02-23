@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 import authRouter from "./routes/authRoutes.js";
 import favoriteRouter from "./routes/favoriteRoutes.js";
 import googleRouter from "./controllers/googleController.js";
@@ -11,6 +13,7 @@ import readRoutes from "./routes/readRoutes.js";
 import hotelRoutes from "./routes/hotelRoutes.js";
 import hotelTagsRoutes from "./routes/hotelTagsRoutes.js";
 import hotelRoomTypeRoutes from "./routes/hotelRoomTypeRoutes.js";
+import roomBasePriceRoutes from "./routes/roomBasePriceRoutes.js";
 import roomInventoryRoutes from "./routes/roomInventoryRoutes.js";
 import hotelOrderRoutes from "./routes/hotelOrderRoutes.js";
 import orderDogsRoutes from "./routes/orderDogsRoutes.js";
@@ -36,7 +39,8 @@ app.use(
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })
 );
-app.use("/uploads/hotel", express.static("/uploads/hotel"));
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use("/auth", authRouter);
 app.use("/api/auth/google", googleRouter);
@@ -47,6 +51,7 @@ app.use("/api/hotels", hotelRoutes);
 app.use("/api/hotel_tags", hotelTagsRoutes);
 app.use("/api/hotel_room_types", hotelRoomTypeRoutes);
 app.use("/api/room_inventory", roomInventoryRoutes);
+app.use("/api/room_base_price", roomBasePriceRoutes);
 app.use("/api/hotel_images", hotelImagesRoutes);
 app.use("/api/hotel_orders", hotelOrderRoutes);
 app.use("/api/order_dogs", orderDogsRoutes);

@@ -11,7 +11,7 @@ export default function ProfileCard  ({
   const fileInputRef = useRef(null);
 
   return (
-    <div className="col-md-3">
+    <div className="d-none d-md-block col-md-3">
       <div className="card p-3 text-center">
         <div className="position-relative d-inline-block">
           <img
@@ -53,7 +53,7 @@ export default function ProfileCard  ({
               負責人資訊
             </a>
           </li>
-          <li className="py-2" onClick={() => changepage("hotel")}>
+          <li className="py-2" onClick={() => changepage("hotel/${id}")}>
             <a
               className="text-decoration-none text-dark"
               style={{ cursor: "pointer" }}
@@ -61,7 +61,7 @@ export default function ProfileCard  ({
               旅館資訊
             </a>
           </li>
-          <li className="py-2" onClick={() => changepage("review")}>
+          <li className="py-2" onClick={() => changepage("review/${id}")}>
             <a
               className="text-decoration-none text-dark"
               style={{ cursor: "pointer" }}

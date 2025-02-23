@@ -68,7 +68,7 @@
   padding: 12px 20px;
   border: 1px solid transparent;
   border-radius: 8px;
-  font-weight: bold; 
+  font-weight: bold;
   cursor: pointer;
 }
 .suSearchBtn:hover {
@@ -107,7 +107,7 @@
 }
 
 .suMapBtn:hover {
-  background: #66C5BD;
+  background: #66c5bd;
 }
 
 .suMapImage {
@@ -150,28 +150,41 @@
 .suPriceInput {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
+  width: 300px;
+  height: 35px; 
   border: 2px solid #ff9538;
-  border-radius: 20px;
+  border-radius: 15px;
   padding: 5px 10px;
+  text-align: center;
+}
+
+.suPriceInput span {
+  flex: 1;
+  text-align: center;
 }
 
 .suPriceInput input {
   border: none;
   outline: none;
   text-align: center;
-  width: 50px;
+  width: 60px;
   font-size: 12px;
+  background: transparent;
 }
 
 /* 篩選按鈕 */
 .suClearFilterBtn {
+  display: block;
+  margin: 0 auto;
+  width: 150px;
   background: none;
   border: 2px solid #ff9538;
   color: #ff9538;
   padding: 8px 20px;
   border-radius: 30px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   cursor: pointer;
   margin-top: 10px;
@@ -237,7 +250,7 @@
 }
 
 .suReview {
-  color: #66C5BD;
+  color: #66c5bd;
   font-size: 14px;
 }
 
@@ -253,7 +266,7 @@
 }
 
 .suBookBtn:hover {
-    background-color: #fdf9f5;
+  background-color: #fdf9f5;
   color: #ff9538;
   border-color: #ff9538;
 }
