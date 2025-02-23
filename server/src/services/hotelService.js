@@ -1,6 +1,6 @@
 import pool from "../config/mysql.js";
 
-export const getHotels = async (minRating = 0, minPrice = 0, maxPrice = 10000, roomTypeId = null) => {
+export const getHotels = async (minRating = 0, minPrice = 0, maxPrice = 10000, roomTypeId = null, tags = []) => {
   const connection = await pool.getConnection();
   try {
       let query = `
@@ -29,12 +29,16 @@ export const getHotels = async (minRating = 0, minPrice = 0, maxPrice = 10000, r
           queryParams.push(roomTypeId);
       }
 
+      if (tags.length > 0) {
+          query += ` AND h.id IN (
+              SELECT hotel_id FROM hotel_tags WHERE tag_id IN (${tags.map(() => "?").join(", ")})
+          )`;
+          queryParams.push(...tags);
+      }
+
       query += " GROUP BY h.id"; // 避免重複
 
       const [hotels] = await connection.query(query, queryParams);
-      
-      console.log("後端查詢結果筆數:", hotels.length);
-
       return hotels;
   } catch (error) {
       throw new Error("無法取得旅館列表：" + error.message);

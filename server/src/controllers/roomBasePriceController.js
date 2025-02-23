@@ -40,14 +40,14 @@ export const getGlobalPriceRange = async () => {
 
     if (!rows[0].min_price || !rows[0].max_price) {
       console.log("資料庫沒有價格數據，回傳預設值");
-      return { min_price: 0, max_price: 10000 }; // ✅ 正確返回物件
+      return { min_price: 0, max_price: 10000 }; // 正確返回物件
     }
 
     console.log("查詢成功，價格範圍:", rows[0]);
-    return rows[0]; // ✅ 返回物件，而不是 `res.json()`
+    return rows[0]; // 返回物件，而不是 `res.json()`
   } catch (error) {
     console.error("獲取所有飯店的價格範圍失敗：", error);
-    return { min_price: 0, max_price: 10000 }; // ✅ 遇錯誤時返回預設值
+    return { min_price: 0, max_price: 10000 }; // 遇錯誤時返回預設值
   }
 };
 
