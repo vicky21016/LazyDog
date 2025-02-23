@@ -33,7 +33,7 @@ export const removeHotelTag = async (req, res) => {
     res.status(500).json({ error: "無法刪除標籤：" + error.message });
   }
 };
-
+//懶得寫後面
 export const getAllHotelTags = async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM hotel_tags");
