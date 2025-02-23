@@ -1,107 +1,100 @@
-
 "use client";
-// 1.建⽴與導出它
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react';
 
-const CartContext = createContext(null)
+// 創建統一的 CartContext
+const CartContext = createContext(null);
 
-// 設定displayName可以在瀏覽器的react devtools上看到名稱，有助於除錯
-CartContext.displayName = 'CartContext'
+CartContext.displayName = 'CartContext';
 
-// 建立一個Provider元件，自訂這個勾子所需的context用的狀態
+// Provider管理商品、課程、旅館的邏輯
 export function CartProvider({ children }) {
-  // 購物中的商品
-  const [cartItems, setCartItems] = useState([])
-  const [didMount, setdidMount] = useState(false)
+  const [productItems, setProductItems] = useState([]);
+  const [courseItems, setCourseItems] = useState([]);
+  const [hotelItems, setHotelItems] = useState([]);
 
-  // 遞增商品數量
-  const onIncrease = (cartItemId) => {
-    const nextCartItems = cartItems.map((v) => {
-      // 在陣列中找到id為cartItemId的物件，將count屬性+1
-      if (v.id === cartItemId) return { ...v, count: v.count + 1 }
-      // 其它沒有影響的物件值直接返回
-      else return v
-    })
+  const [didMount, setDidMount] = useState(false);
 
-    // 設定到狀態
-    setCartItems(nextCartItems)
-  }
-
-  // 遞減商品數量
-  const onDecrease = (cartItemId) => {
-    const nextCartItems = cartItems.map((v) => {
-      // 在陣列中找到id為cartItemId的物件，將count屬性+1
-      if (v.id === cartItemId) return { ...v, count: v.count - 1 }
-      // 其它沒有影響的物件值直接返回
-      else return v
-    })
-
-    // 設定到狀態
-    setCartItems(nextCartItems)
-  }
-
-  // 刪除商品
-  const onRemove = (cartItemId) => {
-    const nextCartItems = cartItems.filter((v) => {
-      return v.id !== cartItemId
-    })
-    // 設定到狀態
-    setCartItems(nextCartItems)
-  }
-
-  // 加入商品到購物車
-  const onAdd = (product) => {
-    // 判斷此商品是否已經在購物車裡
-    const foundIndex = cartItems.findIndex((v) => v.id === product.id)
-
+  // 商品增減邏輯
+  const onAddProduct = (product) => {
+    const foundIndex = productItems.findIndex((v) => v.id === product.id);
     if (foundIndex !== -1) {
-      // 如果有找到==>遞增商品數量
-      onIncrease(product.id)
+      const nextItems = productItems.map((v) => v.id === product.id ? { ...v, count: v.count + 1 } : v);
+      setProductItems(nextItems);
     } else {
-      // 沒找到===>新增商品到購物車
-      // product和item(購物車項目)相比，少了一個數量屬性count
-      const newItem = { ...product, count: 1 }
-      // 加到購物車最前面
-      const nextCartItems = [newItem, ...cartItems]
-      // 設定到狀態
-      setCartItems(nextCartItems)
+      const newItem = { ...product, count: 1 };
+      setProductItems([newItem, ...productItems]);
     }
-  }
+  };
 
-  // 計算總數量&總金額(使用reduce, 累加/歸納)
-  const totalQty = cartItems.reduce((acc, v) => acc + v.count, 0)
-  const totalAmount = cartItems.reduce((acc, v) => acc + v.count * v.price, 0)
+  // 課程增減邏輯
+  const onAddCourse = (course) => {
+    const foundIndex = courseItems.findIndex((v) => v.id === course.id);
+    if (foundIndex !== -1) {
+      const nextItems = courseItems.map((v) => v.id === course.id ? { ...v, count: v.count + 1 } : v);
+      setCourseItems(nextItems);
+    } else {
+      const newItem = { ...course, count: 1 };
+      setCourseItems([newItem, ...courseItems]);
+    }
+  };
 
-  // 第一次渲染之後
+  // 旅館增減邏輯
+  const onAddHotel = (hotel) => {
+    const foundIndex = hotelItems.findIndex((v) => v.id === hotel.id);
+    if (foundIndex !== -1) {
+      const nextItems = hotelItems.map((v) => v.id === hotel.id ? { ...v, count: v.count + 1 } : v);
+      setHotelItems(nextItems);
+    } else {
+      const newItem = { ...hotel, count: 1 };
+      setHotelItems([newItem, ...hotelItems]);
+    }
+  };
+
+  // 計算商品、課程、旅館的總數量和總金額
+  const totalProductQty = productItems.reduce((acc, v) => acc + v.count, 0);
+  const totalProductAmount = productItems.reduce((acc, v) => acc + v.count * v.price, 0);
+
+  const totalCourseQty = courseItems.reduce((acc, v) => acc + v.count, 0);
+  const totalCourseAmount = courseItems.reduce((acc, v) => acc + v.count * v.price, 0);
+
+  const totalHotelQty = hotelItems.reduce((acc, v) => acc + v.count, 0);
+  const totalHotelAmount = hotelItems.reduce((acc, v) => acc + v.count * v.price, 0);
+
   useEffect(() => {
-    // 從localStorage取出資樂設定到cartItems
-    setCartItems(JSON.parse(localStorage.getItem('cart')) || [])
-    // 信號燈改為true
-    setdidMount(true)
-  }, [])
-  // 之後渲染監聽cartItem變化，同步化到local storage
+    setProductItems(JSON.parse(localStorage.getItem('productCart')) || []);
+    setCourseItems(JSON.parse(localStorage.getItem('courseCart')) || []);
+    setHotelItems(JSON.parse(localStorage.getItem('hotelCart')) || []);
+    setDidMount(true);
+  }, []);
+
   useEffect(() => {
     if (didMount) {
-      // 避開第一次渲染
-      localStorage.setItem('cart', JSON.stringify(cartItems))
+      localStorage.setItem('productCart', JSON.stringify(productItems));
+      localStorage.setItem('courseCart', JSON.stringify(courseItems));
+      localStorage.setItem('hotelCart', JSON.stringify(hotelItems));
     }
-  }, [cartItems])
+  }, [productItems, courseItems, hotelItems]);
 
   return (
     <CartContext.Provider
       value={{
-        cartItems,
-        totalAmount,
-        totalQty,
-        onAdd,
-        onDecrease,
-        onIncrease,
-        onRemove,
+        productItems,
+        courseItems,
+        hotelItems,
+        totalProductQty,
+        totalProductAmount,
+        totalCourseQty,
+        totalCourseAmount,
+        totalHotelQty,
+        totalHotelAmount,
+        onAddProduct,
+        onAddCourse,
+        onAddHotel,
       }}
     >
       {children}
     </CartContext.Provider>
-  )
+  );
 }
 
-export const useCart = () => useContext(CartContext)
+export const useCart = () => useContext(CartContext);
