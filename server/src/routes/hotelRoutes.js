@@ -14,23 +14,20 @@ import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 import { upload } from "../middlewares/upload.js";
 
 const router = express.Router();
-// 獲取飯店總數
+
+// 取得飯店總數
 router.get("/count", getHotelsCount);
 
-// 獲取分頁飯店
-router.get("/", getPaginatedHotels);
-//  所有人都可以查詢hotel+search
+// 取得分頁飯店
+router.get("/paginated", getPaginatedHotels); // 避免與 `getAllHotels` 衝突
+
+//  所有人都可以查詢所有飯店
 router.get("/", getAllHotels);
 router.get("/search", getSearch);
 router.get("/:id", getByIds);
 
-//自己可以看自己的hotel
-router.get(
-  "/operator",
-  verifyToken,
-  verifyRole(["operator"]),
-  getOperatorHotels
-);
+//  自己可以查看自己擁有的飯店
+router.get("/operator", verifyToken, verifyRole(["operator"]), getOperatorHotels);
 router.get("/operator/:id", verifyToken, verifyRole(["operator"]), getByIds);
 
 //  新增、更新、刪除自己管理的飯店
@@ -54,8 +51,5 @@ router.patch(
   verifyRole(["operator"]),
   softDeleteHotel
 );
-
-// EX: ("/hotels/:id", verifyToken, verifyRole(["operator", "admin"]), softDeleteHotel)
-// import的參數要放在最後免以免驗證出錯
 
 export default router;

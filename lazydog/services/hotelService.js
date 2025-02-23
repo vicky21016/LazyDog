@@ -25,11 +25,11 @@ export const getHotelById = async (id) => {
   return await res.json();
 };
 
-export const fetchHotelsCount = async () => {
+const fetchHotelsCount = async () => {
   try {
     const res = await fetch(`${API_URL}/count`);
     if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
-    
+
     const data = await res.json();
     console.log("從 API 獲取的總飯店數量:", data.total);
     return data.total;
@@ -38,21 +38,23 @@ export const fetchHotelsCount = async () => {
     return 0;
   }
 };
-export const getPaginatedHotels = async (page = 1, limit = 10) => {
+
+const getPaginatedHotels = async (page = 1, limit = 10) => {
   try {
     const offset = (page - 1) * limit;
-    const res = await fetch(`${API_URL}?limit=${limit}&offset=${offset}`);
-    
+    const res = await fetch(`${API_URL}/paginated?limit=${limit}&offset=${offset}`);
+
     if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
 
     const data = await res.json();
-    console.log(` 取得第 ${page} 頁的飯店數據:`, data);
+    console.log(`取得第 ${page} 頁的飯店數據:`, data);
     return data;
   } catch (error) {
-    console.error(" 獲取飯店失敗:", error);
+    console.error("獲取飯店失敗:", error);
     return [];
   }
 };
+
 
 export const getSearch = async () => {
   const res = await fetch(`${API_URL}/search`, { method: "GET" });
