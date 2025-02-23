@@ -31,9 +31,6 @@ export const getHotels = async (minRating = 0, minPrice = 0, maxPrice = 10000, r
 
       query += " GROUP BY h.id"; // 避免重複
 
-      console.log("執行 SQL:", query);
-      console.log("查詢參數:", queryParams);
-
       const [hotels] = await connection.query(query, queryParams);
       
       console.log("後端查詢結果筆數:", hotels.length);

@@ -133,6 +133,8 @@ export const getGlobalPriceRange = async () => {
   try {
     const res = await fetch(`${ROOM_BASE_PRICE_URL}/range`);
     if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    console.log("Fetching:", `${ROOM_BASE_PRICE_URL}/range`);
+
     return await res.json();
   } catch (error) {
     console.error("獲取所有飯店價格範圍失敗:", error);

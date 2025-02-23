@@ -30,17 +30,30 @@ export const getHotelPriceRange = async (hotelId) => {
 };
 
 // 取得所有飯店的價格範圍
-export const getGlobalPriceRange = async () => {
+// 取得所有飯店的價格範圍
+export const getGlobalPriceRange = async (req, res) => {
   try {
+    // 查詢所有飯店的最低和最高價格
     const [rows] = await pool.execute(
       `SELECT MIN(base_price) AS min_price, MAX(base_price) AS max_price 
-       FROM room_base_price WHERE is_deleted = 0`
+       FROM room_base_price 
+       WHERE is_deleted = 0`
     );
-    return rows[0]; // 回傳單一物件
+
+    // 如果沒有找到價格數據，回傳預設值
+    if (!rows[0].min_price || !rows[0].max_price) {
+      console.log("資料庫沒有價格數據，回傳預設值");
+      return res.json({ min_price: 0, max_price: 10000 });
+    }
+
+    console.log("查詢成功，價格範圍:", rows[0]);
+    return res.json(rows[0]);
   } catch (error) {
-    throw new Error("無法獲取所有飯店的價格範圍：" + error.message);
+    console.error("獲取所有飯店的價格範圍失敗：", error);
+    res.status(500).json({ error: "伺服器錯誤，無法獲取價格範圍" });
   }
 };
+
 
 // 新增房型價格 (含房間總數)
 export const addRoomBasePrice = async (hotelId, roomTypeId, basePrice, totalRooms, currency = "TWD") => {
