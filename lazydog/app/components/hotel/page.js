@@ -29,7 +29,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           {Array.from({ length: totalPages }, (_, i) => (
             <li
               key={i}
-              className={`page-item ${currentPage === i + 1 ? "active" : ""} ${
+              className={`page-item ${currentPage == i + 1 ? "active" : ""} ${
                 styles.pageItem
               }`}
             >
@@ -47,7 +47,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           ))}
           <li
             className={`page-item ${
-              currentPage === totalPages ? "disabled" : ""
+              currentPage == totalPages ? "disabled" : ""
             } ${styles.pageItem}`}
           >
             <a
