@@ -11,6 +11,8 @@ import Header from "../../components/layout/header"
 import Other from "../../components/teacher/otherTeacher";
 import Thead from "../../components/cart/thead"
 import Tbody from "../../components/cart/tbody"
+import Breadcrumb from "../../components/teacher/breadcrumb";
+
 export default function CartListPage(props) {
   const { cartItems, totalAmount, totalQty, onDecrease, onIncrease, onRemove } =
     useCart();
@@ -53,6 +55,16 @@ export default function CartListPage(props) {
           <img src="/cart/cattlist.png" />
         </div>
         <div className="container">
+        <Breadcrumb
+            links={[
+              { label: "首頁 ", href: "/" },
+              {
+                label: " 產品列表",
+                href: "/product/list",
+              },
+              { label: " 購物車", href: "/tcart/CartList", active: true },
+            ]}
+          />
           <div className="custom-table row ">
             <table
               className="col-lg-8 col-md-auto col-auto me-5 mb-5"
