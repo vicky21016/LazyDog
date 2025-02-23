@@ -33,3 +33,12 @@ export const fetchHotelTags = async (hotelId) => {
     throw new Error("無法取得飯店標籤：" + error.message);
   }
 };
+
+export const fetchRoomTypes = async () => {
+  try {
+    const [rows] = await pool.query("SELECT * FROM room_type WHERE is_deleted = 0");
+    return rows;
+  } catch (error) {
+    throw new Error("無法取得房型：" + error.message);
+  }
+};

@@ -7,124 +7,77 @@ import "../css/CartList.css";
 import { left } from "@popperjs/core";
 import CartCartlist from "@/app/components/cart/cartlist";
 import { useCart } from "@/hooks/use-cart";
+import Header from "../../components/layout/header"
+import Other from "../../components/teacher/otherTeacher";
+import Thead from "../../components/cart/thead"
+import Tbody from "../../components/cart/tbody"
+import Breadcrumb from "../../components/teacher/breadcrumb";
+
 export default function CartListPage(props) {
   const { cartItems, totalAmount, totalQty, onDecrease, onIncrease, onRemove } =
     useCart();
+
+    const Data = [
+      {
+        imgSrc: "/teacher-img/Zoe.png",
+        col: "col-6 col-md-3",
+        name: "Zoe",
+        text: "寵物訓練",
+        link: "/teacher/info",
+      },
+      {
+        imgSrc: "/teacher-img/Zoe.png",
+        col: "col-6 col-md-3",
+        name: "Zoe",
+        text: "寵物訓練",
+        link: "/teacher/info",
+      },
+      {
+        imgSrc: "/teacher-img/Zoe.png",
+        col: "col-6 col-md-3",
+        name: "Zoe",
+        text: "寵物訓練",
+        link: "/teacher/info",
+      },
+      {
+        imgSrc: "/teacher-img/Zoe.png",
+        col: "col-6 col-md-3",
+        name: "Zoe",
+        text: "寵物訓練",
+        link: "/teacher/info",
+      },
+    ];
   return (
     <>
+    <Header/>
       <div>
         <div className="cart-img">
           <img src="/cart/cattlist.png" />
         </div>
         <div className="container">
+        <Breadcrumb
+            links={[
+              { label: "首頁 ", href: "/" },
+              {
+                label: " 產品列表",
+                href: "/product/list",
+              },
+              { label: " 購物車", href: "/tcart/CartList", active: true },
+            ]}
+          />
           <div className="custom-table row ">
             <table
               className="col-lg-8 col-md-auto col-auto me-5 mb-5"
               style={{ marginLeft: "auto" }}
             >
-              <thead>
-                <tr>
-                  <th style={{ width: 110 }} />
-                  <th>商品品項</th>
-                  <th>單價</th>
-                  <th>數量</th>
-                  <th>總價</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cartItems.map((cartItem) => (
-                  <tr>
-                    <td>
-                      <img src={cartItem.img} />
-                    </td>
-                    <td>{cartItem.name}</td>
-                    <td>{cartItem.price}</td>
-                    <td>
-                      {" "}
-                      <button
-                        onClick={() => {
-                          onIncrease(cartItem.id);
-                        }}
-                      >
-                        +
-                      </button>
-                      {cartItem.amount}
-                      <button
-                        onClick={() => {
-                          // 先計算如果按下減按鈕，商品數量會變為多少
-                          const nextCount = cartItem.count - 1;
-                          onDecrease(cartItem.id);
-                        }}
-                      >
-                        –
-                      </button>
-                    </td>
-                    <td>{}</td>
-                    <td style={{ width: 64, height: 29 }}>
-                      <button
-                        style={{
-                          border: "transparent",
-                          backgroundColor: "white",
-                        }}
-                      >
-                        <FontAwesomeIcon
-                          icon={faTrashAlt}
-                          style={{ color: "#f2662b" }}
-                          onClick={() => {
-                            onRemove(cartItem.id);
-                          }}
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-
-                {/* <tr>
-                  <td>
-                    <img src="/cart/favicon.ico" alt />
-                  </td>
-                  <td>行 1, 欄 2</td>
-                  <td>行 1, 欄 3</td>
-                  <td>行 1, 欄 4</td>
-                  <td>行 1, 欄 5</td>
-                  <td style={{ width: 64, height: 29 }}>
-                    <button
-                      style={{
-                        border: 'transparent',
-                        backgroundColor: 'white',
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        icon={faTrashAlt}
-                        style={{ color: '#f2662b' }}
-                      />
-                    </button>
-                  </td>
-                </tr> */}
-                {/* <tr>
-                  <td>
-                    <img src="/cart/favicon.ico" alt />
-                  </td>
-                  <td>行 2, 欄 2</td>
-                  <td>行 2, 欄 3</td>
-                  <td>行 2, 欄 4</td>
-                  <td>行 2, 欄 5</td>
-                  <td>
-                    <button
-                      style={{
-                        border: 'transparent',
-                        backgroundColor: 'white',
-                      }}
-                    >
-                      <i
-                        className="fa-solid fa-trash"
-                        style={{ color: '#f2662b' }}
-                      />
-                    </button>
-                  </td>
-                </tr> */}
-              </tbody>
+             <Thead/>
+             <Tbody/>
+             <Thead/>
+             <Tbody/>
+             <Thead/>
+             <Tbody/>
             </table>
+            
             <aside
               className="col-lg-3 col-md-auto col-auto mb-5"
               style={{ margin: "auto" }}
@@ -170,10 +123,12 @@ export default function CartListPage(props) {
           <div className="main2">
             <div className>
               <h2>加購其他優惠商品</h2>
+              <Other cards={Data} />
             </div>
             <div className="card"></div>
             <div className>
               <h2>看看其他精選商品 </h2>
+              <Other cards={Data} />
             </div>
           </div>
           <div className="card"></div>
