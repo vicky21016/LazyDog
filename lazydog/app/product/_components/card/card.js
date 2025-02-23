@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./card.module.css";
 import Link from "next/link";
 import useSWR from "swr";
@@ -32,6 +32,12 @@ export default function CardCard({ productID = "" }) {
     Number(products?.price) * Number(products?.discount)
   ).toFixed(0);
   const productDiscount = (1 - Number(products?.discount)).toFixed(2) * 100;
+  const cardRef = useRef(null);
+  const simulateClick = () => {
+    if (cardRef.current) {
+      cardRef.current.click();
+    }
+  };
   useEffect(() => {
     if (productName) {
       const img = new Image();
@@ -68,9 +74,9 @@ export default function CardCard({ productID = "" }) {
         <img src={`/product/font/cart-fill-big.png`} alt="" />
         <p>{cartRate}</p>
       </div>
-      {productDiscount > 0 && (
+      {/* {productDiscount > 0 && (
         <div className={styles.ProductCardOnsale}>-{productDiscount} %</div>
-      )}
+      )} */}
       <figure className={styles.ProductCardImg}>
         {productName && (
           <img
@@ -82,9 +88,9 @@ export default function CardCard({ productID = "" }) {
       </figure>
       <div className={styles.ProductCardInfo}>
         <p className={styles.ProductCardName}>{productName}</p>
-        <h5 className={styles.ProductCardPrice}>NT${productPrice}</h5>
+        <h5 className={styles.ProductCardPrice}>NT$ {productPrice}</h5>
       </div>
-      <div className={styles.ProductCardHover}>
+      <div className={styles.ProductCardHover} onClick={simulateClick}>
         <button
           type="button"
           className={`${styles.HoverIcon} `}
@@ -119,6 +125,7 @@ export default function CardCard({ productID = "" }) {
         <Link
           href={`/product/detail?productID=${productID}`}
           className={styles.HoverIcon}
+          ref={cardRef}
         >
           <img src="/product/font/list.png" alt="" />
         </Link>

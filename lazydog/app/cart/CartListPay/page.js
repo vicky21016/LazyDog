@@ -9,6 +9,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/hooks/use-cart' // 引入useCart以便取得購物車資料
 
+import Header from "../../components/layout/header"
+import Input from "../../components/forms/Input"
+import InputFiled from "../../components/forms/InputField"
 export default function CartListPayPage(props) {
   // 檢查是否登入
   const { isAuth } = useAuth()
@@ -76,6 +79,7 @@ export default function CartListPayPage(props) {
 
   return (
     <>
+    <Header/>
       <div>
         <div className="cart-img">
           <img src="/cart/Frame 35909.png" alt="Cart Image" />
@@ -91,9 +95,9 @@ export default function CartListPayPage(props) {
                 <div className="mb-3 row">
                   <div className="col-md-6">
                     <label htmlFor="first-name" className="form-label">
-                      姓氏
+                      姓氏 <span style={{color:'red'}}>*</span>
                     </label>
-                    <input
+                    <Input
                       type="text"
                       id="first-name"
                       name="first-name"
@@ -103,9 +107,9 @@ export default function CartListPayPage(props) {
                   </div>
                   <div className="col-md-6">
                     <label htmlFor="last-name" className="form-label">
-                      名字
+                      名字 <span style={{color:'red'}}>*</span>
                     </label>
-                    <input
+                    <Input
                       type="text"
                       id="last-name"
                       name="last-name"
@@ -117,9 +121,9 @@ export default function CartListPayPage(props) {
                 {/* 地址 */}
                 <div className="mb-3">
                   <label htmlFor="adress" className="form-label">
-                    地址
+                    地址 <span style={{color:'red'}}>*</span>
                   </label>
-                  <input
+                  <Input
                     type="text"
                     id="adress"
                     name="adress"
@@ -132,7 +136,7 @@ export default function CartListPayPage(props) {
                   <label htmlFor="city" className="form-label">
                     城市
                   </label>
-                  <input
+                  <Input
                     type="text"
                     id="city"
                     name="city"
@@ -145,7 +149,7 @@ export default function CartListPayPage(props) {
                   <label htmlFor="company-name" className="form-label">
                     公司名稱
                   </label>
-                  <input
+                  <Input
                     type="text"
                     id="company-name"
                     name="company-name"
@@ -155,9 +159,9 @@ export default function CartListPayPage(props) {
                 {/* Email */}
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
-                    Email
+                    Email <span style={{color:'red'}}>*</span>
                   </label>
-                  <input
+                  <Input
                     type="email"
                     id="email"
                     name="email"
@@ -168,9 +172,9 @@ export default function CartListPayPage(props) {
                 {/* 電話 */}
                 <div className="mb-3">
                   <label htmlFor="phone" className="form-label">
-                    電話
+                    電話 <span style={{color:'red'}}>*</span>
                   </label>
-                  <input
+                  <Input
                     type="tel"
                     id="phone"
                     name="phone"
@@ -227,6 +231,48 @@ export default function CartListPayPage(props) {
                   <label>
                     <input type="radio" name="payment" /> 轉帳
                   </label>
+                </div>
+                <div className="input-group">
+                  <InputFiled
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder=" "
+                    required
+                  />
+                  <span>姓名 <span style={{color:'red'}}>*</span></span>
+                </div>
+                <div className="input-group">
+                  <InputFiled
+                    type="text"
+                    id="card-number"
+                    name="card-number"
+                    placeholder=" "
+                    maxLength={16}
+                    required
+                  />
+                  <span>信用卡號 <span style={{color:'red'}}>*</span></span>
+                </div>
+                <div className="input-group">
+                 <InputFiled
+                    type="text"
+                    id="expiry-date"
+                    name="expiry-date"
+                    placeholder=" "
+                    required
+                  />
+                  <span>到期日 <span style={{color:'red'}}>*</span></span>
+                </div>
+                <div className="input-group">
+                  <InputFiled
+                    type="password"
+                    id="cvv"
+                    name="cvv"
+                    placeholder=" "
+                    maxLength={3}
+                    required
+                  />
+                  <span>安全碼 <span style={{color:'red'}}>*</span></span>
                 </div>
               </aside>
             </div>

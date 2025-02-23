@@ -4,6 +4,7 @@ import { getHotelById } from "@/services/hotelService";
 export function useLocationSelector(hotelId) {
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState("");
+  const [hotels, setHotels] = useState([]); 
   const locationModalRef = useRef(null);
   const twCityRef = useRef(null);
   let modalInstance = useRef(null);
@@ -26,8 +27,10 @@ export function useLocationSelector(hotelId) {
       }
     });
 
-    if (hotelId) {
-      fetchHotelLocation();
+    if (!hotelId) {
+      fetchAllHotels();
+    } else {
+      fetchHotelLocation(hotelId);
     }
   }, [hotelId]);
   const fetchHotelLocation = async (hotelId) => {
@@ -47,6 +50,16 @@ export function useLocationSelector(hotelId) {
       console.error("獲取hotel資訊失敗:", error);
     }
   };
+  const fetchAllHotels = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/hotels");
+      const data = await res.json();
+      setHotels(data || []);
+    } catch (error) {
+      console.error("獲取所有飯店失敗:", error);
+    }
+  };
+
   const openModal = () => {
     if (modalInstance.current) {
       modalInstance.current.show();
@@ -68,26 +81,34 @@ export function useLocationSelector(hotelId) {
     closeModal();
   };
 
-  const googleMapUrl = location
-    ? `https://maps.googleapis.com/maps/api/staticmap?center=${location.lat},${location.lng}&zoom=15&size=300x200&maptype=roadmap&markers=color:blue%7Clabel:H%7C${location.lat},${location.lng}&key=YOUR_GOOGLE_MAPS_API_KEY`
-    : `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(
-        address || "台北,台灣"
-      )}&zoom=13&size=300x200&maptype=roadmap&markers=color:blue%7Clabel:H%7C${encodeURIComponent(
-        address || "台北"
-      )}&key=YOUR_GOOGLE_MAPS_API_KEY`;
-
   const openMap = () => {
-    const query = location
-      ? `${location.lat},${location.lng}`
-      : encodeURIComponent(address);
-    window.open(`https://www.google.com/maps?q=${query}`, "_blank");
+    if (hotelId && location) {
+      window.open(`https://www.google.com/maps?q=${location.lat},${location.lng}`, "_blank");
+    } else {
+      if (hotels.length === 0) {
+        alert("目前沒有飯店資料，請稍後再試");
+        return;
+      }
+
+      const markers = hotels
+        .map((hotel) =>
+          hotel.latitude && hotel.longitude
+            ? `${hotel.latitude},${hotel.longitude}`
+            : ""
+        )
+        .filter(Boolean)
+        .join("/");
+
+      const googleMapsUrl = `https://www.google.com/maps/dir/${markers}`;
+
+      window.open(googleMapsUrl, "_blank");
+    }
   };
 
   return {
     location,
     address,
     locationModalRef,
-    googleMapUrl,
     closeModal,
     openModal,
     confirmLocation,

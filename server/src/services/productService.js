@@ -1,9 +1,11 @@
 import pool from "../config/mysql.js";
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (min, max) => {
   try {
     const [products] = await pool.execute(
-      "SELECT * FROM yi_product WHERE is_deleted = 0"
+      `SELECT * FROM yi_product WHERE is_deleted = 0 ${
+        min ? `AND price >= ${min}` : ""
+      } ${max ? `AND price <= ${max}` : ""}`
     );
     return products;
   } catch (error) {
@@ -12,14 +14,16 @@ export const getAllProducts = async () => {
   }
 };
 
-export const getAllCategoryName = async (category) => {
+export const getAllCategoryName = async (category, min, max) => {
   try {
     const [categoryName] = await pool.execute(
       `SELECT * FROM yi_category WHERE name = ? AND is_deleted = 0`,
       [category]
     );
     const [products] = await pool.execute(
-      "SELECT * FROM yi_product WHERE category_id = ? AND is_deleted = 0",
+      `SELECT * FROM yi_product WHERE category_id = ? AND is_deleted = 0 ${
+        min ? `AND price >= ${min}` : ""
+      } ${max ? `AND price <= ${max}` : ""}`,
       [categoryName[0].id]
     );
     return products;
@@ -29,33 +33,36 @@ export const getAllCategoryName = async (category) => {
   }
 };
 
-export const getSearchKeyword = async (category, keyword, all) => {
+export const getSearchKeyword = async (
+  category,
+  keyword,
+  field,
+  value,
+  min,
+  max
+) => {
   try {
-    if (all.length > 0) {
-      console.log(all);
+    if (field.length > 0) {
+      // console.log(field, value);
       const [categoryName] = await pool.execute(
         `SELECT * FROM yi_category WHERE name = ? AND is_deleted = 0`,
         [category]
       );
-      const productPromises = all.map(async (e) => {
-        const [product] = await pool.execute(
-          "SELECT * FROM yi_product WHERE (name LIKE ? OR full_info LIKE ?)AND category_id = ? AND is_deleted = 0",
-          [`%${e}%`, `%${e}%`, categoryName[0].id]
-        );
-        return product;
-      });
-      let productsArray = await Promise.all(productPromises);
-      let products = productsArray.flat().reduce((unique, item) => {
-        if (!unique.some((p) => p.id === item.id)) unique.push(item);
-        return unique;
-      }, []);
+      value.push(categoryName[0].id);
+      // console.log(field, value);
+      const [products] = await pool.execute(
+        `SELECT * FROM yi_product WHERE ${field} AND category_id = ? AND is_deleted = 0 ${
+          min ? `AND price >= ${min}` : ""
+        } ${max ? `AND price <= ${max}` : ""}`,
+        value
+      );
       return products;
     }
     if (!category) {
       const [products] = await pool.execute(
-        // "SELECT * FROM yi_product WHERE (name LIKE ? OR full_info LIKE ?) AND is_deleted = 0",
-        // [`%${keyword}%`, `%${keyword}%`]
-        "SELECT * FROM yi_product WHERE name LIKE ? AND is_deleted = 0",
+        `SELECT * FROM yi_product WHERE name LIKE ? AND is_deleted = 0 ${
+          min ? `AND price >= ${min}` : ""
+        } ${max ? `AND price <= ${max}` : ""}`,
         [`%${keyword}%`]
       );
       return products;
@@ -65,7 +72,9 @@ export const getSearchKeyword = async (category, keyword, all) => {
         [category]
       );
       const [products] = await pool.execute(
-        "SELECT * FROM yi_product WHERE (name LIKE ? OR full_info LIKE ?)AND category_id = ? AND is_deleted = 0",
+        `SELECT * FROM yi_product WHERE (name LIKE ? OR full_info LIKE ?)AND category_id = ? AND is_deleted = 0 ${
+          min ? `AND price >= ${min}` : ""
+        } ${max ? `AND price <= ${max}` : ""}`,
         [`%${keyword}%`, `%${keyword}%`, categoryName[0].id]
       );
       return products;

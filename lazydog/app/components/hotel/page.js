@@ -1,66 +1,45 @@
 import React from "react";
-import styles from "../../../styles/modules/fontHotelHome.module.css"; 
+import styles from "../../../styles/modules/fontHotelHome.module.css";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   return (
     <div className="container page">
       <nav aria-label="Page navigation">
-        <ul
-          className={`pagination justify-content-center ${styles.suPagination}`}
-          id="pagination"
-        >
-          <li
-            className={`page-item ${currentPage === 1 ? "disabled" : ""} ${
-              styles.pageItem
-            }`}
-          >
-            <a
+        <ul className={`pagination justify-content-center ${styles.suPagination}`} id="pagination">
+          {/* 上一頁按鈕 */}
+          <li className={`page-item ${currentPage === 1 ? "disabled" : ""} ${styles.pageItem}`}>
+            <button
               className={`page-link ${styles.pageLink}`}
-              href="#"
               aria-label="Previous"
-              onClick={(e) => {
-                e.preventDefault();
-                if (currentPage > 1) onPageChange(currentPage - 1);
-              }}
+              disabled={currentPage === 1}
+              onClick={() => onPageChange(currentPage - 1)}
             >
               <span aria-hidden="true">&laquo;</span>
-            </a>
+            </button>
           </li>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <li
-              key={i}
-              className={`page-item ${currentPage === i + 1 ? "active" : ""} ${
-                styles.pageItem
-              }`}
-            >
-              <a
+
+          {/* 頁碼按鈕 */}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <li key={page} className={`page-item ${currentPage === page ? "active" : ""} ${styles.pageItem}`}>
+              <button
                 className={`page-link ${styles.pageLink}`}
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onPageChange(i + 1);
-                }}
+                onClick={() => onPageChange(page)}
               >
-                {i + 1}
-              </a>
+                {page}
+              </button>
             </li>
           ))}
-          <li
-            className={`page-item ${
-              currentPage === totalPages ? "disabled" : ""
-            } ${styles.pageItem}`}
-          >
-            <a
+
+          {/* 下一頁按鈕 */}
+          <li className={`page-item ${currentPage === totalPages ? "disabled" : ""} ${styles.pageItem}`}>
+            <button
               className={`page-link ${styles.pageLink}`}
-              href="#"
               aria-label="Next"
-              onClick={(e) => {
-                e.preventDefault();
-                if (currentPage < totalPages) onPageChange(currentPage + 1);
-              }}
+              disabled={currentPage === totalPages}
+              onClick={() => onPageChange(currentPage + 1)}
             >
               <span aria-hidden="true">&raquo;</span>
-            </a>
+            </button>
           </li>
         </ul>
       </nav>

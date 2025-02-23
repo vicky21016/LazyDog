@@ -46,7 +46,7 @@ export default function AppPage({ logout }) {
           router.push("/hotel-coupon/operatorDetail"); // 轉入 operator
           break;
         case "teacher":
-          router.push("/"); // 轉入 teacher
+          router.push("/teacher-sign"); // 轉入 teacher
           break;
         case "user":
           router.push("/pages");

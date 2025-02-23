@@ -7,13 +7,28 @@ import {
   softDeleteHotelById,
   searchHotels,
 } from "../services/hotelService.js";
-
+import pool from "../config/mysql.js";
 export const getAllHotels = async (req, res) => {
   try {
-    const hotels = await getHotels();
+    // 解析查詢參數，確保為數字型態
+    const minRating = req.query.min_rating
+      ? parseFloat(req.query.min_rating)
+      : 0;
+    const minPrice = req.query.min_price ? parseFloat(req.query.min_price) : 0;
+    const maxPrice = req.query.max_price
+      ? parseFloat(req.query.max_price)
+      : 10000;
+    const roomTypeId = req.query.room_type_id
+      ? parseInt(req.query.room_type_id)
+      : null;
+
+    // 傳遞完整的查詢參數給 `getHotels`
+    const hotels = await getHotels(minRating, minPrice, maxPrice, roomTypeId);
+
     res.json(hotels);
-  } catch (err) {
-    res.status(500).json({ err: `找不到旅館` });
+  } catch (error) {
+    console.error("獲取飯店列表失敗:", error);
+    res.status(500).json({ message: "無法獲取飯店列表" });
   }
 };
 
@@ -65,7 +80,7 @@ export const getOperatorHotels = async (req, res) => {
 export const createHotel = async (req, res) => {
   try {
     console.log("收到請求資料:", req.body);
-    console.log("收徒確認之後會刪掉", req. files);
+    console.log("收徒確認之後會刪掉", req.files);
 
     const operatorId = req.user.id;
     const {
@@ -182,5 +197,30 @@ export const softDeleteHotel = async (req, res) => {
     res.json({ message: `旅館 id=${id} 已軟刪除` });
   } catch (error) {
     res.status(500).json({ error: `找不到旅館` });
+  }
+};
+/** 取得飯店總數 */
+export const getHotelsCount = async (req, res) => {
+  try {
+    const [rows] = await pool.query(`SELECT COUNT(*) AS total FROM hotel WHERE is_deleted = 0`);
+    res.json({ total: rows[0].total || 0 });
+  } catch (error) {
+    console.error("無法獲取飯店總數:", error);
+    res.status(500).json({ error: "伺服器錯誤" });
+  }
+};
+
+/** 取得分頁飯店 */
+export const getPaginatedHotels = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = parseInt(req.query.offset) || 0;
+
+    const [hotels] = await pool.query(`SELECT * FROM hotel WHERE is_deleted = 0 LIMIT ? OFFSET ?`, [limit, offset]);
+
+    res.json(hotels);
+  } catch (error) {
+    console.error("獲取飯店清單失敗:", error);
+    res.status(500).json({ error: "伺服器錯誤" });
   }
 };

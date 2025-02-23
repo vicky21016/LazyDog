@@ -4,23 +4,44 @@
 
 /* 活動輪播 */
 .new {
-  position: relative;
-  height: 584px;
-  flex-shrink: 0;
+  width: 100vw;
+  height: 450px;
+  display: flex;
+  padding: 13px 3px;
+  align-items: flex-start;
   align-self: stretch;
-  /* margin: 50px 0; */
-
-  .newImg {
+  overflow: hidden;
+  justify-content: center;
+  /* z-index: -1; */
+  .newCard{
+    /* position: relative; */
     width: 100%;
+  }
+/* 
+  .newImg {
+    width:  100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 60%;
+  } */
+  .newVideoDogs{
+    width:  100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .newVideoPeople{
+    width:  100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 60%;
   }
   .bottom {
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 36px;
-    position: absolute;
     right: 0px;
     bottom: 0px;
 
@@ -81,7 +102,7 @@
   margin-bottom: 25px;
   .sidebar {
     background: #fff;
-    padding: 40px;
+    padding: 40px 15px;
     border-radius: 10px;
     /* margin-bottom: 120x; */
   }
@@ -355,7 +376,7 @@
   /* 所有課程 */
   .right {
     position: relative;
-    padding: 21px 28px;
+    padding: 21px 0 0 40px;
   }
   .top {
     margin: 45px 0 50px;
@@ -408,7 +429,7 @@
     max-width: 1060px;
     align-items: flex-start;
     align-content: flex-start;
-    gap: 80px 47px;
+    gap: 80px 50px;
     flex-wrap: wrap;
   }
   .courseCard {
@@ -510,8 +531,9 @@
 
 /* 熱門課程 */
 .section2 {
+  margin-top: 100px;
   .similarCourse {
-    padding: 70px 40px;
+    padding: 70px 0px;
     .sTitle {
       margin-bottom: 18px;
       color: var(--text-Bk, #3e3e3e);

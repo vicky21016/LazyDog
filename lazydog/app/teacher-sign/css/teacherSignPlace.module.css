@@ -1,0 +1,101 @@
+/* 共用 */
+.rounded {
+border-radius: 5px !important;
+}
+.tName,.tGmail,.tTitle{
+font-weight: bold;
+}
+
+/* 右邊 */
+.right{
+    
+    .top{
+        display: flex;
+        justify-content: space-between;
+        .btnAddCourse{
+            width: 103px;
+            height: 38px;
+            /* padding: 0px 22px; */
+            border-radius: 10px;
+            background: #66C5BD;
+            border: none;
+            
+        }
+        .addCourse{
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            letter-spacing: .8px;
+        }
+    }
+        .cTable{
+            margin-bottom: 56px;
+        }
+        
+        .cTbody{
+            /* border: 1px solid lightblue; */
+            display: flex;
+            justify-content:flex-start;
+            align-items: center;
+            gap: 60px;
+            height: 40px;
+            box-sizing: border-box;
+            overflow: hidden;
+            padding: 35px 25px;
+            align-items: center;
+            border-bottom: 0.8px solid var(--text-Gy, #D2D2D2);
+            cursor: pointer;
+        }
+                        
+        .cTd1{
+            /* background-color: lightpink; */
+            width: 180px;
+            text-align: justify;
+            color: var(--text-Bk, #3E3E3E);
+            font-family: Roboto;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            padding: 0 30px;
+        }
+        .cTd2{
+            /* background-color: lightpink; */
+            /* width: 211px; */
+            text-align: center;
+            color: var(--text-Bk, #3E3E3E);
+            font-family: Roboto;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+        
+        
+        /*  分頁 */
+        .pagination {
+        display: flex;
+        gap: 20px;
+        padding: 66px 0;
+        }
+
+        .pagination .page-item .page-link {
+        border-radius: 50%;
+        margin: 0 5px;
+        color: #bcbcbc;
+        border: none;
+        }
+
+        .pagination .page-item.active .page-link {
+        background-color: #f5842b;
+        color: white;
+        border-radius: 60%;
+        }
+
+        .pagination .page-item .page-link:hover {
+        background-color: #f5842b;
+        color: white;
+        }
+}
+
+

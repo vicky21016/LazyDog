@@ -23,7 +23,9 @@
     "bootstrap-icons": "^1.11.3",
     "bootstrap-slider": "^11.0.2",
     "classnames": "^2.5.1",
+    "cors": "^2.8.5",
     "dom": "^0.0.3",
+    "dompurify": "^3.2.4",
     "dotenv": "^16.4.7",
     "firebase": "^11.3.0",
     "flatpickr": "^4.6.13",
@@ -44,6 +46,7 @@
     "script": "^0.1.4",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.5",
+    "swiper": "^11.2.4",
     "swr": "^2.3.2",
     "tw-city-selector": "^2.1.1"
   },

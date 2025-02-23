@@ -14,9 +14,14 @@ export default function AsideAside({
   changeUrl = () => {},
   keyword = {},
   setKeyword = () => {},
+  setPageNow = () => {},
+  minPrice = 0,
+  maxPrice = 0,
+  setMaxPrice = () => {},
+  setMinPrice = () => {},
 }) {
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(10000);
+  // const [minPrice, setMinPrice] = useState(0);
+  // const [maxPrice, setMaxPrice] = useState(30000);
   const priceSliderRef = useRef(null);
   const pathname = usePathname();
   const query = useSearchParams();
@@ -87,7 +92,7 @@ export default function AsideAside({
 
     value = Number(value);
     if (isNaN(value)) return;
-    if (value > 10000) value = 10000;
+    if (value > maxPrice) value = maxPrice;
     if (value < minPrice) value = minPrice;
 
     setMaxPrice(value);
@@ -105,7 +110,7 @@ export default function AsideAside({
     noUiSlider.create(priceSliderRef.current, {
       start: [minPrice, maxPrice],
       connect: true,
-      range: { min: 0, max: 10000 },
+      range: { min: 0, max: maxPrice },
       step: 100,
     });
 
@@ -130,16 +135,15 @@ export default function AsideAside({
         <input
           type="text"
           placeholder="搜尋商品"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              changeUrl(
-                `http://localhost:5000/api/products/search?${
-                  query.get("category")
-                    ? `category=${query.get("category")}&`
-                    : ""
-                }keyword=${e.target.value}`
-              );
-            }
+          onKeyUp={(e) => {
+            changeUrl(
+              `http://localhost:5000/api/products/search?${
+                query.get("category")
+                  ? `category=${query.get("category")}&`
+                  : ""
+              }keyword=${e.target.value}`
+            );
+            setPageNow(1);
           }}
         />
       </div>
@@ -193,8 +197,8 @@ export default function AsideAside({
               onChange={handleMaxPriceChange}
               onBlur={() => {
                 if (maxPrice === "" || isNaN(maxPrice)) {
-                  setMaxPrice(10000);
-                  priceSliderRef.current?.noUiSlider.set([minPrice, 10000]);
+                  setMaxPrice(maxPrice);
+                  priceSliderRef.current?.noUiSlider.set([minPrice, maxPrice]);
                 }
               }}
             />
@@ -206,9 +210,9 @@ export default function AsideAside({
           className={`btn btn-outline-danger mt-3 ${styles.ClearFilterBtn}`}
           onClick={() => {
             setMinPrice(0);
-            setMaxPrice(10000);
+            setMaxPrice(maxPrice);
             if (priceSliderRef.current?.noUiSlider) {
-              priceSliderRef.current.noUiSlider.set([0, 10000]);
+              priceSliderRef.current.noUiSlider.set([0, maxPrice]);
             }
           }}
         >
