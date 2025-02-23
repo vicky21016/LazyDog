@@ -30,29 +30,27 @@ export const getHotelPriceRange = async (hotelId) => {
 };
 
 // 取得所有飯店的價格範圍
-// 取得所有飯店的價格範圍
-export const getGlobalPriceRange = async (req, res) => {
+export const getGlobalPriceRange = async () => {
   try {
-    // 查詢所有飯店的最低和最高價格
     const [rows] = await pool.execute(
       `SELECT MIN(base_price) AS min_price, MAX(base_price) AS max_price 
        FROM room_base_price 
        WHERE is_deleted = 0`
     );
 
-    // 如果沒有找到價格數據，回傳預設值
     if (!rows[0].min_price || !rows[0].max_price) {
       console.log("資料庫沒有價格數據，回傳預設值");
-      return res.json({ min_price: 0, max_price: 10000 });
+      return { min_price: 0, max_price: 10000 }; // ✅ 正確返回物件
     }
 
     console.log("查詢成功，價格範圍:", rows[0]);
-    return res.json(rows[0]);
+    return rows[0]; // ✅ 返回物件，而不是 `res.json()`
   } catch (error) {
     console.error("獲取所有飯店的價格範圍失敗：", error);
-    res.status(500).json({ error: "伺服器錯誤，無法獲取價格範圍" });
+    return { min_price: 0, max_price: 10000 }; // ✅ 遇錯誤時返回預設值
   }
 };
+
 
 
 // 新增房型價格 (含房間總數)
