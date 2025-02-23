@@ -67,7 +67,7 @@ export const softDeleteHotel = async (id) => {
 //標籤C
 export const getAllTags = async () => {
   try {
-    const res = await fetch(HOTEL_TAGS_URL, { method: "GET" });
+    const res = await fetch(`${HOTEL_TAGS_URL}/tags`, { method: "GET" });
     if (!res.ok) throw new Error(`錯誤! Status: ${res.status}`);
     return await res.json();
   } catch (error) {

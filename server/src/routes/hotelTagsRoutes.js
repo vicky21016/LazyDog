@@ -8,9 +8,9 @@ import {
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
-
+router.get("/tags", getAllHotelTags);
 router.get("/:hotelId", getHotelTag);
-router.get("/", getAllHotelTags);
+
 
 router.post("/", verifyToken, verifyRole(["operator"]), addHotelTag);
 

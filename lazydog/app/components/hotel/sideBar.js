@@ -4,12 +4,12 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/modules/fontHotelHome.module.css";
 import GoogleMapComponent from "../../components/hotel/GoogleMapComponent";
 import Link from "next/link";
-import {  ratingAv, getAllTags } from "@/services/hotelService";
+import { ratingAv, getAllTags, getHotelTags } from "@/services/hotelService";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 
 export default function SideBar({ hotelId, onSearch }) {
-  const [showAllFacilities, setShowAllFacilities] = useState(false);
+  const [showAllFacilities, setShowAllFacilities] = useState(true);
   const [hotels, setHotels] = useState([]);
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -66,11 +66,12 @@ export default function SideBar({ hotelId, onSearch }) {
 
   const fetchTags = async () => {
     try {
-      const tagsData = await getAllTags();
-      setTags(tagsData || []);
+      const allTags = await getAllTags();
+      console.log("獲取到的標籤:", allTags);
+      setTags(allTags);
     } catch (error) {
       console.error("獲取標籤失敗:", error);
-      setTags([]); // 失敗時預設為空陣列
+      setTags([]);
     }
   };
 
@@ -87,10 +88,14 @@ export default function SideBar({ hotelId, onSearch }) {
     setShowAllFacilities((prev) => !prev);
   };
   const handleTagChange = (tagId) => {
-    setSelectedTags((prev) =>
-      prev.includes(tagId) ? prev.filter((t) => t !== tagId) : [...prev, tagId]
-    );
+    if (!tagId && tagId !== 0) return;
+    setSelectedTags((prev) => {
+      return prev.includes(tagId)
+        ? prev.filter((t) => t !== tagId)
+        : [...prev, tagId];
+    });
   };
+
   const handleSearch = async () => {
     console.log("開始搜尋...");
 
@@ -163,7 +168,11 @@ export default function SideBar({ hotelId, onSearch }) {
         {/* 優質住宿篩選 */}
         <div className={styles.suFilterGroup}>
           <h6 className={styles.suFilterTitle}>飯店評分</h6>
-          <select className="form-select" value={selectedRating} onChange={(e) => setSelectedRating(e.target.value)}>
+          <select
+            className="form-select"
+            value={selectedRating}
+            onChange={(e) => setSelectedRating(e.target.value)}
+          >
             <option value="">全部</option>
             {[5, 4, 3, 2, 1].map((rating) => (
               <option key={rating} value={rating}>
@@ -176,7 +185,9 @@ export default function SideBar({ hotelId, onSearch }) {
         {/* 設施篩選 */}
         <div className={styles.suFilterGroup}>
           <h6 className={styles.suFilterTitle}>設施</h6>
-          {tags.slice(0, 3).map((tag) => (
+
+          {/* 根據 showAllFacilities 來決定顯示數量 */}
+          {tags.slice(0, showAllFacilities ? tags.length : 5).map((tag) => (
             <div className="form-check" key={tag.id}>
               <input
                 className="form-check-input"
@@ -191,29 +202,17 @@ export default function SideBar({ hotelId, onSearch }) {
             </div>
           ))}
 
-          <span className={styles.suShowMore} onClick={() => setShowAllFacilities(!showAllFacilities)}>
-            {showAllFacilities ? "收起 ▲" : "顯示全部 ▼"}
-          </span>
-
-          {showAllFacilities && (
-            <div className={`${styles.suHidden} mt-2`}>
-              {tags.slice(3).map((tag) => (
-                <div className="form-check" key={tag.id}>
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id={`tag-${tag.id}`}
-                    checked={selectedTags.includes(tag.id)}
-                    onChange={() => handleTagChange(tag.id)}
-                  />
-                  <label className="form-check-label" htmlFor={`tag-${tag.id}`}>
-                    {tag.name}
-                  </label>
-                </div>
-              ))}
-            </div>
+          {/* 只有當標籤數超過 5 個時，才顯示切換按鈕 */}
+          {tags.length > 5 && (
+            <span
+              className={styles.suShowMore}
+              onClick={() => setShowAllFacilities(!showAllFacilities)}
+            >
+              {showAllFacilities ? "收起 ▲" : "顯示全部 ▼"}
+            </span>
           )}
         </div>
+
         {/* 價格篩選 */}
         <div className={styles.suFilterGroup}>
           <h6 className={styles.suFilterTitle}>價格篩選</h6>

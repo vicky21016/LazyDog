@@ -38,13 +38,14 @@ export const removeHotelTag = async (req, res) => {
 export const getAllHotelTags = async (req, res) => {
   try {
     const [rows] = await pool.query(`
-      SELECT ht.hotel_id, t.id as tag_id, t.name, t.description
-      FROM hotel_tags ht
-      JOIN tags t ON ht.tag_id = t.id
+      SELECT DISTINCT t.id, t.name, t.description 
+      FROM tags t
+      JOIN hotel_tags ht ON t.id = ht.tag_id
       WHERE ht.is_deleted = 0
     `);
     res.json(rows);
-  } catch (error) {   
-    res.status(500).json({ message: "無法取得標籤", error: error.message });
+  } catch (error) {
+    console.error("取得標籤失敗:", error);
+    res.status(500).json({ message: "無法取得標籤" });
   }
 };
