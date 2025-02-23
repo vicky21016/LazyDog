@@ -10,8 +10,6 @@ import Card from "../../_components/card/card";
 import useSWR from "swr";
 
 export default function ListPage(props) {
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(30000);
   // http://localhost:5000/api/products/search?category=乾糧&main=乾糧&type=主食&age=全年齡&feature=強效潔牙&flavor=牛肉,鴨肉&cereal=無穀&size=全適用
   const [keyword, setKeyword] = useState({
     主分類: [],
@@ -26,44 +24,14 @@ export default function ListPage(props) {
   const queryPath = useSearchParams();
   const category = queryPath.get("category");
   const [newUrl, setNewUrl] = useState(
-    `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}`
+    `http://localhost:5000/api/products/category?category=${category}`
   );
   const [page, setPage] = useState(
-    `http://localhost:3000/product/list/category?category=${category}&page=1&min=${minPrice}&max=${maxPrice}`
+    `http://localhost:3000/product/list/category?category=${category}&page=1`
   );
   const changeUrl = (newUrl) => {
     setNewUrl(newUrl);
   };
-  useEffect(() => {
-    if (
-      keyword?.主分類.length == 0 &&
-      keyword?.種類.length == 0 &&
-      keyword?.適用年齡.length == 0 &&
-      keyword?.功能.length == 0 &&
-      keyword?.口味.length == 0 &&
-      keyword?.穀類.length == 0 &&
-      keyword?.適用體型.length == 0
-    ) {
-      changeUrl(
-        `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}`
-      );
-      return;
-    }
-
-    changeUrl(
-      `http://localhost:5000/api/products/search?category=${category}&main=${keyword?.主分類.join(
-        ","
-      )}&type=${keyword?.種類.join(",")}&age=${keyword?.適用年齡.join(
-        ","
-      )}&feature=${keyword?.功能.join(",")}&flavor=${keyword?.口味.join(
-        ","
-      )}&cereal=${keyword?.穀類.join(",")}&size=${keyword?.適用體型.join(
-        ","
-      )}&min=${minPrice}&max=${maxPrice}`
-    );
-    setPageNow(1);
-  }, [keyword]);
-  useEffect(() => {}, [minPrice, maxPrice]);
 
   const fetcher = async (url) => {
     try {
@@ -77,13 +45,50 @@ export default function ListPage(props) {
   };
   const { data, isLoading, error, mutate } = useSWR(newUrl, fetcher);
   const products = data?.data;
+  const prices = (products || []).map((e) => e.price);
+  // console.log(products);
+  const max = Math.max(...prices);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(5000);
 
   const [pageNow, setPageNow] = useState(1);
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
-
-  console.log(minPrice, maxPrice);
+  useEffect(() => {
+    if (
+      keyword?.主分類.length == 0 &&
+      keyword?.種類.length == 0 &&
+      keyword?.適用年齡.length == 0 &&
+      keyword?.功能.length == 0 &&
+      keyword?.口味.length == 0 &&
+      keyword?.穀類.length == 0 &&
+      keyword?.適用體型.length == 0
+    ) {
+      changeUrl(
+        `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}`
+      );
+      if (pageNow !== 1) {
+        setPageNow(1);
+      }
+      return;
+    } else {
+      changeUrl(
+        `http://localhost:5000/api/products/search?category=${category}&main=${keyword?.主分類.join(
+          ","
+        )}&type=${keyword?.種類.join(",")}&age=${keyword?.適用年齡.join(
+          ","
+        )}&feature=${keyword?.功能.join(",")}&flavor=${keyword?.口味.join(
+          ","
+        )}&cereal=${keyword?.穀類.join(",")}&size=${keyword?.適用體型.join(
+          ","
+        )}&min=${minPrice}&max=${maxPrice}`
+      );
+      if (pageNow !== 1) {
+        setPageNow(1);
+      }
+    }
+  }, [keyword, minPrice, maxPrice]);
   return (
     <>
       <div className={`${styles.Container} container`}>

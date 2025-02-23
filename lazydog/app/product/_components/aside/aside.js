@@ -85,7 +85,7 @@ export default function AsideAside({
 
   const handleMaxPriceChange = (e) => {
     let value = e.target.value;
-    if (value === "") {
+    if (value == "") {
       setMaxPrice(""); // 清空
       return;
     }
@@ -147,7 +147,7 @@ export default function AsideAside({
           }}
         />
       </div>
-      <HotSaleGroup />
+      {/* <HotSaleGroup /> */}
       {pathname.includes("category")
         ? categoryClass[i]?.map((e) => (
             <FilterGroup
@@ -210,7 +210,7 @@ export default function AsideAside({
           className={`btn btn-outline-danger mt-3 ${styles.ClearFilterBtn}`}
           onClick={() => {
             setMinPrice(0);
-            setMaxPrice(maxPrice);
+            setMaxPrice(5000);
             if (priceSliderRef.current?.noUiSlider) {
               priceSliderRef.current.noUiSlider.set([0, maxPrice]);
             }

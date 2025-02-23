@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import styles from "./list.module.css";
 import Aside from "../_components/aside/aside";
 import Link from "next/link";
@@ -16,6 +16,11 @@ export default function ListPage(props) {
     setNewUrl(newUrl);
   };
   const url = newUrl;
+  useEffect(() => {
+    changeUrl(
+      `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}`
+    );
+  }, [minPrice, maxPrice]);
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
