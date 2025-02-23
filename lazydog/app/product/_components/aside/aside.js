@@ -6,9 +6,9 @@ import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 import FilterGroup from "./filtergroup";
 import FilterLinkGroup from "./filterlinkgroup";
-import HotSaleGroup from "./hotsalegroup";
 import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function AsideAside({
   changeUrl = () => {},
@@ -19,13 +19,13 @@ export default function AsideAside({
   maxPrice = 0,
   setMaxPrice = () => {},
   setMinPrice = () => {},
+  categoryBtn = "",
+  setCategoryBtn = () => {},
+  sortName = "",
 }) {
-  // const [minPrice, setMinPrice] = useState(0);
-  // const [maxPrice, setMaxPrice] = useState(30000);
   const priceSliderRef = useRef(null);
   const pathname = usePathname();
   const query = useSearchParams();
-  // console.log(changeUrl);
   const url = "http://localhost:5000/api/products/categoryName";
   const fetcher = async (url) => {
     try {
@@ -53,7 +53,6 @@ export default function AsideAside({
   }
   if (category) {
     categoryName.forEach((v, i) => {
-      // console.log(category[v]);
       categoryClass[i] = [];
       category[v].map((v) => {
         if (!categoryClass[i].find((e) => e == v.class)) {
@@ -127,7 +126,6 @@ export default function AsideAside({
     };
   }, []);
   useEffect(() => {}, [pathname, query]);
-
   return (
     <aside className={styles.Sidebar}>
       <div className={styles.SearchTable}>
@@ -141,9 +139,16 @@ export default function AsideAside({
                 query.get("category")
                   ? `category=${query.get("category")}&`
                   : ""
-              }keyword=${e.target.value}`
+              }keyword=${e.target.value}${
+                sortName == "依商品名稱排序"
+                  ? "&sort=name"
+                  : sortName == "依商品價格排序"
+                  ? "&sort=price"
+                  : sortName == "依上架時間排序"
+                  ? "&sort=update"
+                  : ``
+              }`
             );
-            setPageNow(1);
           }}
         />
       </div>
@@ -156,6 +161,7 @@ export default function AsideAside({
               category={category[categoryName[i]]}
               keyword={keyword}
               setKeyword={setKeyword}
+              categoryBtn={categoryBtn}
             />
           ))
         : categoryName?.map((v, i) => (
@@ -163,6 +169,8 @@ export default function AsideAside({
               key={`FilterLinkGroup${i}`}
               name={v}
               category={category[v]}
+              categoryBtn={categoryBtn}
+              setCategoryBtn={setCategoryBtn}
             />
           ))}
       <div className={`text-center ${styles.PriceFilterContainer}`}>
@@ -220,7 +228,7 @@ export default function AsideAside({
         </button>
       </div>
 
-      <a href="">
+      <Link href="">
         <figure>
           <img
             src="/product/DM/DM_aside.png"
@@ -228,7 +236,7 @@ export default function AsideAside({
             className="img-fluid"
           />
         </figure>
-      </a>
+      </Link>
     </aside>
   );
 }

@@ -9,6 +9,8 @@ import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
 
 export default function ListPage(props) {
+  const [sortName, setSortName] = useState("依商品名稱排序");
+  const [categoryBtn, setCategoryBtn] = useState("");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(30000);
   const [newUrl, setNewUrl] = useState("http://localhost:5000/api/products");
@@ -18,7 +20,15 @@ export default function ListPage(props) {
   const url = newUrl;
   useEffect(() => {
     changeUrl(
-      `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}`
+      `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}${
+        sortName == "依商品名稱排序"
+          ? "&sort=name"
+          : sortName == "依商品價格排序"
+          ? "&sort=price"
+          : sortName == "依上架時間排序"
+          ? "&sort=update"
+          : ``
+      }`
     );
   }, [minPrice, maxPrice]);
   const fetcher = async (url) => {
@@ -39,6 +49,7 @@ export default function ListPage(props) {
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
+  // console.log(categoryBtn);
 
   return (
     <>
@@ -52,12 +63,9 @@ export default function ListPage(props) {
         </section>
         <section className={styles.BreadcrumbsTitle}>
           <div className={styles.Breadcrumbs}>
-            <Link href="http://localhost:3000">首頁</Link>
+            <Link href="/">首頁</Link>
             <img src="/product/font/right.png" alt="" />
-            <Link
-              className={styles.BreadcrumbsActive}
-              href="http://localhost:3000/product/list"
-            >
+            <Link className={styles.BreadcrumbsActive} href="/product/list">
               商品目錄
             </Link>
           </div>
@@ -65,7 +73,46 @@ export default function ListPage(props) {
             <h5>商品目錄</h5>
             <div className={styles.TitleFilter}>
               <img src="/product/font/filter.png" alt="" />
-              <h6>依熱門排序</h6>
+              <div className={styles["dropdown"]}>
+                <li>
+                  <h6 className={styles["dropbtn"]}>{sortName}</h6>
+                </li>
+                <div className={styles["dropdown-content"]}>
+                  <h6
+                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=name`
+                      );
+                      setSortName("依商品名稱排序");
+                    }}
+                  >
+                    依商品名稱排序
+                  </h6>
+                  <h6
+                    className={styles["dropdown-link"]}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=price`
+                      );
+                      setSortName("依商品價格排序");
+                    }}
+                  >
+                    依商品價格排序
+                  </h6>
+                  <h6
+                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=update`
+                      );
+                      setSortName("依上架時間排序");
+                    }}
+                  >
+                    依上架時間排序
+                  </h6>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -77,6 +124,9 @@ export default function ListPage(props) {
             maxPrice={maxPrice}
             setMaxPrice={setMaxPrice}
             setMinPrice={setMinPrice}
+            categoryBtn={categoryBtn}
+            setCategoryBtn={setCategoryBtn}
+            sortName={sortName}
           />
           <main className={styles.PdList}>
             {[...Array(6)].map((value, index) => {
@@ -96,7 +146,7 @@ export default function ListPage(props) {
                     onClick={() =>
                       setPageNow(pageNow - 1 == 0 ? 1 : pageNow - 1)
                     }
-                    href={`http://localhost:3000/product/list?page=${
+                    href={`/product/list?page=${
                       pageNow - 1 == 0 ? 1 : pageNow - 1
                     }`}
                   >
@@ -124,9 +174,7 @@ export default function ListPage(props) {
                           <Link
                             onClick={() => setPageNow(i + 1)}
                             className={`${styles.PageLink} page-link `}
-                            href={`http://localhost:3000/product/list?page=${
-                              i + 1
-                            }`}
+                            href={`/product/list?page=${i + 1}`}
                           >
                             {i + 1}
                           </Link>
@@ -140,7 +188,7 @@ export default function ListPage(props) {
                     onClick={() => {
                       setPageNow(pageNow + 1 > pages ? pageNow : pageNow + 1);
                     }}
-                    href={`http://localhost:3000/product/list?page=${
+                    href={`/product/list?page=${
                       pageNow + 1 > pages ? pageNow : pageNow + 1
                     }`}
                   >

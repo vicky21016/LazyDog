@@ -33,9 +33,11 @@ export default function CardCard({ productID = "" }) {
   ).toFixed(0);
   const productDiscount = (1 - Number(products?.discount)).toFixed(2) * 100;
   const cardRef = useRef(null);
-  const simulateClick = () => {
-    if (cardRef.current) {
-      cardRef.current.click();
+  const simulateClick = (e) => {
+    if (e.target.dataset.clickable) {
+      if (cardRef.current) {
+        cardRef.current.click();
+      }
     }
   };
   useEffect(() => {
@@ -90,7 +92,11 @@ export default function CardCard({ productID = "" }) {
         <p className={styles.ProductCardName}>{productName}</p>
         <h5 className={styles.ProductCardPrice}>NT$ {productPrice}</h5>
       </div>
-      <div className={styles.ProductCardHover} onClick={simulateClick}>
+      <div
+        className={styles.ProductCardHover}
+        onClick={simulateClick}
+        data-clickable="true"
+      >
         <button
           type="button"
           className={`${styles.HoverIcon} `}

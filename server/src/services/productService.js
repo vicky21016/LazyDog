@@ -1,11 +1,19 @@
 import pool from "../config/mysql.js";
 
-export const getAllProducts = async (min, max) => {
+export const getAllProducts = async (min, max, sort) => {
   try {
     const [products] = await pool.execute(
       `SELECT * FROM yi_product WHERE is_deleted = 0 ${
         min ? `AND price >= ${min}` : ""
-      } ${max ? `AND price <= ${max}` : ""}`
+      } ${max ? `AND price <= ${max}` : ""} ${
+        sort == "name"
+          ? `ORDER BY name DESC`
+          : sort == "price"
+          ? `ORDER BY price`
+          : sort == "update"
+          ? `ORDER BY updated_at`
+          : `ORDER BY name`
+      } `
     );
     return products;
   } catch (error) {
@@ -14,7 +22,7 @@ export const getAllProducts = async (min, max) => {
   }
 };
 
-export const getAllCategoryName = async (category, min, max) => {
+export const getAllCategoryName = async (category, min, max, sort) => {
   try {
     const [categoryName] = await pool.execute(
       `SELECT * FROM yi_category WHERE name = ? AND is_deleted = 0`,
@@ -23,7 +31,15 @@ export const getAllCategoryName = async (category, min, max) => {
     const [products] = await pool.execute(
       `SELECT * FROM yi_product WHERE category_id = ? AND is_deleted = 0 ${
         min ? `AND price >= ${min}` : ""
-      } ${max ? `AND price <= ${max}` : ""}`,
+      } ${max ? `AND price <= ${max}` : ""} ${
+        sort == "name"
+          ? `ORDER BY name DESC`
+          : sort == "price"
+          ? `ORDER BY price`
+          : sort == "update"
+          ? `ORDER BY updated_at`
+          : `ORDER BY name`
+      }`,
       [categoryName[0].id]
     );
     return products;
@@ -39,7 +55,8 @@ export const getSearchKeyword = async (
   field,
   value,
   min,
-  max
+  max,
+  sort
 ) => {
   try {
     if (field.length > 0) {
@@ -53,7 +70,15 @@ export const getSearchKeyword = async (
       const [products] = await pool.execute(
         `SELECT * FROM yi_product WHERE ${field} AND category_id = ? AND is_deleted = 0 ${
           min ? `AND price >= ${min}` : ""
-        } ${max ? `AND price <= ${max}` : ""}`,
+        } ${max ? `AND price <= ${max}` : ""} ${
+          sort == "name"
+            ? `ORDER BY name DESC`
+            : sort == "price"
+            ? `ORDER BY price`
+            : sort == "update"
+            ? `ORDER BY updated_at`
+            : `ORDER BY name`
+        }`,
         value
       );
       return products;
@@ -62,7 +87,15 @@ export const getSearchKeyword = async (
       const [products] = await pool.execute(
         `SELECT * FROM yi_product WHERE name LIKE ? AND is_deleted = 0 ${
           min ? `AND price >= ${min}` : ""
-        } ${max ? `AND price <= ${max}` : ""}`,
+        } ${max ? `AND price <= ${max}` : ""} ${
+          sort == "name"
+            ? `ORDER BY name DESC`
+            : sort == "price"
+            ? `ORDER BY price`
+            : sort == "update"
+            ? `ORDER BY updated_at`
+            : `ORDER BY name`
+        }`,
         [`%${keyword}%`]
       );
       return products;
@@ -74,7 +107,15 @@ export const getSearchKeyword = async (
       const [products] = await pool.execute(
         `SELECT * FROM yi_product WHERE (name LIKE ? OR full_info LIKE ?)AND category_id = ? AND is_deleted = 0 ${
           min ? `AND price >= ${min}` : ""
-        } ${max ? `AND price <= ${max}` : ""}`,
+        } ${max ? `AND price <= ${max}` : ""} ${
+          sort == "name"
+            ? `ORDER BY name DESC`
+            : sort == "price"
+            ? `ORDER BY price`
+            : sort == "update"
+            ? `ORDER BY updated_at`
+            : `ORDER BY name`
+        }`,
         [`%${keyword}%`, `%${keyword}%`, categoryName[0].id]
       );
       return products;

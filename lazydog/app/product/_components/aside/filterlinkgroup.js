@@ -4,7 +4,12 @@ import React, { useState, useEffect } from "react";
 import styles from "./aside.module.css";
 import Link from "next/link";
 
-export default function FilterLinkGroup({ category = {}, name = "" }) {
+export default function FilterLinkGroup({
+  category = {},
+  name = "",
+  categoryBtn = "",
+  setCategoryBtn = () => {},
+}) {
   const [showMore, setShowMore] = useState(false);
   const categorys = category;
   const categoryClass = [];
@@ -17,7 +22,7 @@ export default function FilterLinkGroup({ category = {}, name = "" }) {
     <>
       <div className={styles.FilterGroup}>
         <Link
-          href={`http://localhost:3000/product/list/category?category=${name}`}
+          href={`/product/list/category?category=${name}`}
           className={styles.FilterLinkTitle}
         >
           {name}
@@ -26,9 +31,11 @@ export default function FilterLinkGroup({ category = {}, name = "" }) {
           if (i < 3) {
             return (
               <Link
-                href={`http://localhost:3000/product/list/category?category=${name}`}
+                href={`/product/list/category?category=${name}`}
                 className={styles.FormLink}
                 key={`FilterLink${i}`}
+                categoryBtn={categoryBtn}
+                onClick={() => setCategoryBtn(v)}
               >
                 {v}
               </Link>
@@ -41,9 +48,10 @@ export default function FilterLinkGroup({ category = {}, name = "" }) {
               if (i >= 3) {
                 return (
                   <Link
-                    href={`http://localhost:3000/product/list/category?category=${name}`}
+                    href={`/product/list/category?category=${name}`}
                     className={styles.FormLink}
                     key={`FilterLink${i}`}
+                    onClick={() => setCategoryBtn(v)}
                   >
                     {v}
                   </Link>

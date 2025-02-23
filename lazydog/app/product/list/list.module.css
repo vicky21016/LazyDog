@@ -52,6 +52,45 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  li {
+    list-style-type: none;
+    a {
+      color: var(--Black);
+    }
+  }
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ff9538;
+  min-width: 200px;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  color: white;
+  .dropdown-link {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+}
+.dropdown-link-top:hover {
+  border-radius: 10px 10px 0 0;
+}
+.dropdown-link-bottom:hover {
+  border-radius: 0 0 10px 10px;
+}
+.dropdown-link:hover {
+  background-color: #ffffff;
+  color: #ff9538;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 /* -------------------------- */
 /* --------商品區域----------- */

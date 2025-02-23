@@ -131,13 +131,13 @@ export default function DetailPage({ searchParams = {} }) {
   return (
     <div className={`${styles.Container} container`}>
       <section className={styles.Breadcrumbs}>
-        <Link href="http://localhost:3000">首頁</Link>
+        <Link href="/">首頁</Link>
         <img src="/product/font/right.png" alt="" />
-        <Link href="http://localhost:3000/product/list"> 商品目錄 </Link>
+        <Link href="/product/list"> 商品目錄 </Link>
         <img src="/product/font/right.png" alt="" />
         <Link
           className={styles.BreadcrumbsActive}
-          href={`http://localhost:3000/product/list/category?category=${productData?.category}`}
+          href={`/product/list/category?category=${productData?.category}`}
         >
           {productData?.category}
         </Link>
