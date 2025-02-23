@@ -2,28 +2,51 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/modules/fontHotelHome.module.css";
-import {openMap} from "@/hooks/useLocationSelector"
+import GoogleMapComponent from "../../components/hotel/GoogleMapComponent";
 import Link from "next/link";
-import { getHotelTags, ratingAv } from "@/services/hotelService";
+import {
+  ratingAv,
+  getAllTags,
+  getHotelTags,
+  getHotelPriceRange,
+  getGlobalPriceRange,
+  getAllRoomTypes,
+} from "@/services/hotelService";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 
 export default function SideBar({ hotelId, onSearch }) {
-  const [showAllFacilities, setShowAllFacilities] = useState(false);
-  const [hotelTags, setHotelTags] = useState([]);
+  const [showAllFacilities, setShowAllFacilities] = useState(true);
+  const [roomTypes, setRoomTypes] = useState([]); //所有房型
+  const [selectedRoomType, setSelectedRoomType] = useState("");
+  const [hotels, setHotels] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [ratings, setRatings] = useState([]);
   const [selectedRating, setSelectedRating] = useState("");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(10000);
   const [isSearching, setIsSearching] = useState(true);
   const priceSliderRef = useRef(null);
+  const [showGoogleMaps, setShowGoogleMaps] = useState(false);
 
   useEffect(() => {
-    if (hotelId) {
-      fetchHotelTags();
-    }
+    fetchHotels();
+    fetchTags();
     fetchRatings();
-  }, [hotelId]); 
+    fetchPriceRange();
+
+    const loadRoomTypes = async () => {
+      try {
+        const types = await getAllRoomTypes();
+        setRoomTypes(types);
+      } catch (error) {
+        console.error("獲取房型失敗:", error);
+      }
+    };
+
+    loadRoomTypes();
+  }, []);
 
   useEffect(() => {
     if (!priceSliderRef.current) return;
@@ -31,7 +54,7 @@ export default function SideBar({ hotelId, onSearch }) {
     noUiSlider.create(priceSliderRef.current, {
       start: [minPrice, maxPrice],
       connect: true,
-      range: { min: 0, max: 10000 },
+      range: { min: minPrice, max: maxPrice },
       step: 100,
     });
 
@@ -46,23 +69,56 @@ export default function SideBar({ hotelId, onSearch }) {
       }
     };
   }, []);
+  useEffect(() => {
+    const loadRoomTypes = async () => {
+      try {
+        const types = await getAllRoomTypes();
+        setRoomTypes(types);
+      } catch (error) {
+        console.error("獲取房型失敗:", error);
+      }
+    };
+
+    loadRoomTypes();
+  }, []);
 
   useEffect(() => {
-    if (priceSliderRef.current?.noUiSlider) {
+    if (priceSliderRef.current && priceSliderRef.current.noUiSlider) {
       priceSliderRef.current.noUiSlider.set([minPrice, maxPrice]);
     }
-  }, [minPrice, maxPrice]);
-
-  const fetchHotelTags = async () => {
+  }, [minPrice, maxPrice]);  
+  const fetchHotels = async () => {
+    const query = new URLSearchParams();
+  
+    // 確保使用當前 UI 設定的篩選條件
+    if (selectedRating) query.append("min_rating", selectedRating);
+    query.append("min_price", minPrice);
+    query.append("max_price", maxPrice);
+    if (selectedRoomType) query.append("room_type_id", selectedRoomType);
+    if (selectedTags.length > 0) query.append("tags", selectedTags.join(",")); // 加入標籤篩選
+  
+    const apiUrl = `http://localhost:5000/api/hotels?${query.toString()}`;
+    console.log("發送 API 請求:", apiUrl);
+  
     try {
-      if (!hotelId) {
-        console.warn("Hotel ID 未提供，無法獲取標籤");
-        return;
-      }
-      const tags = await getHotelTags(hotelId);
-      setHotelTags(tags || []);
+      const res = await fetch(apiUrl);
+      const data = await res.json();
+      console.log(" API 回應的飯店數據:", data);
+      setHotels(data || []);
     } catch (error) {
-      console.error("獲取飯店標籤失敗:", error);
+      console.error(" 獲取所有飯店失敗:", error);
+    }
+  };
+  
+
+
+  const fetchTags = async () => {
+    try {
+      const allTags = await getAllTags();
+      setTags(allTags);
+    } catch (error) {
+      console.error("獲取標籤失敗:", error);
+      setTags([]);
     }
   };
 
@@ -74,24 +130,61 @@ export default function SideBar({ hotelId, onSearch }) {
       console.error("獲取飯店評分失敗:", error);
     }
   };
+  const fetchPriceRange = async (overrideDefault = false) => {
+    try {
+      let priceData;
+      if (hotelId) {
+        priceData = await getHotelPriceRange(hotelId);
+      } else {
+        priceData = await getGlobalPriceRange();
+      }
+  
+      const min = priceData?.min_price ?? 0;
+      const max = priceData?.max_price ?? 10000;
+  
+      console.log("從後端獲取的新價格範圍:", min, max);
+  
+      // 只有當 `overrideDefault` 為 false 時，才更新價格範圍
+      if (!overrideDefault) {
+        setMinPrice(min);
+        setMaxPrice(max);
+      }
+    } catch (error) {
+      console.error("獲取價格範圍失敗:", error);
+    }
+  };
+  
+
+  
 
   const toggleFacilities = () => {
     setShowAllFacilities((prev) => !prev);
   };
+  const handleTagChange = (tagId) => {
+    if (!tagId && tagId !== 0) return;
+    setSelectedTags((prev) => {
+      return prev.includes(tagId)
+        ? prev.filter((t) => t !== tagId)
+        : [...prev, tagId];
+    });
+  };
 
   const handleSearch = async () => {
-    console.log("開始搜尋...");
+    console.log("開始搜尋...", minPrice, maxPrice, selectedRoomType);
 
-    const query = selectedRating ? `?min_rating=${selectedRating}` : "";
+    const query = new URLSearchParams();
+    if (selectedRating) query.append("min_rating", selectedRating);
+    query.append("min_price", minPrice);
+    query.append("max_price", maxPrice);
+    if (selectedRoomType) query.append("room_type_id", selectedRoomType);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/hotels${query}`);
+      const res = await fetch(
+        `http://localhost:5000/api/hotels?${query.toString()}`
+      );
       const data = await res.json();
-
-      console.log("搜尋結果:", data);
-
       if (onSearch) {
-        onSearch(data); //props 更新搜尋結果
+        onSearch(data);
       }
     } catch (error) {
       console.error("搜尋失敗:", error);
@@ -100,17 +193,42 @@ export default function SideBar({ hotelId, onSearch }) {
     setIsSearching(false);
   };
 
-  const handleClear = () => {
-    console.log("篩選條件已清除");
+  const handleClear = async () => {
+    console.log("清除篩選條件開始");
+  
+    // **重置 UI 狀態**
+    setSelectedTags([]);
+    setSelectedRating("");
+    setSelectedRoomType("");
     setMinPrice(0);
     setMaxPrice(10000);
-    priceSliderRef.current?.noUiSlider.set([0, 10000]);
     setIsSearching(true);
-
-    if (onSearch) {
-      onSearch([]); // 清空篩選結果
+  
+    if (priceSliderRef.current?.noUiSlider) {
+      priceSliderRef.current.noUiSlider.set([0, 10000]);
     }
+  
+    try {
+      // 不讓 `fetchPriceRange()` 影響 UI
+      const priceRange = await fetchPriceRange(true);
+      console.log("🔹 `fetchPriceRange(true)` 查詢結果:", priceRange);
+    } catch (error) {
+      console.error(" 重置價格範圍失敗:", error);
+    }
+  
+    setTimeout(() => {
+      console.log(" 重新獲取所有飯店列表...");
+      fetchHotels();
+    }, 300);
+  
+    if (onSearch) {
+      
+      onSearch([]);
+    }
+  
+  
   };
+  
 
   return (
     <>
@@ -118,19 +236,32 @@ export default function SideBar({ hotelId, onSearch }) {
       <aside className={`container col-lg-3${styles.suSidebar}`}>
         {/* 地圖區塊 */}
         <div className={styles.suMapCard}>
-          <button
-            className={`btn ${styles.suMapBtn} btn-primary`}
-            onClick={openMap}
-          >
-            📍 於地圖上顯示
-          </button>
-          <img
-            src="https://maps.googleapis.com/maps/api/staticmap?center=台北,台灣&zoom=13&size=300x200&maptype=roadmap
-                &markers=color:blue%7Clabel:台北%7C25.0330,121.5654
-                &key=AIzaSyDfCdeVzmet4r4U6iU5M1C54K9ooF3WrV4"
-            alt="地圖縮圖"
-            className={styles.suMapImage}
-          />
+          {!showGoogleMaps ? (
+            <>
+              <button
+                className={`btn btn-primary ${styles.suMapBtn}`}
+                onClick={() => setShowGoogleMaps(true)}
+              >
+                📍 於地圖上顯示
+              </button>
+              <img
+                src={`https://maps.googleapis.com/maps/api/staticmap?center=台灣&zoom=7&size=300x200&maptype=roadmap&key=AIzaSyDfCdeVzmet4r4U6iU5M1C54K9ooF3WrV4`}
+                alt="地圖縮圖"
+                className={styles.suMapImage}
+              />
+            </>
+          ) : (
+            <>
+              <button
+                className={`btn btn-primary ${styles.suMapBtn}`}
+                onClick={() => setShowGoogleMaps(false)}
+              >
+                返回縮圖
+              </button>
+              {/*  使用 Google Maps 動態地圖 */}
+              <GoogleMapComponent hotels={hotels} />
+            </>
+          )}
         </div>
 
         {/* 優質住宿篩選 */}
@@ -153,35 +284,48 @@ export default function SideBar({ hotelId, onSearch }) {
         {/* 設施篩選 */}
         <div className={styles.suFilterGroup}>
           <h6 className={styles.suFilterTitle}>設施</h6>
-          {hotelTags.slice(0, 3).map((tag, index) => (
-            <div className="form-check" key={index}>
-              <input className="form-check-input" type="checkbox" id={tag} />
-              <label className="form-check-label" htmlFor={tag}>
-                {tag}
+
+          {/* 根據 showAllFacilities 來決定顯示數量 */}
+          {tags.slice(0, showAllFacilities ? tags.length : 5).map((tag) => (
+            <div className="form-check" key={tag.id}>
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id={`tag-${tag.id}`}
+                checked={selectedTags.includes(tag.id)}
+                onChange={() => handleTagChange(tag.id)}
+              />
+              <label className="form-check-label" htmlFor={`tag-${tag.id}`}>
+                {tag.name}
               </label>
             </div>
           ))}
 
-          <span className={styles.suShowMore} onClick={toggleFacilities}>
-            {showAllFacilities ? "收起 ▲" : "顯示全部 ▼"}
-          </span>
-
-          {showAllFacilities && (
-            <div className={`${styles.suHidden} mt-2`}>
-              {hotelTags.slice(3).map((tag, index) => (
-                <div className="form-check" key={index}>
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id={tag}
-                  />
-                  <label className="form-check-label" htmlFor={tag}>
-                    {tag}
-                  </label>
-                </div>
-              ))}
-            </div>
+          {/* 只有當標籤數超過 5 個時，才顯示切換按鈕 */}
+          {tags.length > 5 && (
+            <span
+              className={styles.suShowMore}
+              onClick={() => setShowAllFacilities(!showAllFacilities)}
+            >
+              {showAllFacilities ? "收起 ▲" : "顯示全部 ▼"}
+            </span>
           )}
+        </div>
+        {/* 房型篩選 */}
+        <div className={styles.suFilterGroup}>
+          <h6 className={styles.suFilterTitle}>房型篩選</h6>
+          <select
+            className="form-select"
+            value={selectedRoomType}
+            onChange={(e) => setSelectedRoomType(e.target.value)}
+          >
+            <option value="">全部</option>
+            {roomTypes.map((room) => (
+              <option key={room.id} value={room.id}>
+                {room.name}
+              </option>
+            ))}
+          </select>
         </div>
         {/* 價格篩選 */}
         <div className={styles.suFilterGroup}>

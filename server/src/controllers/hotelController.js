@@ -10,8 +10,21 @@ import {
 
 export const getAllHotels = async (req, res) => {
   try {
-    const minRating = req.query.min_rating ? parseFloat(req.query.min_rating) : 0;
-    const hotels = await getHotels(minRating);
+    // 解析查詢參數，確保為數字型態
+    const minRating = req.query.min_rating
+      ? parseFloat(req.query.min_rating)
+      : 0;
+    const minPrice = req.query.min_price ? parseFloat(req.query.min_price) : 0;
+    const maxPrice = req.query.max_price
+      ? parseFloat(req.query.max_price)
+      : 10000;
+    const roomTypeId = req.query.room_type_id
+      ? parseInt(req.query.room_type_id)
+      : null;
+
+    // 傳遞完整的查詢參數給 `getHotels`
+    const hotels = await getHotels(minRating, minPrice, maxPrice, roomTypeId);
+
     res.json(hotels);
   } catch (error) {
     console.error("獲取飯店列表失敗:", error);
@@ -67,7 +80,7 @@ export const getOperatorHotels = async (req, res) => {
 export const createHotel = async (req, res) => {
   try {
     console.log("收到請求資料:", req.body);
-    console.log("收徒確認之後會刪掉", req. files);
+    console.log("收徒確認之後會刪掉", req.files);
 
     const operatorId = req.user.id;
     const {
