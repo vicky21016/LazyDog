@@ -35,32 +35,32 @@ export default function TeacherAside() {
                   </div>
                   <ul className={`list-unstyled text-start m-0`}>
                   <li className={` ${styles.lis}`}>
-                      <a href="opTeacherInfo.html" className={`text-decoration-none ${styles.liText}`}>
+                      <a href="/teacher-sign/info" className={`text-decoration-none ${styles.liText}`}>
                       <i className={`bi bi-book-fill fs-6  ${styles.icons}`}></i>我的師資
                       </a>
                     </li>
                     <li className={`${styles.lis}`}>
-                      <a href="opCourseList.html" className={`text-decoration-none ${styles.liText}`}>
+                      <a href="/teacher-sign/list" className={`text-decoration-none ${styles.liText}`}>
                       <i className={`bi bi-calendar-week fs-6  ${styles.icons}`}></i>我的課程
                       </a>
                     </li>
                     <li className={`${styles.lis}`}>
-                      <a href="opCourseList.html" className={`text-decoration-none ${styles.liText}`}>
+                      <a href="/teacher-sign/" className={`text-decoration-none ${styles.liText}`}>
                       <i className={`bi bi bi-chat-left-heart fs-6  ${styles.icons}`}></i>課程評論
                       </a>
                     </li>
                     <li className={`${styles.lis}`}>
-                      <a href="opCoursePlace.html" className={`text-decoration-none ${styles.liText}`}>
+                      <a href="/teacher-sign/place" className={`text-decoration-none ${styles.liText}`}>
                       <i className={`bi bi-building-fill fs-6  ${styles.icons}`}></i>開課地點
                       </a>
                     </li>
                     <li className={`${styles.lis}`}>
-                      <a href="opCoursePlace.html" className={`text-decoration-none ${styles.liText}`}>
+                      <a href="/teacher-sign/" className={`text-decoration-none ${styles.liText}`}>
                       <i className={`bi bi-person-fill fs-5  ${styles.icons}`}></i>會員資料
                       </a>
                     </li>
                     <li className={`${styles.lis}`}>
-                      <a href="opCoursePlace.html" className={`text-decoration-none ${styles.liText}`}>
+                      <a href="/home" className={`text-decoration-none ${styles.liText}`}>
                       <i className={`bi bi-box-arrow-right fs-5  ${styles.icons}`}></i>登出
                       </a>
                     </li>
