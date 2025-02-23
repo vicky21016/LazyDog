@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
+import { getAllHotels } from "@/services/hotelService";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
 import Header from "../../components/layout/header";
 import HotelCard from "@/app/components/hotel/hotelCard";
@@ -15,6 +16,8 @@ export default function HotelHomePage() {
   const router = useRouter();
   const [filteredHotels, setFilteredHotels] = useState([]); // 存篩選後的飯店資料
   const [quantity, setQuantity] = useState(1);
+  const [hotels, setHotels] = useState([]);
+
 
   const {
     location,
@@ -24,6 +27,21 @@ export default function HotelHomePage() {
     closeModal,
     confirmLocation,
   } = useLocationSelector();
+
+  useEffect(() => {
+    const fetchHotels = async () => {
+      try {
+        const hotelData = await getAllHotels();
+        setHotels(hotelData);
+        setFilteredHotels(hotelData); // 一開始有資料
+      } catch (error) {
+        console.error(" 獲取飯店失敗:", error);
+      }
+    };
+  
+    fetchHotels();
+  }, []);
+  
 
   return (
     <>
