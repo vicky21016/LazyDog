@@ -104,10 +104,16 @@ export default function Header(props) {
               </Link>
             </li>
             <div className={styles["dropdown-content"]}>
-              <Link href="/course/list" className={styles["dropdown-link"]}>
+              <Link
+                href="/course/list"
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+              >
                 課程
               </Link>
-              <Link href="/teacher/list" className={styles["dropdown-link"]}>
+              <Link
+                href="/teacher/list"
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+              >
                 師資
               </Link>
             </div>
@@ -127,13 +133,19 @@ export default function Header(props) {
           </Link>
           {user ? (
             <div className={styles["dropdown-content"]}>
-              <Link href="/pages" className={styles["dropdown-link"]}>
+              <Link
+                href="/pages"
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+              >
                 個人資料
               </Link>
               <Link href="/favorite" className={styles["dropdown-link"]}>
                 我的收藏
               </Link>
-              <div onClick={logout} className={styles["dropdown-link"]}>
+              <div
+                onClick={logout}
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+              >
                 登出
               </div>
             </div>
@@ -175,17 +187,18 @@ export default function Header(props) {
                 </Link>
               </li>
               <div className={styles["dropdown-content"]}>
-                <Link href="/course/list" className={styles["dropdown-link"]}>
+                <Link
+                  href="/course/list"
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                >
                   課程
                 </Link>
-                <Link href="/teacher/list" className={styles["dropdown-link"]}>
+                <Link
+                  href="/teacher/list"
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                >
                   師資
                 </Link>
-
-                <Link href="#" className={styles["dropdown-link"]}>
-                  常見 Q&A
-                </Link>
-
               </div>
             </div>
             <li>
@@ -196,13 +209,19 @@ export default function Header(props) {
                 <Link href="/pages">會員中心</Link>
               </li>
               <div className={styles["dropdown-content"]}>
-                <Link href="/pages" className={styles["dropdown-link"]}>
+                <Link
+                  href="/pages"
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                >
                   個人資料
                 </Link>
                 <Link href="/favorite" className={styles["dropdown-link"]}>
                   我的收藏
                 </Link>
-                <div onClick={logout} className={styles["dropdown-link"]}>
+                <div
+                  onClick={logout}
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                >
                   登出
                 </div>
               </div>
@@ -216,7 +235,6 @@ export default function Header(props) {
         </nav>
       </div>
 
-
       {/* </>
       ) : (
         <div>
@@ -229,7 +247,6 @@ export default function Header(props) {
           </Link>
         </div>
       )} */}
-
     </header>
   );
 }
