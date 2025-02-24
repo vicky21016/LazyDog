@@ -1,54 +1,59 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import "../css/CartList.css";
 import { useCart } from "@/hooks/use-cart";
-import Header from "../../components/layout/header"
-import Other from "../../components/teacher/otherTeacher";
-import Thead from "../../components/cart/thead"
-import Tbody from "../../components/cart/tbody"
-import Breadcrumb from "../../components/teacher/breadcrumb";
-
 
 export default function CartListPage(props) {
-  const { productItems, courseItems, hotelItems, totalProductAmount, totalProductQty, totalCourseAmount, totalCourseQty, totalHotelAmount, totalHotelQty, onIncrease, onDecrease, onRemove } = useCart();
+  const {
+    productItems,
+    courseItems,
+    hotelItems,
+    totalProductAmount,
+    totalProductQty,
+    totalCourseAmount,
+    totalCourseQty,
+    totalHotelAmount,
+    totalHotelQty,
+    onIncrease,
+    onDecrease,
+    onRemove,
+  } = useCart();
 
-  const totalAmount = totalProductAmount + totalCourseAmount + totalHotelAmount; // 計算所有類別的總金額
-  const totalQty = totalProductQty + totalCourseQty + totalHotelQty; // 計算總數量
+  const totalAmount = totalProductAmount + totalCourseAmount + totalHotelAmount;
 
-   const teacherData = [
-     {
-       imgSrc: "/teacher-img/Zoe.png",
-       col: "col-6 col-md-3",
-       name: "Zoe",
-       text: "寵物訓練",
-       link: "/teacher/info",
-     },
-     {
-       imgSrc: "/teacher-img/Zoe.png",
-       col: "col-6 col-md-3",
-       name: "Zoe",
-       text: "寵物訓練",
-       link: "/teacher/info",
-     },
-     {
-       imgSrc: "/teacher-img/Zoe.png",
-       col: "col-6 col-md-3",
-       name: "Zoe",
-       text: "寵物訓練",
-       link: "/teacher/info",
-     },
-     {
-       imgSrc: "/teacher-img/Zoe.png",
-       col: "col-6 col-md-3",
-       name: "Zoe",
-       text: "寵物訓練",
-       link: "/teacher/info",
-     },
-   ];
-
+  const teacherData = [
+    {
+      imgSrc: "/teacher-img/Zoe.png",
+      col: "col-6 col-md-3",
+      name: "Zoe",
+      text: "寵物訓練",
+      link: "/teacher/info",
+    },
+    {
+      imgSrc: "/teacher-img/Zoe.png",
+      col: "col-6 col-md-3",
+      name: "Zoe",
+      text: "寵物訓練",
+      link: "/teacher/info",
+    },
+    {
+      imgSrc: "/teacher-img/Zoe.png",
+      col: "col-6 col-md-3",
+      name: "Zoe",
+      text: "寵物訓練",
+      link: "/teacher/info",
+    },
+    {
+      imgSrc: "/teacher-img/Zoe.png",
+      col: "col-6 col-md-3",
+      name: "Zoe",
+      text: "寵物訓練",
+      link: "/teacher/info",
+    },
+  ];
 
   return (
     <>
@@ -216,8 +221,9 @@ export default function CartListPage(props) {
                   type="submit"
                   style={{ backgroundColor: "#f2662b", color: "#fff" }}
                   className="btn w-50"
+                  onClick={() => props.history.push("/checkout/product")}
                 >
-                  結帳
+                  商品結帳
                 </button>
               </div>
             </aside>
