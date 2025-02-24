@@ -89,6 +89,8 @@ export const createArticle = async (req, res) => {
         console.log(article);
     } catch (err) {
         // 如果有錯誤，返回錯誤響應
+        console.log(err);
+        
         res.status(500).json({
             message: "文章創建失敗",
             error: err.message

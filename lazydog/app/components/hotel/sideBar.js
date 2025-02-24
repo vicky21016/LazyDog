@@ -132,7 +132,11 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
       console.error("獲取價格範圍失敗:", error);
     }
   };
-
+  const handleFilterChange = (filter) => {
+    console.log(" 側邊篩選條件變更:", filter);
+    onSearch(filter); // 讓 `Sidebar` 影響 `searchParams`
+  };
+  
   const toggleFacilities = () => {
     setShowAllFacilities((prev) => !prev);
   };
@@ -150,13 +154,13 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
   };
 
   const handleApplyFilters = async () => {
-    console.log("🔍 按下搜尋，篩選條件:", {
+    const filterParams = {
       minPrice,
       maxPrice,
-      selectedRoomType,
-      selectedTags,
-      selectedRating,
-    });
+      roomType: selectedRoomType,
+      tags: selectedTags,
+      rating: selectedRating,
+    };
 
     // 構造查詢參數
     const query = {
@@ -182,7 +186,7 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
       console.log("API 回應的搜尋結果:", data);
 
       if (onSearch) {
-        onSearch(data); // 確保 UI 正確更新
+        onSearch(filterParams); // 確保 UI 正確更新
       }
 
       setIsSearching(false); //  切換按鈕為「清除篩選」
@@ -336,7 +340,7 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
           {/* 搜尋 / 清除篩選 按鈕 */}
           <button
             className={`btn btn-sm btn-outline-danger mt-3 ${styles.suClearFilterBtn}`}
-            onClick={isSearching ? handleApplyFilters : handleClear} // ✅ **點擊時執行 `onClear`**
+            onClick={isSearching ? handleApplyFilters : handleClear} 
           >
             {isSearching ? "搜尋" : "清除篩選"}
           </button>
