@@ -25,7 +25,7 @@ export const getHotels = async () => {
       GROUP BY h.id
     `;
 
-    console.log(" 執行 SQL 查詢:", query);
+  
 
     const [hotels] = await connection.query(query);
     return hotels;

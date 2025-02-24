@@ -75,7 +75,7 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
       noUiSlider.create(priceSliderRef.current, {
         start: [minPrice, maxPrice],
         connect: true,
-        range: { min: 1000, max: 10000 },
+        range: { min: 0, max: 10000 },
         step: 100,
       });
 
@@ -125,7 +125,7 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
         ? await getHotelPriceRange(hotelId)
         : await getGlobalPriceRange();
       if (priceData) {
-        setMinPrice(priceData.min_price ?? 1000);
+        setMinPrice(priceData.min_price ?? 0);
         setMaxPrice(priceData.max_price ?? 10000);
       }
     } catch (error) {
@@ -199,7 +199,7 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
       onClear();
     }
 
-    // **重置 UI 狀態**
+    // 重置 UI 狀態
     setMinPrice(0);
     setMaxPrice(10000);
     setSelectedRoomType("");
@@ -210,7 +210,7 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
     if (priceSliderRef.current?.noUiSlider) {
       priceSliderRef.current.noUiSlider.set([0, 10000]);
     }
-    console.log("✅ 清除後的篩選條件:", {
+    console.log(" 清除後的篩選條件:", {
       minPrice: 0,
       maxPrice: 10000,
       selectedRoomType: "",
