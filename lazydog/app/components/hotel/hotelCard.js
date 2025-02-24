@@ -4,9 +4,14 @@ import { useRouter } from "next/navigation";
 
 const HotelCard = ({ image, name, introduce, review, reviewCount, link }) => {
   const router = useRouter();
-  const imageUrl = image.startsWith("http")
-    ? image // 若為完整 URL，直接使用
-    : `http://localhost:5000/uploads/hotel/${image}`;
+  
+  // ✅確保 `image` 存在，避免 `.startsWith("http")` 錯誤
+  const imageUrl = image
+    ? image.startsWith("http")
+      ? image
+      : `http://localhost:5000/uploads/hotel/${image}`
+    : "/hotel/loding.jpg"; // 🔹 預設圖片
+
   return (
     <div
       className={styles.suHotelCard}
@@ -16,7 +21,7 @@ const HotelCard = ({ image, name, introduce, review, reviewCount, link }) => {
       <img
         src={imageUrl}
         alt={name}
-        onError={(e) => (e.target.src = "/hotel/loding.jpg")}
+        onError={(e) => (e.target.src = "/hotel/loding.jpg")} // 🔹 圖片錯誤時使用預設圖片
       />
       <div className={styles.suHotelInfo}>
         <h5>{name}</h5>

@@ -13,8 +13,8 @@ import {
 
 export const getAll = async (req, res) => {
   try {
-    const { min, max } = req.query;
-    const products = await getAllProducts(min, max);
+    const { min, max, sort } = req.query;
+    const products = await getAllProducts(min, max, sort);
     if (!products.length) throw new Error("查無商品列表");
     res.status(200).json({
       status: "success",
@@ -28,8 +28,8 @@ export const getAll = async (req, res) => {
 
 export const getAllCategory = async (req, res) => {
   try {
-    const { category, min, max } = req.query;
-    const products = await getAllCategoryName(category, min, max);
+    const { category, min, max, sort } = req.query;
+    const products = await getAllCategoryName(category, min, max, sort);
     if (!products.length) throw new Error("查無商品類別列表");
     res.status(200).json({
       status: "success",
@@ -55,6 +55,7 @@ export const getSearch = async (req, res) => {
       size,
       min,
       max,
+      sort,
     } = req.query;
     let all = [
       main && main.split(","),
@@ -99,7 +100,8 @@ export const getSearch = async (req, res) => {
       field,
       value,
       min,
-      max
+      max,
+      sort
     );
     if (!product.length) throw new Error("查無相關商品");
     res.status(200).json({

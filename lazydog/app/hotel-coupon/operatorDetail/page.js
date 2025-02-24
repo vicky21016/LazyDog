@@ -2,16 +2,18 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import styles from "../../../styles/modules/operatorCamera.module.css";
+import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import Header from "../../components/layout/header";
 import My from "../../components/hotel/my"
 export default function OperatorDetailPage() {
   const modalRef = useRef(null);
   const router = useRouter();
- 
+  const { user } = useAuth();
+
   const [showModal, setShowModal] = useState(false);
   const [operatorInfo, setOperatorInfo] = useState({
-    name: "陳大方",
+    name: user?.name,
     license: "A12345678",
     phone: "0912-345-678",
     email: "owner@example.com",
@@ -68,41 +70,49 @@ export default function OperatorDetailPage() {
               <h5 className="mb-3">負責人資訊</h5>
               <div className="row">
                 <div className="col-md-6">
-                  <label className="fw-bold">姓名 <span style={{color:'red'}}>*</span></label>
+                  <label className="fw-bold">
+                    姓名 <span style={{ color: "red" }}>*</span>
+                  </label>
                   <p
                     className="form-control-plaintext border-bottom"
                     id="ownerName"
                   >
-                    陳大方
+                    {user?.name}
                   </p>
                 </div>
                 <div className="col-md-6">
-                  <label className="fw-bold">許可證號 <span style={{color:'red'}}>*</span></label>
+                  <label className="fw-bold">
+                    許可證號 <span style={{ color: "red" }}>*</span>
+                  </label>
                   <p
                     className="form-control-plaintext border-bottom"
                     id="licenseNumber"
                   >
-                    A12345678
+                    {user?.business_license_number}
                   </p>
                 </div>
               </div>
               <div className="row mt-3">
                 <div className="col-md-6">
-                  <label className="fw-bold">電話 <span style={{color:'red'}}>*</span></label>
+                  <label className="fw-bold">
+                    電話 <span style={{ color: "red" }}>*</span>
+                  </label>
                   <p
                     className="form-control-plaintext border-bottom"
                     id="phoneNumber"
                   >
-                    0912-345-678
+                    {user?.phone}
                   </p>
                 </div>
                 <div className="col-md-6">
-                  <label className="fw-bold">信箱 <span style={{color:'red'}}>*</span></label>
+                  <label className="fw-bold">
+                    信箱 <span style={{ color: "red" }}>*</span>
+                  </label>
                   <p
                     className="form-control-plaintext border-bottom"
                     id="email"
                   >
-                    owner@example.com
+                    {user?.email}
                   </p>
                 </div>
               </div>
@@ -112,7 +122,7 @@ export default function OperatorDetailPage() {
                   className="form-control-plaintext border-bottom"
                   id="companyName"
                 >
-                  台北狗狗飯
+                  {user?.company_name}
                 </p>
               </div>
 

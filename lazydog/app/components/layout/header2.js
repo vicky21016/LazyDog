@@ -50,9 +50,6 @@ export default function Header(props) {
               <Link href="/teacher/list" className={styles["dropdown-link"]}>
                 師資
               </Link>
-              <Link href="#" className={styles["dropdown-link"]}>
-                常見 Q&A
-              </Link>
             </div>
           </div>
           <li>
@@ -119,9 +116,6 @@ export default function Header(props) {
               </Link>
               <Link href="/teacher/list" className={styles["dropdown-link"]}>
                 師資
-              </Link>
-              <Link href="#" className={styles["dropdown-link"]}>
-                常見 Q&A
               </Link>
             </div>
           </div>

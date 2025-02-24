@@ -98,49 +98,51 @@ export default function MyMenu() {
         />
 
         {/* <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5> */}
-           <div className={styles.dropdownItem}>
+        <div className={styles.dropdownItem}>
+          <button
+            className={`btn btn-light ${styles.suCameraIcon}`}
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img
+              src="/hotel/hotel-images/page-image/icon-camera.png"
+              alt="相機"
+              className={styles.suCameraIconImg}
+            />
+          </button>
+          <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
+            <li>
               <button
-                className={`btn btn-light ${styles.suCameraIcon}`}
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
+                className={`text-danger dropdown-item ${styles.suDropdownItem}`}
+                onClick={deletePhoto}
               >
-                <img
-                  src="/hotel/hotel-images/page-image/icon-camera.png"
-                  alt="相機"
-                  className={styles.suCameraIconImg}
-                />
+                刪除照片
               </button>
-              <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
-                <li>
-                  <button
-                    className={`text-danger dropdown-item ${styles.suDropdownItem}`}
-                    onClick={deletePhoto}
-                  >
-                    刪除照片
-                  </button>
-                </li>
-                <li>
-                  <label
-                    onClick={uploadPhoto}
-                    className={`dropdown-item ${styles.dropdownItem}`}
-                  >
-                    上傳照片
-                  </label>
-                  <input
-                    type="file"
-                    id="uploadPhoto"
-                    accept="image/*"
-                    className="d-none"
-                    ref={fileInputRef}
-                    onChange={fileChange}
-                  />
-                </li>
-              </ul>
-            </div>
-        <h5 className={`mb-4 ${styles.welcome}`}>歡迎，{profile?.name || "會員"}！</h5>
+            </li>
+            <li>
+              <label
+                onClick={uploadPhoto}
+                className={`dropdown-item ${styles.dropdownItem}`}
+              >
+                上傳照片
+              </label>
+              <input
+                type="file"
+                id="uploadPhoto"
+                accept="image/*"
+                className="d-none"
+                ref={fileInputRef}
+                onChange={fileChange}
+              />
+            </li>
+          </ul>
+        </div>
+        <h5 className={`mb-4 ${styles.welcome}`}>
+          歡迎，{profile?.name || "會員"}！
+        </h5>
       </div>
-
+      <hr className="mx-4"/>
       <List animated selection>
         {menuItems.map((menuItem) => (
           <List.Item

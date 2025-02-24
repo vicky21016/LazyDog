@@ -11,46 +11,61 @@ import AsideCard from '../_components/list/AsideCard';
 const ArticlePage = () => {
   const { articles, loading, error } = useArticles();
   const [page, setPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState(null); // 新增分類狀態
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 5;
 
-  if (loading) return <p>載入中...</p>;
-  if (error) return <p className="text-red-500">錯誤：{error}</p>;
+  // 搜尋處理
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setPage(1); // 每次搜尋重置頁碼
+  };
 
-  // 過濾文章
-  const filteredArticles = selectedCategory
+  // 過濾分類
+  const filteredByCategory = selectedCategory
     ? articles.filter(article => article.category_id === selectedCategory)
     : articles;
 
-  const totalPages = Math.ceil(filteredArticles.length / itemsPerPage);
-  const currentArticles = filteredArticles.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  // 過濾搜尋結果
+  const filteredArticles = filteredByCategory.filter(article =>
+    article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    article.content.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  // 處理分類選擇
+  // 排序文章
+  const sortedArticles = [...filteredArticles].sort((a, b) => {
+    const dateA = new Date(a.created_at);
+    const dateB = new Date(b.created_at);
+    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+  });
+
+  const totalPages = Math.ceil(sortedArticles.length / itemsPerPage);
+  const currentArticles = sortedArticles.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
+  // 分類選擇
   const handleCategorySelect = (categoryId) => {
     setSelectedCategory(categoryId);
-    setPage(1); // 切換分類時重置頁碼
+    setPage(1);
   };
 
-  // 分頁數字生成
-  const generatePageNumbers = () => {
-    if (totalPages <= 3) {
-      return [...Array(totalPages)].map((_, i) => i + 1);
-    } else {
-      if (page === 1) {
-        return [1, 2, 3];
-      } else if (page === totalPages) {
-        return [totalPages - 2, totalPages - 1, totalPages];
-      } else {
-        return [page - 1, page, page + 1];
-      }
-    }
+  // 排序切換
+  const handleSortToggle = () => {
+    setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
+    setPage(1);
   };
 
-  // 分頁切換處理
+  // 分頁處理
   const handlePageChange = (newPage) => {
-    if (newPage < 1 || newPage > totalPages) return; // 限制頁碼範圍
+    if (newPage < 1 || newPage > totalPages) return;
     setPage(newPage);
   };
+
+  if (loading) return <p>載入中...</p>;
+  if (error) return <p className="text-red-500">錯誤：{error}</p>;
 
   return (
     <>
@@ -58,35 +73,30 @@ const ArticlePage = () => {
         <h1 style={{ fontWeight: 'bold' }}>毛孩文章</h1>
       </div>
 
-      <div className={`container ${styles.container}`}>
+      <div className={`container`}>
+        {/* 發布文章按鈕 */}
         <div className={styles.postButton}>
           <button className={styles.post}>
             <i className="bi bi-check-circle"></i> 發布文章
           </button>
         </div>
 
-        {/* 左側欄 */}
-        <div className={styles.top}>
+        {/* 左側搜尋與分類 */}
+        <div className={styles.content}>
+        <aside >
           <div className="input-group my-3" style={{ border: '.2px solid grey', borderRadius: '5px' }}>
             <input
               type="text"
               className="form-control"
               style={{ border: 'none', height: '40px', borderRadius: '5px' }}
+              placeholder="搜尋文章..."
+              value={searchTerm}
+              onChange={handleSearchChange}
             />
             <label className="input-group-text" style={{ background: 'none', border: 'none' }}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-search"
-                viewBox="0 0 16 16"
-              >
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-              </svg>
+              <i className="bi bi-search"></i>
             </label>
           </div>
-
           <div className={styles.asideCategory}>
             <h2 className='mb-3'>類別</h2>
             <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(null); }}>
@@ -105,78 +115,77 @@ const ArticlePage = () => {
               <p>善終</p>
             </a>
           </div>
-        </div>
+          <div >
+            <h4>延伸閱讀</h4>
+            {articles
+              .sort(() => Math.random() - 0.5)
+              .slice(0, 5)
+              .map((article) => (
+                <AsideCard key={article.id} {...article} />
+              ))}
+          </div>
+        </aside>
 
         {/* 主要內容 */}
-        <div className={styles.middle}>
-          <button className={styles.filter}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              className="bi bi-filter"
-              viewBox="0 0 16 16"
-            >
-              <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5" />
-            </svg>{' '}
-            依時間排序
+        <main >
+          <button className={styles.filter} onClick={handleSortToggle}>
+            <i className="bi bi-filter"></i> 依時間排序 {sortOrder === 'asc' ? '↑' : '↓'}
           </button>
-          {currentArticles.map((article) => (
-            <MainCard key={article.id} {...article} />
-          ))}
-         
-        </div>
+          {currentArticles.length > 0 ? (
+            currentArticles.map((article) => (
+              <MainCard key={article.id} {...article} />
+            ))
+          ) : (
+            <p>沒有符合條件的文章</p>
+          )}
+          {/* 分頁 */}
 
-        {/* 左側欄延伸閱讀 */}
-        <div className={styles.bottom}>
-          <h4>延伸閱讀</h4>
-          {articles
-            .sort(() => Math.random() - 0.5) // 亂數排序
-            .slice(0, 5) // 取前五篇
-            .map((article) => (
-              <AsideCard key={article.id} {...article} />
-            ))}
-        </div>
-      </div>
+        </main>
 
-      {/* 分頁 */}
-      <div className={'container d-flex justify-content-center'} style={{ position: 'relative', top: '3200px' }}>
-        <nav>
-          <ul className={styles.ArticlePage}>
-            <li className={`${styles.PageItem} page-item`}>
-              <a
-                className={`${styles.PageLink} page-link`}
-                href="#"
-                onClick={(e) => { e.preventDefault(); handlePageChange(page - 1); }}
-              >
-                <i className="bi bi-arrow-left"></i>
-              </a>
-            </li>
-            {generatePageNumbers().map((pageNumber) => (
-              <li key={pageNumber} className={`${styles.PageItem} page-item`}>
+        </div>
+        {totalPages > 1 && (
+          <nav className="page">
+            <ul className={styles.ArticlePage}>
+              <li className={`${styles.PageItem} page-item`}>
                 <a
                   className={`${styles.PageLink} page-link`}
                   href="#"
-                  onClick={(e) => { e.preventDefault(); handlePageChange(pageNumber); }}
-                  style={page === pageNumber ? { fontWeight: 'bold' } : {}}
+                  onClick={(e) => { e.preventDefault(); handlePageChange(page - 1); }}
                 >
-                  {pageNumber}
+                  <i className="bi bi-arrow-left"></i>
                 </a>
               </li>
-            ))}
-            <li className={`${styles.PageItem} page-item`}>
-              <a
-                className={`${styles.PageLink} page-link`}
-                href="#"
-                onClick={(e) => { e.preventDefault(); handlePageChange(page + 1); }}
-              >
-                <i className="bi bi-arrow-right"></i>
-              </a>
-            </li>
-          </ul>
-        </nav>
+              {[...Array(totalPages)].map((_, i) => (
+                <li key={i + 1} className={`${styles.PageItem} page-item`}>
+                  <a
+                    className={`${styles.PageLink} page-link`}
+                    href="#"
+                    onClick={(e) => { e.preventDefault(); handlePageChange(i + 1); }}
+                    style={page === i + 1 ? { fontWeight: 'bold' } : {}}
+                  >
+                    {i + 1}
+                  </a>
+                </li>
+              ))}
+              <li className={`${styles.PageItem} page-item`}>
+                <a
+                  className={`${styles.PageLink} page-link`}
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); handlePageChange(page + 1); }}
+                >
+                  <i className="bi bi-arrow-right"></i>
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+        )}
+
+
+
       </div>
+
+
     </>
   );
 };

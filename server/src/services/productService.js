@@ -1,11 +1,23 @@
 import pool from "../config/mysql.js";
 
-export const getAllProducts = async (min, max) => {
+export const getAllProducts = async (min, max, sort) => {
   try {
     const [products] = await pool.execute(
       `SELECT * FROM yi_product WHERE is_deleted = 0 ${
         min ? `AND price >= ${min}` : ""
-      } ${max ? `AND price <= ${max}` : ""}`
+      } ${max ? `AND price <= ${max}` : ""} ${
+        sort == "name"
+          ? `ORDER BY name DESC`
+          : sort == "price"
+          ? `ORDER BY price`
+          : sort == "priceDown"
+          ? `ORDER BY price DESC`
+          : sort == "update"
+          ? `ORDER BY updated_at`
+          : sort == "updateDown"
+          ? `ORDER BY updated_at DESC`
+          : `ORDER BY name`
+      }`
     );
     return products;
   } catch (error) {
@@ -14,7 +26,7 @@ export const getAllProducts = async (min, max) => {
   }
 };
 
-export const getAllCategoryName = async (category, min, max) => {
+export const getAllCategoryName = async (category, min, max, sort) => {
   try {
     const [categoryName] = await pool.execute(
       `SELECT * FROM yi_category WHERE name = ? AND is_deleted = 0`,
@@ -23,7 +35,19 @@ export const getAllCategoryName = async (category, min, max) => {
     const [products] = await pool.execute(
       `SELECT * FROM yi_product WHERE category_id = ? AND is_deleted = 0 ${
         min ? `AND price >= ${min}` : ""
-      } ${max ? `AND price <= ${max}` : ""}`,
+      } ${max ? `AND price <= ${max}` : ""} ${
+        sort == "name"
+          ? `ORDER BY name DESC`
+          : sort == "price"
+          ? `ORDER BY price`
+          : sort == "priceDown"
+          ? `ORDER BY price DESC`
+          : sort == "update"
+          ? `ORDER BY updated_at`
+          : sort == "updateDown"
+          ? `ORDER BY updated_at DESC`
+          : `ORDER BY name`
+      }`,
       [categoryName[0].id]
     );
     return products;
@@ -39,7 +63,8 @@ export const getSearchKeyword = async (
   field,
   value,
   min,
-  max
+  max,
+  sort
 ) => {
   try {
     if (field.length > 0) {
@@ -53,7 +78,19 @@ export const getSearchKeyword = async (
       const [products] = await pool.execute(
         `SELECT * FROM yi_product WHERE ${field} AND category_id = ? AND is_deleted = 0 ${
           min ? `AND price >= ${min}` : ""
-        } ${max ? `AND price <= ${max}` : ""}`,
+        } ${max ? `AND price <= ${max}` : ""} ${
+          sort == "name"
+            ? `ORDER BY name DESC`
+            : sort == "price"
+            ? `ORDER BY price`
+            : sort == "priceDown"
+            ? `ORDER BY price DESC`
+            : sort == "update"
+            ? `ORDER BY updated_at`
+            : sort == "updateDown"
+            ? `ORDER BY updated_at DESC`
+            : `ORDER BY name`
+        }`,
         value
       );
       return products;
@@ -62,7 +99,19 @@ export const getSearchKeyword = async (
       const [products] = await pool.execute(
         `SELECT * FROM yi_product WHERE name LIKE ? AND is_deleted = 0 ${
           min ? `AND price >= ${min}` : ""
-        } ${max ? `AND price <= ${max}` : ""}`,
+        } ${max ? `AND price <= ${max}` : ""} ${
+          sort == "name"
+            ? `ORDER BY name DESC`
+            : sort == "price"
+            ? `ORDER BY price`
+            : sort == "priceDown"
+            ? `ORDER BY price DESC`
+            : sort == "update"
+            ? `ORDER BY updated_at`
+            : sort == "updateDown"
+            ? `ORDER BY updated_at DESC`
+            : `ORDER BY name`
+        }`,
         [`%${keyword}%`]
       );
       return products;
@@ -74,7 +123,19 @@ export const getSearchKeyword = async (
       const [products] = await pool.execute(
         `SELECT * FROM yi_product WHERE (name LIKE ? OR full_info LIKE ?)AND category_id = ? AND is_deleted = 0 ${
           min ? `AND price >= ${min}` : ""
-        } ${max ? `AND price <= ${max}` : ""}`,
+        } ${max ? `AND price <= ${max}` : ""} ${
+          sort == "name"
+            ? `ORDER BY name DESC`
+            : sort == "price"
+            ? `ORDER BY price`
+            : sort == "priceDown"
+            ? `ORDER BY price DESC`
+            : sort == "update"
+            ? `ORDER BY updated_at`
+            : sort == "updateDown"
+            ? `ORDER BY updated_at DESC`
+            : `ORDER BY name`
+        }`,
         [`%${keyword}%`, `%${keyword}%`, categoryName[0].id]
       );
       return products;
@@ -137,7 +198,7 @@ export const getAllProductId = async (productID) => {
 export const getProductId = async (productID) => {
   try {
     const [products] = await pool.execute(
-      "SELECT yi_product.*,users.name As user,users.email As email,yi_category.name As category,yi_img.list_img As listImg,yi_img.info_img As infoImg,yi_img.lg_img As img,yi_img.sm_img As smImg,yi_reviews.rating As rate,yi_reviews.comment As comment,yi_reviews.updated_at As commentTime FROM yi_product JOIN yi_category ON yi_product.category_id = yi_category.id JOIN yi_img ON yi_product.productID = yi_img.productID JOIN yi_reviews ON yi_product.productID = yi_reviews.productID JOIN users ON yi_reviews.user_id = users.id WHERE yi_product.productID = ? AND yi_product.is_deleted = 0",
+      "SELECT yi_product.*,users.name As user,users.email As email,users.user_img As userImg,yi_category.name As category,yi_img.list_img As listImg,yi_img.info_img As infoImg,yi_img.lg_img As img,yi_img.sm_img As smImg,yi_reviews.rating As rate,yi_reviews.comment As comment,yi_reviews.updated_at As commentTime FROM yi_product JOIN yi_category ON yi_product.category_id = yi_category.id JOIN yi_img ON yi_product.productID = yi_img.productID JOIN yi_reviews ON yi_product.productID = yi_reviews.productID JOIN users ON yi_reviews.user_id = users.id WHERE yi_product.productID = ? AND yi_product.is_deleted = 0",
       [productID]
     );
     // const [reviews] = await pool.execute(

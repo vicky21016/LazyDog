@@ -14,12 +14,14 @@ import Breadcrumb from "../../components/teacher/breadcrumb";
 
 export default function HotelHomePage() {
   const router = useRouter();
-  const [hotels, setHotels] = useState([]); // 存放所有飯店數據
-  const [filteredHotels, setFilteredHotels] = useState([]); // 存放篩選後的飯店數據
+  const [hotels, setHotels] = useState([]); // 所有飯店
+  const [filteredHotels, setFilteredHotels] = useState([]); // 篩選後飯店
   const [quantity, setQuantity] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const hotelsPerPage = 10; // 每頁顯示的飯店數量
-  const [searchParams, setSearchParams] = useState({});
+  const hotelsPerPage = 10;
+  const [searchParams, setSearchParams] = useState(null);
+  const [totalPages, setTotalPages] = useState(1);
+
   const {
     location,
     locationModalRef,
@@ -29,50 +31,67 @@ export default function HotelHomePage() {
     confirmLocation,
   } = useLocationSelector();
 
+  // 🔹 初次載入所有飯店
   useEffect(() => {
     const fetchHotels = async () => {
       try {
         const hotelData = await getAllHotels();
         setHotels(hotelData);
-        setFilteredHotels(hotelData); // 初次載入時設定篩選數據
+        setFilteredHotels(hotelData);
       } catch (error) {
         console.error("獲取飯店失敗:", error);
       }
     };
-
     fetchHotels();
   }, []);
- // 搜尋欄觸發的搜尋
- const handleSearchBarSubmit = async (params) => {
-  console.log("🔍 觸發搜尋條件:", params);
-  setSearchParams(params); // 存儲搜尋條件
 
-  try {
-    const data = await getFilteredHotels(params); //  傳遞條件給 API
-    setFilteredHotels(data); // 更新篩選後的飯店數據
-    setCurrentPage(1); // 重設到第 1 頁
-  } catch (error) {
-    console.error("搜尋飯店失敗:", error);
-  }
-};
+  // 🔹 更新分頁數
+  useEffect(() => {
+    setTotalPages(Math.max(1, Math.ceil(filteredHotels.length / hotelsPerPage)));
+  }, [filteredHotels]);
 
-// 篩選器觸發的搜尋
-const handleSearchFromFilters = async (params) => {
-  console.log("🔍 篩選條件:", params);
-  setSearchParams((prev) => ({ ...prev, ...params })); // 合併篩選條件
+  // 🔹 確保當前頁數不超過最大頁數
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [totalPages]);
 
-  try {
-    const data = await getFilteredHotels({ ...searchParams, ...params });
-    setFilteredHotels(data);
-    setCurrentPage(1);
-  } catch (error) {
-    console.error("篩選飯店失敗:", error);
-  }
-};
+  // 搜尋觸發
+  const handleSearch = async (params) => {
+    console.log("🔍 搜尋條件:", params);
+    setSearchParams(params);
+
+    try {
+      // 直接使用 `getFilteredHotels` 來獲取篩選飯店
+      const data = await getFilteredHotels(params);
+      setFilteredHotels(data);
+      setCurrentPage(1); // **確保篩選後從第一頁開始**
+    } catch (error) {
+      console.error("篩選飯店時發生錯誤:", error);
+    }
+  };
+
+  //  清除篩選條件
+  const handleClearFilters = async () => {
+    console.log("🧹 清除篩選條件");
+    setSearchParams(null);
+
+    try {
+      const hotelData = await getAllHotels();
+      setFilteredHotels(hotelData);
+      setCurrentPage(1);
+    } catch (error) {
+      console.error("獲取飯店失敗:", error);
+    }
+  };
+
   // 計算當前頁面的飯店數據
   const indexOfLastHotel = currentPage * hotelsPerPage;
   const indexOfFirstHotel = indexOfLastHotel - hotelsPerPage;
   const currentHotels = filteredHotels.slice(indexOfFirstHotel, indexOfLastHotel);
+
+
 
   return (
     <>
@@ -94,7 +113,8 @@ const handleSearchFromFilters = async (params) => {
             quantity={quantity}
             confirmLocation={confirmLocation}
             setQuantity={setQuantity}
-            onSearch={handleSearchBarSubmit}
+            onSearch={handleSearch}
+            onClear={handleClearFilters}
           />
         </div>
 
@@ -103,7 +123,11 @@ const handleSearchFromFilters = async (params) => {
           <Breadcrumb
             links={[
               { label: "首頁", href: "/" },
-              { label: "旅館列表", href: "/hotel-coupon/fonthotelHome", active: true },
+              {
+                label: "旅館列表",
+                href: "/hotel-coupon/fonthotelHome",
+                active: true,
+              },
             ]}
           />
         </div>
@@ -113,7 +137,7 @@ const handleSearchFromFilters = async (params) => {
           <div className="row">
             {/* 側邊篩選欄 */}
             <aside className={`col-lg-3 ${styles.suSidebar}`}>
-            <Aside onSearch={handleSearchFromFilters} />
+              <Aside onSearch={setFilteredHotels} onClear={handleClearFilters} />
             </aside>
 
             {/* 飯店列表 */}
@@ -140,8 +164,8 @@ const handleSearchFromFilters = async (params) => {
         {/* 分頁功能 */}
         <Page
           currentPage={currentPage}
-          totalPages={Math.ceil(filteredHotels.length / hotelsPerPage)}
-          onPageChange={(page) => setCurrentPage(page)}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
         />
       </div>
     </>

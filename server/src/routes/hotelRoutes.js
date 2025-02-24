@@ -22,7 +22,7 @@ router.get("/count", getHotelsCount);
 // 取得分頁飯店
 router.get("/paginated", getPaginatedHotels); // 避免與 `getAllHotels` 衝突
 //篩選飯店的 AP
-router.get("/all", getFilteredHotels);
+router.get("/filter", getFilteredHotels);
 //  所有人都可以查詢所有飯店
 router.get("/", getAllHotels); //不用任何條件的
 router.get("/search", getSearch);

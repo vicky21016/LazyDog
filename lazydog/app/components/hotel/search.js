@@ -12,22 +12,37 @@ const HotelSearchBar = ({
   quantity,
   setQuantity,
   onSearch,
+  onClear,
 }) => {
   const dateRef = useDatePicker();
   const [selectedDate, setSelectedDate] = useState("");
 
- 
   const handleSearchBarSubmit = () => {
     console.log("🔍 搜尋欄條件:", { address, quantity, selectedDate });
 
     if (onSearch) {
-      onSearch({
-        address,
-        quantity,
-        selectedDate,
-      });
+      const searchParams = {
+        address: address || undefined,
+        quantity: quantity || 1,
+        selectedDate: selectedDate || undefined,
+      };
+
+      const cleanParams = Object.fromEntries(
+        Object.entries(searchParams).filter(([_, v]) => v !== undefined)
+      );
+
+      onSearch(cleanParams);
     }
   };
+
+  const handleClearSearch = () => {
+    console.log("🧹 清除搜尋條件");
+  
+    setSelectedDate(""); //  清空 state
+    if (dateRef.current) dateRef.current.value = ""; // 清空 input
+    if (onClear) onClear(); // 確保 `HotelHomePage` 知道清除條件
+  };
+  
 
   return (
     <div className="container mt-4">
@@ -65,10 +80,11 @@ const HotelSearchBar = ({
           <span className="text">數量</span>
           <button
             className={styles.suQuantityBtn}
-            onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+            onClick={() => setQuantity(Math.max(1, quantity - 1))} // 最小為 1
           >
             -
           </button>
+
           <span className={styles.suQuantityNumber}>{quantity}</span>
           <button
             className={styles.suQuantityBtn}
@@ -77,8 +93,8 @@ const HotelSearchBar = ({
             +
           </button>
         </div>
-         {/* 使用 `handleSearchBarSubmit` 作為搜尋函數 */}
-         <button className={styles.suSearchBtn} onClick={handleSearchBarSubmit}>
+        {/* 使用 `handleSearchBarSubmit` 作為搜尋函數 */}
+        <button className={styles.suSearchBtn} onClick={handleSearchBarSubmit}>
           搜尋
         </button>
         <div

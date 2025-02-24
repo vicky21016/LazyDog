@@ -1,12 +1,14 @@
 import React, { useRef } from "react";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
 import { List } from "semantic-ui-react";
 import Link from "next/link";
 import styles from "../../../styles/modules/operatorCamera.module.css";
 import style from "../../../styles/modules/menu.module.css"
 export default function My() {
   const pathname = usePathname();
+  const { user } = useAuth();
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
 
@@ -70,8 +72,8 @@ export default function My() {
               </ul>
             </div>
           </div>
-          <h5 className="mt-2">陳大方</h5>
-          <p className="text-muted">165846hote@gmail.com</p>
+          <h5 className="mt-2">{user?.name}</h5>
+          <p className="text-muted">{user?.email}</p>
           <button
             className={`btn btn-outline-success btn-sm ${styles.suBtnSecondary}`}
           >

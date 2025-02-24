@@ -32,6 +32,15 @@
   flex-direction: column;
   flex: 1 0 0;
   gap: 15px;
+  .ProductInfoImg {
+    width: 540px;
+    margin-left: 43px;
+    border-radius: 4px;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
 }
 .ProductInfoImgSmall {
   display: flex;

@@ -6,30 +6,18 @@ import {
   updateHotelById,
   softDeleteHotelById,
   searchHotels,
-  getFilteredHotel,
+  getFilteredHotelS,
 } from "../services/hotelService.js";
 import pool from "../config/mysql.js";
+
+/* 取得所有飯店（不篩選） */
 export const getAllHotels = async (req, res) => {
   try {
-    // 解析查詢參數，確保為數字型態
-    const minRating = req.query.min_rating
-      ? parseFloat(req.query.min_rating)
-      : 0;
-    const minPrice = req.query.min_price ? parseFloat(req.query.min_price) : 0;
-    const maxPrice = req.query.max_price
-      ? parseFloat(req.query.max_price)
-      : 10000;
-    const roomTypeId = req.query.room_type_id
-      ? parseInt(req.query.room_type_id)
-      : null;
-
-    // 傳遞完整的查詢參數給 `getHotels`
-    const hotels = await getHotels(minRating, minPrice, maxPrice, roomTypeId);
-
+    const hotels = await getHotels();
     res.json(hotels);
   } catch (error) {
     console.error("獲取飯店列表失敗:", error);
-    res.status(500).json({ message: "無法獲取飯店列表" });
+    res.status(500).json({ error: "無法獲取飯店列表" });
   }
 };
 
@@ -80,7 +68,6 @@ export const getOperatorHotels = async (req, res) => {
 
 export const createHotel = async (req, res) => {
   try {
-    console.log("收到請求資料:", req.body);
     console.log("收徒確認之後會刪掉", req.files);
 
     const operatorId = req.user.id;
@@ -203,7 +190,9 @@ export const softDeleteHotel = async (req, res) => {
 /** 取得飯店總數 */
 export const getHotelsCount = async (req, res) => {
   try {
-    const [rows] = await pool.query(`SELECT COUNT(*) AS total FROM hotel WHERE is_deleted = 0`);
+    const [rows] = await pool.query(
+      `SELECT COUNT(*) AS total FROM hotel WHERE is_deleted = 0`
+    );
     res.json({ total: rows[0].total || 0 });
   } catch (error) {
     console.error("無法獲取飯店總數:", error);
@@ -217,7 +206,10 @@ export const getPaginatedHotels = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const offset = parseInt(req.query.offset) || 0;
 
-    const [hotels] = await pool.query(`SELECT * FROM hotel WHERE is_deleted = 0 LIMIT ? OFFSET ?`, [limit, offset]);
+    const [hotels] = await pool.query(
+      `SELECT * FROM hotel WHERE is_deleted = 0 LIMIT ? OFFSET ?`,
+      [limit, offset]
+    );
 
     res.json(hotels);
   } catch (error) {
@@ -226,21 +218,21 @@ export const getPaginatedHotels = async (req, res) => {
   }
 };
 
+/* 取得篩選後的飯店 */
 export const getFilteredHotels = async (req, res) => {
   try {
     const filters = {
-      min_rating: req.query.min_rating ? Number(req.query.min_rating) : 0,
-      min_price: req.query.min_price ? Number(req.query.min_price) : 0,
-      max_price: req.query.max_price ? Number(req.query.max_price) : 10000,
-      room_type_id: req.query.room_type_id ? Number(req.query.room_type_id) : null,
-      tags: req.query.tags ? req.query.tags.split(",").map(Number) : [],
+      min_rating: req.query.min_rating ? parseFloat(req.query.min_rating) : null,
+      min_price: req.query.min_price ? parseFloat(req.query.min_price) : null,
+      max_price: req.query.max_price ? parseFloat(req.query.max_price) : null,
+      room_type_id: req.query.room_type_id ? parseInt(req.query.room_type_id) : null,
+      tags: req.query.tags ? req.query.tags.split(",").map(Number).filter((n) => !isNaN(n)) : [],
     };
+    const hotels = await getFilteredHotelS(filters);
 
-    const hotels = await getFilteredHotel(filters);
     res.json(hotels);
   } catch (error) {
-    console.error("獲取篩選飯店失敗:", error);
-    res.status(500).json({ error: "獲取飯店失敗" });
+    console.error(" 獲取篩選飯店失敗:", error);
+    res.status(500).json({ error: "無法獲取篩選後的飯店" });
   }
 };
-

@@ -1,7 +1,7 @@
 import pool from "../config/mysql.js";
 
 // 獲取全部文章
-export const getArticlesS = async () => {
+export const getAllarticle = async () => {
   try {
     const [articles] = await pool.query(
       `SELECT articles.*, 
@@ -19,7 +19,7 @@ export const getArticlesS = async () => {
     throw new Error(" 無法取得所有文章：" + error.message);
   }
 };
-getArticlesS();
+getAllarticle();
 // 獲取指定文章
 export const getIdS = async (id) => {
   try {
@@ -51,6 +51,7 @@ export const getIdS = async (id) => {
 // 創建文章
 
 export const createArticlesS = async (createArticle) => {
+
   const connection = await pool.getConnection();
   try {
     const { title, content, author_id, category_id, article_img } = createArticle;
@@ -65,7 +66,7 @@ export const createArticlesS = async (createArticle) => {
           VALUES (?, ?, ?, ?, NOW(), NOW(), 0)`,
       [title, content, author_id, category_id]
     );
-
+    // console.log(result)
     // 第二步：將圖片 URL 插入 article_img 資料表，並與文章建立關聯
     const articleId = result.insertId;  // 取得剛插入的文章的 ID
     await connection.query(
@@ -74,6 +75,7 @@ export const createArticlesS = async (createArticle) => {
     );
 
     // 提交事務
+    console.log(req.body)
     await connection.commit();
 
     return {
