@@ -40,6 +40,7 @@ app.use(
   cors({
     origin: "*",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true,
   })
 );
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
