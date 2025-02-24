@@ -4,12 +4,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./aside.module.css";
 import Link from "next/link";
 
-export default function FilterLinkGroup({
-  category = {},
-  name = "",
-  categoryBtn = "",
-  setCategoryBtn = () => {},
-}) {
+export default function FilterLinkGroup({ category = {}, name = "" }) {
   const [showMore, setShowMore] = useState(false);
   const categorys = category;
   const categoryClass = [];
@@ -27,15 +22,13 @@ export default function FilterLinkGroup({
         >
           {name}
         </Link>
-        {categoryClass.map((v, i) => {
+        {/* {categoryClass.map((v, i) => {
           if (i < 3) {
             return (
               <Link
                 href={`/product/list/category?category=${name}`}
                 className={styles.FormLink}
                 key={`FilterLink${i}`}
-                categoryBtn={categoryBtn}
-                onClick={() => setCategoryBtn(v)}
               >
                 {v}
               </Link>
@@ -51,7 +44,6 @@ export default function FilterLinkGroup({
                     href={`/product/list/category?category=${name}`}
                     className={styles.FormLink}
                     key={`FilterLink${i}`}
-                    onClick={() => setCategoryBtn(v)}
                   >
                     {v}
                   </Link>
@@ -67,7 +59,7 @@ export default function FilterLinkGroup({
           >
             {showMore ? "收起 ▲" : "顯示全部 ▼"}
           </span>
-        )}
+        )} */}
       </div>
     </>
   );

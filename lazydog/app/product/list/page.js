@@ -7,15 +7,20 @@ import Link from "next/link";
 import Card from "../_components/card/card";
 import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function ListPage(props) {
+  const { user } = useAuth();
   const [sortName, setSortName] = useState("依商品名稱排序");
-  const [categoryBtn, setCategoryBtn] = useState("");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(30000);
   const [newUrl, setNewUrl] = useState("http://localhost:5000/api/products");
+  const [pageNow, setPageNow] = useState(1);
   const changeUrl = (newUrl) => {
     setNewUrl(newUrl);
+    if (pageNow !== 1) {
+      setPageNow(1);
+    }
   };
   const url = newUrl;
   useEffect(() => {
@@ -23,11 +28,15 @@ export default function ListPage(props) {
       `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}${
         sortName == "依商品名稱排序"
           ? "&sort=name"
-          : sortName == "依商品價格排序"
+          : sortName == "依商品價格⬆排序"
           ? "&sort=price"
-          : sortName == "依上架時間排序"
+          : sortName == "依商品價格⬇排序"
+          ? "&sort=priceDown"
+          : sortName == "依上架時間⬆排序"
           ? "&sort=update"
-          : ``
+          : sortName == "依上架時間⬇排序"
+          ? "&sort=updateDown"
+          : ""
       }`
     );
   }, [minPrice, maxPrice]);
@@ -42,14 +51,12 @@ export default function ListPage(props) {
     }
   };
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
-  const query = useSearchParams();
   const products = data?.data;
 
-  const [pageNow, setPageNow] = useState(1);
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
-  // console.log(categoryBtn);
+  console.log(user);
 
   return (
     <>
@@ -95,10 +102,21 @@ export default function ListPage(props) {
                       changeUrl(
                         `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=price`
                       );
-                      setSortName("依商品價格排序");
+                      setSortName("依商品價格⬆排序");
                     }}
                   >
-                    依商品價格排序
+                    依商品價格⬆排序
+                  </h6>
+                  <h6
+                    className={styles["dropdown-link"]}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=priceDown`
+                      );
+                      setSortName("依商品價格⬇排序");
+                    }}
+                  >
+                    依商品價格⬇排序
                   </h6>
                   <h6
                     className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
@@ -106,10 +124,21 @@ export default function ListPage(props) {
                       changeUrl(
                         `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=update`
                       );
-                      setSortName("依上架時間排序");
+                      setSortName("依上架時間⬆排序");
                     }}
                   >
-                    依上架時間排序
+                    依上架時間⬆排序
+                  </h6>
+                  <h6
+                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=updateDown`
+                      );
+                      setSortName("依上架時間⬇排序");
+                    }}
+                  >
+                    依上架時間⬇排序
                   </h6>
                 </div>
               </div>
@@ -124,8 +153,6 @@ export default function ListPage(props) {
             maxPrice={maxPrice}
             setMaxPrice={setMaxPrice}
             setMinPrice={setMinPrice}
-            categoryBtn={categoryBtn}
-            setCategoryBtn={setCategoryBtn}
             sortName={sortName}
           />
           <main className={styles.PdList}>
@@ -164,22 +191,20 @@ export default function ListPage(props) {
                     i == pages - 1
                   ) {
                     return (
-                      <>
-                        <li
-                          key={`li${i}`}
-                          className={`${styles.PageItem} page-item ${
-                            i + 1 == pageNow ? styles.PageItemActive : ""
-                          }`}
+                      <li
+                        key={`li${i}`}
+                        className={`${styles.PageItem} page-item ${
+                          i + 1 == pageNow ? styles.PageItemActive : ""
+                        }`}
+                      >
+                        <Link
+                          onClick={() => setPageNow(i + 1)}
+                          className={`${styles.PageLink} page-link `}
+                          href={`/product/list?page=${i + 1}`}
                         >
-                          <Link
-                            onClick={() => setPageNow(i + 1)}
-                            className={`${styles.PageLink} page-link `}
-                            href={`/product/list?page=${i + 1}`}
-                          >
-                            {i + 1}
-                          </Link>
-                        </li>
-                      </>
+                          {i + 1}
+                        </Link>
+                      </li>
                     );
                   }
                 })}

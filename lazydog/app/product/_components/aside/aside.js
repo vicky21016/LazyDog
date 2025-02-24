@@ -14,13 +14,10 @@ export default function AsideAside({
   changeUrl = () => {},
   keyword = {},
   setKeyword = () => {},
-  setPageNow = () => {},
   minPrice = 0,
   maxPrice = 0,
   setMaxPrice = () => {},
   setMinPrice = () => {},
-  categoryBtn = "",
-  setCategoryBtn = () => {},
   sortName = "",
 }) {
   const priceSliderRef = useRef(null);
@@ -89,12 +86,17 @@ export default function AsideAside({
       return;
     }
 
-    value = Number(value);
-    if (isNaN(value)) return;
-    if (value > maxPrice) value = maxPrice;
-    if (value < minPrice) value = minPrice;
+    // value = Number(value);
+    // if (isNaN(value)) return;
+    // if (value > maxPrice) value = maxPrice;
+    // if (value < minPrice) value = minPrice;
 
-    setMaxPrice(value);
+    setMaxPrice((prevMax) => {
+      let newValue = Number(value);
+      if (isNaN(newValue)) return prevMax;
+      if (newValue < minPrice) newValue = minPrice;
+      return newValue;
+    });
 
     if (priceSliderRef.current?.noUiSlider) {
       priceSliderRef.current.noUiSlider.set([minPrice, value]);
@@ -154,14 +156,13 @@ export default function AsideAside({
       </div>
       {/* <HotSaleGroup /> */}
       {pathname.includes("category")
-        ? categoryClass[i]?.map((e) => (
+        ? categoryClass[i]?.map((value, index) => (
             <FilterGroup
-              key={`FilterGroup${i}`}
-              name={e}
+              key={`FilterGroup${index}`}
+              name={value}
               category={category[categoryName[i]]}
               keyword={keyword}
               setKeyword={setKeyword}
-              categoryBtn={categoryBtn}
             />
           ))
         : categoryName?.map((v, i) => (
@@ -169,8 +170,6 @@ export default function AsideAside({
               key={`FilterLinkGroup${i}`}
               name={v}
               category={category[v]}
-              categoryBtn={categoryBtn}
-              setCategoryBtn={setCategoryBtn}
             />
           ))}
       <div className={`text-center ${styles.PriceFilterContainer}`}>

@@ -8,13 +8,16 @@ import StarGroup from "../_components/rate/stargroup";
 import StarBar from "../_components/rate/starbar";
 import useSWR from "swr";
 import Link from "next/link";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function DetailPage({ searchParams = {} }) {
+  const { user } = useAuth();
   const [picNow, setPicNow] = useState(0);
   const [heartHover, setHeartHover] = useState(false);
   const [heartState, setHeartState] = useState(false);
   const [rate, setRate] = useState(3);
   const [amount, setAmount] = useState(1);
+  const [cardPic, setCardPic] = useState("/product/img/default.webp");
   const product = searchParams.productID;
   const url = `http://localhost:5000/api/products/${product}`;
   const url2 = "http://localhost:5000/api/products/order";
@@ -49,25 +52,14 @@ export default function DetailPage({ searchParams = {} }) {
     if (productData?.smImg) img["sm"] = (productData?.smImg).split(",");
     if (productData?.infoImg) img["info"] = (productData?.infoImg).split(",");
   }
-  const productPrice = (
-    Number(productData?.price) * Number(productData?.discount)
-  ).toFixed(0);
   const productDiscount = 0;
-  const deadDate = Date.parse(productData?.discount_et);
-  const deadline = () => Math.max(0, deadDate - Date.now());
   const [countDown, setCountDown] = useState(0);
-  const deadDay = Math.floor(countDown / (1000 * 60 * 60 * 24));
-  const deadHour = Math.floor(
-    (countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
-  const deadMin = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setCountDown(deadline());
-  //   }, 10000);
-  //   setCountDown(deadline());
-  //   return () => clearInterval(timer);
-  // }, [deadDate]);
+  // const deadDay = Math.floor(countDown / (1000 * 60 * 60 * 24));
+  // const deadHour = Math.floor(
+  //   (countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  // );
+  // const deadMin = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
+
   const [scrollY, setScrollY] = useState(0);
   useEffect(() => {
     const scrollNow = () => {
@@ -97,14 +89,16 @@ export default function DetailPage({ searchParams = {} }) {
     rate: [],
     comment: [],
     user: [],
+    img: [],
     date: [],
   };
   let rateAvg = 0;
   if (data?.data) {
     data?.data.map((v, i) => {
       rateData["rate"].push(v.rate);
-      rateData["comment"].push(v.comment);
       rateData["user"].push(v.user);
+      rateData["img"].push(v.userImg);
+      rateData["comment"].push(v.comment);
       rateData["date"].push(v.commentTime);
     });
     let rateSum = 0;
@@ -113,6 +107,7 @@ export default function DetailPage({ searchParams = {} }) {
     }
     rateAvg = (rateSum / rateData["rate"].length).toFixed(1);
   }
+  // console.log(rateData);
   let int, dec;
   if (rateAvg) {
     [int, dec] = rateAvg.toString().split(".");
@@ -127,7 +122,17 @@ export default function DetailPage({ searchParams = {} }) {
     if (sameBuy.length < 10 && v.productID.includes(sameCategory))
       sameBuy.push(v.productID);
   });
-  // console.log(hotSale, sameBuy);
+
+  useEffect(() => {
+    if (productName) {
+      const newImage = new Image();
+      const encodedImageName = encodeURIComponent(productName);
+      newImage.src = `/product/img/${encodedImageName}${img.img[picNow]}`;
+      newImage.onload = () => setCardPic(newImage.src);
+      newImage.onerror = () => setCardPic("/product/img/default.webp");
+    }
+  }, [productName]);
+
   return (
     <div className={`${styles.Container} container`}>
       <section className={styles.Breadcrumbs}>
@@ -144,19 +149,32 @@ export default function DetailPage({ searchParams = {} }) {
       </section>
       <section className={styles.ProductInfo}>
         <div className={styles.ProductInfoImgGroup}>
-          <figure>
-            <img src={`/product/img/${productName}${img.img[picNow]}`} alt="" />
+          <figure className={styles.ProductInfoImg}>
+            <img
+              src={cardPic}
+              alt=""
+              onError={() => setCardPic("/product/img/default.webp")}
+            />
           </figure>
           <div className={styles.ProductInfoImgSmall}>
-            <button
-              type="button"
-              className={styles.ProductInfoImgSmallBtn}
-              onClick={() =>
-                setPicNow(picNow - 1 < 0 ? img?.sm.length - 1 : picNow - 1)
-              }
-            >
-              <img src="/product/font/left(orange).png" alt="" />
-            </button>
+            {img.sm.length > 0 && (
+              <button
+                type="button"
+                className={styles.ProductInfoImgSmallBtn}
+                onClick={() => {
+                  setPicNow((e) => {
+                    const newIndex = e - 1 < 0 ? img.sm.length - 1 : e - 1;
+                    const encodedImageName = encodeURIComponent(productName);
+                    setCardPic(
+                      `/product/img/${encodedImageName}${img.img[newIndex]}`
+                    );
+                    return newIndex;
+                  });
+                }}
+              >
+                <img src="/product/font/left(orange).png" alt="" />
+              </button>
+            )}
             {img.sm &&
               img.sm.map((v, i) => {
                 if (i < 5) {
@@ -172,15 +190,24 @@ export default function DetailPage({ searchParams = {} }) {
                   );
                 }
               })}
-            <button
-              type="button"
-              className={styles.ProductInfoImgSmallBtn}
-              onClick={() =>
-                setPicNow(picNow + 1 > img.sm.length - 1 ? 0 : picNow + 1)
-              }
-            >
-              <img src="/product/font/right(orange).png" alt="" />
-            </button>
+            {img.sm.length > 0 && (
+              <button
+                type="button"
+                className={styles.ProductInfoImgSmallBtn}
+                onClick={() => {
+                  setPicNow((e) => {
+                    const newIndex = e + 1 > img.sm.length - 1 ? 0 : e + 1;
+                    const encodedImageName = encodeURIComponent(productName);
+                    setCardPic(
+                      `/product/img/${encodedImageName}${img.img[newIndex]}`
+                    );
+                    return newIndex;
+                  });
+                }}
+              >
+                <img src="/product/font/right(orange).png" alt="" />
+              </button>
+            )}
           </div>
         </div>
         <div className={styles.ProductInfoDetail}>
@@ -202,8 +229,9 @@ export default function DetailPage({ searchParams = {} }) {
               </button>
               <h6>加入收藏</h6>
             </div>
-            {countDown > 0 && (
-              <div className={styles.InfoOnsaleGroup}>
+            {countDown > 0 &&
+              {
+                /* <div className={styles.InfoOnsaleGroup}>
                 <div className={styles.OnsaleTag}>
                   <h5>-{productDiscount}%</h5>
                 </div>
@@ -213,8 +241,8 @@ export default function DetailPage({ searchParams = {} }) {
                     {deadDay} 天 : {deadHour} 時 : {deadMin} 分
                   </h5>
                 </div>
-              </div>
-            )}
+              </div> */
+              }}
             <h2 className={styles.InfoProductName}>{productData?.name}</h2>
             <div className={styles.InfoRateGroup}>
               {int && (
@@ -464,8 +492,9 @@ export default function DetailPage({ searchParams = {} }) {
                         <RateCard
                           key={`rateCard${i}`}
                           rate={v}
+                          users={rateData.user[i]}
+                          img={rateData.img[i]}
                           comment={rateData.comment[i]}
-                          user={rateData.user[i]}
                           date={rateData.date[i]}
                         />
                       );

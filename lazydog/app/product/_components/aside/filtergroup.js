@@ -8,7 +8,6 @@ export default function FilterGroup({
   name = {},
   keyword = {},
   setKeyword = () => {},
-  categoryBtn = "",
 }) {
   const [showMore, setShowMore] = useState(false);
   const categorys = category;

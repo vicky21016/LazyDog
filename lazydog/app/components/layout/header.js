@@ -37,60 +37,60 @@ export default function Header(props) {
               </Link>
             </li>
             <div className={styles["dropdown-content"]}>
-              <Link
+              <a
                 href={`/product/list/category?category=乾糧`}
                 className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
               >
                 乾糧
-              </Link>
-              <Link
+              </a>
+              <a
                 href={`/product/list/category?category=罐頭`}
                 className={styles["dropdown-link"]}
               >
                 罐頭
-              </Link>
-              <Link
+              </a>
+              <a
                 href={`/product/list/category?category=零食`}
                 className={styles["dropdown-link"]}
               >
                 零食
-              </Link>
-              <Link
+              </a>
+              <a
                 href={`/product/list/category?category=保健食品`}
                 className={styles["dropdown-link"]}
               >
                 保健食品
-              </Link>
-              <Link
+              </a>
+              <a
                 href={`/product/list/category?category=美容用品`}
                 className={styles["dropdown-link"]}
               >
                 美容用品
-              </Link>
-              <Link
+              </a>
+              <a
                 href={`/product/list/category?category=清潔用品`}
                 className={styles["dropdown-link"]}
               >
                 清潔用品
-              </Link>
-              <Link
+              </a>
+              <a
                 href={`/product/list/category?category=外出用品`}
                 className={styles["dropdown-link"]}
               >
                 外出用品
-              </Link>
-              <Link
+              </a>
+              <a
                 href={`/product/list/category?category=居家用品`}
                 className={styles["dropdown-link"]}
               >
                 居家用品
-              </Link>
-              <Link
+              </a>
+              <a
                 href={`/product/list/category?category=玩具`}
                 className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
               >
                 玩具
-              </Link>
+              </a>
             </div>
           </div>
           <li>

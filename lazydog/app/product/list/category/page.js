@@ -7,8 +7,10 @@ import Link from "next/link";
 import { useSearchParams, redirect } from "next/navigation";
 import Card from "../../_components/card/card";
 import useSWR from "swr";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function ListPage({}) {
+  const { user } = useAuth();
   const [sortName, setSortName] = useState("依商品名稱排序");
   const [keyword, setKeyword] = useState({
     主分類: [],
@@ -26,22 +28,30 @@ export default function ListPage({}) {
     `http://localhost:5000/api/products/category?category=${category}${
       sortName == "依商品名稱排序"
         ? "&sort=name"
-        : sortName == "依商品價格排序"
+        : sortName == "依商品價格⬆排序"
         ? "&sort=price"
-        : sortName == "依上架時間排序"
+        : sortName == "依商品價格⬇排序"
+        ? "&sort=priceDown"
+        : sortName == "依上架時間⬆排序"
         ? "&sort=update"
-        : ``
+        : sortName == "依上架時間⬇排序"
+        ? "&sort=updateDown"
+        : ""
     }`
   );
   const [page, setPage] = useState(
     `http://localhost:3000/product/list/category?category=${category}${
       sortName == "依商品名稱排序"
         ? "&sort=name"
-        : sortName == "依商品價格排序"
+        : sortName == "依商品價格⬆排序"
         ? "&sort=price"
-        : sortName == "依上架時間排序"
+        : sortName == "依商品價格⬇排序"
+        ? "&sort=priceDown"
+        : sortName == "依上架時間⬆排序"
         ? "&sort=update"
-        : ``
+        : sortName == "依上架時間⬇排序"
+        ? "&sort=updateDown"
+        : ""
     }&page=1`
   );
 
@@ -62,7 +72,6 @@ export default function ListPage({}) {
   const max = Math.max(...prices);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(5000);
-
   const [pageNow, setPageNow] = useState(1);
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
@@ -87,11 +96,15 @@ export default function ListPage({}) {
         `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}${
           sortName == "依商品名稱排序"
             ? "&sort=name"
-            : sortName == "依商品價格排序"
+            : sortName == "依商品價格⬆排序"
             ? "&sort=price"
-            : sortName == "依上架時間排序"
+            : sortName == "依商品價格⬇排序"
+            ? "&sort=priceDown"
+            : sortName == "依上架時間⬆排序"
             ? "&sort=update"
-            : ``
+            : sortName == "依上架時間⬇排序"
+            ? "&sort=updateDown"
+            : ""
         }`
       );
 
@@ -109,11 +122,15 @@ export default function ListPage({}) {
         )}&min=${minPrice}&max=${maxPrice}${
           sortName == "依商品名稱排序"
             ? "&sort=name"
-            : sortName == "依商品價格排序"
+            : sortName == "依商品價格⬆排序"
             ? "&sort=price"
-            : sortName == "依上架時間排序"
+            : sortName == "依商品價格⬇排序"
+            ? "&sort=priceDown"
+            : sortName == "依上架時間⬆排序"
             ? "&sort=update"
-            : ``
+            : sortName == "依上架時間⬇排序"
+            ? "&sort=updateDown"
+            : ""
         }`
       );
     }
@@ -167,10 +184,21 @@ export default function ListPage({}) {
                       changeUrl(
                         `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}&sort=price`
                       );
-                      setSortName("依商品價格排序");
+                      setSortName("依商品價格⬆排序");
                     }}
                   >
-                    依商品價格排序
+                    依商品價格⬆排序
+                  </h6>
+                  <h6
+                    className={styles["dropdown-link"]}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}&sort=priceDown`
+                      );
+                      setSortName("依商品價格⬇排序");
+                    }}
+                  >
+                    依商品價格⬇排序
                   </h6>
                   <h6
                     className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
@@ -178,10 +206,21 @@ export default function ListPage({}) {
                       changeUrl(
                         `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}&sort=update`
                       );
-                      setSortName("依上架時間排序");
+                      setSortName("依上架時間⬆排序");
                     }}
                   >
-                    依上架時間排序
+                    依上架時間⬆排序
+                  </h6>
+                  <h6
+                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}&sort=updateDown`
+                      );
+                      setSortName("依上架時間⬇排序");
+                    }}
+                  >
+                    依上架時間⬇排序
                   </h6>
                 </div>
               </div>

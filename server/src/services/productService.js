@@ -10,10 +10,14 @@ export const getAllProducts = async (min, max, sort) => {
           ? `ORDER BY name DESC`
           : sort == "price"
           ? `ORDER BY price`
+          : sort == "priceDown"
+          ? `ORDER BY price DESC`
           : sort == "update"
           ? `ORDER BY updated_at`
+          : sort == "updateDown"
+          ? `ORDER BY updated_at DESC`
           : `ORDER BY name`
-      } `
+      }`
     );
     return products;
   } catch (error) {
@@ -36,8 +40,12 @@ export const getAllCategoryName = async (category, min, max, sort) => {
           ? `ORDER BY name DESC`
           : sort == "price"
           ? `ORDER BY price`
+          : sort == "priceDown"
+          ? `ORDER BY price DESC`
           : sort == "update"
           ? `ORDER BY updated_at`
+          : sort == "updateDown"
+          ? `ORDER BY updated_at DESC`
           : `ORDER BY name`
       }`,
       [categoryName[0].id]
@@ -75,8 +83,12 @@ export const getSearchKeyword = async (
             ? `ORDER BY name DESC`
             : sort == "price"
             ? `ORDER BY price`
+            : sort == "priceDown"
+            ? `ORDER BY price DESC`
             : sort == "update"
             ? `ORDER BY updated_at`
+            : sort == "updateDown"
+            ? `ORDER BY updated_at DESC`
             : `ORDER BY name`
         }`,
         value
@@ -92,8 +104,12 @@ export const getSearchKeyword = async (
             ? `ORDER BY name DESC`
             : sort == "price"
             ? `ORDER BY price`
+            : sort == "priceDown"
+            ? `ORDER BY price DESC`
             : sort == "update"
             ? `ORDER BY updated_at`
+            : sort == "updateDown"
+            ? `ORDER BY updated_at DESC`
             : `ORDER BY name`
         }`,
         [`%${keyword}%`]
@@ -112,8 +128,12 @@ export const getSearchKeyword = async (
             ? `ORDER BY name DESC`
             : sort == "price"
             ? `ORDER BY price`
+            : sort == "priceDown"
+            ? `ORDER BY price DESC`
             : sort == "update"
             ? `ORDER BY updated_at`
+            : sort == "updateDown"
+            ? `ORDER BY updated_at DESC`
             : `ORDER BY name`
         }`,
         [`%${keyword}%`, `%${keyword}%`, categoryName[0].id]
@@ -178,7 +198,7 @@ export const getAllProductId = async (productID) => {
 export const getProductId = async (productID) => {
   try {
     const [products] = await pool.execute(
-      "SELECT yi_product.*,users.name As user,users.email As email,yi_category.name As category,yi_img.list_img As listImg,yi_img.info_img As infoImg,yi_img.lg_img As img,yi_img.sm_img As smImg,yi_reviews.rating As rate,yi_reviews.comment As comment,yi_reviews.updated_at As commentTime FROM yi_product JOIN yi_category ON yi_product.category_id = yi_category.id JOIN yi_img ON yi_product.productID = yi_img.productID JOIN yi_reviews ON yi_product.productID = yi_reviews.productID JOIN users ON yi_reviews.user_id = users.id WHERE yi_product.productID = ? AND yi_product.is_deleted = 0",
+      "SELECT yi_product.*,users.name As user,users.email As email,users.user_img As userImg,yi_category.name As category,yi_img.list_img As listImg,yi_img.info_img As infoImg,yi_img.lg_img As img,yi_img.sm_img As smImg,yi_reviews.rating As rate,yi_reviews.comment As comment,yi_reviews.updated_at As commentTime FROM yi_product JOIN yi_category ON yi_product.category_id = yi_category.id JOIN yi_img ON yi_product.productID = yi_img.productID JOIN yi_reviews ON yi_product.productID = yi_reviews.productID JOIN users ON yi_reviews.user_id = users.id WHERE yi_product.productID = ? AND yi_product.is_deleted = 0",
       [productID]
     );
     // const [reviews] = await pool.execute(
