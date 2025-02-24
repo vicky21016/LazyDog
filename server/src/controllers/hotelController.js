@@ -222,17 +222,23 @@ export const getPaginatedHotels = async (req, res) => {
 export const getFilteredHotels = async (req, res) => {
   try {
     const filters = {
-      min_rating: req.query.min_rating ? parseFloat(req.query.min_rating) : null,
-      min_price: req.query.min_price ? parseFloat(req.query.min_price) : null,
-      max_price: req.query.max_price ? parseFloat(req.query.max_price) : null,
-      room_type_id: req.query.room_type_id ? parseInt(req.query.room_type_id) : null,
-      tags: req.query.tags ? req.query.tags.split(",").map(Number).filter((n) => !isNaN(n)) : [],
+      city: req.body.city || null,
+      district: req.body.district || null,
+      checkInDate: req.body.checkInDate || null,
+      checkOutDate: req.body.checkOutDate || null,
+      min_rating: req.body.minRating ? parseFloat(req.body.minRating) : null,
+      min_price: req.body.minPrice ? parseFloat(req.body.minPrice) : null,
+      max_price: req.body.maxPrice ? parseFloat(req.body.maxPrice) : null,
+      room_type_id: req.body.roomTypeId ? parseInt(req.body.roomTypeId) : null,
+      tags: req.body.tags
+        ? req.body.tags.map(Number).filter((n) => !isNaN(n))
+        : [],
     };
+    console.log("接收到的篩選條件:", filters);
     const hotels = await getFilteredHotelS(filters);
-
     res.json(hotels);
   } catch (error) {
-    console.error(" 獲取篩選飯店失敗:", error);
+    console.error("獲取篩選飯店失敗:", error);
     res.status(500).json({ error: "無法獲取篩選後的飯店" });
   }
 };
