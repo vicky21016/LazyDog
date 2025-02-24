@@ -54,10 +54,10 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
         if (!response.ok) throw new Error("無法獲取飯店");
 
         const data = await response.json();
-        setHotels(data); // ✅ 只更新 `SideBar` 內的 `hotels`
+        setHotels(data); //  只更新 `SideBar` 內的 `hotels`
 
         if (onSearch) {
-            onSearch(data); // ✅ **傳遞資料給 `HotelHomePage.js`**
+            onSearch(data); // **傳遞資料給 `HotelHomePage.js`**
         }
     } catch (error) {
         console.error("獲取飯店時發生錯誤:", error);
@@ -182,10 +182,10 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
       console.log("API 回應的搜尋結果:", data);
 
       if (onSearch) {
-        onSearch(data); // ✅ **確保 UI 正確更新**
+        onSearch(data); // 確保 UI 正確更新
       }
 
-      setIsSearching(false); // ✅ **切換按鈕為「清除篩選」**
+      setIsSearching(false); //  切換按鈕為「清除篩選」
     } catch (error) {
       console.error(" 搜尋飯店失敗:", error);
     }
@@ -194,7 +194,7 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
   const handleClear = async () => {
     console.log("清除篩選條件開始");
 
-    // ✅ 通知 `HotelHomePage.js` 清除篩選條件
+    // 通知 `HotelHomePage.js` 清除篩選條件
     if (onClear) {
       onClear();
     }

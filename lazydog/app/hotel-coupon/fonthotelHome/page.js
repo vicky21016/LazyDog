@@ -57,7 +57,7 @@ export default function HotelHomePage() {
     }
   }, [totalPages]);
 
-  // 🔹 搜尋觸發
+  // 搜尋觸發
   const handleSearch = async (params) => {
     console.log("🔍 搜尋條件:", params);
     setSearchParams(params);
@@ -72,7 +72,7 @@ export default function HotelHomePage() {
     }
   };
 
-  // 🔹 清除篩選條件
+  //  清除篩選條件
   const handleClearFilters = async () => {
     console.log("🧹 清除篩選條件");
     setSearchParams(null);
@@ -86,13 +86,12 @@ export default function HotelHomePage() {
     }
   };
 
-  // 🔹 計算當前頁面的飯店數據
+  // 計算當前頁面的飯店數據
   const indexOfLastHotel = currentPage * hotelsPerPage;
   const indexOfFirstHotel = indexOfLastHotel - hotelsPerPage;
   const currentHotels = filteredHotels.slice(indexOfFirstHotel, indexOfLastHotel);
 
-  console.log("🔎 `filteredHotels` 長度:", filteredHotels.length);
-  console.log("📄 `totalPages`:", totalPages, "當前頁面:", currentPage);
+
 
   return (
     <>
