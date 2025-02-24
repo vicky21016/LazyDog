@@ -7,18 +7,28 @@ import {
   updateHotel,
   softDeleteHotel,
   getSearch,
+  getHotelsCount,
+  getPaginatedHotels,
+  getFilteredHotels,
 } from "../controllers/hotelController.js";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 import { upload } from "../middlewares/upload.js";
 
 const router = express.Router();
 
-//  所有人都可以查詢hotel+search
-router.get("/", getAllHotels);
+// 取得飯店總數
+router.get("/count", getHotelsCount);
+
+// 取得分頁飯店
+router.get("/paginated", getPaginatedHotels); // 避免與 `getAllHotels` 衝突
+//篩選飯店的 AP
+router.get("/all", getFilteredHotels);
+//  所有人都可以查詢所有飯店
+router.get("/", getAllHotels); //不用任何條件的
 router.get("/search", getSearch);
 router.get("/:id", getByIds);
 
-//自己可以看自己的hotel
+//  自己可以查看自己擁有的飯店
 router.get(
   "/operator",
   verifyToken,
@@ -48,8 +58,5 @@ router.patch(
   verifyRole(["operator"]),
   softDeleteHotel
 );
-
-// EX: ("/hotels/:id", verifyToken, verifyRole(["operator", "admin"]), softDeleteHotel)
-// import的參數要放在最後免以免驗證出錯
 
 export default router;

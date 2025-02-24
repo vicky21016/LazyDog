@@ -4,7 +4,7 @@ const API_URL = "http://localhost:5000/api/hotels";
 const HOTEL_TAGS_URL = "http://localhost:5000/api/hotel_tags";
 const HOTEL_ROOM_TYPES_URL = "http://localhost:5000/api/hotel_room_types";
 const ROOM_BASE_PRICE_URL = "http://localhost:5000/api/room_base_price";
-const ROOM_TYPES_URL = "http://localhost:5000/api/read/room_types"; 
+const ROOM_TYPES_URL = "http://localhost:5000/api/read/room_types";
 const ROOM_INVENTORY_URL = "http://localhost:5000/api/room_inventory";
 const HOTEL_IMAGES_URL = "http://localhost:5000/api/hotel_images";
 const HOTEL_ORDERS_URL = "http://localhost:5000/api/hotel_orders";
@@ -23,6 +23,45 @@ export const getAllHotels = async () => {
 export const getHotelById = async (id) => {
   const res = await fetch(`${API_URL}/${id}`, { method: "GET" });
   return await res.json();
+};
+
+export const fetchHotelsCount = async () => {
+  try {
+    const res = await fetch(`${API_URL}/count`);
+    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+
+    const data = await res.json();
+    console.log("從 API 獲取的總飯店數量:", data.total);
+    return data.total;
+  } catch (error) {
+    console.error("獲取總飯店數量失敗:", error);
+    return 0;
+  }
+};
+
+export const getPaginatedHotels = async (page = 1, limit = 10) => {
+  try {
+    const offset = (page - 1) * limit;
+    const res = await fetch(
+      `${API_URL}/paginated?limit=${limit}&offset=${offset}`
+    );
+
+    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+
+    const data = await res.json();
+    console.log(`取得第 ${page} 頁的飯店數據:`, data);
+    return data;
+  } catch (error) {
+    console.error("獲取飯店失敗:", error);
+    return [];
+  }
+};
+//暫放
+export const getFilteredHotels = async (params) => {
+  const query = new URLSearchParams(params).toString();
+  const response = await fetch(`${API_URL}/all?${query}`);
+  if (!response.ok) throw new Error("獲取飯店失敗");
+  return response.json();
 };
 
 export const getSearch = async () => {
@@ -104,6 +143,17 @@ export const removeHotelTag = async (hotelId, tagId) => {
   }
 };
 //價格
+// 取得所有飯店的價格範圍
+export const getGlobalPriceRange = async () => {
+  try {
+    const res = await fetch(`${ROOM_BASE_PRICE_URL}/range`);
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    return await res.json();
+  } catch (error) {
+    console.error("獲取所有飯店價格範圍失敗:", error);
+    return { min_price: 0, max_price: 10000 };
+  }
+};
 // 取得所有房型價格
 export const getRoomBasePrices = async () => {
   try {
@@ -125,18 +175,6 @@ export const getHotelPriceRange = async (hotelId) => {
   } catch (error) {
     console.error(`獲取飯店 (${hotelId}) 價格範圍失敗:`, error);
     return {};
-  }
-};
-
-// 取得所有飯店的價格範圍
-export const getGlobalPriceRange = async () => {
-  try {
-    const res = await fetch(`${ROOM_BASE_PRICE_URL}/range`);
-    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-    return await res.json();
-  } catch (error) {
-    console.error("獲取所有飯店價格範圍失敗:", error);
-    return { min_price: 0, max_price: 10000 };
   }
 };
 

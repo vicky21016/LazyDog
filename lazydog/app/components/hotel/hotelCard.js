@@ -25,6 +25,7 @@ const HotelCard = ({ image, name, introduce, review, reviewCount, link }) => {
       <div className={styles.suPriceBox}>
         <div className={`mb-3 ${styles.suReview}`}>⭐ {review}</div>
         {reviewCount} 則評論
+        <button className={styles.suBookBtn}>查看價格</button>
       </div>
     </div>
   );

@@ -1,11 +1,82 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import '../css/CartListPay.css'
+import { isDev, apiURL } from '@/config'
+import Link from 'next/link'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { useAuth } from '@/hooks/use-auth'
+import { useCart } from '@/hooks/use-cart' // 引入useCart以便取得購物車資料
+
 import Header from "../../components/layout/header"
 import Input from "../../components/forms/Input"
 import InputFiled from "../../components/forms/InputField"
 export default function CartListPayPage(props) {
+  // 檢查是否登入
+  const { isAuth } = useAuth()
+  // 建立ref，用來放置form表單
+  const payFormDiv = useRef(null)
+  // 建立ref，用來放置金額
+  const amountRef = useRef(null)
+  // 建立ref，用來放置商品名稱
+  const itemsRef = useRef(null)
+
+  // 從useCart取得購物車資料
+  const { productItems, totalProductAmount, totalProductQty } = useCart()
+
+  // 確保商品資料正確
+  const itemsValue = productItems.map((item) => `${item.name} x ${item.count}`).join(", ");
+  const amountValue = totalProductAmount;
+
+  const createEcpayForm = (params, action) => {
+    const form = document.createElement('form')
+    form.method = 'POST'
+    form.action = action
+    for (const key in params) {
+      const input = document.createElement('input')
+      input.type = 'hidden'
+      input.name = key
+      input.value = params[key]
+      form.appendChild(input)
+    }
+    // 回傳form表單的物件參照
+    return payFormDiv.current.appendChild(form)
+  }
+
+  const handleEcpay = async () => {
+    // 先連到node伺服器後端，取得LINE Pay付款網址
+    const res = await fetch(
+      `http://localhost:5000/ecpay-test-only?amount=${amountValue}&items=${itemsValue}`,
+      {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      }
+    )
+
+    const resData = await res.json()
+
+    if (isDev) console.log(resData)
+
+    if (resData.status === 'success') {
+      // 建立表單，回傳的是表單的物件參照
+      const payForm = createEcpayForm(resData.data.params, resData.data.action)
+
+      if (isDev) console.log(payForm)
+
+      if (window.confirm('確認要導向至ECPay(綠界金流)進行付款?')) {
+        //送出表單
+        payForm.submit()
+      }
+    } else {
+      toast.error('付款失敗')
+    }
+  }
+
   return (
     <>
     <Header/>
@@ -121,19 +192,21 @@ export default function CartListPayPage(props) {
                     <span>產品</span>
                     <span>Subtotal</span>
                   </div>
-                  <div className="d-flex justify-content-between">
-                    <span>
-                      <span>Asgaard sofa</span>x<span>1</span>
-                    </span>
-                    <span>Rs. 250,000.00</span>
-                  </div>
+                  {productItems.map((item) => (
+                    <div key={item.id} className="d-flex justify-content-between">
+                      <span>
+                        <span>{item.name}</span>x<span>{item.count}</span>
+                      </span>
+                      <span>{`Rs. ${item.price * item.count}`}</span>
+                    </div>
+                  ))}
                   <div className="d-flex justify-content-between">
                     <span>Subtotal</span>
-                    <span>Rs. 250,000.00</span>
+                    <span>{`Rs. ${totalProductAmount}`}</span>
                   </div>
                   <div className="d-flex justify-content-between">
                     <span>總價</span>
-                    <span>Rs. 250,000.00</span>
+                    <span>{`Rs. ${totalProductAmount}`}</span>
                   </div>
                 </div>
                 <hr />
@@ -203,6 +276,8 @@ export default function CartListPayPage(props) {
                 </div>
               </aside>
             </div>
+
+            <button type="button" onClick={handleEcpay}>付款</button>
           </form>
         </div>
       </div>
