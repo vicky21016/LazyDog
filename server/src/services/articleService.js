@@ -75,7 +75,7 @@ export const createArticlesS = async (createArticle) => {
     );
 
     // 提交事務
-    console.log(req.body)
+    // console.log(req.body)
     await connection.commit();
 
     return {
@@ -95,32 +95,6 @@ export const createArticlesS = async (createArticle) => {
   }
 };
 
-
-
-// export const createArticlesS = async (createArticle) => {
-//   try {
-//     const {
-//       title, content, author_id, category_id
-//     } = createArticle;
-//     const [result] = await pool.query(
-//       `INSERT INTO articles 
-//           (title, content, author_id, category_id, 
-//           created_at, updated_at, is_deleted) 
-//           VALUES (?, ?, ?, ?, NOW(), NOW(), 0)`,
-//       [title, content, author_id, category_id]
-//     );
-
-//     return {
-//       id: result.insertId,
-//       title,
-//       content,
-//       author_id,
-//       category_id
-//     };
-//   } catch (err) {
-//     throw new Error("文章創建失敗：" + err.message);
-//   }
-// };
 
 // 編輯文章
 
@@ -168,25 +142,6 @@ export const updateArticleS = async (updateArticle) => {
   }
 };
 
-// export const updateArticleS = async (id, title, content, author_id, category_id, res) => {
-//   try {
-//     const [result] = await pool.query(
-//       `UPDATE articles 
-//        SET title = ?, content = ?, author_id = ?, category_id = ?, updated_at = NOW() 
-//        WHERE id = ? AND is_deleted = 0`,
-//       [title, content, author_id, category_id, id]
-//     );
-
-//     if (result.affectedRows === 0) {
-//       return res.status(404).json({ error: '找不到文章或文章已被刪除' });
-//     }
-
-//     return { success: true, message: '文章更新成功' };
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: '伺服器錯誤' });
-//   }
-// };
 
 // 刪除文章
 export const deleteArticleS = async (id) => {
@@ -239,18 +194,31 @@ export const searchKeywordS = async (keyword) => {
     throw new Error("搜尋文章時出錯：" + error.message);
   }
 }
-// export const searchKeywordS = async (keyword) => {
-//   try {
-//     if (!keyword || keyword.trim() == "") {
-//       return { error: "請提供有效的搜尋關鍵字" };
-//     }
-//     const [articles] = await pool.execute(
-//       "SELECT * FROM articles WHERE (title LIKE ? OR content LIKE ?) AND is_deleted = 0",
-//       [`%${keyword}%`,`%${keyword}%`]
-//     );
-//     return articles;
-//   } catch (error) {
-//     console.error("搜尋文章時出錯:", error);
-//     throw new Error("搜尋文章時出錯：" + error.message);
-//   }
-// }
+
+export const getArticlesByAuthorS = async (author_id) => {
+  try {
+    const [articles] = await pool.query(
+      `SELECT articles.*, 
+      article_img.url AS cover_image,
+      users.name AS author_name,
+      article_type.name AS category_name
+      FROM articles 
+      LEFT JOIN article_img ON articles.id = article_img.article_id 
+      LEFT JOIN users ON articles.author_id = users.id
+      LEFT JOIN article_type ON articles.category_id = article_type.id
+      WHERE articles.is_deleted = 0 
+      AND users.is_deleted = 0 
+      AND articles.author_id = ?`,
+      [author_id]
+    );
+
+    if (articles.length === 0) {
+      return { message: "該作者沒有文章或文章已被刪除" };
+    }
+
+    return articles;
+  } catch (error) {
+    throw new Error(`獲取作者 ${author_id} 文章時發生錯誤：${error.message}`);
+  }
+};
+
