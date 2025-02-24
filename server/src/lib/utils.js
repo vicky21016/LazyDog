@@ -6,7 +6,7 @@ const __dirname = path.dirname(__filename)
 // 導入dotenv 使用 .env 檔案中的設定值 process.env
 import dotenv from 'dotenv'
 import { readFile, writeFile } from 'fs/promises'
-import { z } from 'zod'
+// import { z } from 'zod'
 
 // 判斷是否為開發環境
 export const isDev = process.env.NODE_ENV === 'development'

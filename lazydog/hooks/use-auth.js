@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
           router.push("/hotel-coupon/operatorDetail"); // 轉入operator
           break;
         case "teacher":
-          router.push("/"); // 轉入 teacher
+          router.push("/teacher-sign/list"); // 轉入 teacher
           break;
         case "user":
           router.push("/pages");

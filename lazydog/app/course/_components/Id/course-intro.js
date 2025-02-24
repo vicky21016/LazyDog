@@ -9,7 +9,7 @@ export default function CourseIntro({course, session, place}) {
 
   // const defaultTeachImg = "/course/img/user.jpg"
 
-  // console.log(s);
+  console.log(s);
   // console.log("CourseIntro - Course:", course);
   // console.log("CourseIntro - Session:", session);
   // console.log("CourseIntro - Place:", place);
@@ -62,7 +62,7 @@ export default function CourseIntro({course, session, place}) {
               <h2 className={styles.price}>NT$ <span className={styles.number}>{Number(c?.price).toLocaleString("zh-Tw")}</span></h2>
               <div className={styles.teacher}>
                 <h2 className={styles.teachTitle}>關於講師</h2>
-                <a href="#" className={`d-flex gap-3 ${styles.tConnect}`}>
+                <a href={`/teacher/info/${s?.teacher_id}`} className={`d-flex gap-3 ${styles.tConnect}`}>
                   <img
                     className={styles.teachPic}
                     src={`/teacher-img/${s?.teacher_img}`}

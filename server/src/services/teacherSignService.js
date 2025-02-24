@@ -1,16 +1,16 @@
 import pool from "../config/mysql.js";
 
 // 讀取師資
-export const getTeacherInfo = async (userId) => {
+export const getTeacherInfo = async (teacherId) => {
   try {
     const sql =`
-      SELECT teacher.* 
+      SELECT teacher.* , users.teacher_id AS teacherId
       FROM teacher 
       JOIN users ON teacher.id = users.teacher_id
       WHERE users.id = ? 
       AND teacher.is_deleted = 0
     `;
-    const [infos] = await pool.execute(sql, [userId]);
+    const [infos] = await pool.execute(sql, [teacherId]);
     return infos;
   } catch (err) {
     throw new Error(" 無法取得師資資訊：" + err.message);
@@ -59,14 +59,17 @@ export const getCoursesByTeacher = async (teacherId) => {
       SELECT 
         cs.id AS session_id, cs.course_id, cs.area_id, cs.teacher_id, cs.class_dates, 
         c.name AS course_name, c.description AS course_description, 
-        course_area.region AS area_region, 
-        users.name AS teacher_name
+        course_area.region AS region, 
+        users.name AS teacher_name,
+        cm.url AS img_url
       FROM users
       JOIN teacher t ON users.teacher_id = t.id   -- 先找到對應的 teacher
       JOIN course_session cs ON t.id = cs.teacher_id  -- 取得該教師的課程
       JOIN course c ON cs.course_id = c.id
       JOIN course_area ON cs.area_id = course_area.id
+      JOIN course_img cm ON cm.course_id = c.id
       WHERE users.id = ?   -- 透過 users.id 來篩選對應的教師
+      AND cm.main_pic = 1
       AND cs.is_deleted = 0
     `;
     const [courses] = await pool.execute(sql, [teacherId]);
@@ -79,20 +82,49 @@ export const getCoursesByTeacher = async (teacherId) => {
 // 課程梯次 細節
 export const getCoursesIdByTeacher = async (id) => {
   try {
-    const sql = `
-      SELECT *
-      FROM course_session cs
-      WHERE cs.id = ?
-      AND cs.is_deleted = 0
-    `;
-    const [courses] = await pool.query(sql, [id]);
+    // const sql = `
+    //   SELECT c.*, cs.*, ct.name AS typeName, cs.id AS session_id, ca.region AS region
+    //   FROM course_session cs
+    //   JOIN course c ON cs.course_id = c.id
+    //   JOIN course_type ct ON c.type_id = ct.type_id
+    //   JOIN course_area ca ON cs.area_id = ca.id
+    //   WHERE cs.id = ?
+    //   AND cs.is_deleted = 0
+    // `;
+    // const [courses] = await pool.query(sql, [id]);
 
-    if (courses.length === 0){
-        console.log("未找到課程資料！");
+    // if (courses.length === 0){
+    //     console.log("未找到課程資料！");
+    // }
+
+    const [courses] = await pool.query(`
+       SELECT c.*, cs.*, ct.name AS typeName, cs.id AS session_id, ca.region AS region
+      FROM course_session cs
+      JOIN course c ON cs.course_id = c.id
+      JOIN course_type ct ON c.type_id = ct.type_id
+      JOIN course_area ca ON cs.area_id = ca.id
+      WHERE cs.id = ?
+      AND cs.is_deleted = 0`
+      ,[id]);
+    if (courses.length == 0){
+        console.log("課程不存在");
     }
-    return courses;
+
+    const [imgs] = await pool.query(`
+      SELECT cm.* 
+      FROM course_img cm
+      JOIN course_session cs ON cm.course_id = cs.course_id 
+      JOIN course c ON c.id = cs.course_id 
+      WHERE cs.id = ?`
+     ,[id]);
+   if (imgs.length == 0){
+       console.log("課程不存在");
+   }
+
+
+    return {courses, imgs};
   } catch (err) {
-    throw new Error(" 無法取得 ${id} 課程:;" + err.message);
+    throw new Error(` 無法取得 ${id} 課程:;` + err.message);
   }
 };
 
