@@ -1,76 +1,75 @@
-
 .infoCard {
-    width: 200px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 16px;
-  }
-  
-  .cardTitle {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  /* 選單項目 */
-  .menuItem {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    border-top: 1px solid #eee;
-    color: #454545;
-    cursor: pointer;
-  }
-
-  .menuItem:hover {
-    color: #ff9538;
-    font-weight: bold;
-  }
-    
-  .icon {
-    margin-right: 8px;
-    font-size: 16px;
-  }
-
-  /* teacher */
-.server{
-  background-image: url(../../public/teacher-img/bag.png);
-height: 450px;
-justify-content: center;
-align-content: center;
-color: white;
-font-size: 42px;
-font-weight: 700;
-letter-spacing: 6px;
-margin: 0;
+  width: 200px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
 }
-.person{
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* 選單項目 */
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-top: 1px solid #eee;
+  color: #454545;
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  color: #ff9538;
+  font-weight: bold;
+}
+
+.icon {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+/* teacher */
+.server {
+  /* background-image: url(../../public/teacher-img/bag.png); */
+  height: 450px;
+  justify-content: center;
+  align-content: center;
+  color: white;
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  margin: 0;
+}
+.person {
   border-radius: 100%;
 }
-  .card6 {
+.card6 {
   /* width: 180px; */
   height: 364px;
   transition: 0.4s;
   color: #3b3330;
   box-shadow: rgba(60, 60, 60, 0.35) 0px 5px 15px;
-  img{
-     width: 100%;
-     object-fit: cover;
+  img {
+    width: 100%;
+    object-fit: cover;
   }
 }
 
 .card6:hover {
   translate: 0 -10px;
-  background-color: #FFF6E8;
+  background-color: #fff6e8;
 }
 
 .card6Title {
   font-size: 22px;
   font-weight: 500;
   margin: 5px 0;
-  padding:10px 20px;
+  padding: 10px 20px;
 }
 
 .card6 img {
@@ -82,11 +81,11 @@ margin: 0;
 
 .card6Description {
   font-size: 14px;
-  padding:0 20px;
+  padding: 0 20px;
   color: #ff9538;
 }
 
-  .card7 {
+.card7 {
   /* width: 180px; */
   /* height: 264px; */
   transition: 0.4s;
@@ -97,7 +96,7 @@ margin: 0;
 
 .card7:hover {
   translate: 0 -10px;
-  background-color: #FFF6E8;
+  background-color: #fff6e8;
 }
 
 .card7Title {
@@ -107,23 +106,23 @@ margin: 0;
   padding: 10px 20px 20px 20px;
 }
 
-.img1{
-width: 571px;
-height: 300px;
-/* padding: 10px; */
-margin: 10px;
+.img1 {
+  width: 571px;
+  height: 300px;
+  /* padding: 10px; */
+  margin: 10px;
 }
-.img{
+.img {
   width: 300px;
-height: 300px;
-margin: 10px;
+  height: 300px;
+  margin: 10px;
 }
-.cube{
+.cube {
   width: 240px;
   height: 80px;
 }
-.dog-image{
+.dog-image {
   width: 80px;
-height: 80px;
-margin: 50px;
+  height: 80px;
+  margin: 50px;
 }

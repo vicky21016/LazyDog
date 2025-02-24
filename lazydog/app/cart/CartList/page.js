@@ -1,22 +1,28 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import "../css/CartList.css";
 import { useCart } from "@/hooks/use-cart";
-import Header from "../../components/layout/header"
-import Other from "../../components/teacher/otherTeacher";
-import Thead from "../../components/cart/thead"
-import Tbody from "../../components/cart/tbody"
-import Breadcrumb from "../../components/teacher/breadcrumb";
-
 
 export default function CartListPage(props) {
-  const { productItems, courseItems, hotelItems, totalProductAmount, totalProductQty, totalCourseAmount, totalCourseQty, totalHotelAmount, totalHotelQty, onIncrease, onDecrease, onRemove } = useCart();
+  const {
+    productItems,
+    courseItems,
+    hotelItems,
+    totalProductAmount,
+    totalProductQty,
+    totalCourseAmount,
+    totalCourseQty,
+    totalHotelAmount,
+    totalHotelQty,
+    onIncrease,
+    onDecrease,
+    onRemove,
+  } = useCart();
 
-  const totalAmount = totalProductAmount + totalCourseAmount + totalHotelAmount; // 計算所有類別的總金額
-  const totalQty = totalProductQty + totalCourseQty + totalHotelQty; // 計算總數量
+  const totalAmount = totalProductAmount + totalCourseAmount + totalHotelAmount;
 
   return (
     <>
@@ -26,147 +32,187 @@ export default function CartListPage(props) {
         </div>
         <div className="container">
           <div className="custom-table row">
-            <table className="col-lg-8 col-md-auto col-auto me-5 mb-5" style={{ marginLeft: "auto" }}>
-              <thead>
-                <tr>
-                  <th style={{ width: 110 }} />
-                  <th>商品品項</th>
-                  <th>單價</th>
-                  <th>數量</th>
-                  <th>總價</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* 顯示商品 */}
-                {productItems.map((cartItem) => (
-                  <tr key={cartItem.id}>
-                    <td>
-                      <img src={cartItem.img} alt={cartItem.name} />
-                    </td>
-                    <td>{cartItem.name}</td>
-                    <td>{cartItem.price}</td>
-                    <td>
-                      <button onClick={() => onIncrease(cartItem.id)}>+</button>
-                      {cartItem.count}
-                      <button onClick={() => onDecrease(cartItem.id)}>-</button>
-                    </td>
-                    <td>{cartItem.count * cartItem.price}</td>
-                    <td>
-                      <button
-                        style={{ border: "transparent", backgroundColor: "white" }}
-                        onClick={() => onRemove(cartItem.id)}
-                      >
-                        <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#f2662b" }} />
-                      </button>
-                    </td>
+            {/* 商品表格 */}
+            <div className="table-container">
+              <table className="col-lg-12 mb-5">
+                <thead>
+                  <tr>
+                    <th style={{ width: 110 }} />
+                    <th>商品品項</th>
+                    <th>單價</th>
+                    <th>數量</th>
+                    <th>總價</th>
+                    <th>操作</th>
                   </tr>
-                ))}
-
-                {/* 顯示課程 */}
-                {courseItems.map((cartItem) => (
-                  <tr key={cartItem.id}>
-                    <td>
-                      <img src={cartItem.img} alt={cartItem.name} />
-                    </td>
-                    <td>{cartItem.name}</td>
-                    <td>{cartItem.price}</td>
-                    <td>
-                      <button onClick={() => onIncrease(cartItem.id)}>+</button>
-                      {cartItem.count}
-                      <button onClick={() => onDecrease(cartItem.id)}>-</button>
-                    </td>
-                    <td>{cartItem.count * cartItem.price}</td>
-                    <td>
-                      <button
-                        style={{ border: "transparent", backgroundColor: "white" }}
-                        onClick={() => onRemove(cartItem.id)}
-                      >
-                        <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#f2662b" }} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-
-                {/* 顯示旅館 */}
-                {hotelItems.map((cartItem) => (
-                  <tr key={cartItem.id}>
-                    <td>
-                      <img src={cartItem.img} alt={cartItem.name} />
-                    </td>
-                    <td>{cartItem.name}</td>
-                    <td>{cartItem.price}</td>
-                    <td>
-                      <button onClick={() => onIncrease(cartItem.id)}>+</button>
-                      {cartItem.count}
-                      <button onClick={() => onDecrease(cartItem.id)}>-</button>
-                    </td>
-                    <td>{cartItem.count * cartItem.price}</td>
-                    <td>
-                      <button
-                        style={{ border: "transparent", backgroundColor: "white" }}
-                        onClick={() => onRemove(cartItem.id)}
-                      >
-                        <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#f2662b" }} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            {/* 顯示摘要區 */}
-            <aside className="col-lg-3 col-md-auto col-auto mb-5" style={{ margin: "auto" }}>
-              <div className="aside-card">
-                <div className="summary-item d-flex justify-content-between">
-                  <span>商品小計</span>
-                  <span>{`Rs. ${totalProductAmount}`}</span>
-                </div>
-                <div className="summary-item d-flex justify-content-between">
-                  <span>課程小計</span>
-                  <span>{`Rs. ${totalCourseAmount}`}</span>
-                </div>
-                <div className="summary-item d-flex justify-content-between">
-                  <span>旅館小計</span>
-                  <span>{`Rs. ${totalHotelAmount}`}</span>
-                </div>
-                <div className="summary-item d-flex justify-content-between mt-3">
-                  <span>總金額</span>
-                  <span className="totalmoney">{`NT$ ${totalAmount}`}</span>
-                </div>
-              </div>
-
-              {/* 折扣區 */}
-              <div className="summary-item summary-item2 d-flex justify-content-between">
-                <span>折扣金額</span>
-                <span>-</span>
-              </div>
-              <div className="summary-item summary-item2 d-flex justify-content-between">
-                <span>總金額:</span>
-                <span className="totalmoney">{`NT$ ${totalAmount}`}</span>
-              </div>
-
-              {/* 結帳按鈕 */}
-              <div className="d-flex justify-content-center pt-5 pb-5">
+                </thead>
+                <tbody>
+                  {productItems.map((cartItem) => (
+                    <tr key={cartItem.id}>
+                      <td>
+                        <img src={cartItem.img} alt={cartItem.name} />
+                      </td>
+                      <td>{cartItem.name}</td>
+                      <td>{cartItem.price}</td>
+                      <td>
+                        <button onClick={() => onIncrease(cartItem.id)}>
+                          +
+                        </button>
+                        {cartItem.count}
+                        <button onClick={() => onDecrease(cartItem.id)}>
+                          -
+                        </button>
+                      </td>
+                      <td>{cartItem.count * cartItem.price}</td>
+                      <td>
+                        <button
+                          style={{
+                            border: "transparent",
+                            backgroundColor: "white",
+                          }}
+                          onClick={() => onRemove(cartItem.id)}
+                        >
+                          <FontAwesomeIcon
+                            icon={faTrashAlt}
+                            style={{ color: "#f2662b" }}
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="checkout-btn">
                 <button
                   type="submit"
                   style={{ backgroundColor: "#f2662b", color: "#fff" }}
                   className="btn w-50"
+                  onClick={() => props.history.push("/checkout/product")}
                 >
-                  結帳
+                  商品結帳
                 </button>
               </div>
-            </aside>
-          </div>
-
-          {/* 推薦商品區 */}
-          <div className="main2">
-            <div>
-              <h2>加購其他優惠商品</h2>
             </div>
-            <div className="card"></div>
-            <div>
-              <h2>看看其他精選商品 </h2>
+
+            {/* 課程表格 */}
+            <div className="table-container">
+              <table className="col-lg-12 mb-5">
+                <thead>
+                  <tr>
+                    <th style={{ width: 110 }} />
+                    <th>課程品項</th>
+                    <th>單價</th>
+                    <th>數量</th>
+                    <th>總價</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {courseItems.map((cartItem) => (
+                    <tr key={cartItem.id}>
+                      <td>
+                        <img src={cartItem.img} alt={cartItem.name} />
+                      </td>
+                      <td>{cartItem.name}</td>
+                      <td>{cartItem.price}</td>
+                      <td>
+                        <button onClick={() => onIncrease(cartItem.id)}>
+                          +
+                        </button>
+                        {cartItem.count}
+                        <button onClick={() => onDecrease(cartItem.id)}>
+                          -
+                        </button>
+                      </td>
+                      <td>{cartItem.count * cartItem.price}</td>
+                      <td>
+                        <button
+                          style={{
+                            border: "transparent",
+                            backgroundColor: "white",
+                          }}
+                          onClick={() => onRemove(cartItem.id)}
+                        >
+                          <FontAwesomeIcon
+                            icon={faTrashAlt}
+                            style={{ color: "#f2662b" }}
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="checkout-btn">
+                <button
+                  type="submit"
+                  style={{ backgroundColor: "#f2662b", color: "#fff" }}
+                  className="btn w-50"
+                  onClick={() => props.history.push("/checkout/course")}
+                >
+                  課程結帳
+                </button>
+              </div>
+            </div>
+
+            {/* 旅館表格 */}
+            <div className="table-container">
+              <table className="col-lg-12 mb-5">
+                <thead>
+                  <tr>
+                    <th style={{ width: 110 }} />
+                    <th>旅館品項</th>
+                    <th>單價</th>
+                    <th>數量</th>
+                    <th>總價</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hotelItems.map((cartItem) => (
+                    <tr key={cartItem.id}>
+                      <td>
+                        <img src={cartItem.img} alt={cartItem.name} />
+                      </td>
+                      <td>{cartItem.name}</td>
+                      <td>{cartItem.price}</td>
+                      <td>
+                        <button onClick={() => onIncrease(cartItem.id)}>
+                          +
+                        </button>
+                        {cartItem.count}
+                        <button onClick={() => onDecrease(cartItem.id)}>
+                          -
+                        </button>
+                      </td>
+                      <td>{cartItem.count * cartItem.price}</td>
+                      <td>
+                        <button
+                          style={{
+                            border: "transparent",
+                            backgroundColor: "white",
+                          }}
+                          onClick={() => onRemove(cartItem.id)}
+                        >
+                          <FontAwesomeIcon
+                            icon={faTrashAlt}
+                            style={{ color: "#f2662b" }}
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="checkout-btn">
+                <button
+                  type="submit"
+                  style={{ backgroundColor: "#f2662b", color: "#fff" }}
+                  className="btn w-50"
+                  onClick={() => props.history.push("/checkout/hotel")}
+                >
+                  旅館結帳
+                </button>
+              </div>
             </div>
           </div>
         </div>
