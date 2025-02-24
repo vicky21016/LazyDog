@@ -47,14 +47,13 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <AuthProvider>
-        <CartProvider>
-          <body className={`${geistSans.variable} ${geistMono.variable}`}>
-            {children}
-            <Footer/>
-          </body>
-        </CartProvider>
-      </AuthProvider>
+
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <AuthProvider>
+          <CartProvider>{children}</CartProvider>
+        </AuthProvider>
+        <Footer />
+      </body>
     </html>
   );
 }
