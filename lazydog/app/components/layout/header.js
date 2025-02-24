@@ -15,6 +15,7 @@ export default function Header(props) {
   const { logout } = useAuth();
   React.useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
+      console.log("Firebase Auth State Changed:", currentUser);
       setUser(currentUser);
     });
   }, []);
@@ -49,9 +50,6 @@ export default function Header(props) {
               <Link href="/teacher/list" className={styles["dropdown-link"]}>
                 師資
               </Link>
-              <Link href="#" className={styles["dropdown-link"]}>
-                常見 Q&A
-              </Link>
             </div>
           </div>
           <li>
@@ -67,17 +65,19 @@ export default function Header(props) {
             {/* <FontAwesomeIcon icon={faUser} /> */}
             <i className="bi bi-person" />
           </Link>
-          <div className={styles["dropdown-content"]}>
-            <Link href="/pages" className={styles["dropdown-link"]}>
-              個人資料
-            </Link>
-            <Link href="/favorite" className={styles["dropdown-link"]}>
-              我的收藏
-            </Link>
-            <div onClick={logout} className={styles["dropdown-link"]}>
-              登出
+          {user ? (
+            <div className={styles["dropdown-content"]}>
+              <Link href="/pages" className={styles["dropdown-link"]}>
+                個人資料
+              </Link>
+              <Link href="/favorite" className={styles["dropdown-link"]}>
+                我的收藏
+              </Link>
+              <div onClick={logout} className={styles["dropdown-link"]}>
+                登出
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
         <div className={styles["lumi-cart-icon"]}>
           <Link href="/cart/CartList" className={styles["lumi-cart-icon"]}>
@@ -91,78 +91,65 @@ export default function Header(props) {
         onClick={() => setMenuOpen(!menuOpen)}
       >
         <i
-          className={`${styles.menu} ${
-            menuOpen ? "bi bi-x-lg" : "bi bi-list"
-          }`}
+          className={`${styles.menu} ${menuOpen ? "bi bi-x-lg" : "bi bi-list"}`}
         ></i>
         <nav className={styles["mobileMenubar"]}>
-        <ul className={`${styles.mobileDrop} ${styles.lumiUl} ${menuOpen ? styles.show : ""}`}>
-          <li>
-            <Link href="/home">關於我們</Link>
-          </li>
-          <li>
-            <Link href="/product/list">寵物用品</Link>
-          </li>
-          <li>
-            <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>
-          </li>
-          <div className={styles["dropdown"]}>
+          <ul
+            className={`${styles.mobileDrop} ${styles.lumiUl} ${
+              menuOpen ? styles.show : ""
+            }`}
+          >
             <li>
-              <Link href="/teacher" className={styles["dropbtn"]}>
-                寵物課程
-              </Link>
+              <Link href="/home">關於我們</Link>
             </li>
-            <div className={styles["dropdown-content"]}>
-              <Link href="/course/list" className={styles["dropdown-link"]}>
-                課程
-              </Link>
-              <Link href="/teacher/list" className={styles["dropdown-link"]}>
-                師資
-              </Link>
-              <Link href="#" className={styles["dropdown-link"]}>
-                常見 Q&A
+            <li>
+              <Link href="/product/list">寵物用品</Link>
+            </li>
+            <li>
+              <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>
+            </li>
+            <div className={styles["dropdown"]}>
+              <li>
+                <Link href="/teacher" className={styles["dropbtn"]}>
+                  寵物課程
+                </Link>
+              </li>
+              <div className={styles["dropdown-content"]}>
+                <Link href="/course/list" className={styles["dropdown-link"]}>
+                  課程
+                </Link>
+                <Link href="/teacher/list" className={styles["dropdown-link"]}>
+                  師資
+                </Link>
+              </div>
+            </div>
+            <li>
+              <Link href="#">毛孩文章</Link>
+            </li>
+            <div className={styles["dropdown"]}>
+              <li>
+                <Link href="/pages">會員中心</Link>
+              </li>
+              <div className={styles["dropdown-content"]}>
+                <Link href="/pages" className={styles["dropdown-link"]}>
+                  個人資料
+                </Link>
+                <Link href="/favorite" className={styles["dropdown-link"]}>
+                  我的收藏
+                </Link>
+                <div onClick={logout} className={styles["dropdown-link"]}>
+                  登出
+                </div>
+              </div>
+            </div>
+            <div>
+              <Link href="/cart/CartList">
+                <i className="bi bi-cart2"></i>購物車
               </Link>
             </div>
-          </div>
-          <li>
-            <Link href="#">毛孩文章</Link>
-          </li>
-          <div className={styles["dropdown"]}>
-          <li>
-            <Link href="/pages">會員中心</Link>
-          </li>
-          <div className={styles["dropdown-content"]}>
-            <Link href="/pages" className={styles["dropdown-link"]}>
-              個人資料
-            </Link>
-            <Link href="/favorite" className={styles["dropdown-link"]}>
-              我的收藏
-            </Link>
-            <div onClick={logout} className={styles["dropdown-link"]}>
-              登出
-            </div>
-          </div>
-          </div>
-          <div>
-            <Link href="/cart/CartList"><i className="bi bi-cart2"></i>購物車</Link>
-          </div>
-        </ul>
-      </nav>
+          </ul>
+        </nav>
       </div>
-      
-      
-      {/* </>
-      ) : (
-        <div>
-          <Link href="/register" className={styles["lumi-signin"]}>
-            註冊
-          </Link>
-          <span className={styles["lumi-connect"]}>/</span>
-          <Link href="/login" className={styles["lumi-signin"]}>
-            登入
-          </Link>
-        </div>
-      )} */}
     </header>
   );
 }

@@ -17,12 +17,14 @@ import OtherCourses from "../../../components/teacher/OtherCourses";
 import styles from "../info.module.css";
 import OtherTeacher from "../../../components/teacher/otherTeacher";
 import style from "../../../pages/menu.module.css";
-
+import styles1 from "../../../../styles/modules/toggle.module.css";
 export default function App () {
   const [selectedTab, setSelectedTab] = useState("experience");
 
     const { id } = useParams();
     const { teacher } = useTeacherDetail(id);
+
+    const [activeTab, setActiveTab] = useState("exps");
 
   const teacherData = [
     {
@@ -83,12 +85,72 @@ export default function App () {
             ]}
           />
 
-          <Profile teacher={teacher}/>
+          <Profile teacher={teacher} />
           {/* <SocialLinks /> */}
           <div className={`row ${styles.profile}`}>
             <div className="my-5 ">
               <div className="">
-                <ToggleButtons onRadioChange={handleRadioChange} />
+                {/* <ToggleButtons onRadioChange={handleRadioChange} /> */}
+                <div className="row g-5">
+                  <div className="col-12 col-md-6 col-lg-5">
+                    <div className={styles1.infoCard}>
+                      <h3 className={`mt-2 mb-4 ms-2 ${styles1.cardTitle}`}>
+                        相關資訊
+                      </h3>
+                      <div
+                        className={`${styles1.menuItem} ${
+                          activeTab == "exps" ? styles1.active : ""
+                        }`}
+                        onClick={() => setActiveTab("exps")}
+                      >
+                        <i className={`"bi bi-person-fill ${styles1.icon}`}></i>
+                        <span className="ms-1">老師經歷</span>
+                      </div>
+                      <div
+                        className={`${styles1.menuItem} ${
+                          activeTab === "course" ? styles1.active : ""
+                        }`}
+                        onClick={() => setActiveTab("course")}
+                      >
+                        <i
+                          className={`bi bi-mortarboard-fill ${styles1.icon}`}
+                        ></i>
+                        <span className="ms-1">相關課程</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12 col-md-6 col-lg-7 ps-5">
+                    {activeTab === "exps" && (
+                      <div className="mb-5">
+                        <h4 className="mb-3">經歷 :</h4>
+                        <ul>
+                          {teacher.Experience?.split("\n").map(
+                            (line, index) => (
+                              <li className="mb-2" key={index}>
+                                {line}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
+
+                    {activeTab === "course" && (
+                      <div className="mb-5">
+                        <h4 className="mb-3">課程 :</h4>
+                        <ul>
+                          {teacher.course_names
+                            ?.split(",")
+                            .map((line, index) => (
+                              <li className="mb-2" key={index}>
+                                {line}
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
               <div className="col-7">
                 {/* {selectedTab === "experience" && <Experience />}

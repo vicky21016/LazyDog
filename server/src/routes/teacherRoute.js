@@ -27,10 +27,26 @@ router.get('/info/:id', async (req, res) => {
   const { id } = req.params
   try {
      const sql = `
-      SELECT teacher.*, course_type.name AS category_name 
-      FROM teacher 
-      JOIN course_type ON teacher.category_id = course_type.type_id
-      WHERE teacher.id = ?;
+         SELECT 
+        teacher.*, 
+        course_type.name AS category_name,
+        GROUP_CONCAT(DISTINCT course.name SEPARATOR ', ') AS course_names
+      FROM 
+        teacher
+      LEFT JOIN 
+        course_type ON teacher.category_id = course_type.type_id
+      LEFT JOIN 
+        course_session ON teacher.id = course_session.teacher_id
+      LEFT JOIN 
+        course ON course_session.course_id = course.id
+      WHERE 
+        teacher.id = ? 
+      AND 
+        (course_session.is_deleted = 0 OR course_session.is_deleted IS NULL) 
+      AND 
+        (course_session.start_date >= CURDATE() OR course_session.start_date IS NULL)
+      GROUP BY 
+        teacher.id;
     `;
     const [teacher] = await pool.execute(sql, [id])
     if (teacher.length == 0)
@@ -66,5 +82,17 @@ router.post('/', async (req, res) => {
     })
   }
 })
+
+// 取得該老師的課程
+// const sql =`SELECT 
+//     course.name AS course_name
+// FROM 
+//     course_session
+// JOIN 
+//     course ON course_session.course_id = course.id
+// WHERE 
+//     course_session.teacher_id = ?  -- 根據老師的 ID 查詢課程
+//     AND course_session.is_deleted = 0
+//     AND course_session.start_date >= CURDATE();`
 
     export default router
