@@ -123,6 +123,46 @@
 }
 .dog-image {
   width: 80px;
-  height: 80px;
-  margin: 50px;
+
+height: 80px;
+margin: 50px;
 }
+.carousel {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.carouselTrack {
+  display: flex;
+  transition: transform 1s ease;
+}
+
+.carouselItem {
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  display: block;
+}
+
+/* @keyframes slideAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-100%);
+  }
+  40% {
+    transform: translateX(-200%);
+  }
+  60% {
+    transform: translateX(-300%);
+  }
+  80% {
+    transform: translateX(-400%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+} */
+

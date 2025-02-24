@@ -141,11 +141,22 @@ export default function App () {
                         <ul>
                           {teacher.course_names
                             ?.split(",")
-                            .map((line, index) => (
-                              <li className="mb-2" key={index}>
-                                {line}
-                              </li>
-                            ))}
+                            .map((course, index) => {
+                              const courseName = course.split(" (")[0]; // 去掉 ID
+                              const courseId =
+                                teacher.course_ids.split(",")[index];
+                              return (
+                                <li className={`mb-2`} key={index}>
+                                  <Link
+                                    className={` ${styles.course}`}
+                                    href={`/course/${courseId}`}
+                                    passHref
+                                  >
+                                    {courseName}
+                                  </Link>
+                                </li>
+                              );
+                            })}
                         </ul>
                       </div>
                     )}

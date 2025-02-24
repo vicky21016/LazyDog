@@ -13,475 +13,115 @@ const HOTEL_FAVORITES_URL = "http://localhost:5000/api/hotel_favorites";
 const HOTEL_REVIEW_URL = "http://localhost:5000/api/hotel_review";
 
 const getToken = () => localStorage.getItem("loginWithToken");
+//  統一 處理
+const fetchAPI = async (url, method = "GET", body = null) => {
+  try {
+    const options = { method, headers: {} };
+    if (body) {
+      options.headers["Content-Type"] = "application/json";
+      options.body = JSON.stringify(body);
+    }
+    const res = await fetch(url, options);
+    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+    return await res.json();
+  } catch (error) {
+    console.error(` API 錯誤 (${method} ${url}):`, error);
+    return null;
+  }
+};
+
+//  自動附帶 `Authorization`
+const fetchAuthAPI = async (url, method = "GET", body = null) => {
+  const token = getToken();
+  const options = {
+    method,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  };
+  if (body) options.body = JSON.stringify(body);
+  return fetchAPI(url, method, body);
+};
 
 // 所有 C
-export const getAllHotels = async () => {
-  const res = await fetch(API_URL, { method: "GET" });
-  return await res.json();
-};
-// id
-export const getHotelById = async (id) => {
-  const res = await fetch(`${API_URL}/${id}`, { method: "GET" });
-  return await res.json();
-};
+export const getAllHotels = async () => fetchAPI(API_URL);
+export const getHotelById = async (id) => fetchAPI(`${API_URL}/${id}`);
+export const fetchHotelsCount = async () => fetchAPI(`${API_URL}/count`);
+export const getPaginatedHotels = async (page = 1, limit = 10) =>
+  fetchAPI(`${API_URL}/paginated?limit=${limit}&offset=${(page - 1) * limit}`);
 
-export const fetchHotelsCount = async () => {
-  try {
-    const res = await fetch(`${API_URL}/count`);
-    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+export const getFilteredHotels = (params) => fetchAPI(`${API_URL}/filter?${new URLSearchParams(params)}`);
 
-    const data = await res.json();
-    console.log("從 API 獲取的總飯店數量:", data.total);
-    return data.total;
-  } catch (error) {
-    console.error("獲取總飯店數量失敗:", error);
-    return 0;
-  }
-};
-
-export const getPaginatedHotels = async (page = 1, limit = 10) => {
-  try {
-    const offset = (page - 1) * limit;
-    const res = await fetch(
-      `${API_URL}/paginated?limit=${limit}&offset=${offset}`
-    );
-
-    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
-
-    const data = await res.json();
-    console.log(`取得第 ${page} 頁的飯店數據:`, data);
-    return data;
-  } catch (error) {
-    console.error("獲取飯店失敗:", error);
-    return [];
-  }
-};
-//暫放
-export const getFilteredHotels = async (params) => {
-  const query = new URLSearchParams(params).toString();
-  const response = await fetch(`${API_URL}/all?${query}`);
-  if (!response.ok) throw new Error("獲取飯店失敗");
-  return response.json();
-};
-
-export const getSearch = async () => {
-  const res = await fetch(`${API_URL}/search`, { method: "GET" });
-  return await res.json();
-};
-
-export const getOperatorHotels = async () => {
-  const token = getToken();
-  const res = await fetch(`${API_URL}/operator`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return await res.json();
-};
-export const createHotel = async (formData) => {
-  const token = getToken();
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
-    body: formData,
-  });
-  return await res.json();
-};
-
-export const updateHotel = async (id, formData) => {
-  const token = getToken();
-  const res = await fetch(`${API_URL}/${id}`, {
-    method: "PATCH",
-    headers: { Authorization: `Bearer ${token}` },
-    body: formData,
-  });
-  return await res.json();
-};
-export const softDeleteHotel = async (id) => {
-  const token = getToken();
-  const res = await fetch(`${API_URL}/${id}/soft-delete`, {
-    method: "PATCH",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return await res.json();
-};
-
+export const getOperatorHotels = async () => fetchAuthAPI(`${API_URL}/operator`);
+export const createHotel = async (formData) => fetchAuthAPI(API_URL, "POST", formData);
+export const updateHotel = async (id, formData) => fetchAuthAPI(`${API_URL}/${id}`, "PATCH", formData);
+export const softDeleteHotel = async (id) => fetchAuthAPI(`${API_URL}/${id}/soft-delete`, "PATCH");
 //標籤C
-export const getAllTags = async () => {
-  try {
-    const res = await fetch(`${HOTEL_TAGS_URL}/tags`, { method: "GET" });
-    if (!res.ok) throw new Error(`錯誤! Status: ${res.status}`);
-    return await res.json();
-  } catch (error) {
-    console.error("獲取標籤失敗:", error);
-    return []; // API 失敗時回傳空陣列，避免前端崩潰
-  }
-};
-export const getHotelTags = async (hotelId) => {
-  try {
-    const res = await fetch(`${HOTEL_TAGS_URL}/${hotelId}`, { method: "GET" });
-    if (!res.ok) throw new Error(`錯誤! Status: ${res.status}`);
-    return await res.json();
-  } catch (error) {
-    console.error(`獲取飯店 (${hotelId}) 標籤失敗:`, error);
-    return [];
-  }
-};
-
-export const removeHotelTag = async (hotelId, tagId) => {
-  try {
-    const res = await fetch(`${HOTEL_TAGS_URL}/${hotelId}/${tagId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!res.ok) throw new Error(`錯誤! Status: ${res.status}`);
-    return await res.json();
-  } catch (error) {
-    console.error(`刪除標籤失敗 (${hotelId}, ${tagId}):`, error);
-    return { success: false, message: "刪除標籤失敗" };
-  }
-};
+export const getAllTags = async () => fetchAPI(`${HOTEL_TAGS_URL}/tags`);
+export const getHotelTags = async (hotelId) => fetchAPI(`${HOTEL_TAGS_URL}/${hotelId}`);
+export const removeHotelTag = async (hotelId, tagId) =>
+  fetchAuthAPI(`${HOTEL_TAGS_URL}/${hotelId}/${tagId}`, "PATCH");
 //價格
 // 取得所有飯店的價格範圍
-export const getGlobalPriceRange = async () => {
-  try {
-    const res = await fetch(`${ROOM_BASE_PRICE_URL}/range`);
-    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-    return await res.json();
-  } catch (error) {
-    console.error("獲取所有飯店價格範圍失敗:", error);
-    return { min_price: 0, max_price: 10000 };
-  }
-};
-// 取得所有房型價格
-export const getRoomBasePrices = async () => {
-  try {
-    const res = await fetch(`${ROOM_BASE_PRICE_URL}`);
-    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-    return await res.json();
-  } catch (error) {
-    console.error("獲取房型價格失敗:", error);
-    return [];
-  }
-};
-
-// 取得特定飯店價格範圍
-export const getHotelPriceRange = async (hotelId) => {
-  try {
-    const res = await fetch(`${ROOM_BASE_PRICE_URL}/range/${hotelId}`);
-    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-    return await res.json();
-  } catch (error) {
-    console.error(`獲取飯店 (${hotelId}) 價格範圍失敗:`, error);
-    return {};
-  }
-};
-
+export const getGlobalPriceRange = async () => fetchAPI(`${ROOM_BASE_PRICE_URL}/range`);
+export const getRoomBasePrices = async () => fetchAPI(`${ROOM_BASE_PRICE_URL}`);
+export const getHotelPriceRange = async (hotelId) => fetchAPI(`${ROOM_BASE_PRICE_URL}/range/${hotelId}`);
 //房型跟庫存
-
-export const getAllRoomTypes = async () => {
-  try {
-    const res = await fetch(ROOM_TYPES_URL);
-    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-    return await res.json();
-  } catch (error) {
-    console.error("獲取房型失敗:", error);
-    return []; // 返回空陣列，避免前端崩潰
-  }
-};
-
-export const getHotelRoomById = async (roomId) => {
-  const res = await fetch(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, {
-    method: "GET",
-  });
-  return await res.json();
-};
+export const getAllRoomTypes = async () => fetchAPI(ROOM_TYPES_URL);
+export const getHotelRoomById = async (roomId) => fetchAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`);
 
 //OP ONLY
-export const createHotelRoom = async (roomData) => {
-  const token = getToken();
-  const res = await fetch(HOTEL_ROOM_TYPES_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(roomData),
-  });
-  return await res.json();
-};
-export const updateHotelRoom = async (roomId, updateData) => {
-  const token = getToken();
-  const res = await fetch(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(updateData),
-  });
-  return await res.json();
-};
-export const deleteHotelRoom = async (roomId) => {
-  const token = getToken();
-  const res = await fetch(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return await res.json();
-};
+export const createHotelRoom = async (roomData) => fetchAuthAPI(HOTEL_ROOM_TYPES_URL, "POST", roomData);
+
+export const updateHotelRoom = async (roomId, updateData) =>fetchAuthAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, "PATCH", updateData);
+
+export const deleteHotelRoom = async (roomId) => fetchAuthAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, "DELETE");
+
 //OP END
 
 //房間庫存
-export const getRoomInventory = async () => {
-  const res = await fetch(ROOM_INVENTORY_URL, { method: "GET" });
-  return await res.json();
-};
+export const getRoomInventory = async () => fetchAPI(ROOM_INVENTORY_URL);
+
 //OP ONLY
-export const updateRoomInventory = async (roomInventoryId, updateData) => {
-  const token = getToken();
-  const res = await fetch(`${ROOM_INVENTORY_URL}/${roomInventoryId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(updateData),
-  });
-  return await res.json();
-};
+export const updateRoomInventory = async (roomInventoryId, updateData) =>fetchAuthAPI(`${ROOM_INVENTORY_URL}/${roomInventoryId}`, "PATCH", updateData);
 //OP END
 
 //hotel的圖C
-export const getAllHotelImages = async () => {
-  const res = await fetch(HOTEL_IMAGES_URL, { method: "GET" });
-  return await res.json();
-};
-export const getByIds = async (imageId) => {
-  const res = await fetch(`${HOTEL_IMAGES_URL}/${imageId}`, { method: "GET" });
-  return await res.json();
-};
-export const getByHotelId = async (hotelId) => {
-  const res = await fetch(`${HOTEL_IMAGES_URL}/hotel/${hotelId}`, {
-    method: "GET",
-  });
-  return await res.json();
-};
+export const getAllHotelImages = async () => fetchAPI(HOTEL_IMAGES_URL);
+export const getByHotelId = async (hotelId) => fetchAPI(`${HOTEL_IMAGES_URL}/hotel/${hotelId}`);
 
 //訂單C
-export const getAllHotelOrders = async () => {
-  const token = getToken();
-  const res = await fetch(HOTEL_ORDERS_URL, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return await res.json();
-};
-// 取得特定訂單
-export const getOrderById = async (orderId) => {
-  const token = getToken();
-  const res = await fetch(`${HOTEL_ORDERS_URL}/${orderId}`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return await res.json();
-};
-export const createNewOrder = async (orderData) => {
-  const token = getToken();
-  const res = await fetch(HOTEL_ORDERS_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(orderData),
-  });
-  return await res.json();
-};
+export const getAllHotelOrders = async () => fetchAuthAPI(HOTEL_ORDERS_URL);
+export const getOrderById = async (orderId) => fetchAuthAPI(`${HOTEL_ORDERS_URL}/${orderId}`);
+export const createNewOrder = async (orderData) => fetchAuthAPI(HOTEL_ORDERS_URL, "POST", orderData);
 // OP ONLY
-export const updateOrder = async (orderId, updateData) => {
-  const token = getToken();
-  const res = await fetch(`${HOTEL_ORDERS_URL}/${orderId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(updateData),
-  });
-  return await res.json();
-};
-export const changeOrderStatus = async (orderId, status) => {
-  const token = getToken();
-  const res = await fetch(`${HOTEL_ORDERS_URL}/${orderId}/status`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ status }),
-  });
-  return await res.json();
-};
-export const updateOrderPayment = async (orderId, paymentStatus) => {
-  const token = getToken();
-  const res = await fetch(`${HOTEL_ORDERS_URL}/${orderId}/payment`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ paymentStatus }),
-  });
-  return await res.json();
-};
-export const softDeleteOrder = async (orderId) => {
-  const token = getToken();
-  const res = await fetch(`${HOTEL_ORDERS_URL}/${orderId}/soft-delete`, {
-    method: "PATCH",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return await res.json();
-};
+export const updateOrder = async (orderId, updateData) =>fetchAuthAPI(`${HOTEL_ORDERS_URL}/${orderId}`, "PATCH", updateData);
+export const changeOrderStatus = async (orderId, status) =>fetchAuthAPI(`${HOTEL_ORDERS_URL}/${orderId}/status`, "PATCH", { status });
+export const updateOrderPayment = async (orderId, paymentStatus) =>fetchAuthAPI(`${HOTEL_ORDERS_URL}/${orderId}/payment`, "PATCH", { paymentStatus });
+export const softDeleteOrder = async (orderId) => fetchAuthAPI(`${HOTEL_ORDERS_URL}/${orderId}/soft-delete`, "PATCH");
 //OP END
 
 //訂單裡面狗的資料
-export const getAllOrderDogs = async () => {
-  const token = getToken();
-  const res = await fetch(ORDER_DOGS_URL, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return await res.json();
-};
-//
-export const getOrderDogs = async (orderId) => {
-  const token = getToken();
-  const res = await fetch(`${ORDER_DOGS_URL}/${orderId}`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return await res.json();
-};
-export const createOrderDog = async (dogData) => {
-  const token = getToken();
-  const res = await fetch(ORDER_DOGS_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(dogData),
-  });
-  return await res.json();
-};
-export const updateOrderDog = async (dogId, updateData) => {
-  const token = getToken();
-  const res = await fetch(`${ORDER_DOGS_URL}/${dogId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(updateData),
-  });
-  return await res.json();
-};
-export const deleteOrderDog = async (dogId) => {
-  const token = getToken();
-  const res = await fetch(`${ORDER_DOGS_URL}/${dogId}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return await res.json();
-};
+export const getAllOrderDogs = async () => fetchAuthAPI(ORDER_DOGS_URL);
+
+export const getOrderDogs = async (orderId) => fetchAuthAPI(`${ORDER_DOGS_URL}/${orderId}`);
+
+export const createOrderDog = async (dogData) => fetchAuthAPI(ORDER_DOGS_URL, "POST", dogData);
+
+export const updateOrderDog = async (dogId, updateData) =>fetchAuthAPI(`${ORDER_DOGS_URL}/${dogId}`, "PATCH", updateData);
+
+export const deleteOrderDog = async (dogId) => fetchAuthAPI(`${ORDER_DOGS_URL}/${dogId}`, "DELETE");
 //END
 
 //收藏C
-export const getUserFavorites = async () => {
-  const token = getToken();
-  const res = await fetch(HOTEL_FAVORITES_URL, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return await res.json();
-};
-export const addHotelToFavorites = async (hotelId) => {
-  const token = getToken();
-  const res = await fetch(HOTEL_FAVORITES_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ hotelId }),
-  });
-  return await res.json();
-};
-export const removeHotelToFavorites = async (hotelId) => {
-  const token = getToken();
-  const res = await fetch(`${HOTEL_FAVORITES_URL}/${hotelId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ hotelId }),
-  });
-  return await res.json();
-};
+export const getUserFavorites = async () => fetchAuthAPI(HOTEL_FAVORITES_URL);
+export const addHotelToFavorites = async (hotelId) =>fetchAuthAPI(HOTEL_FAVORITES_URL, "POST", { hotelId });
+export const removeHotelToFavorites = async (hotelId) =>fetchAuthAPI(`${HOTEL_FAVORITES_URL}/${hotelId}`, "DELETE");
 
 //ReviewC
-export const getHotelReviews = async (hotelId) => {
-  const res = await fetch(`${HOTEL_REVIEW_URL}/${hotelId}`, { method: "GET" });
-  return await res.json();
-};
-
-export const addHotelReview = async (hotelId, reviewData) => {
-  const token = getToken();
-  const res = await fetch(HOTEL_REVIEW_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ hotelId, ...reviewData }),
-  });
-  return await res.json();
-};
-export const replyHotelReview = async (reviewId, replyData) => {
-  const token = getToken();
-  const res = await fetch(`${HOTEL_REVIEW_URL}/${reviewId}/reply`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(replyData),
-  });
-  return await res.json();
-};
-
-export const deleteHotelReview = async (reviewId) => {
-  const token = getToken();
-  const res = await fetch(`${HOTEL_REVIEW_URL}/${reviewId}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return await res.json();
-};
-export const ratingAv = async () => {
-  try {
-    const res = await fetch(`${HOTEL_REVIEW_URL}/average`, { method: "GET" });
-
-    if (!res.ok) {
-      throw new Error(`獲取評分失敗: ${res.status} ${res.statusText}`);
-    }
-
-    return await res.json(); // 確保返回的是 Array
-  } catch (error) {
-    console.error("獲取飯店評分時發生錯誤:", error.message);
-    return [];
-  }
-};
+export const getHotelReviews = async (hotelId) => fetchAPI(`${HOTEL_REVIEW_URL}/${hotelId}`);
+export const addHotelReview = async (hotelId, reviewData) =>fetchAuthAPI(HOTEL_REVIEW_URL, "POST", { hotelId, ...reviewData });
+export const replyHotelReview = async (reviewId, replyData) =>fetchAuthAPI(`${HOTEL_REVIEW_URL}/${reviewId}/reply`, "POST", replyData);
+export const deleteHotelReview = async (reviewId) => fetchAuthAPI(`${HOTEL_REVIEW_URL}/${reviewId}`, "DELETE");
+export const ratingAv = async () => fetchAPI(`${HOTEL_REVIEW_URL}/average`);

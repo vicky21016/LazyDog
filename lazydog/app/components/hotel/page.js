@@ -7,11 +7,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <nav aria-label="Page navigation">
         <ul className={`pagination justify-content-center ${styles.suPagination}`} id="pagination">
           {/* 上一頁按鈕 */}
-          <li className={`page-item ${currentPage === 1 ? "disabled" : ""} ${styles.pageItem}`}>
+          <li className={`page-item ${currentPage == 1 ? "disabled" : ""} ${styles.pageItem}`}>
             <button
               className={`page-link ${styles.pageLink}`}
               aria-label="Previous"
-              disabled={currentPage === 1}
+              disabled={currentPage == 1}
               onClick={() => onPageChange(currentPage - 1)}
             >
               <span aria-hidden="true">&laquo;</span>
@@ -20,7 +20,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
           {/* 頁碼按鈕 */}
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <li key={page} className={`page-item ${currentPage === page ? "active" : ""} ${styles.pageItem}`}>
+            <li key={page} className={`page-item ${currentPage == page ? "active" : ""} ${styles.pageItem}`}>
               <button
                 className={`page-link ${styles.pageLink}`}
                 onClick={() => onPageChange(page)}
@@ -31,11 +31,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           ))}
 
           {/* 下一頁按鈕 */}
-          <li className={`page-item ${currentPage === totalPages ? "disabled" : ""} ${styles.pageItem}`}>
+          <li className={`page-item ${currentPage == totalPages ? "disabled" : ""} ${styles.pageItem}`}>
             <button
               className={`page-link ${styles.pageLink}`}
               aria-label="Next"
-              disabled={currentPage === totalPages}
+              disabled={currentPage == totalPages}
               onClick={() => onPageChange(currentPage + 1)}
             >
               <span aria-hidden="true">&raquo;</span>
