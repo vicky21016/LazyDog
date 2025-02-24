@@ -178,7 +178,19 @@ export const getAllOrder = async (updateFields, value) => {
     return products;
   } catch (error) {
     console.log(error);
-    throw new Error("取得商品列表失敗");
+    throw new Error("取得訂單列表失敗");
+  }
+};
+
+export const getAllFavorite = async () => {
+  try {
+    const [products] = await pool.execute(
+      "SELECT * FROM yi_favorites WHERE is_deleted = 0"
+    );
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error("取得收藏列表失敗");
   }
 };
 
@@ -209,6 +221,30 @@ export const getProductId = async (productID) => {
   } catch (error) {
     console.log(error);
     throw new Error(`取得編號：${productID}的商品資料失敗`);
+  }
+};
+
+export const createNewFavorite = async (userId, productIDlist) => {
+  try {
+    const [last] = await pool.execute(
+      "SELECT * FROM yi_product WHERE category_id = ?",
+      [cateId]
+    );
+    const newProductID = `${productID}${
+      Number(last[last.length - 1].productID.slice(-3)) + 1
+    }`;
+    const [products] = await pool.execute(
+      "INSERT INTO yi_product (category_id,name,brand,price,discount,discount_et,stock,full_info,info_text,spec,productID,created_at,updated_at,is_deleted) VALUES ( ?, ?, ?, ?, 1, null, ?, null, null, null, ?, NOW(), NOW(), 0)",
+      [cateId, name, brand, price, stock, newProductID]
+    );
+    const [imgs] = await pool.execute(
+      "INSERT INTO yi_img (name,list_img,info_img,lg_img,sm_img,productID,created_at,updated_at,is_deleted) VALUES ( ?, ?, null, ?, null, ?, NOW(), NOW(), 0)",
+      [name, listImg, img, newProductID]
+    );
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error("新增商品資料失敗");
   }
 };
 
@@ -245,6 +281,32 @@ export const createNewItem = async (
   }
 };
 
+export const updateFavoriteInfo = async (
+  updateFields,
+  value,
+  updateImgsFields,
+  imgs
+) => {
+  try {
+    const [products] = await pool.execute(
+      `UPDATE yi_product SET ${updateFields.join(", ")} WHERE productID = ? `,
+      value
+    );
+    if (updateImgsFields && imgs) {
+      const [newImgs] = await pool.execute(
+        `UPDATE yi_img SET ${updateImgsFields.join(", ")} WHERE productID = ? `,
+        imgs
+      );
+    }
+    // const [warnings] = await pool.query("SHOW WARNINGS");
+    // console.log("警告:", warnings);
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error("更新商品資料失敗");
+  }
+};
+
 export const updateItemInfo = async (
   updateFields,
   value,
@@ -268,6 +330,23 @@ export const updateItemInfo = async (
   } catch (error) {
     console.log(error);
     throw new Error("更新商品資料失敗");
+  }
+};
+
+export const deleteFavoriteInfo = async (productID) => {
+  try {
+    const [products] = await pool.execute(
+      "DELETE FROM yi_product WHERE productID = ?",
+      [productID]
+    );
+    const [imgs] = await pool.execute(
+      "DELETE FROM yi_img WHERE productID = ?",
+      [productID]
+    );
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`刪除編號：${productID}的商品資料失敗`);
   }
 };
 

@@ -4,8 +4,17 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./card.module.css";
 import Link from "next/link";
 import useSWR from "swr";
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter, usePathname } from "next/navigation";
 
-export default function CardCard({ productID = "" }) {
+export default function CardCard({
+  productID = "",
+  favorite = [],
+  setFavorite = () => {},
+}) {
+  const { user } = useAuth();
+  const router = useRouter();
+  const loginRoute = "/login";
   const url = productID
     ? `http://localhost:5000/api/products/${productID}`
     : null;
@@ -50,6 +59,7 @@ export default function CardCard({ productID = "" }) {
         setCardPic(`/product/img/${encodedImageName}_(1).webp`);
     }
   }, [productName]);
+  console.log(favorite);
   return (
     <li
       className={styles.ProductCard}
@@ -104,7 +114,22 @@ export default function CardCard({ productID = "" }) {
           className={`${styles.HoverIcon} `}
           onMouseEnter={() => setHeartHover(true)}
           onMouseLeave={() => setHeartHover(false)}
-          onClick={() => setHeartState(!heartState)}
+          onClick={() => {
+            if (!user) {
+              alert("請先登入");
+              setTimeout(() => {
+                router.push(loginRoute);
+              }, 100);
+            } else {
+              const newState = !heartState;
+              setHeartState(newState);
+              setFavorite((favorite) =>
+                newState
+                  ? [...favorite, productID]
+                  : favorite.filter((e) => e !== productID)
+              );
+            }
+          }}
         >
           <img
             src={`/product/font/${
@@ -120,7 +145,14 @@ export default function CardCard({ productID = "" }) {
           }`}
           onMouseEnter={() => setCartHover(true)}
           onMouseLeave={() => setCartHover(false)}
-          onClick={() => setCartRate(cartRate + 1)}
+          onClick={() => {
+            if (!user) {
+              alert("請先登入");
+              router.push(loginRoute);
+            } else {
+              setCartRate(cartRate + 1);
+            }
+          }}
         >
           <img
             src={`/product/font/${

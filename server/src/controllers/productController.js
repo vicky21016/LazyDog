@@ -5,9 +5,13 @@ import {
   getSearchKeyword,
   getCategoryName,
   getAllOrder,
+  getAllFavorite,
   getProductId,
+  createNewFavorite,
   createNewItem,
+  updateFavoriteInfo,
   updateItemInfo,
+  deleteFavoriteInfo,
   deleteItemInfo,
 } from "../services/productService.js";
 
@@ -155,6 +159,20 @@ export const getOrder = async (req, res) => {
   }
 };
 
+export const getFavorite = async (req, res) => {
+  try {
+    const favorites = await getAllFavorite();
+    if (!favorites.length) throw new Error("查無收藏列表");
+    res.status(200).json({
+      status: "success",
+      data: favorites,
+      message: `查詢收藏列表成功，共${favorites.length}筆資料`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 export const getId = async (req, res) => {
   try {
     const { productID } = req.params;
@@ -170,6 +188,29 @@ export const getId = async (req, res) => {
       status: "success",
       data: product,
       message: `查詢編號：${productID} ${product[0].name} 商品成功`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const createFavorite = async (req, res) => {
+  try {
+    const { userId, productIDlist } = req.body;
+    if (!userId || !productIDlist) {
+      return res.status(401).json({
+        status: "error",
+        message: "請從正規管道進入此頁面",
+      });
+    }
+
+    const product = await createNewFavorite(userId, productIDlist);
+    if (product.affectedRows == 0) {
+      throw new Error("新增商品失敗");
+    }
+    res.status(201).json({
+      status: "success",
+      message: `新增 ${name} 商品成功`,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -233,6 +274,124 @@ export const createNew = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: `新增 ${name} 商品成功`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const updateFavorite = async (req, res) => {
+  try {
+    const { productID } = req.params;
+    if (!productID) throw new Error("請提供商品編號");
+    const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
+    if (!regForPD.test(productID)) {
+      return connectError(req, res);
+    }
+    const {
+      cateId,
+      name,
+      brand,
+      price,
+      discount,
+      discountEnd,
+      stock,
+      fullInfo,
+      infoText,
+      spec,
+      isDeleted,
+      listImg,
+      infoImg,
+      img,
+      smImg,
+    } = req.body;
+    const updateFields = [];
+    const value = [];
+    const updateImgsFields = [];
+    const imgs = [];
+    const fieldNames = [
+      "category_id",
+      "name",
+      "brand",
+      "price",
+      "discount",
+      "discount_et",
+      "stock",
+      "full_info",
+      "info_text",
+      "spec",
+      "is_deleted",
+      "updated_at",
+    ];
+    const imgNames = [
+      "name",
+      "list_img",
+      "info_img",
+      "lg_img",
+      "sm_img",
+      "is_deleted",
+      "updated_at",
+    ];
+    const updateContent = [
+      cateId,
+      name,
+      brand,
+      price,
+      discount,
+      discountEnd,
+      stock,
+      fullInfo,
+      infoText,
+      spec,
+      isDeleted,
+      productID,
+    ];
+    const updateImgs = [
+      name,
+      listImg,
+      infoImg,
+      img,
+      smImg,
+      isDeleted,
+      productID,
+    ];
+    for (let i = 0; i < updateContent.length; i++) {
+      if (updateContent[i]) {
+        if (i == 11) {
+          updateFields.push(`${fieldNames[i]} = ?`);
+          value.push(new Date().toISOString());
+          value.push(updateContent[i]);
+        } else {
+          updateFields.push(`${fieldNames[i]} = ?`);
+          value.push(updateContent[i]);
+        }
+      }
+    }
+    for (let i = 0; i < updateImgs.length; i++) {
+      if (updateImgs[i]) {
+        if (i == 6) {
+          updateImgsFields.push(`${imgNames[i]} = ?`);
+          imgs.push(new Date().toISOString());
+          imgs.push(updateImgs[i]);
+        } else {
+          updateImgsFields.push(`${imgNames[i]} = ?`);
+          imgs.push(updateImgs[i]);
+        }
+      }
+    }
+
+    const product = await updateFavoriteInfo(
+      updateFields,
+      value,
+      updateImgsFields,
+      imgs
+    );
+    if (product.affectedRows == 0) {
+      throw new Error("更新商品失敗");
+    }
+    res.status(200).json({
+      status: "success",
+      message: `更新編號：${productID} ${name} 商品成功`,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -383,6 +542,28 @@ export const softDeleteItem = async (req, res) => {
     res.status(200).json({
       status: "success",
       message: `編號：${productID} 商品軟刪除切換成功`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const deleteFavorite = async (req, res) => {
+  try {
+    const { productID } = req.params;
+    if (!productID) throw new Error("請提供商品編號");
+    const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
+    if (!regForPD.test(productID)) {
+      return connectError(req, res);
+    }
+
+    const product = await deleteFavoriteInfo(productID);
+    if (product.affectedRows == 0) {
+      throw new Error("刪除商品失敗");
+    }
+    res.status(200).json({
+      status: "success",
+      message: `刪除編號：${productID} 商品成功`,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
