@@ -340,7 +340,7 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
           {/* 搜尋 / 清除篩選 按鈕 */}
           <button
             className={`btn btn-sm btn-outline-danger mt-3 ${styles.suClearFilterBtn}`}
-            onClick={isSearching ? handleApplyFilters : handleClear} // ✅ **點擊時執行 `onClear`**
+            onClick={isSearching ? handleApplyFilters : handleClear} 
           >
             {isSearching ? "搜尋" : "清除篩選"}
           </button>

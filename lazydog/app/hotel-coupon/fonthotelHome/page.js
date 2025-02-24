@@ -29,12 +29,14 @@ export default function HotelHomePage() {
     district,
     closeModal,
     confirmLocation,
+    clearLocation,
   } = useLocationSelector();
 
   const [searchParams, setSearchParams] = useState({
     city: "",
     district: "",
-    date: "",
+    checkInDate: "",
+    checkOutDate: "",
     quantity: 1,
     minPrice: 0,
     maxPrice: 10000,
@@ -43,89 +45,96 @@ export default function HotelHomePage() {
     rating: "",
   });
 
-  //  初次載入所有飯店
+  // 🔹 初次載入所有飯店
   useEffect(() => {
-    const fetchHotels = async () => {
-      try {
-        const hotelData = await getAllHotels();
+    getAllHotels()
+      .then((hotelData) => {
         setHotels(hotelData);
         setFilteredHotels(hotelData);
-      } catch (error) {
-        console.error("獲取飯店失敗:", error);
-      }
-    };
-    fetchHotels();
+      })
+      .catch((error) => console.error("獲取飯店失敗:", error));
   }, []);
 
-  // 🔹 更新分頁數
+  //  監聽 `filteredHotels`，更新分頁數
   useEffect(() => {
     setTotalPages(
       Math.max(1, Math.ceil(filteredHotels.length / hotelsPerPage))
     );
   }, [filteredHotels]);
 
-  // 🔹 確保當前頁數不超過最大頁數
+  // 確保當前頁數不超過最大頁數
   useEffect(() => {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
   }, [totalPages]);
 
-  // 搜尋觸發
+  // 當 `searchParams` 更新時，自動執行篩選 API
+  useEffect(() => {
+    getFilteredHotels(searchParams)
+      .then((data) => {
+        setFilteredHotels(data);
+        setCurrentPage(1);
+      })
+      .catch((error) => console.error("篩選飯店錯誤:", error));
+  }, [searchParams]);
+
+  // 搜尋觸發**
   const handleSearch = (newParams) => {
     setSearchParams((prevParams) => {
       const updatedParams = { ...prevParams, ...newParams };
-  
-      // 🚀 確保 `tags` 是字串，不是陣列
-      if (Array.isArray(updatedParams.tags)) {
-        updatedParams.tags = updatedParams.tags.join(",");
+
+      //  轉換為 `checkInDate` 和 `checkOutDate`
+      if (newParams.selectedDate) {
+        const dates = newParams.selectedDate.split(" → ");
+        updatedParams.checkInDate = dates[0] || "";
+        updatedParams.checkOutDate = dates[1] || "";
       }
-  
-      console.log("📢 更新後的篩選條件:", updatedParams);
+
+      console.log("更新後的篩選條件:", updatedParams);
+
+      getFilteredHotels(updatedParams)
+        .then((data) => {
+          setFilteredHotels(data);
+          setCurrentPage(1);
+        })
+        .catch((error) => {
+          console.error("篩選飯店時發生錯誤:", error);
+        });
+
       return updatedParams;
     });
-  
-    getFilteredHotels(newParams)
+  };
+
+  // 清除篩選條件
+  const handleClearFilters = () => {
+    console.log("🧹 清除篩選條件");
+
+    clearLocation(); 
+    setSearchParams({
+      city: "",
+      district: "",
+      checkInDate: "",
+      checkOutDate: "",
+      quantity: 1,
+      minPrice: 0,
+      maxPrice: 10000,
+      roomType: "",
+      tags: [],
+      rating: "",
+    });
+
+    getAllHotels()
       .then((data) => {
         setFilteredHotels(data);
         setCurrentPage(1);
       })
       .catch((error) => {
-        console.error("篩選飯店時發生錯誤:", error);
+        console.error(" 獲取飯店失敗:", error);
       });
   };
-  
-//  清除篩選條件
-const handleClearFilters = async () => {
-  console.log("🧹 清除篩選條件");
 
-  // ✅ 清空地區選擇
-  confirmLocation("", ""); 
-
-  setSearchParams({
-    city: "",
-    district: "",
-    date: "",
-    quantity: 1,
-    minPrice: 0,
-    maxPrice: 10000,
-    roomType: "",
-    tags: [],
-    rating: "",
-  });
-
-  try {
-    const hotelData = await getAllHotels();
-    setFilteredHotels(hotelData);
-    setCurrentPage(1);
-  } catch (error) {
-    console.error("獲取飯店失敗:", error);
-  }
-};
-
-
-
-  // 計算當前頁面的飯店數據
+  // 計算頁面
   const indexOfLastHotel = currentPage * hotelsPerPage;
   const indexOfFirstHotel = indexOfLastHotel - hotelsPerPage;
   const currentHotels = filteredHotels.slice(
@@ -153,6 +162,7 @@ const handleClearFilters = async () => {
             locationModalRef={locationModalRef}
             quantity={quantity}
             confirmLocation={confirmLocation}
+            clearLocation={clearLocation} 
             setQuantity={setQuantity}
             onSearch={handleSearch}
             onClear={handleClearFilters}

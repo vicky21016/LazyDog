@@ -9,41 +9,58 @@ const HotelSearchBar = ({
   city,
   district,
   closeModal,
-  confirmLocation, // ✅ 這裡的 `confirmLocation` 需要正確更新
+  confirmLocation,
+  clearLocation,
   quantity,
   setQuantity,
   onSearch,
   onClear,
 }) => {
-  const dateRef = useDatePicker(); 
-  const [selectedDate, setSelectedDate] = useState("");
+  const { dateRef, selectedDate, setSelectedDate, clearDate } = useDatePicker();
+  const [isSearching, setIsSearching] = useState(true);
 
   const handleSearchBarSubmit = () => {
-    console.log("🔍 搜尋欄條件:", { city, district, selectedDate, quantity });
+    confirmLocation(); //確保選擇地區後更新 `city` 和 `district`
+
+    console.log("🔍 搜尋條件:", { city, district, selectedDate, quantity });
 
     if (onSearch) {
       const searchParams = {
         city: city || undefined,
         district: district || undefined,
-        selectedDate: selectedDate || undefined,
         quantity: quantity || 1,
       };
 
-      const cleanParams = Object.fromEntries(
-        Object.entries(searchParams).filter(([_, v]) => v !== undefined)
-      );
+      //轉換為 `checkInDate` 和 `checkOutDate`
+      if (selectedDate.includes(" 至 ")) {
+        const [checkInDate, checkOutDate] = selectedDate.split(" 至 ");
+        searchParams.checkInDate = checkInDate;
+        searchParams.checkOutDate = checkOutDate;
+      }
 
-      onSearch(cleanParams);
+      console.log("送出 API 查詢:", searchParams);
+
+      onSearch(searchParams);
+      setIsSearching(false);
     }
   };
-
   const handleClearSearch = () => {
     console.log("🧹 清除搜尋條件");
-
-    setSelectedDate("");
-    if (dateRef.current) dateRef.current.value = "";
+  
+    if (clearLocation) {
+      clearLocation(); 
+    }
+    
+    if (clearDate) {
+      clearDate();
+    }
+  
+    setQuantity(1);
+  
     if (onClear) onClear();
   };
+  
+  
 
   return (
     <div className="container mt-4">
@@ -55,7 +72,6 @@ const HotelSearchBar = ({
             alt=""
           />
           <button className={styles.suSearchInput} onClick={openModal}>
-            {/* ✅ 這裡顯示選擇的地區 */}
             {city ? `${city} ${district || ""}` : "選擇地區"}
           </button>
         </div>
@@ -99,8 +115,11 @@ const HotelSearchBar = ({
         </div>
 
         {/* 搜尋按鈕 */}
-        <button className={styles.suSearchBtn} onClick={handleSearchBarSubmit}>
-          搜尋
+        <button
+          className={styles.suSearchBtn}
+          onClick={isSearching ? handleSearchBarSubmit : handleClearSearch} // 點擊時執行搜尋或清除
+        >
+          {isSearching ? "搜尋" : "清除篩選"}
         </button>
 
         {/* 地區選擇 Modal */}
@@ -129,7 +148,7 @@ const HotelSearchBar = ({
               <div className="modal-footer">
                 <button
                   className={styles.suSearchBtn}
-                  onClick={() => confirmLocation()} // ✅ 確保這裡更新 `city` 和 `district`
+                  onClick={confirmLocation} 
                 >
                   確定
                 </button>
