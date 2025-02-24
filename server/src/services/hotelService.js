@@ -1,21 +1,8 @@
 import pool from "../config/mysql.js";
 
-export const getHotels = async (
-  minRating = 0,
-  minPrice = 0,
-  maxPrice = 10000,
-  roomTypeId = null,
-  tags = "[]"
-) => {
+export const getAllHotelsService = async () => {
   const connection = await pool.getConnection();
   try {
-    let parsedTags = [];
-    try {
-      parsedTags = JSON.parse(tags); // **解析 tags**
-    } catch (e) {
-      console.error("標籤解析失敗:", e);
-    }
-
     let query = `
       SELECT h.*, 
              hi.url AS main_image_url,
@@ -35,43 +22,15 @@ export const getHotels = async (
           GROUP BY hotel_id
       ) rbp ON h.id = rbp.hotel_id
       WHERE h.is_deleted = 0 
-        AND IFNULL(r.avg_rating, 0) >= ?
-        AND IFNULL(rbp.min_price, 0) BETWEEN ? AND ?
+      GROUP BY h.id
     `;
 
-    let queryParams = [
-      minRating,
-      minPrice,
-      maxPrice,
-      roomTypeId,
-      ...parsedTags,
-    ];
+    console.log(" 執行 SQL 查詢:", query);
 
-    if (roomTypeId !== null) {
-      query += ` AND EXISTS (
-          SELECT 1 FROM room_base_price WHERE room_type_id = ? AND hotel_id = h.id
-      )`;
-      queryParams.push(roomTypeId);
-    }
-
-    if (parsedTags.length > 0) {
-      query += ` AND h.id IN (
-          SELECT hotel_id FROM hotel_tags WHERE tag_id IN (${parsedTags
-            .map(() => "?")
-            .join(", ")})
-      )`;
-      queryParams.push(...parsedTags);
-    }
-
-    query += " GROUP BY h.id";
-
-    console.log("執行 SQL 查詢:", query);
-    console.log("查詢參數:", queryParams);
-
-    const [hotels] = await connection.query(query, queryParams);
+    const [hotels] = await connection.query(query);
     return hotels;
   } catch (error) {
-    throw new Error("無法取得旅館列表：" + error.message);
+    throw new Error("無法取得飯店列表：" + error.message);
   } finally {
     connection.release();
   }
@@ -370,13 +329,14 @@ export const softDeleteHotelById = async (id) => {
     connection.release();
   }
 };
-export const getFilteredHotel = async (filters) => {
+/**  從資料庫獲取篩選後的飯店 */
+export const getFilteredHotelsService = async (filters) => {
   const connection = await pool.getConnection();
   try {
     let query = `
       SELECT h.*, 
              hi.url AS main_image_url,
-             IFNULL(r.avg_rating, 0) AS avg_rating,
+             IFNULL(r.avg_rating, 0) AS avg_rating, 
              IFNULL(rbp.min_price, 0) AS min_price
       FROM hotel h
       LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
@@ -387,7 +347,7 @@ export const getFilteredHotel = async (filters) => {
       ) r ON h.id = r.hotel_id
       LEFT JOIN (
           SELECT hotel_id, MIN(base_price) AS min_price
-          FROM room_base_price 
+          FROM room_base_price
           WHERE is_deleted = 0
           GROUP BY hotel_id
       ) rbp ON h.id = rbp.hotel_id
@@ -396,40 +356,41 @@ export const getFilteredHotel = async (filters) => {
 
     let queryParams = [];
 
-    // 依據條件加入篩選
-    if (filters.min_rating) {
+    // 🔹 動態新增篩選條件
+    if (filters.min_price !== null) {
+      query += ` AND IFNULL(rbp.min_price, 0) >= ?`;
+      queryParams.push(filters.min_price);
+    }
+    if (filters.max_price !== null) {
+      query += ` AND IFNULL(rbp.min_price, 0) <= ?`;
+      queryParams.push(filters.max_price);
+    }
+    if (filters.min_rating !== null) {
       query += ` AND IFNULL(r.avg_rating, 0) >= ?`;
       queryParams.push(filters.min_rating);
     }
-
-    if (filters.min_price !== undefined && filters.max_price !== undefined) {
-      query += ` AND IFNULL(rbp.min_price, 0) BETWEEN ? AND ?`;
-      queryParams.push(filters.min_price, filters.max_price);
-    }
-
-    if (filters.room_type_id) {
+    if (filters.room_type_id !== null) {
       query += ` AND EXISTS (
-          SELECT 1 FROM room_base_price WHERE room_type_id = ? AND hotel_id = h.id
+        SELECT 1 FROM room_base_price WHERE room_type_id = ? AND hotel_id = h.id
       )`;
       queryParams.push(filters.room_type_id);
     }
-
     if (filters.tags && filters.tags.length > 0) {
       query += ` AND h.id IN (
-          SELECT hotel_id FROM hotel_tags WHERE tag_id IN (${filters.tags.map(() => "?").join(", ")})
+        SELECT hotel_id FROM hotel_tags WHERE tag_id IN (${filters.tags.map(() => "?").join(", ")})
       )`;
       queryParams.push(...filters.tags);
     }
 
     query += " GROUP BY h.id";
 
-    console.log("執行 SQL 查詢:", query);
-    console.log("查詢參數:", queryParams);
+    console.log("🔍 執行 SQL 查詢:", query);
+    console.log("🔍 查詢參數:", queryParams);
 
     const [hotels] = await connection.query(query, queryParams);
     return hotels;
   } catch (error) {
-    throw new Error("無法取得篩選後的旅館列表：" + error.message);
+    throw new Error("無法取得篩選飯店：" + error.message);
   } finally {
     connection.release();
   }
