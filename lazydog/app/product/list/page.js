@@ -1,21 +1,45 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import styles from "./list.module.css";
 import Aside from "../_components/aside/aside";
 import Link from "next/link";
 import Card from "../_components/card/card";
 import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function ListPage(props) {
+  const { user } = useAuth();
+  const [sortName, setSortName] = useState("依商品名稱排序");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(30000);
   const [newUrl, setNewUrl] = useState("http://localhost:5000/api/products");
+  const [pageNow, setPageNow] = useState(1);
   const changeUrl = (newUrl) => {
     setNewUrl(newUrl);
+    if (pageNow !== 1) {
+      setPageNow(1);
+    }
   };
   const url = newUrl;
+  useEffect(() => {
+    changeUrl(
+      `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}${
+        sortName == "依商品名稱排序"
+          ? "&sort=name"
+          : sortName == "依商品價格⬆排序"
+          ? "&sort=price"
+          : sortName == "依商品價格⬇排序"
+          ? "&sort=priceDown"
+          : sortName == "依上架時間⬆排序"
+          ? "&sort=update"
+          : sortName == "依上架時間⬇排序"
+          ? "&sort=updateDown"
+          : ""
+      }`
+    );
+  }, [minPrice, maxPrice]);
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
@@ -27,13 +51,12 @@ export default function ListPage(props) {
     }
   };
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
-  const query = useSearchParams();
   const products = data?.data;
 
-  const [pageNow, setPageNow] = useState(1);
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
+  console.log(user);
 
   return (
     <>
@@ -47,12 +70,9 @@ export default function ListPage(props) {
         </section>
         <section className={styles.BreadcrumbsTitle}>
           <div className={styles.Breadcrumbs}>
-            <Link href="http://localhost:3000">首頁</Link>
+            <Link href="/">首頁</Link>
             <img src="/product/font/right.png" alt="" />
-            <Link
-              className={styles.BreadcrumbsActive}
-              href="http://localhost:3000/product/list"
-            >
+            <Link className={styles.BreadcrumbsActive} href="/product/list">
               商品目錄
             </Link>
           </div>
@@ -60,7 +80,68 @@ export default function ListPage(props) {
             <h5>商品目錄</h5>
             <div className={styles.TitleFilter}>
               <img src="/product/font/filter.png" alt="" />
-              <h6>依熱門排序</h6>
+              <div className={styles["dropdown"]}>
+                <li>
+                  <h6 className={styles["dropbtn"]}>{sortName}</h6>
+                </li>
+                <div className={styles["dropdown-content"]}>
+                  <h6
+                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=name`
+                      );
+                      setSortName("依商品名稱排序");
+                    }}
+                  >
+                    依商品名稱排序
+                  </h6>
+                  <h6
+                    className={styles["dropdown-link"]}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=price`
+                      );
+                      setSortName("依商品價格⬆排序");
+                    }}
+                  >
+                    依商品價格⬆排序
+                  </h6>
+                  <h6
+                    className={styles["dropdown-link"]}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=priceDown`
+                      );
+                      setSortName("依商品價格⬇排序");
+                    }}
+                  >
+                    依商品價格⬇排序
+                  </h6>
+                  <h6
+                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=update`
+                      );
+                      setSortName("依上架時間⬆排序");
+                    }}
+                  >
+                    依上架時間⬆排序
+                  </h6>
+                  <h6
+                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=updateDown`
+                      );
+                      setSortName("依上架時間⬇排序");
+                    }}
+                  >
+                    依上架時間⬇排序
+                  </h6>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -72,6 +153,7 @@ export default function ListPage(props) {
             maxPrice={maxPrice}
             setMaxPrice={setMaxPrice}
             setMinPrice={setMinPrice}
+            sortName={sortName}
           />
           <main className={styles.PdList}>
             {[...Array(6)].map((value, index) => {
@@ -91,7 +173,7 @@ export default function ListPage(props) {
                     onClick={() =>
                       setPageNow(pageNow - 1 == 0 ? 1 : pageNow - 1)
                     }
-                    href={`http://localhost:3000/product/list?page=${
+                    href={`/product/list?page=${
                       pageNow - 1 == 0 ? 1 : pageNow - 1
                     }`}
                   >
@@ -109,24 +191,20 @@ export default function ListPage(props) {
                     i == pages - 1
                   ) {
                     return (
-                      <>
-                        <li
-                          key={`li${i}`}
-                          className={`${styles.PageItem} page-item ${
-                            i + 1 == pageNow ? styles.PageItemActive : ""
-                          }`}
+                      <li
+                        key={`li${i}`}
+                        className={`${styles.PageItem} page-item ${
+                          i + 1 == pageNow ? styles.PageItemActive : ""
+                        }`}
+                      >
+                        <Link
+                          onClick={() => setPageNow(i + 1)}
+                          className={`${styles.PageLink} page-link `}
+                          href={`/product/list?page=${i + 1}`}
                         >
-                          <Link
-                            onClick={() => setPageNow(i + 1)}
-                            className={`${styles.PageLink} page-link `}
-                            href={`http://localhost:3000/product/list?page=${
-                              i + 1
-                            }`}
-                          >
-                            {i + 1}
-                          </Link>
-                        </li>
-                      </>
+                          {i + 1}
+                        </Link>
+                      </li>
                     );
                   }
                 })}
@@ -135,7 +213,7 @@ export default function ListPage(props) {
                     onClick={() => {
                       setPageNow(pageNow + 1 > pages ? pageNow : pageNow + 1);
                     }}
-                    href={`http://localhost:3000/product/list?page=${
+                    href={`/product/list?page=${
                       pageNow + 1 > pages ? pageNow : pageNow + 1
                     }`}
                   >

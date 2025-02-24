@@ -1,18 +1,17 @@
 "use client";
 
 import React, { useState, useEffect, useRef, use } from "react";
-import { useRouter } from "next/router";
 import styles from "./category.module.css";
 import Aside from "../../_components/aside/aside";
 import Link from "next/link";
 import { useSearchParams, redirect } from "next/navigation";
 import Card from "../../_components/card/card";
 import useSWR from "swr";
+import { useAuth } from "@/hooks/use-auth";
 
-export default function ListPage(props) {
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(30000);
-  // http://localhost:5000/api/products/search?category=乾糧&main=乾糧&type=主食&age=全年齡&feature=強效潔牙&flavor=牛肉,鴨肉&cereal=無穀&size=全適用
+export default function ListPage({}) {
+  const { user } = useAuth();
+  const [sortName, setSortName] = useState("依商品名稱排序");
   const [keyword, setKeyword] = useState({
     主分類: [],
     種類: [],
@@ -26,44 +25,35 @@ export default function ListPage(props) {
   const queryPath = useSearchParams();
   const category = queryPath.get("category");
   const [newUrl, setNewUrl] = useState(
-    `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}`
+    `http://localhost:5000/api/products/category?category=${category}${
+      sortName == "依商品名稱排序"
+        ? "&sort=name"
+        : sortName == "依商品價格⬆排序"
+        ? "&sort=price"
+        : sortName == "依商品價格⬇排序"
+        ? "&sort=priceDown"
+        : sortName == "依上架時間⬆排序"
+        ? "&sort=update"
+        : sortName == "依上架時間⬇排序"
+        ? "&sort=updateDown"
+        : ""
+    }`
   );
   const [page, setPage] = useState(
-    `http://localhost:3000/product/list/category?category=${category}&page=1&min=${minPrice}&max=${maxPrice}`
+    `http://localhost:3000/product/list/category?category=${category}${
+      sortName == "依商品名稱排序"
+        ? "&sort=name"
+        : sortName == "依商品價格⬆排序"
+        ? "&sort=price"
+        : sortName == "依商品價格⬇排序"
+        ? "&sort=priceDown"
+        : sortName == "依上架時間⬆排序"
+        ? "&sort=update"
+        : sortName == "依上架時間⬇排序"
+        ? "&sort=updateDown"
+        : ""
+    }&page=1`
   );
-  const changeUrl = (newUrl) => {
-    setNewUrl(newUrl);
-  };
-  useEffect(() => {
-    if (
-      keyword?.主分類.length == 0 &&
-      keyword?.種類.length == 0 &&
-      keyword?.適用年齡.length == 0 &&
-      keyword?.功能.length == 0 &&
-      keyword?.口味.length == 0 &&
-      keyword?.穀類.length == 0 &&
-      keyword?.適用體型.length == 0
-    ) {
-      changeUrl(
-        `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}`
-      );
-      return;
-    }
-
-    changeUrl(
-      `http://localhost:5000/api/products/search?category=${category}&main=${keyword?.主分類.join(
-        ","
-      )}&type=${keyword?.種類.join(",")}&age=${keyword?.適用年齡.join(
-        ","
-      )}&feature=${keyword?.功能.join(",")}&flavor=${keyword?.口味.join(
-        ","
-      )}&cereal=${keyword?.穀類.join(",")}&size=${keyword?.適用體型.join(
-        ","
-      )}&min=${minPrice}&max=${maxPrice}`
-    );
-    setPageNow(1);
-  }, [keyword]);
-  useEffect(() => {}, [minPrice, maxPrice]);
 
   const fetcher = async (url) => {
     try {
@@ -77,13 +67,74 @@ export default function ListPage(props) {
   };
   const { data, isLoading, error, mutate } = useSWR(newUrl, fetcher);
   const products = data?.data;
-
+  const prices = (products || []).map((e) => e.price);
+  // console.log(products);
+  const max = Math.max(...prices);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(5000);
   const [pageNow, setPageNow] = useState(1);
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
+  const changeUrl = (newUrl) => {
+    setNewUrl(newUrl);
+    if (pageNow !== 1) {
+      setPageNow(1);
+    }
+  };
+  useEffect(() => {
+    if (
+      keyword?.主分類.length == 0 &&
+      keyword?.種類.length == 0 &&
+      keyword?.適用年齡.length == 0 &&
+      keyword?.功能.length == 0 &&
+      keyword?.口味.length == 0 &&
+      keyword?.穀類.length == 0 &&
+      keyword?.適用體型.length == 0
+    ) {
+      changeUrl(
+        `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}${
+          sortName == "依商品名稱排序"
+            ? "&sort=name"
+            : sortName == "依商品價格⬆排序"
+            ? "&sort=price"
+            : sortName == "依商品價格⬇排序"
+            ? "&sort=priceDown"
+            : sortName == "依上架時間⬆排序"
+            ? "&sort=update"
+            : sortName == "依上架時間⬇排序"
+            ? "&sort=updateDown"
+            : ""
+        }`
+      );
 
-  console.log(minPrice, maxPrice);
+      return;
+    } else {
+      changeUrl(
+        `http://localhost:5000/api/products/search?category=${category}&main=${keyword?.主分類.join(
+          ","
+        )}&type=${keyword?.種類.join(",")}&age=${keyword?.適用年齡.join(
+          ","
+        )}&feature=${keyword?.功能.join(",")}&flavor=${keyword?.口味.join(
+          ","
+        )}&cereal=${keyword?.穀類.join(",")}&size=${keyword?.適用體型.join(
+          ","
+        )}&min=${minPrice}&max=${maxPrice}${
+          sortName == "依商品名稱排序"
+            ? "&sort=name"
+            : sortName == "依商品價格⬆排序"
+            ? "&sort=price"
+            : sortName == "依商品價格⬇排序"
+            ? "&sort=priceDown"
+            : sortName == "依上架時間⬆排序"
+            ? "&sort=update"
+            : sortName == "依上架時間⬇排序"
+            ? "&sort=updateDown"
+            : ""
+        }`
+      );
+    }
+  }, [keyword, minPrice, maxPrice]);
   return (
     <>
       <div className={`${styles.Container} container`}>
@@ -96,13 +147,13 @@ export default function ListPage(props) {
         </section>
         <section className={styles.BreadcrumbsTitle}>
           <div className={styles.Breadcrumbs}>
-            <Link href="http://localhost:3000">首頁</Link>
+            <Link href="/">首頁</Link>
             <img src="/product/font/right.png" alt="" />
-            <Link href="http://localhost:3000/product/list">商品目錄</Link>
+            <Link href="/product/list">商品目錄</Link>
             <img src="/product/font/right.png" alt="" />
             <Link
               className={styles.BreadcrumbsActive}
-              href={`http://localhost:3000/product/list/category?category=${category}`}
+              href={`/product/list/category?category=${category}`}
             >
               {category}
             </Link>
@@ -111,7 +162,68 @@ export default function ListPage(props) {
             <h5>{category}</h5>
             <div className={styles.TitleFilter}>
               <img src="/product/font/filter.png" alt="" />
-              <h6>依熱門排序</h6>
+              <div className={styles["dropdown"]}>
+                <li>
+                  <h6 className={styles["dropbtn"]}>{sortName}</h6>
+                </li>
+                <div className={styles["dropdown-content"]}>
+                  <h6
+                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}&sort=name`
+                      );
+                      setSortName("依商品名稱排序");
+                    }}
+                  >
+                    依商品名稱排序
+                  </h6>
+                  <h6
+                    className={styles["dropdown-link"]}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}&sort=price`
+                      );
+                      setSortName("依商品價格⬆排序");
+                    }}
+                  >
+                    依商品價格⬆排序
+                  </h6>
+                  <h6
+                    className={styles["dropdown-link"]}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}&sort=priceDown`
+                      );
+                      setSortName("依商品價格⬇排序");
+                    }}
+                  >
+                    依商品價格⬇排序
+                  </h6>
+                  <h6
+                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}&sort=update`
+                      );
+                      setSortName("依上架時間⬆排序");
+                    }}
+                  >
+                    依上架時間⬆排序
+                  </h6>
+                  <h6
+                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                    onClick={() => {
+                      changeUrl(
+                        `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}&sort=updateDown`
+                      );
+                      setSortName("依上架時間⬇排序");
+                    }}
+                  >
+                    依上架時間⬇排序
+                  </h6>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -125,6 +237,7 @@ export default function ListPage(props) {
             maxPrice={maxPrice}
             setMaxPrice={setMaxPrice}
             setMinPrice={setMinPrice}
+            sortName={sortName}
           />
           <main className={styles.PdList}>
             {[...Array(6)].map((value, index) => {
@@ -144,7 +257,7 @@ export default function ListPage(props) {
                     onClick={() =>
                       setPageNow(pageNow - 1 == 0 ? 1 : pageNow - 1)
                     }
-                    href={`http://localhost:3000/product/list/category?category=${category}&page=${
+                    href={`/product/list/category?category=${category}&page=${
                       pageNow - 1 == 0 ? 1 : pageNow - 1
                     }`}
                   >
@@ -171,7 +284,7 @@ export default function ListPage(props) {
                         <Link
                           onClick={() => setPageNow(i + 1)}
                           className={`${styles.PageLink} page-link `}
-                          href={`http://localhost:3000/product/list/category?category=${category}&page=${
+                          href={`/product/list/category?category=${category}&page=${
                             i + 1
                           }`}
                         >
@@ -186,7 +299,7 @@ export default function ListPage(props) {
                     onClick={() => {
                       setPageNow(pageNow + 1 > pages ? pageNow : pageNow + 1);
                     }}
-                    href={`http://localhost:3000/product/list/category?category=${category}&page=${
+                    href={`/product/list/category?category=${category}&page=${
                       pageNow + 1 > pages ? pageNow : pageNow + 1
                     }`}
                   >
