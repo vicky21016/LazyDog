@@ -51,10 +51,7 @@ export const fetchHotelsCount = async () => fetchAPI(`${API_URL}/count`);
 export const getPaginatedHotels = async (page = 1, limit = 10) =>
   fetchAPI(`${API_URL}/paginated?limit=${limit}&offset=${(page - 1) * limit}`);
 
-export const getFilteredHotels = async (params) => {
-  const query = new URLSearchParams(params).toString();
-  return fetchAPI(`${API_URL}/filter?${query}`);
-};
+export const getFilteredHotels = (params) => fetchAPI(`${API_URL}/filter?${new URLSearchParams(params)}`);
 
 export const getOperatorHotels = async () => fetchAuthAPI(`${API_URL}/operator`);
 export const createHotel = async (formData) => fetchAuthAPI(API_URL, "POST", formData);
