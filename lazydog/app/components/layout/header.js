@@ -31,9 +31,69 @@ export default function Header(props) {
           <li>
             <Link href="/home">關於我們</Link>
           </li>
-          <li>
-            <Link href="/product/list">寵物用品</Link>
-          </li>
+          <div className={styles["dropdown"]}>
+            <li>
+              <Link href="/product/list" className={styles["dropbtn"]}>
+                寵物用品
+              </Link>
+            </li>
+            <div className={styles["dropdown-content"]}>
+              <a
+                href={`/product/list/category?category=乾糧`}
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+              >
+                乾糧
+              </a>
+              <a
+                href={`/product/list/category?category=罐頭`}
+                className={styles["dropdown-link"]}
+              >
+                罐頭
+              </a>
+              <a
+                href={`/product/list/category?category=零食`}
+                className={styles["dropdown-link"]}
+              >
+                零食
+              </a>
+              <a
+                href={`/product/list/category?category=保健食品`}
+                className={styles["dropdown-link"]}
+              >
+                保健食品
+              </a>
+              <a
+                href={`/product/list/category?category=美容用品`}
+                className={styles["dropdown-link"]}
+              >
+                美容用品
+              </a>
+              <a
+                href={`/product/list/category?category=清潔用品`}
+                className={styles["dropdown-link"]}
+              >
+                清潔用品
+              </a>
+              <a
+                href={`/product/list/category?category=外出用品`}
+                className={styles["dropdown-link"]}
+              >
+                外出用品
+              </a>
+              <a
+                href={`/product/list/category?category=居家用品`}
+                className={styles["dropdown-link"]}
+              >
+                居家用品
+              </a>
+              <a
+                href={`/product/list/category?category=玩具`}
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+              >
+                玩具
+              </a>
+            </div>
+          </div>
           <li>
             <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>
           </li>
@@ -121,6 +181,11 @@ export default function Header(props) {
                 <Link href="/teacher/list" className={styles["dropdown-link"]}>
                   師資
                 </Link>
+
+                <Link href="#" className={styles["dropdown-link"]}>
+                  常見 Q&A
+                </Link>
+
               </div>
             </div>
             <li>
@@ -150,6 +215,21 @@ export default function Header(props) {
           </ul>
         </nav>
       </div>
+
+
+      {/* </>
+      ) : (
+        <div>
+          <Link href="/register" className={styles["lumi-signin"]}>
+            註冊
+          </Link>
+          <span className={styles["lumi-connect"]}>/</span>
+          <Link href="/login" className={styles["lumi-signin"]}>
+            登入
+          </Link>
+        </div>
+      )} */}
+
     </header>
   );
 }

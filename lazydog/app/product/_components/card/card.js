@@ -28,22 +28,26 @@ export default function CardCard({ productID = "" }) {
   const products = data?.data[0];
   const productName = products?.name;
   const [cardPic, setCardPic] = useState("/product/img/default.webp");
-  const productPrice = (
-    Number(products?.price) * Number(products?.discount)
-  ).toFixed(0);
-  const productDiscount = (1 - Number(products?.discount)).toFixed(2) * 100;
+  // const productPrice = (
+  //   Number(products?.price) * Number(products?.discount)
+  // ).toFixed(0);
+  // const productDiscount = (1 - Number(products?.discount)).toFixed(2) * 100;
   const cardRef = useRef(null);
-  const simulateClick = () => {
-    if (cardRef.current) {
-      cardRef.current.click();
+  const simulateClick = (e) => {
+    if (e.target.dataset.clickable) {
+      if (cardRef.current) {
+        cardRef.current.click();
+      }
     }
   };
   useEffect(() => {
     if (productName) {
       const img = new Image();
-      img.src = `/product/img/${productName}_title.webp`;
+      const encodedImageName = encodeURIComponent(productName);
+      img.src = `/product/img/${encodedImageName}_title.webp`;
       img.onload = () => setCardPic(img.src);
-      img.onerror = () => setCardPic("/product/img/default.webp");
+      img.onerror = () =>
+        setCardPic(`/product/img/${encodedImageName}_(1).webp`);
     }
   }, [productName]);
   return (
@@ -88,9 +92,13 @@ export default function CardCard({ productID = "" }) {
       </figure>
       <div className={styles.ProductCardInfo}>
         <p className={styles.ProductCardName}>{productName}</p>
-        <h5 className={styles.ProductCardPrice}>NT$ {productPrice}</h5>
+        <h5 className={styles.ProductCardPrice}>NT$ {products?.price}</h5>
       </div>
-      <div className={styles.ProductCardHover} onClick={simulateClick}>
+      <div
+        className={styles.ProductCardHover}
+        onClick={simulateClick}
+        data-clickable="true"
+      >
         <button
           type="button"
           className={`${styles.HoverIcon} `}

@@ -17,16 +17,16 @@ export default function FilterLinkGroup({ category = {}, name = "" }) {
     <>
       <div className={styles.FilterGroup}>
         <Link
-          href={`http://localhost:3000/product/list/category?category=${name}`}
+          href={`/product/list/category?category=${name}`}
           className={styles.FilterLinkTitle}
         >
           {name}
         </Link>
-        {categoryClass.map((v, i) => {
+        {/* {categoryClass.map((v, i) => {
           if (i < 3) {
             return (
               <Link
-                href={`http://localhost:3000/product/list/category?category=${name}`}
+                href={`/product/list/category?category=${name}`}
                 className={styles.FormLink}
                 key={`FilterLink${i}`}
               >
@@ -41,7 +41,7 @@ export default function FilterLinkGroup({ category = {}, name = "" }) {
               if (i >= 3) {
                 return (
                   <Link
-                    href={`http://localhost:3000/product/list/category?category=${name}`}
+                    href={`/product/list/category?category=${name}`}
                     className={styles.FormLink}
                     key={`FilterLink${i}`}
                   >
@@ -59,7 +59,7 @@ export default function FilterLinkGroup({ category = {}, name = "" }) {
           >
             {showMore ? "收起 ▲" : "顯示全部 ▼"}
           </span>
-        )}
+        )} */}
       </div>
     </>
   );
