@@ -1,6 +1,6 @@
 import pool from "../config/mysql.js";
 
-export const getAllHotelsService = async () => {
+export const getHotels = async () => {
   const connection = await pool.getConnection();
   try {
     let query = `
@@ -330,7 +330,7 @@ export const softDeleteHotelById = async (id) => {
   }
 };
 /**  從資料庫獲取篩選後的飯店 */
-export const getFilteredHotelsService = async (filters) => {
+export const getFilteredHotelS = async (filters) => {
   const connection = await pool.getConnection();
   try {
     let query = `

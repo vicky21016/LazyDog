@@ -6,15 +6,14 @@ import {
   updateHotelById,
   softDeleteHotelById,
   searchHotels,
-  getFilteredHotel,
+  getFilteredHotelS,
 } from "../services/hotelService.js";
 import pool from "../config/mysql.js";
-import { getAllHotelsService } from "../services/hotelService.js";
 
 /* 取得所有飯店（不篩選） */
 export const getAllHotels = async (req, res) => {
   try {
-    const hotels = await getAllHotelsService();
+    const hotels = await getHotels();
     console.log("取得的飯店數量:", hotels.length);
     res.json(hotels);
   } catch (error) {
@@ -234,7 +233,7 @@ export const getFilteredHotels = async (req, res) => {
 
     console.log(" 接收到的篩選條件:", filters);
 
-    const hotels = await getFilteredHotelsService(filters);
+    const hotels = await getFilteredHotelS(filters);
     console.log("回傳的篩選後飯店數量:", hotels.length);
 
     res.json(hotels);
