@@ -14,7 +14,6 @@ import pool from "../config/mysql.js";
 export const getAllHotels = async (req, res) => {
   try {
     const hotels = await getHotels();
-    console.log("取得的飯店數量:", hotels.length);
     res.json(hotels);
   } catch (error) {
     console.error("獲取飯店列表失敗:", error);
@@ -69,7 +68,6 @@ export const getOperatorHotels = async (req, res) => {
 
 export const createHotel = async (req, res) => {
   try {
-    console.log("收到請求資料:", req.body);
     console.log("收徒確認之後會刪掉", req.files);
 
     const operatorId = req.user.id;
@@ -230,11 +228,7 @@ export const getFilteredHotels = async (req, res) => {
       room_type_id: req.query.room_type_id ? parseInt(req.query.room_type_id) : null,
       tags: req.query.tags ? req.query.tags.split(",").map(Number).filter((n) => !isNaN(n)) : [],
     };
-
-    console.log(" 接收到的篩選條件:", filters);
-
     const hotels = await getFilteredHotelS(filters);
-    console.log("回傳的篩選後飯店數量:", hotels.length);
 
     res.json(hotels);
   } catch (error) {

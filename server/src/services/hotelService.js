@@ -384,8 +384,8 @@ export const getFilteredHotelS = async (filters) => {
 
     query += " GROUP BY h.id";
 
-    console.log("🔍 執行 SQL 查詢:", query);
-    console.log("🔍 查詢參數:", queryParams);
+
+
 
     const [hotels] = await connection.query(query, queryParams);
     return hotels;
