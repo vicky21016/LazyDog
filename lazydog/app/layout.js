@@ -49,6 +49,7 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
+
       <AuthProvider>
         <CartProvider>
           <body className={`${geistSans.variable} ${geistMono.variable}`}>
@@ -61,6 +62,7 @@ export default function RootLayout({ children }) {
           </body>
         </CartProvider>
       </AuthProvider>
+
     </html>
   );
 }

@@ -11,6 +11,8 @@ import style from "../../pages/menu.module.css";
 export default function ToggleButtons (){
   const { id } = useParams();
   const { teacher } = useTeacherDetail(id);
+  console.log(id);
+  console.log(teacher);
 
   const [activeTab, setActiveTab] = useState("exps"); // 控制顯示內容 預設顯示經歷
 
@@ -75,31 +77,6 @@ export default function ToggleButtons (){
           </div>
         )}
       </div>
-    </div>
-  );
-};
-
-const Experience = () => {
-  return (
-    <div>
-      <h6>經歷</h6>
-      <ul>
-        <li>嶺世界犬隻學習寵物表演訓練師</li>
-        <li>六福村專案犬隻訓練講師</li>
-        <li>曾指導許多知名大戲劇</li>
-      </ul>
-    </div>
-  );
-};
-
-const Publications = () => {
-  return (
-    <div>
-      <h6>出版</h6>
-      <ul>
-        <li>《馬克先生的狗教室》</li>
-        <li>《馬克先生的狗幼兒園》</li>
-      </ul>
     </div>
   );
 };

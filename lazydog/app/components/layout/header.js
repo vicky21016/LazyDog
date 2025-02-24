@@ -15,6 +15,7 @@ export default function Header(props) {
   const { logout } = useAuth();
   React.useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
+      console.log("Firebase Auth State Changed:", currentUser);
       setUser(currentUser);
     });
   }, []);
@@ -109,9 +110,6 @@ export default function Header(props) {
               <Link href="/teacher/list" className={styles["dropdown-link"]}>
                 師資
               </Link>
-              <Link href="#" className={styles["dropdown-link"]}>
-                常見 Q&A
-              </Link>
             </div>
           </div>
           <li>
@@ -127,17 +125,19 @@ export default function Header(props) {
             {/* <FontAwesomeIcon icon={faUser} /> */}
             <i className="bi bi-person" />
           </Link>
-          <div className={styles["dropdown-content"]}>
-            <Link href="/pages" className={styles["dropdown-link"]}>
-              個人資料
-            </Link>
-            <Link href="/favorite" className={styles["dropdown-link"]}>
-              我的收藏
-            </Link>
-            <div onClick={logout} className={styles["dropdown-link"]}>
-              登出
+          {user ? (
+            <div className={styles["dropdown-content"]}>
+              <Link href="/pages" className={styles["dropdown-link"]}>
+                個人資料
+              </Link>
+              <Link href="/favorite" className={styles["dropdown-link"]}>
+                我的收藏
+              </Link>
+              <div onClick={logout} className={styles["dropdown-link"]}>
+                登出
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
         <div className={styles["lumi-cart-icon"]}>
           <Link href="/cart/CartList" className={styles["lumi-cart-icon"]}>
@@ -181,9 +181,11 @@ export default function Header(props) {
                 <Link href="/teacher/list" className={styles["dropdown-link"]}>
                   師資
                 </Link>
+
                 <Link href="#" className={styles["dropdown-link"]}>
                   常見 Q&A
                 </Link>
+
               </div>
             </div>
             <li>
@@ -214,6 +216,7 @@ export default function Header(props) {
         </nav>
       </div>
 
+
       {/* </>
       ) : (
         <div>
@@ -226,6 +229,7 @@ export default function Header(props) {
           </Link>
         </div>
       )} */}
+
     </header>
   );
 }

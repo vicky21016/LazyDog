@@ -82,13 +82,13 @@ export default function AppPage({ logout }) {
             <h4 className="lumi-form-title">登入</h4>
             <div className="lumi-other-accounts-links">
               <Link
-                href="/register"
+                href="/login"
                 className="lumi-teacher text-decoration-none"
               >
                 師資登入
               </Link>
               <Link
-                href="/register"
+                href="/login"
                 className="lumi-hotel text-decoration-none"
               >
                 旅館業者登入
