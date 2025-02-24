@@ -6,26 +6,23 @@ import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 import FilterGroup from "./filtergroup";
 import FilterLinkGroup from "./filterlinkgroup";
-import HotSaleGroup from "./hotsalegroup";
 import useSWR from "swr";
 import { usePathname, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function AsideAside({
   changeUrl = () => {},
   keyword = {},
   setKeyword = () => {},
-  setPageNow = () => {},
   minPrice = 0,
   maxPrice = 0,
   setMaxPrice = () => {},
   setMinPrice = () => {},
+  sortName = "",
 }) {
-  // const [minPrice, setMinPrice] = useState(0);
-  // const [maxPrice, setMaxPrice] = useState(30000);
   const priceSliderRef = useRef(null);
   const pathname = usePathname();
   const query = useSearchParams();
-  // console.log(changeUrl);
   const url = "http://localhost:5000/api/products/categoryName";
   const fetcher = async (url) => {
     try {
@@ -53,7 +50,6 @@ export default function AsideAside({
   }
   if (category) {
     categoryName.forEach((v, i) => {
-      // console.log(category[v]);
       categoryClass[i] = [];
       category[v].map((v) => {
         if (!categoryClass[i].find((e) => e == v.class)) {
@@ -85,17 +81,22 @@ export default function AsideAside({
 
   const handleMaxPriceChange = (e) => {
     let value = e.target.value;
-    if (value === "") {
+    if (value == "") {
       setMaxPrice(""); // 清空
       return;
     }
 
-    value = Number(value);
-    if (isNaN(value)) return;
-    if (value > maxPrice) value = maxPrice;
-    if (value < minPrice) value = minPrice;
+    // value = Number(value);
+    // if (isNaN(value)) return;
+    // if (value > maxPrice) value = maxPrice;
+    // if (value < minPrice) value = minPrice;
 
-    setMaxPrice(value);
+    setMaxPrice((prevMax) => {
+      let newValue = Number(value);
+      if (isNaN(newValue)) return prevMax;
+      if (newValue < minPrice) newValue = minPrice;
+      return newValue;
+    });
 
     if (priceSliderRef.current?.noUiSlider) {
       priceSliderRef.current.noUiSlider.set([minPrice, value]);
@@ -127,7 +128,6 @@ export default function AsideAside({
     };
   }, []);
   useEffect(() => {}, [pathname, query]);
-
   return (
     <aside className={styles.Sidebar}>
       <div className={styles.SearchTable}>
@@ -141,18 +141,25 @@ export default function AsideAside({
                 query.get("category")
                   ? `category=${query.get("category")}&`
                   : ""
-              }keyword=${e.target.value}`
+              }keyword=${e.target.value}${
+                sortName == "依商品名稱排序"
+                  ? "&sort=name"
+                  : sortName == "依商品價格排序"
+                  ? "&sort=price"
+                  : sortName == "依上架時間排序"
+                  ? "&sort=update"
+                  : ``
+              }`
             );
-            setPageNow(1);
           }}
         />
       </div>
-      <HotSaleGroup />
+      {/* <HotSaleGroup /> */}
       {pathname.includes("category")
-        ? categoryClass[i]?.map((e) => (
+        ? categoryClass[i]?.map((value, index) => (
             <FilterGroup
-              key={`FilterGroup${i}`}
-              name={e}
+              key={`FilterGroup${index}`}
+              name={value}
               category={category[categoryName[i]]}
               keyword={keyword}
               setKeyword={setKeyword}
@@ -210,7 +217,7 @@ export default function AsideAside({
           className={`btn btn-outline-danger mt-3 ${styles.ClearFilterBtn}`}
           onClick={() => {
             setMinPrice(0);
-            setMaxPrice(maxPrice);
+            setMaxPrice(5000);
             if (priceSliderRef.current?.noUiSlider) {
               priceSliderRef.current.noUiSlider.set([0, maxPrice]);
             }
@@ -220,7 +227,7 @@ export default function AsideAside({
         </button>
       </div>
 
-      <a href="">
+      <Link href="">
         <figure>
           <img
             src="/product/DM/DM_aside.png"
@@ -228,7 +235,7 @@ export default function AsideAside({
             className="img-fluid"
           />
         </figure>
-      </a>
+      </Link>
     </aside>
   );
 }

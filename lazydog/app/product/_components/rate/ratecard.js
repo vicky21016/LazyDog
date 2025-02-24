@@ -6,9 +6,10 @@ import StarGroup from "./stargroup";
 
 export default function RatecardRatecard({
   rate = "",
-  date = "",
-  user = "",
+  users = "",
+  img = "",
   comment = "",
+  date = "",
 }) {
   const rateNum = rate.toString();
   const years = date.slice(0, 4);
@@ -16,14 +17,14 @@ export default function RatecardRatecard({
   const days = date.slice(8, 10);
   const [hover, setHover] = useState(false);
   const [good, setGood] = useState(false);
-  // console.log(years, months, days);
+
   return (
     <div className={styles.RateCard}>
       <div className={styles.RateCardText}>
         <div className={styles.RateCardUser}>
           <button type="button">
-            <img src="/product/font/self.png" alt="" />
-            <h6>{user}</h6>
+            <img src={`http://localhost:5000/auth/${img}`} alt="" />
+            <h6>{users}</h6>
           </button>
           <div className={styles.StarGroup}>
             <StarGroup rate={rateNum} />
