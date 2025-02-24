@@ -11,6 +11,11 @@ function useArticles() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
+    // 搜尋相關狀態
+    const [searchKeyword, setSearchKeyword] = useState('')
+    const [searchResults, setSearchResults] = useState([])
+    const [isSearching, setIsSearching] = useState(false)
+
     // 取得所有文章（列表用）
     const getArticles = async () => {
         setLoading(true)
@@ -45,10 +50,9 @@ function useArticles() {
             
             const data = await response.json()
             
-            // 重要修正：直接使用 data 而非 data.article
             if (isCurrentRequestValid) {
-                setArticle(data)         // 直接設定整個 data 到 article
-                setComments(data.comments || []) // 從 data 取 comments
+                setArticle(data)
+                setComments(data.comments || [])
             }
         } catch (err) {
             if (isCurrentRequestValid) {
@@ -74,7 +78,7 @@ function useArticles() {
             if (!response.ok) throw new Error('無法新增文章')
 
             const createdArticle = await response.json()
-            setArticles([createdArticle, ...articles]) // 將新文章加入列表
+            setArticles([createdArticle, ...articles])
         } catch (err) {
             setError(err.message)
         } finally {
@@ -102,14 +106,14 @@ function useArticles() {
         }
     }
 
-    // **刪除文章**
+    // 刪除文章
     const deleteArticle = async (id) => {
         setLoading(true)
         try {
             const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' })
             if (!response.ok) throw new Error('無法刪除文章')
 
-            setArticles(articles.filter((article) => article.id !== id)) // 移除文章
+            setArticles(articles.filter((article) => article.id !== id))
         } catch (err) {
             setError(err.message)
         } finally {
@@ -117,19 +121,59 @@ function useArticles() {
         }
     }
 
-    // **在元件載入時自動取得文章**
+    // 搜尋文章
+    const searchArticles = async (keyword) => {
+        if (!keyword.trim()) {
+            setSearchResults([])
+            return
+        }
+
+        setIsSearching(true)
+        try {
+            const response = await fetch(`${API_URL}/search?keyword=${encodeURIComponent(keyword)}`)
+            if (!response.ok) throw new Error('搜尋失敗')
+            const data = await response.json()
+            setSearchResults(data)
+        } catch (err) {
+            setError(err.message)
+            setSearchResults([])
+        } finally {
+            setIsSearching(false)
+        }
+    }
+
+    // 自動搜尋的 useEffect
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            if (searchKeyword) {
+                searchArticles(searchKeyword)
+            } else {
+                setSearchResults([])
+            }
+        }, 500) // 500ms 防抖延遲
+
+        return () => clearTimeout(handler)
+    }, [searchKeyword])
+
+    // 在元件載入時自動取得文章
     useEffect(() => {
         getArticles()
     }, [])
 
     return {
-        articles,
+        articles: searchKeyword ? searchResults : articles,
         article,
         comments,
-        loading,
+        loading: loading || isSearching,
         error,
+        searchKeyword,
+        setSearchKeyword,
         getArticles,
         getArticle,
+        createArticle,
+        updateArticle,
+        deleteArticle,
+        searchArticles,
     }
 }
 
