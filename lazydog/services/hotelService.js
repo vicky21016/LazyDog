@@ -51,23 +51,24 @@ export const fetchHotelsCount = async () => fetchAPI(`${API_URL}/count`);
 export const getPaginatedHotels = async (page = 1, limit = 10) =>
   fetchAPI(`${API_URL}/paginated?limit=${limit}&offset=${(page - 1) * limit}`);
 
+// 前端過濾篩選
 export async function getFilteredHotels(params) {
   // 清理 `params` 物件，移除 undefined / null
   const cleanParams = Object.fromEntries(
     Object.entries(params).filter(([_, v]) => v != null)
   );
 
-  //  確保 `tags` 陣列正確轉換為字串
+  // 確保 `tags` 陣列正確轉換為字串
   if (Array.isArray(cleanParams.tags)) {
     cleanParams.tags = cleanParams.tags.join(",");
   }
 
-  //  確保是有效的 `URLSearchParams`
+  // 確保是有效的 `URLSearchParams`
   const queryString = new URLSearchParams(cleanParams).toString();
 
   try {
     const response = await fetch(
-      `http://localhost:5000/api/hotels?${queryString}`
+      `http://localhost:5000/api/hotels/filter?${queryString}`
     );
     if (!response.ok) throw new Error("獲取飯店失敗");
 
@@ -77,6 +78,7 @@ export async function getFilteredHotels(params) {
     return [];
   }
 }
+
 
 export const getOperatorHotels = async () =>
   fetchAuthAPI(`${API_URL}/operator`);
