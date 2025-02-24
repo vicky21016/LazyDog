@@ -4,7 +4,9 @@ import { getHotelById } from "@/services/hotelService";
 export function useLocationSelector(hotelId) {
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState("");
-  const [hotels, setHotels] = useState([]); 
+  const [city, setCity] = useState("");
+  const [district, setDistrict] = useState("");
+  const [hotels, setHotels] = useState([]);
   const locationModalRef = useRef(null);
   const twCityRef = useRef(null);
   let modalInstance = useRef(null);
@@ -73,19 +75,26 @@ export function useLocationSelector(hotelId) {
   };
 
   const confirmLocation = () => {
-    const county = document.querySelector(".county")?.value || "";
-    const district = document.querySelector(".district")?.value || "";
-    if (county && district) {
-      setAddress(`${county} ${district}`);
+    const selectedCity = document.querySelector(".county")?.value || "";
+    const selectedDistrict = document.querySelector(".district")?.value || "";
+
+    if (selectedCity && selectedDistrict) {
+      setCity(selectedCity);
+      setDistrict(selectedDistrict);
+      setAddress(`${selectedCity} ${selectedDistrict}`);
     }
+
     closeModal();
   };
 
   const openMap = () => {
     if (hotelId && location) {
-      window.open(`https://www.google.com/maps?q=${location.lat},${location.lng}`, "_blank");
+      window.open(
+        `https://www.google.com/maps?q=${location.lat},${location.lng}`,
+        "_blank"
+      );
     } else {
-      if (hotels.length === 0) {
+      if (hotels.length == 0) {
         alert("目前沒有飯店資料，請稍後再試");
         return;
       }
@@ -108,6 +117,8 @@ export function useLocationSelector(hotelId) {
   return {
     location,
     address,
+    city,
+    district,
     locationModalRef,
     closeModal,
     openModal,

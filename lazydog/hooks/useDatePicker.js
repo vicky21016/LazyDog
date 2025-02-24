@@ -6,7 +6,7 @@ export function useDatePicker() {
   const dateRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window == "undefined") return;
 
     flatpickr(dateRef.current, {
       mode: "range",

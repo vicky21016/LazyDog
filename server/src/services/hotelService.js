@@ -384,9 +384,6 @@ export const getFilteredHotelS = async (filters) => {
 
     query += " GROUP BY h.id";
 
-
-
-
     const [hotels] = await connection.query(query, queryParams);
     return hotels;
   } catch (error) {

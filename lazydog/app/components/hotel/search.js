@@ -6,25 +6,27 @@ const HotelSearchBar = ({
   location,
   locationModalRef,
   openModal,
-  address,
+  city,
+  district,
   closeModal,
-  confirmLocation,
+  confirmLocation, // ✅ 這裡的 `confirmLocation` 需要正確更新
   quantity,
   setQuantity,
   onSearch,
   onClear,
 }) => {
-  const dateRef = useDatePicker();
+  const dateRef = useDatePicker(); 
   const [selectedDate, setSelectedDate] = useState("");
 
   const handleSearchBarSubmit = () => {
-    console.log("🔍 搜尋欄條件:", { address, quantity, selectedDate });
+    console.log("🔍 搜尋欄條件:", { city, district, selectedDate, quantity });
 
     if (onSearch) {
       const searchParams = {
-        address: address || undefined,
-        quantity: quantity || 1,
+        city: city || undefined,
+        district: district || undefined,
         selectedDate: selectedDate || undefined,
+        quantity: quantity || 1,
       };
 
       const cleanParams = Object.fromEntries(
@@ -37,12 +39,11 @@ const HotelSearchBar = ({
 
   const handleClearSearch = () => {
     console.log("🧹 清除搜尋條件");
-  
-    setSelectedDate(""); //  清空 state
-    if (dateRef.current) dateRef.current.value = ""; // 清空 input
-    if (onClear) onClear(); // 確保 `HotelHomePage` 知道清除條件
+
+    setSelectedDate("");
+    if (dateRef.current) dateRef.current.value = "";
+    if (onClear) onClear();
   };
-  
 
   return (
     <div className="container mt-4">
@@ -54,7 +55,8 @@ const HotelSearchBar = ({
             alt=""
           />
           <button className={styles.suSearchInput} onClick={openModal}>
-            {address ? address : "選擇地區"}
+            {/* ✅ 這裡顯示選擇的地區 */}
+            {city ? `${city} ${district || ""}` : "選擇地區"}
           </button>
         </div>
         <div className={styles.suSearchGroup}>
@@ -68,9 +70,11 @@ const HotelSearchBar = ({
             ref={dateRef}
             className={styles.suSearchDate}
             placeholder="入住日期 → 退房日期"
+            value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
         </div>
+
         <div className={styles.suSearchGroup}>
           <img
             className={styles.suIcon}
@@ -93,10 +97,13 @@ const HotelSearchBar = ({
             +
           </button>
         </div>
-        {/* 使用 `handleSearchBarSubmit` 作為搜尋函數 */}
+
+        {/* 搜尋按鈕 */}
         <button className={styles.suSearchBtn} onClick={handleSearchBarSubmit}>
           搜尋
         </button>
+
+        {/* 地區選擇 Modal */}
         <div
           className="modal fade"
           ref={locationModalRef}
@@ -122,7 +129,7 @@ const HotelSearchBar = ({
               <div className="modal-footer">
                 <button
                   className={styles.suSearchBtn}
-                  onClick={() => confirmLocation()}
+                  onClick={() => confirmLocation()} // ✅ 確保這裡更新 `city` 和 `district`
                 >
                   確定
                 </button>
