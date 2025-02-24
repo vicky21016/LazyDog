@@ -69,3 +69,11 @@ max-height: 650px; */
   font-size: 14px;
   padding:0 20px;
 }
+.course{
+  color: #3b3330;
+  
+}
+.course:hover{
+    color: #ff9538;
+    font-weight: 600;
+  }

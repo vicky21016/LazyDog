@@ -1,9 +1,36 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+// import { useParams } from 'next/navigation'
 import styles from "../css/teacherSignInfo.module.css"
 
-export default function TeacherInfo(props) {
+export default function TeacherInfo() {
+  // const params = useParams()
+  // const teacherCode = params.teacherId
+
+  const [infos, setInfos] = useState([]);
+  
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/teacher/info`,{
+      method: "GET",
+      headers:{
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+
+        setInfos(data.infos);
+
+      })
+      .catch((err) => {
+        console.error("Error fetching data:", err);
+      });
+  }, []);
+
   return (
     <>
       <div className={`col-lg-9 col-md-12 col-12`}>

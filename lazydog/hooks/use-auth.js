@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
           router.push("/hotel-coupon/operatorDetail"); // 轉入operator
           break;
         case "teacher":
-          router.push("/"); // 轉入 teacher
+          router.push("/teacher-sign/list"); // 轉入 teacher
           break;
         case "user":
           router.push("/pages");
@@ -130,10 +130,7 @@ export function AuthProvider({ children }) {
       setUser(-1);
       localStorage.removeItem("user");
 
-
-
       window.location.href = "/login";
-      
     } catch (err) {
       console.log(err);
       alert(err.message);
@@ -193,9 +190,8 @@ export function AuthProvider({ children }) {
         localStorage.setItem(appKey, token);
         localStorage.setItem("user", JSON.stringify(newUser));
         // 重新取得使用者資料
-        // setUser(JSON.parse(localStorage.getItem("user"))); 
+        // setUser(JSON.parse(localStorage.getItem("user")));
         // 若為 operator，��重新��向 operator ��面
-
       } else {
         alert("儲存失敗");
       }
@@ -233,10 +229,10 @@ export function AuthProvider({ children }) {
       if (response.ok) {
         console.log("上傳成功:", result);
         // const user = JSON.parse(localStorage.getItem("user"));
-        // user.avatar = result.fileUrl; 
+        // user.avatar = result.fileUrl;
         // localStorage.setItem("user", JSON.stringify(user));
         // // 重新取得使用者資料
-      
+
         return result.fileUrl; // 回傳圖片網址
       } else {
         return console.error("上傳失敗:", result.message);

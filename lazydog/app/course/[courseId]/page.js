@@ -1,7 +1,6 @@
 "use client";
 
 import  { useState, useEffect } from "react";
-import { useFetch } from "@/hooks/product/use-fetch";
 import { useParams } from "next/navigation";
 import styles from "../_components/courseId.module.css";
 import Header from "@/app/components/layout/header";

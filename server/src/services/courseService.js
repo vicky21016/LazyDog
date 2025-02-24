@@ -90,7 +90,6 @@ export const getId = async (id) => {
       SELECT * 
       FROM course_img 
       WHERE course_id = ? 
-      AND main_pic = 0;
       `,[id]);
     if (course.length == 0){
         console.log("課程照片不存在");
