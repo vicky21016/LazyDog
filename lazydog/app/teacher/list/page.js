@@ -13,17 +13,30 @@ import style1 from "../../product/list/list.module.css";
 
 export default function App (){
   const { teachers = [] } = useTeachers();
+  const [filterTeachers, setFilterTeachers] = useState(teachers); // 儲存過濾後的資料
+  const [search, setSearch] = useState(""); // 儲存搜尋字串
 
-useEffect(() => {
-  
-}, [teachers]); 
-  // if (loading) return 
+  // 當搜尋字串更新時，過濾教師資料
+  useEffect(() => {
+    const filtered = teachers.filter((teacher) =>
+      teacher.name.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilterTeachers(filtered);
+  }, [search, teachers]); // 當搜尋字串或教師資料改變時重新過濾
+
+  // 處理篩選條件的變化
+  const searchChange = (searchValue) => {
+    setSearch(searchValue); // 更新搜尋字串
+  };
+
+  useEffect(() => {}, [teachers]);
+  // if (loading) return
   //     <>
   //         <div className={style.container2}>
   //             <div className={style.loader27}></div>
   //            </div>
   //          </>
-      
+
   return (
     <>
       <Header />

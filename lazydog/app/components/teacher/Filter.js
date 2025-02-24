@@ -5,6 +5,25 @@ import styles from "../../teacher/list/list.module.css";
 import Link from "next/link";
 
 export default function Filter() {
+  const [search, setSearch] = useState(""); // 儲存搜尋字串
+  const [teachers, setTeachers] = useState([]); // 儲存所有teacher資料
+
+  const searchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  // 清除篩選
+  const clear = () => {
+    setSearch("");
+    searchChange(""); // 清除搜尋字串
+  };
+
+  // 篩選資料
+  const filtered = teachers.filter((teacher) => {
+    // 根據搜尋字串過濾
+    return teacher.title.toLowerCase().includes(search.toLowerCase());
+  });
+
   return (
     <aside className={`mt-4 ${styles["pdFilter"]}`}>
       <table className={styles.pdFilterTable}>
@@ -16,6 +35,8 @@ export default function Filter() {
                 className={styles.searchP}
                 type="text"
                 placeholder="搜尋商品"
+                value={search}
+                onChange={searchChange}
               />
             </td>
           </tr>
@@ -87,7 +108,9 @@ export default function Filter() {
           </tr>
           <tr>
             <td className={`${styles.tdTable} ${styles.checkboxTable}`}>
-              <button className={styles.clear}>清除搜尋</button>
+              <button className={styles.clear} onClick={clear}>
+                清除搜尋
+              </button>
             </td>
           </tr>
         </thead>

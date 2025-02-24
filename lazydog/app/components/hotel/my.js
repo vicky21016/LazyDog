@@ -13,12 +13,27 @@ export default function My() {
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
 
      const menuItems = [
-         { name: "業者資訊", path: "/hotel-coupon/operatorDetail", icon: <i className="bi bi-person-fill me-2"></i> },
-         { name: "旅館資訊", path: "/hotel-coupon/hotel", icon: <i className="bi bi-house-heart-fill me-2"></i> },
-         { name: "旅館評論", path: "/hotel-coupon/review", icon:<i className="bi bi-card-list me-2"></i>  },
-         { name: "旅館優惠", path: "/hotel-coupon/couponList", icon:<i className="bi bi-ticket-perforated me-2"></i> },
-       
-       ]; 
+       {
+         name: "業者資訊",
+         path: "/hotel-coupon/operatorDetail",
+         icon: <i className="bi bi-person-fill me-2"></i>,
+       },
+       {
+         name: "旅館資訊",
+         path: `/hotel-coupon/hotel/${user.id}`,
+         icon: <i className="bi bi-house-heart-fill me-2"></i>,
+       },
+       {
+         name: "旅館評論",
+         path: `/hotel-coupon/review/${user.id}`,
+         icon: <i className="bi bi-card-list me-2"></i>,
+       },
+       {
+         name: "旅館優惠",
+         path: "/hotel-coupon/couponList",
+         icon: <i className="bi bi-ticket-perforated me-2"></i>,
+       },
+     ]; 
   return (
     <div className=" d-none d-md-block col-md-3">
       <div className={` p-3 ${style.container}`}>
