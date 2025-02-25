@@ -9,9 +9,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart"; // 引入useCart以便取得購物車資料
 
-import Header from "../../components/layout/header";
-import Input from "../../components/forms/Input";
-import InputFiled from "../../components/forms/InputField";
+
+import Header from "../../components/layout/header"
+import Input from "../../components/forms/Input"
+import InputFiled from "../../components/forms/InputField"
+import Hotel from "../../components/cart/hotel";
+import Course from "../../components/cart/course";
 export default function CartListPayPage(props) {
   // 檢查是否登入
   const { isAuth } = useAuth();
@@ -239,6 +242,7 @@ export default function CartListPayPage(props) {
                     </div>
                   ))}
 
+
                   {courseItems.map((item) => (
                     <div
                       key={item.id}
@@ -262,6 +266,7 @@ export default function CartListPayPage(props) {
                       <span>{`Rs. ${item.price * item.count}`}</span>
                     </div>
                   ))}
+
 
                   <div className="d-flex justify-content-between">
                     <span>總價</span>
@@ -343,7 +348,9 @@ export default function CartListPayPage(props) {
                 </div>
               </aside>
             </div>
+
             <div ref={payFormDiv}></div>
+
             <button type="button" onClick={handleEcpay}>
               付款
             </button>

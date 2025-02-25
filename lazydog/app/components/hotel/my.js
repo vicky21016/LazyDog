@@ -41,7 +41,7 @@ export default function My() {
           <div className="position-relative d-inline-block">
             <img
               ref={avatarRef}
-              src="/hotel/hotel-images/page-image/Dog2.png"
+              src={user.avatar}
               alt="User Avatar"
               className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
             />

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { useFetch } from "@/hooks/product/use-fetch";
+import { useTeachers} from "../../../../hooks/useTeachers";
 import { useTeacherDetail } from "../../../../hooks/useTeacherDetail";
 // import { useParams } from "react-router-dom";
 // import { useRouter } from "next/router";
@@ -20,7 +20,7 @@ import style from "../../../pages/menu.module.css";
 import styles1 from "../../../../styles/modules/toggle.module.css";
 export default function App () {
   const [selectedTab, setSelectedTab] = useState("experience");
-
+const { teachers=[] } = useTeachers();
     const { id } = useParams();
     const { teacher } = useTeacherDetail(id);
 
