@@ -45,7 +45,7 @@ app.use(
 );
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
-app.use("/teacher-img", express.static(path.join(__dirname, "../../teacher-img")));
+// app.use("/teacher-img", express.static(path.join(__dirname, "../../teacher-img")));
 
 app.use("/auth", authRouter);
 app.use("/api/auth/google", googleRouter);
