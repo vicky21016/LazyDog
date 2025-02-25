@@ -40,7 +40,7 @@ export default function TeacherSection () {
 
   return (
     <section className="">
-      <div className="lumi-teacher-team pt-5 text-center">
+      <div className={` pt-5 text-center ${style.teacher}`}>
         <h3 className="mb-5 lumi-m-title">嚴選的師資團隊</h3>
         <div className=" mb-5">
           <p>

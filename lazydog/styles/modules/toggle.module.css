@@ -35,7 +35,7 @@
 
 /* teacher */
 .server {
-  background-image: url(../../public/teacher-img/bag.png);
+  /* background-image: url(../../public/teacher-img/bag.png); */
   height: 450px;
   justify-content: center;
   align-content: center;
