@@ -107,19 +107,49 @@ export const getCoursesIdByTeacher = async (id) => {
         console.log("課程不存在");
     }
 
-    const [imgs] = await pool.query(`
+    const [mainpic] = await pool.query(`
       SELECT cm.* 
       FROM course_img cm
       JOIN course_session cs ON cm.course_id = cs.course_id 
       JOIN course c ON c.id = cs.course_id 
-      WHERE cs.id = ?`
-     ,[id]);
-   if (imgs.length == 0){
-       console.log("課程不存在");
-   }
+      WHERE cs.id = ?
+      AND cm.main_pic = 1
+      `,[id]);
+    if (mainpic.length == 0){
+        console.log("該課程主圖不存在");
+    }
+
+    const [otherpics] = await pool.query(`
+      SELECT cm.* 
+      FROM course_img cm
+      JOIN course_session cs ON cm.course_id = cs.course_id 
+      JOIN course c ON c.id = cs.course_id 
+      WHERE cs.id = ?
+      AND cm.main_pic = 0
+      `,[id]);
+    if (otherpics.length == 0){
+        console.log("該課程其他照片不存在");
+    }
+
+    const [types] = await pool.execute(`      
+      SELECT *
+      FROM course_type 
+      WHERE is_deleted = 0
+    `);
+    if (types.length == 0){
+      console.log("課程類別不存在");
+    }
+
+    const [places] = await pool.execute(`      
+      SELECT *
+      FROM course_area
+    `);
+    if (places.length == 0){
+      console.log("上課地點不存在");
+    }
 
 
-    return {courses, imgs};
+    return {courses, mainpic, otherpics, types, places};
   } catch (err) {
     throw new Error(` 無法取得 ${id} 課程:;` + err.message);
   }
@@ -209,17 +239,16 @@ export const createCourseWithSession = async (courseData, sessionData, imgData) 
   }
 };
 
-// 更新課程+梯次( 照片還沒 )
+// 更新課程+梯次
 export const updateCourseWithSession = async (courseId, courseData, sessionId, sessionData) => {
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
 
     await connection.query(
-      `UPDATE course SET type_id = ?, img_id = ?, name = ?, description = ?, duration = ?, price = ?, notice = ?, qa = ? WHERE id = ? AND is_deleted =0`,
+      `UPDATE course SET type_id = ?, name = ?, description = ?, duration = ?, price = ?, notice = ?, qa = ? WHERE id = ? AND is_deleted =0`,
       [
         courseData.type_id,
-        courseData.img_id,
         courseData.name,
         courseData.description,
         courseData.duration,

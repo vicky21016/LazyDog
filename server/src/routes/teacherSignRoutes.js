@@ -1,5 +1,6 @@
 import express from "express";
 import multer from "multer";
+import { fileURLToPath } from "url";
 import path from "path";
 import fs from "fs"
 
@@ -16,51 +17,44 @@ import { verifyToken, verifyRole } from '../middlewares/authMiddleware.js'
 
 const router = express.Router();
 
-const secretKey = process.env.JWT_SECRET_KEY;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, "../../../lazydog")
+// console.log("filename~~~~~~",__filename);
+// console.log( "目錄~~~~~~~~~ ",__dirname);
+// console.log(rootDir);
+// 動態設定存儲位置
 const storage = multer.diskStorage({
-  destination: "/teacherSign/img",
+  destination: (req, file, cb) => {
+    let uploadDir = path.join(rootDir, "public", "teacherSign", "uploads"); ; 
+    console.log(uploadDir);
+   
+   if (req.path.includes("/info")) {
+      uploadDir = path.join(rootDir, "public","teacher-img");
+    } else if (req.path.includes("/mycourse")) {
+      uploadDir = path.join(rootDir, "public","course","img");
+    } else if (req.path.includes("/user")) {
+      uploadDir = path.join(rootDir,  "public","user","img");
+    }
+
+
+    console.log( "上傳目錄: ",uploadDir);
+
+
+    // 確保資料夾存在
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+      console.log("📁 目錄不存在，已建立:", uploadDir);
+    }
+
+    cb(null, uploadDir);
+  },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname); // 避免檔名衝突
+    const uniqueName = Date.now() + path.extname(file.originalname);
+    console.log("📸 上傳的檔案名稱: ", uniqueName); // ✅ 記錄檔案名稱
+    cb(null, uniqueName);
   },
 });
-
-// const __filename = new URL(import.meta.url).pathname;
-// const __dirname = path.dirname(__filename);
-// console.log( "目錄~~~~~~~~~ ",__dirname);
-
-// 動態設定存儲位置
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     let uploadDir = "../../../teacherSign/uploads"; // 預設資料夾
-    
-//    // 根據路由判斷資料夾
-//    if (req.path.includes("/info")) {
-//       uploadDir = path.join(__dirname, "../../public/teacher-img");
-//     } else if (req.path.includes("/mycourse")) {
-//       uploadDir = path.join(__dirname, "../../public/course/img");
-//     } else if (req.path.includes("/user")) {
-//       uploadDir = path.join(__dirname, "../../public/user/img");
-//     }
-
-
-//     console.log( "上傳目錄: ",uploadDir);
-
-
-//     // 確保資料夾存在
-//     if (!fs.existsSync(uploadDir)) {
-//       fs.mkdirSync(uploadDir, { recursive: true });
-//       console.log("📁 目錄不存在，已建立:", uploadDir);
-//     }
-
-//     cb(null, uploadDir);
-//   },
-//   filename: (req, file, cb) => {
-//     const uniqueName = Date.now() + path.extname(file.originalname);
-//     console.log("📸 上傳的檔案名稱: ", uniqueName); // ✅ 記錄檔案名稱
-//     cb(null, uniqueName);
-//   },
-// });
-
 const upload = multer({storage});
 
 
