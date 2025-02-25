@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/modules/fontHotelHome.module.css";
 import GoogleMapComponent from "../../components/hotel/GoogleMapComponent";
 import Link from "next/link";
-import {
+import { 
   ratingAv,
   getAllTags,
   getHotelPriceRange,
@@ -51,7 +51,7 @@ export default function SideBar({ hotelId, onSearch, onClear,searchParams }) {
   }, []);
   const fetchHotels = async () => {
     try {
-      if (isFiltered) return; // 🔥 如果已經在篩選，不要載入全部飯店
+      if (isFiltered) return; //  如果已經在篩選，不要載入全部飯店
   
       const response = await fetch(`http://localhost:5000/api/hotels`);
       if (!response.ok) throw new Error("無法獲取飯店");
@@ -160,10 +160,11 @@ useEffect(() => {
     });
   };
   const handleApplyFilters = async () => {
+
     setIsFiltered(true); 
   
     const filterParams = {
-      ...searchParams, // ✅ 保持原本的 searchParams
+      ...searchParams, // 保持原本的 searchParams
       minPrice,
       maxPrice,
       roomType: selectedRoomType || null, 

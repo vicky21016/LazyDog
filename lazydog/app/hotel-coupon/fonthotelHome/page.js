@@ -49,7 +49,7 @@ export default function HotelHomePage() {
   //  避免 `useEffect` 觸發多次篩選
   const isFirstRender = useRef(true);
 
-  //  只有當 `isFiltered === false` 時載入所有飯店
+  // 只有當 `isFiltered === false` 時載入所有飯店
   useEffect(() => {
     if (!isFiltered) {
       getAllHotels()

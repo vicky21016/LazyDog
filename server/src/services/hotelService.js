@@ -345,12 +345,12 @@ export const softDeleteHotelById = async (id) => {
     connection.release();
   }
 };
-/**  從資料庫獲取篩選後的飯店 */
+/**  從資料庫獲取篩選後 */
 export const getFilteredHotels = async (filters) => {
   const connection = await pool.getConnection();
   try {
     let query = `
-      SELECT h.*, 
+      SELECT h.*,
              hi.url AS main_image_url,
              IFNULL(r.avg_rating, 0) AS avg_rating, 
              IFNULL(r.review_count, 0) AS review_count, 

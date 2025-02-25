@@ -31,7 +31,7 @@ const HotelSearchBar = ({
       checkOutDate: null,
     };
 
-    // **確保 `checkInDate` 和 `checkOutDate` 正確**
+    // 確保 `checkInDate` 和 `checkOutDate` 正確
     if (selectedDate.includes(" 至 ")) {
       const [checkInDate, checkOutDate] = selectedDate.split(" 至 ");
       searchParams.checkInDate = checkInDate.trim() || null;
