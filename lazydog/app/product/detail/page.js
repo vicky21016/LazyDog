@@ -8,11 +8,15 @@ import StarGroup from "../_components/rate/stargroup";
 import StarBar from "../_components/rate/starbar";
 import useSWR from "swr";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
 
 export default function DetailPage({ searchParams = {} }) {
   const { user } = useAuth();
+  const { onAddProduct, productItems } = useCart();
+  const router = useRouter();
+  const loginRoute = "/login";
   const [favorite, setFavorite] = useState([]);
   const [picNow, setPicNow] = useState(0);
   const [heartHover, setHeartHover] = useState(false);
@@ -138,8 +142,31 @@ export default function DetailPage({ searchParams = {} }) {
     mutate: favoriteMutate,
   } = useSWR(favoriteAPI, fetcher);
 
+  const [favoriteList, setFavoriteList] = useState([]);
   useEffect(() => {
-    // console.log(favorite);
+    if (favoriteData?.data) {
+      const userFavorite = favoriteData?.data.find(
+        (v) => v.user_id == user?.id
+      );
+      if (userFavorite?.productID_list.length > 0) {
+        setFavoriteList(userFavorite?.productID_list.split(","));
+      }
+    }
+  }, [favoriteData]);
+  useEffect(() => {
+    if (favoriteList.length > 0 && product) {
+      if (favoriteList.includes(product)) setHeartState(true);
+      setFavorite((favoriteNow) => {
+        if (JSON.stringify(favoriteNow) !== JSON.stringify(favoriteList)) {
+          return favoriteList;
+        }
+        return favoriteNow;
+      });
+    }
+  }, [favoriteList]);
+
+  useEffect(() => {
+    console.log(favorite);
     favoriteData?.data.map(async (v, i) => {
       if (user?.id > 0) {
         const formData = new FormData();
@@ -163,6 +190,7 @@ export default function DetailPage({ searchParams = {} }) {
       }
     });
   }, [favorite]);
+
   return (
     <div className={`${styles.Container} container`}>
       <section className={styles.Breadcrumbs}>
@@ -248,7 +276,22 @@ export default function DetailPage({ searchParams = {} }) {
                 className={styles.FavoriteBtn}
                 onMouseEnter={() => setHeartHover(true)}
                 onMouseLeave={() => setHeartHover(false)}
-                onClick={() => setHeartState(!heartState)}
+                onClick={() => {
+                  if (!user) {
+                    alert("請先登入");
+                    setTimeout(() => {
+                      router.push(loginRoute);
+                    }, 100);
+                  } else {
+                    const newState = !heartState;
+                    setHeartState(newState);
+                    setFavorite((favorite) =>
+                      newState
+                        ? [...favorite, product]
+                        : favorite.filter((e) => e !== product)
+                    );
+                  }
+                }}
               >
                 <img
                   src={`/product/font/${
@@ -257,7 +300,7 @@ export default function DetailPage({ searchParams = {} }) {
                   alt=""
                 />
               </button>
-              <h6>加入收藏</h6>
+              <h6>{heartState ? "已加入收藏" : "加入收藏"}</h6>
             </div>
             <h2 className={styles.InfoProductName}>{productData?.name}</h2>
             <div className={styles.InfoRateGroup}>
@@ -300,30 +343,62 @@ export default function DetailPage({ searchParams = {} }) {
               <h5>購買數量</h5>
               <button
                 className={styles.QtyMinus}
-                onClick={() => setAmount(amount <= 1 ? 1 : amount - 1)}
+                onClick={() => {
+                  // const newAmount = amount - 1;
+                  // setAmount(newAmount <= 0 ? 1 : newAmount);
+                  setAmount((prevAmount) =>
+                    prevAmount - 1 <= 0 ? 1 : prevAmount - 1
+                  );
+                }}
               >
                 <img src="/product/font/minus.png" alt="" />
               </button>
-              <input type="number" defaultValue={amount} min={1} max={999} />
+              <input type="number" value={amount} min={1} max={999} />
               <button
                 className={styles.QtyPlus}
-                onClick={() =>
-                  setAmount(
-                    amount >= productData?.stock
-                      ? productData?.stock
-                      : amount + 1
-                  )
-                }
+                onClick={() => {
+                  // const newAmount = amount + 1;
+                  // setAmount(newAmount >= 999 ? 999 : newAmount);
+                  setAmount((prevAmount) =>
+                    prevAmount + 1 >= 999 ? 999 : prevAmount + 1
+                  );
+                }}
               >
                 <img src="/product/font/plus.png" alt="" />
               </button>
             </div>
             <p>庫存數量 : {productData?.stock}</p>
             <div className={styles.InfoBtnGroup}>
-              <button className={styles.BtnBuynow}>
+              <button
+                className={styles.BtnBuynow}
+                onClick={() => {
+                  if (!user) {
+                    alert("請先登入");
+                    setTimeout(() => {
+                      router.push(loginRoute);
+                    }, 100);
+                  } else {
+                    onAddProduct(productData, amount);
+                    setTimeout(() => {
+                      router.push("/cart/CartList");
+                    }, 100);
+                  }
+                }}
+              >
                 <h5>立即購買</h5>
               </button>
-              <button>
+              <button
+                onClick={() => {
+                  if (!user) {
+                    alert("請先登入");
+                    setTimeout(() => {
+                      router.push(loginRoute);
+                    }, 100);
+                  } else {
+                    onAddProduct(productData, amount);
+                  }
+                }}
+              >
                 <h5>加入購物車</h5>
               </button>
             </div>

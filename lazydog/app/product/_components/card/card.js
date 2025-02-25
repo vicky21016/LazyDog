@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import styles from "./card.module.css";
 import Link from "next/link";
 import useSWR from "swr";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function CardCard({
   productID = "",
@@ -14,7 +14,7 @@ export default function CardCard({
   setFavorite = () => {},
 }) {
   const { user } = useAuth();
-  const { onAddProduct } = useCart();
+  const { onAddProduct, productItems } = useCart();
   const router = useRouter();
   const loginRoute = "/login";
   const url = productID
@@ -62,7 +62,18 @@ export default function CardCard({
       });
     }
   }, [favoriteList]);
-  // console.log(favoriteList);
+
+  const [productCount, setProductCount] = useState(0);
+  useEffect(() => {
+    const newCount = productItems?.filter((v) => v.productID == productID);
+    if (newCount && newCount[0]?.count !== undefined) {
+      if (productCount !== newCount[0].count) {
+        setProductCount(newCount[0].count);
+      }
+    }
+  }, [productItems]);
+  // console.log(productItems, productCount);
+  // console.log();
   const [cardHover, setCardHover] = useState(false);
   const [heartHover, setHeartHover] = useState(false);
   const [heartState, setHeartState] = useState(false);
@@ -109,13 +120,13 @@ export default function CardCard({
         className={
           cardHover
             ? styles.ProductCardCartOff
-            : cartRate
+            : (productCount ?? 0) > 0 || (cartRate ?? 0) > 0
             ? styles.ProductCardCart
             : styles.ProductCardCartOff
         }
       >
         <img src={`/product/font/cart-fill-big.png`} alt="" />
-        <p>{cartRate}</p>
+        <p>{productCount > 0 ? productCount : cartRate}</p>
       </div>
       {/* {productDiscount > 0 && (
         <div className={styles.ProductCardOnsale}>-{productDiscount} %</div>

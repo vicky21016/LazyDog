@@ -145,9 +145,9 @@ export default function ListPage({}) {
     error: favoriteError,
     mutate: favoriteMutate,
   } = useSWR(favoriteAPI, fetcher);
-
+  favoriteMutate();
   useEffect(() => {
-    // console.log(favorite);
+    console.log(favorite);
     favoriteData?.data.map(async (v, i) => {
       if (user?.id > 0) {
         const formData = new FormData();
