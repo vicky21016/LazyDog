@@ -8,9 +8,11 @@ import { useSearchParams, redirect } from "next/navigation";
 import Card from "../../_components/card/card";
 import useSWR from "swr";
 import { useAuth } from "@/hooks/use-auth";
+import { useCart } from "@/hooks/use-cart";
 
 export default function ListPage({}) {
   const { user } = useAuth();
+  const [favorite, setFavorite] = useState([]);
   const [sortName, setSortName] = useState("依商品名稱排序");
   const [keyword, setKeyword] = useState({
     主分類: [],
@@ -135,6 +137,40 @@ export default function ListPage({}) {
       );
     }
   }, [keyword, minPrice, maxPrice]);
+
+  const favoriteAPI = "http://localhost:5000/api/products/favorite";
+  const {
+    data: favoriteData,
+    isLoading: favoriteLoading,
+    error: favoriteError,
+    mutate: favoriteMutate,
+  } = useSWR(favoriteAPI, fetcher);
+
+  useEffect(() => {
+    // console.log(favorite);
+    favoriteData?.data.map(async (v, i) => {
+      if (user?.id > 0) {
+        const formData = new FormData();
+        formData.append("userID", user?.id);
+        formData.append("productIDlist", favorite.join(","));
+        let API = "http://localhost:5000/api/products/favorite";
+        let methodType = "POST";
+        if (v.user_id == user?.id) methodType = "PATCH";
+        try {
+          const res = await fetch(API, {
+            method: methodType,
+            body: formData,
+          });
+          const result = await res.json();
+          if (result.status != "success") throw new Error(result.message);
+          // console.log(result);
+        } catch (error) {
+          console.log(error);
+          alert(error.message);
+        }
+      }
+    });
+  }, [favorite]);
   return (
     <>
       <div className={`${styles.Container} container`}>
@@ -245,7 +281,14 @@ export default function ListPage({}) {
                 <ul className={styles.ProductCardGroup} key={index}>
                   {product?.map((v, i) => {
                     if (index * 4 <= i && i < (index + 1) * 4)
-                      return <Card key={v.productID} productID={v.productID} />;
+                      return (
+                        <Card
+                          key={v.productID}
+                          productID={v.productID}
+                          favorite={favorite}
+                          setFavorite={setFavorite}
+                        />
+                      );
                   })}
                 </ul>
               );

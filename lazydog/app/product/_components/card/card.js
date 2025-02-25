@@ -5,6 +5,7 @@ import styles from "./card.module.css";
 import Link from "next/link";
 import useSWR from "swr";
 import { useAuth } from "@/hooks/use-auth";
+import { useCart } from "@/hooks/use-cart";
 import { useRouter, usePathname } from "next/navigation";
 
 export default function CardCard({
@@ -13,6 +14,7 @@ export default function CardCard({
   setFavorite = () => {},
 }) {
   const { user } = useAuth();
+  const { onAddProduct } = useCart();
   const router = useRouter();
   const loginRoute = "/login";
   const url = productID
@@ -29,6 +31,38 @@ export default function CardCard({
     }
   };
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
+
+  const favoriteAPI = "http://localhost:5000/api/products/favorite";
+  const {
+    data: favoriteData,
+    isLoading: favoriteLoading,
+    error: favoriteError,
+    mutate: favoriteMutate,
+  } = useSWR(favoriteAPI, fetcher);
+
+  const [favoriteList, setFavoriteList] = useState([]);
+  useEffect(() => {
+    if (favoriteData?.data) {
+      const userFavorite = favoriteData?.data.find(
+        (v) => v.user_id == user?.id
+      );
+      if (userFavorite?.productID_list.length > 0) {
+        setFavoriteList(userFavorite?.productID_list.split(","));
+      }
+    }
+  }, [favoriteData]);
+  useEffect(() => {
+    if (favoriteList.length > 0 && productID) {
+      if (favoriteList.includes(productID)) setHeartState(true);
+      setFavorite((favoriteNow) => {
+        if (JSON.stringify(favoriteNow) !== JSON.stringify(favoriteList)) {
+          return favoriteList;
+        }
+        return favoriteNow;
+      });
+    }
+  }, [favoriteList]);
+  // console.log(favoriteList);
   const [cardHover, setCardHover] = useState(false);
   const [heartHover, setHeartHover] = useState(false);
   const [heartState, setHeartState] = useState(false);
@@ -37,10 +71,6 @@ export default function CardCard({
   const products = data?.data[0];
   const productName = products?.name;
   const [cardPic, setCardPic] = useState("/product/img/default.webp");
-  // const productPrice = (
-  //   Number(products?.price) * Number(products?.discount)
-  // ).toFixed(0);
-  // const productDiscount = (1 - Number(products?.discount)).toFixed(2) * 100;
   const cardRef = useRef(null);
   const simulateClick = (e) => {
     if (e.target.dataset.clickable) {
@@ -59,7 +89,6 @@ export default function CardCard({
         setCardPic(`/product/img/${encodedImageName}_(1).webp`);
     }
   }, [productName]);
-  console.log(favorite);
   return (
     <li
       className={styles.ProductCard}
@@ -151,6 +180,7 @@ export default function CardCard({
               router.push(loginRoute);
             } else {
               setCartRate(cartRate + 1);
+              onAddProduct(products, 1);
             }
           }}
         >

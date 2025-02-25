@@ -196,21 +196,29 @@ export const getId = async (req, res) => {
 
 export const createFavorite = async (req, res) => {
   try {
-    const { userId, productIDlist } = req.body;
-    if (!userId || !productIDlist) {
+    const { userID, productIDlist } = req.body;
+    if (!userID || !productIDlist) {
       return res.status(401).json({
         status: "error",
-        message: "請從正規管道進入此頁面",
+        message: "請從正規管道進入新增收藏頁面",
       });
     }
+    const productIDs = productIDlist.split(",");
+    productIDs.map((productID, i) => {
+      if (!productID) throw new Error("請提供商品編號");
+      const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
+      if (!regForPD.test(productID)) {
+        return connectError(req, res);
+      }
+    });
 
-    const product = await createNewFavorite(userId, productIDlist);
+    const product = await createNewFavorite(userID, productIDlist);
     if (product.affectedRows == 0) {
-      throw new Error("新增商品失敗");
+      throw new Error("新增收藏失敗");
     }
     res.status(201).json({
       status: "success",
-      message: `新增 ${name} 商品成功`,
+      message: `用戶ID：${userID} 新增收藏成功`,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -223,7 +231,7 @@ export const createNew = async (req, res) => {
     if (!cateId || !name || !brand || !price || !stock || !listImg || !img) {
       return res.status(401).json({
         status: "error",
-        message: "請從正規管道進入此頁面",
+        message: "請從正規管道進入新增商品頁面",
       });
     }
     let classNum = "";
@@ -282,116 +290,34 @@ export const createNew = async (req, res) => {
 
 export const updateFavorite = async (req, res) => {
   try {
-    const { productID } = req.params;
-    if (!productID) throw new Error("請提供商品編號");
-    const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
-    if (!regForPD.test(productID)) {
-      return connectError(req, res);
+    const { userID, productIDlist } = req.body;
+    if (!userID) {
+      return res.status(401).json({
+        status: "error",
+        message: "請從正規管道進入更新收藏頁面",
+      });
     }
-    const {
-      cateId,
-      name,
-      brand,
-      price,
-      discount,
-      discountEnd,
-      stock,
-      fullInfo,
-      infoText,
-      spec,
-      isDeleted,
-      listImg,
-      infoImg,
-      img,
-      smImg,
-    } = req.body;
-    const updateFields = [];
-    const value = [];
-    const updateImgsFields = [];
-    const imgs = [];
-    const fieldNames = [
-      "category_id",
-      "name",
-      "brand",
-      "price",
-      "discount",
-      "discount_et",
-      "stock",
-      "full_info",
-      "info_text",
-      "spec",
-      "is_deleted",
-      "updated_at",
-    ];
-    const imgNames = [
-      "name",
-      "list_img",
-      "info_img",
-      "lg_img",
-      "sm_img",
-      "is_deleted",
-      "updated_at",
-    ];
-    const updateContent = [
-      cateId,
-      name,
-      brand,
-      price,
-      discount,
-      discountEnd,
-      stock,
-      fullInfo,
-      infoText,
-      spec,
-      isDeleted,
-      productID,
-    ];
-    const updateImgs = [
-      name,
-      listImg,
-      infoImg,
-      img,
-      smImg,
-      isDeleted,
-      productID,
-    ];
-    for (let i = 0; i < updateContent.length; i++) {
-      if (updateContent[i]) {
-        if (i == 11) {
-          updateFields.push(`${fieldNames[i]} = ?`);
-          value.push(new Date().toISOString());
-          value.push(updateContent[i]);
-        } else {
-          updateFields.push(`${fieldNames[i]} = ?`);
-          value.push(updateContent[i]);
+    let isDeleted = 0;
+    if (productIDlist !== "") {
+      const productIDs = productIDlist.split(",");
+      productIDs.map((productID, i) => {
+        if (!productID) throw new Error("請提供商品編號");
+        const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
+        if (!regForPD.test(productID)) {
+          return connectError(req, res);
         }
-      }
-    }
-    for (let i = 0; i < updateImgs.length; i++) {
-      if (updateImgs[i]) {
-        if (i == 6) {
-          updateImgsFields.push(`${imgNames[i]} = ?`);
-          imgs.push(new Date().toISOString());
-          imgs.push(updateImgs[i]);
-        } else {
-          updateImgsFields.push(`${imgNames[i]} = ?`);
-          imgs.push(updateImgs[i]);
-        }
-      }
+      });
+    } else if (productIDlist === "") {
+      isDeleted = 1;
     }
 
-    const product = await updateFavoriteInfo(
-      updateFields,
-      value,
-      updateImgsFields,
-      imgs
-    );
+    const product = await updateFavoriteInfo(userID, productIDlist, isDeleted);
     if (product.affectedRows == 0) {
       throw new Error("更新商品失敗");
     }
     res.status(200).json({
       status: "success",
-      message: `更新編號：${productID} ${name} 商品成功`,
+      message: `用戶ID：${userID} 更新收藏成功`,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -516,6 +442,43 @@ export const updateItem = async (req, res) => {
   }
 };
 
+export const softDeleteFavorite = async (req, res) => {
+  try {
+    const { userID, productIDlist } = req.body;
+    if (!userID) {
+      return res.status(401).json({
+        status: "error",
+        message: "請從正規管道進入更新收藏頁面",
+      });
+    }
+    console.log(userID);
+    let isDeleted = 0;
+    if (productIDlist !== "") {
+      const productIDs = productIDlist.split(",");
+      productIDs.map((productID, i) => {
+        if (!productID) throw new Error("請提供商品編號");
+        const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
+        if (!regForPD.test(productID)) {
+          return connectError(req, res);
+        }
+      });
+    } else {
+      isDeleted = 1;
+    }
+
+    const product = await updateFavoriteInfo(userID, productIDlist, isDeleted);
+    if (product.affectedRows == 0) {
+      throw new Error("更新商品失敗");
+    }
+    res.status(200).json({
+      status: "success",
+      message: `用戶ID：${userID} 更新收藏成功`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 export const softDeleteItem = async (req, res) => {
   try {
     const { productID } = req.params;
@@ -550,20 +513,15 @@ export const softDeleteItem = async (req, res) => {
 
 export const deleteFavorite = async (req, res) => {
   try {
-    const { productID } = req.params;
-    if (!productID) throw new Error("請提供商品編號");
-    const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
-    if (!regForPD.test(productID)) {
-      return connectError(req, res);
-    }
+    const { userID } = req.body;
 
-    const product = await deleteFavoriteInfo(productID);
+    const product = await deleteFavoriteInfo(userID);
     if (product.affectedRows == 0) {
-      throw new Error("刪除商品失敗");
+      throw new Error("刪除收藏失敗");
     }
     res.status(200).json({
       status: "success",
-      message: `刪除編號：${productID} 商品成功`,
+      message: `用戶ID：${userID} 刪除收藏成功`,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
