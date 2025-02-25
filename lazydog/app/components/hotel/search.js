@@ -38,11 +38,9 @@ const HotelSearchBar = ({
       searchParams.checkOutDate = checkOutDate.trim() || null;
     }
 
-    console.log("🔍 發送 API 請求:", searchParams);
 
     try {
       const result = await getFilteredHotelsS(searchParams);
-      console.log("✅ API 回傳:", result);
 
       if (onSearch) {
         onSearch(searchParams);
@@ -50,12 +48,12 @@ const HotelSearchBar = ({
 
       setIsSearching(false);
     } catch (error) {
-      console.error("❌ 搜尋 API 錯誤:", error);
+      console.error(" 搜尋 API 錯誤:", error);
     }
   };
 
   const handleClearSearch = () => {
-    console.log("🧹 清除搜尋條件");
+    console.log(" 清除搜尋條件");
 
     clearLocation();
     clearDate();

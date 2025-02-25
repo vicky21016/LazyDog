@@ -37,7 +37,6 @@ export const removeHotelTag = async (req, res) => {
 //懶得寫後面
 export const getAllHotelTags = async (req, res) => {
   try {
-    console.log("🔍 嘗試取得所有飯店標籤...");
 
     const query = `
       SELECT DISTINCT t.id, t.name, t.description 
@@ -53,7 +52,6 @@ export const getAllHotelTags = async (req, res) => {
       return res.json([]); // 回傳空陣列，而不是 404
     }
 
-    console.log(` 成功取得 ${rows.length} 筆標籤資料`);
     res.json(rows);
   } catch (error) {
     console.error(" 取得標籤失敗:", error);

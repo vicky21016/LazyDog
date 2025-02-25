@@ -39,7 +39,6 @@ export const getSearch = async (req, res) => {
 };
 export const getByIds = async (req, res) => {
   try {
-    console.log("找到旅館ID:", req.params.id);
     const id = Number(req.params.id, 10);
 
     if (isNaN(id)) {
@@ -68,7 +67,6 @@ export const getOperatorHotels = async (req, res) => {
 
 export const createHotel = async (req, res) => {
   try {
-    console.log("收徒確認之後會刪掉", req.files);
 
     const operatorId = req.user.id;
     const {
@@ -221,7 +219,6 @@ export const getPaginatedHotels = async (req, res) => {
 /* 取得篩選後的飯店 */
 export const getFilteredHotelsS = async (req, res) => {
   try {
-    console.log("後端收到的篩選條件:", req.body); // 🔥 這行檢查後端是否有收到資料
 
     const filters = {
       city: req.body.city || null,

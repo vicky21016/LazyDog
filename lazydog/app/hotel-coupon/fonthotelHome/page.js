@@ -46,13 +46,12 @@ export default function HotelHomePage() {
     rating: null,
   });
 
-  // ✅ 避免 `useEffect` 觸發多次篩選
+  //  避免 `useEffect` 觸發多次篩選
   const isFirstRender = useRef(true);
 
-  // ✅ 只有當 `isFiltered === false` 時載入所有飯店
+  //  只有當 `isFiltered === false` 時載入所有飯店
   useEffect(() => {
     if (!isFiltered) {
-      console.log("📌 加載所有飯店...");
       getAllHotels()
         .then((hotelData) => {
           setHotels(hotelData);
@@ -62,15 +61,14 @@ export default function HotelHomePage() {
     }
   }, [isFiltered]);
 
-  // ✅ 監聽 `filteredHotels`，更新分頁數
+  // 監聽 `filteredHotels`，更新分頁數
   useEffect(() => {
     setTotalPages(
       Math.max(1, Math.ceil(filteredHotels.length / hotelsPerPage))
     );
-    console.log("🖥️ 更新篩選結果:", filteredHotels);
   }, [filteredHotels]);
 
-  // ✅ 確保當前頁數不超過最大頁數
+  // 確保當前頁數不超過最大頁數
   useEffect(() => {
     if (currentPage > totalPages) {
       setCurrentPage(1);
@@ -86,17 +84,15 @@ export default function HotelHomePage() {
       ...newParams,
     };
   
-    console.log("🔍 送出 API 查詢:", updatedParams);
     
     setSearchParams(updatedParams);
   
     try {
       let data = await getFilteredHotelsS(updatedParams);
   
-      console.log("🔥 API 回傳篩選結果:", data);
   
       if (!data || !Array.isArray(data)) {
-        console.warn("⚠️ API 回傳無效數據，使用空陣列");
+        console.warn(" API 回傳無效數據，使用空陣列");
         data = [];
       }
   
@@ -131,7 +127,6 @@ export default function HotelHomePage() {
 
     try {
       const data = await getAllHotels();
-      console.log("🛠 清除後重新加載飯店:", data);
       setFilteredHotels(data);
       setCurrentPage(1);
     } catch (error) {
@@ -139,7 +134,7 @@ export default function HotelHomePage() {
     }
   };
 
-  // ✅ 計算當前頁面顯示的飯店
+  //  計算當前頁面顯示的飯店
   const indexOfLastHotel = currentPage * hotelsPerPage;
   const indexOfFirstHotel = indexOfLastHotel - hotelsPerPage;
   const currentHotels = Array.isArray(filteredHotels)

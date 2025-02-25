@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
 import { useRouter } from "next/navigation";
-import { getAllHotels } from "@/services/hotelService";
 
 const HotelCard = ({ image, name, introduce, review, reviewCount, link }) => {
   const router = useRouter();

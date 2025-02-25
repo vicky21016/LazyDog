@@ -90,9 +90,7 @@ export function useLocationSelector(hotelId) {
   const confirmLocation = () => {
     const selectedCity = document.querySelector(".county")?.value || "";
     const selectedDistrict = document.querySelector(".district")?.value || "";
-  
-    console.log("🏙️ 選擇地區:", selectedCity, selectedDistrict);
-  
+    
     setCity(selectedCity);
     setDistrict(selectedDistrict);
     setAddress(`${selectedCity} ${selectedDistrict}`);
