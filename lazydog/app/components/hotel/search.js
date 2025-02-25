@@ -1,32 +1,68 @@
 import React, { useState } from "react";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
 import { useDatePicker } from "@/hooks/useDatePicker";
+import { getFilteredHotelsS } from "@/services/hotelService";
 
 const HotelSearchBar = ({
   location,
   locationModalRef,
   openModal,
-  address,
+  city,
+  district,
   closeModal,
   confirmLocation,
+  clearLocation,
   quantity,
   setQuantity,
   onSearch,
+  onClear,
 }) => {
-  const dateRef = useDatePicker();
-  const [selectedDate, setSelectedDate] = useState("");
+  const { dateRef, selectedDate, setSelectedDate, clearDate } = useDatePicker();
+  const [isSearching, setIsSearching] = useState(true);
 
- 
-  const handleSearchBarSubmit = () => {
-    console.log("🔍 搜尋欄條件:", { address, quantity, selectedDate });
+  const handleSearchBarSubmit = async () => {
+    confirmLocation(); // 確保選擇地區後更新 `city` 和 `district`
 
-    if (onSearch) {
-      onSearch({
-        address,
-        quantity,
-        selectedDate,
-      });
+    const searchParams = {
+      city: city || null,
+      district: district || null,
+      quantity: quantity || 1,
+      checkInDate: null,
+      checkOutDate: null,
+    };
+
+    // 確保 `checkInDate` 和 `checkOutDate` 正確
+    if (selectedDate.includes(" 至 ")) {
+      const [checkInDate, checkOutDate] = selectedDate.split(" 至 ");
+      searchParams.checkInDate = checkInDate.trim() || null;
+      searchParams.checkOutDate = checkOutDate.trim() || null;
     }
+
+    try {
+      const result = await getFilteredHotelsS(searchParams);
+      //可以在這裡驗證結果
+      if (onSearch) {
+        onSearch(searchParams);
+      }
+
+      setIsSearching(false);
+    } catch (error) {
+      console.error(" 搜尋 API 錯誤:", error);
+    }
+  };
+
+  const handleClearSearch = () => {
+    console.log(" 清除搜尋條件");
+
+    clearLocation();
+    clearDate();
+    setQuantity(1);
+
+    if (onClear) {
+      onClear();
+    }
+
+    setIsSearching(true); // 恢復搜尋狀態
   };
 
   return (
@@ -39,7 +75,7 @@ const HotelSearchBar = ({
             alt=""
           />
           <button className={styles.suSearchInput} onClick={openModal}>
-            {address ? address : "選擇地區"}
+            {city ? `${city} ${district || ""}` : "選擇地區"}
           </button>
         </div>
         <div className={styles.suSearchGroup}>
@@ -53,9 +89,11 @@ const HotelSearchBar = ({
             ref={dateRef}
             className={styles.suSearchDate}
             placeholder="入住日期 → 退房日期"
+            value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
         </div>
+
         <div className={styles.suSearchGroup}>
           <img
             className={styles.suIcon}
@@ -65,7 +103,7 @@ const HotelSearchBar = ({
           <span className="text">數量</span>
           <button
             className={styles.suQuantityBtn}
-            onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+            onClick={() => setQuantity(Math.max(1, quantity - 1))}
           >
             -
           </button>
@@ -77,10 +115,16 @@ const HotelSearchBar = ({
             +
           </button>
         </div>
-         {/* 使用 `handleSearchBarSubmit` 作為搜尋函數 */}
-         <button className={styles.suSearchBtn} onClick={handleSearchBarSubmit}>
-          搜尋
+
+        {/* 搜尋按鈕 */}
+        <button
+          className={styles.suSearchBtn}
+          onClick={isSearching ? handleSearchBarSubmit : handleClearSearch}
+        >
+          {isSearching ? "搜尋" : "清除篩選"}
         </button>
+
+        {/* 地區選擇 Modal */}
         <div
           className="modal fade"
           ref={locationModalRef}
@@ -106,7 +150,7 @@ const HotelSearchBar = ({
               <div className="modal-footer">
                 <button
                   className={styles.suSearchBtn}
-                  onClick={() => confirmLocation()}
+                  onClick={confirmLocation}
                 >
                   確定
                 </button>

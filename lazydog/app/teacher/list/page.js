@@ -14,16 +14,14 @@ import style1 from "../../product/list/list.module.css";
 export default function App (){
   const { teachers = [] } = useTeachers();
 
-useEffect(() => {
-  
-}, [teachers]); 
-  // if (loading) return 
+
+  // if (loading) return
   //     <>
   //         <div className={style.container2}>
   //             <div className={style.loader27}></div>
   //            </div>
   //          </>
-      
+
   return (
     <>
       <Header />

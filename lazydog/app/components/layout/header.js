@@ -10,16 +10,16 @@ import { auth, firebase } from "../utils/firebase";
 import styles from "../../../styles/modules/header.module.css";
 
 export default function Header(props) {
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false); // 控制選單展開
   const { logout } = useAuth();
-  React.useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
-      console.log("Firebase Auth State Changed:", currentUser);
+  
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
+    return () => unsubscribe();
   }, []);
-
   return (
     <header className={styles["lumi-header"]}>
       <Link href="/" className={styles["lumi-logo"]}>
@@ -104,10 +104,16 @@ export default function Header(props) {
               </Link>
             </li>
             <div className={styles["dropdown-content"]}>
-              <Link href="/course/list" className={styles["dropdown-link"]}>
+              <Link
+                href="/course/list"
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+              >
                 課程
               </Link>
-              <Link href="/teacher/list" className={styles["dropdown-link"]}>
+              <Link
+                href="/teacher/list"
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+              >
                 師資
               </Link>
             </div>
@@ -119,26 +125,34 @@ export default function Header(props) {
       </nav>
       {/* {!user ? (
         <> */}
+      {/* 右上角的會員與購物車 */}
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
           <Link href="/pages" className={styles["lumi-user-icon"]}>
-            {/* <FontAwesomeIcon icon={faUser} /> */}
             <i className="bi bi-person" />
           </Link>
-          {user ? (
+
+          { user ? (
             <div className={styles["dropdown-content"]}>
-              <Link href="/pages" className={styles["dropdown-link"]}>
+              <Link
+                href="/pages"
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+              >
                 個人資料
               </Link>
               <Link href="/favorite" className={styles["dropdown-link"]}>
                 我的收藏
               </Link>
-              <div onClick={logout} className={styles["dropdown-link"]}>
+              <div
+                onClick={logout}
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+              >
                 登出
               </div>
             </div>
           ) : null}
         </div>
+
         <div className={styles["lumi-cart-icon"]}>
           <Link href="/cart/CartList" className={styles["lumi-cart-icon"]}>
             {/* <img src="/images/cart.png" alt="cart" /> */}
@@ -146,6 +160,7 @@ export default function Header(props) {
           </Link>
         </div>
       </div>
+      {/* 手機板 */}
       <div
         className={`${styles.mobileMenu}`}
         onClick={() => setMenuOpen(!menuOpen)}
@@ -175,17 +190,18 @@ export default function Header(props) {
                 </Link>
               </li>
               <div className={styles["dropdown-content"]}>
-                <Link href="/course/list" className={styles["dropdown-link"]}>
+                <Link
+                  href="/course/list"
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                >
                   課程
                 </Link>
-                <Link href="/teacher/list" className={styles["dropdown-link"]}>
+                <Link
+                  href="/teacher/list"
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                >
                   師資
                 </Link>
-
-                <Link href="#" className={styles["dropdown-link"]}>
-                  常見 Q&A
-                </Link>
-
               </div>
             </div>
             <li>
@@ -196,13 +212,19 @@ export default function Header(props) {
                 <Link href="/pages">會員中心</Link>
               </li>
               <div className={styles["dropdown-content"]}>
-                <Link href="/pages" className={styles["dropdown-link"]}>
+                <Link
+                  href="/pages"
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                >
                   個人資料
                 </Link>
                 <Link href="/favorite" className={styles["dropdown-link"]}>
                   我的收藏
                 </Link>
-                <div onClick={logout} className={styles["dropdown-link"]}>
+                <div
+                  onClick={logout}
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                >
                   登出
                 </div>
               </div>
@@ -216,7 +238,6 @@ export default function Header(props) {
         </nav>
       </div>
 
-
       {/* </>
       ) : (
         <div>
@@ -229,7 +250,6 @@ export default function Header(props) {
           </Link>
         </div>
       )} */}
-
     </header>
   );
 }

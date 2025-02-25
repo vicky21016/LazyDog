@@ -3,6 +3,7 @@ import pool from '../config/mysql.js'
 import dotenv from 'dotenv'
 
 dotenv.config()
+// console.log(`JWT Secret Key: ${secretKey}`);
 const secretKey = process.env.JWT_SECRET_KEY
 
 export const verifyToken = async (req, res, next) => {
@@ -17,11 +18,12 @@ export const verifyToken = async (req, res, next) => {
         .json({ status: 'error', message: 'Token 格式錯誤' })
     }
     token = token.slice(7)
+    console.log(token);
     jwt.verify(token, secretKey, async (err, decoded) => {
       if (err) {
         return res
           .status(401)
-          .json({ status: 'error', message: 'Token 無效或已過期' })
+          .json({ status: 'error', message: `Token 無效或已過期: ${err}` })
       }
 
       // 檢查使用者是否仍然存在於資料庫
