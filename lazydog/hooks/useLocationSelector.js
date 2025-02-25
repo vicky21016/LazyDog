@@ -67,7 +67,6 @@ export function useLocationSelector(hotelId) {
     try {
       const res = await fetch("http://localhost:5000/api/hotels");
       const data = await res.json();
-      console.log("獲取所有飯店:", data);
     } catch (error) {
       console.error(" 獲取所有飯店失敗:", error);
     }
@@ -91,9 +90,7 @@ export function useLocationSelector(hotelId) {
   const confirmLocation = () => {
     const selectedCity = document.querySelector(".county")?.value || "";
     const selectedDistrict = document.querySelector(".district")?.value || "";
-  
-    console.log("🏙️ 選擇地區:", selectedCity, selectedDistrict);
-  
+    
     setCity(selectedCity);
     setDistrict(selectedDistrict);
     setAddress(`${selectedCity} ${selectedDistrict}`);

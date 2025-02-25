@@ -2,11 +2,11 @@
 import React, { useEffect, useRef } from "react";
 // import styles from "../../../styles/modules/operatorCamera.module.css";
 import hotelStyles from "../../../../styles/modules/operatorHotel.module.css";
-import {useHotel } from "@/hooks/useHotel";
+import { useHotel } from "@/hooks/useHotel";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import Header from "../../../components/layout/header";
-import My from "../../../components/hotel/my"
+import My from "../../../components/hotel/my";
 export default function HotelEditPage() {
   const router = useRouter();
   const { id } = useParams();
@@ -45,7 +45,9 @@ export default function HotelEditPage() {
                 <div className={`section ${hotelStyles.suSection}`}>
                   <h5>基本資訊</h5>
                   <div className="mb-3">
-                    <label className="form-label">旅館名稱 <span style={{color:'red'}}>*</span></label>
+                    <label className="form-label">
+                      旅館名稱 <span style={{ color: "red" }}>*</span>
+                    </label>
                     <input
                       type="text"
                       className="form-control"
@@ -54,7 +56,9 @@ export default function HotelEditPage() {
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">地址 <span style={{color:'red'}}>*</span></label>
+                    <label className="form-label">
+                      地址 <span style={{ color: "red" }}>*</span>
+                    </label>
                     <input
                       type="text"
                       className="form-control"
@@ -63,7 +67,9 @@ export default function HotelEditPage() {
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">電話 <span style={{color:'red'}}>*</span></label>
+                    <label className="form-label">
+                      電話 <span style={{ color: "red" }}>*</span>
+                    </label>
                     <input
                       type="text"
                       className="form-control"
@@ -99,11 +105,11 @@ export default function HotelEditPage() {
                   <div className="mb-3">
                     {/* <label className="form-label">營業時間</label> */}
                     <textarea
-  className="form-control"
-  value={hotel.time}
-  readOnly
-  rows="3"
-/>
+                      className="form-control"
+                      value={hotel.time}
+                      readOnly
+                      rows="3"
+                    />
                   </div>
                 </div>
 

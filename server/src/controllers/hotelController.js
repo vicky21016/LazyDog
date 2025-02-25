@@ -6,7 +6,7 @@ import {
   updateHotelById,
   softDeleteHotelById,
   searchHotels,
-  getFilteredHotelS,
+  getFilteredHotels,
 } from "../services/hotelService.js";
 import pool from "../config/mysql.js";
 
@@ -39,7 +39,6 @@ export const getSearch = async (req, res) => {
 };
 export const getByIds = async (req, res) => {
   try {
-    console.log("找到旅館ID:", req.params.id);
     const id = Number(req.params.id, 10);
 
     if (isNaN(id)) {
@@ -68,7 +67,6 @@ export const getOperatorHotels = async (req, res) => {
 
 export const createHotel = async (req, res) => {
   try {
-    console.log("收徒確認之後會刪掉", req.files);
 
     const operatorId = req.user.id;
     const {
@@ -219,8 +217,9 @@ export const getPaginatedHotels = async (req, res) => {
 };
 
 /* 取得篩選後的飯店 */
-export const getFilteredHotels = async (req, res) => {
+export const getFilteredHotelsS = async (req, res) => {
   try {
+
     const filters = {
       city: req.body.city || null,
       district: req.body.district || null,
@@ -230,15 +229,13 @@ export const getFilteredHotels = async (req, res) => {
       min_price: req.body.minPrice ? parseFloat(req.body.minPrice) : null,
       max_price: req.body.maxPrice ? parseFloat(req.body.maxPrice) : null,
       room_type_id: req.body.roomTypeId ? parseInt(req.body.roomTypeId) : null,
-      tags: req.body.tags
-        ? req.body.tags.map(Number).filter((n) => !isNaN(n))
-        : [],
+      tags: req.body.tags ? req.body.tags.map(Number).filter((n) => !isNaN(n)) : [],
     };
-    console.log("接收到的篩選條件:", filters);
-    const hotels = await getFilteredHotelS(filters);
+    const hotels = await getFilteredHotels(filters);
     res.json(hotels);
   } catch (error) {
     console.error("獲取篩選飯店失敗:", error);
     res.status(500).json({ error: "無法獲取篩選後的飯店" });
   }
 };
+

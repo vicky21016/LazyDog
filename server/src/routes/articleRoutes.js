@@ -41,7 +41,6 @@ const fileUpload = multer({
     fileSize: 100 * 1024 * 1024, 
   },
 });
-console.log(resolve(__dirname, "../../public", "article_img","0c68b190-ebe5-11ee-bb73-635f232238eb.webp"));
 
 router.use(express.static(resolve(__dirname, "../../public", "article_img")));
 router.get("/", getArticles);
