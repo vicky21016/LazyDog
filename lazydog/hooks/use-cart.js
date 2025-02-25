@@ -50,47 +50,47 @@ export function CartProvider({ children }) {
   const [didMount, setDidMount] = useState(false);
 
   // 商品增減邏輯
-  const onAddProduct = (product) => {
+  const onAddProduct = (product, amount) => {
+    if (!amount) amount = 1;
     const foundIndex = productItems.findIndex((v) => v.id === product.id);
     if (foundIndex !== -1) {
       const nextItems = productItems.map((v) =>
-        v.id === product.id ? { ...v, count: v.count + 1 } : v
+        v.id === product.id ? { ...v, count: v.count + amount } : v
       );
       setProductItems(nextItems);
     } else {
-      const newItem = { ...product, count: 1 };
+      const newItem = { ...product, count: amount };
       setProductItems([newItem, ...productItems]);
     }
   };
 
   // 課程增減邏輯
-  const onAddCourse = (course) => {
+  const onAddCourse = (course, amount = 1) => {
     const foundIndex = courseItems.findIndex((v) => v.id === course.id);
     if (foundIndex !== -1) {
       const nextItems = courseItems.map((v) =>
-        v.id === course.id ? { ...v, count: v.count + 1 } : v
+        v.id === course.id ? { ...v, count: v.count + amount } : v
       );
       setCourseItems(nextItems);
     } else {
-      const newItem = { ...course, count: 1 };
+      const newItem = { ...course, count: amount };
       setCourseItems([newItem, ...courseItems]);
     }
   };
 
-  // 旅館增減邏輯
-  const onAddHotel = (hotel) => {
+  // 增加旅館的邏輯
+  const onAddHotel = (hotel, amount = 1) => {
     const foundIndex = hotelItems.findIndex((v) => v.id === hotel.id);
     if (foundIndex !== -1) {
       const nextItems = hotelItems.map((v) =>
-        v.id === hotel.id ? { ...v, count: v.count + 1 } : v
+        v.id === hotel.id ? { ...v, count: v.count + amount } : v
       );
       setHotelItems(nextItems);
     } else {
-      const newItem = { ...hotel, count: 1 };
+      const newItem = { ...hotel, count: amount };
       setHotelItems([newItem, ...hotelItems]);
     }
   };
-
   // 計算商品、課程、旅館的總數量和總金額
   const totalProductQty = productItems.reduce((acc, v) => acc + v.count, 0);
   const totalProductAmount = productItems.reduce(
