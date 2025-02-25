@@ -28,17 +28,19 @@ import articlesRoutes from "./routes/articleRoutes.js";
 import teacherRoute from "./routes/teacherRoute.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
-import ecpay from "./routes/ecpay-test-only.js"
-
+import ecpay from "./routes/ecpay-test-only.js";
 
 dotenv.config();
 
 const app = express();
 
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+const whiteList = frontendUrl.split(",");
+
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: whiteList,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
@@ -73,7 +75,7 @@ app.use("/favorite", favoriteRouter);
 app.use("/teachers", teacherRoute);
 app.use("/api/comment", commentRoutes);
 
-app.use("/ecpay-test-only", ecpay)
+app.use("/ecpay-test-only", ecpay);
 
 app.get("/", (req, res) => {
   res.json({ status: "success", data: null, message: "首頁" });
