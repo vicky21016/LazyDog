@@ -9,10 +9,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart"; // 引入useCart以便取得購物車資料
 
-
-import Header from "../../components/layout/header"
-import Input from "../../components/forms/Input"
-import InputFiled from "../../components/forms/InputField"
+import Header from "../../components/layout/header";
+import Input from "../../components/forms/Input";
+import InputFiled from "../../components/forms/InputField";
 import Hotel from "../../components/cart/hotel";
 import Course from "../../components/cart/course";
 export default function CartListPayPage(props) {
@@ -37,13 +36,9 @@ export default function CartListPayPage(props) {
 
   // 確保商品資料正確
   const itemsValue = `
-  Products: ${productItems
-    .map((item) => `${item.name} x ${item.count}`)
-    .join(", ")}
-  Courses: ${courseItems
-    .map((item) => `${item.name} x ${item.count}`)
-    .join(", ")}
-  Hotels: ${hotelItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
+  ${productItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
+  ${courseItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
+  ${hotelItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
 `;
 
   // const amountValue = totalProductAmount;
@@ -79,11 +74,11 @@ export default function CartListPayPage(props) {
   };
 
   const handleEcpay = async () => {
-    // 先連到node伺服器後端，取得LINE Pay付款網址
     console.log(
       `http://localhost:5000/ecpay-test-only?amount=${amountValue}&items=${itemsValue}`
     );
 
+    // 先連到node伺服器後端，取得LINE Pay付款網址
     const res = await fetch(
       `http://localhost:5000/ecpay-test-only?amount=${amountValue}&items=${itemsValue}`,
       {
@@ -242,7 +237,6 @@ export default function CartListPayPage(props) {
                     </div>
                   ))}
 
-
                   {courseItems.map((item) => (
                     <div
                       key={item.id}
@@ -266,7 +260,6 @@ export default function CartListPayPage(props) {
                       <span>{`Rs. ${item.price * item.count}`}</span>
                     </div>
                   ))}
-
 
                   <div className="d-flex justify-content-between">
                     <span>總價</span>
