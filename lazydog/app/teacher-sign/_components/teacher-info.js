@@ -5,7 +5,7 @@ import styles from "../css/teacherSignInfo.module.css"
 
 export default function TeacherInfo() {
   
-  const [infos, setInfos] = useState({});  
+  const [infos, setInfos] = useState([]);  
   const [types, setTypes] = useState([])
 
   // 撈後台資料

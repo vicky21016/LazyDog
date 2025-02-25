@@ -9,7 +9,8 @@ export default function TeacherDetailC() {
   const params = useParams()
   const sessionCode = params.sessionId
   const [session, setSession] = useState([]);
-  const [imgs, setImgs] = useState([]);
+  const [mainpic, setMainpic] = useState([]);
+  const [otherpics, setOtherpics] = useState([]);
   
   useEffect(() => {
     fetch(`http://localhost:5000/teacher/mycourse/${sessionCode}`,{
@@ -24,7 +25,8 @@ export default function TeacherDetailC() {
         console.log(data);
 
         setSession(data.data.courses[0]);
-        setImgs(data.data.imgs);
+        setMainpic(data.data.mainpic[0]);
+        setOtherpics(data.data.otherpics);
 
       })
       .catch((err) => {
@@ -33,6 +35,8 @@ export default function TeacherDetailC() {
   }, [sessionCode]);
 
   const startDate = session.start_date? new Date(session.start_date).toISOString().split('T')[0]: '';
+  const startTime = session.start_time ? session.start_time.slice(0, 5) : '';
+  const endTime = session.end_time ? session.end_time.slice(0, 5) : '';
 
   return (
     <>
@@ -82,9 +86,9 @@ export default function TeacherDetailC() {
                       <div className={`col-md-12 mt-3`}>
                         <label className={`form-label ${styles.labels}`}>上課時間</label>
                         <div className={`d-flex`}>
-                          <input type="text" className={`form-control  ${styles.controls}`} defaultValue={session.start_time} disabled readOnly />
+                          <input type="text" className={`form-control  ${styles.controls}`} defaultValue={startTime} disabled readOnly />
                           <span className={`align-self-center p-2`}>~</span>
-                          <input type="text" className={`form-control  ${styles.controls}`} defaultValue={session.end_time} disabled readOnly />
+                          <input type="text" className={`form-control  ${styles.controls}`} defaultValue={endTime} disabled readOnly />
                         </div>
                         
                       </div>
@@ -102,26 +106,31 @@ export default function TeacherDetailC() {
                         <label className={`form-label ${styles.labels}`}>Q&amp;A</label>
                         <textarea className={`form-control  ${styles.controls} ${styles.scrollOrg}`} style={{resize: 'none'}} id="exampleFormControlTextarea1" rows={4} defaultValue={session.qa} disabled readOnly/>
                       </div>
-                      {/* 圖片 */}
-                      <div className={`col-md-12 mt-4 mb-5`}>
-                        <label className={`form-label ${styles.labels}`}>課程圖片</label>
-                          <div id="imagePreviewContainer" className={`d-flex flex-wrap gap-3 mb-2`}>
-                          {imgs.map((img)=>(
-                            <div className={styles.imageCard}>
-                            <img className={styles.imgCr} src={`/course/img/${img.url}`} alt={session.name} />
-                          </div>
-                          ))}
-                          
-                            
-                          </div>
-                          <input type="file" id="imageUpload" className={`form-control ${styles.control} d-none ${styles.add}`} accept="image/*" multiple />
-                      </div>
                     </section>
-  
+                    <section className={`row g-4 mb-5 ${styles.section4}`}>
+                      <label className={`form-label`}>課程圖片
+                          <span className={styles.must}>* </span>
+                      </label>
+                        <div className={`col-md-5 col-12 mt-4 mb-5 ${styles.mainPic}`}>
+                          <div className={styles.imageCard}>
+                            <img className={styles.imgCr} src={`/course/img/${mainpic.url}`} alt={`${session.name}-課程主圖`} />
+                          </div>
+                        </div>
+                        <div className={`col-md-7 col-12 mt-4 mb-5 ${styles.otherPic}`}>
+                          <div id="imageContainer" className={`d-flex flex-wrap gap-3 mb-2`}>
+                            {otherpics.map((other)=>(
+                              <div className={styles.imageCard}>
+                                <img className={`${styles.imgCr} ${styles.pics}`} src={`/course/img/${other.url}`} alt={`${session.name}-課程其他圖片`} />
+                            </div>
+                            ))}                           
+                          </div>
+                          <input type="file" id="imageUpload" className={`form-control d-none add`} accept="image/*" multiple />
+                        </div>
+                    </section>
                 {/* 按鈕區 */}
                 <div className={`d-flex justify-content-end gap-3`}>
                   <button type="submit" className={`btn btn-primary btn-sm px-4 ${styles.submitBtn}`}>
-                    <a className={styles.submitBtnA} href="./opCourseEdit.html">編輯</a>
+                    <a className={styles.submitBtnA} href={`/teacher-sign/update/${session.session_id}`}>編輯</a>
                   </button>
                 </div>
               </form>
