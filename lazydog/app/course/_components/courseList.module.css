@@ -497,7 +497,7 @@
 
 /*  分頁 */
 .navigation{
-  position: absolute;
+  /* position: absolute; */
   right: 40%;
   bottom: 0;
   margin-top: auto;
