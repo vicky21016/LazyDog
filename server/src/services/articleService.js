@@ -19,7 +19,7 @@ export const getAllarticle = async () => {
     throw new Error(" 無法取得所有文章：" + error.message);
   }
 };
-getAllarticle();
+
 // 獲取指定文章
 export const getIdS = async (id) => {
   try {

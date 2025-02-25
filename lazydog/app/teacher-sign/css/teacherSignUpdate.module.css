@@ -75,11 +75,39 @@
     letter-spacing: 1px;
   }
 
+  /* 目前改不了顏色 */
+  .pleaseChoose{
+    color: #a1a1a1;
+  }
+
+  .mainPic{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    border: .8px solid #ecebeb;
+    border-radius: 8px;
+    height: 290px;
+    padding: 0;
+  }
+
+  .otherPic{
+    text-align: center;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    text-align: center;
+    overflow: hidden;
+    border: .8px solid #f5f3f3;
+    border-radius: 8px;
+    height: 250px;
+    padding: 8px;
+  }
+
   /* 美化圖片預覽區 */
   .imageCard {
     position: relative;
-    width: 100px;
-    height: 100px;
     border-radius: 10px;
     overflow: hidden;
     background: #f8f9fa;
@@ -89,14 +117,18 @@
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    /* padding: 8px; */
   }
 
   .imageCard .imgCr {
     width: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 8px;
     cursor: pointer;
+  }
+
+  .imageCard .pics{
+    width: 100px;
+    height: 100px;
   }
 
   .imageCard .add {
@@ -109,6 +141,22 @@
     position: absolute;
     top: 4px;
     right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .deleteBtn1{
+    position: absolute;
+    top: 85px;
+    right: 10px;
     background: red;
     color: white;
     border: none;

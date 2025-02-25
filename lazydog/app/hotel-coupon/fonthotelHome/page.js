@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
-import { getAllHotels, getFilteredHotels } from "@/services/hotelService";
+import { getAllHotels, getFilteredHotelsS } from "@/services/hotelService";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
 import Header from "../../components/layout/header";
 import HotelCard from "@/app/components/hotel/hotelCard";
@@ -19,79 +19,127 @@ export default function HotelHomePage() {
   const [quantity, setQuantity] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const hotelsPerPage = 10;
-  const [searchParams, setSearchParams] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
+  const [isFiltered, setIsFiltered] = useState(false); // ✅ 追蹤是否篩選
 
   const {
     location,
     locationModalRef,
     openModal,
-    address,
+    city,
+    district,
     closeModal,
     confirmLocation,
+    clearLocation,
   } = useLocationSelector();
 
-  // 🔹 初次載入所有飯店
-  useEffect(() => {
-    const fetchHotels = async () => {
-      try {
-        const hotelData = await getAllHotels();
-        setHotels(hotelData);
-        setFilteredHotels(hotelData);
-      } catch (error) {
-        console.error("獲取飯店失敗:", error);
-      }
-    };
-    fetchHotels();
-  }, []);
+  const [searchParams, setSearchParams] = useState({
+    city: null,
+    district: null,
+    checkInDate: null,
+    checkOutDate: null,
+    quantity: 1,
+    minPrice: 0,
+    maxPrice: 10000,
+    roomType: null,
+    tags: [],
+    rating: null,
+  });
 
-  // 🔹 更新分頁數
+  //  避免 `useEffect` 觸發多次篩選
+  const isFirstRender = useRef(true);
+
+  // 只有當 `isFiltered === false` 時載入所有飯店
   useEffect(() => {
-    setTotalPages(Math.max(1, Math.ceil(filteredHotels.length / hotelsPerPage)));
+    if (!isFiltered) {
+      getAllHotels()
+        .then((hotelData) => {
+          setHotels(hotelData);
+          setFilteredHotels(hotelData);
+        })
+        .catch((error) => console.error("獲取飯店失敗:", error));
+    }
+  }, [isFiltered]);
+
+  // 監聽 `filteredHotels`，更新分頁數
+  useEffect(() => {
+    setTotalPages(
+      Math.max(1, Math.ceil(filteredHotels.length / hotelsPerPage))
+    );
   }, [filteredHotels]);
 
-  // 🔹 確保當前頁數不超過最大頁數
+  // 確保當前頁數不超過最大頁數
   useEffect(() => {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
   }, [totalPages]);
 
-  // 搜尋觸發
-  const handleSearch = async (params) => {
-    console.log("🔍 搜尋條件:", params);
-    setSearchParams(params);
-
+  //  觸發篩選 API
+  const handleSearch = async (newParams) => {
+    setIsFiltered(true);
+    
+    const updatedParams = {
+      ...searchParams,
+      ...newParams,
+    };
+  
+    
+    setSearchParams(updatedParams);
+  
     try {
-      // 直接使用 `getFilteredHotels` 來獲取篩選飯店
-      const data = await getFilteredHotels(params);
+      let data = await getFilteredHotelsS(updatedParams);
+  
+  
+      if (!data || !Array.isArray(data)) {
+        console.warn(" API 回傳無效數據，使用空陣列");
+        data = [];
+      }
+  
       setFilteredHotels(data);
-      setCurrentPage(1); // **確保篩選後從第一頁開始**
+      setCurrentPage(1);
     } catch (error) {
-      console.error("篩選飯店時發生錯誤:", error);
+      console.error("篩選飯店錯誤:", error);
+      setFilteredHotels([]);
     }
   };
-
+  
+  
+  
   //  清除篩選條件
   const handleClearFilters = async () => {
     console.log("🧹 清除篩選條件");
-    setSearchParams(null);
+    setIsFiltered(false);
+
+    clearLocation();
+    setSearchParams({
+      city: null,
+      district: null,
+      checkInDate: null,
+      checkOutDate: null,
+      quantity: 1,
+      minPrice: 0,
+      maxPrice: 10000,
+      roomType: null, // 確保只有一個 roomType
+      tags: [],
+      rating: null,
+    });
 
     try {
-      const hotelData = await getAllHotels();
-      setFilteredHotels(hotelData);
+      const data = await getAllHotels();
+      setFilteredHotels(data);
       setCurrentPage(1);
     } catch (error) {
-      console.error("獲取飯店失敗:", error);
+      console.error(" 獲取飯店失敗:", error);
     }
   };
 
-  // 計算當前頁面的飯店數據
+  //  計算當前頁面顯示的飯店
   const indexOfLastHotel = currentPage * hotelsPerPage;
   const indexOfFirstHotel = indexOfLastHotel - hotelsPerPage;
-  const currentHotels = filteredHotels.slice(indexOfFirstHotel, indexOfLastHotel);
-
-
+  const currentHotels = Array.isArray(filteredHotels)
+    ? filteredHotels.slice(indexOfFirstHotel, indexOfLastHotel)
+    : [];
 
   return (
     <>
@@ -106,12 +154,14 @@ export default function HotelHomePage() {
         >
           <SearchBar
             location={location}
-            address={address}
+            city={city}
+            district={district}
             openModal={openModal}
             closeModal={closeModal}
             locationModalRef={locationModalRef}
             quantity={quantity}
             confirmLocation={confirmLocation}
+            clearLocation={clearLocation}
             setQuantity={setQuantity}
             onSearch={handleSearch}
             onClear={handleClearFilters}
@@ -137,7 +187,11 @@ export default function HotelHomePage() {
           <div className="row">
             {/* 側邊篩選欄 */}
             <aside className={`col-lg-3 ${styles.suSidebar}`}>
-              <Aside onSearch={setFilteredHotels} onClear={handleClearFilters} />
+              <Aside
+                searchParams={searchParams}
+                onSearch={handleSearch}
+                onClear={handleClearFilters}
+              />
             </aside>
 
             {/* 飯店列表 */}

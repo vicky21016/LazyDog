@@ -9,6 +9,8 @@ import InputField from "../forms/InputField";
 import axios from "axios";
 import "firebase/auth";
 import { app } from "../utils/firebase";
+import styles from "../../../styles/modules/form.module.css"
+
 
 export default function AppPage() {
   const [email, setEmail] = useState("");
@@ -45,10 +47,10 @@ export default function AppPage() {
   return (
     <>
       <Header />
-      <div className="lumi-login-container">
-        <h2 className="lumi-form-title">登入</h2>
+      <div className={`${styles.container}`}>
+        <h2 className={`${styles.title}`}>登入</h2>
 
-        <form className="lumi-login-form" onSubmit={handleLogin}>
+        <form className={`${styles.lumiLogin}`} onSubmit={handleLogin}>
           <InputField
             type="email"
             placeholder="電子信件或手機號碼"
@@ -64,18 +66,18 @@ export default function AppPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <a href="#" className="lumi-fogot-pass-link">
+          <a href="#" className={`${styles.fogotpass}`}>
             忘記密碼？
           </a>
-          <button className="lumi-login-button">登入</button>
-          <p className="lumi-separator">
+          <button className={`${styles.loginbtn}`}>登入</button>
+          <p className={`${styles.separator}`}>
             <span>或使用社群帳號登入</span>
           </p>
           <SocialLogin />
         </form>
-        <p className="lumi-signup-text">
+        <p className={`${styles.signup}`}>
           還不是會員？{" "}
-          <Link href="/register" className="lumi-register">
+          <Link href="/register" className={`${styles.register}`}>
             註冊
           </Link>
         </p>

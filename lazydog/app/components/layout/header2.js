@@ -11,13 +11,15 @@ import styles from "../../../styles/modules/header2.module.css";
 
 
 export default function Header(props) {
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false); // 控制選單展開
   const { logout } = useAuth();
-   const [menuOpen, setMenuOpen] = useState(false); // 控制選單展開
-  React.useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
+  
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
+    return () => unsubscribe();
   }, []);
 
   return (
@@ -113,7 +115,7 @@ export default function Header(props) {
             </div>
           </div>
           <li>
-            <Link href="#">毛孩文章</Link>
+            <Link href="/article/list">毛孩文章</Link>
           </li>
         </ul>
       </nav>
@@ -144,6 +146,7 @@ export default function Header(props) {
           </Link>
         </div>
       </div>
+      {/* 手機板 */}
       <div
         className={`${styles.mobileMenu}`}
         onClick={() => setMenuOpen(!menuOpen)}
@@ -182,7 +185,7 @@ export default function Header(props) {
               </div>
             </div>
             <li>
-              <Link href="#">毛孩文章</Link>
+              <Link href="/article/list">毛孩文章</Link>
             </li>
             <div className={styles["dropdown"]}>
               <li>

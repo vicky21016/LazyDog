@@ -7,7 +7,8 @@ import Header from "../components/layout/header";
 import SocialLogin from "../components/auth/SocialLogin";
 import InputField from "../components/forms/InputField";
 import { useAuth } from "@/hooks/use-auth";
-import styles from "../pages/menu.module.css";
+// import styles from "../pages/menu.module.css";
+import styles from "../../styles/modules/form.module.css"
 
 
 const appKey = "loginWithToken";
@@ -76,26 +77,26 @@ export default function AppPage({ logout }) {
   return (
     <>
       <Header />
-      <div className="lumi-login-wrapper">
-        <div className="lumi-login-container">
-          <div className="lumi-other-accounts">
-            <h4 className="lumi-form-title">登入</h4>
-            <div className="lumi-other-accounts-links">
+      <div className={`${styles.loginWrapper}`}>
+        <div className={`${styles.container}`}>
+          <div className={`${styles.otherAccounts}`}>
+            <h4 className={`${styles.title}`}>登入</h4>
+            <div className={`${styles.otherAccountsLink}`}>
               <Link
                 href="/login"
-                className="lumi-teacher text-decoration-none"
+                className={`text-decoration-none ${styles.teacher}`} 
               >
                 師資登入
               </Link>
               <Link
                 href="/login"
-                className="lumi-hotel text-decoration-none"
+                className={`text-decoration-none ${styles.hotel}`} 
               >
                 旅館業者登入
               </Link>
             </div>
           </div>
-          <form className="lumi-login-form" onSubmit={handleLogin}>
+          <form className={`${styles.lumiLogin}`} onSubmit={handleLogin}>
             <InputField
               type="email"
               placeholder="電子信件"
@@ -113,19 +114,19 @@ export default function AppPage({ logout }) {
 
             <Link
               href="/pages/forgot-password"
-              className="lumi-fogot-pass-link"
+              className={`${styles.fogotpass}`}
             >
               忘記密碼？
             </Link>
-            <button className="lumi-login-button">登入</button>
-            <p className="lumi-separator">
+            <button className={`${styles.loginbtn}`}>登入</button>
+            <p className={`${styles.separator}`}>
               <span>或使用社群帳號登入</span>
             </p>
             <SocialLogin />
           </form>
-          <p className="lumi-signup-text">
+          <p className={`${styles.signup}`}>
             還不是會員？{" "}
-            <Link href="/register" className="lumi-register">
+            <Link href="/register" className={`${styles.register}`}>
               註冊
             </Link>
           </p>

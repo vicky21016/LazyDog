@@ -7,29 +7,21 @@ import Breadcrumb from "../../components/teacher/breadcrumb";
 import Filter from "../../components/teacher/Filter";
 import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "./list.module.css";
-import Page from "../../components/hotel/page";
+import Page from "../../course/_components/list/pagination";
 import style from "../../pages/menu.module.css";
 import style1 from "../../product/list/list.module.css";
 
 export default function App (){
   const { teachers = [] } = useTeachers();
-  const [filterTeachers, setFilterTeachers] = useState(teachers); // 儲存過濾後的資料
-  const [search, setSearch] = useState(""); // 儲存搜尋字串
 
-  // 當搜尋字串更新時，過濾教師資料
-  useEffect(() => {
-    const filtered = teachers.filter((teacher) =>
-      teacher.name.toLowerCase().includes(search.toLowerCase())
-    );
-    setFilterTeachers(filtered);
-  }, [search, teachers]); // 當搜尋字串或教師資料改變時重新過濾
+  // 分頁
+  const [currPage, setCurrPage] = useState(1);
+  const perPage = 9;
+  const totalPages =  Math.max(1, Math.ceil((teachers?.length || 0) / perPage));
 
-  // 處理篩選條件的變化
-  const searchChange = (searchValue) => {
-    setSearch(searchValue); // 更新搜尋字串
-  };
+  const startIndex = (currPage - 1) * perPage;
+  const currentCourses = teachers?.slice(startIndex, startIndex + perPage);
 
-  useEffect(() => {}, [teachers]);
   // if (loading) return
   //     <>
   //         <div className={style.container2}>
@@ -87,7 +79,7 @@ export default function App (){
               </div>
               <div className="col-9">
                 <div className="row mt-1 g-5 mb-5">
-                  {Array.isArray(teachers) &&
+                  {/* {Array.isArray(teachers) &&
                     teachers.map((teacher) => (
                       <TeacherCard
                         key={teacher.id}
@@ -99,10 +91,19 @@ export default function App (){
                       />
                     ))}
                 </div>
+                <div className={styles.courseGroup}> */}
+                {currentCourses?.map((teacher) => {
+                    return(
+                    <TeacherCard key={teacher.id} imgSrc={`/teacher-img/${teacher.img}`}
+                    col="col-6 col-md-4"
+                    name={teacher.name}
+                    text={teacher.category_name}
+                    link={`/teacher/info/${teacher.id}`}/>
+                    )
+                })}
+            </div>
                 <Page
-                  currentPage={1}
-                  totalPages={3}
-                  onPageChange={(page) => console.log("切換到第", page, "頁")}
+                  totalPages={totalPages} currPage={currPage} setCurrPage={setCurrPage}
                 />
               </div>
             </div>

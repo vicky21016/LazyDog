@@ -13,34 +13,34 @@ export default function TeacherSection () {
       col: "col-6 col-md-3",
       name: "Zoe",
       text: "寵物訓練",
-      link: "/teacher/info",
+      link: "/teacher/info/9",
     },
     {
-      imgSrc: "/teacher-img/Zoe.png",
+      imgSrc: "/teacher-img/Larry.jpg",
       col: "col-6 col-md-3",
-      name: "Zoe",
+      name: "Larry",
       text: "寵物訓練",
-      link: "/teacher/info",
+      link: "/teacher/inf/6",
     },
     {
-      imgSrc: "/teacher-img/Zoe.png",
+      imgSrc: "/teacher-img/林筱瑞.jpg",
       col: "col-6 col-md-3",
-      name: "Zoe",
-      text: "寵物訓練",
-      link: "/teacher/info",
+      name: "林筱瑞",
+      text: "寵物照護",
+      link: "/teacher/info/21",
     },
     {
-      imgSrc: "/teacher-img/Zoe.png",
+      imgSrc: "/teacher-img/鄧惠津(多多媽).jfif",
       col: "col-6 col-md-3",
-      name: "Zoe",
+      name: "鄧惠津(多多媽)",
       text: "寵物訓練",
-      link: "/teacher/info",
+      link: "/teacher/info/10",
     },
   ];
 
   return (
     <section className="">
-      <div className="lumi-teacher-team pt-5 text-center">
+      <div className={` pt-5 text-center ${style.teacher}`}>
         <h3 className="mb-5 lumi-m-title">嚴選的師資團隊</h3>
         <div className=" mb-5">
           <p>
@@ -67,19 +67,19 @@ export default function TeacherSection () {
       </div>
 
       <div className={` text-center ${style.container}`}>
-        <div className={` text-center ${style.dog}`}>
-          <div className={` ${styles["cube"]}`}>
+        <div className={` text-center row ${style.dog}`}>
+          <div className={` col-4 `}>
             <div>803</div>
             <div>蛻變的狗狗</div>
           </div>
-          <div className="">
+          <div className={`col-4  ${style.img}`}>
             <img
               className={` ${styles["dog-image"]}`}
               src="/teacher-img/dog.png"
               alt=""
             />
           </div>
-          <div className={`ms-2 ${styles["cube"]}`}>
+          <div className={` col-4`}>
             <div>5525</div>
             <div>為狗狗服務時數</div>
           </div>

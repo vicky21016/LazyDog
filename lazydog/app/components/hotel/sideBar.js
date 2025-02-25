@@ -4,18 +4,18 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/modules/fontHotelHome.module.css";
 import GoogleMapComponent from "../../components/hotel/GoogleMapComponent";
 import Link from "next/link";
-import {
+import { 
   ratingAv,
   getAllTags,
   getHotelPriceRange,
   getGlobalPriceRange,
   getAllRoomTypes,
-  getFilteredHotels,
+  getFilteredHotelsS,
 } from "@/services/hotelService";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 
-export default function SideBar({ hotelId, onSearch, onClear }) {
+export default function SideBar({ hotelId, onSearch, onClear,searchParams }) {
   const [showAllFacilities, setShowAllFacilities] = useState(true);
   const [roomTypes, setRoomTypes] = useState([]); //所有房型
   const [selectedRoomType, setSelectedRoomType] = useState("");
@@ -29,7 +29,8 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
   const [isSearching, setIsSearching] = useState(true);
   const priceSliderRef = useRef(null);
   const [showGoogleMaps, setShowGoogleMaps] = useState(false);
-  const isFirstRender = useRef(true);
+  const [isFiltered, setIsFiltered] = useState(false);
+
 
   useEffect(() => {
     fetchTags();
@@ -50,24 +51,30 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
   }, []);
   const fetchHotels = async () => {
     try {
-        const response = await fetch(`http://localhost:5000/api/hotels`);
-        if (!response.ok) throw new Error("無法獲取飯店");
-
-        const data = await response.json();
-        setHotels(data); //  只更新 `SideBar` 內的 `hotels`
-
-        if (onSearch) {
-            onSearch(data); // **傳遞資料給 `HotelHomePage.js`**
-        }
+      if (isFiltered) return; //  如果已經在篩選，不要載入全部飯店
+  
+      const response = await fetch(`http://localhost:5000/api/hotels`);
+      if (!response.ok) throw new Error("無法獲取飯店");
+  
+      const data = await response.json();
+      setHotels(data);
+  
+      if (onSearch) {
+        onSearch(data); // 避免覆蓋篩選結果
+      }
     } catch (error) {
-        console.error("獲取飯店時發生錯誤:", error);
+      console.error("獲取飯店時發生錯誤:", error);
     }
-};
+  };
+  
 
 
-  useEffect(() => {
-    fetchHotels(); // 頁面載入時先查詢一次
-  }, [minPrice, maxPrice]);
+useEffect(() => {
+  if (!isFiltered) {
+    fetchHotels();
+  }
+}, [isFiltered]);
+
   useEffect(() => {
     if (!priceSliderRef.current) return;
 
@@ -107,7 +114,7 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
       const ratingList = await ratingAv();
       setRatings(ratingList || []);
     } catch (error) {
-      console.error("獲取飯店評分失敗:", error);
+      console.error("獲取評分失敗:", error);
     }
   };
   const fetchRoomTypes = async () => {
@@ -115,7 +122,7 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
       const types = await getAllRoomTypes();
       setRoomTypes(types);
     } catch (error) {
-      console.error("獲取房型失敗:", error);
+      console.error("獲取失敗:", error);
     }
   };
 
@@ -132,7 +139,11 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
       console.error("獲取價格範圍失敗:", error);
     }
   };
-
+  const handleFilterChange = (filter) => {
+    console.log(" 側邊篩選條件變更:", filter);
+    onSearch(filter); // 讓 `Sidebar` 影響 `searchParams`
+  };
+  
   const toggleFacilities = () => {
     setShowAllFacilities((prev) => !prev);
   };
@@ -148,77 +159,65 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
         : [...prev, numericTagId];
     });
   };
-
   const handleApplyFilters = async () => {
-    console.log("🔍 按下搜尋，篩選條件:", {
+
+    setIsFiltered(true); 
+  
+    const filterParams = {
+      ...searchParams, // 保持原本的 searchParams
       minPrice,
       maxPrice,
-      selectedRoomType,
-      selectedTags,
-      selectedRating,
-    });
-
-    // 構造查詢參數
-    const query = {
-      min_rating: selectedRating ? Number(selectedRating) : undefined,
-      min_price: minPrice > 0 ? minPrice : undefined,
-      max_price: maxPrice < 10000 ? maxPrice : undefined,
-      room_type_id: selectedRoomType ? Number(selectedRoomType) : undefined,
-      tags:
-        selectedTags.length > 0
-          ? selectedTags.map((tag) => Number(tag))
-          : undefined,
+      roomType: selectedRoomType || null, 
+      tags: selectedTags.length > 0 ? selectedTags : [],
+      rating: selectedRating || null,
     };
-
-    // 移除 `undefined` 值，確保 `query` 乾淨
-    Object.keys(query).forEach(
-      (key) => query[key] == undefined && delete query[key]
-    );
-
-    console.log(" 送出 API 查詢:", query);
-
+  
+  
     try {
-      const data = await getFilteredHotels(query);
-      console.log("API 回應的搜尋結果:", data);
-
-      if (onSearch) {
-        onSearch(data); // 確保 UI 正確更新
+      const data = await getFilteredHotelsS(filterParams);
+  
+      if (data && Array.isArray(data)) {
+        console.log("API 回傳篩選結果:", data);
+        onSearch(data); //  確保更新到父層狀態
+      } else {
+        console.warn(" API 沒有返回有效資料");
+        onSearch([]); 
       }
-
-      setIsSearching(false); //  切換按鈕為「清除篩選」
+  
+      setIsSearching(false);
     } catch (error) {
-      console.error(" 搜尋飯店失敗:", error);
+      console.error(" SideBar 篩選 API 錯誤:", error);
+      onSearch([]); // 確保 UI 不會卡住
     }
   };
+  
+  
+  
+  
 
   const handleClear = async () => {
     console.log("清除篩選條件開始");
-
-    // 通知 `HotelHomePage.js` 清除篩選條件
+  
+    setIsFiltered(false); // 讓 `fetchHotels()` 可以重新載入所有飯店
+  
     if (onClear) {
       onClear();
     }
-
-    // 重置 UI 狀態
+  
     setMinPrice(0);
     setMaxPrice(10000);
     setSelectedRoomType("");
     setSelectedTags([]);
     setSelectedRating("");
     setIsSearching(true);
-
+  
     if (priceSliderRef.current?.noUiSlider) {
       priceSliderRef.current.noUiSlider.set([0, 10000]);
     }
-    console.log(" 清除後的篩選條件:", {
-      minPrice: 0,
-      maxPrice: 10000,
-      selectedRoomType: "",
-      selectedTags: [],
-      selectedRating: "",
-    });
-    await fetchHotels();
+  
+    await fetchHotels(); // 重新載入所有飯店
   };
+  
 
   return (
     <>
@@ -336,7 +335,7 @@ export default function SideBar({ hotelId, onSearch, onClear }) {
           {/* 搜尋 / 清除篩選 按鈕 */}
           <button
             className={`btn btn-sm btn-outline-danger mt-3 ${styles.suClearFilterBtn}`}
-            onClick={isSearching ? handleApplyFilters : handleClear} // ✅ **點擊時執行 `onClear`**
+            onClick={isSearching ? handleApplyFilters : handleClear} 
           >
             {isSearching ? "搜尋" : "清除篩選"}
           </button>

@@ -9,7 +9,7 @@ import {
   getSearch,
   getHotelsCount,
   getPaginatedHotels,
-  getFilteredHotels,
+  getFilteredHotelsS,
 } from "../controllers/hotelController.js";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 import { upload } from "../middlewares/upload.js";
@@ -22,7 +22,8 @@ router.get("/count", getHotelsCount);
 // 取得分頁飯店
 router.get("/paginated", getPaginatedHotels); // 避免與 `getAllHotels` 衝突
 //篩選飯店的 AP
-router.get("/filter", getFilteredHotels);
+router.get("/filter", getFilteredHotelsS);
+router.post("/filter", getFilteredHotelsS);
 //  所有人都可以查詢所有飯店
 router.get("/", getAllHotels); //不用任何條件的
 router.get("/search", getSearch);
