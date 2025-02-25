@@ -3,15 +3,28 @@ import pool from "../config/mysql.js";
 // 讀取師資
 export const getTeacherInfo = async (teacherId) => {
   try {
-    const sql =`
-      SELECT teacher.* , users.teacher_id AS teacherId
+    const [infos] = await pool.execute(`      
+      SELECT teacher.* , users.teacher_id AS teacherId, ct.name AS typeName
       FROM teacher 
       JOIN users ON teacher.id = users.teacher_id
+      JOIN course_type ct ON ct.type_id = teacher.category_id
       WHERE users.id = ? 
       AND teacher.is_deleted = 0
-    `;
-    const [infos] = await pool.execute(sql, [teacherId]);
-    return infos;
+    `, [teacherId]);
+    if (infos.length == 0){
+      console.log("師資資訊不存在");
+    }
+    
+    const [types] = await pool.execute(`      
+      SELECT *
+      FROM course_type 
+      WHERE is_deleted = 0
+    `);
+    if (types.length == 0){
+      console.log("類別不存在");
+    }
+
+    return { infos, types};
   } catch (err) {
     throw new Error(" 無法取得師資資訊：" + err.message);
   }
@@ -20,15 +33,15 @@ export const getTeacherInfo = async (teacherId) => {
 // 編輯師資
 export const updateTeacherInfo = async (teacherId, updateData) => {
   try {
-    const { name, category_id, skill, Introduce, Experience, img } = updateData;
+    const { name, category_id, Introduce, Experience, img } = updateData;
 
     const sql = `
-      UPDATE teacher
+      UPDATE teacher 
       JOIN users ON users.teacher_id = teacher.id
+      JOIN course_type ct ON ct.type_id = teacher.category_id
       SET 
         teacher.name = ?, 
-        teacher.category_id = ?, 
-        teacher.skill = ?, 
+        teacher.category_id = ?,
         teacher.Introduce = ?, 
         teacher.Experience = ?, 
         teacher.img = ?
@@ -39,7 +52,6 @@ export const updateTeacherInfo = async (teacherId, updateData) => {
     const [result] = await pool.execute(sql, [
       name,
       category_id,
-      skill,
       Introduce,
       Experience,
       img,
@@ -82,21 +94,6 @@ export const getCoursesByTeacher = async (teacherId) => {
 // 課程梯次 細節
 export const getCoursesIdByTeacher = async (id) => {
   try {
-    // const sql = `
-    //   SELECT c.*, cs.*, ct.name AS typeName, cs.id AS session_id, ca.region AS region
-    //   FROM course_session cs
-    //   JOIN course c ON cs.course_id = c.id
-    //   JOIN course_type ct ON c.type_id = ct.type_id
-    //   JOIN course_area ca ON cs.area_id = ca.id
-    //   WHERE cs.id = ?
-    //   AND cs.is_deleted = 0
-    // `;
-    // const [courses] = await pool.query(sql, [id]);
-
-    // if (courses.length === 0){
-    //     console.log("未找到課程資料！");
-    // }
-
     const [courses] = await pool.query(`
        SELECT c.*, cs.*, ct.name AS typeName, cs.id AS session_id, ca.region AS region
       FROM course_session cs

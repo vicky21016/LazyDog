@@ -52,32 +52,31 @@ export const getPaginatedHotels = async (page = 1, limit = 10) =>
   fetchAPI(`${API_URL}/paginated?limit=${limit}&offset=${(page - 1) * limit}`);
 
 // 前端過濾篩選
-export async function getFilteredHotels(params) {
-  // 清理 `params` 物件，移除 undefined / null
-  const cleanParams = Object.fromEntries(
-    Object.entries(params).filter(([_, v]) => v != null)
-  );
-
-  // 確保 `tags` 陣列正確轉換為字串
-  if (Array.isArray(cleanParams.tags)) {
-    cleanParams.tags = cleanParams.tags.join(",");
-  }
-
-  // 確保是有效的 `URLSearchParams`
-  const queryString = new URLSearchParams(cleanParams).toString();
-
+export const getFilteredHotelsS = async (filters) => {
   try {
-    const response = await fetch(
-      `http://localhost:5000/api/hotels/filter?${queryString}`
-    );
-    if (!response.ok) throw new Error("獲取飯店失敗");
+    const response = await fetch("http://localhost:5000/api/hotels/filter", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(filters),
+    });
 
-    return await response.json();
+    if (!response.ok) throw new Error(`API 錯誤，HTTP 狀態碼: ${response.status}`);
+    // 先獲取原始的 text 內容
+    const text = await response.text();
+
+    // 嘗試解析 JSON
+    const data = JSON.parse(text);
+
+    return data;
   } catch (error) {
-    console.error("API 錯誤:", error);
+    console.error(" 查詢飯店錯誤:", error);
     return [];
   }
-}
+};
+
+
 
 
 export const getOperatorHotels = async () =>

@@ -1,5 +1,4 @@
 import pool from "../config/mysql.js";
-
 export const getHotels = async () => {
   const connection = await pool.getConnection();
   try {
@@ -7,11 +6,14 @@ export const getHotels = async () => {
       SELECT h.*, 
              hi.url AS main_image_url,
              IFNULL(r.avg_rating, 0) AS avg_rating,
+             IFNULL(r.review_count, 0) AS review_count, 
              IFNULL(rp.min_price, 0) AS min_price
       FROM hotel h
       LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
       LEFT JOIN (
-          SELECT hotel_id, ROUND(AVG(rating), 1) AS avg_rating
+          SELECT hotel_id, 
+                 ROUND(AVG(rating), 1) AS avg_rating,
+                 COUNT(id) AS review_count
           FROM hotel_reviews
           GROUP BY hotel_id
       ) r ON h.id = r.hotel_id
@@ -33,6 +35,7 @@ export const getHotels = async () => {
     connection.release();
   }
 };
+
 
 export const searchHotels = async (keyword) => {
   try {
@@ -343,18 +346,21 @@ export const softDeleteHotelById = async (id) => {
   }
 };
 /**  從資料庫獲取篩選後的飯店 */
-export const getFilteredHotelS = async (filters) => {
+export const getFilteredHotels = async (filters) => {
   const connection = await pool.getConnection();
   try {
     let query = `
       SELECT h.*, 
              hi.url AS main_image_url,
              IFNULL(r.avg_rating, 0) AS avg_rating, 
+             IFNULL(r.review_count, 0) AS review_count, 
              IFNULL(inv.min_price, 0) AS min_price
       FROM hotel h
       LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
       LEFT JOIN (
-          SELECT hotel_id, ROUND(AVG(rating), 1) AS avg_rating
+          SELECT hotel_id, 
+                 ROUND(AVG(rating), 1) AS avg_rating, 
+                 COUNT(id) AS review_count
           FROM hotel_reviews
           GROUP BY hotel_id
       ) r ON h.id = r.hotel_id
@@ -364,67 +370,71 @@ export const getFilteredHotelS = async (filters) => {
           WHERE ri.available_quantity > 0
           GROUP BY ri.hotel_id
       ) inv ON h.id = inv.hotel_id
-      LEFT JOIN room_inventory ri ON h.id = ri.hotel_id
+      WHERE h.is_deleted = 0
     `;
 
     let queryParams = [];
 
-    // 只在提供了日期篩選條件的情況下，加入日期篩選
-    if (filters.checkInDate && filters.checkOutDate) {
-      query += ` AND ri.date BETWEEN ? AND ?`;
-      queryParams.push(filters.checkInDate, filters.checkOutDate);
-    }
-
-    // 確保 city 和 district 條件的設置
     if (filters.city) {
       query += ` AND h.county = ?`;
       queryParams.push(filters.city);
     }
+
     if (filters.district) {
       query += ` AND h.district = ?`;
       queryParams.push(filters.district);
     }
-    if (filters.min_price !== null) {
-      query += ` AND IFNULL(inv.min_price, 0) >= ?`;
-      queryParams.push(filters.min_price);
-    }
-    if (filters.max_price !== null) {
-      query += ` AND IFNULL(inv.min_price, 0) <= ?`;
-      queryParams.push(filters.max_price);
-    }
-    if (filters.min_rating !== null) {
-      query += ` AND IFNULL(r.avg_rating, 0) >= ?`;
-      queryParams.push(filters.min_rating);
-    }
-    if (filters.room_type_id !== null) {
+
+    if (filters.checkInDate && filters.checkOutDate) {
       query += ` AND EXISTS (
-        SELECT 1 FROM room_inventory WHERE hotel_id = h.id AND hotel_room_type_id = ?
+        SELECT 1 FROM room_inventory ri
+        WHERE ri.hotel_id = h.id 
+        AND ri.date BETWEEN ? AND ?
+        AND ri.available_quantity > 0
       )`;
-      queryParams.push(filters.room_type_id);
+      queryParams.push(filters.checkInDate, filters.checkOutDate);
     }
 
-    // 標籤過濾
+    if (filters.minPrice !== undefined && filters.maxPrice !== undefined) {
+      query += ` AND inv.min_price BETWEEN ? AND ?`;
+      queryParams.push(filters.minPrice, filters.maxPrice);
+    }
+
+    if (filters.roomType) {
+      query += ` AND EXISTS (
+        SELECT 1 FROM hotel_room_types rt 
+        WHERE rt.hotel_id = h.id 
+        AND rt.type = ?
+      )`;
+      queryParams.push(filters.roomType);
+    }
+
     if (filters.tags && filters.tags.length > 0) {
-      query += ` AND h.id IN (
-        SELECT hotel_id FROM hotel_tags WHERE tag_id IN (${filters.tags
-          .map(() => "?")
-          .join(", ")})
+      query += ` AND EXISTS (
+        SELECT 1 FROM hotel_tags ht 
+        WHERE ht.hotel_id = h.id 
+        AND ht.tag_id IN (${filters.tags.map(() => "?").join(",")})
       )`;
       queryParams.push(...filters.tags);
     }
 
-    query += " GROUP BY h.id";
+    if (filters.rating) {
+      query += ` HAVING avg_rating >= ?`;
+      queryParams.push(filters.rating);
+    }
 
-    console.log(" 最終 SQL 查詢:", query);
-    console.log(" 查詢參數:", queryParams);
-    //等前端用好載山等前端用好載山
+    query += ` GROUP BY h.id`;
+
+    console.log("🛠 SQL 查詢:", query);
+    console.log("🛠 SQL 參數:", queryParams);
 
     const [hotels] = await connection.query(query, queryParams);
-    console.log("查詢結果:", hotels);
     return hotels;
   } catch (error) {
+    console.error("❌ 無法取得篩選飯店：" + error.message);
     throw new Error("無法取得篩選飯店：" + error.message);
   } finally {
     connection.release();
   }
 };
+

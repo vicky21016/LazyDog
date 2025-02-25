@@ -37,15 +37,26 @@ export const removeHotelTag = async (req, res) => {
 //懶得寫後面
 export const getAllHotelTags = async (req, res) => {
   try {
-    const [rows] = await pool.query(`
+    console.log("🔍 嘗試取得所有飯店標籤...");
+
+    const query = `
       SELECT DISTINCT t.id, t.name, t.description 
       FROM tags t
       JOIN hotel_tags ht ON t.id = ht.tag_id
       WHERE ht.is_deleted = 0
-    `);
+    `;
+
+    const [rows] = await pool.query(query);
+
+    if (!rows.length) {
+      console.warn(" 沒有找到任何標籤資料");
+      return res.json([]); // 回傳空陣列，而不是 404
+    }
+
+    console.log(` 成功取得 ${rows.length} 筆標籤資料`);
     res.json(rows);
   } catch (error) {
-    console.error("取得標籤失敗:", error);
-    res.status(500).json({ message: "無法取得標籤" });
+    console.error(" 取得標籤失敗:", error);
+    res.status(500).json({ message: "無法取得標籤", error: error.message });
   }
 };
