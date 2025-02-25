@@ -8,7 +8,7 @@ import Link from "next/link";
 import useArticles from '@/hooks/useArticle';
 import MainCard from '../_components/list/ListCard';
 import AsideCard from '../_components/list/AsideCard';
-import useAuth from '@/hooks/use-auth';
+import { useAuth } from "@/hooks/use-auth";
 
 const ArticlePage = () => {
   const { articles, loading, error } = useArticles();
@@ -17,6 +17,15 @@ const ArticlePage = () => {
   const [sortOrder, setSortOrder] = useState('desc');
   const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 5;
+  const { user } = useAuth()
+
+  // 判斷有無使用者登入
+  const handleClick = (event) => {
+    if (!user) {
+      event.preventDefault(); // 阻止預設跳轉行為
+      window.location.href = "http://localhost:3000/login"; // 跳轉到登入頁
+    }
+  };
 
   // 搜尋處理
   const handleSearchChange = (e) => {
@@ -78,11 +87,11 @@ const ArticlePage = () => {
       <div className={`container`}>
         {/* 發布文章按鈕 */}
         <div className={styles.postButton}>
-          <button
-            className={styles.post}>
+          <button className={styles.post}>
             <Link
               href="http://localhost:3000/article/add_article"
               style={{ textDecoration: 'none', color: 'white' }}
+              onClick={handleClick} // 點擊時檢查是否已登入
             >
               <i className="bi bi-check-circle"></i> 發布文章
             </Link>

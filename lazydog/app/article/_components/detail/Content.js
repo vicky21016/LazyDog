@@ -32,7 +32,13 @@ export default function Content({ article }) {
   return (
     <div className={`${styles.content} mt-4`}>
       <h1>{article?.title}</h1>
-      <div 
+      <div className={`${styles.autherDetail}`} style={{ margin: '15px 0' }}>
+        <div className={`${styles.floor}`}>作者</div>
+        <div className={`${styles.auther}`} style={{ display: 'inline-block' }}>
+          {article?.author_name}
+        </div>
+      </div>
+      <div
         className={`${styles.articleContent}`}
         dangerouslySetInnerHTML={{ __html: processedHTML }}
       />

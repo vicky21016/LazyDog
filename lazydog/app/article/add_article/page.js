@@ -12,15 +12,16 @@ import { useAuth } from "@/hooks/use-auth";  // 引入 useAuth 鉤子
 
 export default function AddArticlePage() {
   const { createArticle } = useArticles();
-  const { uploadCover, isLoading, error } = useUploadCover(); // 使用圖片上傳 Hook
-  const { user } = useAuth(); // 獲取當前使用者的資料
+  const { uploadCover } = useUploadCover(); // ✅ 使用圖片上傳 Hook
+  const { user } = useAuth(); // ✅ 獲取當前使用者
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState(''); // ✅ 儲存 Froala 內容
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [imageUrl, setImageUrl] = useState(''); // ✅ 儲存上傳的圖片 URL
+  const [imageUrl, setImageUrl] = useState(''); // ✅ 儲存圖片 URL
+  const [isSubmitting, setIsSubmitting] = useState(false); // ✅ 防止重複提交
 
   // 類別選項
   const categoryOptions = [
@@ -42,43 +43,55 @@ export default function AddArticlePage() {
     }
   };
 
-  // 上傳圖片
-  const handleUpload = async () => {
-    if (!selectedImage) {
-      console.log('請先選擇一張圖片');
-      return;
-    }
-
-    const uploadedImageUrl = await uploadCover(selectedImage);
-    console.log("後端返回的圖片 URL:", uploadedImageUrl);
-
-    if (uploadedImageUrl) {
-      setImageUrl(uploadedImageUrl);
-    }
-  };
-
-  // 提交文章
+  // 提交文章（包含圖片上傳）
   const handleSubmit = async () => {
     if (!title.trim() || !selectedCategory) {
       alert("請填寫標題並選擇分類");
       return;
     }
 
-    if (!user) {
-      alert("請先登入");
-      return;
+    setIsSubmitting(true); // ✅ 防止重複提交
+
+    let finalImageUrl = imageUrl; // 預設使用已經上傳的圖片 URL
+    if (selectedImage && !imageUrl) {
+      try {
+        finalImageUrl = await uploadCover(selectedImage);
+        if (!finalImageUrl) {
+          alert("圖片上傳失敗，請重試");
+          setIsSubmitting(false);
+          return;
+        }
+      } catch (error) {
+        alert("圖片上傳錯誤：" + error.message);
+        setIsSubmitting(false);
+        return;
+      }
     }
 
     const newArticle = {
       title,
       category_id: Number(selectedCategory),
-      content, // ✅ 使用 Froala 編輯器內容
-      article_img: imageUrl || "",
-      author_id: user.id,  // 把 author_id 加入到提交資料中
+      content,
+      article_img: finalImageUrl || "", // ✅ 確保圖片網址正確
+      author_id: user.id,  
     };
 
     console.log("提交的文章:", JSON.stringify(newArticle, null, 2));
-    await createArticle(newArticle);  // 傳遞帶有 author_id 的文章資料到後端
+
+    try {
+      await createArticle(newArticle);
+      alert("文章發布成功！");
+      setTitle('');
+      setContent('');
+      setSelectedCategory('');
+      setSelectedImage(null);
+      setImagePreview(null);
+      setImageUrl('');
+    } catch (error) {
+      alert("文章提交失敗：" + error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -125,7 +138,7 @@ export default function AddArticlePage() {
               onChange={(e) => setTitle(e.target.value)}
             />
 
-            {/* 圖片上傳 */}
+            {/* 圖片上傳區域 */}
             <div style={{ margin: '20px' }}>
               <input
                 type="file"
@@ -143,19 +156,10 @@ export default function AddArticlePage() {
                   />
                 </div>
               )}
-              <button 
-                type="button" 
-                onClick={handleUpload} 
-                className="btn btn-primary" 
-                disabled={!selectedImage || isLoading}
-              >
-                {isLoading ? '上傳中...' : '上傳圖片'}
-              </button>
-              {error && <p style={{ color: 'red' }}>{error}</p>}
             </div>
 
             {/* 文章內容編輯器 */}
-            <FroalaEditorWrapper onContentChange={setContent} /> {/* ✅ 傳遞內容變更函數 */}
+            <FroalaEditorWrapper onContentChange={setContent} />
 
             {/* 發布按鈕 */}
             <div className="d-flex justify-content-end">
@@ -169,8 +173,14 @@ export default function AddArticlePage() {
                   borderRadius: '5px',
                 }}
                 onClick={handleSubmit}
+                disabled={isSubmitting} // ✅ 防止重複提交
               >
-                <i className="bi bi-check-circle"></i> 發布文章
+                {isSubmitting ? (
+                  <i className="bi bi-hourglass-split"></i>
+                ) : (
+                  <i className="bi bi-check-circle"></i>
+                )}
+                {isSubmitting ? " 發布中..." : " 發布文章"}
               </button>
             </div>
           </form>

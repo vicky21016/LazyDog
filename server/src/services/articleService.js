@@ -147,7 +147,7 @@ export const updateArticleS = async (updateArticle) => {
 export const deleteArticleS = async (id) => {
   try {
     const [result] = await pool.query(
-      `UPDATE articles SET is_deleted = 1, updated_at = NOW() WHERE id = ? AND is_deleted = 1`,
+      `UPDATE articles SET is_deleted = 1, updated_at = NOW() WHERE id = ? AND is_deleted = 0`,
       [id]
     );
     if (result.affectedRows == 0) {
@@ -195,6 +195,8 @@ export const searchKeywordS = async (keyword) => {
   }
 }
 
+
+// 根據使用者id調取所有該作者沒有被ban的文章
 export const getArticlesByAuthorS = async (author_id) => {
   try {
     const [articles] = await pool.query(
