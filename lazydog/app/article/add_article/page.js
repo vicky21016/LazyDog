@@ -8,10 +8,12 @@ import FroalaEditorWrapper from '../_components/add_article/content';
 import Link from 'next/link';
 import useArticles from "@/hooks/useArticle";
 import useUploadCover from "@/hooks/uploadCover"; // 引入圖片上傳鉤子
+import { useAuth } from "@/hooks/use-auth";  // 引入 useAuth 鉤子
 
 export default function AddArticlePage() {
   const { createArticle } = useArticles();
   const { uploadCover, isLoading, error } = useUploadCover(); // 使用圖片上傳 Hook
+  const { user } = useAuth(); // 獲取當前使用者的資料
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState(''); // ✅ 儲存 Froala 內容
@@ -62,15 +64,21 @@ export default function AddArticlePage() {
       return;
     }
 
+    if (!user) {
+      alert("請先登入");
+      return;
+    }
+
     const newArticle = {
       title,
       category_id: Number(selectedCategory),
       content, // ✅ 使用 Froala 編輯器內容
       article_img: imageUrl || "",
+      author_id: user.id,  // 把 author_id 加入到提交資料中
     };
 
     console.log("提交的文章:", JSON.stringify(newArticle, null, 2));
-    await createArticle(newArticle);
+    await createArticle(newArticle);  // 傳遞帶有 author_id 的文章資料到後端
   };
 
   return (
@@ -135,7 +143,12 @@ export default function AddArticlePage() {
                   />
                 </div>
               )}
-              <button type="button" onClick={handleUpload} disabled={!selectedImage || isLoading}>
+              <button 
+                type="button" 
+                onClick={handleUpload} 
+                className="btn btn-primary" 
+                disabled={!selectedImage || isLoading}
+              >
                 {isLoading ? '上傳中...' : '上傳圖片'}
               </button>
               {error && <p style={{ color: 'red' }}>{error}</p>}

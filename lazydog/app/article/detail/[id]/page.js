@@ -56,15 +56,6 @@ export default function ArticleDetail() {
           </li>
         </ol>
       </nav>
-      <div className={`${styles.autherDetail}`} style={{ margin: '15px 0' }}>
-        <div className={`${styles.floor}`}>作者</div>
-        <div className={`${styles.auther}`} style={{ display: 'inline-block' }}>
-          {article?.author_name}
-        </div>
-      </div>
-      <div className="time" style={{ margin: '10px 0' }}>
-        {article?.created_at} 編輯
-      </div>
       {/* 文章內容 */}
       <Content article={article} /> {/* 傳遞文章資料給 Content 組件 */}
 

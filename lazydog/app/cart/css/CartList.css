@@ -81,3 +81,14 @@ td img {
 .summary-item span {
   padding: 0 10px;
 }
+.table-container {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.checkout-btn {
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  width: 180px;
+}

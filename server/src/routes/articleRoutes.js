@@ -11,6 +11,7 @@ import {
   searchKeyword,
   uploadController,
 } from "../controllers/articleController.js";
+import { getArticlesByAuthorS } from "../services/articleService.js";
 
 import { dirname, resolve } from "path";
 
@@ -40,7 +41,6 @@ const fileUpload = multer({
     fileSize: 100 * 1024 * 1024, 
   },
 });
-console.log(resolve(__dirname, "../../public", "article_img","0c68b190-ebe5-11ee-bb73-635f232238eb.webp"));
 
 router.use(express.static(resolve(__dirname, "../../public", "article_img")));
 router.get("/", getArticles);
@@ -49,7 +49,6 @@ router.get("/:id", getId);
 router.post("/", noFileUpload.none(), createArticle);
 router.delete("/:id", deleteArticle);
 router.put("/:id", noFileUpload.none(), updateArticle);
-
 // 新增圖片上傳的路由，專門處理圖片上傳，Froala 的 imageUploadURL 就設定指向這裡
 router.post("/upload", fileUpload.single("file"), uploadController.handleUpload);
 router.post("/upload/cover", fileUpload.single("file"), (req, res) => {
@@ -66,6 +65,18 @@ router.post("/upload/cover", fileUpload.single("file"), (req, res) => {
   } catch (error) {
     console.error("Error uploading file:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// 依 author_id 獲取文章
+router.get("/author/:author_id", async (req, res) => {
+  const { author_id } = req.params;
+
+  try {
+    const articles = await getArticlesByAuthorS(author_id);
+    res.json(articles);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 

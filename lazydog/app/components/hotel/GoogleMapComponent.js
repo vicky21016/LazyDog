@@ -43,7 +43,7 @@ const GoogleMapComponent = ({ hotels }) => {
           map,
           title: hotel.name,
           icon: {
-            url: "/hotel/localtion.png", // 標記圖示
+            url: "/hotel/location.png", // 標記圖示
             scaledSize: new google.maps.Size(40, 40),
           },
         });

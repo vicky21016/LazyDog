@@ -27,10 +27,11 @@ router.get('/info/:id', async (req, res) => {
   const { id } = req.params
   try {
      const sql = `
-         SELECT 
+        SELECT 
         teacher.*, 
         course_type.name AS category_name,
-        GROUP_CONCAT(DISTINCT course.name SEPARATOR ', ') AS course_names
+        GROUP_CONCAT(DISTINCT course.name SEPARATOR ', ') AS course_names,
+        GROUP_CONCAT(DISTINCT course.id SEPARATOR ', ') AS course_ids
       FROM 
         teacher
       LEFT JOIN 

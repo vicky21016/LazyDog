@@ -2,8 +2,33 @@
 
 import React, { useState, useEffect } from 'react'
 import styles from "../css/teacherSignList.module.css"
+import Link from 'next/link';
 
 export default function TeacherListC() {
+  const [mycourse, setMycourse] = useState([]);
+    
+  
+    useEffect(() => {
+      fetch(`http://localhost:5000/teacher/mycourse`,{
+        method: "GET",
+        headers:{
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("loginWithToken")}`,
+        }
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data);          
+          setMycourse(data.data);
+  
+        })
+        .catch((err) => {
+          console.error("Error fetching data:", err);
+        });
+    }, []);
+    // console.log(data?);
+    console.log(mycourse);
+  
   return (
     <>
       <div className={`col-lg-9 col-md-12 col-12`}>
@@ -27,63 +52,26 @@ export default function TeacherListC() {
                   <div className={styles.cTh4}>地點</div>
                 </div>
                 <div className={`${styles.cTbodys}`}>
-                  <div className={styles.cTbody}>
-                    <div className={styles.cTd1}>
-                      <img
-                        className={styles.courseImg}
-                        src="/course/img/3 (1).jpeg"
-                          alt=""
-                      />
-                    </div>
-                    <div className={styles.cTd2}>一對一寵物美容教學實作</div>
-                    <div className={`d-none`}>上課日期</div>
-                    <div className={styles.cTd3}>
-                      【台北】第一梯 11/02、11/09、11/16、11/23、11/30、12/07
-                    </div>
-                    <div className={styles.cTd4}>台北</div>
-                  </div>
-                  <div className={styles.cTbody}>
-                    <div className={styles.cTd1}>
-                      <img
-                        className={styles.courseImg}
-                        src="/course/img/7 (1).jpeg"
-                         alt=""
-                      />
-                    </div>
-                    <div className={styles.cTd2}>一對一寵物美容教學實作</div>
-                    <div className={styles.cTd3}>
-                      【台北】第一梯 11/02、11/09、11/16、11/23、11/30、12/07
-                    </div>
-                    <div className={styles.cTd4}>高雄</div>
-                  </div>
-                  <div className={styles.cTbody}>
-                    <div className={styles.cTd1}>
-                      <img
-                        className={styles.courseImg}
-                        src="/course/img/18 (1).jpeg"
-                          alt=""
-                      />
-                    </div>
-                    <div className={styles.cTd2}>一對一寵物美容教學實作</div>
-                    <div className={styles.cTd3}>
-                      【台北】第一梯 11/02、11/09、11/16、11/23、11/30、12/07
-                    </div>
-                    <div className={styles.cTd4}>線上預錄</div>
-                  </div>
-                  <div className={styles.cTbody}>
-                    <div className={styles.cTd1}>
-                      <img
-                        className={styles.courseImg}
-                        src="/course/img/25 (1).jpeg"
-                          alt=""
-                      />
-                    </div>
-                    <div className={styles.cTd2}>一對一寵物美容教學實作</div>
-                    <div className={styles.cTd3}>
-                      【台北】第一梯 11/02、11/09、11/16、11/23、11/30、12/07
-                    </div>
-                    <div className={styles.cTd4}>線上直播</div>
-                  </div>
+                  {mycourse.map((m) => (
+                    <Link 
+                      key={m.session_id} 
+                      className={styles.cTbody} 
+                      href={`/teacher-sign/detail/${m.session_id}`}>
+                      <div className={styles.cTd1}>
+                        <img
+                          className={styles.courseImg}
+                          src={`/course/img/${m?.img_url}`}
+                            alt={m?.course_name}
+                        />
+                      </div>
+                      <div className={styles.cTd2}>{m.course_name}</div>
+                      <div className={`d-none`}>上課日期</div>
+                      <div className={styles.cTd3}>{m.class_dates}</div>
+                      <div className={styles.cTd4}>{m.region}</div>
+                    </Link>
+                  ))}
+                  
+                  
                 </div>
               </div>
               <nav aria-label="Page navigation">
@@ -125,7 +113,7 @@ export default function TeacherListC() {
                 </ul>
               </nav>
             </div>
-          </div>
+      </div>
     </>
   )
 }

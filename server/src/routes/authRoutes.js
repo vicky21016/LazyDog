@@ -28,7 +28,6 @@ router.post("/login", upload.none(), async (req, res) => {
   try {
     if (!email || !password) throw new Error("請提供帳號和密碼");
 
-    // const db = await pool();
     const sql = "SELECT * FROM `users` WHERE email = ?;";
     const [users] = await pool.execute(sql, [email]);
 
@@ -49,6 +48,7 @@ router.post("/login", upload.none(), async (req, res) => {
         gender: user.gender,
         phone: user.phone,
         avatar,
+        teacher_id: user.teacher_id, // Add teacher_id here
       },
       secretKey,
       {
@@ -72,9 +72,7 @@ router.post("/login", upload.none(), async (req, res) => {
 
 router.post("/register", upload.none(), async (req, res) => {
   const { email, password, confirmPassword } = req.body;
-  // console.log(req.body)
-  //   console.log("Email:", email);
-  // console.log("Password:", password);
+
   if (!email || !password || !confirmPassword) {
     return res
       .status(400)
@@ -87,40 +85,55 @@ router.post("/register", upload.none(), async (req, res) => {
   }
 
   try {
-    // const db = await pool();
     console.log("資料庫連線成功");
-    // 檢查用戶是否已經存在
     const [existUser] = await pool.execute(
       "SELECT * FROM users WHERE email = ?",
       [email]
     );
-    // console.log("查詢結果：", existUser);
     if (existUser.length > 0) {
       return res.status(400).json({ status: "fail", message: "用戶已存在" });
     }
 
-    // 使用 bcrypt 加密密碼
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // 取得當前時間
     const createdAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
     const sql =
       "INSERT INTO `users` (`email`, `password`, `created_at`) VALUES (?, ?, ?)";
-    // console.log("要插入的 email:", email);
-    // console.log("要插入的 password:", password);
-    // 插入新用戶資料
     const [result] = await pool.execute(sql, [
       email,
       hashedPassword,
       createdAt,
     ]);
 
-    console.log("插入結果:", result);
-    // 註冊後返回成功訊息
+    // Assuming you also want to set teacher_id when the user registers, you may need to update the `users` table schema for this
+    const [newUser] = await pool.execute(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
+
+    const user = newUser[0];
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+        birthday: user.birthday,
+        gender: user.gender,
+        phone: user.phone,
+        avatar: user.avatar,
+        teacher_id: user.teacher_id, // Add teacher_id here
+      },
+      secretKey,
+      {
+        expiresIn: "10m",
+      }
+    );
+
     res
       .status(201)
-      .json({ status: "success", data: { email }, message: "註冊成功" });
+      .json({ status: "success", data: { email }, message: "註冊成功", token });
   } catch (err) {
     console.error("伺服器錯誤:", err);
     res.status(500).json({ status: "error", message: "伺服器錯誤" });
@@ -137,6 +150,7 @@ router.post("/logout", checkToken, (req, res) => {
       gender: "",
       phone: "",
       avatar: "",
+      teacher_id: "", // Add teacher_id here
     },
     secretKey,
     { expiresIn: "-10s" }
@@ -147,10 +161,9 @@ router.post("/logout", checkToken, (req, res) => {
     message: "登出成功",
   });
 });
+
 router.put("/:id", checkToken, upload.none(), async (req, res) => {
   const { id } = req.params;
-  console.log(id);
-
   const { email, name, gender, birthday, phone } = req.body;
 
   try {
@@ -184,8 +197,6 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
 
     value.push(id);
     const sql = `UPDATE users SET ${updateFields.join(", ")} WHERE id = ?;`;
-    console.log(sql);
-    console.log(value);
 
     const [result] = await pool.execute(sql, value);
 
@@ -209,6 +220,7 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
         gender: user.gender,
         phone: user.phone,
         avatar: await getAvatar(user.user_img),
+        teacher_id: user.teacher_id, // Add teacher_id here
       },
       secretKey,
       { expiresIn: "10m" }
@@ -220,7 +232,6 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
       data: { token: newToken },
     });
   } catch (err) {
-    console.log(err);
     res.status(400).json({
       status: "error",
       message: err.message ? err.message : "修改失敗",
@@ -238,7 +249,6 @@ router.post(
       return res.status(400).json({ status: "error", message: "請上傳圖片" });
     }
 
-    // 驗證檔案格式
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
       return res
         .status(400)
@@ -251,12 +261,11 @@ router.post(
     const newPath = resolve(__dirname, "../../public/user/img", newFileName);
 
     try {
-      // 移動檔案
       await rename(file.path, newPath);
 
-      // 先更新 users 資料表
       const sql = "UPDATE users SET `user_img` = ? WHERE id = ?;";
       await pool.execute(sql, [newFileName, req.decoded.id]);
+
       const token = jwt.sign(
         {
           id: req.decoded.id,
@@ -267,11 +276,12 @@ router.post(
           gender: req.decoded.gender,
           phone: req.decoded.phone,
           avatar: newFileName,
+          teacher_id: req.decoded.teacher_id, // Add teacher_id here
         },
         secretKey,
         { expiresIn: "30m" }
       );
-      // 再回應成功 JSON
+
       res.status(200).json({
         fileUrl: `/user/img/${newFileName}`,
         data: { token },
@@ -282,9 +292,9 @@ router.post(
     }
   }
 );
+
 router.post("/status", checkToken, (req, res) => {
   const { decoded } = req;
-  // const avatar = await getAvatar(user.img);
   const token = jwt.sign(
     {
       id: decoded.id,
@@ -295,13 +305,16 @@ router.post("/status", checkToken, (req, res) => {
       gender: decoded.gender,
       phone: decoded.phone,
       avatar: decoded.avatar,
+      teacher_id: decoded.teacher_id, // Add teacher_id here
     },
     secretKey,
     { expiresIn: "30m" }
   );
   res.json({ status: "success", data: { token }, message: "登入中" });
 });
+
 router.use(express.static(resolve(__dirname, "../../public", "user", "img")));
+
 function checkToken(req, res, next) {
   let token = req.get("Authorization");
   if (!token)
@@ -310,15 +323,16 @@ function checkToken(req, res, next) {
       data: "",
       message: "無資料",
     });
-  // console.log(token)
+
   if (!token.startsWith("Bearer "))
     return res.json({
       status: "error",
       data: "",
       message: "驗證資料錯誤",
     });
+
   token = token.slice(7);
-  // console.log(token)
+
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err)
       return res.status(401).json({
@@ -327,8 +341,6 @@ function checkToken(req, res, next) {
         message: "資料失效",
       });
     req.decoded = decoded;
-    // console.log(decoded)
-
     next();
   });
 }

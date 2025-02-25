@@ -1,54 +1,63 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import "../css/CartList.css";
 import { useCart } from "@/hooks/use-cart";
-import Header from "../../components/layout/header"
+import Header from "@/app/components/layout/header";
+import Breadcrumb from "@/app/course/_components/Id/breadcrumb";
+import Thead from "@/app/components/cart/thead";
 import Other from "../../components/teacher/otherTeacher";
-import Thead from "../../components/cart/thead"
-import Tbody from "../../components/cart/tbody"
-import Breadcrumb from "../../components/teacher/breadcrumb";
-
-
+import Link from "next/link";
 export default function CartListPage(props) {
-  const { productItems, courseItems, hotelItems, totalProductAmount, totalProductQty, totalCourseAmount, totalCourseQty, totalHotelAmount, totalHotelQty, onIncrease, onDecrease, onRemove } = useCart();
+  const {
+    productItems = [],
+    courseItems = [],
+    hotelItems = [],
+    totalProductAmount,
+    totalProductQty,
+    totalCourseAmount,
+    totalCourseQty,
+    totalHotelAmount,
+    totalHotelQty,
+    onIncrease,
+    onDecrease,
+    onRemove,
+  } = useCart();
 
-  const totalAmount = totalProductAmount + totalCourseAmount + totalHotelAmount; // 計算所有類別的總金額
-  const totalQty = totalProductQty + totalCourseQty + totalHotelQty; // 計算總數量
+  const totalAmount = totalProductAmount + totalCourseAmount + totalHotelAmount;
 
-   const teacherData = [
-     {
-       imgSrc: "/teacher-img/Zoe.png",
-       col: "col-6 col-md-3",
-       name: "Zoe",
-       text: "寵物訓練",
-       link: "/teacher/info",
-     },
-     {
-       imgSrc: "/teacher-img/Zoe.png",
-       col: "col-6 col-md-3",
-       name: "Zoe",
-       text: "寵物訓練",
-       link: "/teacher/info",
-     },
-     {
-       imgSrc: "/teacher-img/Zoe.png",
-       col: "col-6 col-md-3",
-       name: "Zoe",
-       text: "寵物訓練",
-       link: "/teacher/info",
-     },
-     {
-       imgSrc: "/teacher-img/Zoe.png",
-       col: "col-6 col-md-3",
-       name: "Zoe",
-       text: "寵物訓練",
-       link: "/teacher/info",
-     },
-   ];
-
+  const teacherData = [
+    {
+      imgSrc: "/teacher-img/Zoe.png",
+      col: "col-6 col-md-3",
+      name: "Zoe",
+      text: "寵物訓練",
+      link: "/teacher/info",
+    },
+    {
+      imgSrc: "/teacher-img/Zoe.png",
+      col: "col-6 col-md-3",
+      name: "Zoe",
+      text: "寵物訓練",
+      link: "/teacher/info",
+    },
+    {
+      imgSrc: "/teacher-img/Zoe.png",
+      col: "col-6 col-md-3",
+      name: "Zoe",
+      text: "寵物訓練",
+      link: "/teacher/info",
+    },
+    {
+      imgSrc: "/teacher-img/Zoe.png",
+      col: "col-6 col-md-3",
+      name: "Zoe",
+      text: "寵物訓練",
+      link: "/teacher/info",
+    },
+  ];
 
   return (
     <>
@@ -74,106 +83,131 @@ export default function CartListPage(props) {
               className="col-lg-8 col-md-auto col-auto me-5 mb-5"
               style={{ marginLeft: "auto" }}
             >
-              <Thead />
-              {/* 顯示商品 */}
-              <tbody>
-                {productItems.map((cartItem) => (
-                  <tr key={cartItem.id}>
-                    <td>
-                      <img src={cartItem.img} alt={cartItem.name} />
-                    </td>
-                    <td>{cartItem.name}</td>
-                    <td>{cartItem.price}</td>
-                    <td>
-                      <button onClick={() => onIncrease(cartItem.id)}>+</button>
-                      {cartItem.count}
-                      <button onClick={() => onDecrease(cartItem.id)}>-</button>
-                    </td>
-                    <td>{cartItem.count * cartItem.price}</td>
-                    <td>
-                      <button
-                        style={{
-                          border: "transparent",
-                          backgroundColor: "white",
-                        }}
-                        onClick={() => onRemove(cartItem.id)}
-                      >
-                        <FontAwesomeIcon
-                          icon={faTrashAlt}
-                          style={{ color: "#f2662b" }}
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-              <Thead />
+              {productItems.length > 0 && (
+                <>
+                  <Thead />
+                  <tbody>
+                    {/* 顯示商品 */}
+                    {productItems.map((cartItem) => (
+                      <tr key={cartItem.id}>
+                        <td>
+                          <img src={cartItem.img} alt={cartItem.name} />
+                        </td>
+                        <td>{cartItem.name}</td>
+                        <td>{cartItem.price}</td>
+                        <td>
+                          <button onClick={() => onIncrease(cartItem.id)}>
+                            +
+                          </button>
+                          {cartItem.count}
+                          <button onClick={() => onDecrease(cartItem.id)}>
+                            -
+                          </button>
+                        </td>
+                        <td>{cartItem.count * cartItem.price}</td>
+                        <td>
+                          <button
+                            style={{
+                              border: "transparent",
+                              backgroundColor: "white",
+                            }}
+                            onClick={() => onRemove(cartItem.id)}
+                          >
+                            <FontAwesomeIcon
+                              icon={faTrashAlt}
+                              style={{ color: "#f2662b" }}
+                            />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </>
+              )}
 
-              {/* 顯示課程 */}
-              <tbody>
-                {courseItems.map((cartItem) => (
-                  <tr key={cartItem.id}>
-                    <td>
-                      <img src={cartItem.img} alt={cartItem.name} />
-                    </td>
-                    <td>{cartItem.name}</td>
-                    <td>{cartItem.price}</td>
-                    <td>
-                      <button onClick={() => onIncrease(cartItem.id)}>+</button>
-                      {cartItem.count}
-                      <button onClick={() => onDecrease(cartItem.id)}>-</button>
-                    </td>
-                    <td>{cartItem.count * cartItem.price}</td>
-                    <td>
-                      <button
-                        style={{
-                          border: "transparent",
-                          backgroundColor: "white",
-                        }}
-                        onClick={() => onRemove(cartItem.id)}
-                      >
-                        <FontAwesomeIcon
-                          icon={faTrashAlt}
-                          style={{ color: "#f2662b" }}
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-              <Thead />
-              <tbody>
-                {/* 顯示旅館 */}
-                {hotelItems.map((cartItem) => (
-                  <tr key={cartItem.id}>
-                    <td>
-                      <img src={cartItem.img} alt={cartItem.name} />
-                    </td>
-                    <td>{cartItem.name}</td>
-                    <td>{cartItem.price}</td>
-                    <td>
-                      <button onClick={() => onIncrease(cartItem.id)}>+</button>
-                      {cartItem.count}
-                      <button onClick={() => onDecrease(cartItem.id)}>-</button>
-                    </td>
-                    <td>{cartItem.count * cartItem.price}</td>
-                    <td>
-                      <button
-                        style={{
-                          border: "transparent",
-                          backgroundColor: "white",
-                        }}
-                        onClick={() => onRemove(cartItem.id)}
-                      >
-                        <FontAwesomeIcon
-                          icon={faTrashAlt}
-                          style={{ color: "#f2662b" }}
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+              {courseItems.length > 0 && (
+                <>
+                  <Thead />
+                  <tbody>
+                    {/* 顯示課程 */}
+                    {courseItems.map((cartItem) => (
+                      <tr key={cartItem.id}>
+                        <td>
+                          <img src={cartItem.img} alt={cartItem.name} />
+                        </td>
+                        <td>{cartItem.name}</td>
+                        <td>{cartItem.price}</td>
+                        <td>
+                          <button onClick={() => onIncrease(cartItem.id)}>
+                            +
+                          </button>
+                          {cartItem.count}
+                          <button onClick={() => onDecrease(cartItem.id)}>
+                            -
+                          </button>
+                        </td>
+                        <td>{cartItem.count * cartItem.price}</td>
+                        <td>
+                          <button
+                            style={{
+                              border: "transparent",
+                              backgroundColor: "white",
+                            }}
+                            onClick={() => onRemove(cartItem.id)}
+                          >
+                            <FontAwesomeIcon
+                              icon={faTrashAlt}
+                              style={{ color: "#f2662b" }}
+                            />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </>
+              )}
+
+              {hotelItems.length > 0 && (
+                <>
+                  <Thead />
+                  <tbody>
+                    {/* 顯示旅館 */}
+                    {hotelItems.map((cartItem) => (
+                      <tr key={cartItem.id}>
+                        <td>
+                          <img src={cartItem.img} alt={cartItem.name} />
+                        </td>
+                        <td>{cartItem.name}</td>
+                        <td>{cartItem.price}</td>
+                        <td>
+                          <button onClick={() => onIncrease(cartItem.id)}>
+                            +
+                          </button>
+                          {cartItem.count}
+                          <button onClick={() => onDecrease(cartItem.id)}>
+                            -
+                          </button>
+                        </td>
+                        <td>{cartItem.count * cartItem.price}</td>
+                        <td>
+                          <button
+                            style={{
+                              border: "transparent",
+                              backgroundColor: "white",
+                            }}
+                            onClick={() => onRemove(cartItem.id)}
+                          >
+                            <FontAwesomeIcon
+                              icon={faTrashAlt}
+                              style={{ color: "#f2662b" }}
+                            />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </>
+              )}
             </table>
 
             {/* 顯示摘要區 */}
@@ -212,13 +246,29 @@ export default function CartListPage(props) {
 
               {/* 結帳按鈕 */}
               <div className="d-flex justify-content-center pt-5 pb-5">
-                <button
+                {/* <button
                   type="submit"
                   style={{ backgroundColor: "#f2662b", color: "#fff" }}
                   className="btn w-50"
+                  onClick={() => history.push("/cart/CartListPay")}
                 >
-                  結帳
-                </button>
+                  商品結帳
+                </button> */}
+                <Link
+                  style={{ backgroundColor: "#f2662b", color: "#fff" }}
+                  className="btn w-50"
+                  href={{
+                    pathname: "/cart/CartListPay",
+                    query: {
+                      productItems: JSON.stringify(productItems),
+                      courseItems: JSON.stringify(courseItems),
+                      hotelItems: JSON.stringify(hotelItems),
+                      totalAmount: totalAmount,
+                    },
+                  }}
+                >
+                  前往結帳
+                </Link>
               </div>
             </aside>
           </div>
