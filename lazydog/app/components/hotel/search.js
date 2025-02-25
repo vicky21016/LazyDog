@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
 import { useDatePicker } from "@/hooks/useDatePicker";
-import { getFilteredHotelsS, } from "@/services/hotelService";
+import { getFilteredHotelsS } from "@/services/hotelService";
 
 const HotelSearchBar = ({
   location,
@@ -22,7 +22,7 @@ const HotelSearchBar = ({
 
   const handleSearchBarSubmit = async () => {
     confirmLocation(); // 確保選擇地區後更新 `city` 和 `district`
-    
+
     const searchParams = {
       city: city || null,
       district: district || null,
@@ -38,10 +38,9 @@ const HotelSearchBar = ({
       searchParams.checkOutDate = checkOutDate.trim() || null;
     }
 
-
     try {
       const result = await getFilteredHotelsS(searchParams);
-
+      //可以在這裡驗證結果
       if (onSearch) {
         onSearch(searchParams);
       }
@@ -62,22 +61,29 @@ const HotelSearchBar = ({
     if (onClear) {
       onClear();
     }
-  
+
     setIsSearching(true); // 恢復搜尋狀態
-    
   };
 
   return (
     <div className="container mt-4">
       <div className={styles.suSearchBar}>
         <div className={styles.suSearchGroup}>
-          <img className={styles.suIcon} src="/hotel/hotel-images/page-image/icon-search.png" alt="" />
+          <img
+            className={styles.suIcon}
+            src="/hotel/hotel-images/page-image/icon-search.png"
+            alt=""
+          />
           <button className={styles.suSearchInput} onClick={openModal}>
             {city ? `${city} ${district || ""}` : "選擇地區"}
           </button>
         </div>
         <div className={styles.suSearchGroup}>
-          <img className={styles.suIcon} src="/hotel/hotel-images/page-image/icon-Calendar.png" alt="" />
+          <img
+            className={styles.suIcon}
+            src="/hotel/hotel-images/page-image/icon-Calendar.png"
+            alt=""
+          />
           <input
             type="text"
             ref={dateRef}
@@ -89,29 +95,51 @@ const HotelSearchBar = ({
         </div>
 
         <div className={styles.suSearchGroup}>
-          <img className={styles.suIcon} src="/hotel/hotel-images/page-image/Icon-mimi.png" alt="" />
+          <img
+            className={styles.suIcon}
+            src="/hotel/hotel-images/page-image/Icon-mimi.png"
+            alt=""
+          />
           <span className="text">數量</span>
-          <button className={styles.suQuantityBtn} onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+          <button
+            className={styles.suQuantityBtn}
+            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+          >
             -
           </button>
           <span className={styles.suQuantityNumber}>{quantity}</span>
-          <button className={styles.suQuantityBtn} onClick={() => setQuantity(quantity + 1)}>
+          <button
+            className={styles.suQuantityBtn}
+            onClick={() => setQuantity(quantity + 1)}
+          >
             +
           </button>
         </div>
 
         {/* 搜尋按鈕 */}
-        <button className={styles.suSearchBtn} onClick={isSearching ? handleSearchBarSubmit : handleClearSearch}>
+        <button
+          className={styles.suSearchBtn}
+          onClick={isSearching ? handleSearchBarSubmit : handleClearSearch}
+        >
           {isSearching ? "搜尋" : "清除篩選"}
         </button>
 
         {/* 地區選擇 Modal */}
-        <div className="modal fade" ref={locationModalRef} tabIndex="-1" aria-hidden="true">
+        <div
+          className="modal fade"
+          ref={locationModalRef}
+          tabIndex="-1"
+          aria-hidden="true"
+        >
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">選擇地區</h5>
-                <button type="button" className="btn-close" onClick={closeModal}></button>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={closeModal}
+                ></button>
               </div>
               <div className="modal-body">
                 <div id="twzipcode">
@@ -120,7 +148,10 @@ const HotelSearchBar = ({
                 </div>
               </div>
               <div className="modal-footer">
-                <button className={styles.suSearchBtn} onClick={confirmLocation}>
+                <button
+                  className={styles.suSearchBtn}
+                  onClick={confirmLocation}
+                >
                   確定
                 </button>
               </div>
