@@ -49,6 +49,15 @@
   text-decoration: none;
   color: #f5842b;
 }
+.link2 {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+}
+.link2:hover {
+  text-decoration: none;
+  color: white;
+}
 /* -------button---------- */
 .customToggle::after {
   display: none; /* 隱藏倒三角形 */
