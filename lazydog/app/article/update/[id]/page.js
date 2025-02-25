@@ -1,25 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './App.css';
-import FroalaEditorWrapper from '../_components/add_article/content';
+import FroalaEditorWrapper from '../../_components/update/content';
 import Link from 'next/link';
 import useArticles from "@/hooks/useArticle";
 import useUploadCover from "@/hooks/uploadCover"; // 引入圖片上傳鉤子
-import useAuth from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/use-auth";  // 引入 useAuth 鉤子
+import { useRouter } from 'next/navigation'; // 引入 useRouter 用於跳轉
 
-export default function AddArticlePage() {
-  const { createArticle } = useArticles();
-  const { uploadCover, isLoading, error } = useUploadCover(); // 使用圖片上傳 Hook
+export default function UpdatePage({ params }) {
+  const { id } = params; // 從動態路由獲取文章 ID
+  const { getArticle, updateArticle } = useArticles();
+  const { uploadCover } = useUploadCover(); // 使用圖片上傳 Hook
+  const { user } = useAuth(); // 獲取當前使用者
+  const router = useRouter(); // 用於跳轉
 
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState(''); // ✅ 儲存 Froala 內容
+  const [content, setContent] = useState(''); // 儲存 Froala 內容
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [imageUrl, setImageUrl] = useState(''); // ✅ 儲存上傳的圖片 URL
+  const [imageUrl, setImageUrl] = useState(''); // 儲存圖片 URL
+  const [isSubmitting, setIsSubmitting] = useState(false); // 防止重複提交
 
   // 類別選項
   const categoryOptions = [
@@ -29,6 +34,45 @@ export default function AddArticlePage() {
     { id: 4, name: '行為知識' },
     { id: 5, name: '開箱' }
   ];
+
+  // 定義路徑轉換函式
+  const convertFrontendToBackendImagePath = (imageUrl) => {
+    if (!imageUrl) return '';
+    return imageUrl.replace(
+      /http:\/\/localhost:3000\/([a-f0-9-]+)/,
+      'http://localhost:5000/api/articles/$1.png'
+    );
+  };
+
+  const convertBackendToFrontendImagePath = (htmlContent) => {
+    const regex = /http:\/\/localhost:5000\/api\/articles\/([a-f0-9-]+)\.png/g;
+    return htmlContent.replace(regex, 'http://localhost:3000/$1');
+  };
+
+  // 載入文章內容
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        const article = await getArticle(id);
+        if (article) {
+          setTitle(article.title);
+          setContent(article.content);
+          setSelectedCategory(article.category_id);
+
+          // 轉換封面圖片路徑
+          const backendImageUrl = convertFrontendToBackendImagePath(article.article_img);
+          setImageUrl(backendImageUrl);
+          setImagePreview(backendImageUrl);
+        }
+      } catch (error) {
+        console.error("載入文章失敗:", error);
+      }
+    };
+
+    if (id) {
+      fetchArticle();
+    }
+  }, [id, getArticle]);
 
   // 處理圖片變更
   const handleImageChange = (event) => {
@@ -41,37 +85,51 @@ export default function AddArticlePage() {
     }
   };
 
-  // 上傳圖片
-  const handleUpload = async () => {
-    if (!selectedImage) {
-      console.log('請先選擇一張圖片');
-      return;
-    }
-
-    const uploadedImageUrl = await uploadCover(selectedImage);
-    console.log("後端返回的圖片 URL:", uploadedImageUrl);
-
-    if (uploadedImageUrl) {
-      setImageUrl(uploadedImageUrl);
-    }
-  };
-
-  // 提交文章
+  // 提交文章（包含圖片上傳）
   const handleSubmit = async () => {
     if (!title.trim() || !selectedCategory) {
       alert("請填寫標題並選擇分類");
       return;
     }
 
-    const newArticle = {
+    setIsSubmitting(true); // 防止重複提交
+
+    let finalImageUrl = imageUrl; // 預設使用已經上傳的圖片 URL
+    if (selectedImage) {
+      try {
+        finalImageUrl = await uploadCover(selectedImage);
+        if (!finalImageUrl) {
+          alert("圖片上傳失敗，請重試");
+          setIsSubmitting(false);
+          return;
+        }
+      } catch (error) {
+        alert("圖片上傳錯誤：" + error.message);
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
+    // 將 content 中的後端路徑轉回前端格式
+    const processedContent = convertBackendToFrontendImagePath(content);
+
+    const updatedArticle = {
       title,
       category_id: Number(selectedCategory),
-      content, // ✅ 使用 Froala 編輯器內容
-      article_img: imageUrl || "",
+      content: processedContent,
+      article_img: finalImageUrl || "", // 確保圖片網址正確
+      author_id: user.id,
     };
 
-    console.log("提交的文章:", JSON.stringify(newArticle, null, 2));
-    await createArticle(newArticle);
+    try {
+      await updateArticle(id, updatedArticle); // 更新文章
+      alert("文章更新成功！");
+      router.push('/article/list'); // 跳轉到文章列表頁
+    } catch (error) {
+      alert("文章更新失敗：" + error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -91,7 +149,7 @@ export default function AddArticlePage() {
               boxShadow: "0px 10px 14px rgba(0, 0, 0, 0.25)"
             }}
           >
-            <h4>新增文章</h4>
+            <h4>編輯文章</h4>
 
             {/* 下拉選單 - 類別選擇 */}
             <select
@@ -118,7 +176,7 @@ export default function AddArticlePage() {
               onChange={(e) => setTitle(e.target.value)}
             />
 
-            {/* 圖片上傳 */}
+            {/* 圖片上傳區域 */}
             <div style={{ margin: '20px' }}>
               <input
                 type="file"
@@ -136,18 +194,13 @@ export default function AddArticlePage() {
                   />
                 </div>
               )}
-              <button 
-              type="button" 
-              onClick={handleUpload} 
-              className="btn btn-primary" 
-              disabled={!selectedImage || isLoading}>
-                {isLoading ? '上傳中...' : '上傳圖片'}
-              </button>
-              {error && <p style={{ color: 'red' }}>{error}</p>}
             </div>
 
             {/* 文章內容編輯器 */}
-            <FroalaEditorWrapper onContentChange={setContent} /> {/* ✅ 傳遞內容變更函數 */}
+            <FroalaEditorWrapper
+              content={content} // ✅ 傳遞初始內容
+              onContentChange={setContent} // ✅ 處理內容更新
+            />
 
             {/* 發布按鈕 */}
             <div className="d-flex justify-content-end">
@@ -161,8 +214,14 @@ export default function AddArticlePage() {
                   borderRadius: '5px',
                 }}
                 onClick={handleSubmit}
+                disabled={isSubmitting} // 防止重複提交
               >
-                <i className="bi bi-check-circle"></i> 發布文章
+                {isSubmitting ? (
+                  <i className="bi bi-hourglass-split"></i>
+                ) : (
+                  <i className="bi bi-check-circle"></i>
+                )}
+                {isSubmitting ? " 更新中..." : " 更新文章"}
               </button>
             </div>
           </form>
