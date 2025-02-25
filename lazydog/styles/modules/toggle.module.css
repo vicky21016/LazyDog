@@ -124,8 +124,8 @@
 .dog-image {
   width: 80px;
 
-height: 80px;
-margin: 50px;
+  height: 80px;
+  margin: 50px;
 }
 .carousel {
   position: relative;
@@ -165,4 +165,3 @@ margin: 50px;
     transform: translateX(0);
   }
 } */
-
