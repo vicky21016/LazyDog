@@ -240,19 +240,19 @@ export const createCourseWithSession = async (courseData, sessionData, imgData) 
 };
 
 // 更新課程+梯次
-export const updateCourseWithSession = async (courseId, courseData, sessionId, sessionData) => {
+export const updateCourseWithSession = async (courseId, courseData, sessionId, sessionData, imgData) => {
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
 
     await connection.query(
-      `UPDATE course SET type_id = ?, name = ?, description = ?, duration = ?, price = ?, notice = ?, qa = ? WHERE id = ? AND is_deleted =0`,
+      `UPDATE course SET name = ?, type_id = ?, price = ?, duration = ?, description = ?, notice = ?, qa = ? WHERE id = ? AND is_deleted =0`,
       [
-        courseData.type_id,
         courseData.name,
-        courseData.description,
-        courseData.duration,
+        courseData.type_id,
         courseData.price,
+        courseData.duration,
+        courseData.description,
         courseData.notice,
         courseData.qa,
         courseId,
@@ -260,23 +260,69 @@ export const updateCourseWithSession = async (courseId, courseData, sessionId, s
     );
 
     await connection.query(
-      `UPDATE course_session SET area_id = ?, teacher_id = ?, max_people = ?, curr_people = ?, remaining_slots = ?, start_date = ?, end_date = ?, class_dates = ?, deadline_date = ?, start_time = ?, end_time = ?, update_at = NOW() WHERE course_id = ? AND id = ? AND is_deleted = 0 `,
+      `UPDATE course_session SET 
+          max_people = ?,
+          class_dates = ?,
+          start_date = ?,  
+          area_id = ?,
+          start_time = ?, 
+          end_time = ?,
+          update_at = NOW() 
+        WHERE course_id = ? 
+        AND id = ? 
+        AND is_deleted = 0 `,
       [
-        sessionData.area_id,
-        sessionData.teacher_id,
         sessionData.max_people,
-        sessionData.curr_people,
-        sessionData.remaining_slots,
-        sessionData.start_date,
-        sessionData.end_date,
         sessionData.class_dates,
-        sessionData.deadline_date,
+        sessionData.start_date,
+        sessionData.area_id,
         sessionData.start_time,
-        sessionData.end_time,
+        sessionData.end_time,      
         courseId,
         sessionId,
       ]
     );
+
+
+    // 圖片處理邏輯
+    if (imgData?.mainImage) {
+      const [existingMainImage] = await connection.query(
+        `SELECT id FROM course_img WHERE course_id = ? AND main_pic = 1`,
+        [courseId]
+      );
+
+      if (existingMainImage.length > 0) {
+        // 如果有主圖，則更新
+        await connection.query(
+          `UPDATE course_img SET url = ? WHERE id = ?`,
+          [imgData.mainImage, existingMainImage[0].id]
+        );
+      } else {
+        // 沒有主圖則插入
+        await connection.query(
+          `INSERT INTO course_img (course_id, main_pic, url) VALUES (?, ?, ?)`,
+          [courseId, 1, imgData.mainImage]
+        );
+      }
+    }
+
+    // 更新其他圖片
+    if (imgData?.otherImages?.length > 0) {
+      // 先刪除舊的其他圖片
+      await connection.query(
+        `DELETE FROM course_img WHERE course_id = ? AND main_pic = 0`,
+        [courseId]
+      );
+
+      // 插入新的其他圖片
+      for (const filename  of imgData.otherImages) {
+        await connection.query(
+          `INSERT INTO course_img (course_id, main_pic, url) VALUES (?, ?, ?)`,
+          [courseId, 0, filename ] // 其他圖片，main_pic = 0
+        );
+      }
+    }
+
 
     await connection.commit();   // 提交交易
     return { message: "課程與梯次更新成功!" };
@@ -312,35 +358,4 @@ export const deleteCourseSession = async (sessionId) => {
     connection.release();
   }
 };
-
-
-
-// 測試
-// const courseData = {
-//     type_id: 1,
-//     img_id: 3,
-//     name: "狗狗基礎訓練",
-//     description: "適合新手狗主人",
-//     duration: "5週",
-//     price: 5000,
-//     notice: "請攜帶狗狗疫苗證明",
-//     qa: "可提前詢問問題"
-// };
-
-// const sessionData = {
-//     area_id: 1,
-//     teacher_id: 2,
-//     max_people: 10,
-//     curr_people: 0,
-//     remaining_slots: 0,
-//     start_date: "2025-03-01",
-//     end_date: "2025-04-05",
-//     class_dates: "2025-03-01,2025-03-08,2025-03-15,2025-03-22,2025-03-29",
-//     deadline_date: "2025-02-25",
-//     start_time: "10:00",
-//     end_time: "12:00"
-// };
-// createCourseWithSession(courseData, sessionData)
-//     .then(result => console.log("新增課程與梯次成功:", result))
-//     .catch(error => console.error("錯誤:", error));
 
