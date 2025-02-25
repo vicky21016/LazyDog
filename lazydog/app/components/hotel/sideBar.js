@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/modules/fontHotelHome.module.css";
 import GoogleMapComponent from "../../components/hotel/GoogleMapComponent";
 import Link from "next/link";
-import { 
+import {
   ratingAv,
   getAllTags,
   getHotelPriceRange,
@@ -15,7 +15,7 @@ import {
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 
-export default function SideBar({ hotelId, onSearch, onClear,searchParams }) {
+export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
   const [showAllFacilities, setShowAllFacilities] = useState(true);
   const [roomTypes, setRoomTypes] = useState([]); //所有房型
   const [selectedRoomType, setSelectedRoomType] = useState("");
@@ -30,7 +30,6 @@ export default function SideBar({ hotelId, onSearch, onClear,searchParams }) {
   const priceSliderRef = useRef(null);
   const [showGoogleMaps, setShowGoogleMaps] = useState(false);
   const [isFiltered, setIsFiltered] = useState(false);
-
 
   useEffect(() => {
     fetchTags();
@@ -52,13 +51,13 @@ export default function SideBar({ hotelId, onSearch, onClear,searchParams }) {
   const fetchHotels = async () => {
     try {
       if (isFiltered) return; //  如果已經在篩選，不要載入全部飯店
-  
+
       const response = await fetch(`http://localhost:5000/api/hotels`);
       if (!response.ok) throw new Error("無法獲取飯店");
-  
+
       const data = await response.json();
       setHotels(data);
-  
+
       if (onSearch) {
         onSearch(data); // 避免覆蓋篩選結果
       }
@@ -66,14 +65,12 @@ export default function SideBar({ hotelId, onSearch, onClear,searchParams }) {
       console.error("獲取飯店時發生錯誤:", error);
     }
   };
-  
 
-
-useEffect(() => {
-  if (!isFiltered) {
-    fetchHotels();
-  }
-}, [isFiltered]);
+  useEffect(() => {
+    if (!isFiltered) {
+      fetchHotels();
+    }
+  }, [isFiltered]);
 
   useEffect(() => {
     if (!priceSliderRef.current) return;
@@ -143,7 +140,7 @@ useEffect(() => {
     console.log(" 側邊篩選條件變更:", filter);
     onSearch(filter); // 讓 `Sidebar` 影響 `searchParams`
   };
-  
+
   const toggleFacilities = () => {
     setShowAllFacilities((prev) => !prev);
   };
@@ -160,64 +157,53 @@ useEffect(() => {
     });
   };
   const handleApplyFilters = async () => {
-
-    setIsFiltered(true); 
+    setIsFiltered(true);
   
     const filterParams = {
-      ...searchParams, // 保持原本的 searchParams
-      minPrice,
-      maxPrice,
-      roomType: selectedRoomType || null, 
-      tags: selectedTags.length > 0 ? selectedTags : [],
-      rating: selectedRating || null,
+      minPrice: minPrice !== null && !isNaN(minPrice) ? Number(minPrice) : 0,
+      maxPrice: maxPrice !== null && !isNaN(maxPrice) ? Number(maxPrice) : 10000,
+      rating: selectedRating !== null && !isNaN(selectedRating) ? Number(selectedRating) : null,
+      roomType: selectedRoomType ? Number(selectedRoomType) : null,
+      tags: selectedTags.length > 0 ? selectedTags.map(Number) : [],
     };
   
+    console.log("📌 送出篩選 API:", filterParams); // 🔥 確保 `minPrice`、`maxPrice` 有正確值
   
     try {
-      const data = await getFilteredHotelsS(filterParams);
-  
-      if (data && Array.isArray(data)) {
-        console.log("API 回傳篩選結果:", data);
-        onSearch(data); //  確保更新到父層狀態
-      } else {
-        console.warn(" API 沒有返回有效資料");
-        onSearch([]); 
-      }
-  
+      await onSearch(filterParams, true);
       setIsSearching(false);
     } catch (error) {
-      console.error(" SideBar 篩選 API 錯誤:", error);
-      onSearch([]); // 確保 UI 不會卡住
+      console.error("❌ Sidebar 篩選 API 錯誤:", error);
     }
   };
   
   
   
   
-
+  
+  
   const handleClear = async () => {
     console.log("清除篩選條件開始");
-  
+
     setIsFiltered(false); // 讓 `fetchHotels()` 可以重新載入所有飯店
-  
+
     if (onClear) {
       onClear();
     }
-  
+
     setMinPrice(0);
     setMaxPrice(10000);
     setSelectedRoomType("");
     setSelectedTags([]);
     setSelectedRating("");
     setIsSearching(true);
-  
+
     if (priceSliderRef.current?.noUiSlider) {
       priceSliderRef.current.noUiSlider.set([0, 10000]);
     }
-  
+
     await fetchHotels(); // 重新載入所有飯店
   };
-  
 
   return (
     <>
@@ -335,7 +321,7 @@ useEffect(() => {
           {/* 搜尋 / 清除篩選 按鈕 */}
           <button
             className={`btn btn-sm btn-outline-danger mt-3 ${styles.suClearFilterBtn}`}
-            onClick={isSearching ? handleApplyFilters : handleClear} 
+            onClick={isSearching ? handleApplyFilters : handleClear}
           >
             {isSearching ? "搜尋" : "清除篩選"}
           </button>

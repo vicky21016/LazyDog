@@ -7,7 +7,7 @@ export const getHotels = async () => {
              hi.url AS main_image_url,
              IFNULL(r.avg_rating, 0) AS avg_rating,
              IFNULL(r.review_count, 0) AS review_count, 
-             IFNULL(rp.min_price, 0) AS min_price
+             IFNULL(rp.min_price, 9999999) AS min_price
       FROM hotel h
       LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
       LEFT JOIN (
@@ -20,7 +20,7 @@ export const getHotels = async () => {
       LEFT JOIN (
           SELECT hotel_id, MIN(price) AS min_price
           FROM room_inventory
-          WHERE date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+          WHERE available_quantity > 0
           GROUP BY hotel_id
       ) rp ON h.id = rp.hotel_id
       WHERE h.is_deleted = 0 
@@ -55,7 +55,7 @@ export const getId = async (id, checkInDate, checkOutDate) => {
       `SELECT h.*, 
               hi.url AS main_image_url,
               IFNULL(r.avg_rating, 0) AS avg_rating, 
-              IFNULL(rp.min_price, 0) AS min_price
+              IFNULL(rp.min_price, 9999999) AS min_price
        FROM hotel h
        LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
        LEFT JOIN (
@@ -66,14 +66,14 @@ export const getId = async (id, checkInDate, checkOutDate) => {
        LEFT JOIN (
           SELECT hotel_id, MIN(price) AS min_price
           FROM room_inventory
-          WHERE hotel_id = ? AND date BETWEEN ? AND ?
+          WHERE date BETWEEN ? AND ?
           GROUP BY hotel_id
        ) rp ON h.id = rp.hotel_id
        WHERE h.id = ? AND h.is_deleted = 0`,
-      [id, checkInDate, checkOutDate, id]
+      [checkInDate, checkOutDate, id]
     );
 
-    if (hotels.length == 0) {
+    if (hotels.length === 0) {
       throw new Error(`找不到 id=${id} 的旅館`);
     }
 
@@ -82,6 +82,7 @@ export const getId = async (id, checkInDate, checkOutDate) => {
     throw new Error(`無法取得 id=${id} 旅館: ` + error.message);
   }
 };
+
 
 export const getOperatorTZJ = async (operatorId) => {
   try {
@@ -350,11 +351,11 @@ export const getFilteredHotels = async (filters) => {
   const connection = await pool.getConnection();
   try {
     let query = `
-      SELECT h.*,
-             hi.url AS main_image_url,
-             IFNULL(r.avg_rating, 0) AS avg_rating, 
-             IFNULL(r.review_count, 0) AS review_count, 
-             IFNULL(inv.min_price, 0) AS min_price
+      SELECT DISTINCT h.*, 
+       hi.url AS main_image_url,
+       COALESCE(r.avg_rating, 0) AS avg_rating, 
+       COALESCE(r.review_count, 0) AS review_count, 
+       COALESCE(inv.min_price, 9999999) AS min_price
       FROM hotel h
       LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
       LEFT JOIN (
@@ -365,7 +366,7 @@ export const getFilteredHotels = async (filters) => {
           GROUP BY hotel_id
       ) r ON h.id = r.hotel_id
       LEFT JOIN (
-          SELECT ri.hotel_id, MIN(ri.price) AS min_price
+          SELECT ri.hotel_id, COALESCE(MIN(ri.price), 9999999) AS min_price
           FROM room_inventory ri
           WHERE ri.available_quantity > 0
           GROUP BY ri.hotel_id
@@ -375,16 +376,49 @@ export const getFilteredHotels = async (filters) => {
 
     let queryParams = [];
 
+    // **價格篩選**
+    if (filters.minPrice !== undefined && filters.maxPrice !== undefined) {
+      query += ` AND (inv.min_price IS NULL OR inv.min_price BETWEEN ? AND ?)`;
+      queryParams.push(Number(filters.minPrice), Number(filters.maxPrice));
+    }
+
+    // **評分篩選**
+    if (filters.rating !== null && filters.rating !== undefined) {
+      query += ` AND (r.avg_rating IS NULL OR r.avg_rating >= ?)`;
+      queryParams.push(Number(filters.rating));
+    }
+
+    // **房型篩選**
+    if (filters.roomType) {
+      query += ` AND EXISTS (
+        SELECT 1 FROM hotel_room_types hrt
+        WHERE hrt.hotel_id = h.id 
+        AND hrt.room_type_id = ?
+      )`;
+      queryParams.push(Number(filters.roomType));
+    }
+
+    // **標籤篩選**
+    if (filters.tags && filters.tags.length > 0) {
+      query += ` AND (
+        SELECT COUNT(*) FROM hotel_tags ht
+        WHERE ht.hotel_id = h.id 
+        AND ht.tag_id IN (${filters.tags.map(() => "?").join(", ")})
+      ) = ?`;
+      queryParams.push(...filters.tags, filters.tags.length);
+    }
+
+    // **地區篩選**
     if (filters.city) {
       query += ` AND h.county = ?`;
       queryParams.push(filters.city);
     }
-
     if (filters.district) {
       query += ` AND h.district = ?`;
       queryParams.push(filters.district);
     }
 
+    // **訂房日期篩選**
     if (filters.checkInDate && filters.checkOutDate) {
       query += ` AND EXISTS (
         SELECT 1 FROM room_inventory ri
@@ -395,43 +429,20 @@ export const getFilteredHotels = async (filters) => {
       queryParams.push(filters.checkInDate, filters.checkOutDate);
     }
 
-    if (filters.minPrice !== undefined && filters.maxPrice !== undefined) {
-      query += ` AND inv.min_price BETWEEN ? AND ?`;
-      queryParams.push(filters.minPrice, filters.maxPrice);
-    }
-
-    if (filters.roomType) {
-      query += ` AND EXISTS (
-        SELECT 1 FROM hotel_room_types rt 
-        WHERE rt.hotel_id = h.id 
-        AND rt.type = ?
-      )`;
-      queryParams.push(filters.roomType);
-    }
-
-    if (filters.tags && filters.tags.length > 0) {
-      query += ` AND EXISTS (
-        SELECT 1 FROM hotel_tags ht 
-        WHERE ht.hotel_id = h.id 
-        AND ht.tag_id IN (${filters.tags.map(() => "?").join(",")})
-      )`;
-      queryParams.push(...filters.tags);
-    }
-
-    if (filters.rating) {
-      query += ` HAVING avg_rating >= ?`;
-      queryParams.push(filters.rating);
-    }
-
     query += ` GROUP BY h.id`;
+
+    console.log("🛠 SQL 查詢:", query);
+    console.log("🛠 SQL 參數:", queryParams);
 
     const [hotels] = await connection.query(query, queryParams);
     return hotels;
   } catch (error) {
-    console.error(" 無法取得篩選飯店：" + error.message);
+    console.error("❌ 無法取得篩選飯店：" + error.message);
     throw new Error("無法取得篩選飯店：" + error.message);
   } finally {
     connection.release();
   }
 };
+
+
 
