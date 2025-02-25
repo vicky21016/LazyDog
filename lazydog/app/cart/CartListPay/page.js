@@ -1,83 +1,114 @@
-'use client'
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react'
-import '../css/CartListPay.css'
-import { isDev, apiURL } from '@/config'
-import Link from 'next/link'
-import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { useAuth } from '@/hooks/use-auth'
-import { useCart } from '@/hooks/use-cart' // 引入useCart以便取得購物車資料
+import React, { useState, useEffect, useRef } from "react";
+import "../css/CartListPay.css";
+import { isDev, apiURL } from "@/config";
+import Link from "next/link";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "@/hooks/use-auth";
+import { useCart } from "@/hooks/use-cart"; // 引入useCart以便取得購物車資料
 
-import Header from "../../components/layout/header"
-import Input from "../../components/forms/Input"
-import InputFiled from "../../components/forms/InputField"
+import Header from "../../components/layout/header";
+import Input from "../../components/forms/Input";
+import InputFiled from "../../components/forms/InputField";
 import Hotel from "../../components/cart/hotel";
 import Course from "../../components/cart/course";
 export default function CartListPayPage(props) {
   // 檢查是否登入
-  const { isAuth } = useAuth()
+  const { isAuth } = useAuth();
   // 建立ref，用來放置form表單
-  const payFormDiv = useRef(null)
+  const payFormDiv = useRef(null);
   // 建立ref，用來放置金額
-  const amountRef = useRef(null)
+  const amountRef = useRef(null);
   // 建立ref，用來放置商品名稱
-  const itemsRef = useRef(null)
+  const itemsRef = useRef(null);
 
   // 從useCart取得購物車資料
-  const { productItems, totalProductAmount, totalProductQty } = useCart()
+  const {
+    productItems,
+    courseItems,
+    hotelItems,
+    totalProductAmount,
+    totalCourseAmount,
+    totalHotelAmount,
+  } = useCart();
 
   // 確保商品資料正確
-  const itemsValue = productItems.map((item) => `${item.name} x ${item.count}`).join(", ");
-  const amountValue = totalProductAmount;
+  const itemsValue = `
+  ${productItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
+  ${courseItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
+  ${hotelItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
+`;
+
+  // const amountValue = totalProductAmount;
+  const amountValue = totalProductAmount + totalCourseAmount + totalHotelAmount;
+
+  const productItemsValue = productItems
+    .map((item) => `${item.name} x ${item.count}`)
+    .join(", ");
+
+  // 處理課程資料
+  const courseItemsValue = courseItems
+    .map((item) => `${item.name} x ${item.count}`)
+    .join(", ");
+
+  // 處理旅館資料
+  const hotelItemsValue = hotelItems
+    .map((item) => `${item.name} x ${item.count}`)
+    .join(", ");
 
   const createEcpayForm = (params, action) => {
-    const form = document.createElement('form')
-    form.method = 'POST'
-    form.action = action
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = action;
     for (const key in params) {
-      const input = document.createElement('input')
-      input.type = 'hidden'
-      input.name = key
-      input.value = params[key]
-      form.appendChild(input)
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = params[key];
+      form.appendChild(input);
     }
     // 回傳form表單的物件參照
-    return payFormDiv.current.appendChild(form)
-  }
+    return payFormDiv.current.appendChild(form);
+  };
 
   const handleEcpay = async () => {
+    console.log(
+      `http://localhost:5000/ecpay-test-only?amount=${amountValue}&items=${itemsValue}`
+    );
+
     // 先連到node伺服器後端，取得LINE Pay付款網址
     const res = await fetch(
       `http://localhost:5000/ecpay-test-only?amount=${amountValue}&items=${itemsValue}`,
       {
-        method: 'GET',
-        credentials: 'include',
+        method: "GET",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
       }
-    )
+    );
 
-    const resData = await res.json()
+    const resData = await res.json();
 
-    if (isDev) console.log(resData)
+    if (isDev) console.log(resData);
 
-    if (resData.status === 'success') {
+    if (resData.status === "success") {
       // 建立表單，回傳的是表單的物件參照
-      const payForm = createEcpayForm(resData.data.params, resData.data.action)
+      const payForm = createEcpayForm(resData.data.params, resData.data.action);
 
-      if (isDev) console.log(payForm)
+      if (isDev) console.log(payForm);
 
-      if (window.confirm('確認要導向至ECPay(綠界金流)進行付款?')) {
+      if (window.confirm("確認要導向至ECPay(綠界金流)進行付款?")) {
         //送出表單
-        payForm.submit()
+        payForm.submit();
       }
     } else {
-      toast.error('付款失敗')
+      toast.error("付款失敗");
     }
-  }
+  };
 
   return (
     <>
@@ -205,17 +236,34 @@ export default function CartListPayPage(props) {
                       <span>{`Rs. ${item.price * item.count}`}</span>
                     </div>
                   ))}
-                  <select name="coupon" value="" onChange="" required>
-                    {" "}
-                    <option value="">請選擇優惠券</option>
-                  </select>
-                  <div className="d-flex justify-content-between">
-                    <span>Subtotal</span>
-                    <span>{`Rs. ${totalProductAmount}`}</span>
-                  </div>
+
+                  {courseItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className="d-flex justify-content-between"
+                    >
+                      <span>
+                        <span>{item.name}</span>x<span>{item.count}</span>
+                      </span>
+                      <span>{`Rs. ${item.price * item.count}`}</span>
+                    </div>
+                  ))}
+
+                  {hotelItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className="d-flex justify-content-between"
+                    >
+                      <span>
+                        <span>{item.name}</span>x<span>{item.count}</span>
+                      </span>
+                      <span>{`Rs. ${item.price * item.count}`}</span>
+                    </div>
+                  ))}
+
                   <div className="d-flex justify-content-between">
                     <span>總價</span>
-                    <span>{`Rs. ${totalProductAmount}`}</span>
+                    <span>{`Rs. ${amountValue}`}</span>
                   </div>
                 </div>
                 <hr />
@@ -280,7 +328,7 @@ export default function CartListPayPage(props) {
                 </div>
                 <div className="input-group">
                   <InputFiled
-                    type="password"
+                    type=""
                     id="cvv"
                     name="cvv"
                     placeholder=" "
@@ -293,8 +341,9 @@ export default function CartListPayPage(props) {
                 </div>
               </aside>
             </div>
-            <Hotel />
-            <Course />
+
+            <div ref={payFormDiv}></div>
+
             <button type="button" onClick={handleEcpay}>
               付款
             </button>

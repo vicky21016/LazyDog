@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/modules/fontHotelHome.module.css";
 import GoogleMapComponent from "../../components/hotel/GoogleMapComponent";
 import Link from "next/link";
-import {
+import { 
   ratingAv,
   getAllTags,
   getHotelPriceRange,
@@ -51,7 +51,7 @@ export default function SideBar({ hotelId, onSearch, onClear,searchParams }) {
   }, []);
   const fetchHotels = async () => {
     try {
-      if (isFiltered) return; // 🔥 如果已經在篩選，不要載入全部飯店
+      if (isFiltered) return; //  如果已經在篩選，不要載入全部飯店
   
       const response = await fetch(`http://localhost:5000/api/hotels`);
       if (!response.ok) throw new Error("無法獲取飯店");
@@ -114,7 +114,7 @@ useEffect(() => {
       const ratingList = await ratingAv();
       setRatings(ratingList || []);
     } catch (error) {
-      console.error("獲取飯店評分失敗:", error);
+      console.error("獲取評分失敗:", error);
     }
   };
   const fetchRoomTypes = async () => {
@@ -122,7 +122,7 @@ useEffect(() => {
       const types = await getAllRoomTypes();
       setRoomTypes(types);
     } catch (error) {
-      console.error("獲取房型失敗:", error);
+      console.error("獲取失敗:", error);
     }
   };
 
@@ -160,10 +160,11 @@ useEffect(() => {
     });
   };
   const handleApplyFilters = async () => {
+
     setIsFiltered(true); 
   
     const filterParams = {
-      ...searchParams, // ✅ 保持原本的 searchParams
+      ...searchParams, // 保持原本的 searchParams
       minPrice,
       maxPrice,
       roomType: selectedRoomType || null, 
@@ -171,22 +172,21 @@ useEffect(() => {
       rating: selectedRating || null,
     };
   
-    console.log("📌 SideBar 送出篩選 API:", filterParams);
   
     try {
       const data = await getFilteredHotelsS(filterParams);
   
       if (data && Array.isArray(data)) {
-        console.log("🔥 API 回傳篩選結果:", data);
-        onSearch(data); // ✅ 確保更新到父層狀態
+        console.log("API 回傳篩選結果:", data);
+        onSearch(data); //  確保更新到父層狀態
       } else {
-        console.warn("⚠️ API 沒有返回有效資料");
+        console.warn(" API 沒有返回有效資料");
         onSearch([]); 
       }
   
       setIsSearching(false);
     } catch (error) {
-      console.error("❌ SideBar 篩選 API 錯誤:", error);
+      console.error(" SideBar 篩選 API 錯誤:", error);
       onSearch([]); // 確保 UI 不會卡住
     }
   };

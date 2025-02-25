@@ -190,7 +190,7 @@ export const errorResponse = (res, error, status = 200) => {
     ? "資料庫查詢錯誤"
     : error?.message;
 
-  return res.status(status).json({ status: "error", message });
+  return res.status(status).json({ status: "error", message: 123 });
 };
 
 /**
