@@ -10,16 +10,16 @@ import { auth, firebase } from "../utils/firebase";
 import styles from "../../../styles/modules/header.module.css";
 
 export default function Header(props) {
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false); // 控制選單展開
   const { logout } = useAuth();
-  React.useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
-      console.log("Firebase Auth State Changed:", currentUser);
+  
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
+    return () => unsubscribe();
   }, []);
-
   return (
     <header className={styles["lumi-header"]}>
       <Link href="/" className={styles["lumi-logo"]}>
@@ -125,13 +125,14 @@ export default function Header(props) {
       </nav>
       {/* {!user ? (
         <> */}
+      {/* 右上角的會員與購物車 */}
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
           <Link href="/pages" className={styles["lumi-user-icon"]}>
-            {/* <FontAwesomeIcon icon={faUser} /> */}
             <i className="bi bi-person" />
           </Link>
-          {user ? (
+
+          { user ? (
             <div className={styles["dropdown-content"]}>
               <Link
                 href="/pages"
@@ -151,6 +152,7 @@ export default function Header(props) {
             </div>
           ) : null}
         </div>
+
         <div className={styles["lumi-cart-icon"]}>
           <Link href="/cart/CartList" className={styles["lumi-cart-icon"]}>
             {/* <img src="/images/cart.png" alt="cart" /> */}
@@ -158,6 +160,7 @@ export default function Header(props) {
           </Link>
         </div>
       </div>
+      {/* 手機板 */}
       <div
         className={`${styles.mobileMenu}`}
         onClick={() => setMenuOpen(!menuOpen)}
