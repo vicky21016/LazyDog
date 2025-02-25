@@ -25,7 +25,9 @@ export const getInfo = async (req, res) => {
 export const updateInfo = async (req, res) => {
   try {
     const teacherId = req.user.id; // 從 token 中獲取教師的 ID
-    const updateData = req.body; // 從請求的 body 取得要更新的資料
+    const { name, category_id, Introduce, Experience } = req.body; // 從請求的 body 取得要更新的資料
+    const img = req.file ? req.file.filename : null; // 如果有檔案，使用檔案名稱，否則為 null
+    const updateData = { name, category_id, Introduce, Experience, img };
 
     // 呼叫更新函數，傳入 teacherId 和要更新的資料
     const success = await updateTeacherInfo(teacherId, updateData);
