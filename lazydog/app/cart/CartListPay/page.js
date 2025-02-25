@@ -12,6 +12,8 @@ import { useCart } from '@/hooks/use-cart' // 引入useCart以便取得購物車
 import Header from "../../components/layout/header"
 import Input from "../../components/forms/Input"
 import InputFiled from "../../components/forms/InputField"
+import Hotel from "../../components/cart/hotel";
+import Course from "../../components/cart/course";
 export default function CartListPayPage(props) {
   // 檢查是否登入
   const { isAuth } = useAuth()
@@ -79,7 +81,7 @@ export default function CartListPayPage(props) {
 
   return (
     <>
-    <Header/>
+      <Header />
       <div>
         <div className="cart-img">
           <img src="/cart/Frame 35909.png" alt="Cart Image" />
@@ -90,12 +92,12 @@ export default function CartListPayPage(props) {
             <div className="row">
               <main
                 className="col-lg-auto col-md-auto col-auto"
-                style={{ margin: 'auto' }}
+                style={{ margin: "auto" }}
               >
                 <div className="mb-3 row">
                   <div className="col-md-6">
                     <label htmlFor="first-name" className="form-label">
-                      姓氏 <span style={{color:'red'}}>*</span>
+                      姓氏 <span style={{ color: "red" }}>*</span>
                     </label>
                     <Input
                       type="text"
@@ -107,7 +109,7 @@ export default function CartListPayPage(props) {
                   </div>
                   <div className="col-md-6">
                     <label htmlFor="last-name" className="form-label">
-                      名字 <span style={{color:'red'}}>*</span>
+                      名字 <span style={{ color: "red" }}>*</span>
                     </label>
                     <Input
                       type="text"
@@ -121,7 +123,7 @@ export default function CartListPayPage(props) {
                 {/* 地址 */}
                 <div className="mb-3">
                   <label htmlFor="adress" className="form-label">
-                    地址 <span style={{color:'red'}}>*</span>
+                    地址 <span style={{ color: "red" }}>*</span>
                   </label>
                   <Input
                     type="text"
@@ -159,7 +161,7 @@ export default function CartListPayPage(props) {
                 {/* Email */}
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
-                    Email <span style={{color:'red'}}>*</span>
+                    Email <span style={{ color: "red" }}>*</span>
                   </label>
                   <Input
                     type="email"
@@ -172,7 +174,7 @@ export default function CartListPayPage(props) {
                 {/* 電話 */}
                 <div className="mb-3">
                   <label htmlFor="phone" className="form-label">
-                    電話 <span style={{color:'red'}}>*</span>
+                    電話 <span style={{ color: "red" }}>*</span>
                   </label>
                   <Input
                     type="tel"
@@ -185,7 +187,7 @@ export default function CartListPayPage(props) {
               </main>
               <aside
                 className="col-lg-4 col-md-7 col-10"
-                style={{ margin: 'auto' }}
+                style={{ margin: "auto" }}
               >
                 <div className="aside1 ">
                   <div className="d-flex justify-content-between">
@@ -193,13 +195,20 @@ export default function CartListPayPage(props) {
                     <span>Subtotal</span>
                   </div>
                   {productItems.map((item) => (
-                    <div key={item.id} className="d-flex justify-content-between">
+                    <div
+                      key={item.id}
+                      className="d-flex justify-content-between"
+                    >
                       <span>
                         <span>{item.name}</span>x<span>{item.count}</span>
                       </span>
                       <span>{`Rs. ${item.price * item.count}`}</span>
                     </div>
                   ))}
+                  <select name="coupon" value="" onChange="" required>
+                    {" "}
+                    <option value="">請選擇優惠券</option>
+                  </select>
                   <div className="d-flex justify-content-between">
                     <span>Subtotal</span>
                     <span>{`Rs. ${totalProductAmount}`}</span>
@@ -218,7 +227,7 @@ export default function CartListPayPage(props) {
                       name="payment"
                       defaultValue="信用卡"
                       defaultChecked
-                    />{' '}
+                    />{" "}
                     信用卡
                   </label>
                   <label>
@@ -240,7 +249,9 @@ export default function CartListPayPage(props) {
                     placeholder=" "
                     required
                   />
-                  <span>姓名 <span style={{color:'red'}}>*</span></span>
+                  <span>
+                    姓名 <span style={{ color: "red" }}>*</span>
+                  </span>
                 </div>
                 <div className="input-group">
                   <InputFiled
@@ -251,17 +262,21 @@ export default function CartListPayPage(props) {
                     maxLength={16}
                     required
                   />
-                  <span>信用卡號 <span style={{color:'red'}}>*</span></span>
+                  <span>
+                    信用卡號 <span style={{ color: "red" }}>*</span>
+                  </span>
                 </div>
                 <div className="input-group">
-                 <InputFiled
+                  <InputFiled
                     type="text"
                     id="expiry-date"
                     name="expiry-date"
                     placeholder=" "
                     required
                   />
-                  <span>到期日 <span style={{color:'red'}}>*</span></span>
+                  <span>
+                    到期日 <span style={{ color: "red" }}>*</span>
+                  </span>
                 </div>
                 <div className="input-group">
                   <InputFiled
@@ -272,15 +287,20 @@ export default function CartListPayPage(props) {
                     maxLength={3}
                     required
                   />
-                  <span>安全碼 <span style={{color:'red'}}>*</span></span>
+                  <span>
+                    安全碼 <span style={{ color: "red" }}>*</span>
+                  </span>
                 </div>
               </aside>
             </div>
-
-            <button type="button" onClick={handleEcpay}>付款</button>
+            <Hotel />
+            <Course />
+            <button type="button" onClick={handleEcpay}>
+              付款
+            </button>
           </form>
         </div>
       </div>
     </>
-  )
+  );
 }
