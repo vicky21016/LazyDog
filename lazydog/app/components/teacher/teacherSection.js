@@ -67,19 +67,19 @@ export default function TeacherSection () {
       </div>
 
       <div className={` text-center ${style.container}`}>
-        <div className={` text-center ${style.dog}`}>
-          <div className={` ${styles["cube"]}`}>
+        <div className={` text-center row ${style.dog}`}>
+          <div className={` col-4 `}>
             <div>803</div>
             <div>蛻變的狗狗</div>
           </div>
-          <div className="">
+          <div className={`col-4  ${style.img}`}>
             <img
               className={` ${styles["dog-image"]}`}
               src="/teacher-img/dog.png"
               alt=""
             />
           </div>
-          <div className={`ms-2 ${styles["cube"]}`}>
+          <div className={` col-4`}>
             <div>5525</div>
             <div>為狗狗服務時數</div>
           </div>

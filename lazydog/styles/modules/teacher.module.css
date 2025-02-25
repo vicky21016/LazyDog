@@ -22,16 +22,20 @@
   font-weight: 600;
 }
 .container {
-  display: flex;
+  /* display: flex; */
+  /* max-width: 720px; */
   justify-content: center;
   align-items: center;
   background: #fff6e8;
 }
 
 .dog {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex;
+  justify-content: space-between; */
   align-items: center;
+  max-width: 720px;
+  margin: 0 auto;
+  /* width: 50%; */
 }
 
 .dog div {
@@ -42,4 +46,8 @@
   font-size: 24px;
   font-weight: 600;
   letter-spacing: 6px;
+}
+.img{
+  justify-content: center;
+  align-items: center;
 }

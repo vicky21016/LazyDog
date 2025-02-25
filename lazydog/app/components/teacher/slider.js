@@ -42,7 +42,7 @@ function CourseSection() {
             {/* 第一個課程 */}
             <div className={`${styles.carouselItem}`}>
               <div className="row">
-                <div className="col-6">
+                <div className="col-lg-6 col-12">
                   <h6 className="my-3 lumi-s-title">提升毛孩健康的最佳選擇</h6>
                   <h3 className="mb-4 lumi-m-title">寵膳食育</h3>
 
@@ -70,14 +70,14 @@ function CourseSection() {
                     </div>
                   </div>
                 </div>
-                <Link className="mb-3 col-6" href="/course/list">
+                <Link className="mb-3 col-lg-6 col-12" href="/course/list">
                   <img src="/teacher-img/eat.png" alt="" />
                 </Link>
               </div>
             </div>
             <div className={`${styles.carouselItem}`}>
               <div className="row">
-                <div className="col-6">
+                <div className="col-lg-6 col-12">
                   <h6 className="my-3 lumi-s-title">
                     讓毛孩擁有健康亮麗的外型
                   </h6>
@@ -107,14 +107,14 @@ function CourseSection() {
                     </div>
                   </div>
                 </div>
-                <Link className="mb-3 col-6" href="/course/list">
+                <Link className="mb-3 col-lg-6 col-12" href="/course/list">
                   <img src="/teacher-img/salon.png" alt="" />
                 </Link>
               </div>
             </div>
             <div className={`${styles.carouselItem}`}>
               <div className="row">
-                <div className="col-6">
+                <div className="col-lg-6 col-12">
                   <h6 className="my-3 lumi-s-title">
                     專業寵物訓練讓您的毛孩聰明又乖巧
                   </h6>
@@ -144,14 +144,14 @@ function CourseSection() {
                     </div>
                   </div>
                 </div>
-                <Link className="mb-3 col-6" href="/course/list">
+                <Link className="mb-3 col-lg-6 col-12" href="/course/list">
                   <img src="/teacher-img/train.png" alt="" />
                 </Link>
               </div>
             </div>
             <div className={`${styles.carouselItem}`}>
               <div className="row">
-                <div className="col-6">
+                <div className="col-lg-6 col-12">
                   <h6 className="my-3 lumi-s-title">
                     全方位寵物照護讓毛孩生活更健康
                   </h6>
@@ -181,14 +181,14 @@ function CourseSection() {
                     </div>
                   </div>
                 </div>
-                <Link className="mb-3 col-6" href="/course/list">
+                <Link className="mb-3 col-lg-6 col-12" href="/course/list">
                   <img src="/teacher-img/care.png" alt="" />
                 </Link>
               </div>
             </div>
             <div className={`${styles.carouselItem}`}>
               <div className="row">
-                <div className="col-6">
+                <div className="col-lg-6 col-12">
                   <h6 className="my-3 lumi-s-title">提升毛孩健康的最佳選擇</h6>
                   <h3 className="mb-4 lumi-m-title">商業思維與專業培訓</h3>
 
@@ -216,7 +216,7 @@ function CourseSection() {
                     </div>
                   </div>
                 </div>
-                <Link className="mb-3 col-6" href="/course/list">
+                <Link className="mb-3 col-lg-6 col-12" href="/course/list">
                   <img src="/teacher-img/busin.png" alt="" />
                 </Link>
               </div>
