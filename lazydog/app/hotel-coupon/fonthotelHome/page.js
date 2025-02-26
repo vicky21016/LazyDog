@@ -79,26 +79,50 @@ export default function HotelHomePage() {
   //  觸發篩選 API
   const handleSearch = async (newParams, isSidebar = false) => {
     setIsFiltered(true);
-  
+
     const updatedParams = {
-      ...searchParams,  // 🔥 先保留現有條件
-      ...newParams,  // 再合併新的篩選條件
-      minPrice: newParams.minPrice !== undefined ? Number(newParams.minPrice) : searchParams.minPrice,
-      maxPrice: newParams.maxPrice !== undefined ? Number(newParams.maxPrice) : searchParams.maxPrice,
-      rating: newParams.rating !== undefined ? Number(newParams.rating) : searchParams.rating,
+      ...searchParams, // 🔥 先保留現有條件
+      ...newParams, // 再合併新的篩選條件
+      minPrice:
+        newParams.minPrice !== undefined
+          ? Number(newParams.minPrice)
+          : searchParams.minPrice,
+      maxPrice:
+        newParams.maxPrice !== undefined
+          ? Number(newParams.maxPrice)
+          : searchParams.maxPrice,
+      rating:
+        newParams.rating !== undefined
+          ? Number(newParams.rating)
+          : searchParams.rating,
       roomType: newParams.roomType ? Number(newParams.roomType) : null,
-      tags: newParams.tags && newParams.tags.length > 0 ? newParams.tags.map(Number) : [],
-      checkInDate: newParams.checkInDate !== undefined ? newParams.checkInDate : searchParams.checkInDate,
-      checkOutDate: newParams.checkOutDate !== undefined ? newParams.checkOutDate : searchParams.checkOutDate,
+      tags:
+        newParams.tags && newParams.tags.length > 0
+          ? newParams.tags.map(Number)
+          : [],
+      checkInDate:
+        newParams.checkInDate !== undefined
+          ? newParams.checkInDate
+          : searchParams.checkInDate,
+      checkOutDate:
+        newParams.checkOutDate !== undefined
+          ? newParams.checkOutDate
+          : searchParams.checkOutDate,
       city: newParams.city !== undefined ? newParams.city : searchParams.city,
-      district: newParams.district !== undefined ? newParams.district : searchParams.district,
-      quantity: newParams.quantity !== undefined ? Number(newParams.quantity) : searchParams.quantity,
+      district:
+        newParams.district !== undefined
+          ? newParams.district
+          : searchParams.district,
+      quantity:
+        newParams.quantity !== undefined
+          ? Number(newParams.quantity)
+          : searchParams.quantity,
     };
-  
+
     console.log("🔍 送出 API 查詢:", updatedParams);
-  
+
     setSearchParams(updatedParams);
-  
+
     try {
       let data = await getFilteredHotelsS(updatedParams);
       console.log("✅ API 回應:", data);
@@ -109,8 +133,6 @@ export default function HotelHomePage() {
       setFilteredHotels([]);
     }
   };
-  
-  
 
   //  清除篩選條件
   const handleClearFilters = async () => {
@@ -204,15 +226,7 @@ export default function HotelHomePage() {
             <section className="col-lg-9">
               {currentHotels.length > 0 ? (
                 currentHotels.map((hotel) => (
-                  <HotelCard
-                    key={hotel.id}
-                    image={hotel.main_image_url || "/hotel/loding.jpg"}
-                    name={hotel.name}
-                    introduce={hotel.introduce}
-                    review={hotel.avg_rating || "無評分"}
-                    reviewCount={hotel.review_count || 0}
-                    link={`/hotel-coupon/${hotel.id}`}
-                  />
+                  <HotelCard key={hotel.id} hotel={hotel} />
                 ))
               ) : (
                 <p className="text-center">沒有符合條件的飯店</p>

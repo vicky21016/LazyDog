@@ -16,12 +16,15 @@ import { useGoogleMap } from "@/hooks/useGoogleMap";
 import Header from "../../components/layout/header";
 import SearchBar from "../../components/hotel/search";
 import Breadcrumb from "../../components/teacher/breadcrumb";
+// import HotelCard from "@/app/components/hotel/hotelCard";
+// import RoomSelection from "../../components/hotel/roomSelection";
 export default function HotelHomePage() {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [hotel, setHotel] = useState(null);
   const mapRef = useGoogleMap(hotel?.address);
   const { query } = router; //  URL 參數
+  
 
   const [hotelId, setHotelId] = useState(null);
   useEffect(() => {

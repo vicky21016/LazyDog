@@ -1,5 +1,6 @@
 // import React from "react";
-// import styles from "@/styles/modules/fontHotelDetail.module.css";
+// import "../../../html/hotel-coupon/css/fontHotelHome.css";
+// import hotelStyles from "../../../styles/modules/fontHotelDetail.module.css";
 // import Image from "next/image";
 
 // const RoomSelection = ({ rooms }) => {
