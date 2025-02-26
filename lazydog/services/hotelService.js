@@ -45,7 +45,21 @@ const fetchAuthAPI = async (url, method = "GET", body = null) => {
 };
 
 // 所有 C
-export const getAllHotels = async () => fetchAPI(API_URL);
+export const getAllHotels = async (sortOption = "") => {
+  let query = "";
+  if (sortOption == "review") query = "?sort=review";
+  if (sortOption == "rating") query = "?sort=rating";
+
+  try {
+    const response = await fetch(`http://localhost:5000/api/hotels${query}`);
+    if (!response.ok) throw new Error(`API 回應錯誤: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error("獲取飯店列表失敗:", error);
+    return [];
+  }
+};
+
 export const getHotelById = async (id) => fetchAPI(`${API_URL}/${id}`);
 export const fetchHotelsCount = async () => fetchAPI(`${API_URL}/count`);
 export const getPaginatedHotels = async (page = 1, limit = 10) =>
@@ -54,7 +68,7 @@ export const getPaginatedHotels = async (page = 1, limit = 10) =>
 // 前端過濾篩選
 export const getFilteredHotelsS = async (filters) => {
   try {
-    console.log("🚀 發送 API 篩選請求:", filters);
+    console.log(" 發送 API 篩選請求:", filters);
 
     const response = await fetch("http://localhost:5000/api/hotels/filter", {
       method: "POST",
@@ -65,10 +79,10 @@ export const getFilteredHotelsS = async (filters) => {
     if (!response.ok) throw new Error(`API 錯誤，HTTP 狀態碼: ${response.status}`);
 
     const data = await response.json();
-    console.log("✅ API 回應:", data);
+    console.log(" API 回應:", data);
     return data;
   } catch (error) {
-    console.error("❌ 查詢飯店錯誤:", error);
+    console.error(" 查詢飯店錯誤:", error);
     return [];
   }
 };

@@ -21,6 +21,7 @@ export default function HotelHomePage() {
   const hotelsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
   const [isFiltered, setIsFiltered] = useState(false); //  追蹤是否篩選
+  const [sortOption, setSortOption] = useState("");
 
   const {
     location,
@@ -75,33 +76,63 @@ export default function HotelHomePage() {
       setCurrentPage(1);
     }
   }, [totalPages]);
+  useEffect(() => {
+    const controller = new AbortController();
+    const fetchHotels = async () => {
+      try {
+        const data = await getAllHotels(sortOption, {
+          signal: controller.signal,
+        });
+
+        if (!controller.signal.aborted) {
+          if (!isFiltered) {
+            setHotels(data);
+          }
+
+          const filteredData = data.filter(
+            (hotel) =>
+              (!searchParams.city || hotel.city == searchParams.city) &&
+              (!searchParams.district ||
+                hotel.district == searchParams.district) &&
+              (!searchParams.minPrice ||
+                hotel.min_price >= searchParams.minPrice) &&
+              (!searchParams.maxPrice ||
+                hotel.min_price <= searchParams.maxPrice) &&
+              (!searchParams.rating || hotel.avg_rating >= searchParams.rating)
+          );
+
+          setFilteredHotels(filteredData);
+        }
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error("獲取飯店失敗:", error);
+        }
+      }
+    };
+
+    fetchHotels();
+    return () => controller.abort(); // 取消舊請求
+  }, [sortOption, isFiltered]);
 
   //  觸發篩選 API
-  const handleSearch = async (newParams, isSidebar = false) => {
+  const handleSearch = async (newParams) => {
     setIsFiltered(true);
-  
+
     const updatedParams = {
-      ...searchParams,  // 🔥 先保留現有條件
-      ...newParams,  // 再合併新的篩選條件
-      minPrice: newParams.minPrice !== undefined ? Number(newParams.minPrice) : searchParams.minPrice,
-      maxPrice: newParams.maxPrice !== undefined ? Number(newParams.maxPrice) : searchParams.maxPrice,
-      rating: newParams.rating !== undefined ? Number(newParams.rating) : searchParams.rating,
-      roomType: newParams.roomType ? Number(newParams.roomType) : null,
-      tags: newParams.tags && newParams.tags.length > 0 ? newParams.tags.map(Number) : [],
-      checkInDate: newParams.checkInDate !== undefined ? newParams.checkInDate : searchParams.checkInDate,
-      checkOutDate: newParams.checkOutDate !== undefined ? newParams.checkOutDate : searchParams.checkOutDate,
-      city: newParams.city !== undefined ? newParams.city : searchParams.city,
-      district: newParams.district !== undefined ? newParams.district : searchParams.district,
-      quantity: newParams.quantity !== undefined ? Number(newParams.quantity) : searchParams.quantity,
+      ...searchParams,
+      ...newParams,
     };
-  
+
     console.log("🔍 送出 API 查詢:", updatedParams);
-  
+
     setSearchParams(updatedParams);
-  
+
     try {
-      let data = await getFilteredHotelsS(updatedParams);
-      console.log("✅ API 回應:", data);
+      let query = "";
+      if (sortOption == "review") query = "?sort=review";
+      if (sortOption == "rating") query = "?sort=rating";
+
+      const data = await getFilteredHotelsS(updatedParams, query);
       setFilteredHotels(data);
       setCurrentPage(1);
     } catch (error) {
@@ -109,13 +140,12 @@ export default function HotelHomePage() {
       setFilteredHotels([]);
     }
   };
-  
-  
 
   //  清除篩選條件
   const handleClearFilters = async () => {
     console.log("🧹 清除篩選條件");
     setIsFiltered(false);
+    setSortOption(""); // 重設排序條件
 
     clearLocation();
     setSearchParams({
@@ -126,7 +156,7 @@ export default function HotelHomePage() {
       quantity: 1,
       minPrice: 0,
       maxPrice: 10000,
-      roomType: null, // 確保只有一個 roomType
+      roomType: null,
       tags: [],
       rating: null,
     });
@@ -186,6 +216,18 @@ export default function HotelHomePage() {
               },
             ]}
           />
+          <div className="lumi-all-wrapper text-end">
+            <span className="lumi-all-title">排序：</span>
+            <select
+              className="form-select d-inline w-auto"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <option value="">選擇排序方式</option>
+              <option value="review">依評價總數排序</option>
+              <option value="rating">依星級排序</option>
+            </select>
+          </div>
         </div>
 
         {/* 主要內容 */}
@@ -204,15 +246,7 @@ export default function HotelHomePage() {
             <section className="col-lg-9">
               {currentHotels.length > 0 ? (
                 currentHotels.map((hotel) => (
-                  <HotelCard
-                    key={hotel.id}
-                    image={hotel.main_image_url || "/hotel/loding.jpg"}
-                    name={hotel.name}
-                    introduce={hotel.introduce}
-                    review={hotel.avg_rating || "無評分"}
-                    reviewCount={hotel.review_count || 0}
-                    link={`/hotel-coupon/${hotel.id}`}
-                  />
+                  <HotelCard key={hotel.id} hotel={hotel} />
                 ))
               ) : (
                 <p className="text-center">沒有符合條件的飯店</p>
