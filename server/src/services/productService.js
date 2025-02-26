@@ -178,7 +178,17 @@ export const getAllOrder = async (updateFields, value) => {
     return products;
   } catch (error) {
     console.log(error);
-    throw new Error("取得商品列表失敗");
+    throw new Error("取得訂單列表失敗");
+  }
+};
+
+export const getAllFavorite = async () => {
+  try {
+    const [products] = await pool.execute("SELECT * FROM yi_favorites");
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error("取得收藏列表失敗");
   }
 };
 
@@ -209,6 +219,19 @@ export const getProductId = async (productID) => {
   } catch (error) {
     console.log(error);
     throw new Error(`取得編號：${productID}的商品資料失敗`);
+  }
+};
+
+export const createNewFavorite = async (userID, productIDlist) => {
+  try {
+    const [products] = await pool.execute(
+      "INSERT INTO yi_favorites (user_id,productID_list,folder_name,created_at,updated_at,is_deleted) VALUES ( ?, ?, null, NOW(), NOW(), 0)",
+      [userID, productIDlist]
+    );
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error("新增收藏資料失敗");
   }
 };
 
@@ -245,6 +268,21 @@ export const createNewItem = async (
   }
 };
 
+export const updateFavoriteInfo = async (userID, productIDlist, isDeleted) => {
+  try {
+    const [products] = await pool.execute(
+      `UPDATE yi_favorites SET productID_list = ?, updated_at = NOW(), is_deleted = ? WHERE user_id = ? `,
+      [productIDlist, isDeleted, userID]
+    );
+    // const [warnings] = await pool.query("SHOW WARNINGS");
+    // console.log("警告:", warnings);
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error("更新收藏資料失敗");
+  }
+};
+
 export const updateItemInfo = async (
   updateFields,
   value,
@@ -268,6 +306,19 @@ export const updateItemInfo = async (
   } catch (error) {
     console.log(error);
     throw new Error("更新商品資料失敗");
+  }
+};
+
+export const deleteFavoriteInfo = async (userID) => {
+  try {
+    const [products] = await pool.execute(
+      "DELETE FROM yi_favorites WHERE user_id = ?",
+      [userID]
+    );
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error(`刪除收藏資料失敗`);
   }
 };
 
