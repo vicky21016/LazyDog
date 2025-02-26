@@ -48,6 +48,7 @@
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.5",
     "slick-carousel": "^1.8.1",
+    "sweetalert2": "^11.17.2",
     "swiper": "^11.2.4",
     "swr": "^2.3.2",
     "tw-city-selector": "^2.1.1"
