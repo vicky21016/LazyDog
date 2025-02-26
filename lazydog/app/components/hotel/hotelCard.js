@@ -2,10 +2,10 @@ import React from "react";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
 import { useRouter } from "next/navigation";
 
-const HotelCard = ({ image, name, introduce, review, reviewCount, link,hotel }) => {
+const HotelCard = ({ image,hotel }) => {
   const router = useRouter();
 
-  // 確保 `image` 存在，避免 `.startsWith("http")` 錯誤
+  // 確保 `image` 存在
   const imageUrl = image ? image : "/hotel/loding.jpg";
 
   const goToDetail = () => {
