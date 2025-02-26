@@ -27,3 +27,11 @@ export const updateRoomInventorys = async (roomInventoryId, data) => {
     throw new Error("無法更新庫存" + error.message);
   }
 };
+export const getAllRoomInventoryService = async () => {
+  try {
+    const [rows] = await pool.query("SELECT * FROM room_inventory WHERE available_quantity > 0");
+    return rows;
+  } catch (error) {
+    throw new Error("無法獲取所有房型庫存：" + error.message);
+  }
+};

@@ -1,6 +1,7 @@
 import {
   getRoomInventorys,
   updateRoomInventorys,
+  getAllRoomInventoryService,
 } from "../services/roomInventoryService.js";
 
 export const getRoomInventory = async (req, res) => {
@@ -27,5 +28,13 @@ export const updateRoomInventory = async (req, res) => {
     res.status(200).json({ message: "房間庫存已更新" });
   } catch (error) {
     res.status(400).json({ error: "無法更新房間庫存：" + error.message });
+  }
+};
+export const getAllRoomInventory = async (req, res) => {
+  try {
+    const inventory = await getAllRoomInventoryService(); // 這裡需要在 service 層定義函式
+    res.json(inventory);
+  } catch (error) {
+    res.status(500).json({ error: "無法獲取房型庫存：" + error.message });
   }
 };

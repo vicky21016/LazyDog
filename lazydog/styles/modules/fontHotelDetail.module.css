@@ -56,8 +56,8 @@
 
 .suRoomBookBtn:hover {
   background-color: #fdf9f5;
-    color: #ff9538;
-    border-color: #ff9538;
+  color: #ff9538;
+  border-color: #ff9538;
 }
 
 /* =================== 廣告區 (努力區塊) =================== */
@@ -79,7 +79,7 @@
 
 .suEffortSubtitle {
   font-size: 18px;
-  color: #66C5BD;
+  color: #66c5bd;
   margin-bottom: 25px;
 }
 
@@ -132,9 +132,9 @@
 }
 
 .suEffortButtons .suBtnPrimary:hover {
-     background-color: #fdf9f5;
-    color: #ff9538;
-    border-color: #ff9538;
+  background-color: #fdf9f5;
+  color: #ff9538;
+  border-color: #ff9538;
 }
 
 .suEffortButtons .suBtnOutlineLight {
@@ -152,13 +152,17 @@
 .suMapContainer {
   position: relative;
   width: 100%;
-  height: 500px;
+  height: 600px;
   overflow: hidden;
+  border-bottom-left-radius: 50% 35px;
+  border-bottom-right-radius: 50% 50px; /* 可以再調整*/
+  overflow: hidden;
+  margin-bottom: -155px;
 }
 
 @media (max-width: 768px) {
   .suMapContainer {
-    height: 300px;
+    height: 500px;
   }
 }
 
