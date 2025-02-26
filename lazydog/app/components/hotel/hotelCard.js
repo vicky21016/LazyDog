@@ -24,7 +24,7 @@ const HotelCard = ({ image,hotel }) => {
         <p>{hotel.introduce}</p>
       </div>
       <div className={styles.suPriceBox}>
-        <div className={`mb-3 ${styles.suReview}`}>⭐ {hotel.review}</div>
+        <div className={`mb-3 ${styles.suReview}`}>⭐ {hotel.avg_rating}</div>
         {hotel.review_count || 0}則評論
         <button className={styles.suBookBtn} onClick={goToDetail}>
           查看價格
