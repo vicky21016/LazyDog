@@ -11,7 +11,7 @@ export const getCourses = async () => {
       JOIN course_img ON course.id = course_img.course_id 
       AND course_img.main_pic = 1
       ;`);
-    if (courses.length == 0){
+    if (courses.length == 0) {
       console.log("課程列表不存在");
     }
     const [latest] = await pool.execute(`
@@ -26,7 +26,7 @@ export const getCourses = async () => {
       ORDER BY cs.start_date ASC
       LIMIT 6
       ;`);
-    if (latest.length == 0){
+    if (latest.length == 0) {
       console.log("近期開課不存在");
     }
     const [newest] = await pool.execute(`
@@ -41,10 +41,10 @@ export const getCourses = async () => {
       ORDER BY cs.created_at ASC
       LIMIT 6
       ;`);
-    if (newest.length == 0){
+    if (newest.length == 0) {
       console.log("最新建立課程不存在");
     }
-    return {courses, latest, newest};
+    return { courses, latest, newest };
   } catch (err) {
     throw new Error(" 無法取得課程列表：" + err.message);
   }
@@ -52,17 +52,20 @@ export const getCourses = async () => {
 
 export const getId = async (id) => {
   try {
-    const [course] = await pool.query(`
+    const [course] = await pool.query(
+      `
       SELECT c.* , cm.url AS img_url
       FROM course c
       JOIN course_img cm ON c.id = cm.course_id
       WHERE c.id = ?
-      AND cm.main_pic = 1`, 
-      [id]);
-    if (course.length == 0){
-        console.log("課程不存在");
+      AND cm.main_pic = 1`,
+      [id]
+    );
+    if (course.length == 0) {
+      console.log("課程不存在");
     }
-    const [session] = await pool.query(`
+    const [session] = await pool.query(
+      `
       SELECT 
         cs.*, 
         cs.id AS session_id , 
@@ -78,33 +81,40 @@ export const getId = async (id) => {
       AND cs.start_date >= CURDATE() 
       ORDER BY cs.start_date ASC, cs.id ASC;
       `,
-      [id,]);
-    if (session.length == 0){
-        console.log("梯次不存在");
+      [id]
+    );
+    if (session.length == 0) {
+      console.log("梯次不存在");
     }
     const [place] = await pool.query("SELECT * FROM course_area");
-    if (course.length == 0){
-        console.log("上課地點不存在");
+    if (course.length == 0) {
+      console.log("上課地點不存在");
     }
-    const [imgs] = await pool.query(`
+    const [imgs] = await pool.query(
+      `
       SELECT * 
       FROM course_img 
       WHERE course_id = ? 
-      `,[id]);
-    if (course.length == 0){
-        console.log("課程照片不存在");
+      `,
+      [id]
+    );
+    if (course.length == 0) {
+      console.log("課程照片不存在");
     }
-    const [simiCourse] = await pool.query(`
+    const [simiCourse] = await pool.query(
+      `
       SELECT c.id AS courseId, c.name AS courseName, cm.url AS img_url 
       FROM course c 
       JOIN course_img cm ON c.id = cm.course_id
       WHERE c.type_id = (SELECT type_id FROM course WHERE id = ?) 
       AND cm.main_pic = 1;
-      `,[id]);
-    if (course.length == 0){
-        console.log("相關課程的資料不存在");
+      `,
+      [id]
+    );
+    if (course.length == 0) {
+      console.log("相關課程的資料不存在");
     }
-    return {course, session, place, imgs, simiCourse};
+    return { course, session, place, imgs, simiCourse };
   } catch (err) {
     throw new Error(" 無法取得 ${id} 課程:;" + err.message);
   }
@@ -113,15 +123,15 @@ export const getId = async (id) => {
 export const searchCourses = async (keyword) => {
   try {
     const [courses] = await pool.execute(
-      'SELECT * FROM course WHERE (name LIKE ? OR description LIKE ?) AND is_deleted = 0',
+      "SELECT * FROM course WHERE (name LIKE ? OR description LIKE ?) AND is_deleted = 0",
       [`%${keyword}%`, `%${keyword}%`]
-    )
-    return courses
+    );
+    return courses;
   } catch (error) {
-    console.log(error)
-    throw new Error('取得相關資料失敗')
+    console.log(error);
+    throw new Error("取得相關資料失敗");
   }
-}
+};
 
 // export const createCourseWithSession = async (courseData, sessionData) => {
 //   const connection = await pool.getConnection();
@@ -129,7 +139,7 @@ export const searchCourses = async (keyword) => {
 //     await connection.beginTransaction();
 
 //     const [courseResult] = await connection.query(
-//       `INSERT INTO course (type_id, img_id, name, description, duration, price, notice, qa, is_deleted) 
+//       `INSERT INTO course (type_id, img_id, name, description, duration, price, notice, qa, is_deleted)
 //             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 //       [
 //         courseData.type_id,
@@ -148,7 +158,7 @@ export const searchCourses = async (keyword) => {
 //     const courseId = courseResult.insertId;
 
 //     const [sessionResult] = await connection.query(
-//       `INSERT INTO course_session (course_id, area_id, teacher_id, max_people, curr_people, remaining_slots, start_date, end_date, class_dates, deadline_date, start_time, end_time, is_deleted, created_at, update_at) 
+//       `INSERT INTO course_session (course_id, area_id, teacher_id, max_people, curr_people, remaining_slots, start_date, end_date, class_dates, deadline_date, start_time, end_time, is_deleted, created_at, update_at)
 //             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
 //       [
 //         courseId,
@@ -239,7 +249,7 @@ export const searchCourses = async (keyword) => {
 //     );
 
 //     await connection.commit(); // 提交交易
-    
+
 //   } catch (err) {
 //     await connection.rollback(); // 發生錯誤則回滾
 //     throw err;
@@ -249,8 +259,6 @@ export const searchCourses = async (keyword) => {
 //     connection.release();
 //   }
 // };
-
-
 
 // 測試
 // const courseData = {
@@ -280,4 +288,3 @@ export const searchCourses = async (keyword) => {
 // createCourseWithSession(courseData, sessionData)
 //     .then(result => console.log("新增課程與梯次成功:", result))
 //     .catch(error => console.error("錯誤:", error));
-

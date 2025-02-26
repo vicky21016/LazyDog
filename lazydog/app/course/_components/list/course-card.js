@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useFetch } from "@/hooks/product/use-fetch";
+import { useFetch } from "@/hooks/use-fetch";
 import styles from "../courseList.module.css";
 import Card from "./card";
 import Pagination from "./pagination";
