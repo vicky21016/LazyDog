@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { useTeachers} from "../../../../hooks/useTeachers";
 import { useTeacherDetail } from "../../../../hooks/useTeacherDetail";
 // import { useParams } from "react-router-dom";
 // import { useRouter } from "next/router";
@@ -20,42 +19,10 @@ import style from "../../../pages/menu.module.css";
 import styles1 from "../../../../styles/modules/toggle.module.css";
 export default function App () {
   const [selectedTab, setSelectedTab] = useState("experience");
-const { teachers=[] } = useTeachers();
     const { id } = useParams();
     const { teacher } = useTeacherDetail(id);
 
     const [activeTab, setActiveTab] = useState("exps");
-
-  const teacherData = [
-    {
-      imgSrc: "/teacher-img/Zoe.png",
-      col: "col-6 col-md-3",
-      name: "Zoe",
-      text: "寵物訓練",
-      link: "/teacher/info",
-    },
-    {
-      imgSrc: "/teacher-img/Zoe.png",
-      col: "col-6 col-md-3",
-      name: "Zoe",
-      text: "寵物訓練",
-      link: "/teacher/info",
-    },
-    {
-      imgSrc: "/teacher-img/Zoe.png",
-      col: "col-6 col-md-3",
-      name: "Zoe",
-      text: "寵物訓練",
-      link: "/teacher/info",
-    },
-    {
-      imgSrc: "/teacher-img/Zoe.png",
-      col: "col-6 col-md-3",
-      name: "Zoe",
-      text: "寵物訓練",
-      link: "/teacher/info",
-    },
-  ];
 
   const handleRadioChange = (tab) => {
     setSelectedTab(tab);
@@ -84,7 +51,6 @@ const { teachers=[] } = useTeachers();
               { label: "師資介紹", href: "/teacher/info", active: true },
             ]}
           />
-
           <Profile teacher={teacher} />
           {/* <SocialLinks /> */}
           <div className={`row ${styles.profile}`}>
@@ -170,7 +136,7 @@ const { teachers=[] } = useTeachers();
             </div>
           </div>
           <h5 className="my-4 fw-semibold">看看其他優良師資...</h5>
-          <OtherTeacher cards={teacherData} />
+          <OtherTeacher />
           <h5 className="my-4 fw-semibold">看看其他優良課程...</h5>
           <div className="row mb-5 g-4">
             <OtherCourses

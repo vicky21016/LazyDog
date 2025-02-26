@@ -84,6 +84,21 @@ router.post('/', async (req, res) => {
   }
 })
 
+// 隨機撈取資料
+router.get('/random', async (req, res) => {
+  try {
+  const sql =
+    "SELECT teacher.*, course_type.name AS category_name FROM teacher JOIN course_type ON teacher.category_id = course_type.type_id ORDER BY RAND() LIMIT 4"; 
+  const [random] = await pool.execute(sql)
+    if (!Array.isArray(random)) {
+      return res.status(500).json({ status: 'error', message: '資料格式錯誤' })
+    }
+    res.json(random)
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message })
+  }
+})
+
 // 取得該老師的課程
 // const sql =`SELECT 
 //     course.name AS course_name
