@@ -43,9 +43,17 @@ export default function HotelHomePage({ params }) {
       try {
         const hotelData = await getHotelById(id);
         setHotel(hotelData);
-
+    
         // 獲取房型與庫存
         const roomTypes = await getHotelRoomById(id);
+    
+        // 防止 roomTypes 為 null 或 undefined
+        if (!Array.isArray(roomTypes)) {
+          console.error("roomTypes 不是陣列:", roomTypes);
+          setRooms([]); // 設為空陣列，避免 map 出錯
+          return;
+        }
+    
         const roomData = await Promise.all(
           roomTypes.map(async (room) => {
             const inventory = await getRoomInventory(room.id);
@@ -59,11 +67,12 @@ export default function HotelHomePage({ params }) {
         setRooms(roomData);
       } catch (error) {
         console.error("獲取旅館資訊失敗:", error);
+        setRooms([]);
       } finally {
         setLoading(false);
       }
     };
-
+    
     fetchHotelData();
   }, [id]);
 
