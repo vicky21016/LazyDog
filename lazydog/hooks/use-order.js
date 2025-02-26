@@ -1,53 +1,60 @@
 "use client";
+import { useState } from "react";
 
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+export function useCreateOrder() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [order, setOrder] = useState(null);
 
-export function useOrder() {
-  // 狀態管理
-  const [orders, setOrders] = useState([]); // 訂單列表
-  const [loading, setLoading] = useState(false); // 加載狀態
-  const [error, setError] = useState(null); // 錯誤狀態
-
-  // 獲取訂單資料
-  const fetchOrders = async (userId) => {
-    setLoading(true);
-    try {
-      const response = await axios.post("/api/productOrders", {
-        user_id: userId,
-      });
-      setOrders(response.data.orders);
-    } catch (err) {
-      setError("無法獲取訂單資料");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // 創建訂單
   const createOrder = async (orderData) => {
     setLoading(true);
+    setError(null);
     try {
-      const response = await axios.post("/api/product", orderData);
-      setOrders((prevOrders) => [...prevOrders, response.data]);
+      const res = await fetch("http://localhost:5000/order/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!res.ok) {
+        throw new Error("訂單創建失敗");
+      }
+
+      const result = await res.json();
+      console.log("Order Created", result);
+      setOrder(result.order);
     } catch (err) {
-      setError("創建訂單失敗");
+      setError(err.message);
+      console.error(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  // 你也可以把這個 hook 做成能夠清除訂單資料的功能
-  const clearOrders = () => {
-    setOrders([]);
+  return { createOrder, order, loading, error };
+}
+
+// Example usage in a React component
+import { useCreateOrder } from "./useCreateOrder";
+
+function OrderComponent() {
+  const { createOrder, order, loading, error } = useCreateOrder();
+
+  const handleCreateOrder = () => {
+    createOrder({ user_id: 123, items: [{ productId: 1, quantity: 2 }] });
   };
 
-  return {
-    orders,
-    loading,
-    error,
-    fetchOrders,
-    createOrder,
-    clearOrders,
-  };
+  return (
+    <div>
+      <button onClick={handleCreateOrder} disabled={loading}>
+        {loading ? "Creating Order..." : "Create Order"}
+      </button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {order && <p>Order Created: {JSON.stringify(order)}</p>}
+    </div>
+  );
 }
+
+export default OrderComponent;
