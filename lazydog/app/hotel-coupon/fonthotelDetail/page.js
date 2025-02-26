@@ -15,7 +15,7 @@ import { useLocationSelector } from "@/hooks/useLocationSelector";
 import { useGoogleMap } from "@/hooks/useGoogleMap";
 import Header from "../../components/layout/header";
 import SearchBar from "../../components/hotel/search";
-import Breadcrumb  from "../../components/teacher/breadcrumb";
+import Breadcrumb from "../../components/teacher/breadcrumb";
 export default function HotelHomePage() {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -85,24 +85,23 @@ export default function HotelHomePage() {
       router.push(`/hotel-coupon/${path}`);
     }
   };
-    const handleSearch = () => {
-      console.log("開始搜尋飯店...");
-    };
+  const handleSearch = () => {
+    console.log("開始搜尋飯店...");
+  };
   return (
     <>
       <Header />
       <SearchBar
         location={location}
-            address={address}
-            openModal={openModal}
-            closeModal={closeModal}
-            locationModalRef={locationModalRef}
-            quantity={quantity}
-            confirmLocation={confirmLocation}
-            setQuantity={setQuantity}
-            onSearch={handleSearch}
+        address={address}
+        openModal={openModal}
+        closeModal={closeModal}
+        locationModalRef={locationModalRef}
+        quantity={quantity}
+        confirmLocation={confirmLocation}
+        setQuantity={setQuantity}
+        onSearch={handleSearch}
       />
-     
 
       {/* 旅館簡介 */}
       <div className="container mt-5">
@@ -172,7 +171,7 @@ export default function HotelHomePage() {
         </div>
       </div>
 
-      {/* 我們的努力 */}
+      {/* 我們的努力 */}   {/* KEEP */}
       <div className={hotelStyles.suEffortSection}>
         <div className="container text-center">
           <h2 className={hotelStyles.suEffortTitle}>我們的努力，看的見</h2>
@@ -207,7 +206,8 @@ export default function HotelHomePage() {
           </div>
         </div>
       </div>
-
+      {/* KEEP */}{/* KEEP */}
+      
       {/* Google 地圖 */}
       <div className={hotelStyles.suMapContainer}>
         <h1 className="map-title text-center mt-5">

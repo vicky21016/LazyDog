@@ -1,11 +1,22 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import styles from "./card.module.css";
 import Link from "next/link";
 import useSWR from "swr";
+import { useAuth } from "@/hooks/use-auth";
+import { useCart } from "@/hooks/use-cart";
+import { useRouter } from "next/navigation";
 
-export default function CardCard({ productID = "" }) {
+export default function CardCard({
+  productID = "",
+  favorite = [],
+  setFavorite = () => {},
+}) {
+  const { user } = useAuth();
+  const { onAddProduct, productItems } = useCart();
+  const router = useRouter();
+  const loginRoute = "/login";
   const url = productID
     ? `http://localhost:5000/api/products/${productID}`
     : null;
@@ -20,6 +31,49 @@ export default function CardCard({ productID = "" }) {
     }
   };
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
+
+  const favoriteAPI = "http://localhost:5000/api/products/favorite";
+  const {
+    data: favoriteData,
+    isLoading: favoriteLoading,
+    error: favoriteError,
+    mutate: favoriteMutate,
+  } = useSWR(favoriteAPI, fetcher);
+
+  const [favoriteList, setFavoriteList] = useState([]);
+  useEffect(() => {
+    if (favoriteData?.data) {
+      const userFavorite = favoriteData?.data.find(
+        (v) => v.user_id == user?.id
+      );
+      if (userFavorite?.productID_list.length > 0) {
+        setFavoriteList(userFavorite?.productID_list.split(","));
+      }
+    }
+  }, [favoriteData]);
+  useEffect(() => {
+    if (favoriteList.length > 0 && productID) {
+      if (favoriteList.includes(productID)) setHeartState(true);
+      setFavorite((favoriteNow) => {
+        if (JSON.stringify(favoriteNow) !== JSON.stringify(favoriteList)) {
+          return favoriteList;
+        }
+        return favoriteNow;
+      });
+    }
+  }, [favoriteList]);
+
+  const [productCount, setProductCount] = useState(0);
+  useEffect(() => {
+    const newCount = productItems?.filter((v) => v.productID == productID);
+    if (newCount && newCount[0]?.count !== undefined) {
+      if (productCount !== newCount[0].count) {
+        setProductCount(newCount[0].count);
+      }
+    }
+  }, [productItems]);
+  // console.log(productItems, productCount);
+  // console.log();
   const [cardHover, setCardHover] = useState(false);
   const [heartHover, setHeartHover] = useState(false);
   const [heartState, setHeartState] = useState(false);
@@ -28,10 +82,6 @@ export default function CardCard({ productID = "" }) {
   const products = data?.data[0];
   const productName = products?.name;
   const [cardPic, setCardPic] = useState("/product/img/default.webp");
-  // const productPrice = (
-  //   Number(products?.price) * Number(products?.discount)
-  // ).toFixed(0);
-  // const productDiscount = (1 - Number(products?.discount)).toFixed(2) * 100;
   const cardRef = useRef(null);
   const simulateClick = (e) => {
     if (e.target.dataset.clickable) {
@@ -70,13 +120,13 @@ export default function CardCard({ productID = "" }) {
         className={
           cardHover
             ? styles.ProductCardCartOff
-            : cartRate
+            : (productCount ?? 0) > 0 || (cartRate ?? 0) > 0
             ? styles.ProductCardCart
             : styles.ProductCardCartOff
         }
       >
         <img src={`/product/font/cart-fill-big.png`} alt="" />
-        <p>{cartRate}</p>
+        <p>{productCount > 0 ? productCount : cartRate}</p>
       </div>
       {/* {productDiscount > 0 && (
         <div className={styles.ProductCardOnsale}>-{productDiscount} %</div>
@@ -104,7 +154,22 @@ export default function CardCard({ productID = "" }) {
           className={`${styles.HoverIcon} `}
           onMouseEnter={() => setHeartHover(true)}
           onMouseLeave={() => setHeartHover(false)}
-          onClick={() => setHeartState(!heartState)}
+          onClick={() => {
+            if (!user) {
+              alert("請先登入");
+              setTimeout(() => {
+                router.push(loginRoute);
+              }, 100);
+            } else {
+              const newState = !heartState;
+              setHeartState(newState);
+              setFavorite((favorite) =>
+                newState
+                  ? [...favorite, productID]
+                  : favorite.filter((e) => e !== productID)
+              );
+            }
+          }}
         >
           <img
             src={`/product/font/${
@@ -120,7 +185,15 @@ export default function CardCard({ productID = "" }) {
           }`}
           onMouseEnter={() => setCartHover(true)}
           onMouseLeave={() => setCartHover(false)}
-          onClick={() => setCartRate(cartRate + 1)}
+          onClick={() => {
+            if (!user) {
+              alert("請先登入");
+              router.push(loginRoute);
+            } else {
+              setCartRate(cartRate + 1);
+              onAddProduct(products, 1);
+            }
+          }}
         >
           <img
             src={`/product/font/${
