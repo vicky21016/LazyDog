@@ -66,7 +66,7 @@ const HotelSearchBar = ({
       checkInDate: null,
       checkOutDate: null,
       quantity: 1,
-      minPrice: 0,  // ✅ 預設最小價格
+      minPrice: 0,  // 預設最小價格
       maxPrice: 10000,  //  預設最大價格
       rating: null,  //  預設評分
       roomType: null,
