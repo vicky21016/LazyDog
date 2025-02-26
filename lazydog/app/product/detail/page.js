@@ -11,20 +11,27 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
+import { useFavorite } from "@/hooks/product/use-favorite";
 
 export default function DetailPage({ searchParams = {} }) {
-  const { user } = useAuth();
-  const { onAddProduct, productItems } = useCart();
+  const product = searchParams.productID;
   const router = useRouter();
   const loginRoute = "/login";
-  const [favorite, setFavorite] = useState([]);
-  const [picNow, setPicNow] = useState(0);
+  const { user } = useAuth();
+  const { onAddProduct, productItems } = useCart();
+  const { favorite, setFavorite } = useFavorite();
   const [heartHover, setHeartHover] = useState(false);
   const [heartState, setHeartState] = useState(false);
+  useEffect(() => {
+    if (favorite?.includes(product)) setHeartState(true);
+  }, [favorite]);
+
+  // const [favorite, setFavorite] = useState([]);
+  const [picNow, setPicNow] = useState(0);
   const [rate, setRate] = useState(3);
   const [amount, setAmount] = useState(1);
   const [cardPic, setCardPic] = useState("/product/img/default.webp");
-  const product = searchParams.productID;
+
   const url = `http://localhost:5000/api/products/${product}`;
   const url2 = "http://localhost:5000/api/products/order";
   const fetcher = async (url) => {
@@ -133,63 +140,6 @@ export default function DetailPage({ searchParams = {} }) {
       newImage.onerror = () => setCardPic("/product/img/default.webp");
     }
   }, [productName]);
-
-  const favoriteAPI = "http://localhost:5000/api/products/favorite";
-  const {
-    data: favoriteData,
-    isLoading: favoriteLoading,
-    error: favoriteError,
-    mutate: favoriteMutate,
-  } = useSWR(favoriteAPI, fetcher);
-
-  const [favoriteList, setFavoriteList] = useState([]);
-  useEffect(() => {
-    if (favoriteData?.data) {
-      const userFavorite = favoriteData?.data.find(
-        (v) => v.user_id == user?.id
-      );
-      if (userFavorite?.productID_list.length > 0) {
-        setFavoriteList(userFavorite?.productID_list.split(","));
-      }
-    }
-  }, [favoriteData]);
-  useEffect(() => {
-    if (favoriteList.length > 0 && product) {
-      if (favoriteList.includes(product)) setHeartState(true);
-      setFavorite((favoriteNow) => {
-        if (JSON.stringify(favoriteNow) !== JSON.stringify(favoriteList)) {
-          return favoriteList;
-        }
-        return favoriteNow;
-      });
-    }
-  }, [favoriteList]);
-
-  useEffect(() => {
-    console.log(favorite);
-    favoriteData?.data.map(async (v, i) => {
-      if (user?.id > 0) {
-        const formData = new FormData();
-        formData.append("userID", user?.id);
-        formData.append("productIDlist", favorite.join(","));
-        let API = "http://localhost:5000/api/products/favorite";
-        let methodType = "POST";
-        if (v.user_id == user?.id) methodType = "PATCH";
-        try {
-          const res = await fetch(API, {
-            method: methodType,
-            body: formData,
-          });
-          const result = await res.json();
-          if (result.status != "success") throw new Error(result.message);
-          // console.log(result);
-        } catch (error) {
-          console.log(error);
-          alert(error.message);
-        }
-      }
-    });
-  }, [favorite]);
 
   return (
     <div className={`${styles.Container} container`}>

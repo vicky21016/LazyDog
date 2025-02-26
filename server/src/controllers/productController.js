@@ -162,12 +162,18 @@ export const getOrder = async (req, res) => {
 export const getFavorite = async (req, res) => {
   try {
     const favorites = await getAllFavorite();
-    if (!favorites.length) throw new Error("查無收藏列表");
-    res.status(200).json({
-      status: "success",
-      data: favorites,
-      message: `查詢收藏列表成功，共${favorites.length}筆資料`,
-    });
+    if (!favorites.length) {
+      res.status(200).json({
+        status: "success",
+        message: `查詢收藏列表成功，目前資料庫無收藏資料`,
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        data: favorites,
+        message: `查詢收藏列表成功，共${favorites.length}筆資料`,
+      });
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -203,15 +209,16 @@ export const createFavorite = async (req, res) => {
         message: "請從正規管道進入新增收藏頁面",
       });
     }
-    const productIDs = productIDlist.split(",");
-    productIDs.map((productID, i) => {
-      if (!productID) throw new Error("請提供商品編號");
-      const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
-      if (!regForPD.test(productID)) {
-        return connectError(req, res);
-      }
-    });
-    if (!productIDlist) productIDlist = "";
+    if (productIDlist !== "") {
+      const productIDs = productIDlist.split(",");
+      productIDs.map((productID, i) => {
+        if (!productID) throw new Error("請提供商品編號");
+        const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
+        if (!regForPD.test(productID)) {
+          return connectError(req, res);
+        }
+      });
+    }
     const product = await createNewFavorite(userID, productIDlist);
     if (product.affectedRows == 0) {
       throw new Error("新增收藏失敗");

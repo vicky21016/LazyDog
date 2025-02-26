@@ -6,8 +6,8 @@ import Aside from "../_components/aside/aside";
 import Link from "next/link";
 import Card from "../_components/card/card";
 import { useAuth } from "@/hooks/use-auth";
-import { useListFetch } from "@/hooks/product/use-fetch";
-import { useListFavorite } from "@/hooks/product/use-favorite";
+import { useListFetch } from "@/hooks/product/use-fetch-list";
+import { useFavorite } from "@/hooks/product/use-favorite";
 
 export default function ListPage(props) {
   const { user } = useAuth();
@@ -27,7 +27,7 @@ export default function ListPage(props) {
     isLoading,
     error,
   } = useListFetch();
-  const { favorite, setFavorite } = useListFavorite();
+  const { favorite, setFavorite } = useFavorite();
 
   return (
     <>

@@ -4,14 +4,10 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import useSWR from "swr";
 
-const ListFavoriteContext = createContext(null);
-ListFavoriteContext.displayName = "ListFavoriteContext";
-const CategoryFavoriteContext = createContext(null);
-CategoryFavoriteContext.displayName = "CategoryFavoriteContext";
-const DetailFavoriteContext = createContext(null);
-DetailFavoriteContext.displayName = "DetailFavoriteContext";
+const FavoriteContext = createContext(null);
+FavoriteContext.displayName = "FavoriteContext";
 
-export function FavoriteListProvider({ children }) {
+export function FavoriteProvider({ children }) {
   const { user } = useAuth();
   const fetcher = async (url) => {
     try {
@@ -34,11 +30,12 @@ export function FavoriteListProvider({ children }) {
 
   useEffect(() => {
     const updateFavorite = async () => {
-      console.log(6, favorite, JSON.parse(localStorage.getItem("favoritePD")));
+      // console.log(favorite);
       let methodType = "POST";
-      favoriteData?.data.map((v, i) => {
-        if (v.user_id == user?.id) methodType = "PATCH";
-      });
+      if (favoriteData?.data) {
+        if (favoriteData?.data.find((v) => v.user_id === user?.id))
+          methodType = "PATCH";
+      }
       if (user?.id > 0) {
         const formData = new FormData();
         formData.append("userID", user?.id);
@@ -51,7 +48,6 @@ export function FavoriteListProvider({ children }) {
           });
           const result = await res.json();
           if (result.status != "success") throw new Error(result.message);
-          console.log(7);
         } catch (error) {
           console.log(error);
           alert(error.message);
@@ -62,33 +58,15 @@ export function FavoriteListProvider({ children }) {
     updateFavorite();
   }, [favorite]);
   return (
-    <ListFavoriteContext.Provider
+    <FavoriteContext.Provider
       value={{
         favorite,
         setFavorite,
       }}
     >
       {children}
-    </ListFavoriteContext.Provider>
+    </FavoriteContext.Provider>
   );
 }
 
-export function FavoriteCategoryProvider({ children }) {
-  return (
-    <CategoryFavoriteContext.Provider value={{}}>
-      {children}
-    </CategoryFavoriteContext.Provider>
-  );
-}
-
-export function FavoriteDetailProvider({ children }) {
-  return (
-    <DetailFavoriteContext.Provider value={{}}>
-      {children}
-    </DetailFavoriteContext.Provider>
-  );
-}
-
-export const useListFavorite = () => useContext(ListFavoriteContext);
-export const useCategoryFavorite = () => useContext(CategoryFavoriteContext);
-export const useDetailFavorite = () => useContext(DetailFavoriteContext);
+export const useFavorite = () => useContext(FavoriteContext);
