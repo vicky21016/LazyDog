@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import TeacherAside from "../../_components/teacher-aside";
+import My from "../../_components/my";
 import TeacherUpdateC from "../../_components/teacher-updateC";
 
 export default function TeacherUpdatePage() {    
@@ -11,7 +11,7 @@ export default function TeacherUpdatePage() {
     <>
       <div className={`container mt-5 mb-5`}>
         <div className={`row`}>
-          <TeacherAside/>
+          <My/>
           <TeacherUpdateC/>
         </div>
       </div>

@@ -8,10 +8,16 @@ import StarGroup from "../_components/rate/stargroup";
 import StarBar from "../_components/rate/starbar";
 import useSWR from "swr";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
+import { useCart } from "@/hooks/use-cart";
 
 export default function DetailPage({ searchParams = {} }) {
   const { user } = useAuth();
+  const { onAddProduct, productItems } = useCart();
+  const router = useRouter();
+  const loginRoute = "/login";
+  const [favorite, setFavorite] = useState([]);
   const [picNow, setPicNow] = useState(0);
   const [heartHover, setHeartHover] = useState(false);
   const [heartState, setHeartState] = useState(false);
@@ -54,11 +60,6 @@ export default function DetailPage({ searchParams = {} }) {
   }
   const productDiscount = 0;
   const [countDown, setCountDown] = useState(0);
-  // const deadDay = Math.floor(countDown / (1000 * 60 * 60 * 24));
-  // const deadHour = Math.floor(
-  //   (countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  // );
-  // const deadMin = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
 
   const [scrollY, setScrollY] = useState(0);
   useEffect(() => {
@@ -132,6 +133,63 @@ export default function DetailPage({ searchParams = {} }) {
       newImage.onerror = () => setCardPic("/product/img/default.webp");
     }
   }, [productName]);
+
+  const favoriteAPI = "http://localhost:5000/api/products/favorite";
+  const {
+    data: favoriteData,
+    isLoading: favoriteLoading,
+    error: favoriteError,
+    mutate: favoriteMutate,
+  } = useSWR(favoriteAPI, fetcher);
+
+  const [favoriteList, setFavoriteList] = useState([]);
+  useEffect(() => {
+    if (favoriteData?.data) {
+      const userFavorite = favoriteData?.data.find(
+        (v) => v.user_id == user?.id
+      );
+      if (userFavorite?.productID_list.length > 0) {
+        setFavoriteList(userFavorite?.productID_list.split(","));
+      }
+    }
+  }, [favoriteData]);
+  useEffect(() => {
+    if (favoriteList.length > 0 && product) {
+      if (favoriteList.includes(product)) setHeartState(true);
+      setFavorite((favoriteNow) => {
+        if (JSON.stringify(favoriteNow) !== JSON.stringify(favoriteList)) {
+          return favoriteList;
+        }
+        return favoriteNow;
+      });
+    }
+  }, [favoriteList]);
+
+  useEffect(() => {
+    console.log(favorite);
+    favoriteData?.data.map(async (v, i) => {
+      if (user?.id > 0) {
+        const formData = new FormData();
+        formData.append("userID", user?.id);
+        formData.append("productIDlist", favorite.join(","));
+        let API = "http://localhost:5000/api/products/favorite";
+        let methodType = "POST";
+        if (v.user_id == user?.id) methodType = "PATCH";
+        try {
+          const res = await fetch(API, {
+            method: methodType,
+            body: formData,
+          });
+          const result = await res.json();
+          if (result.status != "success") throw new Error(result.message);
+          // console.log(result);
+        } catch (error) {
+          console.log(error);
+          alert(error.message);
+        }
+      }
+    });
+  }, [favorite]);
 
   return (
     <div className={`${styles.Container} container`}>
@@ -218,7 +276,22 @@ export default function DetailPage({ searchParams = {} }) {
                 className={styles.FavoriteBtn}
                 onMouseEnter={() => setHeartHover(true)}
                 onMouseLeave={() => setHeartHover(false)}
-                onClick={() => setHeartState(!heartState)}
+                onClick={() => {
+                  if (!user) {
+                    alert("請先登入");
+                    setTimeout(() => {
+                      router.push(loginRoute);
+                    }, 100);
+                  } else {
+                    const newState = !heartState;
+                    setHeartState(newState);
+                    setFavorite((favorite) =>
+                      newState
+                        ? [...favorite, product]
+                        : favorite.filter((e) => e !== product)
+                    );
+                  }
+                }}
               >
                 <img
                   src={`/product/font/${
@@ -227,22 +300,8 @@ export default function DetailPage({ searchParams = {} }) {
                   alt=""
                 />
               </button>
-              <h6>加入收藏</h6>
+              <h6>{heartState ? "已加入收藏" : "加入收藏"}</h6>
             </div>
-            {countDown > 0 &&
-              {
-                /* <div className={styles.InfoOnsaleGroup}>
-                <div className={styles.OnsaleTag}>
-                  <h5>-{productDiscount}%</h5>
-                </div>
-                <div className={styles.OnsaleInfo}>
-                  <h5>限時促銷剩餘時間</h5>
-                  <h5 className={styles.OnsaleTime}>
-                    {deadDay} 天 : {deadHour} 時 : {deadMin} 分
-                  </h5>
-                </div>
-              </div> */
-              }}
             <h2 className={styles.InfoProductName}>{productData?.name}</h2>
             <div className={styles.InfoRateGroup}>
               {int && (
@@ -284,30 +343,71 @@ export default function DetailPage({ searchParams = {} }) {
               <h5>購買數量</h5>
               <button
                 className={styles.QtyMinus}
-                onClick={() => setAmount(amount <= 1 ? 1 : amount - 1)}
+                onClick={() => {
+                  setAmount((prevAmount) =>
+                    prevAmount - 1 <= 0 ? 1 : prevAmount - 1
+                  );
+                }}
               >
                 <img src="/product/font/minus.png" alt="" />
               </button>
-              <input type="number" defaultValue={amount} min={1} max={999} />
+              <input
+                type="number"
+                value={amount}
+                min={1}
+                max={999}
+                onChange={(e) => {
+                  setAmount(() => {
+                    const value = Number(e.target.value);
+                    if (value >= 999) return 999;
+                    if (value <= 0) return 1;
+                    return value;
+                  });
+                }}
+              />
               <button
                 className={styles.QtyPlus}
-                onClick={() =>
-                  setAmount(
-                    amount >= productData?.stock
-                      ? productData?.stock
-                      : amount + 1
-                  )
-                }
+                onClick={() => {
+                  setAmount((prevAmount) =>
+                    prevAmount + 1 >= 999 ? 999 : prevAmount + 1
+                  );
+                }}
               >
                 <img src="/product/font/plus.png" alt="" />
               </button>
             </div>
             <p>庫存數量 : {productData?.stock}</p>
             <div className={styles.InfoBtnGroup}>
-              <button className={styles.BtnBuynow}>
+              <button
+                className={styles.BtnBuynow}
+                onClick={() => {
+                  if (!user) {
+                    alert("請先登入");
+                    setTimeout(() => {
+                      router.push(loginRoute);
+                    }, 100);
+                  } else {
+                    onAddProduct(productData, amount);
+                    setTimeout(() => {
+                      router.push("/cart/CartList");
+                    }, 100);
+                  }
+                }}
+              >
                 <h5>立即購買</h5>
               </button>
-              <button>
+              <button
+                onClick={() => {
+                  if (!user) {
+                    alert("請先登入");
+                    setTimeout(() => {
+                      router.push(loginRoute);
+                    }, 100);
+                  } else {
+                    onAddProduct(productData, amount);
+                  }
+                }}
+              >
                 <h5>加入購物車</h5>
               </button>
             </div>
@@ -532,7 +632,12 @@ export default function DetailPage({ searchParams = {} }) {
         <ul className={styles.AlsoBuyList}>
           {sameBuy.length > 0 &&
             sameBuy?.map((v, i) => (
-              <ProductCard key={`ProductCard${i}`} productID={v} />
+              <ProductCard
+                key={`ProductCard${i}`}
+                productID={v}
+                favorite={favorite}
+                setFavorite={setFavorite}
+              />
             ))}
         </ul>
       </section>
@@ -541,7 +646,12 @@ export default function DetailPage({ searchParams = {} }) {
         <ul className={styles.OtherLikeList}>
           {hotSale.length > 0 &&
             hotSale?.map((v, i) => (
-              <ProductCard key={`ProductCard${i}`} productID={v} />
+              <ProductCard
+                key={`ProductCard${i}`}
+                productID={v}
+                favorite={favorite}
+                setFavorite={setFavorite}
+              />
             ))}
         </ul>
       </section>
