@@ -33,7 +33,7 @@ export default function MyCard({ id, title, cover_image, created_at }) {
                     <div className="row h-100">
                         <div className="col-md-10 py-2">
                             <div className={`${styles.linkheight}`}>
-                                <Link className={`${styles.link}`} href={{ pathname: `/article/detail/${id}`, query: { list: "true" } }}>
+                                <Link className={`${styles.link}`} href={{ pathname: `/article/my_detail/${id}`, query: { list: "true" } }}>
                                     {title}
                                 </Link>
                             </div>
@@ -48,7 +48,7 @@ export default function MyCard({ id, title, cover_image, created_at }) {
                                     <Dropdown.Item className={`${styles.item}`} href="#">
                                     <Link
                                     className={`${styles.link2}`}
-                                    href={{ pathname: `/article/detail/${id}`, query: { list: "true" } }}
+                                    href={{ pathname: `/article/my_detail/${id}`, query: { list: "true" } }}
                                     >檢視
                                     </Link>
                                     </Dropdown.Item>
