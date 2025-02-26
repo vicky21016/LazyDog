@@ -19,51 +19,68 @@ const HotelSearchBar = ({
 }) => {
   const { dateRef, selectedDate, setSelectedDate, clearDate } = useDatePicker();
   const [isSearching, setIsSearching] = useState(true);
-
   const handleSearchBarSubmit = async () => {
-    confirmLocation(); // 確保選擇地區後更新 `city` 和 `district`
-
+    confirmLocation(); // 確保地區更新
+    
     const searchParams = {
       city: city || null,
       district: district || null,
       quantity: quantity || 1,
       checkInDate: null,
       checkOutDate: null,
+      minPrice: 0,  
+      maxPrice: 10000,  
+      rating: null,  
+      roomType: null,
+      tags: [],
     };
-
-    // 確保 `checkInDate` 和 `checkOutDate` 正確
+  
     if (selectedDate.includes(" 至 ")) {
       const [checkInDate, checkOutDate] = selectedDate.split(" 至 ");
       searchParams.checkInDate = checkInDate.trim() || null;
       searchParams.checkOutDate = checkOutDate.trim() || null;
     }
-
+  
+    console.log("🔍 SearchBar 送出篩選 API:", searchParams);
+  
     try {
-      const result = await getFilteredHotelsS(searchParams);
-      //可以在這裡驗證結果
       if (onSearch) {
         onSearch(searchParams);
       }
-
       setIsSearching(false);
     } catch (error) {
       console.error(" 搜尋 API 錯誤:", error);
     }
   };
-
+  
   const handleClearSearch = () => {
-    console.log(" 清除搜尋條件");
-
+    console.log("🧹 清除搜尋條件");
+  
     clearLocation();
     clearDate();
     setQuantity(1);
-
-    if (onClear) {
-      onClear();
+  
+    const resetParams = {
+      city: null,
+      district: null,
+      checkInDate: null,
+      checkOutDate: null,
+      quantity: 1,
+      minPrice: 0,  // ✅ 預設最小價格
+      maxPrice: 10000,  //  預設最大價格
+      rating: null,  //  預設評分
+      roomType: null,
+      tags: [],
+    };
+  
+    if (onSearch) {
+      onSearch(resetParams);
     }
-
-    setIsSearching(true); // 恢復搜尋狀態
+  
+    setIsSearching(true);
   };
+  
+  
 
   return (
     <div className="container mt-4">

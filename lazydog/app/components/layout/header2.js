@@ -115,7 +115,7 @@ export default function Header(props) {
             </div>
           </div>
           <li>
-            <Link href="#">毛孩文章</Link>
+            <Link href="/article/list">毛孩文章</Link>
           </li>
         </ul>
       </nav>
@@ -185,7 +185,7 @@ export default function Header(props) {
               </div>
             </div>
             <li>
-              <Link href="#">毛孩文章</Link>
+              <Link href="/article/list">毛孩文章</Link>
             </li>
             <div className={styles["dropdown"]}>
               <li>

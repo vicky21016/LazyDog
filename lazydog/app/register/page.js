@@ -7,6 +7,7 @@ import SocialLogin from "../components/auth/SocialLogin";
 import InputFiled from "../components/forms/InputField";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
+import styles from "../../styles/modules/form.module.css"
 export default function Register() {
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
@@ -44,13 +45,13 @@ try {
   return (
     <>
       <Header />
-      <div className="lumi-login-wrapper">
-        <div className="lumi-login-container">
-          <h4 className="lumi-form-title">註冊</h4>
+      <div className={`${styles.loginWrapper}`}>
+        <div className={`${styles.container}`}>
+          <h4 className={`${styles.title}`}>註冊</h4>
 
           <form
             action="#"
-            className="lumi-login-form"
+            className={`${styles.lumiLogin}`}
             onSubmit={handleRegister}
           >
             <InputFiled
@@ -75,25 +76,25 @@ try {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
 
-            <p className="lumi-agree">
+            <p className={`${styles.agree}`}>
               點擊註冊，即表示您已閱讀並同意
-              <Link href="pages/about/member" className="lumi-terms">
+              <Link href="pages/about/member" className={`${styles.terms}`}>
                 會員條款
               </Link>
               與
-              <Link href="pages/about/customer" className="lumi-terms">
+              <Link href="pages/about/customer" className={`${styles.terms}`}>
                 客戶隱私權條款
               </Link>
             </p>
-            <button className="lumi-login-button">註冊會員</button>
-            <p className="lumi-separator">
+            <button className={`${styles.loginbtn}`}>註冊會員</button>
+            <p className={`${styles.separator}`}>
               <span>或使用社群帳號註冊</span>
             </p>
             <SocialLogin />
           </form>
-          <p className="lumi-login-text">
+          <p className={`${styles.logintext}`}>
             已經有帳號了嗎？{" "}
-            <Link href="/login" className="lumi-login">
+            <Link href="/login" className={`${styles.lumiLogin}`}>
               登入
             </Link>
           </p>
