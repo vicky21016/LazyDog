@@ -89,39 +89,47 @@ export default function CartListPage(props) {
                   <Thead />
                   <tbody>
                     {/* 顯示商品 */}
-                    {productItems.map((cartItem) => (
-                      <tr key={cartItem.id}>
-                        <td className={styles.table}>
-                          <img src={cartItem.img} alt={cartItem.name} />
-                        </td>
-                        <td>{cartItem.name}</td>
-                        <td>{cartItem.price}</td>
-                        <td>
-                          <button onClick={() => onIncrease(cartItem.id)}>
-                            +
-                          </button>
-                          {cartItem.count}
-                          <button onClick={() => onDecrease(cartItem.id)}>
-                            -
-                          </button>
-                        </td>
-                        <td>{cartItem.count * cartItem.price}</td>
-                        <td>
-                          <button
-                            style={{
-                              border: "transparent",
-                              backgroundColor: "white",
-                            }}
-                            onClick={() => onRemove(cartItem.id)}
-                          >
-                            <FontAwesomeIcon
-                              icon={faTrashAlt}
-                              style={{ color: "#f2662b" }}
+                    {productItems.map((cartItem) => {
+                      const imgName = cartItem?.img.split(",");
+                      return (
+                        <tr key={cartItem.id}>
+                          <td className={styles.table}>
+                            <img
+                              src={`/product/img/${encodeURIComponent(
+                                cartItem.name
+                              )}${imgName[0]}`}
+                              alt={cartItem.name}
                             />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                          </td>
+                          <td>{cartItem.name}</td>
+                          <td>{cartItem.price}</td>
+                          <td>
+                            <button onClick={() => onIncrease(cartItem.id)}>
+                              +
+                            </button>
+                            {cartItem.count}
+                            <button onClick={() => onDecrease(cartItem.id)}>
+                              -
+                            </button>
+                          </td>
+                          <td>{cartItem.count * cartItem.price}</td>
+                          <td>
+                            <button
+                              style={{
+                                border: "transparent",
+                                backgroundColor: "white",
+                              }}
+                              onClick={() => onRemove(cartItem.id)}
+                            >
+                              <FontAwesomeIcon
+                                icon={faTrashAlt}
+                                style={{ color: "#f2662b" }}
+                              />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </>
               )}
@@ -276,12 +284,12 @@ export default function CartListPage(props) {
                   className="btn w-50"
                   href={{
                     pathname: "/cart/CartListPay",
-                    query: {
-                      productItems: JSON.stringify(productItems),
-                      courseItems: JSON.stringify(courseItems),
-                      hotelItems: JSON.stringify(hotelItems),
-                      totalAmount: totalAmount,
-                    },
+                    // query: {
+                    //   productItems: JSON.stringify(productItems),
+                    //   courseItems: JSON.stringify(courseItems),
+                    //   hotelItems: JSON.stringify(hotelItems),
+                    //   totalAmount: totalAmount,
+                    // },
                   }}
                 >
                   前往結帳

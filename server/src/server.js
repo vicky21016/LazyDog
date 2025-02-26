@@ -26,7 +26,7 @@ import productRoutes from "./routes/productRoutes.js";
 import courseRoutes from "./routes/courseRoutes.js";
 import articlesRoutes from "./routes/articleRoutes.js";
 import teacherRoute from "./routes/teacherRoute.js";
-import cartRoutes from "./routes/cartRoutes.js";
+import order from "./routes/orderRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
 import ecpay from "./routes/ecpay-test-only.js";
 
@@ -46,8 +46,14 @@ app.use(
   })
 );
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-app.use("/uploads/hotel", express.static(path.join(__dirname, "../uploads/hotel")));
-app.use("/teacher-img", express.static(path.join(__dirname, "../../teacher-img")));
+app.use(
+  "/uploads/hotel",
+  express.static(path.join(__dirname, "../uploads/hotel"))
+);
+app.use(
+  "/teacher-img",
+  express.static(path.join(__dirname, "../../teacher-img"))
+);
 
 app.use("/auth", authRouter);
 app.use("/api/auth/google", googleRouter);
@@ -77,7 +83,7 @@ app.use("/teachers", teacherRoute);
 app.use("/api/comment", commentRoutes);
 
 app.use("/ecpay-test-only", ecpay);
-
+app.use("/order", order);
 app.get("/", (req, res) => {
   res.json({ status: "success", data: null, message: "首頁" });
 });
