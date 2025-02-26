@@ -3,7 +3,8 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
-import "../css/CartList.css";
+import styles from "../css/CartList.module.css";
+// import "../css/CartList.css";
 import { useCart } from "@/hooks/use-cart";
 import Header from "@/app/components/layout/header";
 import Breadcrumb from "@/app/course/_components/Id/breadcrumb";
@@ -63,7 +64,7 @@ export default function CartListPage(props) {
     <>
       <Header />
       <div>
-        <div className="cart-img">
+        <div className={styles.cartImg}>
           <img src="/cart/cattlist.png" />
         </div>
 
@@ -78,7 +79,7 @@ export default function CartListPage(props) {
               },
             ]}
           />
-          <div className="custom-table row">
+          <div className={`${styles.customTable} row`}>
             <table
               className="col-lg-8 col-md-auto col-auto me-5 mb-5"
               style={{ marginLeft: "auto" }}
@@ -90,7 +91,7 @@ export default function CartListPage(props) {
                     {/* 顯示商品 */}
                     {productItems.map((cartItem) => (
                       <tr key={cartItem.id}>
-                        <td>
+                        <td className={styles.table}>
                           <img src={cartItem.img} alt={cartItem.name} />
                         </td>
                         <td>{cartItem.name}</td>
@@ -132,7 +133,7 @@ export default function CartListPage(props) {
                     {/* 顯示課程 */}
                     {courseItems.map((cartItem) => (
                       <tr key={cartItem.id}>
-                        <td>
+                        <td className={styles.table}>
                           <img src={cartItem.img} alt={cartItem.name} />
                         </td>
                         <td>{cartItem.name}</td>
@@ -174,7 +175,7 @@ export default function CartListPage(props) {
                     {/* 顯示旅館 */}
                     {hotelItems.map((cartItem) => (
                       <tr key={cartItem.id}>
-                        <td>
+                        <td className={styles.table}>
                           <img src={cartItem.img} alt={cartItem.name} />
                         </td>
                         <td>{cartItem.name}</td>
@@ -212,36 +213,52 @@ export default function CartListPage(props) {
 
             {/* 顯示摘要區 */}
             <aside
-              className="col-lg-3 col-md-auto col-auto mb-5"
+              className={`${styles.aside} col-lg-3 col-md-auto col-auto mb-5`}
               style={{ margin: "auto" }}
             >
               <div className="aside-card">
-                <div className="summary-item d-flex justify-content-between">
+                <div
+                  className={`${styles.summaryItem} d-flex justify-content-between`}
+                >
                   <span>商品小計</span>
                   <span>{`Rs. ${totalProductAmount}`}</span>
                 </div>
-                <div className="summary-item d-flex justify-content-between">
+                <div
+                  className={`${styles.summaryItem} d-flex justify-content-between`}
+                >
                   <span>課程小計</span>
                   <span>{`Rs. ${totalCourseAmount}`}</span>
                 </div>
-                <div className="summary-item d-flex justify-content-between">
+                <div
+                  className={`${styles.summaryItem} d-flex justify-content-between`}
+                >
                   <span>旅館小計</span>
                   <span>{`Rs. ${totalHotelAmount}`}</span>
                 </div>
-                <div className="summary-item d-flex justify-content-between mt-3">
+                <div
+                  className={`${styles.summaryItem} d-flex justify-content-between mt-3`}
+                >
                   <span>總金額</span>
-                  <span className="totalmoney">{`NT$ ${totalAmount}`}</span>
+                  <span
+                    className={styles.totalmoney}
+                  >{`NT$ ${totalAmount}`}</span>
                 </div>
               </div>
 
               {/* 折扣區 */}
-              <div className="summary-item summary-item2 d-flex justify-content-between">
+              <div
+                className={`${styles.summaryItem} ${styles.summaryItem2} d-flex justify-content-between`}
+              >
                 <span>折扣金額</span>
                 <span>-</span>
               </div>
-              <div className="summary-item summary-item2 d-flex justify-content-between">
+              <div
+                className={`${styles.summaryItem} ${styles.summaryItem2} d-flex justify-content-between`}
+              >
                 <span>總金額:</span>
-                <span className="totalmoney">{`NT$ ${totalAmount}`}</span>
+                <span
+                  className={styles.totalmoney}
+                >{`NT$ ${totalAmount}`}</span>
               </div>
 
               {/* 結帳按鈕 */}
