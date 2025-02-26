@@ -9,7 +9,7 @@ const RoomSelection = ({ hotelId }) => {
 
   useEffect(() => {
     if (!hotelId) {
-      console.warn("🚨 錯誤: `hotelId` 為 undefined，無法載入房型");
+      console.warn(" 錯誤: `hotelId` 為 undefined，無法載入房型");
       setLoading(false);
       return;
     }
@@ -20,7 +20,7 @@ const RoomSelection = ({ hotelId }) => {
         
         let roomTypes = await getHotelRoomById(hotelId);
         if (!Array.isArray(roomTypes)) {
-          console.error("⚠️ API 回傳房型格式錯誤:", roomTypes);
+          console.error(" API 回傳房型格式錯誤:", roomTypes);
           roomTypes = []; // 確保不為 `null`
         }
 
@@ -28,7 +28,7 @@ const RoomSelection = ({ hotelId }) => {
           roomTypes.map(async (room) => {
             let inventory = await getRoomInventory(room.id);
             if (!Array.isArray(inventory)) {
-              console.warn(`⚠️ `, room.id, "無房間庫存資料");
+              console.warn(` `, room.id, "無房間庫存資料");
               inventory = [];
             }
             
@@ -42,7 +42,7 @@ const RoomSelection = ({ hotelId }) => {
 
         setRooms(roomData);
       } catch (error) {
-        console.error("🚨 房型載入失敗:", error);
+        console.error(" 房型載入失敗:", error);
         setRooms([]);
       } finally {
         setLoading(false);

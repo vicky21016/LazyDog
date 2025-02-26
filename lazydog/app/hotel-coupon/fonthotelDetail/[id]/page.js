@@ -1,8 +1,6 @@
-//還沒轉moudles還沒轉moudles
-
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { useRouter } from "next/navigation";
 import "../../../../html/hotel-coupon/css/fontHotelHome.css";
 import hotelStyles from "../../../../styles/modules/fontHotelDetail.module.css";
@@ -10,85 +8,149 @@ import hotelStyles from "../../../../styles/modules/fontHotelDetail.module.css";
 import Image from "next/image";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
 import { useGoogleMap } from "@/hooks/useGoogleMap";
-import { getHotelById, getHotelRoomById, getRoomInventory } from "@/services/hotelService";
+import {
+  getHotelById,
+  getHotelRoomById,
+  getRoomInventory,
+} from "@/services/hotelService";
 
 import Header from "../../../components/layout/header";
 import SearchBar from "../../../components/hotel/search";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
-// import HotelCard from "@/app/components/hotel/hotelCard";
 import RoomSelection from "../../../components/hotel/roomSelection";
-export default function HotelHomePage({ params }) {
-  const { id } = params;   
+
+export default function HotelDetailPage({ params }) {
+  const { id } = params;
+  const router = useRouter();
   const [hotel, setHotel] = useState(null);
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
+  const [isFiltered, setIsFiltered] = useState(false);
 
-  const mapRef = useGoogleMap(hotel?.address);
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
+  
+  //  確保 `sessionStorage` 只在瀏覽器內部操作
+  const getInitialSearchParams = () => {
+    if (typeof window !== "undefined") {
+      const storedParams = sessionStorage.getItem("searchParams");
+      return storedParams ? JSON.parse(storedParams) : {};
+    }
+    return {};
+  };
+
+  const [searchParams, setSearchParams] = useState(getInitialSearchParams);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("searchParams", JSON.stringify(searchParams));
+    }
+  }, [searchParams]);
+
   const {
     location,
-    address,
     locationModalRef,
-    googleMapUrl,
     openModal,
+    city,
+    district,
     closeModal,
     confirmLocation,
-    openMap,
+    clearLocation,
   } = useLocationSelector();
 
   useEffect(() => {
     if (!id) return;
-
-    const fetchHotelData = async () => {
-      setLoading(true);
-      try {
-        const hotelData = await getHotelById(id);
-        setHotel(hotelData);
-    
-        // 獲取房型與庫存
-        const roomTypes = await getHotelRoomById(id);
-    
-        // 防止 roomTypes 為 null 或 undefined
-        if (!Array.isArray(roomTypes)) {
-          console.error("roomTypes 不是陣列:", roomTypes);
-          setRooms([]); // 設為空陣列，避免 map 出錯
-          return;
-        }
-    
-        const roomData = await Promise.all(
-          roomTypes.map(async (room) => {
-            const inventory = await getRoomInventory(room.id);
-            return {
-              ...room,
-              price: inventory.length ? inventory[0].price : room.price_per_night,
-              available: inventory.length ? inventory[0].available_quantity : 0,
-            };
-          })
-        );
-        setRooms(roomData);
-      } catch (error) {
-        console.error("獲取旅館資訊失敗:", error);
-        setRooms([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
     fetchHotelData();
   }, [id]);
 
+  const fetchHotelData = async () => {
+    setLoading(true);
+    try {
+      const hotelData = await getHotelById(id);
+      if (!hotelData) {
+        console.error("❌ Hotel data is null");
+        return;
+      }
+      console.log("🏨 獲取旅館數據:", hotelData);
+      setHotel(hotelData);
+
+      // 更新經緯度
+      if (hotelData.latitude && hotelData.longitude) {
+        setLat(parseFloat(hotelData.latitude));
+        setLng(parseFloat(hotelData.longitude));
+      }
+      console.log("🌍 獲取的經緯度:", hotelData.latitude, hotelData.longitude);
+
+      // 取得 RoomType
+      const roomTypes = await getHotelRoomById(id);
+      if (!Array.isArray(roomTypes) || roomTypes.length === 0) {
+        console.warn("⚠️ 無房型資料");
+        setRooms([]);
+        return;
+      }
+
+      // 取得房間價格
+      const roomData = await Promise.all(
+        roomTypes.map(async (room) => {
+          const inventory = await getRoomInventory(room.id);
+          return {
+            ...room,
+            price: inventory.length ? inventory[0].price : room.price_per_night,
+            available: inventory.length ? inventory[0].available_quantity : 0,
+          };
+        })
+      );
+      setRooms(roomData);
+    } catch (error) {
+      console.error("❌ 獲取旅館資訊失敗:", error);
+      setRooms([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 處理搜尋邏輯
+  const handleSearch = async (newParams) => {
+    setIsFiltered(true); //  加入這行修正
+    const updatedParams = { ...searchParams, ...newParams };
+
+    console.log("🔍 送出 API 查詢:", updatedParams);
+
+    setSearchParams(updatedParams);
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("searchParams", JSON.stringify(updatedParams));
+    }
+
+    const paramsString = new URLSearchParams(
+      Object.entries(updatedParams)
+        .filter(([_, value]) => value !== null && value !== undefined)
+        .map(([key, value]) => [
+          key,
+          Array.isArray(value) ? value.join(",") : String(value),
+        ])
+    ).toString();
+
+    router.push(`/hotel-coupon/fonthotelHome?${paramsString}`);
+  };
+  const mapRef = useRef(null);
+  useGoogleMap(lat, lng, mapRef);
+  
   return (
     <>
       <Header />
       <SearchBar
         location={location}
-        address={address}
+        city={city}
+        district={district}
         openModal={openModal}
         closeModal={closeModal}
         locationModalRef={locationModalRef}
-        quantity={1}
+        quantity={quantity}
         confirmLocation={confirmLocation}
-        setQuantity={() => {}}
-        onSearch={() => console.log("開始搜尋飯店...")}
+        clearLocation={clearLocation}
+        setQuantity={setQuantity}
+        onSearch={handleSearch}
       />
       {/* 旅館簡介 */}
       <div className="container mt-5">
@@ -103,33 +165,33 @@ export default function HotelHomePage({ params }) {
             },
           ]}
         />
-   {loading ? (
+        {loading ? (
           <p className="text-center mt-5">載入中...</p>
         ) : hotel ? (
           <>
             <div className="mt-5 row">
               <div className="col-lg-6">
                 <img
-                  src={hotel?.main_image_url || "/hotel/hotel-uploads/default.png"}
+                  src={hotel?.main_image_url || "/hotel/location.png"}
                   alt={hotel?.name || "飯店圖片"}
                   className={hotelStyles.suHotelImage}
                 />
               </div>
-              <div className={`col-lg-6 ps-5 ${hotelStyles.suHotelDescription}`}>
+              <div
+                className={`col-lg-6 ps-5 ${hotelStyles.suHotelDescription}`}
+              >
                 <h2 className="mb-5">{hotel.name}</h2>
-                <p>{hotel.introduce || "無介紹"}</p>
+                <p>{hotel.introduce || "暫無介紹"}</p>
               </div>
             </div>
 
             {/* 房型選擇 */}
-            <h2 className="my-5">房型選擇</h2>
             <RoomSelection hotelId={id} />
           </>
         ) : (
           <p className="text-center">飯店不存在</p>
         )}
       </div>
-
       {/* 我們的努力 */} {/* KEEP */}
       <div className={hotelStyles.suEffortSection}>
         <div className="container text-center">
@@ -175,7 +237,13 @@ export default function HotelHomePage({ params }) {
         <p className="map-title text-center mt-5">
           地址: {hotel?.address || "無資料"}
         </p>
-        <div ref={mapRef} style={{ height: "500px", width: "100%" }}></div>
+        {lat && lng ? (
+          <div ref={mapRef} style={{ height: "500px", width: "100%" }}></div>
+        ) : (
+          <p className="text-center">
+            無法載入地圖，請確認旅館是否有經緯度數據。
+          </p>
+        )}
       </div>
     </>
   );

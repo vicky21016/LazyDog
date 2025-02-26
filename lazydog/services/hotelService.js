@@ -60,7 +60,21 @@ export const getAllHotels = async (sortOption = "") => {
   }
 };
 
-export const getHotelById = async (id) => fetchAPI(`${API_URL}/${id}`);
+
+export const getHotelById = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/${id}`);
+    if (!response.ok) {
+      throw new Error(`HTTP 錯誤！狀態碼: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("API 取得飯店錯誤:", error);
+    throw error;
+  }
+};
+
 export const fetchHotelsCount = async () => fetchAPI(`${API_URL}/count`);
 export const getPaginatedHotels = async (page = 1, limit = 10) =>
   fetchAPI(`${API_URL}/paginated?limit=${limit}&offset=${(page - 1) * limit}`);
@@ -113,18 +127,14 @@ export const getHotelPriceRange = async (hotelId) =>
   fetchAPI(`${ROOM_BASE_PRICE_URL}/range/${hotelId}`);
 //房型跟庫存
 export const getAllRoomTypes = async () => fetchAPI(ROOM_TYPES_URL);
-export const getHotelRoomById = async (roomId) =>
-  fetchAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`);
+export const getHotelRoomById = async (roomId) =>fetchAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`);
 
 //OP ONLY
-export const createHotelRoom = async (roomData) =>
-  fetchAuthAPI(HOTEL_ROOM_TYPES_URL, "POST", roomData);
+export const createHotelRoom = async (roomData) =>fetchAuthAPI(HOTEL_ROOM_TYPES_URL, "POST", roomData);
 
-export const updateHotelRoom = async (roomId, updateData) =>
-  fetchAuthAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, "PATCH", updateData);
+export const updateHotelRoom = async (roomId, updateData) =>fetchAuthAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, "PATCH", updateData);
 
-export const deleteHotelRoom = async (roomId) =>
-  fetchAuthAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, "DELETE");
+export const deleteHotelRoom = async (roomId) =>fetchAuthAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, "DELETE");
 
 //OP END
 
