@@ -8,14 +8,16 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart"; // 引入useCart以便取得購物車資料
-
+import { useOrder } from "@/hooks/useHotel";
 import Header from "../../components/layout/header";
 import Input from "../../components/forms/Input";
 import InputFiled from "../../components/forms/InputField";
 import Hotel from "../../components/cart/hotel";
 import Course from "../../components/cart/course";
 export default function CartListPayPage(props) {
-  const [userdetail, setUserdetail] = useState({
+  useEffect(() => {}, []);
+  const user = props.user;
+  const [productOrder, setProductOrder] = useState({
     user_id: "",
     orderID: "",
     coupon_id: "",
@@ -47,6 +49,7 @@ export default function CartListPayPage(props) {
     totalHotelAmount,
   } = useCart();
 
+  const { createOrder } = useOrder();
   // 確保商品資料正確
   const itemsValue = `
   ${productItems.map((item) => `${item.name} x ${item.count}`).join(", ")}#
@@ -87,6 +90,22 @@ export default function CartListPayPage(props) {
   };
 
   const handleEcpay = async () => {
+    // 將訂單詳細資料儲存到localStorage
+    setProductOrder({
+      user_id: user.id,
+      orderID: `PD${new Date().getTime()}`,
+      coupon_id: "",
+      discount_amount: 0,
+      productID_list: productItems.map((item) => item.id),
+      price_list: productItems.map((item) => item.price),
+      amount_list: productItems.map((item) => item.count),
+      total_price: totalProductAmount,
+      final_amount: totalProductAmount,
+      created_at: new Date().toISOString(),
+      is_deleted: 0,
+      status: "未付款",
+    });
+    createOrder(productOrder);
     // 先連到node伺服器後端，取得LINE Pay付款網址
     const res = await fetch(
       `http://localhost:5000/ecpay-test-only?amount=${amountValue}&items=${itemsValue}`,
