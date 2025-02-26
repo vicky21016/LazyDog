@@ -5,6 +5,7 @@ import {
   getCoursesByTeacher,
   getCoursesIdByTeacher,
   createCourseWithSession,
+  createGets,
   updateCourseWithSession,
   deleteCourseSession,
 } from "../services/teacherSignService.js";
@@ -107,32 +108,44 @@ export const createCourse = async (req, res) => {
   }
 };
 
+export const createGetNeed = async (req, res) => {
+  try {
+    const selects = await createGets();
+    res.json({
+      status: "success",
+      data: selects,
+      message: "新增課程 所需的資料GET成功",
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 export const updateCourse = async (req, res) => {
   try {
-    const { courseId, courseData, sessionId, sessionData } = req.body;
+    console.log("📂 解析後的檔案:", req.files); // 🛠️ 查看 multer 是否成功處理圖片
+    console.log("📨 解析後的 body:", req.body); // 🛠️ 查看請求 body 是否正確
 
-    // 取得主圖檔名
+    const { courseId, sessionId, courseData, sessionData } = req.body;
+
+    if (!courseId || !sessionId || !courseData || !sessionData) {
+      return res.status(400).json({
+        error: "缺少courseId 或 sessionId 或 courseData 或 sessionData",
+      });
+    }
+
     let mainpicName = req.files["mainImage"]
       ? req.files["mainImage"][0].filename
       : null;
-    // 取得其他圖片檔名（陣列）
     let otherpicsName = req.files["otherImages"]
       ? req.files["otherImages"].map((file) => file.filename)
       : [];
 
-    if (!courseId || !sessionId || !courseData || !sessionData) {
-      return res
-        .status(400)
-        .json({
-          error: "缺少courseId 或 sessionId 或 courseData 或 sessionData",
-        });
-    }
-
     const result = await updateCourseWithSession(
       courseId,
-      courseData,
+      JSON.parse(courseData),
       sessionId,
-      sessionData,
+      JSON.parse(sessionData),
       { mainImage: mainpicName, otherImages: otherpicsName }
     );
     console.log("更新結果:", result);
