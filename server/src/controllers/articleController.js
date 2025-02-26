@@ -46,6 +46,7 @@ export const getId = async (req, res) => {
           content: results[0].content,
           cover_image: results[0].cover_image,
           author_name: results[0].name,
+          category_id: results[0].category_id,
           category_name: results[0].category_name,
           created_at: formatDate(results[0].created_at),
           updated_at: formatDate(results[0].updated_at), // 確保 updated_at 也被格式化

@@ -7,36 +7,6 @@ import OtherTeacher from "./otherTeacher";
 import style from "../../../styles/modules/teacher.module.css"
 export default function TeacherSection () {
   const [state, setState] = useState(null);
-  const teacherData = [
-    {
-      imgSrc: "/teacher-img/Zoe.png",
-      col: "col-6 col-md-3",
-      name: "Zoe",
-      text: "寵物訓練",
-      link: "/teacher/info/9",
-    },
-    {
-      imgSrc: "/teacher-img/Larry.jpg",
-      col: "col-6 col-md-3",
-      name: "Larry",
-      text: "寵物訓練",
-      link: "/teacher/inf/6",
-    },
-    {
-      imgSrc: "/teacher-img/林筱瑞.jpg",
-      col: "col-6 col-md-3",
-      name: "林筱瑞",
-      text: "寵物照護",
-      link: "/teacher/info/21",
-    },
-    {
-      imgSrc: "/teacher-img/鄧惠津(多多媽).jfif",
-      col: "col-6 col-md-3",
-      name: "鄧惠津(多多媽)",
-      text: "寵物訓練",
-      link: "/teacher/info/10",
-    },
-  ];
 
   return (
     <section className="">
@@ -89,8 +59,8 @@ export default function TeacherSection () {
         <img className="" src="/teacher-img/yello2.png" alt="" />
       </div>
       <div className="lumi-all-wrapper pb-5">
-        <h3 className="my-5 lumi-m-title ">熱門師資</h3>
-        <OtherTeacher cards={teacherData} />
+        <h3 className="my-5 lumi-m-title ">推薦師資</h3>
+        <OtherTeacher />
       </div>
       <div>
         <img className="" src="/teacher-img/rice.png" alt="" />

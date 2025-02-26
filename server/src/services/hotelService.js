@@ -1,7 +1,17 @@
 import pool from "../config/mysql.js";
-export const getHotels = async () => {
+export const getHotels = async (sortOption) => {
   const connection = await pool.getConnection();
   try {
+    let orderByClause = ""; // 預設不排序
+
+    if (sortOption == "review") {
+      orderByClause = "ORDER BY review_count DESC"; // 依評價總數排序
+    } else if (sortOption == "rating") {
+      orderByClause = "ORDER BY avg_rating DESC"; // 依星級排序
+    } else {
+      orderByClause = "ORDER BY h.id DESC"; // 預設排序
+    }
+
     let query = `
       SELECT h.*, 
              hi.url AS main_image_url,
@@ -25,6 +35,7 @@ export const getHotels = async () => {
       ) rp ON h.id = rp.hotel_id
       WHERE h.is_deleted = 0 
       GROUP BY h.id
+      ${orderByClause}
     `;
 
     const [hotels] = await connection.query(query);
@@ -35,7 +46,6 @@ export const getHotels = async () => {
     connection.release();
   }
 };
-
 
 export const searchHotels = async (keyword) => {
   try {

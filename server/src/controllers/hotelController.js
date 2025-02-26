@@ -10,16 +10,19 @@ import {
 } from "../services/hotelService.js";
 import pool from "../config/mysql.js";
 
-/* 取得所有飯店（不篩選） */
+/* 取得所有飯店（支援排序） */
 export const getAllHotels = async (req, res) => {
   try {
-    const hotels = await getHotels();
+    const { sort } = req.query; // 取得排序參數
+    const hotels = await getHotels(sort); // 讓 getHotels() 接受排序條件
     res.json(hotels);
   } catch (error) {
     console.error("獲取飯店列表失敗:", error);
     res.status(500).json({ error: "無法獲取飯店列表" });
   }
 };
+
+
 
 export const getSearch = async (req, res) => {
   try {

@@ -1,24 +1,46 @@
-'use client'
-import React, { useState, useEffect } from 'react'
-import '../css/CartListPayFinsh.css'
-import Header from "../../components/layout/header"
-import 'bootstrap/dist/css/bootstrap.min.css' // 引入 Bootstrap 样式
-import 'bootstrap/dist/js/bootstrap.bundle.min' // 引入 Bootstrap 的 JS 及其依赖
+"use client";
+import React, { useState, useEffect } from "react";
+import "../css/CartListPayFinsh.css";
+import Header from "../../components/layout/header";
+import "bootstrap/dist/css/bootstrap.min.css"; // 引入 Bootstrap 样式
+import "bootstrap/dist/js/bootstrap.bundle.min"; // 引入 Bootstrap 的 JS 及其依赖
+
+import { useSearchParams } from "next/navigation";
+import { isDev } from "@/config";
 
 export default function CartListPayFinshPage(props) {
+  const searchParams = useSearchParams();
+  const [countdown, setCountdown] = useState(5);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev === 1) {
+          window.location.href = "http://localhost:3000/product/list";
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    // 清除定時器
+    return () => clearInterval(timer);
+  }, []);
+
+  if (isDev) console.log("RtnCode", searchParams?.get("RtnCode"));
+
   return (
     <>
-    <Header/>
+      <Header />
       <div>
         <div className="cart-img pb-5">
           <img src="/cart/Group6.png" alt="Cart Image" />
         </div>
         <div className="container">
-          <p className="gobacktext pt-5">3秒後回到購物畫面</p>
+          <p className="gobacktext pt-5">{countdown}秒後回到購物畫面</p>{" "}
           <div className="row">
             <main
               className="col-lg-4 col-md-8 col-12"
-              style={{ margin: 'auto' }}
+              style={{ margin: "auto" }}
             >
               <div className="row mb-2">
                 <button
@@ -106,15 +128,20 @@ export default function CartListPayFinshPage(props) {
             </main>
             <aside
               className="col-lg-4 col-md-8 col-8"
-              style={{ margin: 'auto' }}
+              style={{ margin: "auto" }}
             >
-              <div className="cart-img pb-5">
-                <img src="/cart/image 24.png" alt="Cart Image" />
+              <div className=" pb-5">
+                <p>以下為回傳資料:</p>
+                <p>交易編號: {searchParams?.get("MerchantTradeNo")}</p>
+                <p>交易金額: {searchParams?.get("TradeAmt")}</p>
+                <p>交易日期: {searchParams?.get("TradeDate")}</p>
+                <p>付款日期: {searchParams?.get("PaymentDate")}</p>
+                <p>付款方式: {searchParams?.get("PaymentType")}</p>
               </div>
             </aside>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }

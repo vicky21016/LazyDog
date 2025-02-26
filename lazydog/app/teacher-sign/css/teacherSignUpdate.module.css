@@ -88,7 +88,7 @@
     overflow: hidden;
     border: .8px solid #ecebeb;
     border-radius: 8px;
-    height: 290px;
+    height: 250px;
     padding: 0;
   }
 
@@ -111,17 +111,17 @@
     border-radius: 10px;
     overflow: hidden;
     background: #f8f9fa;
-    border: 1px solid #ddd;
+    border: .1px solid #ddd;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     text-align: center;
   }
-
+  
   .imageCard .imgCr {
     width: 100%;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 8px;
     cursor: pointer;
   }
@@ -189,11 +189,12 @@
 
 
 
-  /* 按鈕 */
+  
+  /* 取消按鈕 */
   .cancleBtn{
     background-color: #dee2e6;
     .cancleBtnA{
-      color:#9e9898;
+      color:#696464;
       text-decoration: none;
       font-weight: bold;
     }
@@ -201,22 +202,35 @@
   .cancleBtn:hover{
     background-color: #cecfd1;
     font-weight: bolder;
-    .cancleBtnA{
-      color:#fff;
-    }
+    color:#696464;
   }
 
+  /* 儲存按鈕 */
   .submitBtn{
-    background-color: #F5842B;
-    border: none;      
-    .submitBtnA{
-      color:white;
-      text-decoration: none;
-      font-weight: bold;
-    }
+    background-color: #fdab69;
+    border: none;
+    color:white;
+    text-decoration: none;
+    font-weight: bold;      
+    
   }
   .submitBtn:hover{
-    background-color: #e26404;
+    background-color: #e97720;
+  }
+
+  /* 刪除按鈕 */
+  .deletedBtn{
+    background-color: #fdc6ca;
+    border: none;
+    color:white;
+    text-decoration: none;
+    font-weight: bold;      
+    /* .submitBtnA{
+      
+    } */
+  }
+  .deletedBtn:hover{
+    background-color: #fa2638;
   }
 
 }

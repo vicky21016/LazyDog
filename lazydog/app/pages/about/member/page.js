@@ -1,15 +1,25 @@
 import Header from "../../../components/layout/header"; 
-
+import Bread from "../../../components/teacher/breadcrumb"; 
 export default async function MemberPage(props) {
     return (
       <>
         <Header />
         <div className="container-fluid lumi-all-wrapper my-3">
+          <Bread
+            links={[
+              { label: "首頁 ", href: "/" },
+              { label: " 關於我們", href: "/teacher" },
+
+              {
+                label: "會員條款條款與細則",
+                href: "/pages/about/member",
+                active: true,
+              },
+            ]}
+          />
           <div className="row flex-nowrap">
             <div className="col py-3">
-              <h3 className="mb-5">
-                會員條款條款與細則
-              </h3>
+              <h3 className="my-5">會員條款條款與細則</h3>
               <div className="mb-5">
                 <h5 className="my-4">一、認知與接受條款</h5>
                 <p className="lead">

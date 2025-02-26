@@ -1,26 +1,37 @@
+"use client";
 import { useState, useEffect } from "react";
 
-export function useHotel (id) {
-    const [hotel, setHotel] = useState([]);
-    useEffect(() => {
+export function useOrder(userId) {
+  const [orders, setOrders] = useState([]);
 
-        const fetchHotel = async () => {
-             let API = `http://localhost:5000/api/hotels/${id}`;
-            try {
-                const res = await fetch(API);
-               if (!res.ok) {
-                 throw new Error("無法取得資料");
-               }
-               const result = await res.json();
-                console.log("Fetched", result);
-               setHotel(result); 
-            } catch (err) {
-                console.log(err.message);
-            } 
-        };
+  useEffect(() => {
+    const fetchOrders = async () => {
+      let API = `http://localhost:5000/order/productOrders`;
+      try {
+        const res = await fetch(API, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user_id: userId }),
+        });
 
-        fetchHotel();
-    }, [id]);
+        if (!res.ok) {
+          throw new Error("無法取得訂單資料");
+        }
 
-    return { hotel } ;
-};
+        const result = await res.json();
+        console.log("Fetched Orders", result);
+        setOrders(result.orders);
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    if (userId) {
+      fetchOrders();
+    }
+  }, [userId]);
+
+  return { orders };
+}

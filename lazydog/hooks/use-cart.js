@@ -8,44 +8,9 @@ CartContext.displayName = "CartContext";
 
 // Provider管理商品、課程、旅館的邏輯
 export function CartProvider({ children }) {
-  // const [productItems, setProductItems] = useState([]);
-  // const [courseItems, setCourseItems] = useState([]);
-  // const [hotelItems, setHotelItems] = useState([]);
-
-  const [productItems, setProductItems] = useState([
-    {
-      id: "product1",
-      name: "商品 A",
-      price: 1000,
-      count: 2,
-      img: "/images/productA.png",
-    },
-    {
-      id: "product2",
-      name: "商品 B",
-      price: 2000,
-      count: 1,
-      img: "/images/productB.png",
-    },
-  ]);
-  const [courseItems, setCourseItems] = useState([
-    {
-      id: "course1",
-      name: "課程 A",
-      price: 5000,
-      count: 1,
-      img: "/images/courseA.png",
-    },
-  ]);
-  const [hotelItems, setHotelItems] = useState([
-    {
-      id: "hotel1",
-      name: "旅館 A",
-      price: 3000,
-      count: 1,
-      img: "/images/hotelA.png",
-    },
-  ]);
+  const [productItems, setProductItems] = useState([]);
+  const [courseItems, setCourseItems] = useState([]);
+  const [hotelItems, setHotelItems] = useState([]);
 
   const [didMount, setDidMount] = useState(false);
 
@@ -112,12 +77,12 @@ export function CartProvider({ children }) {
     0
   );
 
-  // useEffect(() => {
-  //   setProductItems(JSON.parse(localStorage.getItem("productCart")) || []);
-  //   setCourseItems(JSON.parse(localStorage.getItem("courseCart")) || []);
-  //   setHotelItems(JSON.parse(localStorage.getItem("hotelCart")) || []);
-  //   setDidMount(true);
-  // }, []);
+  useEffect(() => {
+    setProductItems(JSON.parse(localStorage.getItem("productCart")) || []);
+    setCourseItems(JSON.parse(localStorage.getItem("courseCart")) || []);
+    setHotelItems(JSON.parse(localStorage.getItem("hotelCart")) || []);
+    setDidMount(true);
+  }, []);
 
   useEffect(() => {
     if (didMount) {
