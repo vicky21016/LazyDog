@@ -10,8 +10,7 @@ const HotelCard = ({ image,hotel }) => {
 
   const goToDetail = () => {
     if (hotel?.id) {
-      router.push(`/hotel-coupon/${hotel.id}`);
-    }
+      router.push(`/hotel-coupon/fonthotelDetail/${hotel.id}/`);    }
   };
   return (
     <div
