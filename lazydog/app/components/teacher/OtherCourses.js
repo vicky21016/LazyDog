@@ -13,7 +13,7 @@ const OtherCourses = () => {
         const formatCards = courses.map((teacher) => ({
           id: teacher.id,
           name: teacher.name,
-          imgSrc: `/course/img/${teacher.img}`,
+          imgSrc: `/course/img/${teacher.course_img}`,
           link: `/course/${teacher.id}`,
           text: teacher.category_name,
           col: "col-6 col-md-3",

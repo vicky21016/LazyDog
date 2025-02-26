@@ -88,7 +88,7 @@ export default function App () {
                   <div className="col-12 col-md-6 col-lg-7 ps-5">
                     {activeTab === "exps" && (
                       <div className="mb-5">
-                        <h4 className="mb-3">經歷 :</h4>
+                        <h4 className="mb-4">經歷 :</h4>
                         <ul>
                           {teacher.Experience?.split("\n").map(
                             (line, index) => (
@@ -135,9 +135,10 @@ export default function App () {
               </div>
             </div>
           </div>
-          <h5 className="my-4 fw-semibold">看看其他優良師資...</h5>
+          <h5 className="my-5 fw-semibold">看看其他優良師資...</h5>
           <OtherTeacher />
-          <h5 className="my-4 fw-semibold">看看其他優良課程...</h5>
+          <hr/>
+          <h5 className="my-5 fw-semibold">看看其他優良課程...</h5>
           <div className="row mb-5 g-4">
             <OtherCourses
              

@@ -11,9 +11,9 @@ import styles from "../../../styles/modules/header2.module.css";
 
 
 export default function Header(props) {
-  const [user, setUser] = useState(null);
+  const [usernow, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false); // 控制選單展開
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -135,14 +135,15 @@ export default function Header(props) {
           </li>
         </ul>
       </nav>
-      {/* {!user ? (
-        <> */}
+     
+       
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
           <Link href="/pages" className={styles["lumi-user-icon2"]}>
             {/* <FontAwesomeIcon icon={faUser} /> */}
             <i className="bi bi-person"></i>
           </Link>
+           {user ? (
           <div className={styles["dropdown-content"]}>
             <Link href="/pages" className={styles["dropdown-link"]}>
               個人資料
@@ -154,6 +155,7 @@ export default function Header(props) {
               登出
             </div>
           </div>
+          ):null}
         </div>
         <div className={styles["lumi-cart-icon2"]}>
           <Link href="/cart/CartList" className={styles["lumi-cart-icon2"]}>

@@ -10,9 +10,9 @@ import { auth, firebase } from "../utils/firebase";
 import styles from "../../../styles/modules/header.module.css";
 
 export default function Header(props) {
-  const [user, setUser] = useState(null);
+  const [usernow, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false); // 控制選單展開
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {

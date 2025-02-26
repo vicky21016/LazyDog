@@ -5,7 +5,7 @@ import {useReview } from "@/hooks/useCourseReview";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import Header from "../../../components/layout/header";
-import My from "../../../components/hotel/my"
+import My from "../../../teacher-sign/_components/my"
 // ReviewList
 // reviews.js 裡get+post+delete+put做API連結後台，
 //下面都是假資料參考用就好

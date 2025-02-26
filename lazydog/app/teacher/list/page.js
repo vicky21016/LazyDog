@@ -57,7 +57,7 @@ export default function App (){
               <h3 className={style1.list}>師資列表</h3>
               <div className={style1.TitleFilter}>
                 <img src="/product/font/filter.png" alt="" />
-                <h5>依熱門排序</h5>
+                <h6>依熱門排序</h6>
               </div>
             </div>
           </section>
