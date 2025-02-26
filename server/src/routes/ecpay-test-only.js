@@ -13,11 +13,15 @@ router.get("/", function (req, res) {
     items.split(",").length > 1
       ? items.split(",").join("#")
       : "線上商店購買一批";
-
-  if (isDev) console.log("amount:", amount);
-  if (isDev) console.log("items:", items);
-  if (isDev) console.log("itemName:", itemName);
   console.log(1);
+  // if (isDev)
+  console.log("amount:", amount);
+  console.log(2);
+  // if (isDev)
+  console.log("items:", items);
+  console.log(3);
+  // if (isDev)
+  console.log("itemName:", itemName);
 
   if (!amount) {
     console.log(amount);
@@ -43,10 +47,11 @@ router.get("/", function (req, res) {
 
   // 付款結果通知回傳網址(這網址可能需要網路上的真實網址或IP，才能正確接收回傳結果)
   const ReturnURL = "https://www.ecpay.com.tw";
+  // const ReturnURL = "http://localhost:3000/cart/CartListPay/callback";
   // (二選一)以下這個設定，會有回傳結果，但要用前端的api路由來接收並協助重新導向到前端成功callback頁面(不用時下面要83~97從中的值要註解)
   const OrderResultURL = "http://localhost:3000/cart/CartListPay/api"; //前端成功頁面api路由(POST)
   // (二選一)以下這個設定，不會任何回傳結果(不用時下面要83~97從中的值要註解)
-  // const ClientBackURL = 'http://localhost:3000/ecpay/callback' //前端成功頁面
+  // const ClientBackURL = "http://localhost:3000/cart/CartListPay/callback"; //前端成功頁面
   const ChoosePayment = "ALL";
 
   ////////////////////////以下參數不用改////////////////////////
@@ -146,17 +151,17 @@ router.get("/", function (req, res) {
   const AllParams = { ...ParamsBeforeCMV, CheckMacValue };
 
   // 六、製作送出畫面
-  //
+
   // # region --- 純後端送出form的作法，可以進行簡單的測試用  ---
-  //
+
   // const inputs = Object.entries(AllParams)
   //   .map(function (param) {
   //     return `<input name=${
   //       param[0]
-  //     } value="${param[1].toString()}" style="display:none"><br/>`
+  //     } value="${param[1].toString()}" style="display:none"><br/>`;
   //   })
-  //   .join('')
-  //
+  //   .join("");
+
   // const htmlContent = `
   //   <!DOCTYPE html>
   //   <html>
@@ -173,8 +178,8 @@ router.get("/", function (req, res) {
   //   </script>
   //   </body>
   //   </html>
-  //   `
-  // res.send(htmlContent)
+  //   `;
+  // res.send(htmlContent);
   // # endregion ----------------------------------------
 
   // 送至react前端，由前端產生表單控制送出的動作
