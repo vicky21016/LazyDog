@@ -15,7 +15,8 @@ export async function POST(request) {
 
   // 使用表單資料重新導向到回調頁面
   // redirect 內部一定會拋出錯誤，因此應該在 try/catch 區塊之外呼叫執行。
-  redirect(`http://localhost:3000/`);
+  // redirect(`http://localhost:3000/`);
+  redirect(`/cart/CartListPayFinsh?${new URLSearchParams(body).toString()}`);
   redirect(
     `/cart/CartListPay/callback?${new URLSearchParams(body).toString()}`
   );

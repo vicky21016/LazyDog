@@ -15,18 +15,19 @@ export default function ECPayCallback() {
   return (
     <>
       <Header />
-      <h1>ECPay(綠界金流) - 已完成付款頁</h1>
-      <p>本頁利用next的api路由(/ecpay/api)來協助導向這頁。</p>
-      <Link href="/ecpay">連至ECPay(綠界金流)測試頁</Link>
-      <hr />
-      <p>以下為回傳資料:</p>
-      <p>交易編號: {searchParams?.get("MerchantTradeNo")}</p>
-      <p>交易金額: {searchParams?.get("TradeAmt")}</p>
-      <p>交易日期: {searchParams?.get("TradeDate")}</p>
-      <p>付款日期: {searchParams?.get("PaymentDate")}</p>
-      <p>付款方式: {searchParams?.get("PaymentType")}</p>
-      <p>回應碼: {searchParams?.get("RtnCode")}</p>
-      <p>回應訊息: {searchParams?.get("RtnMsg")}</p>
+      <div className="container">
+        <h1>ECPay(綠界金流) - 已完成付款頁</h1>
+
+        <hr />
+        <p>以下為回傳資料:</p>
+        <p>交易編號: {searchParams?.get("MerchantTradeNo")}</p>
+        <p>交易金額: {searchParams?.get("TradeAmt")}</p>
+        <p>交易日期: {searchParams?.get("TradeDate")}</p>
+        <p>付款日期: {searchParams?.get("PaymentDate")}</p>
+        <p>付款方式: {searchParams?.get("PaymentType")}</p>
+        <p>回應碼: {searchParams?.get("RtnCode")}</p>
+        <p>回應訊息: {searchParams?.get("RtnMsg")}</p>
+      </div>
     </>
   );
 }
