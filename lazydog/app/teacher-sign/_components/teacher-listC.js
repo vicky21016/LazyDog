@@ -56,7 +56,7 @@ export default function TeacherListC() {
                     <Link 
                       key={m.session_id} 
                       className={styles.cTbody} 
-                      href={`/teacher-sign/detail/${m.session_id}`}>
+                      href={`/teacher-sign/update/${m.session_id}`}>
                       <div className={styles.cTd1}>
                         <img
                           className={styles.courseImg}

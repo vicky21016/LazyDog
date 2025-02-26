@@ -52,10 +52,12 @@ export function CartProvider({ children }) {
   // 商品增減邏輯
   const onAddProduct = (product, amount) => {
     if (!amount) amount = 1;
-    const foundIndex = productItems.findIndex((v) => v.id === product.id);
+    const foundIndex = productItems.findIndex(
+      (v) => v.productID == product.productID
+    );
     if (foundIndex !== -1) {
       const nextItems = productItems.map((v) =>
-        v.id === product.id ? { ...v, count: v.count + amount } : v
+        v.productID == product.productID ? { ...v, count: v.count + amount } : v
       );
       setProductItems(nextItems);
     } else {
