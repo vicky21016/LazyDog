@@ -197,7 +197,7 @@ export const getId = async (req, res) => {
 export const createFavorite = async (req, res) => {
   try {
     const { userID, productIDlist } = req.body;
-    if (!userID || !productIDlist) {
+    if (!userID) {
       return res.status(401).json({
         status: "error",
         message: "請從正規管道進入新增收藏頁面",
@@ -211,7 +211,7 @@ export const createFavorite = async (req, res) => {
         return connectError(req, res);
       }
     });
-
+    if (!productIDlist) productIDlist = "";
     const product = await createNewFavorite(userID, productIDlist);
     if (product.affectedRows == 0) {
       throw new Error("新增收藏失敗");
