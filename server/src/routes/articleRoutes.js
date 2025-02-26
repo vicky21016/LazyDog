@@ -12,15 +12,10 @@ import {
   uploadController,
 } from "../controllers/articleController.js";
 import { getArticlesByAuthorS } from "../services/articleService.js";
-
 import { dirname, resolve } from "path";
-
 import { fileURLToPath } from "url";
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
-
-
-
 const router = express.Router();
 
 // 用於處理一般表單資料，不包含檔案
