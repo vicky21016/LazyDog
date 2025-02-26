@@ -1,11 +1,10 @@
-'use client'
+"use client";
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import styles from "../courseId.module.css";
 
-
-export default function Breadcrumb({course}) {
-  const c = course?.[0]
+export default function Breadcrumb({ course }) {
+  const c = course?.[0];
 
   return (
     <>
@@ -20,10 +19,10 @@ export default function Breadcrumb({course}) {
           </li>
           <img src="/course/img/right.svg" alt="" />
           <li>
-            <a href>{c?.name}</a>
+            <a href="#">{c?.name}</a>
           </li>
         </ul>
-      </nav>      
+      </nav>
     </>
-  )
+  );
 }
