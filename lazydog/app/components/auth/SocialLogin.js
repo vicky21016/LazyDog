@@ -2,23 +2,25 @@
 
 import { useAuth } from "@/hooks/use-auth";
 import Link from "next/link";
+import styles from "../../../styles/modules/form.module.css"
+
 export default function SocialLogin() {
   const { googleLogin } = useAuth();
 
   return (
-    <div className="lumi-social-login">
+    <div className={`${styles.sociallogin}`}>
       {/* Google 登入按鈕 */}
-      <button onClick={googleLogin} className="lumi-social-button">
+      <button onClick={googleLogin} className={`${styles.socialloginBtn}`}>
         <img
           src="/images/Google.png"
           alt="google"
-          className="lumi-google-icon"
+          className={`${styles.googleIcon}`}
         />
       </button>
 
       {/* LINE 登入按鈕 */}
-      <Link href="/line/google-login" className="lumi-social-button">
-        <img src="/images/line.webp" alt="line" className="lumi-line-icon" />
+      <Link href="/line/google-login" className={`${styles.socialloginBtn}`}>
+        <img src="/images/line.webp" alt="line" className={`${styles.lineIcon}`} />
       </Link>
     </div>
   );

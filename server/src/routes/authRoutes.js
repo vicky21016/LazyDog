@@ -49,6 +49,8 @@ router.post("/login", upload.none(), async (req, res) => {
         phone: user.phone,
         avatar,
         teacher_id: user.teacher_id, // Add teacher_id here
+        company_name: user.company_name,
+        business_license_number: user.business_license_number,
       },
       secretKey,
       {
@@ -124,6 +126,8 @@ router.post("/register", upload.none(), async (req, res) => {
         phone: user.phone,
         avatar: user.avatar,
         teacher_id: user.teacher_id, // Add teacher_id here
+        company_name: user.company_name,
+        business_license_number: user.business_license_number,
       },
       secretKey,
       {
@@ -151,6 +155,8 @@ router.post("/logout", checkToken, (req, res) => {
       phone: "",
       avatar: "",
       teacher_id: "", // Add teacher_id here
+      company_name: "",
+      business_license_number: "",
     },
     secretKey,
     { expiresIn: "-10s" }
@@ -221,6 +227,8 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
         phone: user.phone,
         avatar: await getAvatar(user.user_img),
         teacher_id: user.teacher_id, // Add teacher_id here
+        company_name: user.company_name,
+        business_license_number: user.business_license_number,
       },
       secretKey,
       { expiresIn: "10m" }
@@ -277,6 +285,8 @@ router.post(
           phone: req.decoded.phone,
           avatar: newFileName,
           teacher_id: req.decoded.teacher_id, // Add teacher_id here
+          company_name: req.decoded.company_name,
+          business_license_number: req.decoded.business_license_number,
         },
         secretKey,
         { expiresIn: "30m" }
@@ -306,6 +316,8 @@ router.post("/status", checkToken, (req, res) => {
       phone: decoded.phone,
       avatar: decoded.avatar,
       teacher_id: decoded.teacher_id, // Add teacher_id here
+      company_name: decoded.company_name,
+      business_license_number: decoded.business_license_number,
     },
     secretKey,
     { expiresIn: "30m" }
