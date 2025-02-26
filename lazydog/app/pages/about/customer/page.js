@@ -1,11 +1,23 @@
 import Header from "../../../components/layout/header"; 
-
+import Bread from "../../../components/teacher/breadcrumb"; 
 export default async function CustomerPage(props) {
     return (
       <>
         <Header />
         <section className="lumi-all-wrapper my-4">
-          <h3 className="mb-5">客戶隱私權條款</h3>
+          <Bread 
+            links={[
+              { label: "首頁 ", href: "/" },
+              { label: " 關於我們", href: "/teacher" },
+
+              {
+                label: "客戶隱私權條款",
+                href: "/pages/about/customer",
+                active: true,
+              },
+            ]}
+          />
+          <h3 className="my-5">客戶隱私權條款</h3>
           <p className="mb-5">
             非常歡迎您光臨「LAZYDOG」（以下簡稱本網站），為了讓您能夠安心的使用本網站的各項服務與資訊，特此向您說明本網站的隱私權保護政策，以保障您的權益，請您詳閱下列內容：
           </p>

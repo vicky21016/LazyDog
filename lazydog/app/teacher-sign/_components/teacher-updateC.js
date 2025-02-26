@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { updateCourse } from "@/services/teachersignService";
+// import { updateCourse } from "@/services/teachersignService";
+import Swal from "sweetalert2";
 import styles from "../css/teacherSignUpdate.module.css";
 import CourseIdPage from "@/app/course/[courseId]/page";
 
@@ -28,9 +29,6 @@ export default function TeacherUpdateC() {
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
-        // console.log(data.data.otherpics);
-        // console.log(data.data.places);
         setCS(data.data.courses[0]);
         setMainpic(data.data.mainpic[0]);
         setOtherpics(data.data.otherpics);
@@ -42,33 +40,94 @@ export default function TeacherUpdateC() {
       });
   }, [sessionCode]);
 
-  // 表單變更
+  // 欄位變更
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (files) {
+    setCS((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // 圖片上傳
+  const handleImageChange = (e) => {
+    const { name, files } = e.target;
+
+    if (files && files.length > 0) {
       if (name === "mainpic") {
         setMainpic(files[0]); // 更新主圖片
       } else if (name === "otherpics") {
-        setOtherpics([...files]); // 更新其他圖片，轉為陣列
+        setOtherpics((prev) => [...prev, ...Array.from(files)]); // 加入新的圖片
       }
-    } else {
-      setCS((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
     }
   };
 
-  // 圖片變更
+  // otherpics 刪除
   const handleDelete = (id) => {
     setOtherpics(otherpics.filter((other) => other.id !== id));
   };
 
+  // 跳出框效果
+  const animationConfig = {
+    showClass: {
+      popup: `
+      animate__animated
+      animate__fadeInUp
+      animate__faster
+    `,
+    },
+    hideClass: {
+      popup: `
+      animate__animated
+      animate__fadeOutDown
+      animate__faster
+    `,
+    },
+  };
+
+  // 更新至後台
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 更新至後台
+    if (
+      !cs.max_people ||
+      !cs.class_dates ||
+      !cs.start_date ||
+      !cs.start_time ||
+      !cs.end_time ||
+      !cs.area_id
+    ) {
+      Swal.fire({
+        title: "欄位未填寫完整",
+        text: "請檢查所有必填欄位！",
+        icon: "warning",
+        confirmButtonText: "確定",
+        ...animationConfig,
+      });
+      return;
+    }
+    if (!mainpic) {
+      Swal.fire({
+        title: "請選擇主圖片",
+        text: "主圖片是必須的！",
+        icon: "warning",
+        confirmButtonText: "確定",
+        ...animationConfig,
+      });
+      return;
+    }
+    if (otherpics.length === 0) {
+      Swal.fire({
+        title: "請上傳至少一張其他圖片",
+        text: "其他圖片至少需要有一張！",
+        icon: "warning",
+        confirmButtonText: "確定",
+        ...animationConfig,
+      });
+      return;
+    }
+
     const courseData = {
       name: cs.name,
       type_id: cs.type_id,
@@ -117,12 +176,28 @@ export default function TeacherUpdateC() {
     })
       .then((res) => res.json())
       .then((data) => {
-        alert("資料更新成功！");
         console.log("更新成功:", data);
+        Swal.fire({
+          title: "資料更新成功！",
+          text: "課程資料已成功更新！",
+          icon: "success",
+          confirmButtonText: "確定",
+          ...animationConfig,
+        });
       })
-      .catch((err) => console.error("Error updating data:", err));
+      .catch((err) => {
+        console.error("Error updating data:", err);
+        Swal.fire({
+          title: "更新失敗",
+          text: "資料更新發生錯誤，請稍後再試。",
+          icon: "error",
+          confirmButtonText: "確定",
+          ...animationConfig,
+        });
+      });
   };
 
+  // 跳頁
   const changepage = (path) => {
     if (path) {
       router.push(`/teacher-sign/${path}`);
@@ -143,7 +218,7 @@ export default function TeacherUpdateC() {
                 <input
                   type="text"
                   className={`form-control`}
-                  value={cs.name}
+                  value={cs?.name}
                   disabled
                   readOnly
                 />
@@ -172,7 +247,7 @@ export default function TeacherUpdateC() {
                 <input
                   type="text"
                   className={`form-control`}
-                  value={cs.price}
+                  value={cs?.price}
                   disabled
                   readOnly
                 />
@@ -182,7 +257,7 @@ export default function TeacherUpdateC() {
                 <input
                   type="text"
                   className={`form-control`}
-                  value={cs.duration}
+                  value={cs?.duration}
                   disabled
                   readOnly
                 />
@@ -194,7 +269,7 @@ export default function TeacherUpdateC() {
                 <input
                   type="text"
                   className={`form-control  ${styles.controls}`}
-                  value={cs.max_people}
+                  value={cs?.max_people}
                   onChange={handleChange}
                 />
               </div>
@@ -208,7 +283,7 @@ export default function TeacherUpdateC() {
                   type="text"
                   className={`form-control ${styles.controls}`}
                   placeholder={`範例: 2025 【台北】 08/17、08/24、08/31、09/07、09/14 、09/21、09/28`}
-                  value={cs.class_dates}
+                  value={cs?.class_dates}
                   name="class_dates"
                   onChange={handleChange}
                 />
@@ -220,7 +295,7 @@ export default function TeacherUpdateC() {
                 <input
                   type="text"
                   className={`form-control  ${styles.controls}`}
-                  value={cs.start_date}
+                  value={cs?.start_date}
                   name="start_date"
                   onChange={handleChange}
                 />
@@ -250,7 +325,7 @@ export default function TeacherUpdateC() {
                   <input
                     type="text"
                     className={`form-control  ${styles.controls}`}
-                    value={cs.start_time}
+                    value={cs?.start_time}
                     name="start_time"
                     onChange={handleChange}
                   />
@@ -258,7 +333,7 @@ export default function TeacherUpdateC() {
                   <input
                     type="text"
                     className={`form-control  ${styles.controls}`}
-                    value={cs.end_time}
+                    value={cs?.end_time}
                     name="end_time"
                     onChange={handleChange}
                   />
@@ -275,7 +350,7 @@ export default function TeacherUpdateC() {
                   style={{ resize: "none" }}
                   id="exampleFormControlTextarea1"
                   rows={8}
-                  value={cs.description}
+                  value={cs?.description}
                   disabled
                   readOnly
                 />
@@ -289,7 +364,7 @@ export default function TeacherUpdateC() {
                   style={{ resize: "none" }}
                   id="exampleFormControlTextarea1"
                   rows={8}
-                  value={cs.notice}
+                  value={cs?.notice}
                   disabled
                   readOnly
                 />
@@ -301,7 +376,7 @@ export default function TeacherUpdateC() {
                   style={{ resize: "none" }}
                   id="exampleFormControlTextarea1"
                   rows={8}
-                  value={cs.qa}
+                  value={cs?.qa}
                   disabled
                   readOnly
                 />
@@ -309,25 +384,59 @@ export default function TeacherUpdateC() {
             </section>
             <section className={`row g-1 mb-5 ${styles.section4}`}>
               <div className={`col-md-12 col-12 mt-3`}>
-                <label className={`form-label`}>課程圖片</label>
+                <label className={`form-label`}>
+                  課程圖片<span className={styles.must}>*</span>
+                </label>
               </div>
 
               <div className={`col-md-5 col-12 mt-4 mb-5 ${styles.mainPic}`}>
                 <div className={styles.imageCard}>
-                  <img
-                    className={styles.imgCr}
-                    src={`/course/img/${mainpic?.url}`}
-                    alt={`${cs.name}-課程主圖`}
-                  />
-                  {/* <button 
-                          type="button" 
-                          className={`${styles.deleteBtn1} ${styles.deletPic}`}
-                          onClick={()=> setMainpic(null)}>×</button> */}
+                  {mainpic ? (
+                    <img
+                      className={styles.imgCr}
+                      src={
+                        mainpic instanceof File
+                          ? URL.createObjectURL(mainpic)
+                          : `/course/img/${mainpic.url}`
+                      }
+                      alt="主圖片"
+                    />
+                  ) : (
+                    <span>未選擇圖片</span>
+                  )}
+
+                  {mainpic && (
+                    <button
+                      type="button"
+                      className={`${styles.deleteBtn1} ${styles.deletPic}`}
+                      onClick={() => setMainpic(null)}
+                    >
+                      ×
+                    </button>
+                  )}
                 </div>
-                {/* <button type="button" className={`btn btn-primary btn-sm ${styles.addPicBtn}`} >
-                          新增
-                        </button> */}
-                {/* <input type="file" id="imageUpload" className={`form-control d-none add`} accept="image/*" /> */}
+
+                {!mainpic && (
+                  <>
+                    <button
+                      type="button"
+                      className={`btn btn-primary btn-sm ${styles.addPicBtn}`}
+                      onClick={() =>
+                        document.getElementById("mainpicUpload").click()
+                      }
+                    >
+                      新增
+                    </button>
+                    <input
+                      type="file"
+                      id="mainpicUpload"
+                      className="d-none"
+                      accept="image/*"
+                      name="mainpic"
+                      onChange={handleImageChange}
+                    />
+                  </>
+                )}
               </div>
               <div className={`col-md-7 col-12 mt-4 mb-5 ${styles.otherPic}`}>
                 <div
@@ -339,19 +448,54 @@ export default function TeacherUpdateC() {
                       <img
                         className={`${styles.imgCr} ${styles.pics}`}
                         src={`/course/img/${other.url}`}
-                        alt={`${cs.name}-課程其他圖片`}
+                        alt={`${cs?.name}-課程其他圖片`}
                       />
-                      {/* <button 
-                              type="button" 
-                              className={`${styles.deleteBtn} ${styles.deletPic}`}
-                              onClick ={() => handleDelete(other.id)}>×</button> */}
+                      <button
+                        type="button"
+                        className={`${styles.deleteBtn} ${styles.deletPic}`}
+                        onClick={() => handleDelete(other.id)}
+                      >
+                        ×
+                      </button>
                     </div>
                   ))}
+                  {otherpics.length < 5 && (
+                    <>
+                      <button
+                        type="button"
+                        className={`btn btn-primary btn-sm ${styles.addPicBtn}`}
+                        onClick={() =>
+                          document.getElementById("fileInput").click()
+                        }
+                      >
+                        新增
+                      </button>
+                      <input
+                        id="fileInput"
+                        type="file"
+                        className="form-control d-none"
+                        accept="image/*"
+                        name="otherpics"
+                        multiple
+                        onChange={handleImageChange}
+                      />
+                    </>
+                  )}
                 </div>
-                {/* <button type="button" className={`btn btn-primary btn-sm ${styles.addPicBtn}`} >
-                          新增
-                        </button> */}
-                {/* <input type="file" id="imageUpload" className={`form-control d-none add`} accept="image/*" multiple /> */}
+                <button
+                  type="button"
+                  className={`btn btn-primary btn-sm ${styles.addPicBtn}`}
+                >
+                  新增
+                </button>
+                <input
+                  type="file"
+                  className={`form-control d-none add`}
+                  accept="image/*"
+                  name="otherpics"
+                  multiple
+                  onChange={handleImageChange}
+                />
               </div>
             </section>
 
@@ -362,21 +506,19 @@ export default function TeacherUpdateC() {
                 className={`btn btn-sm px-4 mt-4 ${styles.cancleBtn}`}
                 onClick={() => changepage("list")}
               >
-                <a className={styles.cancleBtnA} href={`/teacher-sign/list`}>
-                  取消
-                </a>
+                取消
+              </button>
+              <button
+                type="submit"
+                className={`btn btn-primary btn-sm px-4 mt-4 ${styles.deletedBtn}`}
+              >
+                刪除
               </button>
               <button
                 type="submit"
                 className={`btn btn-primary btn-sm px-4 mt-4 ${styles.submitBtn}`}
               >
-                <a className={styles.submitBtnA}>儲存</a>
-              </button>
-              <button
-                type="submit"
-                className={`btn btn-primary btn-sm px-4 mt-4 ${styles.submitBtn}`}
-              >
-                <a className={styles.submitBtnA}>刪除</a>
+                儲存
               </button>
             </div>
           </form>

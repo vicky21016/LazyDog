@@ -28,6 +28,7 @@ import articlesRoutes from "./routes/articleRoutes.js";
 import teacherRoute from "./routes/teacherRoute.js";
 import order from "./routes/orderRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
+import reviewsRoutes from "./routes/reviewsRoutes.js";
 import ecpay from "./routes/ecpay-test-only.js";
 
 dotenv.config();
@@ -81,6 +82,7 @@ app.use("/api/articles", articlesRoutes);
 app.use("/favorite", favoriteRouter);
 app.use("/teachers", teacherRoute);
 app.use("/api/comment", commentRoutes);
+app.use("/api/reviews", reviewsRoutes);
 
 app.use("/ecpay-test-only", ecpay);
 app.use("/order", order);
