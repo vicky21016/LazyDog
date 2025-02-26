@@ -8,13 +8,27 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart"; // 引入useCart以便取得購物車資料
-
+import { useOrder } from "@/hooks/use-order";
 import Header from "../../components/layout/header";
 import Input from "../../components/forms/Input";
 import InputFiled from "../../components/forms/InputField";
 import Hotel from "../../components/cart/hotel";
 import Course from "../../components/cart/course";
 export default function CartListPayPage(props) {
+  const { user } = useAuth()
+  const [productOrder, setProductOrder] = useState({
+    user_id: "",
+    orderID: "",
+    coupon_id: "",
+    discount_amount: "",
+    productID_list: [],
+    price_list: [],
+    amount_list: [],
+    total_price: "",
+    final_amount: "",
+    created_at: "",
+    is_deleted: "",
+  });
   // 檢查是否登入
   const { isAuth } = useAuth();
   // 建立ref，用來放置form表單
@@ -34,10 +48,11 @@ export default function CartListPayPage(props) {
     totalHotelAmount,
   } = useCart();
 
+  const { createOrder } = useOrder();
   // 確保商品資料正確
   const itemsValue = `
-  ${productItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
-  ${courseItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
+  ${productItems.map((item) => `${item.name} x ${item.count}`).join(", ")}#
+  ${courseItems.map((item) => `${item.name} x ${item.count}`).join(", ")}#
   ${hotelItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
 `;
 
@@ -74,9 +89,26 @@ export default function CartListPayPage(props) {
   };
 
   const handleEcpay = async () => {
-    console.log(
-      `http://localhost:5000/ecpay-test-only?amount=${amountValue}&items=${itemsValue}`
-    );
+    if (!user || !user.id) {
+      toast.error("請先登入後再進行結帳");
+      return;
+    }
+    const newOrder = {
+      user_id: user.id,
+      orderID: `PD${new Date().getTime()}`,
+      coupon_id: "",
+      discount_amount: 0,
+      productID_list: productItems.map((item) => item.id),
+      price_list: productItems.map((item) => item.price),
+      amount_list: productItems.map((item) => item.count),
+      total_price: totalProductAmount,
+      final_amount: totalProductAmount,
+      created_at: new Date(),
+      is_deleted: 0,
+      status: "未付款",
+    };
+    await setProductOrder(newOrder);
+    await createOrder(newOrder);
 
     // 先連到node伺服器後端，取得LINE Pay付款網址
     const res = await fetch(

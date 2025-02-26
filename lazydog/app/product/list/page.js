@@ -1,95 +1,35 @@
 "use client";
 
-import React, { useState, useEffect, useRef, use } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./list.module.css";
 import Aside from "../_components/aside/aside";
 import Link from "next/link";
 import Card from "../_components/card/card";
 import useSWR from "swr";
 import { useAuth } from "@/hooks/use-auth";
+import { useListFetch } from "@/hooks/product/use-fetch";
+import { useListFavorite } from "@/hooks/product/use-favorite";
 
 export default function ListPage(props) {
   const { user } = useAuth();
-  const [favorite, setFavorite] = useState([]);
-  const [sortName, setSortName] = useState("依商品名稱排序");
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(30000);
-  const [newUrl, setNewUrl] = useState("http://localhost:5000/api/products");
-  const [pageNow, setPageNow] = useState(1);
-  const changeUrl = (newUrl) => {
-    setNewUrl(newUrl);
-    if (pageNow !== 1) {
-      setPageNow(1);
-    }
-  };
-  const url = newUrl;
-  useEffect(() => {
-    changeUrl(
-      `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}${
-        sortName == "依商品名稱排序"
-          ? "&sort=name"
-          : sortName == "依商品價格⬆排序"
-          ? "&sort=price"
-          : sortName == "依商品價格⬇排序"
-          ? "&sort=priceDown"
-          : sortName == "依上架時間⬆排序"
-          ? "&sort=update"
-          : sortName == "依上架時間⬇排序"
-          ? "&sort=updateDown"
-          : ""
-      }`
-    );
-  }, [minPrice, maxPrice]);
-  const fetcher = async (url) => {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("資料要求失敗");
-      return res.json();
-    } catch (err) {
-      console.error("資料要求失敗:", err);
-      throw err;
-    }
-  };
-  const { data, isLoading, error, mutate } = useSWR(url, fetcher);
-  const products = data?.data;
-
-  let pages = "";
-  if (products) pages = Math.ceil(products.length / 24);
-  const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
-
-  const favoriteAPI = "http://localhost:5000/api/products/favorite";
   const {
-    data: favoriteData,
-    isLoading: favoriteLoading,
-    error: favoriteError,
-    mutate: favoriteMutate,
-  } = useSWR(favoriteAPI, fetcher);
-  favoriteMutate();
-  useEffect(() => {
-    console.log(favorite);
-    favoriteData?.data.map(async (v, i) => {
-      if (user?.id > 0) {
-        const formData = new FormData();
-        formData.append("userID", user?.id);
-        formData.append("productIDlist", favorite.join(","));
-        let API = "http://localhost:5000/api/products/favorite";
-        let methodType = "POST";
-        if (v.user_id == user?.id) methodType = "PATCH";
-        try {
-          const res = await fetch(API, {
-            method: methodType,
-            body: formData,
-          });
-          const result = await res.json();
-          if (result.status != "success") throw new Error(result.message);
-          // console.log(result);
-        } catch (error) {
-          console.log(error);
-          alert(error.message);
-        }
-      }
-    });
-  }, [favorite]);
+    changeUrl,
+    minPrice,
+    setMinPrice,
+    maxPrice,
+    setMaxPrice,
+    sortName,
+    setSortName,
+    pages,
+    pageNow,
+    setPageNow,
+    product,
+    mutate,
+    isLoading,
+    error,
+  } = useListFetch();
+  const { favorite, setFavorite } = useListFavorite();
+
   return (
     <>
       <div className={`${styles.Container} container`}>

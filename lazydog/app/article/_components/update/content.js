@@ -1,56 +1,112 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import FroalaEditor from 'froala-editor';
 import 'froala-editor/js/languages/zh_tw.js';
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/js/plugins.pkgd.min.js';
+import $ from 'jquery';
+import { debounce } from 'lodash'; // 使用 lodash 的 debounce 函數
+import styles from '../update/AddArticleModal.module.css'
 
-// 定義前端和後端圖片路徑的基礎 URL
-const FRONTEND_IMAGE_BASE = 'http://localhost:3000/';
-const BACKEND_IMAGE_BASE = 'http://localhost:5000/api/articles/';
+// 設置 jQuery 為全域變數
+if (typeof window !== 'undefined') {
+  window.$ = $;
+  window.jQuery = $;
+}
 
-export default function FroalaEditorWrapper({ content, onContentChange }) {
+export default function FroalaEditorWrapper({ onContentChange, initialContent }) {
   const editorRef = useRef(null);
-  const editorInstanceRef = useRef(null); // 用於保存 Froala 實例
-  const isInitializedRef = useRef(false); // 用於標記編輯器是否已初始化
+  const editorInstanceRef = useRef(null);
 
-  // 將前端圖片路徑轉換為後端路徑
-  const convertFrontendToBackendImagePath = (htmlContent) => {
-    const regex = new RegExp(`${FRONTEND_IMAGE_BASE}([a-f0-9-]+)(\\\\?)`, 'g');
-    return htmlContent.replace(regex, (match, imageId) => {
-      return `${BACKEND_IMAGE_BASE}${imageId}.png`;
-    });
-  };
+  // 使用 debounce 減少 onContentChange 的觸發頻率
+  const debouncedContentChange = useCallback(
+    debounce((content) => {
+      if (typeof onContentChange === 'function') {
+        onContentChange(content);
+      }
+    }, 300), // 300ms 的防抖時間
+    [onContentChange]
+  );
 
-  // 處理初始化內容的轉換
-  const getProcessedContent = () => {
-    return content ? convertFrontendToBackendImagePath(content) : '';
-  };
-
+  // 初始化 Froala 編輯器
   useEffect(() => {
-    if (editorRef.current && !editorInstanceRef.current) {
+    if (editorInstanceRef.current) return; // 避免重複初始化
+
+    if (editorRef.current) {
       editorInstanceRef.current = new FroalaEditor(editorRef.current, {
         language: 'zh_tw',
-        toolbarButtons: ['bold', 'italic', 'underline', 'insertImage', 'insertLink', 'html'],
-        pluginsEnabled: ['image', 'link', 'html'],
-        events: {
-          initialized: function () {
-            isInitializedRef.current = true;
-            const processedContent = getProcessedContent();
-            if (processedContent) {
-              this.html.set(processedContent);
-            }
+        toolbarButtons: {
+          moreText: {
+            buttons: [
+              'bold',
+              'italic',
+              'underline',
+              'strikeThrough',
+              'subscript',
+              'superscript',
+              'fontFamily',
+              'fontSize',
+              'textColor',
+              'backgroundColor',
+              'inlineClass',
+              'inlineStyle',
+              'clearFormatting',
+            ],
           },
+          moreParagraph: {
+            buttons: [
+              'alignLeft',
+              'alignCenter',
+              'alignRight',
+              'alignJustify',
+              'formatOL',
+              'formatUL',
+              'paragraphFormat',
+              'paragraphStyle',
+              'lineHeight',
+              'outdent',
+              'indent',
+              'quote',
+            ],
+          },
+          moreRich: {
+            buttons: [
+              'insertLink',
+              'insertImage',
+              'insertVideo',
+              'insertTable',
+              'emoticons',
+              'fontAwesome',
+              'specialCharacters',
+              'embedly',
+              'insertFile',
+              'insertHR',
+            ],
+          },
+          moreMisc: {
+            buttons: ['undo', 'redo', 'fullscreen', 'html', 'help'],
+          },
+        },
+        pluginsEnabled: ['image', 'italic', 'underline', 'strikeThrough'],
+        imageUploadURL: 'http://localhost:5000/api/articles/upload',
+        videoUploadURL: '/api/froala-upload?type=video',
+        fileUploadURL: '/api/froala-upload?type=file',
+        events: {
           contentChanged: function () {
-            if (isInitializedRef.current) {
-              const content = this.html.get();
-              console.log("🔹 Froala 內容變更:", content);
-              onContentChange(content); // ✅ 回傳內容給父組件
+            const content = this.html.get();
+            debouncedContentChange(content); // 使用防抖函數
+          },
+          initialized: function () {
+            window.editorInstance = this;
+            this.el.style.backgroundColor = 'transparent';
+            if (initialContent) {
+              this.html.set(initialContent);
             }
           },
         },
+        zIndex: 1050,
       });
     }
 
@@ -58,20 +114,17 @@ export default function FroalaEditorWrapper({ content, onContentChange }) {
       if (editorInstanceRef.current) {
         editorInstanceRef.current.destroy();
         editorInstanceRef.current = null;
-        isInitializedRef.current = false;
       }
+      window.editorInstance = null;
     };
-  }, [onContentChange]);
+  }, [debouncedContentChange, initialContent]);
 
-  // 當外部 content 更新時，同步轉換路徑並更新編輯器
-  useEffect(() => {
-    if (isInitializedRef.current && editorInstanceRef.current) {
-      const processedContent = getProcessedContent();
-      if (processedContent !== editorInstanceRef.current.html.get()) {
-        editorInstanceRef.current.html.set(processedContent);
-      }
-    }
-  }, [content]);
-
-  return <div ref={editorRef}></div>;
+  return (
+    <div>
+      <p>
+        <span className={`mx-1 ${styles['red-sign']}`}></span>
+      </p>
+      <div id="example" ref={editorRef}></div>
+    </div>
+  );
 }

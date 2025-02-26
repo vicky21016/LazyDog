@@ -25,7 +25,7 @@ export default function My() {
     },
     {
       name: "課程評論",
-      path: "/teacher-sign/review",
+      path: `/course/review/${user.teacher_id}`,
       icon: <i className="bi bi-chat-left-heart "></i>,
     },
     {
