@@ -6,7 +6,6 @@ export function useGoogleMap(lat, lng, mapRef) {
 
   useEffect(() => {
     if (!lat || !lng || !mapRef.current) {
-      console.warn(" 等待經緯度數據或 mapRef...");
       return;
     }
 

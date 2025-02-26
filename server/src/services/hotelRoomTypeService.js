@@ -13,17 +13,21 @@ export const getAllHotelRooms = async () => {
     throw new Error("無法取得旅館房型: " + error.message);
   }
 };
-export const getHotelRoomByIds = async (id) => {
+export const getHotelRoomByIds = async (hotelId) => {
   try {
     const [rows] = await pool.query(
-      "SELECT * FROM hotel_room_types WHERE id = ? AND is_deleted = 0",
-      [id]
+      `SELECT hrt.*, rt.name AS room_type_name, rt.description AS room_type_description
+       FROM hotel_room_types hrt
+       JOIN room_type rt ON hrt.room_type_id = rt.id
+       WHERE hrt.hotel_id = ? AND hrt.is_deleted = 0`,
+      [hotelId]
     );
-    return rows[0] || null;
+    return rows; // 返回所有符合 hotelId 的房型
   } catch (error) {
-    throw new Error(`找不到hotel房型 (ID: ${id})，錯誤訊息：` + error.message);
+    throw new Error(`找不到 hotel_id=${hotelId} 的房型，錯誤訊息：` + error.message);
   }
 };
+
 export const createHotelRooms = async (data) => {
   try {
     const {

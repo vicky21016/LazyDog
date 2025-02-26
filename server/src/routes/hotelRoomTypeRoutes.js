@@ -11,7 +11,7 @@ import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 //都可以
 router.get("/", getAllHotelRoom);
-router.get("/:id", getHotelRoomById);
+router.get("/:hotelId", getHotelRoomById);
 //operator可以
 router.post("/", verifyToken, verifyRole(["operator"]), createHotelRoom);
 router.patch("/:id", verifyToken, verifyRole(["operator"]), updateHotelRoom);
