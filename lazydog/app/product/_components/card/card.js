@@ -48,18 +48,24 @@ export default function CardCard({
       );
       if (userFavorite?.productID_list.length > 0) {
         setFavoriteList(userFavorite?.productID_list.split(","));
+        localStorage.setItem("favoritePD", JSON.stringify(favoriteList));
       }
     }
-  }, [favoriteData]);
+  }, []);
   useEffect(() => {
     if (favoriteList.length > 0 && productID) {
       if (favoriteList.includes(productID)) setHeartState(true);
-      setFavorite((favoriteNow) => {
-        if (JSON.stringify(favoriteNow) !== JSON.stringify(favoriteList)) {
-          return favoriteList;
-        }
-        return favoriteNow;
-      });
+      const storedFavorites =
+        JSON.parse(localStorage.getItem("favoritePD")) || [];
+      const isSameContent =
+        storedFavorites.length == favoriteList.length &&
+        storedFavorites.every((PD) => favoriteList.includes(PD)) &&
+        favoriteList.every((PD) => storedFavorites.includes(PD));
+
+      if (!isSameContent) {
+        setFavorite(favoriteList);
+        localStorage.setItem("favoritePD", JSON.stringify(favoriteList));
+      }
     }
   }, [favoriteList]);
 

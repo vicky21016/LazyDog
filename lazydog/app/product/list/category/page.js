@@ -8,7 +8,6 @@ import { useSearchParams, redirect } from "next/navigation";
 import Card from "../../_components/card/card";
 import useSWR from "swr";
 import { useAuth } from "@/hooks/use-auth";
-import { useCart } from "@/hooks/use-cart";
 
 export default function ListPage({}) {
   const { user } = useAuth();
@@ -145,17 +144,19 @@ export default function ListPage({}) {
     error: favoriteError,
     mutate: favoriteMutate,
   } = useSWR(favoriteAPI, fetcher);
-  favoriteMutate();
+
   useEffect(() => {
-    console.log(favorite);
-    favoriteData?.data.map(async (v, i) => {
+    const updateFavorite = async () => {
+      console.log(favorite);
+      let methodType = "POST";
+      favoriteData?.data.map((v, i) => {
+        if (v.user_id == user?.id) methodType = "PATCH";
+      });
       if (user?.id > 0) {
         const formData = new FormData();
         formData.append("userID", user?.id);
         formData.append("productIDlist", favorite.join(","));
         let API = "http://localhost:5000/api/products/favorite";
-        let methodType = "POST";
-        if (v.user_id == user?.id) methodType = "PATCH";
         try {
           const res = await fetch(API, {
             method: methodType,
@@ -169,7 +170,8 @@ export default function ListPage({}) {
           alert(error.message);
         }
       }
-    });
+    };
+    updateFavorite();
   }, [favorite]);
   return (
     <>
