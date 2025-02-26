@@ -15,11 +15,11 @@ export default function App (){
   const { teachers = [] } = useTeachers();
 
   // 分頁
-  const [currPage, setCurrPage] = useState(1);
+  const [page, setPage] = useState(1);
   const perPage = 9;
   const totalPages =  Math.max(1, Math.ceil((teachers?.length || 0) / perPage));
 
-  const startIndex = (currPage - 1) * perPage;
+  const startIndex = (page - 1) * perPage;
   const currentCourses = teachers?.slice(startIndex, startIndex + perPage);
 
   // if (loading) return
@@ -57,7 +57,7 @@ export default function App (){
               <h3 className={style1.list}>師資列表</h3>
               <div className={style1.TitleFilter}>
                 <img src="/product/font/filter.png" alt="" />
-                <h5>依熱門排序</h5>
+                <h6>依熱門排序</h6>
               </div>
             </div>
           </section>
@@ -103,7 +103,7 @@ export default function App (){
                 })}
             </div>
                 <Page
-                  totalPages={totalPages} currPage={currPage} setCurrPage={setCurrPage}
+                  totalPages={totalPages} currPage={page} setCurrPage={setPage}
                 />
               </div>
             </div>
