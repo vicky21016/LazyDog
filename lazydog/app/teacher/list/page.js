@@ -15,11 +15,11 @@ export default function App (){
   const { teachers = [] } = useTeachers();
 
   // 分頁
-  const [currPage, setCurrPage] = useState(1);
+  const [page, setPage] = useState(1);
   const perPage = 9;
   const totalPages =  Math.max(1, Math.ceil((teachers?.length || 0) / perPage));
 
-  const startIndex = (currPage - 1) * perPage;
+  const startIndex = (page - 1) * perPage;
   const currentCourses = teachers?.slice(startIndex, startIndex + perPage);
 
   // if (loading) return
@@ -103,7 +103,7 @@ export default function App (){
                 })}
             </div>
                 <Page
-                  totalPages={totalPages} currPage={currPage} setCurrPage={setCurrPage}
+                  totalPages={totalPages} currPage={page} setCurrPage={setPage}
                 />
               </div>
             </div>

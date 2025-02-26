@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import Header from "../components/layout/header";
 import MyMenu from "../components/layout/myMenu";
+import Bread from "../components/teacher/breadcrumb"; 
 import Input from "../components/forms/Input";
 import styles from "./menu.module.css";
 import style from "../../styles/modules/menu.module.css"
@@ -108,6 +109,19 @@ export default function Menu() {
   return (
     <>
       <Header />
+      <div className={`lumi-all-wrapper`}>
+        <Bread
+          links={[
+            { label: "首頁 ", href: "/" },
+
+            {
+              label: "個人資料",
+              href: "/pages",
+              active: true,
+            },
+          ]}
+        />
+      </div>
       <div className="row">
         <div className={`${style.wrapper}`}>
           <div className="d-none d-md-block col-md-3">

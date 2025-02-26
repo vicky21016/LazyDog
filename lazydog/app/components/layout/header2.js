@@ -30,9 +30,25 @@ export default function Header(props) {
       </Link>
       <nav>
         <ul className={styles["lumi-ul2"]}>
-          <li>
-            <Link href="/home">關於我們</Link>
-          </li>
+          <div className={styles["dropdown"]}>
+            <li>
+              <Link href="/home">關於我們</Link>
+            </li>
+            <div className={styles["dropdown-content"]}>
+              <Link
+                href="/pages/about/member"
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+              >
+                會員條款條款與細則
+              </Link>
+              <Link
+                href="/pages/about/customer"
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+              >
+                客戶隱私權條款
+              </Link>
+            </div>
+          </div>
           <div className={styles["dropdown"]}>
             <li>
               <Link href="/product/list" className={styles["dropbtn"]}>
