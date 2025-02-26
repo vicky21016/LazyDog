@@ -1,5 +1,6 @@
 'use client';
 
+
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -10,18 +11,20 @@ import useArticles from "@/hooks/useArticle";
 import useUploadCover from "@/hooks/uploadCover"; // 引入圖片上傳鉤子
 import { useAuth } from "@/hooks/use-auth";  // 引入 useAuth 鉤子
 
+
 export default function AddArticlePage() {
   const { createArticle } = useArticles();
-  const { uploadCover } = useUploadCover(); // ✅ 使用圖片上傳 Hook
-  const { user } = useAuth(); // ✅ 獲取當前使用者
+  const { uploadCover, isLoading, error } = useUploadCover(); // 使用圖片上傳 Hook
+  const { user } = useAuth(); // 獲取當前使用者的資料
+
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState(''); // ✅ 儲存 Froala 內容
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [imageUrl, setImageUrl] = useState(''); // ✅ 儲存圖片 URL
-  const [isSubmitting, setIsSubmitting] = useState(false); // ✅ 防止重複提交
+  const [imageUrl, setImageUrl] = useState(''); // ✅ 儲存上傳的圖片 URL
+
 
   // 類別選項
   const categoryOptions = [
@@ -31,6 +34,7 @@ export default function AddArticlePage() {
     { id: 4, name: '行為知識' },
     { id: 5, name: '開箱' }
   ];
+
 
   // 處理圖片變更
   const handleImageChange = (event) => {
@@ -43,56 +47,49 @@ export default function AddArticlePage() {
     }
   };
 
-  // 提交文章（包含圖片上傳）
+
+  // 提交文章
   const handleSubmit = async () => {
     if (!title.trim() || !selectedCategory) {
       alert("請填寫標題並選擇分類");
       return;
     }
 
-    setIsSubmitting(true); // ✅ 防止重複提交
 
-    let finalImageUrl = imageUrl; // 預設使用已經上傳的圖片 URL
-    if (selectedImage && !imageUrl) {
+    if (!user) {
+      alert("請先登入");
+      return;
+    }
+
+
+    // 如果有選擇圖片，先上傳圖片
+    let uploadedImageUrl = imageUrl; // 預設使用已上傳的圖片 URL
+    if (selectedImage) {
       try {
-        finalImageUrl = await uploadCover(selectedImage);
-        if (!finalImageUrl) {
-          alert("圖片上傳失敗，請重試");
-          setIsSubmitting(false);
-          return;
-        }
-      } catch (error) {
-        alert("圖片上傳錯誤：" + error.message);
-        setIsSubmitting(false);
+        uploadedImageUrl = await uploadCover(selectedImage);
+        console.log("後端返回的圖片 URL:", uploadedImageUrl);
+      } catch (err) {
+        console.error("圖片上傳失敗:", err);
+        alert("圖片上傳失敗，請重試");
         return;
       }
     }
 
+
+    // 提交文章資料
     const newArticle = {
       title,
       category_id: Number(selectedCategory),
-      content,
-      article_img: finalImageUrl || "", // ✅ 確保圖片網址正確
-      author_id: user.id,  
+      content, // ✅ 使用 Froala 編輯器內容
+      article_img: uploadedImageUrl || "", // 使用上傳後的圖片 URL
+      author_id: user.id,  // 把 author_id 加入到提交資料中
     };
 
-    console.log("提交的文章:", JSON.stringify(newArticle, null, 2));
 
-    try {
-      await createArticle(newArticle);
-      alert("文章發布成功！");
-      setTitle('');
-      setContent('');
-      setSelectedCategory('');
-      setSelectedImage(null);
-      setImagePreview(null);
-      setImageUrl('');
-    } catch (error) {
-      alert("文章提交失敗：" + error.message);
-    } finally {
-      setIsSubmitting(false);
-    }
+    console.log("提交的文章:", JSON.stringify(newArticle, null, 2));
+    await createArticle(newArticle);  // 傳遞帶有 author_id 的文章資料到後端
   };
+
 
   return (
     <div className="container">
@@ -113,6 +110,7 @@ export default function AddArticlePage() {
           >
             <h4>新增文章</h4>
 
+
             {/* 下拉選單 - 類別選擇 */}
             <select
               className="form-select my-3"
@@ -128,6 +126,7 @@ export default function AddArticlePage() {
               ))}
             </select>
 
+
             {/* 標題輸入 */}
             <input
               className="ps-2 w-100 d-block"
@@ -138,7 +137,8 @@ export default function AddArticlePage() {
               onChange={(e) => setTitle(e.target.value)}
             />
 
-            {/* 圖片上傳區域 */}
+
+            {/* 圖片上傳 */}
             <div style={{ margin: '20px' }}>
               <input
                 type="file"
@@ -156,10 +156,15 @@ export default function AddArticlePage() {
                   />
                 </div>
               )}
+              {error && <p style={{ color: 'red' }}>{error}</p>}
             </div>
 
+
             {/* 文章內容編輯器 */}
-            <FroalaEditorWrapper onContentChange={setContent} />
+            <FroalaEditorWrapper
+            onContentChange={(content) => setContent(content)} />
+            {/* ✅ 傳遞內容變更函數 */}
+
 
             {/* 發布按鈕 */}
             <div className="d-flex justify-content-end">
@@ -173,14 +178,13 @@ export default function AddArticlePage() {
                   borderRadius: '5px',
                 }}
                 onClick={handleSubmit}
-                disabled={isSubmitting} // ✅ 防止重複提交
+                disabled={isLoading} // 上傳中禁用按鈕
               >
-                {isSubmitting ? (
-                  <i className="bi bi-hourglass-split"></i>
-                ) : (
-                  <i className="bi bi-check-circle"></i>
+                {isLoading ? '發布中...' : (
+                  <>
+                    <i className="bi bi-check-circle"></i> 發布文章
+                  </>
                 )}
-                {isSubmitting ? " 發布中..." : " 發布文章"}
               </button>
             </div>
           </form>
@@ -189,3 +193,4 @@ export default function AddArticlePage() {
     </div>
   );
 }
+
