@@ -10,6 +10,7 @@ import {
   getCourse,
   getCourseId,
   createCourse,
+  createGetNeed,
   updateCourse,
   deleteSessionOnly,
 } from "../controllers/teacherSignController.js";
@@ -65,6 +66,7 @@ router.put(
 // 課程
 router.get("/mycourse", verifyToken, verifyRole(["teacher"]), getCourse);
 router.get("/mycourse/:id", verifyToken, verifyRole(["teacher"]), getCourseId);
+router.get("/createGet", verifyToken, verifyRole(["teacher"]), createGetNeed);
 router.post(
   "/mycourse",
   verifyToken,

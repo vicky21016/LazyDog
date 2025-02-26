@@ -3,32 +3,35 @@ import pool from "../config/mysql.js";
 // 讀取師資
 export const getTeacherInfo = async (teacherId) => {
   try {
-    const [infos] = await pool.execute(`      
+    const [infos] = await pool.execute(
+      `      
       SELECT teacher.* , users.teacher_id AS teacherId, ct.name AS typeName
       FROM teacher 
       JOIN users ON teacher.id = users.teacher_id
       JOIN course_type ct ON ct.type_id = teacher.category_id
       WHERE users.id = ? 
       AND teacher.is_deleted = 0
-    `, [teacherId]);
-    if (infos.length == 0){
+    `,
+      [teacherId]
+    );
+    if (infos.length == 0) {
       console.log("師資資訊不存在");
     }
-    
+
     const [types] = await pool.execute(`      
       SELECT *
       FROM course_type 
       WHERE is_deleted = 0
     `);
-    if (types.length == 0){
+    if (types.length == 0) {
       console.log("類別不存在");
     }
 
-    return { infos, types};
+    return { infos, types };
   } catch (err) {
     throw new Error(" 無法取得師資資訊：" + err.message);
   }
-}
+};
 
 // 編輯師資
 export const updateTeacherInfo = async (teacherId, updateData) => {
@@ -55,7 +58,7 @@ export const updateTeacherInfo = async (teacherId, updateData) => {
       Introduce,
       Experience,
       img,
-      teacherId
+      teacherId,
     ]);
 
     return result.affectedRows > 0; // 如果有更新回傳 true，否則 false
@@ -67,7 +70,7 @@ export const updateTeacherInfo = async (teacherId, updateData) => {
 // 課程列表
 export const getCoursesByTeacher = async (teacherId) => {
   try {
-    const sql =`
+    const sql = `
       SELECT 
         cs.id AS session_id, cs.course_id, cs.area_id, cs.teacher_id, cs.class_dates, 
         c.name AS course_name, c.description AS course_description, 
@@ -94,41 +97,49 @@ export const getCoursesByTeacher = async (teacherId) => {
 // 課程梯次 細節
 export const getCoursesIdByTeacher = async (id) => {
   try {
-    const [courses] = await pool.query(`
+    const [courses] = await pool.query(
+      `
        SELECT c.*, cs.*, ct.name AS typeName, cs.id AS session_id, ca.region AS region
       FROM course_session cs
       JOIN course c ON cs.course_id = c.id
       JOIN course_type ct ON c.type_id = ct.type_id
       JOIN course_area ca ON cs.area_id = ca.id
       WHERE cs.id = ?
-      AND cs.is_deleted = 0`
-      ,[id]);
-    if (courses.length == 0){
-        console.log("課程不存在");
+      AND cs.is_deleted = 0`,
+      [id]
+    );
+    if (courses.length == 0) {
+      console.log("課程不存在");
     }
 
-    const [mainpic] = await pool.query(`
+    const [mainpic] = await pool.query(
+      `
       SELECT cm.* 
       FROM course_img cm
       JOIN course_session cs ON cm.course_id = cs.course_id 
       JOIN course c ON c.id = cs.course_id 
       WHERE cs.id = ?
       AND cm.main_pic = 1
-      `,[id]);
-    if (mainpic.length == 0){
-        console.log("該課程主圖不存在");
+      `,
+      [id]
+    );
+    if (mainpic.length == 0) {
+      console.log("該課程主圖不存在");
     }
 
-    const [otherpics] = await pool.query(`
+    const [otherpics] = await pool.query(
+      `
       SELECT cm.* 
       FROM course_img cm
       JOIN course_session cs ON cm.course_id = cs.course_id 
       JOIN course c ON c.id = cs.course_id 
       WHERE cs.id = ?
       AND cm.main_pic = 0
-      `,[id]);
-    if (otherpics.length == 0){
-        console.log("該課程其他照片不存在");
+      `,
+      [id]
+    );
+    if (otherpics.length == 0) {
+      console.log("該課程其他照片不存在");
     }
 
     const [types] = await pool.execute(`      
@@ -136,7 +147,7 @@ export const getCoursesIdByTeacher = async (id) => {
       FROM course_type 
       WHERE is_deleted = 0
     `);
-    if (types.length == 0){
+    if (types.length == 0) {
       console.log("課程類別不存在");
     }
 
@@ -144,19 +155,22 @@ export const getCoursesIdByTeacher = async (id) => {
       SELECT *
       FROM course_area
     `);
-    if (places.length == 0){
+    if (places.length == 0) {
       console.log("上課地點不存在");
     }
 
-
-    return {courses, mainpic, otherpics, types, places};
+    return { courses, mainpic, otherpics, types, places };
   } catch (err) {
     throw new Error(` 無法取得 ${id} 課程:;` + err.message);
   }
 };
 
 // 新增課程+梯次
-export const createCourseWithSession = async (courseData, sessionData, imgData) => {
+export const createCourseWithSession = async (
+  courseData,
+  sessionData,
+  imgData
+) => {
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
@@ -200,37 +214,37 @@ export const createCourseWithSession = async (courseData, sessionData, imgData) 
       ]
     );
 
-    
-
     let img_id = "";
 
-     // 處理主圖
-     let mainImageId = null;
-     if (imgData?.mainImage) {
-       const [mainImgResult] = await connection.query(
-         `INSERT INTO course_img (course_id, main_pic, url) VALUES (?, ?, ?)`,
-         [courseId, 1, imgData.mainImage]
-       );
-       mainImageId = mainImgResult.insertId;
-       img_id = mainImgResult.insertId;
- 
-       // 更新課程的 img_id 欄位
-       await connection.query(`UPDATE course SET img_id = ? WHERE id = ?`, [mainImageId, courseId]);
-     }
- 
-     // 處理其他圖片
-     if (imgData?.otherImages?.length>0) {
-       for (const url of imgData.otherImages) {
-         await connection.query(
-           `INSERT INTO course_img (course_id, main_pic, url) VALUES (?, ?, ?)`,
-           [courseId, 0, url] // 其他圖片，main_pic = 0
-         );
-       }
-     }
+    // 處理主圖
+    let mainImageId = null;
+    if (imgData?.mainImage) {
+      const [mainImgResult] = await connection.query(
+        `INSERT INTO course_img (course_id, main_pic, url) VALUES (?, ?, ?)`,
+        [courseId, 1, imgData.mainImage]
+      );
+      mainImageId = mainImgResult.insertId;
+      img_id = mainImgResult.insertId;
 
+      // 更新課程的 img_id 欄位
+      await connection.query(`UPDATE course SET img_id = ? WHERE id = ?`, [
+        mainImageId,
+        courseId,
+      ]);
+    }
+
+    // 處理其他圖片
+    if (imgData?.otherImages?.length > 0) {
+      for (const url of imgData.otherImages) {
+        await connection.query(
+          `INSERT INTO course_img (course_id, main_pic, url) VALUES (?, ?, ?)`,
+          [courseId, 0, url] // 其他圖片，main_pic = 0
+        );
+      }
+    }
 
     await connection.commit(); // 提交交易
-    return { courseId, sessionId: sessionResult.insertId, mainImageId};
+    return { courseId, sessionId: sessionResult.insertId, mainImageId };
   } catch (err) {
     console.log("錯誤:", err);
     throw new Error(" 無法建立課程：" + err.message);
@@ -239,14 +253,49 @@ export const createCourseWithSession = async (courseData, sessionData, imgData) 
   }
 };
 
+// (新增) 取資料
+export const createGets = async () => {
+  try {
+    const [types] = await pool.execute(`      
+      SELECT *
+      FROM course_type 
+      WHERE is_deleted = 0
+    `);
+    if (types.length == 0) {
+      console.log("課程類別不存在");
+    }
+
+    const [places] = await pool.execute(`      
+      SELECT *
+      FROM course_area
+    `);
+    if (places.length == 0) {
+      console.log("上課地點不存在");
+    }
+
+    return { types, places };
+  } catch (err) {
+    throw new Error(` 無法取得 ${id} 課程:;` + err.message);
+  }
+};
+
 // 更新課程+梯次
-export const updateCourseWithSession = async (courseId, courseData, sessionId, sessionData, imgData) => {
+export const updateCourseWithSession = async (
+  courseId,
+  courseData,
+  sessionId,
+  sessionData,
+  imgData
+) => {
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
 
     await connection.query(
-      `UPDATE course SET name = ?, type_id = ?, price = ?, duration = ?, description = ?, notice = ?, qa = ? WHERE id = ? AND is_deleted =0`,
+      `UPDATE course 
+        SET name = ?, type_id = ?, price = ?, duration = ?, description = ?, notice = ?, qa = ? 
+        WHERE id = ? 
+        AND is_deleted =0`,
       [
         courseData.name,
         courseData.type_id,
@@ -277,12 +326,11 @@ export const updateCourseWithSession = async (courseId, courseData, sessionId, s
         sessionData.start_date,
         sessionData.area_id,
         sessionData.start_time,
-        sessionData.end_time,      
+        sessionData.end_time,
         courseId,
         sessionId,
       ]
     );
-
 
     // 圖片處理邏輯
     if (imgData?.mainImage) {
@@ -293,10 +341,10 @@ export const updateCourseWithSession = async (courseId, courseData, sessionId, s
 
       if (existingMainImage.length > 0) {
         // 如果有主圖，則更新
-        await connection.query(
-          `UPDATE course_img SET url = ? WHERE id = ?`,
-          [imgData.mainImage, existingMainImage[0].id]
-        );
+        await connection.query(`UPDATE course_img SET url = ? WHERE id = ?`, [
+          imgData.mainImage,
+          existingMainImage[0].id,
+        ]);
       } else {
         // 沒有主圖則插入
         await connection.query(
@@ -315,16 +363,15 @@ export const updateCourseWithSession = async (courseId, courseData, sessionId, s
       );
 
       // 插入新的其他圖片
-      for (const filename  of imgData.otherImages) {
+      for (const filename of imgData.otherImages) {
         await connection.query(
           `INSERT INTO course_img (course_id, main_pic, url) VALUES (?, ?, ?)`,
-          [courseId, 0, filename ] // 其他圖片，main_pic = 0
+          [courseId, 0, filename] // 其他圖片，main_pic = 0
         );
       }
     }
 
-
-    await connection.commit();   // 提交交易
+    await connection.commit(); // 提交交易
     return { message: "課程與梯次更新成功!" };
   } catch (err) {
     await connection.rollback(); // 回滾交易
@@ -348,7 +395,6 @@ export const deleteCourseSession = async (sessionId) => {
     );
 
     await connection.commit(); // 提交交易
-    
   } catch (err) {
     await connection.rollback(); // 發生錯誤則回滾
     throw err;
@@ -358,4 +404,3 @@ export const deleteCourseSession = async (sessionId) => {
     connection.release();
   }
 };
-

@@ -2,10 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-// import { updateCourse } from "@/services/teachersignService";
 import Swal from "sweetalert2";
 import styles from "../css/teacherSignUpdate.module.css";
-import CourseIdPage from "@/app/course/[courseId]/page";
 
 export default function TeacherUpdateC() {
   const router = useRouter();
@@ -18,12 +16,13 @@ export default function TeacherUpdateC() {
   const [otherpics, setOtherpics] = useState([]);
   const [types, setTypes] = useState([]);
   const [places, setPlaces] = useState([]);
+  // const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(`http://localhost:5000/teacher/mycourse/${sessionCode}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("loginWithToken")}`,
       },
     })
@@ -151,6 +150,7 @@ export default function TeacherUpdateC() {
     };
 
     const sessionId = cs.id;
+    // const sessionCode = cs.id;
     const courseId = cs.course_id;
 
     const formData = new FormData();
@@ -162,8 +162,8 @@ export default function TeacherUpdateC() {
       formData.append("mainImage", mainpic);
     }
     if (otherpics.length > 0) {
-      otherpics.forEach((pic, index) => {
-        formData.append("otherImages", pic);
+      otherpics.forEach((pic) => {
+        formData.append(`otherImages`, pic);
       });
     }
 
@@ -204,12 +204,45 @@ export default function TeacherUpdateC() {
     }
   };
 
+  const handleisDelete = async () => {
+    const sessionId = cs.id;
+    fetch(`http://localhost:5000/teacher/mycourse/session/${sessionId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("loginWithToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("軟刪除成功:", data);
+        Swal.fire({
+          title: "刪除成功！",
+          icon: "success",
+          confirmButtonText: "確定",
+          ...animationConfig,
+        });
+      })
+      .then(() => {
+        router.push("/teacher-sign/list");
+      })
+      .catch((err) => {
+        console.error("Error updating data:", err);
+        Swal.fire({
+          title: "軟刪除失敗",
+          icon: "error",
+          confirmButtonText: "確定",
+          ...animationConfig,
+        });
+      });
+  };
+
   return (
     <>
       <div className={`col-lg-9 col-md-12 col-12`}>
         <div className={`p-5 ${styles.right}`}>
           <h3 className={`mb-4 ${styles.tTitle}`}>編輯該梯次</h3>
-          <form onSubmit={handleSubmit}>
+          <form>
             <section className={`row g-4 mb-5 ${styles.section1}`}>
               <div className={`col-md-12`}>
                 <label className={`form-label ${styles.labels}`}>
@@ -509,14 +542,16 @@ export default function TeacherUpdateC() {
                 取消
               </button>
               <button
-                type="submit"
+                type="button"
                 className={`btn btn-primary btn-sm px-4 mt-4 ${styles.deletedBtn}`}
+                onClick={handleisDelete}
               >
                 刪除
               </button>
               <button
                 type="submit"
                 className={`btn btn-primary btn-sm px-4 mt-4 ${styles.submitBtn}`}
+                onSubmit={handleSubmit}
               >
                 儲存
               </button>

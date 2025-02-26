@@ -4,11 +4,10 @@
   --sb-track-color: #bcbcbc38;
   --sb-thumb-color: #f7a96d;
   --sb-size: 4px;
-
 }
 
 .scrollOrg::-webkit-scrollbar {
-  width: var(--sb-size)
+  width: var(--sb-size);
 }
 
 .scrollOrg::-webkit-scrollbar-track {
@@ -25,52 +24,45 @@
 
 @supports not selector(::-webkit-scrollbar) {
   .scrollOrg {
-    scrollbar-color: var(--sb-thumb-color)
-                     var(--sb-track-color);
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
 
 .labels:focus,
 .controls:focus,
-input:focus, 
+input:focus,
 input:active {
   outline: none !important;
   box-shadow: none !important;
   border-color: #a1a1a1 !important;
 }
 
-body{
-  background: #fffef3;
-}
-  
-
-
 /* 右邊 */
-.right{
+.right {
   background: #fff;
   overflow-y: auto;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
-  .tTitle{
+  .tTitle {
     font-weight: bold;
   }
 
-  .must{
-  color: red;
-  padding-left: 5px;
+  .must {
+    color: red;
+    padding-left: 5px;
   }
 
-  .labels{
+  .labels {
     font-size: 15px;
   }
 
-  .controls  {
+  .controls {
     border-radius: 8px;
     background-color: #fff;
     /* border: none; */
-    border: .8px solid #ecebeb;
+    border: 0.8px solid #ecebeb;
   }
-  
+
   .controls::placeholder {
     color: #bcbcbc;
     font-size: 13px;
@@ -78,39 +70,45 @@ body{
     letter-spacing: 1px;
   }
   /* 目前改不了顏色 */
-  .pleaseChoose{
+  .pleaseChoose {
     color: #a1a1a1;
   }
 
-  .pics{
+  .pics {
     display: flex;
     margin: 0px;
   }
 
-  .mainPic{
+  .mainPic {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     overflow: hidden;
-    border: .8px solid #ecebeb;
-    border-radius: 8px;
-    width: 290px;
-    height: 290px;
-  }
-
-  .otherPic{
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    overflow: hidden;
-    border: .8px solid #f5f3f3;
+    border: 0.8px solid #ecebeb;
     border-radius: 8px;
     height: 250px;
+    &:hover {
+      border: 0.8px solid #a1a1a1;
+      transition: 0.1s;
+    }
   }
-  
+
+  .otherPic {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    border: 0.8px solid #ecebeb;
+    border-radius: 8px;
+    height: 250px;
+    &:hover {
+      border: 0.8px solid #a1a1a1;
+      transition: 0.1s;
+    }
+  }
 
   /* 美化圖片預覽區 */
   .imageCard {
@@ -162,53 +160,47 @@ body{
     background: darkred;
   }
 
-  .addPicBtn{
-    width: 50px;
-    height: 25px;
-    background-color: #66C5BD;
+  .addPicBtn {
+    width: 100%;
+    height: 100%;
+    /* height: 25px; */
+    color: #66c5bd;
+    background-color: white;
     border: none;
     font-weight: bold;
-    letter-spacing: 1px;
-    padding: 0;
-    /* margin-left: 15px; */
-    &:hover{
-      background: #20b9ad;
+    font-size: 15px;
+    letter-spacing: 3px;
+    padding: 10px;
+    &:hover {
+      font-size: 18px;
+      transition: 0.1s;
+    }
+    &:active {
+      background-color: #fff;
+    }
   }
-}
-
-
 
   /* 按鈕 */
-  .cancleBtn{
+  .cancleBtn {
     background-color: #dee2e6;
-    .cancleBtnA{
-      color:#9e9898;
-      text-decoration: none;
-      font-weight: bold;
-    }
+    color: #9e9898;
+    text-decoration: none;
+    font-weight: bold;
   }
-  .cancleBtn:hover{
+  .cancleBtn:hover {
     background-color: #cecfd1;
     font-weight: bolder;
-    .cancleBtnA{
-      color:#fff;
-    }
+    color: #fff;
   }
 
-  .submitBtn{
-    background-color: #F5842B;
-    border: none;      
-    .submitBtnA{
-      color:white;
-      text-decoration: none;
-      font-weight: bold;
-    }
+  .submitBtn {
+    background-color: #f5842b;
+    border: none;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
   }
-  .submitBtn:hover{
+  .submitBtn:hover {
     background-color: #e26404;
   }
-
 }
-
-  
-  

@@ -7,7 +7,7 @@
 }
 
 .scrollOrg::-webkit-scrollbar {
-  width: var(--sb-size)
+  width: var(--sb-size);
 }
 
 .scrollOrg::-webkit-scrollbar-track {
@@ -23,67 +23,59 @@
 
 @supports not selector(::-webkit-scrollbar) {
   .scrollOrg {
-    scrollbar-color: var(--sb-thumb-color)
-                     var(--sb-track-color);
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
 
 .labels:focus,
 .controls:focus,
-input:focus, 
+input:focus,
 input:active {
   outline: none !important;
   box-shadow: none !important;
   border-color: #a1a1a1 !important;
 }
 
-body{
-  background: #fffef3;
-}
-  
-
-
-
 /* 右邊 */
-.right{
+.right {
   background: #fff;
-  overflow-y: auto;  
+  overflow-y: auto;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
-  .tTitle{
+  .tTitle {
     font-weight: bold;
   }
 
-  .labels{
+  .labels {
     font-size: 15px;
   }
-  
-  .controls  {
+
+  .controls {
     border-radius: 8px;
     background-color: #bcbcbc38;
     border: none;
   }
-  
-  .mainPic{
+
+  .mainPic {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     overflow: hidden;
-    border: .8px solid #ecebeb;
+    border: 0.8px solid #ecebeb;
     border-radius: 8px;
     height: 290px;
     padding: 0;
   }
 
-  .otherPic{
+  .otherPic {
     text-align: center;
     display: flex;
     justify-content: start;
     align-items: start;
     text-align: center;
     overflow: hidden;
-    border: .8px solid #f5f3f3;
+    border: 0.8px solid #f5f3f3;
     border-radius: 8px;
     height: 250px;
     padding: 8px;
@@ -111,7 +103,7 @@ body{
     cursor: pointer;
   }
 
-  .imageCard .pics{
+  .imageCard .pics {
     width: 100px;
     height: 100px;
   }
@@ -122,21 +114,18 @@ body{
     margin-top: 5px;
     padding: 3px;
   }
-  
 
-  .submitBtn{
-    background-color: #F5842B;
+  .submitBtn {
+    background-color: #f5842b;
     border: none;
-    &:hover{
+    &:hover {
       background-color: #e26404;
     }
 
-    .submitBtnA{
-      color:white;
+    .submitBtnA {
+      color: white;
       text-decoration: none;
       font-weight: bold;
     }
   }
 }
-
-  

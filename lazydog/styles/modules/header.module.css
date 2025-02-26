@@ -79,6 +79,7 @@
 .dropdown {
   position: relative;
   display: inline-block;
+  z-index: 2;
 }
 
 .dropdown-content {
@@ -173,7 +174,7 @@
   .mobileMenu {
     display: block;
     color: #ff9538;
-    .menu{
+    .menu {
       font-size: 28px;
     }
   }
