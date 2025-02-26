@@ -6,7 +6,6 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "../css/teacherSignAdd.module.css";
 import Header from "@/app/components/layout/header";
 import My from "../_components/my";
-// import TeacherAside from "../_components/teacher-aside";
 import TeacherAddC from "../_components/teacher-addC";
 
 export default function TeacherAddPage() {

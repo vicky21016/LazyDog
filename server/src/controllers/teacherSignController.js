@@ -1,17 +1,17 @@
 import { decode } from "jsonwebtoken";
-import { 
-  getTeacherInfo, 
-  updateTeacherInfo, 
-  getCoursesByTeacher, 
-  getCoursesIdByTeacher, 
-  createCourseWithSession, 
+import {
+  getTeacherInfo,
+  updateTeacherInfo,
+  getCoursesByTeacher,
+  getCoursesIdByTeacher,
+  createCourseWithSession,
   updateCourseWithSession,
-  deleteCourseSession
+  deleteCourseSession,
 } from "../services/teacherSignService.js";
 
 export const getInfo = async (req, res) => {
   try {
-    const userId = req.user.id; 
+    const userId = req.user.id;
     console.log(userId);
 
     const infos = await getTeacherInfo(userId);
@@ -37,7 +37,9 @@ export const updateInfo = async (req, res) => {
       return res.json({ status: "success", message: "師資資訊更新成功" });
     } else {
       // 如果沒有更新任何資料（可能是資料沒有變更或其他原因）
-      return res.status(400).json({ status: "fail", message: "更新失敗，請確認資料是否正確" });
+      return res
+        .status(400)
+        .json({ status: "fail", message: "更新失敗，請確認資料是否正確" });
     }
   } catch (err) {
     console.error("更新師資資訊失敗：", err);
@@ -57,14 +59,14 @@ export const getCourse = async (req, res) => {
 
 export const getCourseId = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
     console.log("找到課程ID", id);
 
     if (isNaN(id)) {
       return res.status(400).json({ error: "請提供有效的課程 ID" });
     }
 
-    const course = await getCoursesIdByTeacher(id);  
+    const course = await getCoursesIdByTeacher(id);
     res.json({ status: "success", data: course, message: "課程查詢成功" });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -72,21 +74,31 @@ export const getCourseId = async (req, res) => {
 };
 
 export const createCourse = async (req, res) => {
-  try{
+  try {
     // 檢查上傳的圖片
     const imgData = {
-      mainImage: req.files?.mainImage?.[0]? `/teacherSign/img/${req.files.mainImage[0].filename}` : null,
-      otherImages: req.files?.otherImages?  req.files.otherImages.map((file) => `/teacherSign/img/${file.filename}`) : [],
+      mainImage: req.files?.mainImage?.[0]
+        ? `/teacherSign/img/${req.files.mainImage[0].filename}`
+        : null,
+      otherImages: req.files?.otherImages
+        ? req.files.otherImages.map(
+            (file) => `/teacherSign/img/${file.filename}`
+          )
+        : [],
     };
 
-    const {courseData, sessionData} = req.body;
+    const { courseData, sessionData } = req.body;
 
-    const result = await createCourseWithSession(courseData, sessionData, imgData)
+    const result = await createCourseWithSession(
+      courseData,
+      sessionData,
+      imgData
+    );
     console.log(result);
 
     res.status(201).json({
-      message:"課程建立成功",
-      courseId:  result.courseId,
+      message: "課程建立成功",
+      courseId: result.courseId,
       sessionId: result.sessionId,
       mainImageId: result.mainImageId,
     });
@@ -96,23 +108,44 @@ export const createCourse = async (req, res) => {
 };
 
 export const updateCourse = async (req, res) => {
-  const {courseId, courseData, sessionId, sessionData} = req.body;
+  try {
+    const { courseId, courseData, sessionId, sessionData } = req.body;
 
-  if(!courseId || !sessionId){
-    return res.status(400).json({error: "缺少courseId 或 sessionId"})
-  }
+    // 取得主圖檔名
+    let mainpicName = req.files["mainImage"]
+      ? req.files["mainImage"][0].filename
+      : null;
+    // 取得其他圖片檔名（陣列）
+    let otherpicsName = req.files["otherImages"]
+      ? req.files["otherImages"].map((file) => file.filename)
+      : [];
 
-  try{
-    const result = await updateCourseWithSession(courseId, courseData, sessionId, sessionData)
-    console.log(result);
+    if (!courseId || !sessionId || !courseData || !sessionData) {
+      return res
+        .status(400)
+        .json({
+          error: "缺少courseId 或 sessionId 或 courseData 或 sessionData",
+        });
+    }
+
+    const result = await updateCourseWithSession(
+      courseId,
+      courseData,
+      sessionId,
+      sessionData,
+      { mainImage: mainpicName, otherImages: otherpicsName }
+    );
+    console.log("更新結果:", result);
 
     res.status(200).json({
-      message:"課程更新成功",
+      message: "課程更新成功",
       courseId,
-      sessionId
+      sessionId,
+      mainImage: mainpicName,
+      otherImages: otherpicsName,
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "無法更新課程" + err.message });
   }
 };
 
@@ -120,19 +153,17 @@ export const deleteSessionOnly = async (req, res) => {
   const sessionId = req.params.id;
   console.log(req.params.id);
 
-  if(!sessionId){
-    return res.status(400).json({error: "缺少 sessionId"})
+  if (!sessionId) {
+    return res.status(400).json({ error: "缺少 sessionId" });
   }
 
-  try{
+  try {
     await deleteCourseSession(sessionId);
     res.status(200).json({
-      message:"該梯次已標記為刪除",
-      sessionId
+      message: "該梯次已標記為刪除",
+      sessionId,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
-
-
