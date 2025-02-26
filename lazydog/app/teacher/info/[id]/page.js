@@ -140,24 +140,7 @@ export default function App () {
           <h5 className="my-4 fw-semibold">看看其他優良課程...</h5>
           <div className="row mb-5 g-4">
             <OtherCourses
-              imgSrc="/teacher-img/course.png"
-              name="狗兒的50道基礎訓練"
-              link="/course"
-            />
-            <OtherCourses
-              imgSrc="/teacher-img/course.png"
-              name="狗兒的50道基礎訓練"
-              link="/course"
-            />
-            <OtherCourses
-              imgSrc="/teacher-img/course.png"
-              name="狗兒的50道基礎訓練"
-              link="/course"
-            />
-            <OtherCourses
-              imgSrc="/teacher-img/course.png"
-              name="狗兒的50道基礎訓練"
-              link="/course"
+             
             />
           </div>
         </div>

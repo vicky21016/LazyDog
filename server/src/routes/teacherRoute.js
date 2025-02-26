@@ -99,6 +99,20 @@ router.get('/random', async (req, res) => {
   }
 })
 
+router.get("/courseRandom", async (req, res) => {
+  try {
+    const sql =
+      "SELECT course.*, course_img.url AS course_img FROM course JOIN course_img ON course.id = course_img.course_id ORDER BY RAND() LIMIT 4";
+    const [random] = await pool.execute(sql);
+    if (!Array.isArray(random)) {
+      return res.status(500).json({ status: "error", message: "資料格式錯誤" });
+    }
+    res.json(random);
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
 // 取得該老師的課程
 // const sql =`SELECT 
 //     course.name AS course_name
