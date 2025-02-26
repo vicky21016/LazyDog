@@ -15,6 +15,19 @@ import InputFiled from "../../components/forms/InputField";
 import Hotel from "../../components/cart/hotel";
 import Course from "../../components/cart/course";
 export default function CartListPayPage(props) {
+  const [userdetail, setUserdetail] = useState({
+    user_id: "",
+    orderID: "",
+    coupon_id: "",
+    discount_amount: "",
+    productID_list: [],
+    price_list: [],
+    amount_list: [],
+    total_price: "",
+    final_amount: "",
+    created_at: "",
+    is_deleted: "",
+  });
   // 檢查是否登入
   const { isAuth } = useAuth();
   // 建立ref，用來放置form表單
@@ -36,8 +49,8 @@ export default function CartListPayPage(props) {
 
   // 確保商品資料正確
   const itemsValue = `
-  ${productItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
-  ${courseItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
+  ${productItems.map((item) => `${item.name} x ${item.count}`).join(", ")}#
+  ${courseItems.map((item) => `${item.name} x ${item.count}`).join(", ")}#
   ${hotelItems.map((item) => `${item.name} x ${item.count}`).join(", ")}
 `;
 
@@ -74,10 +87,6 @@ export default function CartListPayPage(props) {
   };
 
   const handleEcpay = async () => {
-    console.log(
-      `http://localhost:5000/ecpay-test-only?amount=${amountValue}&items=${itemsValue}`
-    );
-
     // 先連到node伺服器後端，取得LINE Pay付款網址
     const res = await fetch(
       `http://localhost:5000/ecpay-test-only?amount=${amountValue}&items=${itemsValue}`,

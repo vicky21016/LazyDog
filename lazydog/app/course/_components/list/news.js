@@ -1,14 +1,13 @@
-'use client'
+"use client";
 
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from "react";
 import styles from "../courseList.module.css";
-import Link from 'next/link';
+import Link from "next/link";
 
 // swiper
-import {Swiper, SwiperSlide} from 'swiper/react';
-import 'swiper/css';
-import {Autoplay, Pagination} from 'swiper/modules';
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import { Autoplay, Pagination } from "swiper/modules";
 
 export default function News() {
   // const [newest, setNewest] = useState(null);
@@ -28,7 +27,6 @@ export default function News() {
   return (
     <>
       <div className={`container ${styles.new}`}>
-
         {/* 影片slide */}
         <Swiper
           spaceBetween={100}
@@ -43,15 +41,27 @@ export default function News() {
           // navigation={true}
           modules={[Autoplay, Pagination]}
           className="mySwiper"
-        > 
-          <SwiperSlide className={styles.newCard} >
-            <video autoPlay loop muted playsInline className={styles.newVideoDogs}>
-              <source src="/course/img/dogplay.mp4" type="video/mp4"/>
+        >
+          <SwiperSlide className={styles.newCard}>
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className={styles.newVideoDogs}
+            >
+              <source src="/course/img/dogplay.mp4" type="video/mp4" />
             </video>
           </SwiperSlide>
           <SwiperSlide className={styles.newCard}>
-            <video autoPlay loop muted playsInline className={styles.newVideoPeople}>
-              <source src="/course/img/peopleWdog.mp4" type="video/mp4"/>
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className={styles.newVideoPeople}
+            >
+              <source src="/course/img/peopleWdog.mp4" type="video/mp4" />
             </video>
           </SwiperSlide>
         </Swiper>
@@ -89,8 +99,7 @@ export default function News() {
         <video className={styles.newImg}>
           <source src="/course/img/peopleWdog.mp4"/>
         </video> */}
-
       </div>
     </>
-  )
+  );
 }
