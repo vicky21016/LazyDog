@@ -40,34 +40,44 @@ export default function CardCard({
     mutate: favoriteMutate,
   } = useSWR(favoriteAPI, fetcher);
 
-  const [favoriteList, setFavoriteList] = useState([]);
+  // const [favoriteList, setFavoriteList] = useState([]);
   useEffect(() => {
+    console.log(1);
     if (favoriteData?.data) {
       const userFavorite = favoriteData?.data.find(
         (v) => v.user_id == user?.id
       );
-      if (userFavorite?.productID_list.length > 0) {
-        setFavoriteList(userFavorite?.productID_list.split(","));
-        localStorage.setItem("favoritePD", JSON.stringify(favoriteList));
+      if (userFavorite?.productID_list) {
+        // setFavoriteList(userFavorite?.productID_list.split(","));
+        localStorage.setItem(
+          "favoritePD",
+          JSON.stringify(userFavorite?.productID_list.split(","))
+        );
+        setFavorite(userFavorite?.productID_list.split(","));
+        console.log(
+          2,
+          favorite,
+          JSON.parse(localStorage.getItem("favoritePD"))
+        );
       }
     }
   }, []);
   useEffect(() => {
-    if (favoriteList.length > 0 && productID) {
-      if (favoriteList.includes(productID)) setHeartState(true);
-      const storedFavorites =
-        JSON.parse(localStorage.getItem("favoritePD")) || [];
-      const isSameContent =
-        storedFavorites.length == favoriteList.length &&
-        storedFavorites.every((PD) => favoriteList.includes(PD)) &&
-        favoriteList.every((PD) => storedFavorites.includes(PD));
-
-      if (!isSameContent) {
-        setFavorite(favoriteList);
-        localStorage.setItem("favoritePD", JSON.stringify(favoriteList));
-      }
+    const storedFavorites = JSON.parse(localStorage.getItem("favoritePD"));
+    console.log(3);
+    // console.log(favorite, storedFavorites);
+    if (storedFavorites.includes(productID)) setHeartState(true);
+    const isSameContent =
+      storedFavorites.length == favorite.length &&
+      storedFavorites.every((PD) => favorite.includes(PD)) &&
+      favorite.every((PD) => storedFavorites.includes(PD));
+    if (!isSameContent) {
+      // setFavorite(storedFavorites);
+      console.log(4, favorite, storedFavorites);
+      localStorage.setItem("favoritePD", JSON.stringify(favorite));
+      console.log(5, favorite, storedFavorites);
     }
-  }, [favoriteList]);
+  }, [favorite]);
 
   const [productCount, setProductCount] = useState(0);
   useEffect(() => {

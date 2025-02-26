@@ -32,10 +32,9 @@ export function FavoriteListProvider({ children }) {
   } = useSWR(favoriteAPI, fetcher);
   const [favorite, setFavorite] = useState([]);
 
-  // favoriteMutate();
   useEffect(() => {
     const updateFavorite = async () => {
-      console.log(favorite);
+      console.log(6, favorite, JSON.parse(localStorage.getItem("favoritePD")));
       let methodType = "POST";
       favoriteData?.data.map((v, i) => {
         if (v.user_id == user?.id) methodType = "PATCH";
@@ -52,12 +51,13 @@ export function FavoriteListProvider({ children }) {
           });
           const result = await res.json();
           if (result.status != "success") throw new Error(result.message);
-          // console.log(result);
+          console.log(7);
         } catch (error) {
           console.log(error);
           alert(error.message);
         }
       }
+      favoriteMutate();
     };
     updateFavorite();
   }, [favorite]);

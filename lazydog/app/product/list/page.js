@@ -5,7 +5,6 @@ import styles from "./list.module.css";
 import Aside from "../_components/aside/aside";
 import Link from "next/link";
 import Card from "../_components/card/card";
-import useSWR from "swr";
 import { useAuth } from "@/hooks/use-auth";
 import { useListFetch } from "@/hooks/product/use-fetch";
 import { useListFavorite } from "@/hooks/product/use-favorite";
