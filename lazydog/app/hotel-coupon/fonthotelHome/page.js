@@ -154,7 +154,6 @@ export default function HotelHomePage() {
     setIsFiltered(true);
     const updatedParams = { ...searchParams, ...newParams };
 
-    console.log("🔍 送出 API 查詢:", updatedParams);
 
     setSearchParams(updatedParams);
     if (typeof window !== "undefined") {

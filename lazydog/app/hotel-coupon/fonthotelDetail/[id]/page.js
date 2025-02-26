@@ -69,10 +69,10 @@ export default function HotelDetailPage({ params }) {
     try {
       const hotelData = await getHotelById(id);
       if (!hotelData) {
-        console.error("❌ Hotel data is null");
+        console.error(" Hotel data is null");
         return;
       }
-      console.log("🏨 獲取旅館數據:", hotelData);
+      console.log(" 獲取旅館數據:", hotelData);
       setHotel(hotelData);
 
       // 更新經緯度
@@ -80,12 +80,12 @@ export default function HotelDetailPage({ params }) {
         setLat(parseFloat(hotelData.latitude));
         setLng(parseFloat(hotelData.longitude));
       }
-      console.log("🌍 獲取的經緯度:", hotelData.latitude, hotelData.longitude);
+      console.log(" 獲取的經緯度:", hotelData.latitude, hotelData.longitude);
 
       // 取得 RoomType
       const roomTypes = await getHotelRoomById(id);
       if (!Array.isArray(roomTypes) || roomTypes.length === 0) {
-        console.warn("⚠️ 無房型資料");
+        console.warn("無房型資料");
         setRooms([]);
         return;
       }
@@ -103,7 +103,7 @@ export default function HotelDetailPage({ params }) {
       );
       setRooms(roomData);
     } catch (error) {
-      console.error("❌ 獲取旅館資訊失敗:", error);
+      console.error(" 獲取旅館資訊失敗:", error);
       setRooms([]);
     } finally {
       setLoading(false);

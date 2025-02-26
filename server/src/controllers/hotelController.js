@@ -48,7 +48,6 @@ export const getByIds = async (req, res) => {
       return res.status(400).json({ error: "無效的 ID，請提供數字格式" });
     }
 
-    console.log(`🔍 查詢旅館 ID: ${id}`);
 
     const hotel = await getId(id); // 確保這個函數可以正確查詢資料
     if (!hotel) {
@@ -56,7 +55,6 @@ export const getByIds = async (req, res) => {
       return res.status(404).json({ error: `找不到 id=${id} 的旅館` });
     }
 
-    console.log(`成功找到旅館:`, hotel);
     res.json(hotel);
   } catch (err) {
     console.error("伺服器錯誤:", err);
