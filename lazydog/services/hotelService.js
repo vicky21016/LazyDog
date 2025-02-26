@@ -54,7 +54,7 @@ export const getPaginatedHotels = async (page = 1, limit = 10) =>
 // 前端過濾篩選
 export const getFilteredHotelsS = async (filters) => {
   try {
-    console.log("🚀 發送 API 篩選請求:", filters);
+    console.log(" 發送 API 篩選請求:", filters);
 
     const response = await fetch("http://localhost:5000/api/hotels/filter", {
       method: "POST",
@@ -65,10 +65,10 @@ export const getFilteredHotelsS = async (filters) => {
     if (!response.ok) throw new Error(`API 錯誤，HTTP 狀態碼: ${response.status}`);
 
     const data = await response.json();
-    console.log("✅ API 回應:", data);
+    console.log(" API 回應:", data);
     return data;
   } catch (error) {
-    console.error("❌ 查詢飯店錯誤:", error);
+    console.error(" 查詢飯店錯誤:", error);
     return [];
   }
 };

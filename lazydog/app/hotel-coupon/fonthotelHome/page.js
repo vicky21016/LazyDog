@@ -208,6 +208,7 @@ export default function HotelHomePage() {
               },
             ]}
           />
+          <div className="lumi-all-wrapper text-end"><span className="lumi-all-title">排序</span></div>
         </div>
 
         {/* 主要內容 */}
