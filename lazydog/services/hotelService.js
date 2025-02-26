@@ -127,7 +127,7 @@ export const getHotelPriceRange = async (hotelId) =>
   fetchAPI(`${ROOM_BASE_PRICE_URL}/range/${hotelId}`);
 //房型跟庫存
 export const getAllRoomTypes = async () => fetchAPI(ROOM_TYPES_URL);
-export const getHotelRoomById = async (roomId) =>fetchAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`);
+export const getHotelRoomById = async (hotelId) =>fetchAPI(`${HOTEL_ROOM_TYPES_URL}/${hotelId}`);
 
 //OP ONLY
 export const createHotelRoom = async (roomData) =>fetchAuthAPI(HOTEL_ROOM_TYPES_URL, "POST", roomData);
@@ -139,7 +139,7 @@ export const deleteHotelRoom = async (roomId) =>fetchAuthAPI(`${HOTEL_ROOM_TYPES
 //OP END
 
 //房間庫存
-export const getRoomInventory = async () => fetchAPI(ROOM_INVENTORY_URL);
+export const getRoomInventory = async (hotelId) => fetchAPI(`${ROOM_INVENTORY_URL}/${hotelId}`);
 
 //OP ONLY
 export const updateRoomInventory = async (roomInventoryId, updateData) =>
