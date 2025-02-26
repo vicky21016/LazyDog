@@ -344,8 +344,6 @@ export default function DetailPage({ searchParams = {} }) {
               <button
                 className={styles.QtyMinus}
                 onClick={() => {
-                  // const newAmount = amount - 1;
-                  // setAmount(newAmount <= 0 ? 1 : newAmount);
                   setAmount((prevAmount) =>
                     prevAmount - 1 <= 0 ? 1 : prevAmount - 1
                   );
@@ -353,12 +351,23 @@ export default function DetailPage({ searchParams = {} }) {
               >
                 <img src="/product/font/minus.png" alt="" />
               </button>
-              <input type="number" value={amount} min={1} max={999} />
+              <input
+                type="number"
+                value={amount}
+                min={1}
+                max={999}
+                onChange={(e) => {
+                  setAmount(() => {
+                    const value = Number(e.target.value);
+                    if (value >= 999) return 999;
+                    if (value <= 0) return 1;
+                    return value;
+                  });
+                }}
+              />
               <button
                 className={styles.QtyPlus}
                 onClick={() => {
-                  // const newAmount = amount + 1;
-                  // setAmount(newAmount >= 999 ? 999 : newAmount);
                   setAmount((prevAmount) =>
                     prevAmount + 1 >= 999 ? 999 : prevAmount + 1
                   );
