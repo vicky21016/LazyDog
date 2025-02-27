@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./aside.module.css";
 
 export default function FilterGroup({
@@ -8,6 +8,11 @@ export default function FilterGroup({
   name = {},
   keyword = {},
   setKeyword = () => {},
+  setClearSearch = () => {},
+  isChecked = true,
+  setIsChecked = () => {},
+  newUrl = "",
+  changeUrl = () => {},
 }) {
   const [showMore, setShowMore] = useState(false);
   const categorys = category;
@@ -20,6 +25,47 @@ export default function FilterGroup({
       categoryName[v.class].push(v.name);
     });
   }
+  // console.log(categoryName[name]);
+  const categoryCheckbox = {};
+  categoryName[name].forEach((v) => {
+    categoryCheckbox[v] = false;
+  });
+
+  const [checkedItems, setCheckedItems] = useState(categoryCheckbox);
+
+  const handleInputChange = () => {
+    setCheckedItems((prev) => {
+      const newCategoryCheckbox = Object.keys(prev).reduce((acc, v) => {
+        acc[v] = false;
+        return acc;
+      }, {});
+      return newCategoryCheckbox;
+    });
+    // setCheckedItems((prev) => {
+    //   const newCategoryCheckbox = { ...prev };
+    //   Object.keys(prev).forEach((v) => {
+    //     if (prev[v] === true) {
+    //       newCategoryCheckbox[v] = false;
+    //       // 創建並觸發 change 事件
+    //       const event = new Event("change", { bubbles: true });
+    //       const inputElement = document.getElementById(`checkbox-${v}`);
+    //       if (inputElement) {
+    //         inputElement.dispatchEvent(event);
+    //       }
+    //     }
+    //   });
+    //   return newCategoryCheckbox;
+    // });
+  };
+
+  useEffect(() => {
+    if (isChecked == false) {
+      handleInputChange();
+      changeUrl(newUrl);
+    }
+    setIsChecked(true);
+    console.log(checkedItems);
+  }, [isChecked]);
 
   return (
     <>
@@ -35,11 +81,17 @@ export default function FilterGroup({
                 <input
                   className={`form-check-input ${styles.FormCheckInput}`}
                   type="checkbox"
-                  id={v}
-                  onChange={() => {
+                  id={`checkbox-${v}`}
+                  checked={checkedItems[v]}
+                  onChange={(e) => {
+                    setCheckedItems((prev) => ({
+                      ...prev,
+                      [v]: e.target.checked,
+                    }));
+                    setClearSearch("");
                     if (v == "保健品") {
                       const newKeyword = { ...keyword };
-                      if (!newKeyword[name].includes("保健")) {
+                      if (!checkedItems[v]) {
                         newKeyword[name].push("保健");
                       } else {
                         newKeyword[name] = newKeyword[name].filter(
@@ -49,7 +101,7 @@ export default function FilterGroup({
                       setKeyword(newKeyword);
                     } else if (v == "寢具服飾") {
                       const newKeyword = { ...keyword };
-                      if (!newKeyword[name].includes("乳牛,床窩,衣")) {
+                      if (!checkedItems[v]) {
                         newKeyword[name].push("乳牛,床窩,衣");
                       } else {
                         newKeyword[name] = newKeyword[name].filter(
@@ -59,7 +111,7 @@ export default function FilterGroup({
                       setKeyword(newKeyword);
                     } else if (v == "外出用品") {
                       const newKeyword = { ...keyword };
-                      if (!newKeyword[name].includes("項圈,背帶,外出")) {
+                      if (!checkedItems[v]) {
                         newKeyword[name].push("項圈,背帶,外出");
                       } else {
                         newKeyword[name] = newKeyword[name].filter(
@@ -69,7 +121,7 @@ export default function FilterGroup({
                       setKeyword(newKeyword);
                     } else if (v == "除蟲醫藥") {
                       const newKeyword = { ...keyword };
-                      if (!newKeyword[name].includes("驅蟲,除蚤,防蚤")) {
+                      if (!checkedItems[v]) {
                         newKeyword[name].push("驅蟲,除蚤,防蚤");
                       } else {
                         newKeyword[name] = newKeyword[name].filter(
@@ -79,9 +131,7 @@ export default function FilterGroup({
                       setKeyword(newKeyword);
                     } else if (v == "美容保養除臭") {
                       const newKeyword = { ...keyword };
-                      if (
-                        !newKeyword[name].includes("護理,養護,抑菌,洗毛,臭")
-                      ) {
+                      if (!checkedItems[v]) {
                         newKeyword[name].push("護理,養護,抑菌,洗毛,臭");
                       } else {
                         newKeyword[name] = newKeyword[name].filter(
@@ -91,7 +141,7 @@ export default function FilterGroup({
                       setKeyword(newKeyword);
                     } else if (v == "強效潔牙") {
                       const newKeyword = { ...keyword };
-                      if (!newKeyword[name].includes("牙,口腔保健")) {
+                      if (!checkedItems[v]) {
                         newKeyword[name].push("牙,口腔保健");
                       } else {
                         newKeyword[name] = newKeyword[name].filter(
@@ -101,7 +151,7 @@ export default function FilterGroup({
                       setKeyword(newKeyword);
                     } else if (v == "骨骼保健") {
                       const newKeyword = { ...keyword };
-                      if (!newKeyword[name].includes("肌肉,關節,骨骼,軟骨")) {
+                      if (!checkedItems[v]) {
                         newKeyword[name].push("肌肉,關節,骨骼,軟骨");
                       } else {
                         newKeyword[name] = newKeyword[name].filter(
@@ -111,7 +161,7 @@ export default function FilterGroup({
                       setKeyword(newKeyword);
                     } else if (v == "補充營養") {
                       const newKeyword = { ...keyword };
-                      if (!newKeyword[name].includes("營養")) {
+                      if (!checkedItems[v]) {
                         newKeyword[name].push("營養");
                       } else {
                         newKeyword[name] = newKeyword[name].filter(
@@ -121,7 +171,7 @@ export default function FilterGroup({
                       setKeyword(newKeyword);
                     } else if (v == "心血管保健") {
                       const newKeyword = { ...keyword };
-                      if (!newKeyword[name].includes("心臟,血")) {
+                      if (!checkedItems[v]) {
                         newKeyword[name].push("心臟,血");
                       } else {
                         newKeyword[name] = newKeyword[name].filter(
@@ -131,7 +181,7 @@ export default function FilterGroup({
                       setKeyword(newKeyword);
                     } else if (v == "牛肉") {
                       const newKeyword = { ...keyword };
-                      if (!newKeyword[name].includes("牛肉,牛")) {
+                      if (!checkedItems[v]) {
                         newKeyword[name].push("牛肉,牛");
                       } else {
                         newKeyword[name] = newKeyword[name].filter(
@@ -141,7 +191,7 @@ export default function FilterGroup({
                       setKeyword(newKeyword);
                     } else {
                       const newKeyword = { ...keyword };
-                      if (!newKeyword[name].includes(v)) {
+                      if (!checkedItems[v]) {
                         newKeyword[name].push(v);
                       } else {
                         newKeyword[name] = newKeyword[name].filter(
@@ -172,10 +222,16 @@ export default function FilterGroup({
                       className={`form-check-input ${styles.FormCheckInput}`}
                       type="checkbox"
                       id={v}
+                      checked={checkedItems[v]}
                       onChange={() => {
+                        setCheckedItems((prev) => ({
+                          ...prev,
+                          [v]: e.target.checked,
+                        }));
+                        setClearSearch("");
                         if (v == "護膚毛髮保健") {
                           const newKeyword = { ...keyword };
-                          if (!newKeyword[name].includes("皮膚,毛髮")) {
+                          if (!checkedItems[v]) {
                             newKeyword[name].push("皮膚,毛髮");
                           } else {
                             newKeyword[name] = newKeyword[name].filter(
@@ -185,7 +241,7 @@ export default function FilterGroup({
                           setKeyword(newKeyword);
                         } else if (v == "飲水餐具用品") {
                           const newKeyword = { ...keyword };
-                          if (!newKeyword[name].includes("水,碗")) {
+                          if (!checkedItems[v]) {
                             newKeyword[name].push("水,碗");
                           } else {
                             newKeyword[name] = newKeyword[name].filter(
@@ -195,7 +251,7 @@ export default function FilterGroup({
                           setKeyword(newKeyword);
                         } else if (v == "泌尿管保健") {
                           const newKeyword = { ...keyword };
-                          if (!newKeyword[name].includes("尿")) {
+                          if (!checkedItems[v]) {
                             newKeyword[name].push("尿");
                           } else {
                             newKeyword[name] = newKeyword[name].filter(
@@ -205,9 +261,7 @@ export default function FilterGroup({
                           setKeyword(newKeyword);
                         } else if (v == "骨骼保健") {
                           const newKeyword = { ...keyword };
-                          if (
-                            !newKeyword[name].includes("肌肉,關節,骨骼,軟骨")
-                          ) {
+                          if (!checkedItems[v]) {
                             newKeyword[name].push("肌肉,關節,骨骼,軟骨");
                           } else {
                             newKeyword[name] = newKeyword[name].filter(
@@ -217,7 +271,7 @@ export default function FilterGroup({
                           setKeyword(newKeyword);
                         } else {
                           const newKeyword = { ...keyword };
-                          if (!newKeyword[name].includes(v)) {
+                          if (!checkedItems[v]) {
                             newKeyword[name].push(v);
                           } else {
                             newKeyword[name] = newKeyword[name].filter(

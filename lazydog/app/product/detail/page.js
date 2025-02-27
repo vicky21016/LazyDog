@@ -6,67 +6,66 @@ import ProductCard from "../_components/card/card";
 import RateCard from "../_components/rate/ratecard";
 import StarGroup from "../_components/rate/stargroup";
 import StarBar from "../_components/rate/starbar";
-import useSWR from "swr";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
-import { useFavorite } from "@/hooks/product/use-favorite";
+import { FetchDetailProvider, useDetailFetch } from "@/hooks/product/use-fetch";
+import {
+  DetailFavoriteProvider,
+  useDetailFavorite,
+} from "@/hooks/product/use-favorite";
 
-export default function DetailPage({ searchParams = {} }) {
-  const product = searchParams.productID;
-  const router = useRouter();
-  const loginRoute = "/login";
+import useSWR from "swr";
+import { useSearchParams, useRouter } from "next/navigation";
+
+export default function DetailPage() {
+  return (
+    <FetchDetailProvider>
+      <DetailFavoriteProvider>
+        <DetailContent />
+      </DetailFavoriteProvider>
+    </FetchDetailProvider>
+  );
+}
+
+function DetailContent() {
   const { user } = useAuth();
   const { onAddProduct, productItems } = useCart();
-  const { favorite, setFavorite } = useFavorite();
-  const [heartHover, setHeartHover] = useState(false);
-  const [heartState, setHeartState] = useState(false);
-  useEffect(() => {
-    if (favorite?.includes(product)) setHeartState(true);
-  }, [favorite]);
-
-  // const [favorite, setFavorite] = useState([]);
-  const [picNow, setPicNow] = useState(0);
-  const [rate, setRate] = useState(3);
-  const [amount, setAmount] = useState(1);
-  const [cardPic, setCardPic] = useState("/product/img/default.webp");
-
-  const url = `http://localhost:5000/api/products/${product}`;
-  const url2 = "http://localhost:5000/api/products/order";
-  const fetcher = async (url) => {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("資料要求失敗");
-      return res.json();
-    } catch (err) {
-      console.error("資料要求失敗:", err);
-      throw err;
-    }
-  };
-  const { data, isLoading, error, mutate } = useSWR(url, fetcher);
   const {
-    data: orderData,
-    isLoading: orderLoading,
-    error: orderError,
-    mutate: orderMutate,
-  } = useSWR(url2, fetcher);
-  const productData = data?.data[0];
-  const productName = productData?.name;
-  const img = {
-    list: [],
-    img: [],
-    sm: [],
-    info: [],
-  };
-  if (productData) {
-    img["list"].push(productData?.listImg);
-    img["img"] = (productData?.img).split(",");
-    if (productData?.smImg) img["sm"] = (productData?.smImg).split(",");
-    if (productData?.infoImg) img["info"] = (productData?.infoImg).split(",");
-  }
-  const productDiscount = 0;
-  const [countDown, setCountDown] = useState(0);
+    product,
+    router,
+    loginRoute,
+    productData,
+    productName,
+    productDiscount,
+    img,
+    picNow,
+    setPicNow,
+    rate,
+    setRate,
+    amount,
+    setAmount,
+    cardPic,
+    setCardPic,
+    rateData,
+    rateAvg,
+    int,
+    dec,
+    hotSale,
+    sameBuy,
+    mutate,
+    isLoading,
+    error,
+  } = useDetailFetch();
+  const {
+    favorite,
+    setFavorite,
+    heartHover,
+    setHeartHover,
+    heartState,
+    setHeartState,
+  } = useDetailFavorite();
 
   const [scrollY, setScrollY] = useState(0);
   useEffect(() => {
@@ -92,54 +91,6 @@ export default function DetailPage({ searchParams = {} }) {
       collapseRef.current.click();
     }
   };
-
-  const rateData = {
-    rate: [],
-    comment: [],
-    user: [],
-    img: [],
-    date: [],
-  };
-  let rateAvg = 0;
-  if (data?.data) {
-    data?.data.map((v, i) => {
-      rateData["rate"].push(v.rate);
-      rateData["user"].push(v.user);
-      rateData["img"].push(v.userImg);
-      rateData["comment"].push(v.comment);
-      rateData["date"].push(v.commentTime);
-    });
-    let rateSum = 0;
-    for (let i = 0; i < rateData["rate"].length; i++) {
-      rateSum += rateData["rate"][i];
-    }
-    rateAvg = (rateSum / rateData["rate"].length).toFixed(1);
-  }
-  // console.log(rateData);
-  let int, dec;
-  if (rateAvg) {
-    [int, dec] = rateAvg.toString().split(".");
-    if (!dec) dec = 0;
-  }
-  const orders = orderData?.data;
-  const hotSale = [];
-  const sameBuy = [];
-  const sameCategory = data?.data[0].productID.slice(0, 6);
-  orders?.map((v, i) => {
-    if (i < 10) hotSale.push(v.productID);
-    if (sameBuy.length < 10 && v.productID.includes(sameCategory))
-      sameBuy.push(v.productID);
-  });
-
-  useEffect(() => {
-    if (productName) {
-      const newImage = new Image();
-      const encodedImageName = encodeURIComponent(productName);
-      newImage.src = `/product/img/${encodedImageName}${img.img[picNow]}`;
-      newImage.onload = () => setCardPic(newImage.src);
-      newImage.onerror = () => setCardPic("/product/img/default.webp");
-    }
-  }, [productName]);
 
   return (
     <div className={`${styles.Container} container`}>

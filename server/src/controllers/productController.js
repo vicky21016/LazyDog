@@ -107,12 +107,20 @@ export const getSearch = async (req, res) => {
       max,
       sort
     );
-    if (!product.length) throw new Error("查無相關商品");
-    res.status(200).json({
-      status: "success",
-      data: product,
-      message: `查詢： ${keyword} 相關商品成功，共${product.length}筆資料`,
-    });
+    if (!product.length) {
+      res.status(200).json({
+        status: "success",
+        message: `${
+          keyword ? `找不到與 ${keyword} 相關的商品` : `找不到符合條件的商品`
+        }`,
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        data: product,
+        message: `查詢： ${keyword} 相關商品成功，共${product.length}筆資料`,
+      });
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
