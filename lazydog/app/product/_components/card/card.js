@@ -1,74 +1,38 @@
 "use client";
 
-import React, { useState, useEffect, useRef, use } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./card.module.css";
 import Link from "next/link";
-import useSWR from "swr";
+
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
-import { useRouter } from "next/navigation";
+import { FetchCardProvider, useCardFetch } from "@/hooks/product/use-fetch";
+import {
+  CardFavoriteProvider,
+  useCardFavorite,
+} from "@/hooks/product/use-favorite";
 
-export default function CardCard({
+export default function Card({
   productID = "",
   favorite = [],
   setFavorite = () => {},
 }) {
+  return (
+    <FetchCardProvider productID={productID}>
+      <CardFavoriteProvider
+        productID={productID}
+        favorite={favorite}
+        setFavorite={setFavorite}
+      >
+        <CardContent />
+      </CardFavoriteProvider>
+    </FetchCardProvider>
+  );
+}
+
+function CardContent() {
   const { user } = useAuth();
   const { onAddProduct, productItems } = useCart();
-  const router = useRouter();
-  const loginRoute = "/login";
-  const url = productID
-    ? `http://localhost:5000/api/products/${productID}`
-    : null;
-  const fetcher = async (url) => {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("資料要求失敗");
-      return res.json();
-    } catch (err) {
-      console.error("資料要求失敗:", err);
-      throw err;
-    }
-  };
-  const { data, isLoading, error, mutate } = useSWR(url, fetcher);
-
-  const favoriteAPI = "http://localhost:5000/api/products/favorite";
-  const {
-    data: favoriteData,
-    isLoading: favoriteLoading,
-    error: favoriteError,
-    mutate: favoriteMutate,
-  } = useSWR(favoriteAPI, fetcher);
-
-  const [favoriteList, setFavoriteList] = useState([]);
-  useEffect(() => {
-    if (favoriteData?.data) {
-      const userFavorite = favoriteData?.data.find(
-        (v) => v.user_id == user?.id
-      );
-      if (userFavorite?.productID_list.length > 0) {
-        setFavoriteList(userFavorite?.productID_list.split(","));
-        localStorage.setItem("favoritePD", JSON.stringify(favoriteList));
-      }
-    }
-  }, []);
-  useEffect(() => {
-    if (favoriteList.length > 0 && productID) {
-      if (favoriteList.includes(productID)) setHeartState(true);
-      const storedFavorites =
-        JSON.parse(localStorage.getItem("favoritePD")) || [];
-      const isSameContent =
-        storedFavorites.length == favoriteList.length &&
-        storedFavorites.every((PD) => favoriteList.includes(PD)) &&
-        favoriteList.every((PD) => storedFavorites.includes(PD));
-
-      if (!isSameContent) {
-        setFavorite(favoriteList);
-        localStorage.setItem("favoritePD", JSON.stringify(favoriteList));
-      }
-    }
-  }, [favoriteList]);
-
   const [productCount, setProductCount] = useState(0);
   useEffect(() => {
     const newCount = productItems?.filter((v) => v.productID == productID);
@@ -78,34 +42,29 @@ export default function CardCard({
       }
     }
   }, [productItems]);
-  // console.log(productItems, productCount);
-  // console.log();
-  const [cardHover, setCardHover] = useState(false);
-  const [heartHover, setHeartHover] = useState(false);
-  const [heartState, setHeartState] = useState(false);
-  const [cartHover, setCartHover] = useState(false);
-  const [cartRate, setCartRate] = useState(0);
-  const products = data?.data[0];
-  const productName = products?.name;
-  const [cardPic, setCardPic] = useState("/product/img/default.webp");
-  const cardRef = useRef(null);
-  const simulateClick = (e) => {
-    if (e.target.dataset.clickable) {
-      if (cardRef.current) {
-        cardRef.current.click();
-      }
-    }
-  };
-  useEffect(() => {
-    if (productName) {
-      const img = new Image();
-      const encodedImageName = encodeURIComponent(productName);
-      img.src = `/product/img/${encodedImageName}_title.webp`;
-      img.onload = () => setCardPic(img.src);
-      img.onerror = () =>
-        setCardPic(`/product/img/${encodedImageName}_(1).webp`);
-    }
-  }, [productName]);
+  const {
+    productID,
+    router,
+    loginRoute,
+    products,
+    productName,
+    cardHover,
+    setCardHover,
+    cartHover,
+    setCartHover,
+    cartRate,
+    setCartRate,
+    cardPic,
+    setCardPic,
+    cardRef,
+    simulateClick,
+    mutate,
+    isLoading,
+    error,
+  } = useCardFetch();
+  const { setFavorite, heartHover, setHeartHover, heartState, setHeartState } =
+    useCardFavorite();
+
   return (
     <li
       className={styles.ProductCard}
@@ -134,9 +93,6 @@ export default function CardCard({
         <img src={`/product/font/cart-fill-big.png`} alt="" />
         <p>{productCount > 0 ? productCount : cartRate}</p>
       </div>
-      {/* {productDiscount > 0 && (
-        <div className={styles.ProductCardOnsale}>-{productDiscount} %</div>
-      )} */}
       <figure className={styles.ProductCardImg}>
         {productName && (
           <img
@@ -207,7 +163,6 @@ export default function CardCard({
             }.png`}
             alt=""
           />
-          {/* <h6>{cartRate}</h6> */}
         </button>
         <Link
           href={`/product/detail?productID=${productID}`}

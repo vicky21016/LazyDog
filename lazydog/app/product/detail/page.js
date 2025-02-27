@@ -6,60 +6,66 @@ import ProductCard from "../_components/card/card";
 import RateCard from "../_components/rate/ratecard";
 import StarGroup from "../_components/rate/stargroup";
 import StarBar from "../_components/rate/starbar";
-import useSWR from "swr";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
+import { FetchDetailProvider, useDetailFetch } from "@/hooks/product/use-fetch";
+import {
+  DetailFavoriteProvider,
+  useDetailFavorite,
+} from "@/hooks/product/use-favorite";
 
-export default function DetailPage({ searchParams = {} }) {
+import useSWR from "swr";
+import { useSearchParams, useRouter } from "next/navigation";
+
+export default function DetailPage() {
+  return (
+    <FetchDetailProvider>
+      <DetailFavoriteProvider>
+        <DetailContent />
+      </DetailFavoriteProvider>
+    </FetchDetailProvider>
+  );
+}
+
+function DetailContent() {
   const { user } = useAuth();
   const { onAddProduct, productItems } = useCart();
-  const router = useRouter();
-  const loginRoute = "/login";
-  const [favorite, setFavorite] = useState([]);
-  const [picNow, setPicNow] = useState(0);
-  const [heartHover, setHeartHover] = useState(false);
-  const [heartState, setHeartState] = useState(false);
-  const [rate, setRate] = useState(3);
-  const [amount, setAmount] = useState(1);
-  const [cardPic, setCardPic] = useState("/product/img/default.webp");
-  const product = searchParams.productID;
-  const url = `http://localhost:5000/api/products/${product}`;
-  const url2 = "http://localhost:5000/api/products/order";
-  const fetcher = async (url) => {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("資料要求失敗");
-      return res.json();
-    } catch (err) {
-      console.error("資料要求失敗:", err);
-      throw err;
-    }
-  };
-  const { data, isLoading, error, mutate } = useSWR(url, fetcher);
   const {
-    data: orderData,
-    isLoading: orderLoading,
-    error: orderError,
-    mutate: orderMutate,
-  } = useSWR(url2, fetcher);
-  const productData = data?.data[0];
-  const productName = productData?.name;
-  const img = {
-    list: [],
-    img: [],
-    sm: [],
-    info: [],
-  };
-  if (productData) {
-    img["list"].push(productData?.listImg);
-    img["img"] = (productData?.img).split(",");
-    if (productData?.smImg) img["sm"] = (productData?.smImg).split(",");
-    if (productData?.infoImg) img["info"] = (productData?.infoImg).split(",");
-  }
-  const productDiscount = 0;
-  const [countDown, setCountDown] = useState(0);
+    product,
+    router,
+    loginRoute,
+    productData,
+    productName,
+    productDiscount,
+    img,
+    picNow,
+    setPicNow,
+    rate,
+    setRate,
+    amount,
+    setAmount,
+    cardPic,
+    setCardPic,
+    rateData,
+    rateAvg,
+    int,
+    dec,
+    hotSale,
+    sameBuy,
+    mutate,
+    isLoading,
+    error,
+  } = useDetailFetch();
+  const {
+    favorite,
+    setFavorite,
+    heartHover,
+    setHeartHover,
+    heartState,
+    setHeartState,
+  } = useDetailFavorite();
 
   const [scrollY, setScrollY] = useState(0);
   useEffect(() => {
@@ -85,111 +91,6 @@ export default function DetailPage({ searchParams = {} }) {
       collapseRef.current.click();
     }
   };
-
-  const rateData = {
-    rate: [],
-    comment: [],
-    user: [],
-    img: [],
-    date: [],
-  };
-  let rateAvg = 0;
-  if (data?.data) {
-    data?.data.map((v, i) => {
-      rateData["rate"].push(v.rate);
-      rateData["user"].push(v.user);
-      rateData["img"].push(v.userImg);
-      rateData["comment"].push(v.comment);
-      rateData["date"].push(v.commentTime);
-    });
-    let rateSum = 0;
-    for (let i = 0; i < rateData["rate"].length; i++) {
-      rateSum += rateData["rate"][i];
-    }
-    rateAvg = (rateSum / rateData["rate"].length).toFixed(1);
-  }
-  // console.log(rateData);
-  let int, dec;
-  if (rateAvg) {
-    [int, dec] = rateAvg.toString().split(".");
-    if (!dec) dec = 0;
-  }
-  const orders = orderData?.data;
-  const hotSale = [];
-  const sameBuy = [];
-  const sameCategory = data?.data[0].productID.slice(0, 6);
-  orders?.map((v, i) => {
-    if (i < 10) hotSale.push(v.productID);
-    if (sameBuy.length < 10 && v.productID.includes(sameCategory))
-      sameBuy.push(v.productID);
-  });
-
-  useEffect(() => {
-    if (productName) {
-      const newImage = new Image();
-      const encodedImageName = encodeURIComponent(productName);
-      newImage.src = `/product/img/${encodedImageName}${img.img[picNow]}`;
-      newImage.onload = () => setCardPic(newImage.src);
-      newImage.onerror = () => setCardPic("/product/img/default.webp");
-    }
-  }, [productName]);
-
-  const favoriteAPI = "http://localhost:5000/api/products/favorite";
-  const {
-    data: favoriteData,
-    isLoading: favoriteLoading,
-    error: favoriteError,
-    mutate: favoriteMutate,
-  } = useSWR(favoriteAPI, fetcher);
-
-  const [favoriteList, setFavoriteList] = useState([]);
-  useEffect(() => {
-    if (favoriteData?.data) {
-      const userFavorite = favoriteData?.data.find(
-        (v) => v.user_id == user?.id
-      );
-      if (userFavorite?.productID_list.length > 0) {
-        setFavoriteList(userFavorite?.productID_list.split(","));
-      }
-    }
-  }, [favoriteData]);
-  useEffect(() => {
-    if (favoriteList.length > 0 && product) {
-      if (favoriteList.includes(product)) setHeartState(true);
-      setFavorite((favoriteNow) => {
-        if (JSON.stringify(favoriteNow) !== JSON.stringify(favoriteList)) {
-          return favoriteList;
-        }
-        return favoriteNow;
-      });
-    }
-  }, [favoriteList]);
-
-  useEffect(() => {
-    console.log(favorite);
-    favoriteData?.data.map(async (v, i) => {
-      if (user?.id > 0) {
-        const formData = new FormData();
-        formData.append("userID", user?.id);
-        formData.append("productIDlist", favorite.join(","));
-        let API = "http://localhost:5000/api/products/favorite";
-        let methodType = "POST";
-        if (v.user_id == user?.id) methodType = "PATCH";
-        try {
-          const res = await fetch(API, {
-            method: methodType,
-            body: formData,
-          });
-          const result = await res.json();
-          if (result.status != "success") throw new Error(result.message);
-          // console.log(result);
-        } catch (error) {
-          console.log(error);
-          alert(error.message);
-        }
-      }
-    });
-  }, [favorite]);
 
   return (
     <div className={`${styles.Container} container`}>
