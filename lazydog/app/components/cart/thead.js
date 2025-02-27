@@ -12,6 +12,7 @@ export default function Thead(props) {
   <th>單價</th>
   <th>數量</th>
   <th>總價</th>
+  <th  />
 </tr>
 </thead>
       

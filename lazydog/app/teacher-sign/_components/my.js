@@ -35,7 +35,7 @@ export default function My() {
     },
     {
       name: "會員資料",
-      path: "/teacher-sign/user",
+      path: "/pages",
       icon: <i className="bi bi-person-fill "></i>,
     },
   ];

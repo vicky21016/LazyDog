@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import "../css/CartListPay.css";
+// import "../css/CartListPay.css";
 import { isDev, apiURL } from "@/config";
 import Link from "next/link";
 import { toast, ToastContainer } from "react-toastify";
@@ -12,6 +12,7 @@ import { useOrder } from "@/hooks/use-order";
 import Header from "../../components/layout/header";
 import Input from "../../components/forms/Input";
 import InputFiled from "../../components/forms/InputField";
+import styles from "../css/CartList.module.css"
 import Hotel from "../../components/cart/hotel";
 import Course from "../../components/cart/course";
 export default function CartListPayPage(props) {
@@ -188,13 +189,13 @@ export default function CartListPayPage(props) {
         <div className="cart-img">
           <img src="/cart/Frame 35909.png" alt="Cart Image" />
         </div>
-        <div className="container">
-          <h1>購買資訊</h1>
+        <div className="container lumi-all-wrapper">
+          <h4 className="mb-5">購買資訊</h4>
           <form action>
             <div className="row">
               <main
-                className="col-lg-auto col-md-auto col-auto"
-                style={{ margin: "auto" }}
+                className="col-lg-5 col-md-auto col-auto me-5"
+               
               >
                 <div className="mb-3 row">
                   <div className="col-md-6">
@@ -288,18 +289,18 @@ export default function CartListPayPage(props) {
                 </div>
               </main>
               <aside
-                className="col-lg-4 col-md-7 col-10"
-                style={{ margin: "auto" }}
+                className={`col-lg-5 col-md-7 col-10 ${styles.list}`}
+                
               >
                 <div className="aside1 ">
-                  <div className="d-flex justify-content-between">
-                    <span>產品</span>
+                  <div className="d-flex justify-content-between mb-4">
+                    <span className={styles.text}>產品</span>
                     <span>Subtotal</span>
                   </div>
                   {productItems.map((item) => (
                     <div
                       key={item.id}
-                      className="d-flex justify-content-between"
+                      className="d-flex justify-content-between mb-2"
                     >
                       <span>
                         <span>{item.name}</span>x<span>{item.count}</span>
@@ -311,7 +312,7 @@ export default function CartListPayPage(props) {
                   {courseItems.map((item) => (
                     <div
                       key={item.id}
-                      className="d-flex justify-content-between"
+                      className="d-flex justify-content-between mb-2"
                     >
                       <span>
                         <span>{item.name}</span>x<span>{item.count}</span>
@@ -323,7 +324,7 @@ export default function CartListPayPage(props) {
                   {hotelItems.map((item) => (
                     <div
                       key={item.id}
-                      className="d-flex justify-content-between"
+                      className="d-flex justify-content-between mb-2"
                     >
                       <span>
                         <span>{item.name}</span>x<span>{item.count}</span>
@@ -332,13 +333,16 @@ export default function CartListPayPage(props) {
                     </div>
                   ))}
 
-                  <div className="d-flex justify-content-between">
-                    <span>總價</span>
+                  <div className="d-flex justify-content-between mt-5">
+                    <span className={styles.subtext}>總價</span>
                     <span>{`Rs. ${amountValue}`}</span>
                   </div>
                 </div>
-                <hr />
-                <div className="aside2">
+                <hr className="mb-5"/>
+                <button className={styles.btn} type="button" onClick={handleEcpay}>
+              付款
+            </button>
+                {/* <div className="aside2">
                   <h1>付款</h1>
                   <label>
                     <input
@@ -359,8 +363,8 @@ export default function CartListPayPage(props) {
                   <label>
                     <input type="radio" name="payment" /> 轉帳
                   </label>
-                </div>
-                <div className="input-group">
+                </div> */}
+                {/* <div className="input-group">
                   <InputFiled
                     type="text"
                     id="name"
@@ -409,15 +413,13 @@ export default function CartListPayPage(props) {
                   <span>
                     安全碼 <span style={{ color: "red" }}>*</span>
                   </span>
-                </div>
+                </div> */}
               </aside>
             </div>
 
             <div ref={payFormDiv}></div>
 
-            <button type="button" onClick={handleEcpay}>
-              付款
-            </button>
+            
           </form>
         </div>
       </div>
