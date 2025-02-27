@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import hotelStyles from "../../../styles/modules/fontHotelDetail.module.css";
 import Image from "next/image";
 import { getHotelRoomById, getRoomInventory } from "@/services/hotelService";
+import { useCart } from "@/hooks/use-cart";
+import { useAuth } from "@/hooks/use-auth";
 
 const RoomSelection = ({ hotelId }) => {
+  const { user } = useAuth();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const { onAddHotel, hotelItems } = useCart();
   useEffect(() => {
     if (!hotelId) {
       console.warn(" 錯誤: `hotelId` 為 undefined，無法載入房型");
@@ -93,6 +96,15 @@ const RoomSelection = ({ hotelId }) => {
                   <button
                     className={hotelStyles.suRoomBookBtn}
                     disabled={room.available == 0}
+                    onClick={() => {
+                      if (!user) {
+                        alert("請先登入");
+                        router.push(loginRoute);
+                      } else {
+                        setCartRate(cartRate + 1);
+                        onAddHotel(hotel);
+                      }
+                    }}
                   >
                     {room.available > 0 ? "BOOK" : "已滿"}
                   </button>
