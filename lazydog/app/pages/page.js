@@ -1,17 +1,19 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import Header from "../components/layout/header";
 import MyMenu from "../components/layout/myMenu";
-import Bread from "../components/teacher/breadcrumb"; 
+import Bread from "../components/teacher/breadcrumb";
 import Input from "../components/forms/Input";
 import styles from "./menu.module.css";
-import style from "../../styles/modules/menu.module.css"
+import style from "../../styles/modules/menu.module.css";
+import { useLocationSelector } from "@/hooks/useLocationSelector";
 // import { auth, signOut, onAuth } from "./firebase";
 
 export default function Menu() {
+  // const { city, district, closeModal, openModal } = useLocationSelector();
   const [checkingAuth, setCheckingAuth] = useState(true);
   const { user, save } = useAuth();
 
@@ -205,12 +207,6 @@ export default function Menu() {
                   <h6>
                     所在地區<span className={`${styles["important"]}`}> *</span>
                   </h6>
-                  <Input
-                    name="location"
-                    placeholder="所在地區"
-                    value={formData.location}
-                    onChange={handleChange}
-                  />
 
                   <div className={styles.addressRow}>
                     <select
@@ -240,30 +236,12 @@ export default function Menu() {
                   </div>
 
                   <div className={styles.addressRow}>
-                    <Input
+                    {/* <Input
                       name="section"
                       placeholder="段"
                       value={formData.section}
                       onChange={handleChange}
-                    />
-                    <Input
-                      name="lane"
-                      placeholder="巷/弄"
-                      value={formData.lane}
-                      onChange={handleChange}
-                    />
-                    <Input
-                      name="number"
-                      placeholder="號"
-                      value={formData.number}
-                      onChange={handleChange}
-                    />
-                    <Input
-                      name="floor"
-                      placeholder="樓"
-                      value={formData.floor}
-                      onChange={handleChange}
-                    />
+                    /> */}
                   </div>
                 </div>
 
