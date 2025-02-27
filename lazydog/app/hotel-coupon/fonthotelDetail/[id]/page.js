@@ -175,7 +175,7 @@ export default function HotelDetailPage({ params }) {
               <div
                 className={`col-lg-6 ps-5 ${hotelStyles.suHotelDescription}`}
               >
-                <h2 className="mb-5 text-center">
+                <h3 className="mb-5 text-center">
                   {hotel.name}
                   <i
                     className={`bi ${
@@ -184,7 +184,7 @@ export default function HotelDetailPage({ params }) {
                     style={{ color: "red", cursor: "pointer", float: "right" }}
                     onClick={() => setIsFavorite(!isFavorite)}
                   ></i>
-                </h2>
+                </h3>
 
                 <p className={hotelStyles.suIntroduce}>
                   {hotel.introduce || "暫無介紹"}

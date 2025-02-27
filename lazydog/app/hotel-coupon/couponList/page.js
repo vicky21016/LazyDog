@@ -66,7 +66,7 @@ export default function CouponListPage() {
 
           {/* 右邊 */}
           <div className="col-12 col-md-9">
-            <h3 className="mb-4">優惠券列表</h3>
+            <h5 className="mb-4">優惠券列表</h5>
             <div className="table-responsive">
               <table className="table table-striped table-hover">
                 <thead className="table-light">

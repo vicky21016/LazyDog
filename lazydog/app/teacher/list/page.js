@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {useTeachers} from "@/hooks/useTeachers";
+import { useTeachers } from "@/hooks/useTeachers";
 import Header from "../../components/layout/header";
 import Breadcrumb from "../../components/teacher/breadcrumb";
 import Filter from "../../components/teacher/Filter";
@@ -11,23 +11,29 @@ import Page from "../../course/_components/list/pagination";
 import style from "../../pages/menu.module.css";
 import style1 from "../../product/list/list.module.css";
 
-export default function App (){
+export default function App() {
   const { teachers = [] } = useTeachers();
+  const [filteredCourses, setFilteredCourses] = useState(teachers);
 
   // 分頁
   const [page, setPage] = useState(1);
   const perPage = 9;
-  const totalPages =  Math.max(1, Math.ceil((teachers?.length || 0) / perPage));
+  const totalPages = Math.max(1, Math.ceil((filteredCourses.length || 0) / perPage));
 
   const startIndex = (page - 1) * perPage;
-  const currentCourses = teachers?.slice(startIndex, startIndex + perPage);
+  const currentCourses = filteredCourses.slice(startIndex, startIndex + perPage);
 
-  // if (loading) return
-  //     <>
-  //         <div className={style.container2}>
-  //             <div className={style.loader27}></div>
-  //            </div>
-  //          </>
+  // 處理篩選條件
+  const handleFilterChange = (selectedCategories, selectedGenders) => {
+    const newFilteredData = teachers.filter(
+      (teacher) =>
+        (selectedCategories.length === 0 || selectedCategories.includes(teacher.category_name)) &&
+        (selectedGenders.length === 0 || selectedGenders.includes(teacher.gender))
+    );
+
+    setFilteredCourses(newFilteredData);
+    setPage(1); // 篩選後重置分頁到第 1 頁
+  };
 
   return (
     <>
@@ -46,11 +52,7 @@ export default function App (){
               links={[
                 { label: "首頁 ", href: "/" },
                 { label: " 師資服務", href: "/teacher" },
-                {
-                  label: " 師資列表",
-                  href: "/teacher/list",
-                  active: true,
-                },
+                { label: " 師資列表", href: "/teacher/list", active: true },
               ]}
             />
             <div className={`mt-4 ${style1.Title}`}>
@@ -64,23 +66,12 @@ export default function App (){
           <section className={styles.pdArea}>
             <div className="row">
               <div className={`col-3 ${styles.asideContainer}`}>
-                <Filter />
-                {/* <div>
-                <section className={styles.breadcrumbsTitle}>
-                  <div className={styles.teaTitle}>
-                    <h4 className={styles.list}>師資列表</h4>
-                    <div className={styles.titleFilter}>
-                      <img src="./img/font/filter.png" alt="" />
-                      <h6>依熱門排序</h6>
-                    </div>
-                  </div>
-                </section>
-                <div> */}
+                <Filter onFilterChange={handleFilterChange} />
               </div>
               <div className="col-9">
                 <div className="row mt-1 g-5 mb-5">
-                  {/* {Array.isArray(teachers) &&
-                    teachers.map((teacher) => (
+                  {currentCourses.length > 0 ? (
+                    currentCourses.map((teacher) => (
                       <TeacherCard
                         key={teacher.id}
                         imgSrc={`/teacher-img/${teacher.img}`}
@@ -89,22 +80,12 @@ export default function App (){
                         text={teacher.category_name}
                         link={`/teacher/info/${teacher.id}`}
                       />
-                    ))}
+                    ))
+                  ) : (
+                    <p className="text-center">沒有符合條件的老師</p>
+                  )}
                 </div>
-                <div className={styles.courseGroup}> */}
-                {currentCourses?.map((teacher) => {
-                    return(
-                    <TeacherCard key={teacher.id} imgSrc={`/teacher-img/${teacher.img}`}
-                    col="col-6 col-md-4"
-                    name={teacher.name}
-                    text={teacher.category_name}
-                    link={`/teacher/info/${teacher.id}`}/>
-                    )
-                })}
-            </div>
-                <Page
-                  totalPages={totalPages} currPage={page} setCurrPage={setPage}
-                />
+                <Page totalPages={totalPages} currPage={page} setCurrPage={setPage} />
               </div>
             </div>
           </section>
@@ -112,4 +93,4 @@ export default function App (){
       </div>
     </>
   );
-};
+}

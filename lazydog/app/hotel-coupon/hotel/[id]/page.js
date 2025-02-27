@@ -40,7 +40,7 @@ export default function HotelEditPage() {
           {/* 右邊 */}
           <div className="col-12 col-md-9">
             <div className="mx-auto">
-              <h3 className="mb-3">旅館資訊</h3>
+              <h5 className="mb-3">旅館資訊</h5>
               <form id="hotelForm">
                 <div className={`section ${hotelStyles.suSection}`}>
                   <h5>基本資訊</h5>

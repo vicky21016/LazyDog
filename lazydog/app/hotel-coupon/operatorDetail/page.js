@@ -67,7 +67,7 @@ export default function OperatorDetailPage() {
           <My />
           <div className="col-12 col-md-9">
             <div className="card p-4">
-              <h5 className="mb-3">負責人資訊</h5>
+              <h5 className="mb-4">負責人資訊</h5>
               <div className="row">
                 <div className="col-md-6">
                   <label className="fw-bold">
