@@ -7,7 +7,7 @@ import styles from "../css/CartList.module.css";
 // import "../css/CartList.css";
 import { useCart } from "@/hooks/use-cart";
 import Header from "@/app/components/layout/header";
-import Breadcrumb from "@/app/course/_components/Id/breadcrumb";
+import Breadcrumb from "../../components/teacher/breadcrumb";
 import Thead from "@/app/components/cart/thead";
 import Other from "../../components/teacher/otherTeacher";
 import Link from "next/link";
@@ -67,9 +67,9 @@ export default function CartListPage(props) {
         <div className={styles.cartImg}>
           <img src="/cart/cattlist.png" />
         </div>
-
+        
         <div className="container">
-          <Breadcrumb
+        <Breadcrumb
             links={[
               { label: "首頁 ", href: "/" },
               {
@@ -79,10 +79,10 @@ export default function CartListPage(props) {
               },
             ]}
           />
-          <div className={`${styles.customTable} row`}>
+          <div className={`${styles.customTable} row my-5`}>
             <table
-              className="col-lg-8 col-md-auto col-auto me-5 mb-5"
-              style={{ marginLeft: "auto" }}
+              className="col-lg-8 col-md-auto col-auto mb-5 me-5"
+              
             >
               {productItems.length > 0 && (
                 <>
@@ -103,7 +103,7 @@ export default function CartListPage(props) {
                           </td>
                           <td>{cartItem.name}</td>
                           <td>{cartItem.price}</td>
-                          <td>
+                          <td className={`${styles.Btn}`}>
                             <button onClick={() => onIncrease(cartItem.id)}>
                               +
                             </button>
@@ -222,9 +222,10 @@ export default function CartListPage(props) {
             {/* 顯示摘要區 */}
             <aside
               className={`${styles.aside} col-lg-3 col-md-auto col-auto mb-5`}
-              style={{ margin: "auto" }}
+              
             >
-              <div className="aside-card">
+              <div className={`${styles.summary} aside-card mb-5`}>
+                <h5 className="mb-4">訂單明細</h5>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
@@ -243,14 +244,7 @@ export default function CartListPage(props) {
                   <span>旅館小計</span>
                   <span>{`Rs. ${totalHotelAmount}`}</span>
                 </div>
-                <div
-                  className={`${styles.summaryItem} d-flex justify-content-between mt-3`}
-                >
-                  <span>總金額</span>
-                  <span
-                    className={styles.totalmoney}
-                  >{`NT$ ${totalAmount}`}</span>
-                </div>
+          
               </div>
 
               {/* 折扣區 */}
@@ -270,7 +264,7 @@ export default function CartListPage(props) {
               </div>
 
               {/* 結帳按鈕 */}
-              <div className="d-flex justify-content-center pt-5 pb-5">
+              <div className="d-flex justify-content-center pt-5 ">
                 {/* <button
                   type="submit"
                   style={{ backgroundColor: "#f2662b", color: "#fff" }}
@@ -301,12 +295,12 @@ export default function CartListPage(props) {
           {/* 推薦商品區 */}
           <div className="main2">
             <div>
-              <h2>加購其他優惠商品</h2>
+              <h4 className="mb-5">加購其他優惠商品</h4>
               <Other cards={teacherData} />
             </div>
-            <div className="card"></div>
+            <hr className="mb-5"/>
             <div>
-              <h2>看看其他精選商品 </h2>
+              <h4 className="mb-5">看看其他精選商品 </h4>
               <Other cards={teacherData} />
             </div>
           </div>
