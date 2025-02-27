@@ -359,7 +359,7 @@ function checkToken(req, res, next) {
 
 async function getAvatar(img) {
   if (!img) {
-    return "http://localhost:5000/auth/default-avatar.jpg";
+    return "http://localhost:5000/auth/Dog5.png";
   }
   return `http://localhost:5000/auth/${img}`;
 }

@@ -156,12 +156,12 @@ router.post("/productOrders", async (req, res) => {
 
 // 課程
 router.post("/course", async (req, res) => {
-  const { user_id, item_id, type } = req.body;
+  const { user_id, course_id, quanity } = req.body;
   const sql =
-    "INSERT INTO course_orders (user_id, item_id, type) VALUES (?, ?, ?)";
+    "INSERT INTO course_orders (user_id, course_id, quanity) VALUES (?, ?, ?)";
 
   try {
-    const [result] = await pool.execute(sql, [user_id, item_id, type]);
+    const [result] = await pool.execute(sql, [user_id, course_id, quanity]);
 
     res.json({ status: "success", id: result.insertId });
   } catch (err) {
@@ -171,14 +171,50 @@ router.post("/course", async (req, res) => {
 
 // 旅館
 router.post("/hotel", async (req, res) => {
-  const { user_id, item_id, type } = req.body;
-  const sql =
-    "INSERT INTO hotel_order (user_id, item_id, type) VALUES (?, ?, ?)";
+  const {
+    hotel_id,
+    user_id,
+    dog_count,
+    check_in,
+    check_out,
+    total_price,
+    payment_status,
+    payment_method,
+    cancellation_policy,
+    remark,
+  } = req.body;
+  //預設折扣薇玲
+  const discount_amount = 0;
+  const final_amount = total_price;
 
   try {
-    const [result] = await pool.execute(sql, [user_id, item_id, type]);
-
-    res.json({ status: "success", id: result.insertId });
+    const [result] = await pool.query(
+      `INSERT INTO hotel_order 
+      (hotel_id, user_id, dog_count, check_in, check_out, status, discount_amount, 
+       total_price, final_amount, payment_status, payment_method, 
+       cancellation_policy, remark, created_at, updated_at, is_deleted) 
+       VALUES (?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
+      [
+        hotel_id,
+        user_id,
+        dog_count,
+        check_in,
+        check_out,
+        discount_amount,
+        total_price,
+        final_amount,
+        payment_status,
+        payment_method,
+        cancellation_policy,
+        remark,
+      ]
+    );
+    res.json({
+      status: "success",
+      id: result.insertId,
+      total_price,
+      final_amount,
+    });
   } catch (err) {
     res.status(500).json({ status: "error", message: err.message });
   }
