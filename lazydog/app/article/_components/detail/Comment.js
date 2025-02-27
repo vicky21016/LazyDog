@@ -3,7 +3,7 @@
 import styles from "./page.module.css";
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
-export default function comment() {
+export default function Comment({ content, author, author_img }) {
     return (
         <>
             <li className="d-flex py-3" style={{ margin: '10px' }}>
@@ -11,15 +11,15 @@ export default function comment() {
                     <div className="avatar ratio ratio-1x1 rounded-circle overflow-hidden">
                         <img
                             className="object-fit-cover"
-                            src="/article_img/batman.jpg"
-                            alt=""
+                            src={author_img}
                         />
                     </div>
+                    <div className="d-flex justify-content-center">
+                        <div>{author}</div>
+                    </div>
                 </div>
-                <div className="" style={{ marginLeft: '2rem', width: '100%' }}>
-                    Looking to replicate the media object component from Bootstrap 4?
-                    Recreate it in no time with a few flex utilities that allow even
-                    more flexibility and customization than before.
+                <div className="" style={{ marginLeft: '2rem', width: '90%' }}>
+                    {content}
                 </div>
             </li>
         </>

@@ -6,7 +6,7 @@ import pool from "../config/mysql.js";
 export const createCommentS = async (createComment) => {
     const connection = await pool.getConnection();
     try {
-      const { content, article_id, user_id } = createComment;
+      const { content, article_id, user_id,create_time } = createComment;
   
       // 開始事務
       await connection.beginTransaction();
@@ -16,7 +16,7 @@ export const createCommentS = async (createComment) => {
         `INSERT INTO comment 
             (content, article_id, user_id, create_time) 
             VALUES (?, ?, ?,NOW())`,
-        [content, article_id, user_id]
+        [content, article_id, user_id, create_time]
       );
       // 提交事務
       await connection.commit();
