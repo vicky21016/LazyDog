@@ -9,6 +9,7 @@ import Link from 'next/link';
 import useArticles from "@/hooks/useArticle";
 import useUploadCover from "@/hooks/uploadCover";
 import { useAuth } from "@/hooks/use-auth";
+import Header from "../../../components/layout/header";
 
 // 將表單的不同部分拆分為子元件
 import TitleInput from '../../_components/update/TitleInput';
@@ -106,79 +107,82 @@ export default function UpdateArticlePage({ params }) {
   }, [title, selectedCategory, user, imageUrl, selectedImage, uploadCover, updateArticle, articleId]);
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-lg-3 col-sm-12">
-          <Link href="/article/my_article" className="btn btn-primary mb-3">
-            回文章列表
-          </Link>
-        </div>
-        <div className="col-lg-9">
-          <form
-            className="p-3 col"
-            style={{
-              maxWidth: '750px',
-              backgroundColor: '#FFF6E8',
-              boxShadow: "0px 10px 14px rgba(0, 0, 0, 0.25)"
-            }}
-          >
-            <h4>編輯文章</h4>
+    <>
+      <Header />
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-3 col-sm-12">
+            <Link href="/article/my_article" className="btn btn-primary mb-3">
+              回我的文章
+            </Link>
+          </div>
+          <div className="col-lg-9">
+            <form
+              className="p-3 col"
+              style={{
+                maxWidth: '750px',
+                backgroundColor: '#FFF6E8',
+                boxShadow: "0px 10px 14px rgba(0, 0, 0, 0.25)"
+              }}
+            >
+              <h4>編輯文章</h4>
 
-            {/* 標題輸入 */}
-            <TitleInput title={title} setTitle={setTitle} />
+              {/* 標題輸入 */}
+              <TitleInput title={title} setTitle={setTitle} />
 
-            {/* 類別選擇 */}
-            <CategorySelect
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              categoryOptions={categoryOptions}
-            />
+              {/* 類別選擇 */}
+              <CategorySelect
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                categoryOptions={categoryOptions}
+              />
 
-            {/* 圖片上傳 */}
-            <ImageUpload
-              imageUrl={imageUrl}
-              imagePreview={imagePreview}
-              handleImageChange={handleImageChange}
-              error={error}
-            />
+              {/* 圖片上傳 */}
+              <ImageUpload
+                imageUrl={imageUrl}
+                imagePreview={imagePreview}
+                handleImageChange={handleImageChange}
+                error={error}
+              />
 
-            {/* 文章內容編輯器 */}
-            <FroalaEditorWrapper
-              onContentChange={setContent}
-              initialContent={content}
-            />
+              {/* 文章內容編輯器 */}
+              <FroalaEditorWrapper
+                onContentChange={setContent}
+                initialContent={content}
+              />
 
-            {/* 保存按鈕 */}
-            <div className="d-flex justify-content-end">
-              <button
-                type="button"
-                className="mt-3"
-                style={{
-                  border: 'none',
-                  borderRadius:'5px',
-                  backgroundColor: '#FFBD00',
-                }}
-                onClick={handleSubmit}
-                disabled={isLoading}
-              >
-                {isLoading ? '保存中...' : (
-                  <>
-                    <Link
-                      href="/article/my_article"
-                      style={{
-                        backgroundColor: '#FFBD00',
-                        color: 'white',
-                      }}
-                    >
-                      <i className="bi bi-check-circle"></i> 保存文章
-                    </Link>
-                  </>
-                )}
-              </button>
-            </div>
-          </form>
+              {/* 保存按鈕 */}
+              <div className="d-flex justify-content-end">
+                <button
+                  type="button"
+                  className="mt-3"
+                  style={{
+                    border: 'none',
+                    borderRadius: '5px',
+                    backgroundColor: '#FFBD00',
+                  }}
+                  onClick={handleSubmit}
+                  disabled={isLoading}
+                >
+                  {isLoading ? '保存中...' : (
+                    <>
+                      <Link
+                        href="/article/my_article"
+                        style={{
+                          backgroundColor: '#FFBD00',
+                          color: 'white',
+                        }}
+                      >
+                        <i className="bi bi-check-circle"></i> 保存文章
+                      </Link>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

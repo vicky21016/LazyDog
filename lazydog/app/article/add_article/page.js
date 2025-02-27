@@ -10,6 +10,7 @@ import Link from 'next/link';
 import useArticles from "@/hooks/useArticle";
 import useUploadCover from "@/hooks/uploadCover"; // 引入圖片上傳鉤子
 import { useAuth } from "@/hooks/use-auth";  // 引入 useAuth 鉤子
+import Header from "../../components/layout/header";
 
 export default function AddArticlePage() {
   const { createArticle } = useArticles();
@@ -89,99 +90,103 @@ export default function AddArticlePage() {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-lg-3 col-sm-12">
-          <Link href="/article/list" className="btn btn-primary mb-3">
-            回文章列表
-          </Link>
-        </div>
-        <div className="col-lg-9">
-          <form
-            className="p-3 col"
-            style={{
-              maxWidth: '750px',
-              backgroundColor: '#FFF6E8',
-              boxShadow: "0px 10px 14px rgba(0, 0, 0, 0.25)"
-            }}
-          >
-            <h4>新增文章</h4>
+    <>
+      <Header />
 
-            {/* 下拉選單 - 類別選擇 */}
-            <select
-              className="form-select my-3"
-              value={selectedCategory}
-              style={{ width: '154px' }}
-              onChange={(e) => setSelectedCategory(Number(e.target.value))}
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-3 col-sm-12">
+            <Link href="/article/list" className="btn btn-primary mb-3">
+              回文章列表
+            </Link>
+          </div>
+          <div className="col-lg-9">
+            <form
+              className="p-3 col"
+              style={{
+                maxWidth: '750px',
+                backgroundColor: '#FFF6E8',
+                boxShadow: "0px 10px 14px rgba(0, 0, 0, 0.25)"
+              }}
             >
-              <option value="">請選擇主題</option>
-              {categoryOptions.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+              <h4>新增文章</h4>
 
-            {/* 標題輸入 */}
-            <input
-              className="ps-2 w-100 d-block"
-              placeholder="標題"
-              type="text"
-              name="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-
-            {/* 圖片上傳 */}
-            <div style={{ margin: '20px' }}>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ marginBottom: '10px' }}
-              />
-              {imagePreview && (
-                <div>
-                  <h4>圖片預覽:</h4>
-                  <img
-                    src={imagePreview}
-                    alt="預覽"
-                    style={{ maxWidth: '100%', height: '250px', marginBottom: '10px' }}
-                  />
-                </div>
-              )}
-              {error && <p style={{ color: 'red' }}>{error}</p>}
-            </div>
-
-            {/* 文章內容編輯器 */}
-            <FroalaEditorWrapper
-              onContentChange={(content) => setContent(content)} />
-            {/* ✅ 傳遞內容變更函數 */}
-
-            {/* 發布按鈕 */}
-            <div className="d-flex justify-content-end">
-              <button
-                type="button"
-                className="mt-3"
-                style={{
-                  border: 'none',
-                  backgroundColor: '#FFBD00',
-                  color: 'white',
-                  borderRadius: '5px',
-                }}
-                onClick={handleSubmit}
-                disabled={isLoading} // 上傳中禁用按鈕
+              {/* 下拉選單 - 類別選擇 */}
+              <select
+                className="form-select my-3"
+                value={selectedCategory}
+                style={{ width: '154px' }}
+                onChange={(e) => setSelectedCategory(Number(e.target.value))}
               >
-                {isLoading ? '發布中...' : (
-                  <>
-                    <i className="bi bi-check-circle"></i> 發布文章
-                  </>
+                <option value="">請選擇主題</option>
+                {categoryOptions.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+
+              {/* 標題輸入 */}
+              <input
+                className="ps-2 w-100 d-block"
+                placeholder="標題"
+                type="text"
+                name="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+
+              {/* 圖片上傳 */}
+              <div style={{ margin: '20px' }}>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  style={{ marginBottom: '10px' }}
+                />
+                {imagePreview && (
+                  <div>
+                    <h4>圖片預覽:</h4>
+                    <img
+                      src={imagePreview}
+                      alt="預覽"
+                      style={{ maxWidth: '100%', height: '250px', marginBottom: '10px' }}
+                    />
+                  </div>
                 )}
-              </button>
-            </div>
-          </form>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+              </div>
+
+              {/* 文章內容編輯器 */}
+              <FroalaEditorWrapper
+                onContentChange={(content) => setContent(content)} />
+              {/* ✅ 傳遞內容變更函數 */}
+
+              {/* 發布按鈕 */}
+              <div className="d-flex justify-content-end">
+                <button
+                  type="button"
+                  className="mt-3"
+                  style={{
+                    border: 'none',
+                    backgroundColor: '#FFBD00',
+                    color: 'white',
+                    borderRadius: '5px',
+                  }}
+                  onClick={handleSubmit}
+                  disabled={isLoading} // 上傳中禁用按鈕
+                >
+                  {isLoading ? '發布中...' : (
+                    <>
+                      <i className="bi bi-check-circle"></i> 發布文章
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
