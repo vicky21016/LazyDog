@@ -27,7 +27,7 @@ export default function HotelDetailPage({ params }) {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [isFiltered, setIsFiltered] = useState(false);
-
+  const [isFavorite, setIsFavorite] = useState(false);
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
 
@@ -175,7 +175,16 @@ export default function HotelDetailPage({ params }) {
               <div
                 className={`col-lg-6 ps-5 ${hotelStyles.suHotelDescription}`}
               >
-                <h2 className="mb-5">{hotel.name}</h2>
+                <h2 className="mb-5 text-center">
+                  {hotel.name}
+                  <i
+                    className={`bi ${
+                      isFavorite ? "bi-heart-fill" : "bi-heart"
+                    }  `}
+                    style={{ color: "red", cursor: "pointer", float: "right" }}
+                    onClick={() => setIsFavorite(!isFavorite)}
+                  ></i>
+                </h2>
                 <p>{hotel.introduce || "暫無介紹"}</p>
               </div>
             </div>
