@@ -1,8 +1,8 @@
 /* Reset Body */
-body {
+/* body {
   margin: 0;
   padding: 0;
-}
+} */
 
 /* 圖片區塊 */
 .cart-img {
@@ -72,4 +72,19 @@ form {
 .aside1{
   margin-bottom: 50px;
   
+}
+.btn{
+  background-color: #ff9538;
+  color: white;
+  padding: 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+.btn:hover{
+  background-color: white;
+color: #f5842b;
+border: 2px solid;
+border-color: #f5842b;
 }
