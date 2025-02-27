@@ -4,12 +4,18 @@ import Image from "next/image";
 import { getHotelRoomById, getRoomInventory } from "@/services/hotelService";
 import { useCart } from "@/hooks/use-cart";
 import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "next/navigation";
 
 const RoomSelection = ({ hotelId }) => {
   const { user } = useAuth();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { onAddHotel, hotelItems } = useCart();
+  const { onAddHotel } = useCart();
+  const router = useRouter();
+  const [cartRate, setCartRate] = useState(0);
+  const loginRoute = "/login";
+  const [selectedQuantities, setSelectedQuantities] = useState({});
+
   useEffect(() => {
     if (!hotelId) {
       console.warn(" 錯誤: `hotelId` 為 undefined，無法載入房型");
@@ -54,7 +60,35 @@ const RoomSelection = ({ hotelId }) => {
 
     fetchRooms();
   }, [hotelId]);
+  const handleQuantityChange = (roomId, quantity) => {
+    setSelectedQuantities({
+      ...selectedQuantities,
+      [roomId]: quantity,
+    });
+  };
+  const handleAddToCart = (room) => {
+    if (!user) {
+      alert("請先登入");
+      router.push(loginRoute);
+      return;
+    }
 
+    const quantity = selectedQuantities[room.id] || 1;
+    const hotelToAdd = {
+      id: room.id,
+      name: room.room_type_name,
+      price: room.price,
+      imageUrl: room.image_url?.startsWith("http")
+        ? room.image_url
+        : `http://localhost:5000${room.image_url}`,
+      petSize: room.allowed_pet_size,
+      provideFood: room.default_food_provided,
+      count: quantity,
+    };
+
+    onAddHotel(hotelToAdd);
+    setCartRate(cartRate + 1);
+  };
   return (
     <>
       <h2 className="my-5">房型選擇</h2>
@@ -96,15 +130,8 @@ const RoomSelection = ({ hotelId }) => {
                   <button
                     className={hotelStyles.suRoomBookBtn}
                     disabled={room.available == 0}
-                    onClick={() => {
-                      if (!user) {
-                        alert("請先登入");
-                        router.push(loginRoute);
-                      } else {
-                        setCartRate(cartRate + 1);
-                        onAddHotel(hotel);
-                      }
-                    }}
+                    onClick={() => handleAddToCart(room)}
+                    type="button"
                   >
                     {room.available > 0 ? "訂購" : "已滿"}
                   </button>

@@ -49,7 +49,7 @@ export default function CartListPayPage(props) {
     totalHotelAmount,
   } = useCart();
 
-  const { createOrder } = useOrder();
+  const { createProductOrder } = useOrder();
   // 確保商品資料正確
   const itemsValue = `
   ${productItems.map((item) => `${item.name} x ${item.count}`).join(", ")}#
@@ -135,7 +135,7 @@ export default function CartListPayPage(props) {
             payment_status: "Unpaid",
           };
           await setProductOrder(newOrder);
-          await createOrder(newOrder);
+          await createProductOrder(newOrder);
         }
         if (courseItems.length > 0) {
           const newOrder = {
@@ -153,25 +153,24 @@ export default function CartListPayPage(props) {
             payment_status: "Unpaid",
           };
           await setProductOrder(newOrder);
-          await createOrder(newOrder);
+          await createProductOrder(newOrder);
         }
         if (hotelItems.length > 0) {
+          //假設我的hotelItems有更多詳細資料
           const newOrder = {
+            hotel_id: hotelItems[0].hotel_id, // 假設您hotel有hotel_id
             user_id: user.id,
-            orderID: `HT${new Date().getTime()}`,
-            coupon_id: "",
-            discount_amount: 0,
-            productID_list: hotelItems.map((item) => item.id),
-            price_list: hotelItems.map((item) => item.price),
-            amount_list: hotelItems.map((item) => item.count),
+            dog_count: hotelItems[0].dog_count, // 假設您hotel有dog_count
+            check_in: hotelItems[0].check_in, // 假設您hotel有check_in
+            check_out: hotelItems[0].check_out, // 假設您hotel有check_out
             total_price: totalHotelAmount,
-            final_amount: totalHotelAmount,
-            created_at: new Date(),
-            is_deleted: 0,
             payment_status: "Unpaid",
+            payment_method: "credit card", // 可從表單取得
+            cancellation_policy: "Flexible", // 可從表單取得
+            remark: "none",
           };
           await setProductOrder(newOrder);
-          await createOrder(newOrder);
+          await createHotelOrder(newOrder);
         }
 
         //送出表單
