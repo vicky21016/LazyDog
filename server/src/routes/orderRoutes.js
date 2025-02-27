@@ -33,7 +33,6 @@ router.post("/product", async (req, res) => {
     amount_list,
     payment_status,
   } = req.body;
-  console.log(payment_status);
 
   if (!user_id || !orderID || !productID_list || !price_list || !amount_list) {
     return res.status(400).json({ status: "error", message: "缺少必要參數" });
@@ -166,13 +165,24 @@ router.post("/course", async (req, res) => {
     cancellation_policy,
     remark,
   } = req.body;
- 
+
   const discount_amount = 0;
   const final_amount = total_price;
   try {
-    const [result] =await pool.query(
-    `INSERT INTO course_orders (user_id, course_id, quanity,total_price,final_amount,payment_status,payment_method,cancellation_policy,remark,created_at,updated_at,is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`
-    ,[user_id,course_id,quanity,total_price,final_amount,payment_status,payment_method,cancellation_policy,remark]);
+    const [result] = await pool.query(
+      `INSERT INTO course_orders (user_id, course_id, quanity,total_price,final_amount,payment_status,payment_method,cancellation_policy,remark,created_at,updated_at,is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
+      [
+        user_id,
+        course_id,
+        quanity,
+        total_price,
+        final_amount,
+        payment_status,
+        payment_method,
+        cancellation_policy,
+        remark,
+      ]
+    );
 
     res.json({ status: "success", id: result.insertId });
   } catch (err) {
@@ -182,6 +192,10 @@ router.post("/course", async (req, res) => {
 
 // 旅館
 router.post("/hotel", async (req, res) => {
+  console.log(123);
+
+  console.log(req.body);
+
   const {
     hotel_id,
     user_id,
@@ -215,7 +229,7 @@ router.post("/hotel", async (req, res) => {
         total_price,
         final_amount,
         payment_status,
-        payment_method,
+        payment_method != null ? payment_method : "ECpay",
         cancellation_policy,
         remark,
       ]

@@ -29,6 +29,7 @@ export default function CartListPayPage(props) {
     created_at: "",
     is_deleted: "",
   });
+  const [hotelOrder, sethotelOrder] = useState({});
   // 檢查是否登入
   const { isAuth } = useAuth();
   // 建立ref，用來放置form表單
@@ -48,7 +49,7 @@ export default function CartListPayPage(props) {
     totalHotelAmount,
   } = useCart();
 
-  const { createProductOrder } = useOrder();
+  const { createProductOrder, createHotelOrder } = useOrder();
   // 確保商品資料正確
   const itemsValue = `
   ${productItems.map((item) => `${item.name} x ${item.count}`).join(", ")}#
@@ -155,21 +156,20 @@ export default function CartListPayPage(props) {
           await createProductOrder(newOrder);
         }
         if (hotelItems.length > 0) {
-          //假設我的hotelItems有更多詳細資料
-          const newOrder = {
-            hotel_id: hotelItems[0].hotel_id, // 假設您hotel有hotel_id
-            user_id: user.id,
-            dog_count: hotelItems[0].dog_count, // 假設您hotel有dog_count
-            check_in: hotelItems[0].check_in, // 假設您hotel有check_in
-            check_out: hotelItems[0].check_out, // 假設您hotel有check_out
-            total_price: totalHotelAmount,
-            payment_status: "Unpaid",
-            payment_method: "credit card", // 可從表單取得
-            cancellation_policy: "Flexible", // 可從表單取得
-            remark: "none",
-          };
-          await setProductOrder(newOrder);
-          await createHotelOrder(newOrder);
+          hotelItems.forEach(async (hotelItem) => {
+            const newOrder = {
+              hotel_id: hotelItem.id, // 假設您hotel有hotel_id
+              user_id: user.id,
+              dog_count: hotelItem.count, // 假設您hotel有dog_count
+              check_in: "null", // 假設您hotel有check_in
+              check_out: "null", // 假設您hotel有check_out
+              total_price: totalHotelAmount,
+              payment_status: "Unpaid",
+              remark: "",
+            };
+            await sethotelOrder(newOrder);
+            await createHotelOrder(newOrder);
+          });
         }
 
         //送出表單
