@@ -16,31 +16,32 @@ const CommentSection = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!commentContent.trim()) {
-          alert("請輸入留言內容");
-          return;
+            alert("請輸入留言內容");
+            return;
         }
-      
+    
         try {
-          const commentData = {
-            content: commentContent,
-            article_id: id,
-            user_id: user.id,
-          };
-          console.log(commentData);
-          const result = await createComment(commentData);
-          console.log("留言創建成功:", result);
-      
-          // 顯示成功訊息
-          alert("新增成功");
-      
-          // 重新載入當前畫面
-          window.location.reload(); // 重新載入頁面
-          setCommentContent(""); // 清空輸入框
+            const commentData = {
+                content: commentContent,
+                article_id: id,
+                user_id: user.id,
+            };
+    
+            await createComment(commentData);
+            
+            // 顯示成功訊息
+            alert("新增成功");
+    
+            // 重新載入當前畫面
+            window.location.reload(); 
+    
+            setCommentContent(""); // 清空輸入框
         } catch (err) {
-          console.error("留言創建失敗:", err);
-          alert("留言創建失敗，請稍後重試"); // 顯示錯誤訊息
+            console.error("留言創建失敗:", err);
+            alert("留言創建失敗，請稍後重試"); // 顯示錯誤訊息
         }
-      };
+    };
+    
 
     return (
         <li className="d-flex py-3" style={{ margin: "10px" }}>

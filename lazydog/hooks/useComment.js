@@ -24,7 +24,7 @@ const useComment = () => {
       }
 
       const result = await response.json(); // 將響應數據轉換為 JSON
-      setData(result); // 保存返回的資料
+      setData(result.article); // 保存返回的資料
       return result; // 返回資料供組件使用
     } catch (err) {
       setError(err.message || "留言創建失敗"); // 設置錯誤訊息
