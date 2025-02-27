@@ -185,7 +185,10 @@ export default function HotelDetailPage({ params }) {
                     onClick={() => setIsFavorite(!isFavorite)}
                   ></i>
                 </h2>
-                <p>{hotel.introduce || "暫無介紹"}</p>
+
+                <p className={hotelStyles.suIntroduce}>
+                  {hotel.introduce || "暫無介紹"}
+                </p>
               </div>
             </div>
 
