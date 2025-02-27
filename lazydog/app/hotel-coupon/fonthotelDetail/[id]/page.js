@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import "../../../../html/hotel-coupon/css/fontHotelHome.css";
 import hotelStyles from "../../../../styles/modules/fontHotelDetail.module.css";
@@ -27,10 +27,10 @@ export default function HotelDetailPage({ params }) {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [isFiltered, setIsFiltered] = useState(false);
-
+  const [isFavorite, setIsFavorite] = useState(false);
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
-  
+
   //  確保 `sessionStorage` 只在瀏覽器內部操作
   const getInitialSearchParams = () => {
     if (typeof window !== "undefined") {
@@ -72,7 +72,6 @@ export default function HotelDetailPage({ params }) {
         console.error(" Hotel data is null");
         return;
       }
-      console.log(" 獲取旅館數據:", hotelData);
       setHotel(hotelData);
 
       // 更新經緯度
@@ -80,11 +79,10 @@ export default function HotelDetailPage({ params }) {
         setLat(parseFloat(hotelData.latitude));
         setLng(parseFloat(hotelData.longitude));
       }
-      console.log(" 獲取的經緯度:", hotelData.latitude, hotelData.longitude);
 
       // 取得 RoomType
       const roomTypes = await getHotelRoomById(id);
-      if (!Array.isArray(roomTypes) || roomTypes.length === 0) {
+      if (!Array.isArray(roomTypes) || roomTypes.length == 0) {
         console.warn("無房型資料");
         setRooms([]);
         return;
@@ -115,8 +113,6 @@ export default function HotelDetailPage({ params }) {
     setIsFiltered(true); //  加入這行修正
     const updatedParams = { ...searchParams, ...newParams };
 
-    console.log("🔍 送出 API 查詢:", updatedParams);
-
     setSearchParams(updatedParams);
     if (typeof window !== "undefined") {
       sessionStorage.setItem("searchParams", JSON.stringify(updatedParams));
@@ -135,7 +131,7 @@ export default function HotelDetailPage({ params }) {
   };
   const mapRef = useRef(null);
   useGoogleMap(lat, lng, mapRef);
-  
+
   return (
     <>
       <Header />
@@ -160,8 +156,7 @@ export default function HotelDetailPage({ params }) {
             { label: "旅館列表", href: "/hotel-coupon/fonthotelHome" },
             {
               label: "旅館介紹",
-              href: "/hotel-coupon/fonthotelDetail",
-              active: true,
+              href: `/hotel-coupon/fonthotelDetail/${id}`,
             },
           ]}
         />
@@ -180,8 +175,20 @@ export default function HotelDetailPage({ params }) {
               <div
                 className={`col-lg-6 ps-5 ${hotelStyles.suHotelDescription}`}
               >
-                <h2 className="mb-5">{hotel.name}</h2>
-                <p>{hotel.introduce || "暫無介紹"}</p>
+                <h2 className="mb-5 text-center">
+                  {hotel.name}
+                  <i
+                    className={`bi ${
+                      isFavorite ? "bi-heart-fill" : "bi-heart"
+                    }  `}
+                    style={{ color: "red", cursor: "pointer", float: "right" }}
+                    onClick={() => setIsFavorite(!isFavorite)}
+                  ></i>
+                </h2>
+
+                <p className={hotelStyles.suIntroduce}>
+                  {hotel.introduce || "暫無介紹"}
+                </p>
               </div>
             </div>
 

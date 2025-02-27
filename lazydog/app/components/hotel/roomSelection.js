@@ -2,10 +2,19 @@ import React, { useState, useEffect } from "react";
 import hotelStyles from "../../../styles/modules/fontHotelDetail.module.css";
 import Image from "next/image";
 import { getHotelRoomById, getRoomInventory } from "@/services/hotelService";
+import { useCart } from "@/hooks/use-cart";
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "next/navigation";
 
 const RoomSelection = ({ hotelId }) => {
+  const { user } = useAuth();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { onAddHotel } = useCart();
+  const router = useRouter();
+  const [cartRate, setCartRate] = useState(0);
+  const loginRoute = "/login";
+  const [selectedQuantities, setSelectedQuantities] = useState({});
 
   useEffect(() => {
     if (!hotelId) {
@@ -16,8 +25,6 @@ const RoomSelection = ({ hotelId }) => {
 
     const fetchRooms = async () => {
       try {
-        console.log(`🔍 請求 API: /api/hotel_room_types/${hotelId}`);
-
         let roomTypes = await getHotelRoomById(hotelId);
         if (!Array.isArray(roomTypes)) {
           console.error(" API 回傳房型格式錯誤:", roomTypes);
@@ -53,14 +60,42 @@ const RoomSelection = ({ hotelId }) => {
 
     fetchRooms();
   }, [hotelId]);
+  const handleQuantityChange = (roomId, quantity) => {
+    setSelectedQuantities({
+      ...selectedQuantities,
+      [roomId]: quantity,
+    });
+  };
+  const handleAddToCart = (room) => {
+    if (!user) {
+      alert("請先登入");
+      router.push(loginRoute);
+      return;
+    }
 
+    const quantity = selectedQuantities[room.id] || 1;
+    const hotelToAdd = {
+      id: room.id,
+      name: room.room_type_name,
+      price: room.price,
+      imageUrl: room.image_url?.startsWith("http")
+        ? room.image_url
+        : `http://localhost:5000${room.image_url}`,
+      petSize: room.allowed_pet_size,
+      provideFood: room.default_food_provided,
+      count: quantity,
+    };
+
+    onAddHotel(hotelToAdd);
+    setCartRate(cartRate + 1);
+  };
   return (
     <>
       <h2 className="my-5">房型選擇</h2>
       {loading ? (
         <p className="text-center">載入中...</p>
       ) : rooms.length > 0 ? (
-        <div className="row mt-4">
+        <div className="row mt-4 justify-content-center">
           {rooms.map((room, index) => (
             <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4">
               <div className={`card ${hotelStyles.suRoomCard}`}>
@@ -95,8 +130,10 @@ const RoomSelection = ({ hotelId }) => {
                   <button
                     className={hotelStyles.suRoomBookBtn}
                     disabled={room.available == 0}
+                    onClick={() => handleAddToCart(room)}
+                    type="button"
                   >
-                    {room.available > 0 ? "BOOK" : "已滿"}
+                    {room.available > 0 ? "訂購" : "已滿"}
                   </button>
                 </div>
               </div>

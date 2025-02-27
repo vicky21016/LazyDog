@@ -9,20 +9,10 @@ export function useOrder() {
   const [isLoading, setIsLoading] = useState(false); // 是否正在載入資料
   const [error, setError] = useState(null); // 錯誤訊息
 
-  // 創建訂單的函數
-  const createOrder = async (orderData) => {
+  // 創建商品訂單的函數
+  const createProductOrder = async (orderData) => {
     setIsLoading(true); // 開始載入資料
     setError(null); // 清空錯誤訊息
-
-    // 從 localStorage 取得 token
-    // const token = localStorage.getItem("token");
-
-    // 如果沒有 token，表示使用者未登入
-    // if (!token) {
-    //   console.log("使用者未登入，無法創建訂單。");
-    //   setIsLoading(false); // 停止載入
-    //   return; // 停止執行後續程式碼
-    // }
 
     try {
       const res = await fetch("http://localhost:5000/order/product", {
@@ -52,9 +42,81 @@ export function useOrder() {
       console.error("創建訂單錯誤:", err);
       setError(err.message);
       toast.error(`創建訂單失敗: ${err.message}`);
+      setIsLoading(false);
     }
   };
 
+  //創建旅館訂單的函數
+  const createHotelOrder = async (orderData) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("http://localhost:5000/order/hotel", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        setIsLoading(false);
+        throw new Error(errorData.message || "創建旅館訂單失敗");
+      }
+
+      const result = await res.json();
+      if (result.status === "error") {
+        setIsLoading(false);
+        throw new Error(result.message);
+      }
+
+      console.log("旅館訂單創建成功:", result);
+      toast.success("旅館訂單創建成功");
+      setIsLoading(false);
+    } catch (err) {
+      console.error("創建旅館訂單錯誤:", err);
+      setError(err.message);
+      toast.error(`創建旅館訂單失敗: ${err.message}`);
+      setIsLoading(false);
+    }
+  };
+  const createCourseOrder = async (orderData) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("http://localhost:5000/order/course", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        setIsLoading(false);
+        throw new Error(errorData.message || "創建課程訂單失敗");
+      }
+
+      const result = await res.json();
+      if (result.status === "error") {
+        setIsLoading(false);
+        throw new Error(result.message);
+      }
+
+      console.log("課程訂單創建成功:", result);
+      toast.success("課程訂單創建成功");
+      setIsLoading(false);
+    } catch (err) {
+      console.error("創建課程訂單錯誤:", err);
+      setError(err.message);
+      toast.error(`創建課程訂單失敗: ${err.message}`);
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
     const fetchOrders = async () => {
       setIsLoading(true); // 開始載入資料
@@ -78,7 +140,7 @@ export function useOrder() {
         setIsLoading(false); // 停止載入
         return;
       }
-    
+
       try {
         const res = await fetch("http://localhost:5000/order/productOrders", {
           method: "POST",
@@ -89,13 +151,13 @@ export function useOrder() {
         });
 
         if (!res.ok) {
-            setIsLoading(false);
+          setIsLoading(false);
           throw new Error("無法取得訂單資料"); // 如果請求失敗，拋出錯誤
         }
 
         const result = await res.json();
         if (result.status === "error") {
-            setIsLoading(false);
+          setIsLoading(false);
           throw new Error(result.message); // 如果API回傳狀態是error，拋出錯誤
         }
 
@@ -123,5 +185,11 @@ export function useOrder() {
     fetchOrders();
   }, []); // dependency array 為空，確保只執行一次
 
-  return { orders, isLoading, error, createOrder }; // 回傳訂單資料、載入狀態和錯誤訊息 ,createOrder
+  return {
+    orders,
+    isLoading,
+    error,
+    createProductOrder,
+    createHotelOrder,
+  }; // 回傳訂單資料、載入狀態和錯誤訊息 ,createOrder
 }

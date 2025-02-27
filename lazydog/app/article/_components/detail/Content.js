@@ -31,8 +31,8 @@ export default function Content({ article }) {
 
   return (
     <div className={`${styles.content} mt-4`}>
-      <h1>{article?.title}</h1>
-      <div className={`${styles.autherDetail}`} style={{ margin: '15px 0' }}>
+      <h1 className='my-5'>{article?.title}</h1>
+      <div >
         <div className={`${styles.floor}`}>作者</div>
         <div className={`${styles.auther}`} style={{ display: 'inline-block' }}>
           {article?.author_name}
@@ -45,3 +45,5 @@ export default function Content({ article }) {
     </div>
   )
 }
+
+// className={`${styles.autherDetail}`} style={{ margin: '15px 0' }}

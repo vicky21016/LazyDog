@@ -31,6 +31,7 @@ router.post("/product", async (req, res) => {
     productID_list,
     price_list,
     amount_list,
+    payment_status,
   } = req.body;
 
   if (!user_id || !orderID || !productID_list || !price_list || !amount_list) {
@@ -70,8 +71,8 @@ router.post("/product", async (req, res) => {
 
   const sql = `
     INSERT INTO yi_orderlist 
-    (user_id, orderID, coupon_id, discount_amount, productID_list, price_list, amount_list, total_price, final_amount, created_at, is_deleted) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 0)
+    (user_id, orderID, coupon_id, discount_amount, productID_list, price_list, amount_list, total_price, final_amount, created_at, is_deleted,payment_status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 0,?)
   `;
 
   try {
@@ -85,6 +86,7 @@ router.post("/product", async (req, res) => {
       amount_list.join(","),
       total_price, // 計算出的原始總金額
       final_amount, // 計算出的折扣後金額
+      payment_status != null ? payment_status : "pending",
     ]);
 
     res.json({
@@ -101,7 +103,8 @@ router.post("/product", async (req, res) => {
 // 檢視使用者商品訂單
 router.post("/productOrders", async (req, res) => {
   // 驗證 JWT Token，從 Token 中提取 user_id
-  const token = req.headers["authorization"];
+  let token = req.get("Authorization");
+  token = token.slice(7);
   if (!token) {
     return res
       .status(401)
@@ -110,12 +113,11 @@ router.post("/productOrders", async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY); // 使用你的 JWT 密鑰來驗證
-    const user_id = decoded.user_id; // 從 Token 中解碼出 user_id
+    const user_id = decoded.id; // 從 Token 中解碼出 user_id
 
     // 查詢該使用者的所有訂單
     const sql = `
-      SELECT orderID, coupon_id, discount_amount, productID_list, price_list, amount_list, 
-             total_price, final_amount, created_at 
+      SELECT *
       FROM yi_orderlist 
       WHERE user_id = ? AND is_deleted = 0
       ORDER BY created_at DESC
@@ -153,12 +155,34 @@ router.post("/productOrders", async (req, res) => {
 
 // 課程
 router.post("/course", async (req, res) => {
-  const { user_id, item_id, type } = req.body;
-  const sql =
-    "INSERT INTO course_orders (user_id, item_id, type) VALUES (?, ?, ?)";
+  const {
+    user_id,
+    course_id,
+    quanity,
+    total_price,
+    payment_status,
+    payment_method,
+    cancellation_policy,
+    remark,
+  } = req.body;
 
+  const discount_amount = 0;
+  const final_amount = total_price;
   try {
-    const [result] = await pool.execute(sql, [user_id, item_id, type]);
+    const [result] = await pool.query(
+      `INSERT INTO course_orders (user_id, course_id, quanity,total_price,final_amount,payment_status,payment_method,cancellation_policy,remark,created_at,updated_at,is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
+      [
+        user_id,
+        course_id,
+        quanity,
+        total_price,
+        final_amount,
+        payment_status,
+        payment_method,
+        cancellation_policy,
+        remark,
+      ]
+    );
 
     res.json({ status: "success", id: result.insertId });
   } catch (err) {
@@ -168,14 +192,54 @@ router.post("/course", async (req, res) => {
 
 // 旅館
 router.post("/hotel", async (req, res) => {
-  const { user_id, item_id, type } = req.body;
-  const sql =
-    "INSERT INTO hotel_order (user_id, item_id, type) VALUES (?, ?, ?)";
+  console.log(123);
+
+  console.log(req.body);
+
+  const {
+    hotel_id,
+    user_id,
+    dog_count,
+    check_in,
+    check_out,
+    total_price,
+    payment_status,
+    payment_method,
+    cancellation_policy,
+    remark,
+  } = req.body;
+  //預設折扣薇玲
+  const discount_amount = 0;
+  const final_amount = total_price;
 
   try {
-    const [result] = await pool.execute(sql, [user_id, item_id, type]);
-
-    res.json({ status: "success", id: result.insertId });
+    const [result] = await pool.query(
+      `INSERT INTO hotel_order 
+      (hotel_id, user_id, dog_count, check_in, check_out, status, discount_amount, 
+       total_price, final_amount, payment_status, payment_method, 
+       cancellation_policy, remark, created_at, updated_at, is_deleted) 
+       VALUES (?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
+      [
+        hotel_id,
+        user_id,
+        dog_count,
+        check_in,
+        check_out,
+        discount_amount,
+        total_price,
+        final_amount,
+        payment_status,
+        payment_method != null ? payment_method : "ECpay",
+        cancellation_policy,
+        remark,
+      ]
+    );
+    res.json({
+      status: "success",
+      id: result.insertId,
+      total_price,
+      final_amount,
+    });
   } catch (err) {
     res.status(500).json({ status: "error", message: err.message });
   }

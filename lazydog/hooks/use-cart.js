@@ -32,7 +32,7 @@ export function CartProvider({ children }) {
   };
 
   // 課程增減邏輯
-  const onAddCourse = (course, amount = 1) => {
+  const onAddCourse = (course, amount = 1, session, time) => {
     const foundIndex = courseItems.findIndex((v) => v.id === course.id);
     if (foundIndex !== -1) {
       const nextItems = courseItems.map((v) =>
@@ -47,6 +47,8 @@ export function CartProvider({ children }) {
 
   // 增加旅館的邏輯
   const onAddHotel = (hotel, amount = 1) => {
+    console.log({ hotel });
+
     const foundIndex = hotelItems.findIndex((v) => v.id === hotel.id);
     if (foundIndex !== -1) {
       const nextItems = hotelItems.map((v) =>

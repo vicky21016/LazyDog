@@ -13,15 +13,15 @@ router.get("/", function (req, res) {
     items.split(",").length > 1
       ? items.split(",").join("#")
       : "線上商店購買一批";
-  console.log(1);
-  // if (isDev)
-  console.log("amount:", amount);
-  console.log(2);
-  // if (isDev)
-  console.log("items:", items);
-  console.log(3);
-  // if (isDev)
-  console.log("itemName:", itemName);
+  // console.log(1);
+  // // if (isDev)
+  // console.log("amount:", amount);
+  // console.log(2);
+  // // if (isDev)
+  // console.log("items:", items);
+  // console.log(3);
+  // // if (isDev)
+  // console.log("itemName:", itemName);
 
   if (!amount) {
     console.log(amount);

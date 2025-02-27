@@ -1,23 +1,24 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Card from "../../_components/detail/MoreCard";
 import Comment from "../../_components/detail/Comment";
 import Content from "../../_components/detail/Content";
+import MyComment from "../../_components/detail/MyComment"
 import styles from "./page.module.css";
 import useArticles from "@/hooks/useArticle";
 
 
 
+
 export default function ArticleDetail() {
   const { id } = useParams(); // 取得網址中的文章 ID
-  const searchParams = useSearchParams();
-  const isFromList = searchParams.get("list"); // 解析 Query String
-  const { articles, article, comments, getArticle, loading, error, cover_image } = useArticles()
+  const { articles, article, comments, getArticle, loading, error } = useArticles()
+  console.log(comments)
 
   // **當 ID 變更時，載入對應的文章**
   useEffect(() => {
@@ -60,17 +61,23 @@ export default function ArticleDetail() {
       <Content article={article} /> {/* 傳遞文章資料給 Content 組件 */}
 
       {/* 留言區 */}
-      <div className="chat" style={{ background: "#FFF6E8", padding: "0.5px" }}>
+      <div className="chat" style={{ background: "#FFF6E8", padding: "0.5px" , marginTop: "150px"}}>
         <h3 className="mt-3 ms-3">留言</h3>
         <ul className="list-unstyled">
-          {comments.length > 0 ? (
-            comments.map((comment) => (
-              <Comment key={comment.id} comment={comment} />
-            ))
+          {comments.length === 0 ? (
+            <p className="mt-3 ms-3">暫無評論，快來發表你的看法吧！</p>
           ) : (
-            <p className="ms-3">目前沒有留言</p>
+            comments.map((comment, index) => (
+              <Comment
+                key={index}
+                content={comment.content}
+                author={comment.author}
+                author_img={comment.author_img}
+              />
+            ))
           )}
-          <li className="d-flex py-3" style={{ margin: "10px" }}>
+          <MyComment/>
+          {/* <li className="d-flex py-3" style={{ margin: "10px" }}>
             <div className={`${styles.auther}`}>
               <div className="avatar ratio ratio-1x1 rounded-circle overflow-hidden">
                 <img
@@ -85,7 +92,7 @@ export default function ArticleDetail() {
               className="px-1"
               style={{ marginLeft: "2rem", width: "100%" }}
             ></input>
-          </li>
+          </li> */}
         </ul>
       </div>
 

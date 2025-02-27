@@ -440,14 +440,10 @@ export const getFilteredHotels = async (filters) => {
     }
 
     query += ` GROUP BY h.id`;
-
-    console.log("🛠 SQL 查詢:", query);
-    console.log("🛠 SQL 參數:", queryParams);
-
     const [hotels] = await connection.query(query, queryParams);
     return hotels;
   } catch (error) {
-    console.error("❌ 無法取得篩選飯店：" + error.message);
+    console.error(" 無法取得篩選飯店：" + error.message);
     throw new Error("無法取得篩選飯店：" + error.message);
   } finally {
     connection.release();

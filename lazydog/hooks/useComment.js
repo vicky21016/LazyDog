@@ -1,98 +1,40 @@
-"use client"
+import { useState } from 'react';
 
-import { useState, useEffect } from 'react'
+const useComment = () => {
+  const [loading, setLoading] = useState(false); // 加載狀態
+  const [error, setError] = useState(null); // 錯誤訊息
+  const [data, setData] = useState(null); // 返回的資料
 
-const API_URL = 'http://localhost:5000/api/articles' 
-
-function useArticles() {
-  const [articles, setArticles] = useState([]) // 文章列表
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-
-  // 取得對應文章下的留言
-  const getComment = async (id) => {
-    setLoading(true)
+  const createComment = async (commentData) => {
+    setLoading(true);
+    setError(null);
     try {
-      const response = await fetch(`${API_URL}/${id}`)
-      if (!response.ok) throw new Error('無法取得文章')
-      return await response.json()
-    } catch (err) {
-      setError(err.message)
-      return null
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // 新增文章
-  const createArticle = async (newArticle) => {
-    setLoading(true)
-    try {
-      const response = await fetch(API_URL, {
+      const response = await fetch('http://localhost:5000/api/comment', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newArticle),
-      })
-      if (!response.ok) throw new Error('無法新增文章')
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(commentData), // 將數據轉換為 JSON 字符串
+        
+      });
+      // console.log(body);
 
-      const createdArticle = await response.json()
-      setArticles([createdArticle, ...articles]) // 將新文章加入列表
+      if (!response.ok) {
+        throw new Error(response.statusText || "留言創建失敗");
+      }
+
+      const result = await response.json(); // 將響應數據轉換為 JSON
+      setData(result.article); // 保存返回的資料
+      return result; // 返回資料供組件使用
     } catch (err) {
-      setError(err.message)
+      setError(err.message || "留言創建失敗"); // 設置錯誤訊息
+      throw err; // 拋出錯誤供組件處理
     } finally {
-      setLoading(false)
+      setLoading(false); // 結束加載
     }
-  }
+  };
 
-  // 更新文章
-  const updateArticle = async (id, updatedData) => {
-    setLoading(true)
-    try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedData),
-      })
-      if (!response.ok) throw new Error('無法更新文章')
+  return { createComment, loading, error, data };
+};
 
-      const updatedArticle = await response.json()
-      setArticles(articles.map((article) => (article.id === id ? updatedArticle : article)))
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // **刪除文章**
-  const deleteArticle = async (id) => {
-    setLoading(true)
-    try {
-      const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' })
-      if (!response.ok) throw new Error('無法刪除文章')
-
-      setArticles(articles.filter((article) => article.id !== id)) // 移除文章
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // **在元件載入時自動取得文章**
-  useEffect(() => {
-    getArticles()
-  }, [])
-
-  return {
-    articles,
-    loading,
-    error,
-    getArticle,
-    createArticle,
-    updateArticle,
-    deleteArticle,
-  }
-}
-
-export default useArticles
+export default useComment;
