@@ -14,17 +14,11 @@ export function useOrder() {
     setIsLoading(true); // 開始載入資料
     setError(null); // 清空錯誤訊息
 
-    // 從 localStorage 取得 token
-    // const token = localStorage.getItem("token");
-
-    // 如果沒有 token，表示使用者未登入
-    // if (!token) {
-    //   console.log("使用者未登入，無法創建訂單。");
-    //   setIsLoading(false); // 停止載入
-    //   return; // 停止執行後續程式碼
-    // }
+    console.log(1);
 
     try {
+      console.log(2);
+
       const res = await fetch("http://localhost:5000/order/product", {
         method: "POST",
         headers: {
@@ -78,7 +72,7 @@ export function useOrder() {
         setIsLoading(false); // 停止載入
         return;
       }
-    
+
       try {
         const res = await fetch("http://localhost:5000/order/productOrders", {
           method: "POST",
@@ -89,13 +83,13 @@ export function useOrder() {
         });
 
         if (!res.ok) {
-            setIsLoading(false);
+          setIsLoading(false);
           throw new Error("無法取得訂單資料"); // 如果請求失敗，拋出錯誤
         }
 
         const result = await res.json();
         if (result.status === "error") {
-            setIsLoading(false);
+          setIsLoading(false);
           throw new Error(result.message); // 如果API回傳狀態是error，拋出錯誤
         }
 

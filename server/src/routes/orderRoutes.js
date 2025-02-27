@@ -31,7 +31,9 @@ router.post("/product", async (req, res) => {
     productID_list,
     price_list,
     amount_list,
+    payment_status,
   } = req.body;
+  console.log(payment_status);
 
   if (!user_id || !orderID || !productID_list || !price_list || !amount_list) {
     return res.status(400).json({ status: "error", message: "缺少必要參數" });
@@ -70,8 +72,8 @@ router.post("/product", async (req, res) => {
 
   const sql = `
     INSERT INTO yi_orderlist 
-    (user_id, orderID, coupon_id, discount_amount, productID_list, price_list, amount_list, total_price, final_amount, created_at, is_deleted) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 0)
+    (user_id, orderID, coupon_id, discount_amount, productID_list, price_list, amount_list, total_price, final_amount, created_at, is_deleted,payment_status) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 0,?)
   `;
 
   try {
@@ -85,6 +87,7 @@ router.post("/product", async (req, res) => {
       amount_list.join(","),
       total_price, // 計算出的原始總金額
       final_amount, // 計算出的折扣後金額
+      payment_status != null ? payment_status : "pending",
     ]);
 
     res.json({
@@ -101,7 +104,8 @@ router.post("/product", async (req, res) => {
 // 檢視使用者商品訂單
 router.post("/productOrders", async (req, res) => {
   // 驗證 JWT Token，從 Token 中提取 user_id
-  const token = req.headers["authorization"];
+  let token = req.get("Authorization");
+  token = token.slice(7);
   if (!token) {
     return res
       .status(401)
@@ -110,12 +114,11 @@ router.post("/productOrders", async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY); // 使用你的 JWT 密鑰來驗證
-    const user_id = decoded.user_id; // 從 Token 中解碼出 user_id
+    const user_id = decoded.id; // 從 Token 中解碼出 user_id
 
     // 查詢該使用者的所有訂單
     const sql = `
-      SELECT orderID, coupon_id, discount_amount, productID_list, price_list, amount_list, 
-             total_price, final_amount, created_at 
+      SELECT *
       FROM yi_orderlist 
       WHERE user_id = ? AND is_deleted = 0
       ORDER BY created_at DESC

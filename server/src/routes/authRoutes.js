@@ -54,7 +54,7 @@ router.post("/login", upload.none(), async (req, res) => {
       },
       secretKey,
       {
-        expiresIn: "10m",
+        expiresIn: "8h",
       }
     );
 
@@ -131,7 +131,7 @@ router.post("/register", upload.none(), async (req, res) => {
       },
       secretKey,
       {
-        expiresIn: "10m",
+        expiresIn: "8h",
       }
     );
 
@@ -231,7 +231,7 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
         business_license_number: user.business_license_number,
       },
       secretKey,
-      { expiresIn: "10m" }
+      { expiresIn: "8h" }
     );
 
     res.status(200).json({
@@ -289,7 +289,7 @@ router.post(
           business_license_number: req.decoded.business_license_number,
         },
         secretKey,
-        { expiresIn: "30m" }
+        { expiresIn: "8h" }
       );
 
       res.status(200).json({
@@ -320,7 +320,7 @@ router.post("/status", checkToken, (req, res) => {
       business_license_number: decoded.business_license_number,
     },
     secretKey,
-    { expiresIn: "30m" }
+    { expiresIn: "8h" }
   );
   res.json({ status: "success", data: { token }, message: "登入中" });
 });
