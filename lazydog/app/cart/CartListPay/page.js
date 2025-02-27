@@ -15,7 +15,7 @@ import InputFiled from "../../components/forms/InputField";
 import Hotel from "../../components/cart/hotel";
 import Course from "../../components/cart/course";
 export default function CartListPayPage(props) {
-  const { user } = useAuth()
+  const { user } = useAuth();
   const [productOrder, setProductOrder] = useState({
     user_id: "",
     orderID: "",
@@ -93,22 +93,6 @@ export default function CartListPayPage(props) {
       toast.error("請先登入後再進行結帳");
       return;
     }
-    const newOrder = {
-      user_id: user.id,
-      orderID: `PD${new Date().getTime()}`,
-      coupon_id: "",
-      discount_amount: 0,
-      productID_list: productItems.map((item) => item.id),
-      price_list: productItems.map((item) => item.price),
-      amount_list: productItems.map((item) => item.count),
-      total_price: totalProductAmount,
-      final_amount: totalProductAmount,
-      created_at: new Date(),
-      is_deleted: 0,
-      status: "未付款",
-    };
-    await setProductOrder(newOrder);
-    await createOrder(newOrder);
 
     // 先連到node伺服器後端，取得LINE Pay付款網址
     const res = await fetch(
@@ -134,6 +118,61 @@ export default function CartListPayPage(props) {
       if (isDev) console.log(payForm);
 
       if (window.confirm("確認要導向至ECPay(綠界金流)進行付款?")) {
+        if (productItems.length > 0) {
+          const newOrder = {
+            user_id: user.id,
+            orderID: `PD${new Date().getTime()}`,
+            coupon_id: "",
+            discount_amount: 0,
+            productID_list: productItems.map((item) => item.id),
+            price_list: productItems.map((item) => item.price),
+            amount_list: productItems.map((item) => item.count),
+            total_price: totalProductAmount,
+            final_amount: totalProductAmount,
+            created_at: new Date(),
+            is_deleted: 0,
+            payment_status: "Unpaid",
+          };
+          await setProductOrder(newOrder);
+          await createOrder(newOrder);
+        }
+        if (courseItems.length > 0) {
+          const newOrder = {
+            user_id: user.id,
+            orderID: `CR${new Date().getTime()}`,
+            coupon_id: "",
+            discount_amount: 0,
+            productID_list: courseItems.map((item) => item.id),
+            price_list: courseItems.map((item) => item.price),
+            amount_list: courseItems.map((item) => item.count),
+            total_price: totalCourseAmount,
+            final_amount: totalCourseAmount,
+            created_at: new Date(),
+            is_deleted: 0,
+            payment_status: "Unpaid",
+          };
+          await setProductOrder(newOrder);
+          await createOrder(newOrder);
+        }
+        if (hotelItems.length > 0) {
+          const newOrder = {
+            user_id: user.id,
+            orderID: `HT${new Date().getTime()}`,
+            coupon_id: "",
+            discount_amount: 0,
+            productID_list: hotelItems.map((item) => item.id),
+            price_list: hotelItems.map((item) => item.price),
+            amount_list: hotelItems.map((item) => item.count),
+            total_price: totalHotelAmount,
+            final_amount: totalHotelAmount,
+            created_at: new Date(),
+            is_deleted: 0,
+            payment_status: "Unpaid",
+          };
+          await setProductOrder(newOrder);
+          await createOrder(newOrder);
+        }
+
         //送出表單
         payForm.submit();
       }

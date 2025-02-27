@@ -16,6 +16,9 @@ export default function CartListPayFinshPage(props) {
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev === 1) {
+          localStorage.removeItem("productCart");
+          localStorage.removeItem("courseCart");
+          localStorage.removeItem("hotelCart");
           window.location.href = "http://localhost:3000/product/list";
         }
         return prev - 1;

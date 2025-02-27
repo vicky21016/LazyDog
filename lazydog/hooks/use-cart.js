@@ -32,7 +32,7 @@ export function CartProvider({ children }) {
   };
 
   // 課程增減邏輯
-  const onAddCourse = (course, amount = 1) => {
+  const onAddCourse = (course, amount = 1, session, time) => {
     const foundIndex = courseItems.findIndex((v) => v.id === course.id);
     if (foundIndex !== -1) {
       const nextItems = courseItems.map((v) =>
