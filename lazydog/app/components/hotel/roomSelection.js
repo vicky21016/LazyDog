@@ -106,7 +106,7 @@ const RoomSelection = ({ hotelId }) => {
                       }
                     }}
                   >
-                    {room.available > 0 ? "BOOK" : "已滿"}
+                    {room.available > 0 ? "訂購" : "已滿"}
                   </button>
                 </div>
               </div>
