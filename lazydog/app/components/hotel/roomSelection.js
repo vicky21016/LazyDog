@@ -16,7 +16,6 @@ const RoomSelection = ({ hotelId }) => {
 
     const fetchRooms = async () => {
       try {
-        console.log(`🔍 請求 API: /api/hotel_room_types/${hotelId}`);
 
         let roomTypes = await getHotelRoomById(hotelId);
         if (!Array.isArray(roomTypes)) {
@@ -60,7 +59,10 @@ const RoomSelection = ({ hotelId }) => {
       {loading ? (
         <p className="text-center">載入中...</p>
       ) : rooms.length > 0 ? (
-        <div className="row mt-4">
+        <div
+          className={`row mt-4 ${
+            rooms.length == 1 ? "justify-content-center" : ""}`}
+        >
           {rooms.map((room, index) => (
             <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4">
               <div className={`card ${hotelStyles.suRoomCard}`}>
