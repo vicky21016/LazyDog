@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import "../../../../html/hotel-coupon/css/fontHotelHome.css";
 import hotelStyles from "../../../../styles/modules/fontHotelDetail.module.css";
@@ -30,7 +30,7 @@ export default function HotelDetailPage({ params }) {
 
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
-  
+
   //  確保 `sessionStorage` 只在瀏覽器內部操作
   const getInitialSearchParams = () => {
     if (typeof window !== "undefined") {
@@ -113,7 +113,6 @@ export default function HotelDetailPage({ params }) {
     setIsFiltered(true); //  加入這行修正
     const updatedParams = { ...searchParams, ...newParams };
 
-
     setSearchParams(updatedParams);
     if (typeof window !== "undefined") {
       sessionStorage.setItem("searchParams", JSON.stringify(updatedParams));
@@ -132,7 +131,7 @@ export default function HotelDetailPage({ params }) {
   };
   const mapRef = useRef(null);
   useGoogleMap(lat, lng, mapRef);
-  
+
   return (
     <>
       <Header />
@@ -157,8 +156,7 @@ export default function HotelDetailPage({ params }) {
             { label: "旅館列表", href: "/hotel-coupon/fonthotelHome" },
             {
               label: "旅館介紹",
-              href: "/hotel-coupon/fonthotelDetail",
-              active: true,
+              href: `/hotel-coupon/fonthotelDetail/${id}`,
             },
           ]}
         />

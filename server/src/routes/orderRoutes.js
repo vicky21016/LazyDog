@@ -156,12 +156,23 @@ router.post("/productOrders", async (req, res) => {
 
 // 課程
 router.post("/course", async (req, res) => {
-  const { user_id, course_id, quanity } = req.body;
-  const sql =
-    "INSERT INTO course_orders (user_id, course_id, quanity) VALUES (?, ?, ?)";
-
+  const {
+    user_id,
+    course_id,
+    quanity,
+    total_price,
+    payment_status,
+    payment_method,
+    cancellation_policy,
+    remark,
+  } = req.body;
+ 
+  const discount_amount = 0;
+  const final_amount = total_price;
   try {
-    const [result] = await pool.execute(sql, [user_id, course_id, quanity]);
+    const [result] =await pool.query(
+    `INSERT INTO course_orders (user_id, course_id, quanity,total_price,final_amount,payment_status,payment_method,cancellation_policy,remark,created_at,updated_at,is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`
+    ,[user_id,course_id,quanity,total_price,final_amount,payment_status,payment_method,cancellation_policy,remark]);
 
     res.json({ status: "success", id: result.insertId });
   } catch (err) {
