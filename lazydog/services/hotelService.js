@@ -104,8 +104,24 @@ export const getFilteredHotelsS = async (filters) => {
 
 
 
-export const getOperatorHotels = async () =>
-  fetchAuthAPI(`${API_URL}/operator`);
+export const getOperatorHotels = async (operator_id) => {
+  if (!operator_id) {
+    console.error("operator_id is required");
+    return [];
+  }
+
+  try {
+    const response = await fetchAuthAPI(`${API_URL}/operator/${operator_id}`);
+    if (!response.ok) {
+      throw new Error(`API 回應錯誤: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("獲取負責人飯店列表失敗:", error);
+    return [];
+  }
+};
+
 export const createHotel = async (formData) =>
   fetchAuthAPI(API_URL, "POST", formData);
 export const updateHotel = async (id, formData) =>
@@ -203,3 +219,5 @@ export const replyHotelReview = async (reviewId, replyData) =>
 export const deleteHotelReview = async (reviewId) =>
   fetchAuthAPI(`${HOTEL_REVIEW_URL}/${reviewId}`, "DELETE");
 export const ratingAv = async () => fetchAPI(`${HOTEL_REVIEW_URL}/average`);
+
+
