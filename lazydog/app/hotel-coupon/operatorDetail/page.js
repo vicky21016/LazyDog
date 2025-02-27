@@ -5,7 +5,7 @@ import styles from "../../../styles/modules/operatorCamera.module.css";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import Header from "../../components/layout/header";
-import My from "../../components/hotel/my"
+import My from "../../components/hotel/my";
 export default function OperatorDetailPage() {
   const modalRef = useRef(null);
   const router = useRouter();
@@ -168,7 +168,7 @@ export default function OperatorDetailPage() {
                   type="text"
                   className="form-control"
                   name="name"
-                  value={operatorInfo.name}
+                  value={user?.name}
                   onChange={handleInputChange}
                 />
                 <label className="mt-2">許可證號：</label>
@@ -176,7 +176,7 @@ export default function OperatorDetailPage() {
                   type="text"
                   className="form-control"
                   name="license"
-                  value={operatorInfo.license}
+                  value={user?.business_license_number}
                   onChange={handleInputChange}
                 />
                 <label className="mt-2">電話：</label>
@@ -184,7 +184,7 @@ export default function OperatorDetailPage() {
                   type="text"
                   className="form-control"
                   name="phone"
-                  value={operatorInfo.phone}
+                  value={user?.phone}
                   onChange={handleInputChange}
                 />
                 <label className="mt-2">信箱：</label>
@@ -192,7 +192,7 @@ export default function OperatorDetailPage() {
                   type="text"
                   className="form-control"
                   name="email"
-                  value={operatorInfo.email}
+                  value={user?.email}
                   onChange={handleInputChange}
                 />
                 <label className="mt-2">公司名稱：</label>
@@ -200,7 +200,7 @@ export default function OperatorDetailPage() {
                   type="text"
                   className="form-control"
                   name="company"
-                  value={operatorInfo.company}
+                  value={user?.company_name}
                   onChange={handleInputChange}
                 />
               </div>

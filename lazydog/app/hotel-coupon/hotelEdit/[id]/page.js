@@ -3,19 +3,19 @@ import React, { useEffect, useContext, useState, useRef } from "react";
 // import styles from "../../../styles/modules/operatorCamera.module.css";
 import hotelStyles from "../../../../styles/modules/operatorHotel.module.css";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
-import {useHotel } from "@/hooks/useHotel";
+import { useHotel } from "@/hooks/useHotel";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-import My from "../../../components/hotel/my"
+import My from "../../../components/hotel/my";
 import Header from "../../../components/layout/header";
 export default function HotelEditPage(props) {
   const imageUploadRef = useRef(null);
-   const { id } = useParams();
-    const { hotel } = useHotel(id);
+  const { id } = useParams();
+  const { hotel } = useHotel(id);
 
-   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-      usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
-  
+  const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
+    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+
   const [tags, setTags] = useState("寵物友善, 免費早餐");
   const [rooms, setRooms] = useState([
     { type: "大型犬房", quantity: 5, price: "1500 元/晚", extra: "500 元" },
@@ -35,7 +35,7 @@ export default function HotelEditPage(props) {
   };
 
   const router = useRouter();
-  
+
   const changepage = (path) => {
     if (path) {
       router.push(`/hotel-coupon/${path}`);
@@ -62,7 +62,9 @@ export default function HotelEditPage(props) {
               <div className={`section ${hotelStyles.suSection}`}>
                 <h5>基本資訊</h5>
                 <div className="mb-3">
-                  <label>旅館名稱 <span style={{color:'red'}}>*</span></label>
+                  <label>
+                    旅館名稱 <span style={{ color: "red" }}>*</span>
+                  </label>
                   <input
                     type="text"
                     value={hotel.name}
@@ -72,7 +74,9 @@ export default function HotelEditPage(props) {
                 </div>
 
                 <div className="mb-3">
-                  <label>地址 <span style={{color:'red'}}>*</span></label>
+                  <label>
+                    地址 <span style={{ color: "red" }}>*</span>
+                  </label>
                   <input
                     type="text"
                     value={`${hotel.county}${hotel.district}${hotel.address}`}
@@ -82,7 +86,9 @@ export default function HotelEditPage(props) {
                 </div>
 
                 <div className="mb-3">
-                  <label>電話 <span style={{color:'red'}}>*</span></label>
+                  <label>
+                    電話 <span style={{ color: "red" }}>*</span>
+                  </label>
                   <input
                     type="text"
                     value={hotel.phone}
@@ -196,10 +202,10 @@ export default function HotelEditPage(props) {
                 <h5>營業時間</h5>
                 <label className="form-label">營業時間</label>
                 <div className="mb-3">
-                <textarea
-  value={hotel.time}
-  readOnly
-  rows="3"
+                  <textarea
+                    value={hotel.time}
+                    readOnly
+                    rows="3"
                     onChange={(e) => setBusinessHours(e.target.value)}
                     className={`form-control ${hotelStyles.suFormControl}`}
                   />
