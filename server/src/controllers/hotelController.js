@@ -42,22 +42,26 @@ export const getSearch = async (req, res) => {
 };
 export const getByIds = async (req, res) => {
   try {
-    const id = Number(req.params.id, 10);
+    const id = Number(req.params.id);
 
     if (isNaN(id)) {
-      return res.status(400).json({ err: "無效的 ID" });
+      return res.status(400).json({ error: "無效的 ID，請提供數字格式" });
     }
 
-    const hotel = await getId(id);
+
+    const hotel = await getId(id); // 確保這個函數可以正確查詢資料
     if (!hotel) {
-      return res.status(404).json({ err: `找不到 id=${id} 的旅館` });
+      console.log(` 找不到 id=${id} 的旅館`);
+      return res.status(404).json({ error: `找不到 id=${id} 的旅館` });
     }
 
     res.json(hotel);
   } catch (err) {
-    res.status(500).json({ error: `找不到旅館` });
+    console.error("伺服器錯誤:", err);
+    res.status(500).json({ error: `伺服器錯誤: ${err.message}` });
   }
 };
+
 export const getOperatorHotels = async (req, res) => {
   try {
     const operatorId = req.user.id;

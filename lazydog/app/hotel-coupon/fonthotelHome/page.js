@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
 import { getAllHotels, getFilteredHotelsS } from "@/services/hotelService";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
@@ -15,6 +15,7 @@ import Breadcrumb from "../../components/teacher/breadcrumb";
 export default function HotelHomePage() {
   const router = useRouter();
   const [hotels, setHotels] = useState([]); // 所有飯店
+  const searchParamsHook = useSearchParams();
   const [filteredHotels, setFilteredHotels] = useState([]); // 篩選後飯店
   const [quantity, setQuantity] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,7 +35,15 @@ export default function HotelHomePage() {
     clearLocation,
   } = useLocationSelector();
 
-  const [searchParams, setSearchParams] = useState({
+  const getInitialSearchParams = () => {
+    if (typeof window !== "undefined") {
+      const storedParams = sessionStorage.getItem("searchParams");
+      return storedParams ? JSON.parse(storedParams) : getDefaultParams();
+    }
+    return getDefaultParams();
+  };
+
+  const getDefaultParams = () => ({
     city: null,
     district: null,
     checkInDate: null,
@@ -47,8 +56,36 @@ export default function HotelHomePage() {
     rating: null,
   });
 
+  const [searchParams, setSearchParams] = useState(getInitialSearchParams);
+
+
+ useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("searchParams", JSON.stringify(searchParams));
+    }
+  }, [searchParams]);
+
+
+ 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedParams = JSON.parse(sessionStorage.getItem("searchParams"));
+      if (storedParams) {
+        handleSearch(storedParams);
+      } else {
+        getAllHotels()
+          .then((hotelData) => {
+            setHotels(hotelData);
+            setFilteredHotels(hotelData);
+          })
+          .catch((error) => console.error("獲取飯店失敗:", error));
+      }
+    }
+  }, []);
+
+
   //  避免 `useEffect` 觸發多次篩選
-  const isFirstRender = useRef(true);
+  const isFirstRender  = useRef(true);
 
   // 只有當 `isFiltered == false` 時載入所有飯店
   useEffect(() => {
@@ -64,10 +101,10 @@ export default function HotelHomePage() {
 
   //  監聽 `filteredHotels`，更新分頁數
   useEffect(() => {
-    setTotalPages(
-      Math.max(1, Math.ceil(filteredHotels.length / hotelsPerPage))
-    );
-    console.log(" 更新篩選結果:", filteredHotels);
+    setTotalPages(Math.max(1, Math.ceil(filteredHotels.length / hotelsPerPage)));
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
   }, [filteredHotels]);
 
   //  確保當前頁數不超過最大頁數
@@ -76,7 +113,8 @@ export default function HotelHomePage() {
       setCurrentPage(1);
     }
   }, [totalPages]);
-  useEffect(() => {
+
+   useEffect(() => {
     const controller = new AbortController();
     const fetchHotels = async () => {
       try {
@@ -92,12 +130,9 @@ export default function HotelHomePage() {
           const filteredData = data.filter(
             (hotel) =>
               (!searchParams.city || hotel.city == searchParams.city) &&
-              (!searchParams.district ||
-                hotel.district == searchParams.district) &&
-              (!searchParams.minPrice ||
-                hotel.min_price >= searchParams.minPrice) &&
-              (!searchParams.maxPrice ||
-                hotel.min_price <= searchParams.maxPrice) &&
+              (!searchParams.district || hotel.district == searchParams.district) &&
+              (!searchParams.minPrice || hotel.min_price >= searchParams.minPrice) &&
+              (!searchParams.maxPrice || hotel.min_price <= searchParams.maxPrice) &&
               (!searchParams.rating || hotel.avg_rating >= searchParams.rating)
           );
 
@@ -111,44 +146,50 @@ export default function HotelHomePage() {
     };
 
     fetchHotels();
-    return () => controller.abort(); // 取消舊請求
+    return () => controller.abort();
   }, [sortOption, isFiltered]);
 
   //  觸發篩選 API
-  const handleSearch = async (newParams) => {
+   const handleSearch = async (newParams) => {
     setIsFiltered(true);
+    const updatedParams = { ...searchParams, ...newParams };
 
-    const updatedParams = {
-      ...searchParams,
-      ...newParams,
-    };
-
-    console.log("🔍 送出 API 查詢:", updatedParams);
 
     setSearchParams(updatedParams);
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("searchParams", JSON.stringify(updatedParams));
+    }
 
     try {
-      let query = "";
-      if (sortOption == "review") query = "?sort=review";
-      if (sortOption == "rating") query = "?sort=rating";
-
-      const data = await getFilteredHotelsS(updatedParams, query);
+      const data = await getFilteredHotelsS(updatedParams);
       setFilteredHotels(data);
       setCurrentPage(1);
+
+      const queryString = new URLSearchParams(
+        Object.entries(updatedParams).reduce((acc, [key, value]) => {
+          if (value !== null && value !== "" && value !== undefined) {
+            acc[key] = Array.isArray(value) ? value.join(",") : value.toString();
+          }
+          return acc;
+        }, {})
+      ).toString();
+
+      router.push(`/hotel-coupon/fonthotelHome?${queryString}`);
     } catch (error) {
       console.error("篩選飯店錯誤:", error);
       setFilteredHotels([]);
     }
   };
+  
 
   //  清除篩選條件
   const handleClearFilters = async () => {
     console.log("🧹 清除篩選條件");
     setIsFiltered(false);
-    setSortOption(""); // 重設排序條件
+    setSortOption("");
 
     clearLocation();
-    setSearchParams({
+    const resetParams = {
       city: null,
       district: null,
       checkInDate: null,
@@ -159,7 +200,10 @@ export default function HotelHomePage() {
       roomType: null,
       tags: [],
       rating: null,
-    });
+    };
+
+    setSearchParams(resetParams);
+    sessionStorage.setItem("searchParams", JSON.stringify(resetParams));
 
     try {
       const data = await getAllHotels();
@@ -170,13 +214,11 @@ export default function HotelHomePage() {
     }
   };
 
+
   //  計算當前頁面顯示的飯店
   const indexOfLastHotel = currentPage * hotelsPerPage;
   const indexOfFirstHotel = indexOfLastHotel - hotelsPerPage;
-  const currentHotels = Array.isArray(filteredHotels)
-    ? filteredHotels.slice(indexOfFirstHotel, indexOfLastHotel)
-    : [];
-
+  const currentHotels = filteredHotels.slice(indexOfFirstHotel, indexOfLastHotel);
   return (
     <>
       <Header />

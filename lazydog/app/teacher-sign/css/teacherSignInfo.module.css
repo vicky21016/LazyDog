@@ -7,7 +7,7 @@
 }
 
 .scrollOrg::-webkit-scrollbar {
-  width: var(--sb-size)
+  width: var(--sb-size);
 }
 
 .scrollOrg::-webkit-scrollbar-track {
@@ -23,140 +23,131 @@
 
 @supports not selector(::-webkit-scrollbar) {
   .scrollOrg {
-    scrollbar-color: var(--sb-thumb-color)
-                     var(--sb-track-color);
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
 
 .labels:focus,
 .controls:focus,
-input:focus, 
+input:focus,
 input:active {
   outline: none !important;
   box-shadow: none !important;
   border-color: #a1a1a1 !important;
 }
 
-body{
-  background: #fffef3;
-} 
-    
-    
-
 /* 右邊 */
-.right{
+.right {
   background: #fff;
   height: auto;
   overflow-y: auto;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
-  .tTitle{
+  .tTitle {
     font-weight: bold;
   }
 
-  .labels{
+  .labels {
     font-size: 15px;
   }
 
-  .controls  {
+  .controls {
     border-radius: 8px;
     background-color: #fff;
     /* border: none; */
-    border: .8px solid #e2e1e1;
+    border: 0.8px solid #e2e1e1;
   }
   .controls::placeholder {
     color: #bcbcbc;
     font-size: 13px;
     padding-left: 2px;
     letter-spacing: 1px;
-}  
+  }
 
-  .must{
-  color: red;
-  padding-left: 5px;
+  .must {
+    color: red;
+    padding-left: 5px;
   }
 
   .form-control {
-      border-radius: 8px;
-  }  
+    border-radius: 8px;
+  }
 
   /* 美化圖片預覽區 */
   .imageCard {
-      position: relative;
-      width: 100px;
-      height: 100px;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #f8f9fa;
-      border: 1px solid #ddd;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-      /* padding: 8px; */
-      cursor: pointer;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    /* padding: 8px; */
+    cursor: pointer;
+  }
+
+  .imageCard .imgCr {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .imageCard .add {
+    width: 100%;
+    font-size: 12px;
+    margin-top: 5px;
+    padding: 3px;
+  }
+  .deleteBtn {
+    position: absolute;
+    top: 4px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .deleteBtn:hover {
+    background: darkred;
+  }
+
+  .addPicBtn {
+    width: 50px;
+    height: 25px;
+    background-color: #66c5bd;
+    border: none;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 0;
+    margin-left: 15px;
+    &:hover {
+      background: #20b9ad;
+    }
+  }
+
+  .submitBtn {
+    background-color: #f5842b;
+    border: none;
+    &:hover {
+      background-color: #e26404;
     }
 
-    .imageCard .imgCr {
-      width: 100%;
-      object-fit: cover;
-      border-radius: 8px;
-      
-    }
-
-    .imageCard .add {
-      width: 100%;
-      font-size: 12px;
-      margin-top: 5px;
-      padding: 3px;
-    }
-    .deleteBtn {
-      position: absolute;
-      top: 4px;
-      right: 5px;
-      background: red;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .deleteBtn:hover {
-      background: darkred;
-    }
-
-    .addPicBtn{
-      width: 50px;
-      height: 25px;
-      background-color: #66C5BD;
-      border: none;
-      font-weight: bold;
-      letter-spacing: 1px;
-      padding: 0;
-      margin-left: 15px;
-      &:hover{
-        background: #20b9ad;
-      }
-    }
-
-    .submitBtn{
-      background-color: #F5842B;
-      border: none;
-      &:hover{
-        background-color: #e26404;
-      }
-
-      /* .submitBtnA{
+    /* .submitBtnA{
         color:white;
         text-decoration: none;
         font-weight: bold;
       } */
-    }
-
+  }
 }

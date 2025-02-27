@@ -1,225 +1,221 @@
 /* 共用 */
 /* 滾軸樣式 */
 .scrollOrg {
-    --sb-track-color: #bcbcbc38;
-    --sb-thumb-color: #f7a96d;
-    --sb-size: 4px;
+  --sb-track-color: #bcbcbc38;
+  --sb-thumb-color: #f7a96d;
+  --sb-size: 4px;
+}
+
+.scrollOrg::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+.scrollOrg::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 4px;
+}
+
+.scrollOrg::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 4px;
+  /* border: 1px solid #232E33; */
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .scrollOrg {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
-  
-  .scrollOrg::-webkit-scrollbar {
-    width: var(--sb-size)
-  }
-  
-  .scrollOrg::-webkit-scrollbar-track {
-    background: var(--sb-track-color);
-    border-radius: 4px;
-  }
-  
-  .scrollOrg::-webkit-scrollbar-thumb {
-    background: var(--sb-thumb-color);
-    border-radius: 4px;
-    /* border: 1px solid #232E33; */
-  }
-  
-  @supports not selector(::-webkit-scrollbar) {
-    .scrollOrg {
-      scrollbar-color: var(--sb-thumb-color)
-                       var(--sb-track-color);
-    }
-  }
-  
-  .labels:focus,
-  .controls:focus,
-  input:focus, 
-  input:active {
-    outline: none !important;
-    box-shadow: none !important;
-    border-color: #a1a1a1 !important;
-  }
-  
-  body{
-    background: #fffef3;
-  }
-      
+}
+
+.labels:focus,
+.controls:focus,
+input:focus,
+input:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #a1a1a1 !important;
+}
 
 /* 右邊 */
-.right{
-    background: #fff;
-    overflow-y: auto;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);  
-     
-    .top{
-        display: flex;
-        justify-content: space-between;
+.right {
+  background: #fff;
+  overflow-y: auto;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
-        .tTitle{
-            font-weight: bold;
-        }
+  .top {
+    display: flex;
+    justify-content: space-between;
 
-        .addCourseBtn{
-            width: 60px;
-            height: 38px;
-            /* padding: 0px 22px; */
-            border-radius: 10px;
-            background: #66C5BD;
-            border: none;
-            &:hover{
-                background: #20b9ad;
-            }
-        }
-        .addCourse{
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            letter-spacing: .8px;
-        }
+    .tTitle {
+      font-weight: bold;
     }
-    .bottom{
-        
-        .cThead, .cTbody{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 40px;
-            box-sizing: border-box;
-            overflow: hidden;
-            padding: 0 20px 0 17px;            
-        }
 
-        /* 表頭 */
-        .cThead{
-            border-bottom: 0.5px solid var(--text-Gy, #BCBCBC);
-            margin-top: 30px;
-            margin-bottom: 20px;
-            padding: 25px 25px 30px 17px;
-        }
-        .cTh2, .cTh3, .cTh4{
-            text-align: center;
-            /* display: -webkit-box;
+    .addCourseBtn {
+      width: 60px;
+      height: 38px;
+      /* padding: 0px 22px; */
+      border-radius: 10px;
+      background: #66c5bd;
+      border: none;
+      &:hover {
+        background: #20b9ad;
+      }
+    }
+    .addCourse {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      letter-spacing: 0.8px;
+    }
+  }
+  .bottom {
+    .cThead,
+    .cTbody {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 40px;
+      box-sizing: border-box;
+      overflow: hidden;
+      padding: 0 20px 0 17px;
+    }
+
+    /* 表頭 */
+    .cThead {
+      border-bottom: 0.5px solid var(--text-Gy, #bcbcbc);
+      margin-top: 30px;
+      margin-bottom: 20px;
+      padding: 25px 25px 30px 17px;
+    }
+    .cTh2,
+    .cTh3,
+    .cTh4 {
+      text-align: center;
+      /* display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
             overflow: hidden; */
-            color: var(--text-Bk, #3E3E3E);
-            text-overflow: ellipsis;
-            font-family: "Noto Sans TC";
-            font-size: 18px;
-            font-style: normal;
-            font-weight: bolder;
-        }
-        .cTh1{
-            width: 140px;
-        }
-        .cTh2{
-            width: 200px;
-            padding: 5px;
-        }
-        .cTh3{
-            width: 211px;
-        }
-        .cTh4{
-            width: 80px;
-        }
-
-        /* 內容 */
-        .cTbody{
-            /* border: 1px solid lightblue; */
-            height: 150px;
-            margin: 10px 0;
-            padding: 18px 20px 18px 17px;
-            box-sizing: border-box;
-            cursor: pointer;
-            
-            &:hover{
-                border-radius: 10px;
-                background-color: #f5832b25;
-                .cTd2, .cTd3, .cTd4{
-                    color: #5c5c5c;
-                    
-                }   
-            }
-        }
-        .courseImg{
-            width: 100%;
-            padding: 8px;
-            object-fit: cover;
-        }
-        .cTd1{
-            /* background-color: lightpink; */
-            width: 140px;
-            text-align: center;
-        }
-        .cTd2{
-            /* background-color: lightpink; */
-            width: 200px;
-            text-align: center;
-            color: var(--text-Bk, #3E3E3E);
-            text-overflow: ellipsis;
-            font-family: "Noto Sans TC";
-            font-size: 15px;
-            font-style: normal;
-            font-weight: bolder;
-            letter-spacing: .8px;
-        }
-        .cTd3{
-            /* background-color: lightpink; */
-            width: 211px;
-            padding: 8px;
-            text-align: center;
-            color: var(--text-Bk, #3E3E3E);
-            text-overflow: ellipsis;
-            /* h4 */
-            font-family: "Noto Sans TC";
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 500;
-            letter-spacing: -0.5px;
-            line-height: 18px;
-        }
-        .cTd4{
-            /* background-color: lightpink; */
-            width: 80px;
-            text-align: center;
-            overflow: hidden;
-            color: var(--text-Bk, #3E3E3E);
-            text-overflow: ellipsis;
-            /* h4 */
-            font-family: "Noto Sans TC";
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 500;
-        }
+      color: var(--text-Bk, #3e3e3e);
+      text-overflow: ellipsis;
+      font-family: "Noto Sans TC";
+      font-size: 18px;
+      font-style: normal;
+      font-weight: bolder;
     }
-    .pagination {
-        display: flex;
-        gap: 5px;
-        padding: 50px 0 15px;
-        .pageItem{
-            justify-content: center;
-            align-items: center;
-        }
+    .cTh1 {
+      width: 140px;
+    }
+    .cTh2 {
+      width: 200px;
+      padding: 5px;
+    }
+    .cTh3 {
+      width: 211px;
+    }
+    .cTh4 {
+      width: 80px;
+    }
 
-        .pageLink {
-            border: 1px solid #66C5BD;
-            text-align: center;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            padding: 3px 0 0 0;
-            margin: 0 5px;
-            color: #bcbcbc;
-            border: none;
-            box-sizing: border-box;
-        }
-        .pageLink:hover {
-            background-color: #f5842b;
-            color: #fff;
-        }   
+    /* 內容 */
+    .cTbody {
+      /* border: 1px solid lightblue; */
+      height: 150px;
+      margin: 10px 0;
+      padding: 18px 20px 18px 17px;
+      box-sizing: border-box;
+      cursor: pointer;
 
-        /* .pageItem.active .pageLink {
+      &:hover {
+        border-radius: 10px;
+        background-color: #f5832b25;
+        .cTd2,
+        .cTd3,
+        .cTd4 {
+          color: #5c5c5c;
+        }
+      }
+    }
+    .courseImg {
+      width: 100%;
+      padding: 8px;
+      object-fit: cover;
+    }
+    .cTd1 {
+      /* background-color: lightpink; */
+      width: 140px;
+      text-align: center;
+    }
+    .cTd2 {
+      /* background-color: lightpink; */
+      width: 200px;
+      text-align: center;
+      color: var(--text-Bk, #3e3e3e);
+      text-overflow: ellipsis;
+      font-family: "Noto Sans TC";
+      font-size: 15px;
+      font-style: normal;
+      font-weight: bolder;
+      letter-spacing: 0.8px;
+    }
+    .cTd3 {
+      /* background-color: lightpink; */
+      width: 211px;
+      padding: 8px;
+      text-align: center;
+      color: var(--text-Bk, #3e3e3e);
+      text-overflow: ellipsis;
+      /* h4 */
+      font-family: "Noto Sans TC";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+      line-height: 18px;
+    }
+    .cTd4 {
+      /* background-color: lightpink; */
+      width: 80px;
+      text-align: center;
+      overflow: hidden;
+      color: var(--text-Bk, #3e3e3e);
+      text-overflow: ellipsis;
+      /* h4 */
+      font-family: "Noto Sans TC";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+    }
+  }
+  .pagination {
+    display: flex;
+    gap: 5px;
+    padding: 50px 0 15px;
+    .pageItem {
+      justify-content: center;
+      align-items: center;
+    }
+
+    .pageLink {
+      border: 1px solid #66c5bd;
+      text-align: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      padding: 3px 0 0 0;
+      margin: 0 5px;
+      color: #bcbcbc;
+      border: none;
+      box-sizing: border-box;
+    }
+    .pageLink:hover {
+      background-color: #f5842b;
+      color: #fff;
+    }
+
+    /* .pageItem.active .pageLink {
         background-color: #f5842b;
         color: #fff;
         border-radius: 60%;
-        } */      
-    }        
+        } */
+  }
 }
-    

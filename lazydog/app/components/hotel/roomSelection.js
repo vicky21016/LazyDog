@@ -9,7 +9,7 @@ const RoomSelection = ({ hotelId }) => {
 
   useEffect(() => {
     if (!hotelId) {
-      console.warn("🚨 錯誤: `hotelId` 為 undefined，無法載入房型");
+      console.warn(" 錯誤: `hotelId` 為 undefined，無法載入房型");
       setLoading(false);
       return;
     }
@@ -17,10 +17,10 @@ const RoomSelection = ({ hotelId }) => {
     const fetchRooms = async () => {
       try {
         console.log(`🔍 請求 API: /api/hotel_room_types/${hotelId}`);
-        
+
         let roomTypes = await getHotelRoomById(hotelId);
         if (!Array.isArray(roomTypes)) {
-          console.error("⚠️ API 回傳房型格式錯誤:", roomTypes);
+          console.error(" API 回傳房型格式錯誤:", roomTypes);
           roomTypes = []; // 確保不為 `null`
         }
 
@@ -28,13 +28,15 @@ const RoomSelection = ({ hotelId }) => {
           roomTypes.map(async (room) => {
             let inventory = await getRoomInventory(room.id);
             if (!Array.isArray(inventory)) {
-              console.warn(`⚠️ `, room.id, "無房間庫存資料");
+              console.warn(` `, room.id, "無房間庫存資料");
               inventory = [];
             }
-            
+
             return {
               ...room,
-              price: inventory.length ? inventory[0].price : room.price_per_night,
+              price: inventory.length
+                ? inventory[0].price
+                : room.price_per_night,
               available: inventory.length ? inventory[0].available_quantity : 0,
             };
           })
@@ -42,7 +44,7 @@ const RoomSelection = ({ hotelId }) => {
 
         setRooms(roomData);
       } catch (error) {
-        console.error("🚨 房型載入失敗:", error);
+        console.error(" 房型載入失敗:", error);
         setRooms([]);
       } finally {
         setLoading(false);
@@ -64,23 +66,36 @@ const RoomSelection = ({ hotelId }) => {
               <div className={`card ${hotelStyles.suRoomCard}`}>
                 <Image
                   className={hotelStyles.suRoomImage}
-                  src={room.image_url || "/hotel/location.jpg"}
-                  alt={room.name}
+                  src={
+                    room.image_url?.startsWith("http")
+                      ? room.image_url
+                      : `http://localhost:5000${room.image_url}`
+                  }
+                  alt={room.room_type_name || "房型圖片"}
                   width={300}
                   height={200}
+                  unoptimized // 暫時加上這個屬性來略過 next/image 的最佳化
                 />
+
                 <div className="card-body">
                   <h3>{room.room_type_name}</h3>
-                  <p className={hotelStyles.suRoomPrice}>價格: {room.price}元</p>
+                  <p className={hotelStyles.suRoomPrice}>
+                    價格: {room.price}元
+                  </p>
                   <p>允許寵物體型: {room.allowed_pet_size}</p>
-                  <p>是否提供食物: {room.default_food_provided ? "是" : "否"}</p>
+                  <p>
+                    是否提供食物: {room.default_food_provided ? "是" : "否"}
+                  </p>
                   <select className="my-4 form-select">
                     <option>選擇數量</option>
                     {[...Array(room.available).keys()].map((num) => (
                       <option key={num + 1}>{num + 1}</option>
                     ))}
                   </select>
-                  <button className={hotelStyles.suRoomBookBtn} disabled={room.available === 0}>
+                  <button
+                    className={hotelStyles.suRoomBookBtn}
+                    disabled={room.available == 0}
+                  >
                     {room.available > 0 ? "BOOK" : "已滿"}
                   </button>
                 </div>
