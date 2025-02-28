@@ -8,7 +8,7 @@ import {
   searchHotels,
   getFilteredHotels,
   updateMainImages,
-  deleteHotelImagesByIds
+  deleteHotelImagesByIds,
 } from "../services/hotelService.js";
 import pool from "../config/mysql.js";
 
@@ -74,7 +74,6 @@ export const getOperatorHotels = async (req, res) => {
       return res.status(400).json({ error: "無效的 ID，請提供數字格式" });
     }
 
-   
     if (operatorId !== userId) {
       return res.status(403).json({ error: "你沒有權限查看這間旅館" });
     }
@@ -93,8 +92,6 @@ export const getOperatorHotels = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-
 
 export const createHotel = async (req, res) => {
   try {
@@ -217,12 +214,20 @@ export const updateHotel = async (req, res) => {
 };
 
 export const updateMainImage = async (req, res) => {
+  const { hotelId, imageId } = req.params;
+
+  console.log("收到的 hotelId:", hotelId);
+  console.log("收到的 imageId:", imageId);
+
+  if (!hotelId || !imageId) {
+    return res.status(400).json({ message: "缺少 hotelId 或 imageId" });
+  }
+
   try {
-    const { hotelId, imageId } = req.params;
-    const result = await updateMainImages(hotelId, imageId);
-    res.json(result);
+    const result = await hotelService.updateMainImages(hotelId, imageId);
+    return res.json({ status: "success", message: "主圖片更新成功" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ status: "error", message: error.message });
   }
 };
 
@@ -257,7 +262,6 @@ export const getHotelsCount = async (req, res) => {
     res.status(500).json({ error: "伺服器錯誤", details: error.message });
   }
 };
-
 
 /** 取得分頁飯店 */
 export const getPaginatedHotels = async (req, res) => {
@@ -304,6 +308,7 @@ export const getFilteredHotelsS = async (req, res) => {
 export const deleteHotelImage = async (req, res) => {
   try {
     const { hotelId, imageId } = req.params;
+    console.log("收到刪除請求:", { hotelId, imageId });
 
     if (!imageId || isNaN(Number(imageId))) {
       return res.status(400).json({ error: "請提供有效的圖片 ID" });
@@ -314,11 +319,12 @@ export const deleteHotelImage = async (req, res) => {
       "SELECT id FROM hotel_images WHERE id = ? AND hotel_id = ? AND is_deleted = 0",
       [imageId, hotelId]
     );
+
     if (imageExists.length === 0) {
       return res.status(404).json({ error: "找不到該圖片，或圖片不屬於此旅館" });
     }
 
-    const result = await deleteHotelImagesByIds([imageId], false); // 永久刪除
+    const result = await deleteHotelImagesByIds([imageId], false);
     res.json(result);
   } catch (error) {
     console.error("刪除圖片失敗:", error);
@@ -326,10 +332,11 @@ export const deleteHotelImage = async (req, res) => {
   }
 };
 
+
 export const deleteHotelImages = async (req, res) => {
   try {
     const { imageIds } = req.body;
-    if (!Array.isArray(imageIds) || imageIds.length === 0) {
+    if (!Array.isArray(imageIds) || imageIds.length == 0) {
       return res.status(400).json({ error: "請提供要刪除的圖片 ID" });
     }
 

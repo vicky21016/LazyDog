@@ -128,13 +128,16 @@ export const softDeleteHotel = async (hotelId) => {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/api/hotels/${hotelId}/soft-delete`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // ✅ 確保帶入 JWT Token
-      },
-    });
+    const response = await fetch(
+      `http://localhost:5000/api/hotels/${hotelId}/soft-delete`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     const result = await response.json();
 
@@ -151,7 +154,44 @@ export const softDeleteHotel = async (hotelId) => {
     return false;
   }
 };
+export const updateMainImage = async (hotelId, imageId) => {
+  console.log("更新主圖片:", { hotelId, imageId }); // 這裡檢查傳入的 ID 是否正確
 
+  try {
+    const response = await fetch(
+      `/api/hotels/${hotelId}/main-image/${imageId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (!response.ok) throw new Error("更新主圖片失敗");
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+export const deleteHotelImage = async (hotelId, imageId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/hotels/${hotelId}/images/${imageId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (!response.ok) throw new Error("刪除圖片失敗");
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
 //標籤C
 export const getAllTags = async () => fetchAPI(`${HOTEL_TAGS_URL}/tags`);
 export const getHotelTags = async (hotelId) =>

@@ -95,7 +95,6 @@ export const getId = async (id, checkInDate, checkOutDate) => {
 
 export const getOperatorTZJ = async (req) => {
   try {
-    console.log("收到的 req.user:", req.user);
     if (!req.user || !req.user.id) {
       throw new Error("找不到 operatorId，請確認你的 token 是否正確");
     }
@@ -105,14 +104,11 @@ export const getOperatorTZJ = async (req) => {
       throw new Error(`operatorId 不是數字: ${req.user.id}`);
     }
 
-    console.log("解析出的 operatorId:", operatorId);
-
     const [hotels] = await pool.query(
       "SELECT * FROM hotel WHERE operator_id = ?",
       [operatorId]
     );
 
-    console.log("查詢結果:", hotels);
     return hotels;
   } catch (err) {
     throw new Error(
@@ -265,37 +261,56 @@ export const updateMainImages = async (hotelId, imageId) => {
       "SELECT id FROM hotel_images WHERE id = ? AND hotel_id = ? AND is_deleted = 0",
       [imageId, hotelId]
     );
+
     if (imageExists.length === 0) {
       throw new Error("找不到該圖片，或圖片已刪除");
     }
 
-    // 將原本的 `main` 圖片改為 `room`
+    console.log("即將更新主圖片，hotelId:", hotelId, "imageId:", imageId);
+
+    // 確保 `hotel.main_image_id` 與 `hotel_images.image_type` 一致
+    const [currentMain] = await connection.query(
+      "SELECT id FROM hotel_images WHERE hotel_id = ? AND image_type = 'main'",
+      [hotelId]
+    );
+
+    if (currentMain.length > 0) {
+      console.log("當前主圖片 ID:", currentMain[0].id);
+    } else {
+      console.log("沒有找到當前主圖片");
+    }
+
+    // **1. 將原本的 `main` 圖片改為 `room`**
     await connection.query(
       "UPDATE hotel_images SET image_type = 'room' WHERE hotel_id = ? AND image_type = 'main'",
       [hotelId]
     );
 
-    // 設定新的 `main` 圖片
+    // **2. 設定新的 `main` 圖片**
     await connection.query(
       "UPDATE hotel_images SET image_type = 'main' WHERE id = ?",
       [imageId]
     );
 
-    // 更新 `hotel.main_image_id`
-    await connection.query(
+    // **3. 更新 `hotel.main_image_id`**
+    const [updateResult] = await connection.query(
       "UPDATE hotel SET main_image_id = ? WHERE id = ?",
       [imageId, hotelId]
     );
+
+    console.log("hotel main_image_id 更新結果:", updateResult);
 
     await connection.commit();
     return { message: "主圖片更新成功" };
   } catch (error) {
     await connection.rollback();
+    console.error("更新主圖片失敗:", error);
     throw error;
   } finally {
     connection.release();
   }
 };
+
 
 
 
@@ -348,7 +363,7 @@ export const insertHotelImages = async (images) => {
   try {
     await connection.beginTransaction();
 
-    if (!images || images.length === 0) {
+    if (!images || images.length == 0) {
       throw new Error("沒有提供圖片");
     }
 
@@ -359,7 +374,7 @@ export const insertHotelImages = async (images) => {
       [hotelId]
     );
 
-    if (hotelCheck.length === 0) {
+    if (hotelCheck.length == 0) {
       throw new Error("找不到對應的旅館");
     }
 
@@ -378,8 +393,8 @@ export const insertHotelImages = async (images) => {
       [values]
     );
 
-    // 如果有 `main` 圖片，更新 `hotel.main_image_id`
-    const mainImage = images.find((img) => img.image_type === "main");
+    // 如果有 main圖片，更新 hotel.main_image_id
+    const mainImage = images.find((img) => img.image_type == "main");
     if (mainImage) {
       const [mainImageData] = await connection.query(
         "SELECT id FROM hotel_images WHERE hotel_id = ? AND image_type = 'main' ORDER BY created_at DESC LIMIT 1",

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 
-export function useHotel(id = null) {
+export function useHotel(operatorId = null) {
     const { user, loading: authLoading } = useAuth();
     const [hotel, setHotel] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [images, setImages] = useState([]); 
+    const [hotelId, setHotelId] = useState(null); // 新增 state 來存放 hotel.id
 
     useEffect(() => {
         if (authLoading || !user) return;
@@ -16,8 +17,8 @@ export function useHotel(id = null) {
                 const token = localStorage.getItem("loginWithToken");
                 if (!token) throw new Error("未登入，請重新登入");
 
-                const url = id
-                    ? `http://localhost:5000/api/hotels/operator/${id}`
+                const url = operatorId
+                    ? `http://localhost:5000/api/hotels/operator/${operatorId}`
                     : `http://localhost:5000/api/hotels/operator`;
 
                 console.log("Fetching hotel data from:", url);
@@ -48,9 +49,10 @@ export function useHotel(id = null) {
                 }
 
                 setHotel(hotelData);
+                setHotelId(hotelData.id); // 存放正確的 hotel.id
 
                 // 取得旅館圖片
-                const imageRes = await fetch(`http://localhost:5000/api/hotel_images/hotel/${id}`, {
+                const imageRes = await fetch(`http://localhost:5000/api/hotel_images/hotel/${hotelData.id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json",
@@ -74,7 +76,7 @@ export function useHotel(id = null) {
         };
 
         fetchHotel();
-    }, [id, user, authLoading]);
+    }, [operatorId, user, authLoading]);
 
-    return { hotel, loading, error, images };  // 回傳 images
+    return { hotel, hotelId, loading, error, images };  // 回傳 hotelId
 }

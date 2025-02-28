@@ -12,6 +12,7 @@ export default function HotelDetailPage() {
   const router = useRouter();
   const { id } = useParams();
   const { hotel, loading, images } = useHotel(id);
+  const hotelId = hotel?.id;
   const [isDeleted, setIsDeleted] = useState(false);
 
   useEffect(() => {
@@ -41,7 +42,7 @@ export default function HotelDetailPage() {
       console.error("business_hours JSON 解析失敗:", error);
     }
   }
-// 🔹 加入 `changepage` 函數
+
 const changepage = (path) => {
   router.push(`/hotel-coupon/${path}`);
 };

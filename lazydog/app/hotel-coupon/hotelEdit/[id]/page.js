@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
+import Swal from "sweetalert2";
 import { useRouter, useParams } from "next/navigation";
 import { useHotel } from "@/hooks/useHotel";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
@@ -108,40 +109,45 @@ export default function HotelEditPage() {
     }
   };
   const handleSetMainImage = async (imageId) => {
+    if (!hotel || !hotel.id) {
+      Swal.fire("錯誤", "找不到旅館 ID", "error");
+      return;
+    }
+
     try {
-      const response = await fetch(`/api/hotels/${id}/main-image/${imageId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetch(
+        `http://localhost:5000/api/hotels/${hotel.id}/main-image/${imageId}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
       if (!response.ok) throw new Error("無法更新主圖片");
+
       Swal.fire("成功", "主圖片已更新", "success").then(() => {
-        router.refresh(); // 更新頁面
+        router.refresh();
       });
     } catch (error) {
       Swal.fire("錯誤", error.message, "error");
     }
   };
+
   const handleDeleteImage = async (imageId) => {
+    const image = images.find(img => img.id === imageId);
+    if (!image) {
+      Swal.fire("錯誤", "找不到該圖片", "error");
+      return;
+    }
+  
+    const correctHotelId = image.hotel_id; // 直接使用圖片的 hotel_id
+    console.log("即將刪除圖片:", { hotelId: correctHotelId, imageId });
+  
     try {
       const token = localStorage.getItem("loginWithToken");
-
-      // SweetAlert2 刪除確認
-      const confirmDelete = await Swal.fire({
-        title: "確定要刪除這張圖片嗎？",
-        text: "刪除後無法恢復！",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "刪除",
-        cancelButtonText: "取消",
-      });
-
-      if (!confirmDelete.isConfirmed) return;
-
-      // 發送 DELETE 請求
+  
       const response = await fetch(
-        `http://localhost:5000/api/hotels/${id}/image/${imageId}`,
+        `http://localhost:5000/api/hotels/${correctHotelId}/image/${imageId}`,
         {
           method: "DELETE",
           headers: {
@@ -150,17 +156,23 @@ export default function HotelEditPage() {
           },
         }
       );
-
-      if (!response.ok) throw new Error("刪除失敗");
-
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`刪除失敗: ${errorText}`);
+      }
+  
       Swal.fire("已刪除", "圖片已成功刪除！", "success");
-
-      // 即時更新圖片列表
       setImages((prevImages) => prevImages.filter((img) => img.id !== imageId));
     } catch (error) {
+      console.error("刪除圖片錯誤:", error);
       Swal.fire("錯誤", error.message, "error");
     }
   };
+  
+  
+  
+  
 
   return (
     <>
@@ -244,24 +256,21 @@ export default function HotelEditPage() {
                       <div key={index} className={hotelStyles.suImageCard}>
                         <img src={img.url} alt={`旅館圖片 ${index + 1}`} />
 
-                        {/* 主圖片標記 */}
                         {hotel.main_image_id === img.id && (
                           <span className="badge bg-primary position-absolute top-0 start-0 m-2">
                             主圖片
                           </span>
                         )}
 
-                        {/* 刪除圖片按鈕 (防止刪除主圖片) */}
                         <button
                           type="button"
                           className={hotelStyles.suDeleteBtn}
                           onClick={() => handleDeleteImage(img.id)}
-                          disabled={hotel.main_image_id === img.id} // 不能刪除主圖片
+                          disabled={hotel.main_image_id === img.id}
                         >
                           &times;
                         </button>
 
-                        {/* 設為主圖片按鈕 */}
                         {hotel.main_image_id !== img.id && (
                           <button
                             type="button"
@@ -277,7 +286,7 @@ export default function HotelEditPage() {
                     <p className="text-muted">無圖片可顯示</p>
                   )}
                 </div>
-
+              
                 {/* 圖片上傳功能 */}
                 <input
                   type="file"
@@ -293,8 +302,8 @@ export default function HotelEditPage() {
                 >
                   + 新增圖片
                 </button>
-              </div>
-
+                </div>
+        
               {/* 營業時間（統一顯示為一組） */}
               <div className={`section ${hotelStyles.suSection}`}>
                 <h5>營業時間 (適用於星期一到星期日)</h5>
