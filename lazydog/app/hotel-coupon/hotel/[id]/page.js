@@ -1,26 +1,18 @@
 "use client";
-import React, { useEffect, useRef } from "react";
-// import styles from "../../../styles/modules/operatorCamera.module.css";
+import React, { useEffect } from "react";
 import hotelStyles from "../../../../styles/modules/operatorHotel.module.css";
 import { useHotel } from "@/hooks/useHotel";
-import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import Header from "../../../components/layout/header";
 import My from "../../../components/hotel/my";
+
 export default function HotelEditPage() {
   const router = useRouter();
   const { id } = useParams();
-  const { hotel } = useHotel(id);
+  const { hotel, loading, images } = useHotel(id); // ✅ 獲取 `images`
 
   const changepage = (path) => {
     router.push(`/hotel-coupon/${path}`);
-  };
-
-  const handleDelete = () => {
-    if (confirm("確定要刪除這間旅館嗎？")) {
-      console.log("刪除成功！");
-      changepage("hotelList"); // 刪除後跳轉回旅館列表
-    }
   };
 
   useEffect(() => {
@@ -28,6 +20,9 @@ export default function HotelEditPage() {
       import("bootstrap/dist/js/bootstrap.bundle.min.js");
     }
   }, []);
+
+  if (loading) return <p className="text-center">載入中...</p>;
+  if (!hotel) return <p className="text-danger text-center">找不到旅館資訊</p>;
 
   return (
     <>
@@ -51,7 +46,7 @@ export default function HotelEditPage() {
                     <input
                       type="text"
                       className="form-control"
-                      value={hotel.name}
+                      value={hotel?.name || ""}
                       readOnly
                     />
                   </div>
@@ -62,7 +57,7 @@ export default function HotelEditPage() {
                     <input
                       type="text"
                       className="form-control"
-                      value={`${hotel.county}${hotel.district}${hotel.address}`}
+                      value={`${hotel?.county || ""}${hotel?.district || ""}${hotel?.address || ""}`}
                       readOnly
                     />
                   </div>
@@ -73,40 +68,34 @@ export default function HotelEditPage() {
                     <input
                       type="text"
                       className="form-control"
-                      value={hotel.phone}
+                      value={hotel?.phone || ""}
                       readOnly
                     />
                   </div>
                 </div>
 
+                {/* 旅館圖片區域 */}
                 <div className={`section ${hotelStyles.suSection}`}>
                   <h5>旅館圖片</h5>
-                  <div
-                    id="imagePreviewContainer"
-                    className="d-flex flex-wrap gap-3 mb-2"
-                  >
-                    <div className={hotelStyles.suImageCard}>
-                      <img
-                        src="/hotel/hotel-uploads/11-room.webp"
-                        alt="旅館圖片1"
-                      />
-                    </div>
-                    <div className={hotelStyles.suImageCard}>
-                      <img
-                        src="/hotel/hotel-uploads/13-s-room.jpg"
-                        alt="旅館圖片2"
-                      />
-                    </div>
+                  <div id="imagePreviewContainer" className="d-flex flex-wrap gap-3 mb-2">
+                    {images.length > 0 ? (
+                      images.map((img, index) => (
+                        <div key={index} className={hotelStyles.suImageCard}>
+                          <img src={img.url} alt={`旅館圖片${index + 1}`} />
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-muted">無圖片可顯示</p>
+                    )}
                   </div>
                 </div>
 
                 <div className={`section ${hotelStyles.suSection}`}>
                   <h5>營業時間</h5>
                   <div className="mb-3">
-                    {/* <label className="form-label">營業時間</label> */}
                     <textarea
                       className="form-control"
-                      value={hotel.time}
+                      value={hotel?.time || ""}
                       readOnly
                       rows="3"
                     />
@@ -124,14 +113,14 @@ export default function HotelEditPage() {
                   <button
                     type="button"
                     className="btn btn-warning btn-sm px-4"
-                    onClick={() => changepage("hotelEdit")}
+                    onClick={() => changepage(`hotelEdit/${id}`)}
                   >
                     編輯
                   </button>
                   <button
                     type="button"
                     className="btn btn-danger btn-sm px-4"
-                    onClick={handleDelete}
+                    onClick={() => alert("確定要刪除這間旅館嗎？")}
                   >
                     刪除
                   </button>
