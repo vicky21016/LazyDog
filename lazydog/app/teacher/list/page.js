@@ -8,30 +8,38 @@ import Filter from "../../components/teacher/Filter";
 import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "./list.module.css";
 import Page from "../../course/_components/list/pagination";
-import style from "../../pages/menu.module.css";
+// import style from "../../pages/menu.module.css";
 import style1 from "../../product/list/list.module.css";
 
 export default function App() {
   const { teachers = [] } = useTeachers();
-  const [filteredCourses, setFilteredCourses] = useState(teachers);
+  const [filtered, setFiltered] = useState([]);
+
+  // 當 `teachers` 資料載入時，設定 `filtered` 預設為所有老師
+  useEffect(() => {
+    if (teachers.length > 0) {
+      setFiltered(teachers);
+    }
+  }, [teachers]);
 
   // 分頁
   const [page, setPage] = useState(1);
   const perPage = 9;
-  const totalPages = Math.max(1, Math.ceil((filteredCourses.length || 0) / perPage));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
 
   const startIndex = (page - 1) * perPage;
-  const currentCourses = filteredCourses.slice(startIndex, startIndex + perPage);
+  const currentTeacher = filtered.slice(startIndex, startIndex + perPage);
 
   // 處理篩選條件
-  const handleFilterChange = (selectedCategories, selectedGenders) => {
-    const newFilteredData = teachers.filter(
+  const filter = (searchText, selectCategories, selectGenders) => {
+    const filterData = teachers.filter(
       (teacher) =>
-        (selectedCategories.length === 0 || selectedCategories.includes(teacher.category_name)) &&
-        (selectedGenders.length === 0 || selectedGenders.includes(teacher.gender))
+        (searchText === "" || teacher.name.includes(searchText) || teacher.category_name.includes(searchText)) &&
+        (selectCategories.length === 0 || selectCategories.includes(teacher.category_name)) &&
+        (selectGenders.length === 0 || selectGenders.includes(teacher.gender))
     );
 
-    setFilteredCourses(newFilteredData);
+    setFiltered(filterData);
     setPage(1); // 篩選後重置分頁到第 1 頁
   };
 
@@ -66,12 +74,12 @@ export default function App() {
           <section className={styles.pdArea}>
             <div className="row">
               <div className={`col-3 ${styles.asideContainer}`}>
-                <Filter onFilterChange={handleFilterChange} />
+                <Filter filterChange={filter} />
               </div>
               <div className="col-9">
                 <div className="row mt-1 g-5 mb-5">
-                  {currentCourses.length > 0 ? (
-                    currentCourses.map((teacher) => (
+                  {currentTeacher.length > 0 ? (
+                    currentTeacher.map((teacher) => (
                       <TeacherCard
                         key={teacher.id}
                         imgSrc={`/teacher-img/${teacher.img}`}
