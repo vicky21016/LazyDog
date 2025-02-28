@@ -89,7 +89,7 @@ const ReviewList = () => {
                       <td>
                         <span
                           className={`badge ${
-                            review.status === "公開"
+                            review.status == "公開"
                               ? "bg-success"
                               : "bg-warning"
                           }`}
