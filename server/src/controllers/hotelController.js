@@ -22,8 +22,6 @@ export const getAllHotels = async (req, res) => {
   }
 };
 
-
-
 export const getSearch = async (req, res) => {
   try {
     const { keyword } = req.query;
@@ -48,7 +46,6 @@ export const getByIds = async (req, res) => {
       return res.status(400).json({ error: "無效的 ID，請提供數字格式" });
     }
 
-
     const hotel = await getId(id); // 確保這個函數可以正確查詢資料
     if (!hotel) {
       console.log(` 找不到 id=${id} 的旅館`);
@@ -64,17 +61,40 @@ export const getByIds = async (req, res) => {
 
 export const getOperatorHotels = async (req, res) => {
   try {
-    const operatorId = req.user.id;
-    const hotels = await getOperatorTZJ(operatorId);
-    res.status(200).json({ success: true, data: hotels });
-  } catch (err) {
-    res.status(500).json({ error: `無法獲取旅館` });
+    const operatorId = Number(req.params.id);
+    const userId = req.user.id;
+
+    console.log("解析出的 operatorId:", operatorId);
+    console.log("當前登入的 userId:", userId);
+
+    if (!operatorId || isNaN(operatorId)) {
+      return res.status(400).json({ error: "無效的 ID，請提供數字格式" });
+    }
+
+   
+    if (operatorId !== userId) {
+      return res.status(403).json({ error: "你沒有權限查看這間旅館" });
+    }
+
+    const [hotels] = await pool.query(
+      "SELECT * FROM hotel WHERE operator_id = ?",
+      [operatorId]
+    );
+
+    if (hotels.length == 0) {
+      return res.status(404).json({ error: "找不到旅館資料" });
+    }
+
+    res.json(hotels);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
+
+
 export const createHotel = async (req, res) => {
   try {
-
     const operatorId = req.user.id;
     const {
       name,
@@ -226,7 +246,6 @@ export const getPaginatedHotels = async (req, res) => {
 /* 取得篩選後的飯店 */
 export const getFilteredHotelsS = async (req, res) => {
   try {
-
     const filters = {
       city: req.body.city || null,
       district: req.body.district || null,
@@ -236,7 +255,9 @@ export const getFilteredHotelsS = async (req, res) => {
       min_price: req.body.minPrice ? parseFloat(req.body.minPrice) : null,
       max_price: req.body.maxPrice ? parseFloat(req.body.maxPrice) : null,
       room_type_id: req.body.roomTypeId ? parseInt(req.body.roomTypeId) : null,
-      tags: req.body.tags ? req.body.tags.map(Number).filter((n) => !isNaN(n)) : [],
+      tags: req.body.tags
+        ? req.body.tags.map(Number).filter((n) => !isNaN(n))
+        : [],
     };
     const hotels = await getFilteredHotels(filters);
     res.json(hotels);
@@ -245,4 +266,3 @@ export const getFilteredHotelsS = async (req, res) => {
     res.status(500).json({ error: "無法獲取篩選後的飯店" });
   }
 };
-

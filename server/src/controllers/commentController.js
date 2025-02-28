@@ -9,7 +9,7 @@ export const createComment = async (req, res) => {
 
         // 返回創建成功的響應
         res.status(201).json({
-            message: "留言創建成功",
+            // message: "留言創建成功",
             article
         });
     } catch (err) {

@@ -6,11 +6,11 @@ import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
 import FilterGroup from "./filtergroup";
 import FilterLinkGroup from "./filterlinkgroup";
-import useSWR from "swr";
-import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { FetchAsideProvider, useAsideFetch } from "@/hooks/product/use-fetch";
 
-export default function AsideAside({
+export default function Aside({
+  newUrl = "",
   changeUrl = () => {},
   keyword = {},
   setKeyword = () => {},
@@ -20,45 +20,46 @@ export default function AsideAside({
   setMinPrice = () => {},
   sortName = "",
 }) {
+  return (
+    <FetchAsideProvider
+      newUrl={newUrl}
+      changeUrl={changeUrl}
+      keyword={keyword}
+      setKeyword={setKeyword}
+      minPrice={minPrice}
+      maxPrice={maxPrice}
+      setMaxPrice={setMaxPrice}
+      setMinPrice={setMinPrice}
+      sortName={sortName}
+    >
+      <AsideContent />
+    </FetchAsideProvider>
+  );
+}
+
+function AsideContent() {
+  const {
+    newUrl,
+    changeUrl,
+    keyword,
+    setKeyword,
+    minPrice,
+    maxPrice,
+    setMaxPrice,
+    setMinPrice,
+    sortName,
+    category,
+    categoryName,
+    categoryClass,
+    i,
+    pathname,
+    query,
+    mutate,
+    isLoading,
+    error,
+  } = useAsideFetch();
   const priceSliderRef = useRef(null);
-  const pathname = usePathname();
-  const query = useSearchParams();
-  const url = "http://localhost:5000/api/products/categoryName";
-  const fetcher = async (url) => {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("資料要求失敗");
-      return res.json();
-    } catch (err) {
-      console.error("資料要求失敗:", err);
-      throw err;
-    }
-  };
-  const { data, isLoading, error, mutate } = useSWR(url, fetcher);
-  const categorys = data?.data;
-  const categoryName = [];
-  const category = {};
-  const categoryClass = [];
-  if (categorys) {
-    categorys.map((v, i) => {
-      if (!categoryName.includes(v.category)) {
-        categoryName.push(v.category);
-        category[v.category] = [];
-      }
-      category[v.category].push(v);
-    });
-  }
-  if (category) {
-    categoryName.forEach((v, i) => {
-      categoryClass[i] = [];
-      category[v].map((v) => {
-        if (!categoryClass[i].find((e) => e == v.class)) {
-          categoryClass[i].push(v.class);
-        }
-      });
-    });
-  }
-  const i = categoryName.findIndex((v) => v == query.get("category"));
+
   const handleMinPriceChange = (e) => {
     let value = e.target.value;
     if (value === "") {
@@ -78,18 +79,12 @@ export default function AsideAside({
       priceSliderRef.current.noUiSlider.set([value, maxPrice]);
     }
   };
-
   const handleMaxPriceChange = (e) => {
     let value = e.target.value;
     if (value == "") {
       setMaxPrice(""); // 清空
       return;
     }
-
-    // value = Number(value);
-    // if (isNaN(value)) return;
-    // if (value > maxPrice) value = maxPrice;
-    // if (value < minPrice) value = minPrice;
 
     setMaxPrice((prevMax) => {
       let newValue = Number(value);
@@ -102,7 +97,6 @@ export default function AsideAside({
       priceSliderRef.current.noUiSlider.set([minPrice, value]);
     }
   };
-
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!priceSliderRef.current) return;
@@ -127,15 +121,23 @@ export default function AsideAside({
       }
     };
   }, []);
-  useEffect(() => {}, [pathname, query]);
+
+  const [clearSearch, setClearSearch] = useState("");
+  const [isChecked, setIsChecked] = useState(true);
+
   return (
     <aside className={styles.Sidebar}>
       <div className={styles.SearchTable}>
         <img src="/product/font/search.png" alt="" />
         <input
           type="text"
+          value={clearSearch}
+          onChange={(e) => {
+            setClearSearch(e.target.value);
+          }}
           placeholder="搜尋商品"
           onKeyUp={(e) => {
+            setIsChecked(false);
             changeUrl(
               `http://localhost:5000/api/products/search?${
                 query.get("category")
@@ -163,6 +165,11 @@ export default function AsideAside({
               category={category[categoryName[i]]}
               keyword={keyword}
               setKeyword={setKeyword}
+              setClearSearch={setClearSearch}
+              isChecked={isChecked}
+              setIsChecked={setIsChecked}
+              newUrl={newUrl}
+              changeUrl={changeUrl}
             />
           ))
         : categoryName?.map((v, i) => (

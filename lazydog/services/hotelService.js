@@ -60,7 +60,6 @@ export const getAllHotels = async (sortOption = "") => {
   }
 };
 
-
 export const getHotelById = async (id) => {
   try {
     const response = await fetch(`${API_URL}/${id}`);
@@ -90,7 +89,8 @@ export const getFilteredHotelsS = async (filters) => {
       body: JSON.stringify(filters),
     });
 
-    if (!response.ok) throw new Error(`API 錯誤，HTTP 狀態碼: ${response.status}`);
+    if (!response.ok)
+      throw new Error(`API 錯誤，HTTP 狀態碼: ${response.status}`);
 
     const data = await response.json();
     console.log(" API 回應:", data);
@@ -101,11 +101,21 @@ export const getFilteredHotelsS = async (filters) => {
   }
 };
 
+export const getOperatorHotels = async (id) => {
+  try {
+    const response = await fetchAuthAPI(
+      `http://localhost:5000/api/operator/${id}`
+    );
+    if (!response.ok) {
+      throw new Error(`API 回應錯誤: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("獲取負責人飯店列表失敗:", error);
+    return [];
+  }
+};
 
-
-
-export const getOperatorHotels = async () =>
-  fetchAuthAPI(`${API_URL}/operator`);
 export const createHotel = async (formData) =>
   fetchAuthAPI(API_URL, "POST", formData);
 export const updateHotel = async (id, formData) =>
@@ -127,19 +137,24 @@ export const getHotelPriceRange = async (hotelId) =>
   fetchAPI(`${ROOM_BASE_PRICE_URL}/range/${hotelId}`);
 //房型跟庫存
 export const getAllRoomTypes = async () => fetchAPI(ROOM_TYPES_URL);
-export const getHotelRoomById = async (hotelId) =>fetchAPI(`${HOTEL_ROOM_TYPES_URL}/${hotelId}`);
+export const getHotelRoomById = async (hotelId) =>
+  fetchAPI(`${HOTEL_ROOM_TYPES_URL}/${hotelId}`);
 
 //OP ONLY
-export const createHotelRoom = async (roomData) =>fetchAuthAPI(HOTEL_ROOM_TYPES_URL, "POST", roomData);
+export const createHotelRoom = async (roomData) =>
+  fetchAuthAPI(HOTEL_ROOM_TYPES_URL, "POST", roomData);
 
-export const updateHotelRoom = async (roomId, updateData) =>fetchAuthAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, "PATCH", updateData);
+export const updateHotelRoom = async (roomId, updateData) =>
+  fetchAuthAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, "PATCH", updateData);
 
-export const deleteHotelRoom = async (roomId) =>fetchAuthAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, "DELETE");
+export const deleteHotelRoom = async (roomId) =>
+  fetchAuthAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, "DELETE");
 
 //OP END
 
 //房間庫存
-export const getRoomInventory = async (hotelId) => fetchAPI(`${ROOM_INVENTORY_URL}/${hotelId}`);
+export const getRoomInventory = async (hotelId) =>
+  fetchAPI(`${ROOM_INVENTORY_URL}/${hotelId}`);
 
 //OP ONLY
 export const updateRoomInventory = async (roomInventoryId, updateData) =>

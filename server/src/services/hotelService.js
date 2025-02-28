@@ -83,7 +83,7 @@ export const getId = async (id, checkInDate, checkOutDate) => {
       [checkInDate, checkOutDate, id]
     );
 
-    if (hotels.length === 0) {
+    if (hotels.length == 0) {
       throw new Error(`找不到 id=${id} 的旅館`);
     }
 
@@ -94,17 +94,35 @@ export const getId = async (id, checkInDate, checkOutDate) => {
 };
 
 
-export const getOperatorTZJ = async (operatorId) => {
+export const getOperatorTZJ = async (req) => {
   try {
+    console.log("收到的 req.user:", req.user);
+    if (!req.user || !req.user.id) {
+      throw new Error("找不到 operatorId，請確認你的 token 是否正確");
+    }
+
+    const operatorId = Number(req.user.id); // 確保是數字
+    if (isNaN(operatorId)) {
+      throw new Error(`operatorId 不是數字: ${req.user.id}`);
+    }
+
+    console.log("解析出的 operatorId:", operatorId); 
+
+    
     const [hotels] = await pool.query(
       "SELECT * FROM hotel WHERE operator_id = ?",
       [operatorId]
     );
+
+    console.log("查詢結果:", hotels);
     return hotels;
   } catch (err) {
-    throw new Error(`你的operatorId:${operatorId}有錯`);
+    throw new Error(`你的 operatorId: ${req.user?.id || "未知"} 有錯，錯誤訊息: ${err.message}`);
   }
 };
+
+
+
 
 export const createHotels = async (hotelData) => {
   const connection = await pool.getConnection();

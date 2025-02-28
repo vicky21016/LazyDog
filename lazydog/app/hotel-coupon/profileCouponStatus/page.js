@@ -64,7 +64,7 @@ export default function ProfileCouponPage(props) {
           </div>
           {/* 右邊 */}
           <div className=" col-12 col-md-9 coupon-section">
-            <h3 className="mb-3">我的優惠券</h3>
+            <h5 className="mb-3">我的優惠券</h5>
 
             <div className="suFeatureLinks mb-3">
               <a

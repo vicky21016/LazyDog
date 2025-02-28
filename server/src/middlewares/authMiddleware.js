@@ -8,44 +8,46 @@ const secretKey = process.env.JWT_SECRET_KEY
 
 export const verifyToken = async (req, res, next) => {
   try {
-    let token = req.get('Authorization')
+    let token = req.get("Authorization");
     if (!token) {
-      return res.status(401).json({ status: 'error', message: '未提供 Token' })
+      return res.status(401).json({ status: "error", message: "未提供 Token" });
     }
-    if (!token.startsWith('Bearer ')) {
-      return res
-        .status(400)
-        .json({ status: 'error', message: 'Token 格式錯誤' })
+    if (!token.startsWith("Bearer ")) {
+      return res.status(400).json({ status: "error", message: "Token 格式錯誤" });
     }
-    token = token.slice(7)
-    console.log(token);
-    jwt.verify(token, secretKey, async (err, decoded) => {
+    token = token.slice(7);
+
+    console.log("收到的 Token:", token); 
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
       if (err) {
-        return res
-          .status(401)
-          .json({ status: 'error', message: `Token 無效或已過期: ${err}` })
+        return res.status(401).json({ status: "error", message: `Token 無效或已過期: ${err}` });
       }
 
-      // 檢查使用者是否仍然存在於資料庫
+      console.log("解析出的 Token 資料:", decoded); 
+      // 從資料庫查詢該 `id` 是否存在
       const [user] = await pool.execute(
-        'SELECT id, role FROM users WHERE id = ? AND is_deleted = 0',
+        "SELECT id, role FROM users WHERE id = ? AND is_deleted = 0",
         [decoded.id]
-      )
+      );
 
-      if (user.length == 0) {
-        return res
-          .status(401)
-          .json({ status: 'error', message: '不存在或已停用' })
+      console.log("從資料庫取得的使用者:", user); 
+
+      if (user.length === 0) {
+        return res.status(401).json({ status: "error", message: "使用者不存在或已停用" });
       }
 
-      req.user = user[0]
-      next()
-    })
+      req.user = user[0]; 
+      console.log("設置的 req.user:", req.user); 
+
+      next();
+    });
   } catch (err) {
-    console.error('Token 驗證錯誤:', err)
-    return res.status(500).json({ status: 'error', message: '伺服器錯誤' })
+    console.error("Token 驗證錯誤:", err);
+    return res.status(500).json({ status: "error", message: "伺服器錯誤" });
   }
-}
+};
+
 export const verifyRole = (roles) => {
   return (req, res, next) => {
     if (!req.user || !req.user.role) {
