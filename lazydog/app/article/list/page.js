@@ -9,6 +9,7 @@ import useArticles from '@/hooks/useArticle';
 import MainCard from '../_components/list/ListCard';
 import AsideCard from '../_components/list/AsideCard';
 import { useAuth } from "@/hooks/use-auth";
+import Header from "../../components/layout/header";
 
 const ArticlePage = () => {
   const { articles, loading, error } = useArticles();
@@ -80,6 +81,7 @@ const ArticlePage = () => {
 
   return (
     <>
+    <Header />
       <div className={`${styles.mainDog} mb-3`}>
         <h1 style={{ fontWeight: 'bold' }}>毛孩文章</h1>
       </div>

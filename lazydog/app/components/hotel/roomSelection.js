@@ -91,7 +91,7 @@ const RoomSelection = ({ hotelId }) => {
   };
   return (
     <>
-      <h2 className="my-5">房型選擇</h2>
+      <h4 className="my-5">房型選擇</h4>
       {loading ? (
         <p className="text-center">載入中...</p>
       ) : rooms.length > 0 ? (
