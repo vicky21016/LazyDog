@@ -104,14 +104,9 @@ export const getFilteredHotelsS = async (filters) => {
 
 
 
-export const getOperatorHotels = async (operator_id) => {
-  if (!operator_id) {
-    console.error("operator_id is required");
-    return [];
-  }
-
+export const getOperatorHotels = async () => {
   try {
-    const response = await fetchAuthAPI(`${API_URL}/operator/${operator_id}`);
+    const response = await fetchAuthAPI(`http://localhost:5000/api/operator`);
     if (!response.ok) {
       throw new Error(`API 回應錯誤: ${response.status}`);
     }
@@ -121,6 +116,8 @@ export const getOperatorHotels = async (operator_id) => {
     return [];
   }
 };
+
+
 
 export const createHotel = async (formData) =>
   fetchAuthAPI(API_URL, "POST", formData);
