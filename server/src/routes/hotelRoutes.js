@@ -31,12 +31,12 @@ router.get("/:id", getByIds);
 
 //  自己可以查看自己擁有的飯店
 router.get(
-  "/operator",
+  "/operator/:id",
   verifyToken,
   verifyRole(["operator"]),
   getOperatorHotels
 );
-router.get("/operator/:id", verifyToken, verifyRole(["operator"]), getByIds);
+
 
 //  新增、更新、刪除自己管理的飯店
 router.post(
