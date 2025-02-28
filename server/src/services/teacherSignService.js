@@ -354,15 +354,20 @@ export const updateCourseWithSession = async (
       }
     }
 
+    // **處理刪除的圖片**
+    if (imgData?.deletedPics?.length > 0) {
+      const deletedPicsArray = JSON.parse(imgData.deletedPics);
+      const picIdsToDelete = deletedPicsArray.map((pic) => pic.id); // 取出所有圖片的 id
+
+      await connection.query(
+        `DELETE FROM course_img WHERE id IN (?) AND course_id = ?`,
+        [picIdsToDelete, courseId]
+      );
+      console.log("🗑️ 已刪除圖片 ID:", picIdsToDelete);
+    }
+
     // 更新其他圖片
     if (imgData?.otherImages?.length > 0) {
-      // 先刪除舊的其他圖片
-      await connection.query(
-        `DELETE FROM course_img WHERE course_id = ? AND main_pic = 0`,
-        [courseId]
-      );
-
-      // 插入新的其他圖片
       for (const filename of imgData.otherImages) {
         await connection.query(
           `INSERT INTO course_img (course_id, main_pic, url) VALUES (?, ?, ?)`,

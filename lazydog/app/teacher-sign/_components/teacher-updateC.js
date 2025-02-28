@@ -14,6 +14,8 @@ export default function TeacherUpdateC() {
   const [cs, setCS] = useState({});
   const [mainpic, setMainpic] = useState([]);
   const [otherpics, setOtherpics] = useState([]);
+  const [deletedPics, setDeletedPics] = useState([]); // 要刪除的圖片 ID
+
   const [types, setTypes] = useState([]);
   const [places, setPlaces] = useState([]);
   // const [error, setError] = useState(null);
@@ -57,14 +59,30 @@ export default function TeacherUpdateC() {
       if (name === "mainpic") {
         setMainpic(files[0]); // 更新主圖片
       } else if (name === "otherpics") {
-        setOtherpics((prev) => [...prev, ...Array.from(files)]); // 加入新的圖片
+        const newImages = Array.from(files).map((file) => ({
+          id: Date.now() + Math.random(),
+          file,
+          url: URL.createObjectURL(file),
+          isLocal: true,
+        }));
+        setOtherpics((prev) => [...prev, ...newImages]); // 加入新的圖片
       }
     }
+    e.target.value = "";
   };
 
   // otherpics 刪除
   const handleDelete = (id) => {
     setOtherpics(otherpics.filter((other) => other.id !== id));
+
+    const deletedPic = otherpics.find((other) => other.id === id);
+    setDeletedPics((prev) => [
+      ...prev,
+      {
+        id: deletedPic.id,
+        url: deletedPic.url, // 假設圖片有 url 屬性
+      },
+    ]); // 記錄被刪除的圖片 ID
   };
 
   // 跳出框效果
@@ -109,7 +127,6 @@ export default function TeacherUpdateC() {
     if (!mainpic) {
       Swal.fire({
         title: "請選擇主圖片",
-        text: "主圖片是必須的！",
         icon: "warning",
         confirmButtonText: "確定",
         ...animationConfig,
@@ -119,7 +136,6 @@ export default function TeacherUpdateC() {
     if (otherpics.length === 0) {
       Swal.fire({
         title: "請上傳至少一張其他圖片",
-        text: "其他圖片至少需要有一張！",
         icon: "warning",
         confirmButtonText: "確定",
         ...animationConfig,
@@ -150,7 +166,7 @@ export default function TeacherUpdateC() {
     };
 
     const sessionId = cs.id;
-    // const sessionCode = cs.id;
+    const sessionCode = cs.id;
     const courseId = cs.course_id;
 
     const formData = new FormData();
@@ -158,13 +174,27 @@ export default function TeacherUpdateC() {
     formData.append("sessionData", JSON.stringify(sessionData));
     formData.append("courseId", courseId);
     formData.append("sessionId", sessionId);
+
     if (mainpic) {
       formData.append("mainImage", mainpic);
     }
+
     if (otherpics.length > 0) {
-      otherpics.forEach((pic) => {
-        formData.append(`otherImages`, pic);
+      otherpics.forEach((pic, i) => {
+        formData.append("otherImages", pic.file);
+        console.log(pic);
       });
+      console.log(otherpics);
+    }
+
+    // **新增 `deletedPics` 到 `formData`**
+    if (deletedPics.length > 0) {
+      formData.append("deletedPics", JSON.stringify(deletedPics));
+      console.log(deletedPics);
+    }
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]); // 輸出 key 和 value
     }
 
     fetch(`http://localhost:5000/teacher/mycourse/${sessionCode}`, {
@@ -182,8 +212,14 @@ export default function TeacherUpdateC() {
           text: "課程資料已成功更新！",
           icon: "success",
           confirmButtonText: "確定",
+          timer: 2500,
+          willClose: () => {
+            // 在 Swal 關閉後跳轉頁面
+            router.push(`/teacher-sign/list`);
+          },
           ...animationConfig,
         });
+        setDeletedPics([]);
       })
       .catch((err) => {
         console.error("Error updating data:", err);
@@ -204,6 +240,7 @@ export default function TeacherUpdateC() {
     }
   };
 
+  // 軟刪除梯次
   const handleisDelete = async () => {
     const sessionId = cs.id;
     fetch(`http://localhost:5000/teacher/mycourse/session/${sessionId}`, {
@@ -242,7 +279,7 @@ export default function TeacherUpdateC() {
       <div className={`col-lg-9 col-md-12 col-12`}>
         <div className={`p-5 ${styles.right}`}>
           <h3 className={`mb-4 ${styles.tTitle}`}>編輯該梯次</h3>
-          <form>
+          <form onSubmit={handleSubmit}>
             <section className={`row g-4 mb-5 ${styles.section1}`}>
               <div className={`col-md-12`}>
                 <label className={`form-label ${styles.labels}`}>
@@ -251,7 +288,7 @@ export default function TeacherUpdateC() {
                 <input
                   type="text"
                   className={`form-control`}
-                  value={cs?.name}
+                  defaultValue={cs?.name}
                   disabled
                   readOnly
                 />
@@ -262,12 +299,12 @@ export default function TeacherUpdateC() {
                 </label>
                 <select
                   className={`form-select`}
-                  value={cs?.type_id}
+                  defaultValue={cs?.type_id}
                   disabled
                   readOnly
                 >
                   {types.map((t) => (
-                    <option key={t.type_id} value={t.type_id}>
+                    <option key={t.type_id} defaultValue={t.type_id}>
                       {t.name}
                     </option>
                   ))}
@@ -280,7 +317,7 @@ export default function TeacherUpdateC() {
                 <input
                   type="text"
                   className={`form-control`}
-                  value={cs?.price}
+                  defaultValue={cs?.price}
                   disabled
                   readOnly
                 />
@@ -290,7 +327,7 @@ export default function TeacherUpdateC() {
                 <input
                   type="text"
                   className={`form-control`}
-                  value={cs?.duration}
+                  defaultValue={cs?.duration}
                   disabled
                   readOnly
                 />
@@ -302,7 +339,7 @@ export default function TeacherUpdateC() {
                 <input
                   type="text"
                   className={`form-control  ${styles.controls}`}
-                  value={cs?.max_people}
+                  defaultValue={cs?.max_people}
                   onChange={handleChange}
                 />
               </div>
@@ -315,8 +352,8 @@ export default function TeacherUpdateC() {
                 <input
                   type="text"
                   className={`form-control ${styles.controls}`}
-                  placeholder={`範例: 2025 【台北】 08/17、08/24、08/31、09/07、09/14 、09/21、09/28`}
-                  value={cs?.class_dates}
+                  placeholder={`範例:   2025 【台北】 08/17、08/24、08/31、09/07、09/14 、09/21、09/28`}
+                  defaultValue={cs?.class_dates}
                   name="class_dates"
                   onChange={handleChange}
                 />
@@ -328,7 +365,7 @@ export default function TeacherUpdateC() {
                 <input
                   type="text"
                   className={`form-control  ${styles.controls}`}
-                  value={cs?.start_date}
+                  defaultValue={cs?.start_date}
                   name="start_date"
                   onChange={handleChange}
                 />
@@ -358,7 +395,7 @@ export default function TeacherUpdateC() {
                   <input
                     type="text"
                     className={`form-control  ${styles.controls}`}
-                    value={cs?.start_time}
+                    defaultValue={cs?.start_time}
                     name="start_time"
                     onChange={handleChange}
                   />
@@ -366,7 +403,7 @@ export default function TeacherUpdateC() {
                   <input
                     type="text"
                     className={`form-control  ${styles.controls}`}
-                    value={cs?.end_time}
+                    defaultValue={cs?.end_time}
                     name="end_time"
                     onChange={handleChange}
                   />
@@ -383,7 +420,7 @@ export default function TeacherUpdateC() {
                   style={{ resize: "none" }}
                   id="exampleFormControlTextarea1"
                   rows={8}
-                  value={cs?.description}
+                  defaultValue={cs?.description}
                   disabled
                   readOnly
                 />
@@ -397,7 +434,7 @@ export default function TeacherUpdateC() {
                   style={{ resize: "none" }}
                   id="exampleFormControlTextarea1"
                   rows={8}
-                  value={cs?.notice}
+                  defaultValue={cs?.notice}
                   disabled
                   readOnly
                 />
@@ -409,7 +446,7 @@ export default function TeacherUpdateC() {
                   style={{ resize: "none" }}
                   id="exampleFormControlTextarea1"
                   rows={8}
-                  value={cs?.qa}
+                  defaultValue={cs?.qa}
                   disabled
                   readOnly
                 />
@@ -480,8 +517,10 @@ export default function TeacherUpdateC() {
                     <div key={other.id} className={styles.imageCard}>
                       <img
                         className={`${styles.imgCr} ${styles.pics}`}
-                        src={`/course/img/${other.url}`}
-                        alt={`${cs?.name}-課程其他圖片`}
+                        src={
+                          other.isLocal ? other.url : `/course/img/${other.url}`
+                        }
+                        alt={`其他圖片`}
                       />
                       <button
                         type="button"
@@ -498,13 +537,13 @@ export default function TeacherUpdateC() {
                         type="button"
                         className={`btn btn-primary btn-sm ${styles.addPicBtn}`}
                         onClick={() =>
-                          document.getElementById("fileInput").click()
+                          document.getElementById("otherpicsUpload").click()
                         }
                       >
                         新增
                       </button>
                       <input
-                        id="fileInput"
+                        id="otherpicsUpload"
                         type="file"
                         className="form-control d-none"
                         accept="image/*"
@@ -515,7 +554,7 @@ export default function TeacherUpdateC() {
                     </>
                   )}
                 </div>
-                <button
+                {/* <button
                   type="button"
                   className={`btn btn-primary btn-sm ${styles.addPicBtn}`}
                 >
@@ -528,7 +567,7 @@ export default function TeacherUpdateC() {
                   name="otherpics"
                   multiple
                   onChange={handleImageChange}
-                />
+                /> */}
               </div>
             </section>
 
@@ -551,7 +590,6 @@ export default function TeacherUpdateC() {
               <button
                 type="submit"
                 className={`btn btn-primary btn-sm px-4 mt-4 ${styles.submitBtn}`}
-                onSubmit={handleSubmit}
               >
                 儲存
               </button>
