@@ -9,6 +9,9 @@ import {
   getSearch,
   getHotelsCount,
   getPaginatedHotels,
+  deleteHotelImage,
+  deleteHotelImages,
+  updateMainImage,
   getFilteredHotelsS,
 } from "../controllers/hotelController.js";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
@@ -37,7 +40,6 @@ router.get(
   getOperatorHotels
 );
 
-
 //  新增、更新、刪除自己管理的飯店
 router.post(
   "/",
@@ -59,5 +61,19 @@ router.patch(
   verifyRole(["operator"]),
   softDeleteHotel
 );
+router.patch(
+  "/:hotelId/main-image/:imageId",
+  verifyToken,
+  verifyRole(["operator"]),
+  updateMainImage
+);
+router.delete(
+  "/:hotelId/image/:imageId",
+  verifyToken,
+  verifyRole(["operator"]),
+  deleteHotelImage
+);
+
+router.delete("/:hotelId/images", verifyToken, verifyRole(["operator"]), deleteHotelImages);
 
 export default router;

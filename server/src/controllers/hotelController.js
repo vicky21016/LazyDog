@@ -7,6 +7,8 @@ import {
   softDeleteHotelById,
   searchHotels,
   getFilteredHotels,
+  updateMainImages,
+  deleteHotelImagesByIds
 } from "../services/hotelService.js";
 import pool from "../config/mysql.js";
 
@@ -41,14 +43,15 @@ export const getSearch = async (req, res) => {
 export const getByIds = async (req, res) => {
   try {
     const id = Number(req.params.id);
+    const { checkInDate, checkOutDate } = req.query;
 
     if (isNaN(id)) {
       return res.status(400).json({ error: "無效的 ID，請提供數字格式" });
     }
 
-    const hotel = await getId(id); // 確保這個函數可以正確查詢資料
+    const hotel = await getId(id, checkInDate, checkOutDate);
     if (!hotel) {
-      console.log(` 找不到 id=${id} 的旅館`);
+      console.log(`找不到 id=${id} 的旅館`);
       return res.status(404).json({ error: `找不到 id=${id} 的旅館` });
     }
 
@@ -169,31 +172,57 @@ export const createHotel = async (req, res) => {
 export const updateHotel = async (req, res) => {
   try {
     const { id } = req.params;
-    const { deleteImageIds, ...hotelData } = req.body;
-
     if (isNaN(Number(id))) {
       return res.status(400).json({ error: "無效的 ID" });
     }
+
+    let { deleteImageIds, ...hotelData } = req.body;
+
+    // 確保 `deleteImageIds` 為數字陣列
+    if (deleteImageIds) {
+      deleteImageIds = Array.isArray(deleteImageIds)
+        ? deleteImageIds.map(Number).filter((id) => !isNaN(id))
+        : [];
+    }
+
+    // 刪除圖片
+    if (deleteImageIds.length > 0) {
+      const deleteResult = await deleteHotelImagesByIds(deleteImageIds, false); // 永久刪除
+      if (deleteResult.error) return res.status(500).json(deleteResult);
+    }
+
+    // 新增圖片
     let newImages = [];
     if (req.files && req.files.length > 0) {
       newImages = req.files.map((file) => ({
         url: `/uploads/hotel/${file.filename}`,
-        description: null, // 預設為 null
+        description: null,
+        hotel_id: id,
       }));
+      const insertResult = await insertHotelImages(newImages);
+      if (insertResult.error) return res.status(500).json(insertResult);
     }
-    const updatedHotel = await updateHotelById({
-      id,
-      deleteImageIds: deleteImageIds || [],
-      newImages: newImages || [],
-      ...hotelData,
-    });
+
+    // 更新旅館基本資料
+    const updatedHotel = await updateHotelById({ id, ...hotelData });
     if (!updatedHotel) {
       return res.status(404).json({ error: `找不到 id=${id} 或該旅館已刪除` });
     }
 
     res.json({ message: `旅館 id=${id} 更新成功` });
   } catch (error) {
-    res.status(500).json({ error: `找不到旅館` });
+    console.error("更新旅館失敗:", error);
+    res.status(500).json({ error: "更新旅館失敗：" + error.message });
+  }
+};
+
+export const updateMainImage = async (req, res) => {
+  try {
+    const { hotelId, imageId } = req.params;
+    const result = await updateMainImages(hotelId, imageId);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -224,10 +253,11 @@ export const getHotelsCount = async (req, res) => {
     );
     res.json({ total: rows[0].total || 0 });
   } catch (error) {
-    console.error("無法獲取飯店總數:", error);
-    res.status(500).json({ error: "伺服器錯誤" });
+    console.error("無法獲取飯店總數:", error.stack);
+    res.status(500).json({ error: "伺服器錯誤", details: error.message });
   }
 };
+
 
 /** 取得分頁飯店 */
 export const getPaginatedHotels = async (req, res) => {
@@ -268,5 +298,51 @@ export const getFilteredHotelsS = async (req, res) => {
   } catch (error) {
     console.error("獲取篩選飯店失敗:", error);
     res.status(500).json({ error: "無法獲取篩選後的飯店" });
+  }
+};
+//刪除單張圖片
+export const deleteHotelImage = async (req, res) => {
+  try {
+    const { hotelId, imageId } = req.params;
+
+    if (!imageId || isNaN(Number(imageId))) {
+      return res.status(400).json({ error: "請提供有效的圖片 ID" });
+    }
+
+    // 確保 `imageId` 屬於 `hotelId`
+    const [imageExists] = await pool.query(
+      "SELECT id FROM hotel_images WHERE id = ? AND hotel_id = ? AND is_deleted = 0",
+      [imageId, hotelId]
+    );
+    if (imageExists.length === 0) {
+      return res.status(404).json({ error: "找不到該圖片，或圖片不屬於此旅館" });
+    }
+
+    const result = await deleteHotelImagesByIds([imageId], false); // 永久刪除
+    res.json(result);
+  } catch (error) {
+    console.error("刪除圖片失敗:", error);
+    res.status(500).json({ error: "刪除圖片失敗：" + error.message });
+  }
+};
+
+export const deleteHotelImages = async (req, res) => {
+  try {
+    const { imageIds } = req.body;
+    if (!Array.isArray(imageIds) || imageIds.length === 0) {
+      return res.status(400).json({ error: "請提供要刪除的圖片 ID" });
+    }
+
+    // 確保所有 ID 為數字
+    const validImageIds = imageIds.map(Number).filter((id) => !isNaN(id));
+    if (validImageIds.length !== imageIds.length) {
+      return res.status(400).json({ error: "圖片 ID 必須是數字" });
+    }
+
+    const result = await deleteHotelImagesByIds(validImageIds, false); // 永久刪除
+    res.json(result);
+  } catch (error) {
+    console.error("批量刪除圖片失敗:", error);
+    res.status(500).json({ error: "刪除圖片失敗：" + error.message });
   }
 };

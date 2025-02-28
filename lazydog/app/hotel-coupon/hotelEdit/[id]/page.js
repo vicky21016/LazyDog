@@ -10,8 +10,9 @@ import My from "../../../components/hotel/my";
 export default function HotelEditPage() {
   const router = useRouter();
   const { id } = useParams(); // 取得旅館 ID
-  const { hotel, images } = useHotel(id); // 取得旅館資訊 + 圖片
+  const { hotel, images: hotelImages } = useHotel(id); // 取得旅館資訊 + 圖片
   const imageUploadRef = useRef(null);
+  const [images, setImages] = useState([]);
 
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
@@ -25,7 +26,11 @@ export default function HotelEditPage() {
     businessHours: { open: "", close: "" },
     introduce: "",
   });
-
+  useEffect(() => {
+    if (hotelImages) {
+      setImages(hotelImages);
+    }
+  }, [hotelImages]);
   // useEffect當 hotel 有資料時，設定 formData
   useEffect(() => {
     if (hotel) {
@@ -100,6 +105,60 @@ export default function HotelEditPage() {
     } catch (error) {
       console.error("更新失敗:", error);
       alert("更新失敗，請重試");
+    }
+  };
+  const handleSetMainImage = async (imageId) => {
+    try {
+      const response = await fetch(`/api/hotels/${id}/main-image/${imageId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) throw new Error("無法更新主圖片");
+      Swal.fire("成功", "主圖片已更新", "success").then(() => {
+        router.refresh(); // 更新頁面
+      });
+    } catch (error) {
+      Swal.fire("錯誤", error.message, "error");
+    }
+  };
+  const handleDeleteImage = async (imageId) => {
+    try {
+      const token = localStorage.getItem("loginWithToken");
+
+      // SweetAlert2 刪除確認
+      const confirmDelete = await Swal.fire({
+        title: "確定要刪除這張圖片嗎？",
+        text: "刪除後無法恢復！",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "刪除",
+        cancelButtonText: "取消",
+      });
+
+      if (!confirmDelete.isConfirmed) return;
+
+      // 發送 DELETE 請求
+      const response = await fetch(
+        `http://localhost:5000/api/hotels/${id}/image/${imageId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("刪除失敗");
+
+      Swal.fire("已刪除", "圖片已成功刪除！", "success");
+
+      // 即時更新圖片列表
+      setImages((prevImages) => prevImages.filter((img) => img.id !== imageId));
+    } catch (error) {
+      Swal.fire("錯誤", error.message, "error");
     }
   };
 
@@ -184,18 +243,42 @@ export default function HotelEditPage() {
                     images.map((img, index) => (
                       <div key={index} className={hotelStyles.suImageCard}>
                         <img src={img.url} alt={`旅館圖片 ${index + 1}`} />
+
+                        {/* 主圖片標記 */}
+                        {hotel.main_image_id === img.id && (
+                          <span className="badge bg-primary position-absolute top-0 start-0 m-2">
+                            主圖片
+                          </span>
+                        )}
+
+                        {/* 刪除圖片按鈕 (防止刪除主圖片) */}
                         <button
                           type="button"
                           className={hotelStyles.suDeleteBtn}
+                          onClick={() => handleDeleteImage(img.id)}
+                          disabled={hotel.main_image_id === img.id} // 不能刪除主圖片
                         >
                           &times;
                         </button>
+
+                        {/* 設為主圖片按鈕 */}
+                        {hotel.main_image_id !== img.id && (
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-primary mt-1"
+                            onClick={() => handleSetMainImage(img.id)}
+                          >
+                            設為主圖片
+                          </button>
+                        )}
                       </div>
                     ))
                   ) : (
                     <p className="text-muted">無圖片可顯示</p>
                   )}
                 </div>
+
+                {/* 圖片上傳功能 */}
                 <input
                   type="file"
                   ref={imageUploadRef}
