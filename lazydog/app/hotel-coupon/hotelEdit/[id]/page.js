@@ -14,94 +14,94 @@ export default function HotelEditPage() {
   const imageUploadRef = useRef(null);
 
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-  usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
 
-const [formData, setFormData] = useState({
-  name: "",
-  county: "",
-  district: "",
-  address: "",
-  phone: "",
-  businessHours: { open: "", close: "" }, 
-  introduce: "",
-});
+  const [formData, setFormData] = useState({
+    name: "",
+    county: "",
+    district: "",
+    address: "",
+    phone: "",
+    businessHours: { open: "", close: "" },
+    introduce: "",
+  });
 
-// useEffect當 hotel 有資料時，設定 formData
-useEffect(() => {
-  if (hotel) {
-    let parsedBusinessHours = hotel.business_hours;
+  // useEffect當 hotel 有資料時，設定 formData
+  useEffect(() => {
+    if (hotel) {
+      let parsedBusinessHours = hotel.business_hours;
 
-    if (typeof hotel.business_hours === "string") {
-      try {
-        parsedBusinessHours = JSON.parse(hotel.business_hours);
-        if (!parsedBusinessHours.open || !parsedBusinessHours.close) {
+      if (typeof hotel.business_hours === "string") {
+        try {
+          parsedBusinessHours = JSON.parse(hotel.business_hours);
+          if (!parsedBusinessHours.open || !parsedBusinessHours.close) {
+            parsedBusinessHours = { open: "", close: "" };
+          }
+        } catch (error) {
+          console.error("business_hours JSON 解析失敗:", error);
           parsedBusinessHours = { open: "", close: "" };
         }
-      } catch (error) {
-        console.error("business_hours JSON 解析失敗:", error);
-        parsedBusinessHours = { open: "", close: "" };
       }
+
+      setFormData({
+        name: hotel.name || "",
+        county: hotel.county || "",
+        district: hotel.district || "",
+        address: hotel.address || "",
+        phone: hotel.phone || "",
+        businessHours: parsedBusinessHours || { open: "", close: "" }, // ✅ 統一為一組營業時間
+        introduce: hotel.introduce || "",
+      });
     }
+  }, [hotel]);
 
-    setFormData({
-      name: hotel.name || "",
-      county: hotel.county || "",
-      district: hotel.district || "",
-      address: hotel.address || "",
-      phone: hotel.phone || "",
-      businessHours: parsedBusinessHours || { open: "", close: "" }, // ✅ 統一為一組營業時間
-      introduce: hotel.introduce || "",
-    });
-  }
-}, [hotel]);
+  // 表單
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-// 表單
-const handleChange = (e) => {
-  setFormData({ ...formData, [e.target.name]: e.target.value });
-};
+  // 營業時間變更
+  const handleTimeChange = (type, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      businessHours: { ...prev.businessHours, [type]: value },
+    }));
+  };
 
-// 營業時間變更
-const handleTimeChange = (type, value) => {
-  setFormData((prev) => ({
-    ...prev,
-    businessHours: { ...prev.businessHours, [type]: value },
-  }));
-};
+  //  確保時間格式
+  const formatTime = (time) => {
+    if (!time) return "";
+    const [hours, minutes] = time.split(":");
+    return `${hours}:${minutes}`;
+  };
 
-//  確保時間格式
-const formatTime = (time) => {
-  if (!time) return "";
-  const [hours, minutes] = time.split(":");
-  return `${hours}:${minutes}`;
-};
+  // 儲存
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("loginWithToken");
+      if (!token) throw new Error("未登入，請重新登入");
 
-// 儲存
-const handleSave = async () => {
-  try {
-    const token = localStorage.getItem("loginWithToken");
-    if (!token) throw new Error("未登入，請重新登入");
+      const response = await fetch(`http://localhost:5000/api/hotels/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...formData,
+          businessHours: JSON.stringify(formData.businessHours),
+        }),
+      });
 
-    const response = await fetch(`http://localhost:5000/api/hotels/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        ...formData,
-        businessHours: JSON.stringify(formData.businessHours), 
-      }),
-    });
+      if (!response.ok) throw new Error(`更新失敗，錯誤碼: ${response.status}`);
 
-    if (!response.ok) throw new Error(`更新失敗，錯誤碼: ${response.status}`);
-
-    alert("更新成功！");
-    router.push(`/hotel-coupon/hotelDetail/${id}`);
-  } catch (error) {
-    console.error("更新失敗:", error);
-    alert("更新失敗，請重試");
-  }
-};
+      alert("更新成功！");
+      router.push(`/hotel-coupon/hotelDetail/${id}`);
+    } catch (error) {
+      console.error("更新失敗:", error);
+      alert("更新失敗，請重試");
+    }
+  };
 
   return (
     <>
@@ -257,10 +257,11 @@ const handleSave = async () => {
                 <button
                   type="button"
                   className={`btn btn-sm px-4 ${hotelStyles.suBtnSecondary}`}
-                  onClick={() => router.push(`/hotel-coupon/hotelDetail/${id}`)}
+                  onClick={() => router.push(`/hotel-coupon/hotel/${id}`)}
                 >
                   返回
                 </button>
+
                 <button
                   type="button"
                   className={`btn btn-sm px-4 ${hotelStyles.suBtnSuccess}`}

@@ -6,7 +6,7 @@ export function useHotel(id = null) {
     const [hotel, setHotel] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [images, setImages] = useState([]);  // ⬅️ 存圖片
+    const [images, setImages] = useState([]); 
 
     useEffect(() => {
         if (authLoading || !user) return;
@@ -62,7 +62,7 @@ export function useHotel(id = null) {
                 console.log("Hotel Images:", imageResult);
 
                 if (imageResult.status === "success" && Array.isArray(imageResult.data)) {
-                    setImages(imageResult.data);  // ✅ 確保 `images` 來自 `data`
+                    setImages(imageResult.data); 
                 } else {
                     setImages([]);
                 }
@@ -76,5 +76,5 @@ export function useHotel(id = null) {
         fetchHotel();
     }, [id, user, authLoading]);
 
-    return { hotel, loading, error, images };  // ⬅️ 回傳 images
+    return { hotel, loading, error, images };  // 回傳 images
 }

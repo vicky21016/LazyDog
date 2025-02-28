@@ -120,8 +120,38 @@ export const createHotel = async (formData) =>
   fetchAuthAPI(API_URL, "POST", formData);
 export const updateHotel = async (id, formData) =>
   fetchAuthAPI(`${API_URL}/${id}`, "PATCH", formData);
-export const softDeleteHotel = async (id) =>
-  fetchAuthAPI(`${API_URL}/${id}/soft-delete`, "PATCH");
+export const softDeleteHotel = async (hotelId) => {
+  const token = localStorage.getItem("loginWithToken");
+  if (!token) {
+    alert("未登入，請重新登入");
+    return false;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:5000/api/hotels/${hotelId}/soft-delete`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // ✅ 確保帶入 JWT Token
+      },
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.error("刪除失敗:", result);
+      alert(`刪除失敗: ${result.error || "請重試"}`);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("刪除 API 失敗:", error);
+    alert("刪除請求失敗，請檢查網路或伺服器");
+    return false;
+  }
+};
+
 //標籤C
 export const getAllTags = async () => fetchAPI(`${HOTEL_TAGS_URL}/tags`);
 export const getHotelTags = async (hotelId) =>

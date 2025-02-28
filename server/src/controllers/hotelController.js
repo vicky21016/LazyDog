@@ -199,19 +199,23 @@ export const updateHotel = async (req, res) => {
 
 export const softDeleteHotel = async (req, res) => {
   try {
-    const { id } = req.params;
+    const hotelId = req.params.id; // 取得前端傳來的 hotel ID
+    const operatorId = req.user.id; // 透過 JWT 解析的 operator ID
 
-    const deletedHotel = await softDeleteHotelById(id);
+    //  呼叫軟刪除函數並傳遞 `hotelId` 和 `operatorId`
+    const deletedHotel = await softDeleteHotelById(hotelId, operatorId);
 
-    if (!deletedHotel) {
-      return res.status(404).json({ error: `找不到 id=${id} 或該旅館已刪除` });
+    if (deletedHotel.error) {
+      return res.status(403).json({ error: deletedHotel.error }); // 403 Forbidden
     }
 
-    res.json({ message: `旅館 id=${id} 已軟刪除` });
+    res.json({ message: `旅館 id=${hotelId} 已軟刪除` });
   } catch (error) {
-    res.status(500).json({ error: `找不到旅館` });
+    console.error("刪除旅館失敗：", error);
+    res.status(500).json({ error: ` 刪除旅館時發生錯誤` });
   }
 };
+
 /** 取得飯店總數 */
 export const getHotelsCount = async (req, res) => {
   try {

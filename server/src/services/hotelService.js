@@ -93,7 +93,6 @@ export const getId = async (id, checkInDate, checkOutDate) => {
   }
 };
 
-
 export const getOperatorTZJ = async (req) => {
   try {
     console.log("收到的 req.user:", req.user);
@@ -106,9 +105,8 @@ export const getOperatorTZJ = async (req) => {
       throw new Error(`operatorId 不是數字: ${req.user.id}`);
     }
 
-    console.log("解析出的 operatorId:", operatorId); 
+    console.log("解析出的 operatorId:", operatorId);
 
-    
     const [hotels] = await pool.query(
       "SELECT * FROM hotel WHERE operator_id = ?",
       [operatorId]
@@ -117,12 +115,13 @@ export const getOperatorTZJ = async (req) => {
     console.log("查詢結果:", hotels);
     return hotels;
   } catch (err) {
-    throw new Error(`你的 operatorId: ${req.user?.id || "未知"} 有錯，錯誤訊息: ${err.message}`);
+    throw new Error(
+      `你的 operatorId: ${req.user?.id || "未知"} 有錯，錯誤訊息: ${
+        err.message
+      }`
+    );
   }
 };
-
-
-
 
 export const createHotels = async (hotelData) => {
   const connection = await pool.getConnection();
@@ -334,46 +333,55 @@ export const updateHotelById = async (updateData) => {
   }
 };
 
-export const softDeleteHotelById = async (id) => {
+export const softDeleteHotelById = async (hotelId, operatorId) => {
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
 
-    const [LiveHotel] = await connection.query(
-      "SELECT * FROM hotel WHERE id = ? AND is_deleted = 0",
-      [id]
-    );
-
-    if (LiveHotel.length == 0) {
-      await connection.rollback();
-      return { error: `刪除失敗，找不到 id=${id} 或該旅館已刪除` };
+    if (!hotelId || isNaN(hotelId) || !operatorId || isNaN(operatorId)) {
+      throw new Error("無效的旅館 ID 或負責人 ID");
     }
 
-    // 軟刪除旅館
-    const [result] = await connection.query(
-      "UPDATE hotel SET is_deleted = 1, updated_at = NOW() WHERE id = ?",
-      [id]
+    // 查詢該負責人的 Hotel 是否存在
+    const [LiveHotel] = await connection.query(
+      "SELECT * FROM hotel WHERE id = ? AND operator_id = ? AND is_deleted = 0",
+      [hotelId, operatorId]
     );
 
-    const imageResult = await pool.query(
-      "UPDATE hotel_images SET is_deleted = 1,updated_at = NOW()  WHERE hotel_id =?",
-      [id]
-    );
-
-    if (result.affectedRows == 0 && imageResult.affectedRows == 0) {
+    if (LiveHotel.length === 0) {
       await connection.rollback();
-      return { error: `軟刪除失敗，找不到 id=${id}` };
+      return {
+        error: `刪除失敗，旅館 ID=${hotelId} 不屬於負責人 ID=${operatorId} 或已刪除`,
+      };
+    }
+
+    //  軟刪除旅館
+    const [hotelResult] = await connection.query(
+      "UPDATE hotel SET is_deleted = 1, updated_at = NOW() WHERE id = ? AND operator_id = ?",
+      [hotelId, operatorId]
+    );
+
+    // 軟刪除旅館圖片
+    const [imageResult] = await connection.query(
+      "UPDATE hotel_images SET is_deleted = 1, updated_at = NOW() WHERE hotel_id = ?",
+      [hotelId]
+    );
+
+    if (hotelResult.affectedRows === 0) {
+      await connection.rollback();
+      return { error: `軟刪除失敗，旅館 ID=${hotelId} 沒有變更` };
     }
 
     await connection.commit();
-    return { message: `旅館 id=${id} 已成功軟刪除` };
+    return { message: ` 旅館 ID=${hotelId} 已成功軟刪除` };
   } catch (error) {
     await connection.rollback();
-    return { error: "無法刪除旅館：" + error.message };
+    return { error: " 無法刪除旅館：" + error.message };
   } finally {
     connection.release();
   }
 };
+
 /**  從資料庫獲取篩選後 */
 export const getFilteredHotels = async (filters) => {
   const connection = await pool.getConnection();
@@ -404,19 +412,19 @@ export const getFilteredHotels = async (filters) => {
 
     let queryParams = [];
 
-    // **價格篩選**
+    // 價格篩選
     if (filters.minPrice !== undefined && filters.maxPrice !== undefined) {
       query += ` AND (inv.min_price IS NULL OR inv.min_price BETWEEN ? AND ?)`;
       queryParams.push(Number(filters.minPrice), Number(filters.maxPrice));
     }
 
-    // **評分篩選**
+    // 評分篩選
     if (filters.rating !== null && filters.rating !== undefined) {
       query += ` AND (r.avg_rating IS NULL OR r.avg_rating >= ?)`;
       queryParams.push(Number(filters.rating));
     }
 
-    // **房型篩選**
+    // 房型篩選
     if (filters.roomType) {
       query += ` AND EXISTS (
         SELECT 1 FROM hotel_room_types hrt
@@ -426,7 +434,7 @@ export const getFilteredHotels = async (filters) => {
       queryParams.push(Number(filters.roomType));
     }
 
-    // **標籤篩選**
+    // 標籤篩選
     if (filters.tags && filters.tags.length > 0) {
       query += ` AND (
         SELECT COUNT(*) FROM hotel_tags ht
@@ -436,7 +444,7 @@ export const getFilteredHotels = async (filters) => {
       queryParams.push(...filters.tags, filters.tags.length);
     }
 
-    // **地區篩選**
+    // 地區篩選
     if (filters.city) {
       query += ` AND h.county = ?`;
       queryParams.push(filters.city);
@@ -446,7 +454,7 @@ export const getFilteredHotels = async (filters) => {
       queryParams.push(filters.district);
     }
 
-    // **訂房日期篩選**
+    // 訂房日期篩選
     if (filters.checkInDate && filters.checkOutDate) {
       query += ` AND EXISTS (
         SELECT 1 FROM room_inventory ri
@@ -467,6 +475,3 @@ export const getFilteredHotels = async (filters) => {
     connection.release();
   }
 };
-
-
-
