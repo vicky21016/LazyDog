@@ -61,11 +61,19 @@ export const getByIds = async (req, res) => {
 
 export const getOperatorHotels = async (req, res) => {
   try {
-    console.log("解析出的使用者資料:", req.user);
-    const operatorId = req.user.id;
+    const operatorId = Number(req.params.id);
+    const userId = req.user.id;
+
+    console.log("解析出的 operatorId:", operatorId);
+    console.log("當前登入的 userId:", userId);
 
     if (!operatorId || isNaN(operatorId)) {
       return res.status(400).json({ error: "無效的 ID，請提供數字格式" });
+    }
+
+   
+    if (operatorId !== userId) {
+      return res.status(403).json({ error: "你沒有權限查看這間旅館" });
     }
 
     const [hotels] = await pool.query(
@@ -73,7 +81,10 @@ export const getOperatorHotels = async (req, res) => {
       [operatorId]
     );
 
-    console.log("查詢結果:", hotels); 
+    if (hotels.length == 0) {
+      return res.status(404).json({ error: "找不到旅館資料" });
+    }
+
     res.json(hotels);
   } catch (error) {
     res.status(500).json({ error: error.message });
