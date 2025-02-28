@@ -35,10 +35,11 @@ export function FavoriteProvider({ children }) {
 
   useEffect(() => {
     const updateFavorite = async () => {
-      // console.log(favorite);
       let methodType = "POST";
-      favoriteData?.data.find((v) => v.user_id === user?.id);
-      methodType = "PATCH";
+      if (favoriteData?.data) {
+        if (favoriteData?.data.find((v) => v.user_id === user?.id))
+          methodType = "PATCH";
+      }
       if (user?.id > 0) {
         const formData = new FormData();
         formData.append("userID", user?.id);

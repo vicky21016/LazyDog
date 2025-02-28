@@ -430,7 +430,6 @@ export function FetchCardProvider({ children, productID = "" }) {
 
 export function FetchAsideProvider({
   children,
-  newUrl = "",
   changeUrl = () => {},
   keyword = {},
   setKeyword = () => {},
@@ -483,7 +482,6 @@ export function FetchAsideProvider({
   return (
     <AsideFetchContext.Provider
       value={{
-        newUrl,
         changeUrl,
         keyword,
         setKeyword,
