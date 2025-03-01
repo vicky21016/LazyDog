@@ -12,7 +12,7 @@ const getToken = () => localStorage.getItem("loginWithToken");
 //詳細role限制請看server端
 //API URL的part
 // 取得所有優惠券
-export const getAllCoupons = async () => {
+export const getCoupons = async () => {
   const token = getToken();
   const res = await fetch(API_URL, {
     method: "GET",
@@ -31,7 +31,7 @@ export const getAllCoupons = async () => {
   return await res.json();
 };
 
-// 取得特定優惠券
+// 取得特定優惠券OP
 export const getCouponById = async (id) => {
   const token = getToken();
   const res = await fetch(`${API_URL}/${id}`, {
@@ -41,6 +41,11 @@ export const getCouponById = async (id) => {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  if (res.status == 403) {
+    console.warn("權限不足，無法訪問此資源");
+    return null;
+  }
 
   return await res.json();
 };
@@ -89,15 +94,32 @@ export const updateCoupon = async (id, data) => {
 };
 
 // 軟刪除
-export const softDeleteCoupon = async (id) => {
-  const token = getToken();
-  const res = await fetch(`${API_URL}/${id}/soft-delete`, {
-    method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const softDeleteCoupon = async (couponId) => {
+  const token = localStorage.getItem("loginWithToken");
+
+  try {
+    const response = await fetch(`http://localhost:5000/api/coupon/${couponId}/soft-delete`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorMessage = await response.text(); // 讀取錯誤訊息
+      throw new Error(`刪除失敗: ${errorMessage}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("刪除優惠券失敗:", error);
+    return { success: false, message: error.message };
+  }
 };
+
+
+
 export const getUserCoupons = async () => {
   const token = getToken();
   const res = await fetch(COUPON_USAGE_URL, {

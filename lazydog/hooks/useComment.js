@@ -15,15 +15,22 @@ const useComment = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(commentData), // 將數據轉換為 JSON 字符串
-        
-      });
-      // console.log(body);
 
+      });
+      console.log(response)
       if (!response.ok) {
         throw new Error(response.statusText || "留言創建失敗");
       }
+      // response.comments.forEach(comment => {
+      //   console.log(comment.author_img);
+      //   if (comment.author_img && comment.author_img.startsWith('images/')) {
+      //     comment.author_img = comment.author_img.replace('images/', 'http://localhost:5000/auth/');
+      //   }
+      // });
 
       const result = await response.json(); // 將響應數據轉換為 JSON
+      console.log(result);
+
       setData(result.article); // 保存返回的資料
       return result; // 返回資料供組件使用
     } catch (err) {

@@ -4,11 +4,15 @@ import React, { useState, useEffect } from "react";
 import styles from "../../teacher/list/list.module.css";
 import Link from "next/link";
 
-export default function Filter({ onFilterChange }) {
+export default function Filter({ filterChange }) {
 
   const [searchText, setSearchText] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedGenders, setSelectedGenders] = useState([]);
+  const [selectCategories, setselectCategories] = useState([]);
+  const [selectGenders, setselectGenders] = useState([]);
+
+  const searchChange = (e) => {
+    setSearchText(e.target.value);
+  };
 
   const categories = [
     { id: "train", label: "寵物訓練" },
@@ -24,31 +28,36 @@ export default function Filter({ onFilterChange }) {
   ];
 
   // 處理分類選擇
-  const handleCategoryChange = (category) => {
-    setSelectedCategories((prev) =>
+  const categoryChange = (category) => {
+    setselectCategories((prev) =>
       prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     );
   };
 
   // 處理性別選擇
-  const handleGenderChange = (gender) => {
-    setSelectedGenders((prev) =>
+  const genderChange = (gender) => {
+    setselectGenders((prev) =>
       prev.includes(gender) ? prev.filter((g) => g !== gender) : [...prev, gender]
     );
   };
 
   // 清除篩選
-  const handleClearFilters = () => {
+  const clearFilters = () => {
     setSearchText("");
-    setSelectedCategories([]);
-    setSelectedGenders([]);
-    onFilterChange([], []);
+    setselectCategories([]);
+    setselectGenders([]);
+    filterChange([], []);
   };
+
+   // 一進入頁面就顯示所有老師
+   useEffect(() => {
+    filterChange([], []);
+  }, []); // 只執行一次
 
   // 當篩選條件改變時，通知父元件
   useEffect(() => {
-    onFilterChange(selectedCategories, selectedGenders);
-  }, [selectedCategories, selectedGenders]);
+    filterChange(searchText, selectCategories, selectGenders);
+  }, [searchText, selectCategories, selectGenders]);
 
   
   return (
@@ -61,9 +70,9 @@ export default function Filter({ onFilterChange }) {
               <input
                 className={styles.searchP}
                 type="text"
-                placeholder="搜尋商品"
+                placeholder="搜尋老師"
                 value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
+                onChange={searchChange}
               />
             </td>
           </tr>
@@ -85,8 +94,8 @@ export default function Filter({ onFilterChange }) {
                 <input
                   id={category.id}
                   type="checkbox"
-                  checked={selectedCategories.includes(category.label)}
-                  onChange={() => handleCategoryChange(category.label)}
+                  checked={selectCategories.includes(category.label)}
+                  onChange={() => categoryChange(category.label)}
                 />
                 <label htmlFor={category.id} className={styles.checkboxLabel}>
                   {category.label}
@@ -154,8 +163,8 @@ export default function Filter({ onFilterChange }) {
                 <input
                   id={gender.id}
                   type="checkbox"
-                  checked={selectedGenders.includes(gender.value)}
-                  onChange={() => handleGenderChange(gender.value)}
+                  checked={selectGenders.includes(gender.value)}
+                  onChange={() => genderChange(gender.value)}
                 />
                 <label htmlFor={gender.id} className={styles.checkboxLabel}>
                   {gender.label}
@@ -165,7 +174,7 @@ export default function Filter({ onFilterChange }) {
            ))}
           <tr>
             <td className={`${styles.tdTable} ${styles.checkboxTable}`}>
-              <button className={styles.clear} onClick={handleClearFilters}>
+              <button className={styles.clear} onClick={clearFilters}>
                 清除搜尋
               </button>
             </td>

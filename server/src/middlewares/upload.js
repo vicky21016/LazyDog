@@ -3,10 +3,11 @@ import multer from "multer";
 // 設定圖片上傳位置
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/hotel/"); 
+    cb(null, "uploads/hotel/");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // 避免檔名重複
+    const ext = file.originalname.split(".").pop();
+    cb(null, Date.now() + "." + ext); // 避免檔名重複
   },
 });
 

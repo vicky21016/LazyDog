@@ -69,7 +69,11 @@ router.get("/author/:author_id", async (req, res) => {
 
   try {
     const articles = await getArticlesByAuthorS(author_id);
-    res.json(articles);
+    const formattedArticles = articles.map(article => ({
+      ...article,
+      cover_image: article.cover_image || "http://localhost:5000/api/articles/image2.jpg" // 設定預設圖片
+  }));
+    res.json(formattedArticles);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

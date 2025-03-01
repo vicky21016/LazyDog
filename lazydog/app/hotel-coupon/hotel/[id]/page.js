@@ -1,8 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import hotelStyles from "../../../../styles/modules/operatorHotel.module.css";
 import { useHotel } from "@/hooks/useHotel";
 import { useRouter, useParams } from "next/navigation";
+import { softDeleteHotel } from "@/services/hotelService";
 import Header from "../../../components/layout/header";
 import My from "../../../components/hotel/my";
 
@@ -10,10 +12,8 @@ export default function HotelDetailPage() {
   const router = useRouter();
   const { id } = useParams();
   const { hotel, loading, images } = useHotel(id);
-
-  const changepage = (path) => {
-    router.push(`/hotel-coupon/${path}`);
-  };
+  const hotelId = hotel?.id;
+  const [isDeleted, setIsDeleted] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -21,10 +21,15 @@ export default function HotelDetailPage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (hotel) {
+      setIsDeleted(hotel.is_deleted == 1);
+    }
+  }, [hotel]);
+
   if (loading) return <p className="text-center">載入中...</p>;
   if (!hotel) return <p className="text-danger text-center">找不到旅館資訊</p>;
 
-  // ✅ 確保 `business_hours` 解析正確
   let businessHours = { open: "", close: "" };
   if (hotel.business_hours) {
     try {
@@ -38,10 +43,44 @@ export default function HotelDetailPage() {
     }
   }
 
+const changepage = (path) => {
+  router.push(`/hotel-coupon/${path}`);
+};
+
+  //  軟刪除函數
+  const handleSoftDelete = async () => {
+    if (!hotel || !hotel.id) {
+      Swal.fire("錯誤", "無法刪除，找不到旅館 ID", "error");
+      return;
+    }
+
+    const confirmDelete = await Swal.fire({
+      title: "確定要刪除這間旅館嗎？",
+      text: "刪除後將無法恢復！",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "刪除",
+      cancelButtonText: "取消",
+    });
+
+    if (confirmDelete.isConfirmed) {
+      const success = await softDeleteHotel(hotel.id);
+      if (success) {
+        Swal.fire("已刪除", "旅館已標記為刪除！", "success").then(() => {
+          router.refresh();
+        });
+      } else {
+        Swal.fire("刪除失敗", "請重試！", "error");
+      }
+    }
+  };
+
   return (
     <>
       <Header />
-      <div className="container my-5">
+      <div className={`container my-5 ${isDeleted ? "opacity-50" : ""}`}>
         <div className="row">
           <My />
 
@@ -52,9 +91,7 @@ export default function HotelDetailPage() {
                 <div className={`section ${hotelStyles.suSection}`}>
                   <h5>基本資訊</h5>
                   <div className="mb-3">
-                    <label className="form-label">
-                      旅館名稱 <span style={{ color: "red" }}>*</span>
-                    </label>
+                    <label className="form-label">旅館名稱 *</label>
                     <input
                       type="text"
                       className="form-control"
@@ -63,9 +100,7 @@ export default function HotelDetailPage() {
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">
-                      地址 <span style={{ color: "red" }}>*</span>
-                    </label>
+                    <label className="form-label">地址 *</label>
                     <input
                       type="text"
                       className="form-control"
@@ -76,9 +111,7 @@ export default function HotelDetailPage() {
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">
-                      電話 <span style={{ color: "red" }}>*</span>
-                    </label>
+                    <label className="form-label">電話 *</label>
                     <input
                       type="text"
                       className="form-control"
@@ -110,9 +143,9 @@ export default function HotelDetailPage() {
                   </div>
                 </div>
 
-                {/* ✅ 修正營業時間顯示 */}
+                {/* 修正營業時間顯示 */}
                 <div className={`section ${hotelStyles.suSection}`}>
-                  <h5>營業時間 (適用於星期一到星期日)</h5>
+                  <h5>營業時間</h5>
                   <div className="mb-3 d-flex align-items-center">
                     <input
                       type="text"
@@ -129,8 +162,9 @@ export default function HotelDetailPage() {
                     />
                   </div>
                 </div>
-                   {/* ✅ 旅館簡介 */}
-                   <div className={`section ${hotelStyles.suSection}`}>
+
+                {/* 旅館簡介 */}
+                <div className={`section ${hotelStyles.suSection}`}>
                   <h5>旅館簡介</h5>
                   <textarea
                     className="form-control"
@@ -139,11 +173,13 @@ export default function HotelDetailPage() {
                     rows="3"
                   />
                 </div>
+
+                {/* 按鈕區域 */}
                 <div className="d-flex justify-content-end gap-2 mt-3">
                   <button
                     type="button"
                     className="btn btn-success btn-sm px-4"
-                    onClick={() => changepage("hotelList")}
+                    onClick={() => changepage(`operatorDetail`)}
                   >
                     返回
                   </button>
@@ -151,13 +187,15 @@ export default function HotelDetailPage() {
                     type="button"
                     className="btn btn-warning btn-sm px-4"
                     onClick={() => changepage(`hotelEdit/${id}`)}
+                    disabled={isDeleted}
                   >
                     編輯
                   </button>
                   <button
                     type="button"
                     className="btn btn-danger btn-sm px-4"
-                    onClick={() => alert("確定要刪除這間旅館嗎？")}
+                    onClick={handleSoftDelete}
+                    disabled={isDeleted}
                   >
                     刪除
                   </button>

@@ -167,13 +167,13 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
       tags: selectedTags.length > 0 ? selectedTags.map(Number) : [],
     };
   
-    console.log("📌 送出篩選 API:", filterParams); // 🔥 確保 `minPrice`、`maxPrice` 有正確值
+    console.log(" 送出篩選 API:", filterParams); //  確保 `minPrice`、`maxPrice` 有正確值
   
     try {
       await onSearch(filterParams, true);
       setIsSearching(false);
     } catch (error) {
-      console.error("❌ Sidebar 篩選 API 錯誤:", error);
+      console.error("Sidebar 篩選 API 錯誤:", error);
     }
   };
   

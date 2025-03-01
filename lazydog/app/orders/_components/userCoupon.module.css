@@ -1,0 +1,156 @@
+.profileCard {
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.profileCard img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+.suFeatureLinks1 {
+  color: #ff9538;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 20px;
+  gap: 20px;
+}
+
+.suFeatureLinks2 {
+  color: #ff9538;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.suNavTabs {
+  border-bottom: 2px solid #ddd;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.suNavTabs .suNavLink {
+  color: black;
+  border-bottom: 2px solid transparent;
+}
+
+.suNavTabs .suNavLink:hover {
+  color: #ff9538;
+  border-bottom: 2px solid #ff9538;
+}
+.suCouponCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between ;
+  border: 1px solid #ddd ;
+  border-radius: 10px;
+  padding:0 5px 0 0;
+  background-color: white ;
+  margin-bottom: 15px ;
+  height: 100px;
+  overflow: hidden;
+
+}
+.suCouponCard .suPrice {
+  font-size: 22px;
+  font-weight: bold;
+  color: #66C5BD;
+}
+
+.suCouponCard .suDetails {
+  flex: 1;
+  padding-left: 15px;
+}
+
+.suCouponCard .suDetails p {
+  margin: 0px;
+  font-size: 14px;
+}
+.suUsed {
+  background-color: #d4edda;
+  font-size: 14px;
+  color: #66C5BD;
+}
+
+.suExpired {
+  background-color: #f8d7da;
+  font-size: 14px;
+  color: #721c24;
+}
+
+.suUnused {
+  background-color: white;
+  color: #ff9538;
+}
+
+.suCouponCard .suAction {
+  text-align: right;
+}
+.suCouponCard .suAction a {
+  color: #66C5BD;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.profileCard .btn {
+  font-size: 14px;
+}
+
+.profileLinks {
+  list-style: none;
+  padding: 0;
+}
+
+.profileLinks li {
+  padding: 8px 0;
+}
+
+.suCouponInputGroup {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.suCouponInputGroup input {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  margin-right: 10px;
+}
+
+.statusFilter button {
+  border: none ;
+  background: none;
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.statusFilter button:hover {
+  color:#ff9538;
+}
+
+
+
+.suTable th,
+.suTable td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.badge {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+.stars {
+  color: #ff9538;
+}
+
+.btnAction {
+  min-width: 100px;
+}
