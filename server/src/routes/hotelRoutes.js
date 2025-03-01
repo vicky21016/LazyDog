@@ -13,6 +13,7 @@ import {
   deleteHotelImages,
   updateMainImage,
   getFilteredHotelsS,
+  uploadHotelImage, // ✅ 新增上傳圖片控制器
 } from "../controllers/hotelController.js";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 import { upload } from "../middlewares/upload.js";
@@ -22,19 +23,19 @@ const router = express.Router();
 // 取得飯店總數
 router.get("/count", getHotelsCount);
 
-// 取得分頁飯店（避免與 `getAllHotels` 衝突）
+// 取得分頁飯店
 router.get("/paginated", getPaginatedHotels);
 
 // 篩選飯店
 router.get("/filter", getFilteredHotelsS);
 router.post("/filter", getFilteredHotelsS);
 
-// 所有人都可以查詢所有飯店
+// 查詢所有飯店
 router.get("/", getAllHotels);
 router.get("/search", getSearch);
 router.get("/:id", getByIds);
 
-// 只有 operator可以查看自己的飯店
+// 只有 operator 可以查看自己的飯店
 router.get(
   "/operator/:id",
   verifyToken,
@@ -42,7 +43,7 @@ router.get(
   getOperatorHotels
 );
 
-// 只有 operator可以新增、更新、刪除飯店
+// 只有 operator 可以新增、更新、刪除飯店
 router.post(
   "/",
   verifyToken,
@@ -66,7 +67,7 @@ router.patch(
   softDeleteHotel
 );
 
-// 更換主要圖片（主圖更新）
+// 更換主要圖片
 router.patch(
   "/:hotelId/main-image/:imageId",
   verifyToken,
@@ -74,7 +75,7 @@ router.patch(
   updateMainImage
 );
 
-// 刪除單張圖片（確保 hotelId 限制 imageId）
+// 刪除單張圖片
 router.delete(
   "/:hotelId/image/:imageId",
   verifyToken,
@@ -82,12 +83,20 @@ router.delete(
   deleteHotelImage
 );
 
-// 批量刪除圖片（使用imageIds而不是 hotelId）
+// 批量刪除圖片
 router.delete(
   "/images",
   verifyToken,
   verifyRole(["operator"]),
   deleteHotelImages
+);
+
+router.post(
+  "/:hotelId/images",
+  verifyToken,
+  verifyRole(["operator"]),
+  upload.single("image"),
+  uploadHotelImage
 );
 
 export default router;

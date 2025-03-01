@@ -262,7 +262,7 @@ export const updateMainImages = async (hotelId, imageId) => {
       [imageId, hotelId]
     );
 
-    if (imageExists.length === 0) {
+    if (imageExists.length == 0) {
       throw new Error("找不到該圖片，或圖片已刪除");
     }
 
@@ -312,6 +312,23 @@ export const updateMainImages = async (hotelId, imageId) => {
 };
 
 
+// ✅ 將圖片插入 `hotel_images` 資料表
+export const insertHotelImage = async (hotelId, imageUrl) => {
+  const [result] = await pool.query(
+    "INSERT INTO hotel_images (hotel_id, image_url) VALUES (?, ?)",
+    [hotelId, imageUrl]
+  );
+  return result.insertId; // 回傳新圖片的 ID
+};
+
+// ✅ 刪除 `hotel_images` 中的圖片
+export const deleteImageById = async (imageId) => {
+  const [result] = await pool.query(
+    "DELETE FROM hotel_images WHERE id = ?",
+    [imageId]
+  );
+  return result.affectedRows > 0; // 回傳是否刪除成功
+};
 
 
 export const deleteHotelImagesByIds = async (imageIds, isSoftDelete = true) => {
@@ -558,7 +575,6 @@ export const getFilteredHotels = async (filters) => {
     const [hotels] = await connection.query(query, queryParams);
     return hotels;
   } catch (error) {
-    console.error(" 無法取得篩選飯店：" + error.message);
     throw new Error("無法取得篩選飯店：" + error.message);
   } finally {
     connection.release();

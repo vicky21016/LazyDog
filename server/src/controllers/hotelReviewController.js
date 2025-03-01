@@ -44,26 +44,29 @@ export const createHotelReview = async (req, res) => {
 };
 export const replyHotelReview = async (req, res) => {
   try {
-    const { id } = req.params;
     const { reply } = req.body;
-    const operator_id = req.user.id;
+    const reviewId = req.params.id;
 
-    if (!reply) {
-      return res.status(400).json({ error: "請提供回覆內容" });
+    if (!reply || typeof reply !== "string") {
+      return res.status(400).json({ error: "回覆內容無效" });
     }
 
-    const updatedReview = await replyHotelReviews(id, operator_id, reply);
-    if (!updatedReview) {
-      return res.status(404).json({ error: "找不到該評論或無法回覆" });
+    const [result] = await pool.query(
+      "UPDATE hotel_reviews SET reply = ?, updated_at = NOW() WHERE id = ?",
+      [reply, reviewId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "找不到評論" });
     }
 
-    res
-      .status(200)
-      .json({ success: true, message: "評論回覆成功", data: updatedReview });
+    res.json({ success: true, message: "回覆成功" });
   } catch (error) {
-    res.status(500).json({ error: "無法回覆評論", details: error.message });
+    console.error("回覆評論錯誤:", error);
+    res.status(500).json({ error: "伺服器錯誤" });
   }
 };
+
 export const getHotelReview = async (req, res) => {
   try {
     const { hotel_id } = req.params;
