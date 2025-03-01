@@ -123,7 +123,7 @@ function AsideContent() {
   const [isChecked, setIsChecked] = useState(true);
 
   return (
-    <aside className={styles.Sidebar}>
+    <aside className={`${styles.Sidebar}`}>
       <div className={styles.SearchTable}>
         <img src="/product/font/search.png" alt="" />
         <input
@@ -229,7 +229,7 @@ function AsideContent() {
         </button>
       </div>
 
-      <Link href="">
+      <Link href="" className="d-none d-lg-block">
         <figure>
           <img
             src="/product/DM/DM_aside.png"

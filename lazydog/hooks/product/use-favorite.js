@@ -98,7 +98,6 @@ export function DetailFavoriteProvider({ children }) {
 
   useEffect(() => {
     const updateFavorite = async () => {
-      console.log(favorite);
       let methodType = "POST";
       favoriteData?.data.find((v) => v.user_id === user?.id);
       methodType = "PATCH";

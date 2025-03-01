@@ -30,7 +30,7 @@ export default function FilterGroup({
 
   const [checkedItems, setCheckedItems] = useState(categoryCheckbox);
   const handleCheckboxChange = (e, v, name) => {
-    console.log(1);
+    // console.log(1);
     setCheckedItems((prev) => ({
       ...prev,
       [v]: e.target.checked,

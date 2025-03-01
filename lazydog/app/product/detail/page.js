@@ -143,6 +143,17 @@ function DetailContent() {
                       className={`${styles.ProductInfoImgSmall}  ${
                         i == picNow ? styles.ProductInfoImgSmallActive : ""
                       }`}
+                      onClick={() => {
+                        setPicNow(() => {
+                          const newIndex = i;
+                          const encodedImageName =
+                            encodeURIComponent(productName);
+                          setCardPic(
+                            `/product/img/${encodedImageName}${img.img[newIndex]}`
+                          );
+                          return newIndex;
+                        });
+                      }}
                     >
                       <img src={`/product/img/${productName}${v}`} alt="" />
                     </figure>

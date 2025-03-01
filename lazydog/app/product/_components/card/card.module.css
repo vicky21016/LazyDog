@@ -1,12 +1,12 @@
 .ProductCard {
-  width: 225px;
+  max-width: 225px;
   position: relative;
 }
 .ProductCardHover {
   width: 100%;
   height: 100%;
   position: absolute;
-  background: rgb(241, 213, 182, 0);
+  background: rgb(0, 0, 0, 0);
   top: 0;
   left: 0;
   .HoverIcon {
@@ -20,16 +20,68 @@
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
   position: absolute;
   background: rgb(241, 213, 182, 0.7);
   top: 0;
   left: 0;
   .HoverIcon {
-    width: 50px;
-    height: 50px;
+    min-width: 45px;
+    min-height: 45px;
+    border-radius: 50%;
+    background: var(--White);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .CartBtnOff {
+    h6 {
+      display: none;
+    }
+  }
+  .CartBtn {
+    h6 {
+      position: absolute;
+      color: var(--Black);
+      text-shadow: 0 0 2px var(--White);
+      cursor: pointer;
+      top: 0;
+    }
+  }
+}
+.ProductCardClickOff {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: rgb(0, 0, 0, 0);
+  top: 0;
+  left: 0;
+  .HoverIcon {
+    display: none;
+  }
+  .CartBtn {
+    display: none;
+  }
+}
+.ProductCardClickOn {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  position: absolute;
+  background: rgb(241, 213, 182, 0.7);
+  top: 0;
+  left: 0;
+  .HoverIcon {
+    min-width: 45px;
+    min-height: 45px;
     border-radius: 50%;
     background: var(--White);
     display: flex;
@@ -69,7 +121,7 @@
 .ProductCardCart {
   position: absolute;
   right: 6px;
-  top: 300px;
+  bottom: 10px;
   p {
     width: 100%;
     text-align: center;
@@ -105,10 +157,15 @@
     color: var(--Black);
     display: flex;
     align-items: start;
+    /* max-width: 185px; */
     height: 72px;
     overflow: hidden;
   }
   .ProductCardPrice {
+    color: var(--Orange);
+  }
+  .ProductCardPriceSm {
+    width: 100%;
     color: var(--Orange);
   }
 }

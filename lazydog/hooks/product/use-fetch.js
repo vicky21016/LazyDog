@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import useSWR from "swr";
+import useScreenSize from "./use-Screen";
 
 const ListFetchContext = createContext(null);
 ListFetchContext.displayName = "ListFetchContext";
@@ -19,8 +20,9 @@ export function FetchListProvider({ children }) {
   const [newUrl, setNewUrl] = useState("http://localhost:5000/api/products");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(30000);
-  const [sortName, setSortName] = useState("依商品名稱排序");
+  const [sortName, setSortName] = useState("條件排序");
   const [pageNow, setPageNow] = useState(1);
+  const { width, height } = useScreenSize();
 
   const changeUrl = (newUrl) => {
     setNewUrl(newUrl);
@@ -32,15 +34,15 @@ export function FetchListProvider({ children }) {
   useEffect(() => {
     changeUrl(
       `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}${
-        sortName == "依商品名稱排序"
+        sortName == "↓商品名稱"
           ? "&sort=name"
-          : sortName == "依商品價格⬆排序"
+          : sortName == "↑商品價格"
           ? "&sort=price"
-          : sortName == "依商品價格⬇排序"
+          : sortName == "↓商品價格"
           ? "&sort=priceDown"
-          : sortName == "依上架時間⬆排序"
+          : sortName == "↑上架時間"
           ? "&sort=update"
-          : sortName == "依上架時間⬇排序"
+          : sortName == "↓上架時間"
           ? "&sort=updateDown"
           : ""
       }`
@@ -64,10 +66,15 @@ export function FetchListProvider({ children }) {
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
+  const productLine = Math.ceil(product?.length / (width >= 768 ? 4 : 2));
+  const int = width >= 1200 ? 4 : width >= 768 ? 3 : 2;
   return (
     <ListFetchContext.Provider
       value={{
+        width,
         products,
+        int,
+        productLine,
         emptyMessage,
         changeUrl,
         minPrice,
@@ -93,18 +100,18 @@ export function FetchListProvider({ children }) {
 export function FetchCategoryProvider({ children }) {
   const query = useSearchParams();
   const category = query.get("category");
-  const [sortName, setSortName] = useState("依商品名稱排序");
+  const [sortName, setSortName] = useState("條件排序");
   const [newUrl, setNewUrl] = useState(
     `http://localhost:5000/api/products/category?category=${category}${
-      sortName == "依商品名稱排序"
+      sortName == "↓商品名稱"
         ? "&sort=name"
-        : sortName == "依商品價格⬆排序"
+        : sortName == "↑商品價格"
         ? "&sort=price"
-        : sortName == "依商品價格⬇排序"
+        : sortName == "↓商品價格"
         ? "&sort=priceDown"
-        : sortName == "依上架時間⬆排序"
+        : sortName == "↑上架時間"
         ? "&sort=update"
-        : sortName == "依上架時間⬇排序"
+        : sortName == "↓上架時間"
         ? "&sort=updateDown"
         : ""
     }`
@@ -121,6 +128,8 @@ export function FetchCategoryProvider({ children }) {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(5000);
   const [pageNow, setPageNow] = useState(1);
+  const { width, height } = useScreenSize();
+
   const changeUrl = (newUrl) => {
     setNewUrl(newUrl);
     if (pageNow !== 1) {
@@ -140,15 +149,15 @@ export function FetchCategoryProvider({ children }) {
     ) {
       changeUrl(
         `http://localhost:5000/api/products/category?category=${category}&min=${minPrice}&max=${maxPrice}${
-          sortName == "依商品名稱排序"
+          sortName == "↓商品名稱"
             ? "&sort=name"
-            : sortName == "依商品價格⬆排序"
+            : sortName == "↑商品價格"
             ? "&sort=price"
-            : sortName == "依商品價格⬇排序"
+            : sortName == "↓商品價格"
             ? "&sort=priceDown"
-            : sortName == "依上架時間⬆排序"
+            : sortName == "↑上架時間"
             ? "&sort=update"
-            : sortName == "依上架時間⬇排序"
+            : sortName == "↓上架時間"
             ? "&sort=updateDown"
             : ""
         }`
@@ -166,15 +175,15 @@ export function FetchCategoryProvider({ children }) {
         )}&cereal=${keyword?.穀類.join(",")}&size=${keyword?.適用體型.join(
           ","
         )}&min=${minPrice}&max=${maxPrice}${
-          sortName == "依商品名稱排序"
+          sortName == "↓商品名稱"
             ? "&sort=name"
-            : sortName == "依商品價格⬆排序"
+            : sortName == "↑商品價格"
             ? "&sort=price"
-            : sortName == "依商品價格⬇排序"
+            : sortName == "↓商品價格"
             ? "&sort=priceDown"
-            : sortName == "依上架時間⬆排序"
+            : sortName == "↑上架時間"
             ? "&sort=update"
-            : sortName == "依上架時間⬇排序"
+            : sortName == "↓上架時間"
             ? "&sort=updateDown"
             : ""
         }`
@@ -199,10 +208,15 @@ export function FetchCategoryProvider({ children }) {
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
+  const productLine = Math.ceil(product?.length / (width >= 768 ? 4 : 2));
+  const int = width >= 1200 ? 4 : width >= 768 ? 3 : 2;
   return (
     <CategoryFetchContext.Provider
       value={{
+        width,
         products,
+        int,
+        productLine,
         emptyMessage,
         category,
         keyword,
@@ -230,6 +244,7 @@ export function FetchCategoryProvider({ children }) {
 }
 
 export function FetchDetailProvider({ children }) {
+  const { width, height } = useScreenSize();
   const query = useSearchParams();
   const product = query.get("productID");
   const router = useRouter();
@@ -323,6 +338,7 @@ export function FetchDetailProvider({ children }) {
   return (
     <DetailFetchContext.Provider
       value={{
+        width,
         product,
         router,
         loginRoute,
@@ -357,6 +373,7 @@ export function FetchDetailProvider({ children }) {
 export function FetchCardProvider({ children, productID = "" }) {
   const router = useRouter();
   const loginRoute = "/login";
+  const { width, height } = useScreenSize();
 
   const url = productID
     ? `http://localhost:5000/api/products/${productID}`
@@ -403,6 +420,7 @@ export function FetchCardProvider({ children, productID = "" }) {
   return (
     <CardFetchContext.Provider
       value={{
+        width,
         productID,
         router,
         loginRoute,
