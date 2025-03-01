@@ -10,32 +10,38 @@ export const getCoupons = async (user_id, role) => {
   try {
     let coupons;
 
-    if (role === "operator") {
-      // 業者只能獲取自己 `hotel_id` 內的優惠券
+    if (role == "operator") {
+      // 業者只能獲取自己管理的旅館優惠券
       [coupons] = await pool.query(
-        "SELECT * FROM coupons WHERE hotel_id IN (SELECT id FROM hotel WHERE operator_id = ?) AND is_deleted = 0",
+        `SELECT c.* FROM coupons c
+         JOIN hotel h ON c.hotel_id = h.id
+         WHERE h.operator_id = ? AND c.is_deleted = 0`,
         [user_id]
       );
-    } else if (role === "teacher") {
+    } else if (role == "teacher") {
       // 老師只能獲取自己創建的優惠券
       [coupons] = await pool.query(
         "SELECT * FROM coupons WHERE creator_id = ? AND is_deleted = 0",
         [user_id]
       );
-    } else if (role === "admin") {
-      // 管理員可以查詢所有優惠券
+    } else if (role == "user") {
+      // 使用者只能獲取自己擁有的優惠券 (JOIN coupons)
       [coupons] = await pool.query(
-        "SELECT * FROM coupons WHERE is_deleted = 0"
+        `SELECT c.* FROM coupons c
+         JOIN coupon_usage cu ON c.id = cu.coupon_id
+         WHERE cu.user_id = ? AND c.is_deleted = 0`,
+        [user_id]
       );
     } else {
-      return { error: "無權限獲取優惠券" };
+      throw new Error("無權限獲取優惠券");
     }
 
-    return { success: true, data: coupons };
+    return coupons;
   } catch (error) {
     throw new Error("無法取得優惠券列表：" + error.message);
   }
 };
+
 
 export const getCouponById = async (req, res) => {
   try {

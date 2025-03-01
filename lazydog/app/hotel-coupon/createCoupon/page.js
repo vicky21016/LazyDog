@@ -40,43 +40,19 @@ export default function CreateCouponPage() {
   // 提交表單
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // 檢查必填欄位
-    if (
-      !coupon.name ||
-      !coupon.code ||
-      !coupon.description ||
-      !coupon.discount_value ||
-      !coupon.min_order_value ||
-      !coupon.max_usage ||
-      !coupon.start_time ||
-      !coupon.end_time ||
-      !coupon.status
-    ) {
-      alert("請填寫所有必填欄位");
+  
+    if (!token) {
+      alert("請先登入");
       return;
     }
-
-    // 檢查 discount_value 是否為數字
-    if (isNaN(Number(coupon.discount_value))) {
-      alert("優惠金額必須是數字");
-      return;
-    }
-
-    // 檢查 start_time 是否早於 end_time
-    if (new Date(coupon.start_time) >= new Date(coupon.end_time)) {
-      alert("開始日期必須早於結束日期");
-      return;
-    }
-
-    // 提交表單
+  
     const formattedCoupon = {
       name: coupon.name,
       code: coupon.code,
       discount_type: coupon.discount_type,
-      is_global: coupon.targetAudience === "all" ? 1 : 0, // 映射 targetAudience
-      content: coupon.description, // 映射 description
-      value: Number(coupon.discount_value), // 映射 discount_value
+      is_global: coupon.targetAudience === "all" ? 1 : 0, 
+      content: coupon.description,
+      value: Number(coupon.discount_value),
       min_order_value: Number(coupon.min_order_value),
       max_usage: Number(coupon.max_usage),
       max_usage_per_user: Number(coupon.max_usage_per_user),
@@ -84,11 +60,11 @@ export default function CreateCouponPage() {
       end_time: coupon.end_time ? `${coupon.end_time}T23:59:59Z` : "",
       status: coupon.status,
     };
-
-    console.log("送出的資料:", formattedCoupon);
-
+  
+    console.log(" 送出的資料:", formattedCoupon);
+  
     try {
-      const result = await createCoupon(formattedCoupon);
+      const result = await createCoupon(formattedCoupon, token); 
       if (result.success) {
         alert("優惠券新增成功！");
         router.push("/hotel-coupon/couponList");
@@ -100,6 +76,7 @@ export default function CreateCouponPage() {
       alert("發生錯誤，請稍後再試");
     }
   };
+  
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);

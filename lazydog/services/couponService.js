@@ -13,22 +13,29 @@ const getToken = () => localStorage.getItem("loginWithToken");
 //API URL的part
 // 取得所有優惠券
 export const getCoupons = async () => {
-  const token = getToken();
-  const res = await fetch(API_URL, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  try {
+    const token = localStorage.getItem("loginWithToken"); // 確保 token 存在
+    if (!token) throw new Error("用戶未登入，請重新登入");
 
-  if (res.status == 401) {
-    console.warn("未授權，請重新登入");
-    window.location.href = "/login";
-    return null;
+    const res = await fetch("http://localhost:5000/api/coupon", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(`API 錯誤: ${errorData.error || "未知錯誤"}`);
+    }
+
+    const data = await res.json();
+    return { success: true, data }; // 確保返回 { success: true, data: [...] }
+  } catch (error) {
+    console.error("取得優惠券失敗:", error);
+    return { success: false, error: error.message };
   }
-
-  return await res.json();
 };
 
 // 取得特定優惠券OP
@@ -64,9 +71,7 @@ export const getCouponByCode = async (code) => {
 };
 
 //  新增優惠券
-export const createCoupon = async (couponData) => {
-  let token = localStorage.getItem("token"); // 確保 token 來自 localStorage
-
+export const createCoupon = async (couponData, token) => {
   if (!token) {
     return { error: "未授權請求，請重新登入" };
   }
@@ -93,6 +98,7 @@ export const createCoupon = async (couponData) => {
     return { error: "發生錯誤，請稍後再試" };
   }
 };
+
 
 
 
@@ -201,18 +207,36 @@ export const claimCoupon = async (couponId) => {
 };
 // 透過code領取優惠券(打字領)
 export const claimCouponByCode = async (code) => {
-  const token = getToken();
-  const res = await fetch(`${COUPON_USAGE_URL}/typing`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ code }),
-  });
+  const token = localStorage.getItem("loginWithToken");
+  if (!token) {
+    alert("請先登入");
+    window.location.href = "/login";
+    return;
+  }
 
-  return await res.json();
+  try {
+    // 從 JWT Token 解析 `userId`
+    const payload = JSON.parse(atob(token.split(".")[1])); 
+    const userId = payload.id;
+
+    const res = await fetch("http://localhost:5000/api/coupon/usage/typing", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ userId, code }), // ✅ 確保 `userId` 被傳遞
+    });
+
+    const response = await res.json();
+    console.log("API 回應:", response);
+    return response;
+  } catch (error) {
+    console.error("解析 token 錯誤：", error);
+  }
 };
+
+
 // 使用優惠券
 export const useCoupon = async (couponId) => {
   const token = getToken();
