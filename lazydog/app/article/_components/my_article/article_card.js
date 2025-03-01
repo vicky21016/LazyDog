@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Dropdown, Modal, Button } from "react-bootstrap";
 
 export default function MyCard({ id, title, cover_image, created_at }) {
+    console.log(cover_image)
     const { deleteArticle } = useArticle(); // 取得刪除文章的函數
     const [showModal, setShowModal] = useState(false);
 
@@ -23,6 +24,7 @@ export default function MyCard({ id, title, cover_image, created_at }) {
         } catch (error) {
             console.error("刪除文章失敗:", error);
         }
+
     };
 
     return (
