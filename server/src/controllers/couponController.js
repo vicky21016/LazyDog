@@ -3,32 +3,40 @@ import {
   updateCouponById,
   softDeleteCouponById,
   getCouponByCodes,
+  createCoupons,
 } from "../services/couponService.js";
 import pool from "../config/mysql.js";
 export const getCoupons = async (user_id, role) => {
   try {
     let coupons;
 
-    if (role === "operator") {
-      // 業者只能獲取自己 `hotel_id` 內的優惠券
+    if (role == "operator") {
+      // 業者只能獲取自己管理的旅館優惠券
       [coupons] = await pool.query(
-        "SELECT * FROM coupons WHERE hotel_id IN (SELECT id FROM hotel WHERE operator_id = ?) AND is_deleted = 0",
+        `SELECT c.* FROM coupons c
+         JOIN hotel h ON c.hotel_id = h.id
+         WHERE h.operator_id = ? AND c.is_deleted = 0`,
         [user_id]
       );
-    } else if (role === "teacher") {
+    } else if (role == "teacher") {
       // 老師只能獲取自己創建的優惠券
       [coupons] = await pool.query(
         "SELECT * FROM coupons WHERE creator_id = ? AND is_deleted = 0",
         [user_id]
       );
-    } else if (role === "admin") {
-      // 管理員可以查詢所有優惠券
-      [coupons] = await pool.query("SELECT * FROM coupons WHERE is_deleted = 0");
+    } else if (role == "user") {
+      // 使用者只能獲取自己擁有的優惠券 (JOIN coupons)
+      [coupons] = await pool.query(
+        `SELECT c.* FROM coupons c
+         JOIN coupon_usage cu ON c.id = cu.coupon_id
+         WHERE cu.user_id = ? AND c.is_deleted = 0`,
+        [user_id]
+      );
     } else {
-      return { error: "無權限獲取優惠券" };
+      throw new Error("無權限獲取優惠券");
     }
 
-    return { success: true, data: coupons };
+    return coupons;
   } catch (error) {
     throw new Error("無法取得優惠券列表：" + error.message);
   }
@@ -56,73 +64,21 @@ export const getCouponByCode = async (req, res) => {
   }
 };
 
-export const createCoupons = async (couponData, user_id, role) => {
+export const createCoupon = async (req, res) => {
+  console.log("📌 進入 createCoupon，解析 req.user:", req.user); // ✅ 檢查是否有用戶資訊
+
   try {
-    const {
-      name,
-      type,
-      content,
-      value,
-      min_order_value,
-      start_time,
-      end_time,
-      status,
-      max_usage,
-      max_usage_per_user,
-      code,
-    } = couponData;
+    const user_id = req.user?.id;
+    const role = req.user?.role;
 
-    let hotel_id = null;
-    let is_global = 0;
-
-    if (role === "operator") {
-      // 業者只能為自己管理的 `hotel_id` 建立優惠券
-      const [hotel] = await pool.query(
-        "SELECT id FROM hotel WHERE operator_id = ?",
-        [user_id]
-      );
-
-      if (!hotel || hotel.length === 0) {
-        return { error: "你沒有管理的飯店，無法新增優惠券" };
-      }
-      hotel_id = hotel[0].id;
-    } else if (role === "teacher") {
-      // 老師創建的優惠券應該是全站適用
-      is_global = 1;
-    } else {
-      return { error: "你沒有權限新增優惠券" };
+    if (!user_id || !role) {
+      return res.status(403).json({ error: "未授權：缺少用戶資訊" });
     }
 
-    const [result] = await pool.query(
-      `INSERT INTO coupons 
-        (creator_id, name, type, is_global, hotel_id, content, value, min_order_value, 
-        start_time, end_time, status, max_usage, max_usage_per_user, code, created_at, updated_at, is_deleted) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
-      [
-        user_id,  // 記錄創建者 ID
-        name,
-        type,
-        is_global,
-        hotel_id,
-        content,
-        value,
-        min_order_value,
-        start_time,
-        end_time,
-        status,
-        max_usage,
-        max_usage_per_user,
-        code,
-      ]
-    );
-
-    return {
-      success: true,
-      message: "優惠券建立成功",
-      data: { id: result.insertId, name, type, creator_id: user_id, hotel_id, is_global },
-    };
-  } catch (err) {
-    throw new Error("無法創建優惠券：" + err.message);
+    const result = await createCoupons(req.body, user_id, role);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: "無法創建優惠券：" + error.message });
   }
 };
 
@@ -131,20 +87,30 @@ export const updateCoupon = async (req, res) => {
   try {
     const { id } = req.params;
     const couponData = req.body;
+    const user_id = req.user.id;
+    const role = req.user.role;
 
     if (isNaN(Number(id))) {
-      return res.status(400).json({ error: "無效的 ID" });
+      return res.status(400).json({ error: "無效的優惠券 ID" });
+    }
+
+    console.log(" 更新請求：", { id, couponData, user_id, role });
+
+    // 🛠 確保只有管理者 (operator, teacher) 才能更新
+    if (!["operator", "teacher"].includes(role)) {
+      return res.status(403).json({ error: "無權限更新優惠券" });
     }
 
     const result = await updateCouponById(id, couponData);
 
     if (result.error) {
-      return res.status(404).json({ error: result.error });
+      return res.status(400).json({ error: result.error });
     }
 
-    res.json(result);
+    res.json({ success: true, message: "優惠券更新成功" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error(" 更新優惠券錯誤：", err);
+    res.status(500).json({ error: "內部伺服器錯誤：" + err.message });
   }
 };
 
@@ -197,4 +163,3 @@ export const softDeleteCoupon = async (id, user_id, role) => {
     connection.release();
   }
 };
-

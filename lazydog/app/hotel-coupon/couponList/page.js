@@ -35,10 +35,8 @@ export default function CouponListPage() {
   }, []);
 
   // 切換頁面
-  const changepage = (path) => {
-    if (path) {
-      router.push(`/hotel-coupon/${path}`);
-    }
+  const handlePageChange = (path) => {
+    router.push(`/hotel-coupon/${path}`);
   };
 
   // 加載單個優惠券詳細信息
@@ -56,7 +54,7 @@ export default function CouponListPage() {
       if (result.success) {
         setCoupons((prevCoupons) =>
           prevCoupons.filter((coupon) => coupon.id !== couponId)
-        ); // ✅ 確保 `setCoupons` 更新
+        );
         alert("優惠券已刪除");
       } else {
         alert("刪除失敗：" + result.message);
@@ -69,7 +67,7 @@ export default function CouponListPage() {
 
   // 編輯優惠券
   const handleEditCoupon = (couponId) => {
-    router.push(`/hotel-coupon/editCoupon?id=${couponId}`); // ✅ 改用 `query string`
+    router.push(`/hotel-coupon/editCoupon?id=${couponId}`);
   };
 
   useEffect(() => {
@@ -107,18 +105,16 @@ export default function CouponListPage() {
                       <td>{coupon.code}</td>
                       <td>{coupon.name}</td>
                       <td>{coupon.value || "無"}</td>
-                      {/* 確保 `details` 存在 */}
                       <td>
-                        {
-                          new Date(coupon.start_time)
-                            .toISOString()
-                            .split("T")[0]
-                        }
+                        {coupon.start_time
+                          ? coupon.start_time.split("T")[0]
+                          : "未設定"}
                       </td>
                       <td>
-                        {new Date(coupon.end_time).toISOString().split("T")[0]}
+                        {coupon.end_time
+                          ? coupon.end_time.split("T")[0]
+                          : "未設定"}
                       </td>
-
                       <td>{coupon.usage || 0}</td>
                       <td>
                         <span
@@ -226,7 +222,7 @@ export default function CouponListPage() {
             <div className="d-flex justify-content-end mt-3">
               <button
                 className="btn btn-sm btn-primary"
-                onClick={() => changepage("createCoupon")}
+                onClick={() => handlePageChange("createCoupon")}
               >
                 + 新增優惠券
               </button>
