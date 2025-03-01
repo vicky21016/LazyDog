@@ -64,47 +64,95 @@ export const getCouponByCode = async (code) => {
 };
 
 //  新增優惠券
-export const createCoupon = async (data) => {
-  const token = getToken();
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-  });
+export const createCoupon = async (couponData) => {
+  let token = localStorage.getItem("token"); // 確保 token 來自 localStorage
 
-  return await res.json();
+  if (!token) {
+    return { error: "未授權請求，請重新登入" };
+  }
+
+  try {
+    const res = await fetch("http://localhost:5000/api/coupon", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(couponData),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      console.error("新增優惠券失敗:", errorData);
+      return { error: `新增失敗 (${res.status}): ${errorData.error}` };
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("API 錯誤:", error);
+    return { error: "發生錯誤，請稍後再試" };
+  }
 };
+
+
 
 //  更新
 export const updateCoupon = async (id, data) => {
   const token = getToken();
-  const res = await fetch(`${API_URL}/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-  });
+  if (!token) {
+    return { error: "未授權請求，請重新登入" };
+  }
 
-  return await res.json();
+  const formattedData = {
+    ...data,
+    discount_type: data.discountType ? data.discountType.toLowerCase() : "fixed", 
+    discountValue: isNaN(Number(data.discountValue)) ? 0 : Number(data.discountValue),
+    minAmount: isNaN(Number(data.minAmount)) ? 0 : Number(data.minAmount),
+  };
+
+  console.log("更新優惠券數據:", JSON.stringify(formattedData));
+
+  try {
+    const res = await fetch(`${API_URL}/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formattedData),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      console.error("更新優惠券失敗:", errorData);
+      return { error: `更新失敗 (${res.status}): ${errorData.message || "未知錯誤"}` };
+    }
+
+    const result = await res.json();
+    console.log(" 更新成功:", result);
+    return result;
+  } catch (error) {
+    console.error(" API 請求錯誤:", error);
+    return { error: "發生錯誤，請稍後再試" };
+  }
 };
+
 
 // 軟刪除
 export const softDeleteCoupon = async (couponId) => {
   const token = localStorage.getItem("loginWithToken");
 
   try {
-    const response = await fetch(`http://localhost:5000/api/coupon/${couponId}/soft-delete`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `http://localhost:5000/api/coupon/${couponId}/soft-delete`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       const errorMessage = await response.text(); // 讀取錯誤訊息
@@ -117,8 +165,6 @@ export const softDeleteCoupon = async (couponId) => {
     return { success: false, message: error.message };
   }
 };
-
-
 
 export const getUserCoupons = async () => {
   const token = getToken();
