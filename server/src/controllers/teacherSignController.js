@@ -79,19 +79,19 @@ export const getCourseId = async (req, res) => {
 
 export const createCourse = async (req, res) => {
   try {
-    // 檢查上傳的圖片
+    console.log("後端收到的req.body:", req.body);
+
+    // const { courseData, sessionData } = req.body;
+    const courseData = JSON.parse(req.body.courseData);
+    const sessionData = JSON.parse(req.body.sessionData);
     const imgData = {
       mainImage: req.files?.mainImage?.[0]
-        ? `/teacherSign/img/${req.files.mainImage[0].filename}`
+        ? req.files.mainImage[0].filename
         : null,
       otherImages: req.files?.otherImages
-        ? req.files.otherImages.map(
-            (file) => `/teacherSign/img/${file.filename}`
-          )
+        ? req.files.otherImages.map((file) => file.filename)
         : [],
     };
-
-    const { courseData, sessionData } = req.body;
 
     const result = await createCourseWithSession(
       courseData,

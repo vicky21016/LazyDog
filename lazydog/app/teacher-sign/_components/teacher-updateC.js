@@ -212,7 +212,7 @@ export default function TeacherUpdateC() {
           text: "課程資料已成功更新！",
           icon: "success",
           confirmButtonText: "確定",
-          timer: 2500,
+          timer: 200,
           willClose: () => {
             // 在 Swal 關閉後跳轉頁面
             router.push(`/teacher-sign/list`);
@@ -471,9 +471,7 @@ export default function TeacherUpdateC() {
                       }
                       alt="主圖片"
                     />
-                  ) : (
-                    <span>未選擇圖片</span>
-                  )}
+                  ) : null}
 
                   {mainpic && (
                     <button
@@ -495,7 +493,7 @@ export default function TeacherUpdateC() {
                         document.getElementById("mainpicUpload").click()
                       }
                     >
-                      新增
+                      + 封面圖
                     </button>
                     <input
                       type="file"
