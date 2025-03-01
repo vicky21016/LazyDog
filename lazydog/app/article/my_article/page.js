@@ -1,29 +1,19 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { usePhotoUpload } from "@/hooks/usePhotoUpload";
+import React from "react";
+import { useAuth } from "@/hooks/use-auth";
+import useMyArticles from "@/hooks/useMyArticles"; // ✅ 改用新 Hook
 import Header from "../../components/layout/header";
 import MyMenu from "../../components/layout/myMenu";
 import MyCard from "../_components/my_article/article_card";
-import { useAuth } from "@/hooks/use-auth";
-import useArticles from "@/hooks/useArticle";
+import Link from "next/link";
+
 
 export default function MyArticle() {
-  const router = useRouter();
   const { user } = useAuth();
   const userId = user?.id;
 
-  const { articles, loading, error, getArticlesByAuthor } = useArticles();
-  const [reload, setReload] = useState(false);
-
-  useEffect(() => {
-    if (userId) {
-      getArticlesByAuthor(userId);
-      setTimeout(() => setReload(true), 200); // 200ms 後重新加載
-    }
-  }, [userId, getArticlesByAuthor, reload]);
+  const { articles, loading, error } = useMyArticles(userId); // ✅ 只載入該用戶的文章
 
   return (
     <>

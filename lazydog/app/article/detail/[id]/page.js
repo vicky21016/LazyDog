@@ -18,7 +18,7 @@ import Header from "../../../components/layout/header";
 export default function ArticleDetail() {
   const { id } = useParams(); // 取得網址中的文章 ID
   const { articles, article, comments, getArticle, loading, error } = useArticles()
-  console.log(comments)
+  // console.log(comments)
 
   // **當 ID 變更時，載入對應的文章**
   useEffect(() => {
