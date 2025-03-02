@@ -2,13 +2,13 @@
   background-color: #f5842b;
 }
 .wrapper {
-  margin: 0 auto;
+  /* margin: 0 auto;
   max-width: 1440px;
-  text-align: center;
-  
+  text-align: center; */
 }
 
 .footer {
+  width: 100%;
   display: flex;
   flex-direction: column;
   .word {
@@ -33,34 +33,35 @@
 /* ---------------------------------- */
 /* ----------footer中段區域----------- */
 .footerMiddle {
-  /* padding: 65px 120px 25px; */
   .infos {
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
     align-items: flex-start;
     color: White;
-    gap: 80px;
     margin: 0;
+    li {
+      padding: 20px 10px;
+    }
   }
 }
 
 /* -------footer中段區域第1部分------- */
 .footerList1 {
+  width: 350px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  /* width: 440px; */
   gap: 15px;
   padding: 21px 0 0 0;
-  margin: 0 100px 0 0;
-  figure{
+  figure {
     margin: 0 0 10px 0;
   }
   .logoPic {
     width: 60px;
     height: auto;
   }
-  .lazydog{
+  .lazydog {
     color: white;
     font-size: 24px;
     font-weight: 600;
@@ -104,9 +105,14 @@
 }
 
 /* ------footer中段區域第2,3部分------ */
+.footerListGroup {
+  width: 400px;
+  display: flex;
+  justify-content: space-around;
+  gap: 40px;
+}
 .footerList2,
 .footerList3 {
-  padding: 20px 0px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -121,7 +127,7 @@
     letter-spacing: 5px;
     margin: 0;
   }
-  p{
+  p {
     margin: 0;
   }
   .service {
@@ -132,13 +138,15 @@
     padding-left: 1.5px;
     &:hover {
       color: #3b3330;
+      text-shadow: #3b3330 0px 0px 2px;
+      /* font-weight: bold; */
     }
   }
 }
 
 /* -------footer中段區域第4部分------- */
 .footerList4 {
-  width: 420px;
+  width: 350px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -154,9 +162,10 @@
     background: White;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 40px 0 60px;
+    justify-content: space-around;
+    overflow: hidden;
     .enterMail {
+      max-width: 170px;
       border: none;
       font-size: 16px;
       font-weight: 500;
@@ -164,17 +173,19 @@
       background: White;
       outline: none;
     }
-
     .enterMail::placeholder {
       color: #cac8c8;
     }
-
     .planeBtn {
-      width: 36px;
-      height: 35px;
+      padding: 0;
+      /* max-width: 36px; */
+      height: 60%;
       border: none;
       background: none;
-      /* background: url("../img/font/plane.png"); */
+      img {
+        /* width: 100%; */
+        height: 100%;
+      }
     }
   }
   .discount {
@@ -186,12 +197,12 @@
     letter-spacing: 1.2px;
   }
   .footerIcon {
+    /* width: 100%; */
     display: flex;
     align-items: center;
     justify-content: center;
     align-self: stretch;
     gap: 20px;
-    /* padding: 41px 0 30px; */
     .icons {
       cursor: pointer;
     }
