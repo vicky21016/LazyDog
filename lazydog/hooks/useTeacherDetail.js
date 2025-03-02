@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 
 export function useTeacherDetail (id) {
     const [teacher, setTeacher] = useState([]);
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         // console.log("useEffect 觸發，id:", id);
         //  if (!id) {
@@ -21,11 +23,13 @@ export function useTeacherDetail (id) {
                setTeacher(result); 
             } catch (err) {
                 console.log(err.message);
-            } 
+            } finally {
+                setLoading(false);
+            }
         };
 
         fetchTeacher();
     }, [id]);
 
-    return { teacher } ;
+    return { teacher, loading } ;
 };

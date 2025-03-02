@@ -43,6 +43,7 @@ function CardContent() {
     }
   }, [productItems]);
   const {
+    width,
     productID,
     router,
     loginRoute,
@@ -64,10 +65,10 @@ function CardContent() {
   } = useCardFetch();
   const { setFavorite, heartHover, setHeartHover, heartState, setHeartState } =
     useCardFavorite();
-
+  // const [hoverState, setHoverState] = useState(false);
   return (
     <li
-      className={styles.ProductCard}
+      className={`${styles.ProductCard} col`}
       onMouseEnter={() => setCardHover(true)}
       onMouseLeave={() => setCardHover(false)}
     >
@@ -103,12 +104,30 @@ function CardContent() {
         )}
       </figure>
       <div className={styles.ProductCardInfo}>
-        <p className={styles.ProductCardName}>{productName}</p>
-        <h5 className={styles.ProductCardPrice}>NT$ {products?.price}</h5>
+        <p className={`${styles.ProductCardName} d-none d-xxl-flex`}>
+          {productName}
+        </p>
+        <p className={`${styles.ProductCardNameSm} d-xxl-none`}>
+          {productName}
+        </p>
+        <h5 className={`${styles.ProductCardPrice} d-none d-xl-block`}>
+          NT$ {products?.price}
+        </h5>
+        <p className={`${styles.ProductCardPriceSm} d-xl-none`}>
+          NT$ {products?.price}
+        </p>
       </div>
       <div
-        className={styles.ProductCardHover}
-        onClick={simulateClick}
+        className={`${
+          width > 1024
+            ? styles.ProductCardHover
+            : cardHover
+            ? styles.ProductCardClickOn
+            : styles.ProductCardClickOff
+        }`}
+        onClick={(e) => {
+          width > 1024 ? simulateClick(e) : setCardHover(!cardHover);
+        }}
         data-clickable="true"
       >
         <button

@@ -2,18 +2,96 @@
 import pool from "../config/mysql.js";
 
 // 用MVC架構，步驟一 Model 負責資料庫操作
-export const getCourses = async () => {
+export const getCourses = async ({
+  keyword,
+  typeList,
+  placeList,
+  // minPrice,
+  // maxPrice,
+}) => {
   try {
-    const [courses] = await pool.execute(`
-      SELECT course.*, course_type.name AS type_name, course_img.url AS img_url       
-      FROM course 
+    console.log("📌 service接收到的篩選條件:", {
+      keyword,
+      typeList,
+      placeList,
+    });
+    let sql = `
+      SELECT 
+        course.*, 
+        course_type.name AS type_name, 
+        course_img.url AS img_url,
+        GROUP_CONCAT(DISTINCT course_session.area_id ORDER BY course_session.area_id) AS area_ids
+      FROM course
       JOIN course_type ON course.type_id = course_type.type_id
-      JOIN course_img ON course.id = course_img.course_id 
-      AND course_img.main_pic = 1
-      ;`);
+      LEFT JOIN course_img ON course.id = course_img.course_id AND course_img.main_pic = 1
+      LEFT JOIN course_session ON course.id = course_session.course_id  -- 加入與 course_session 的聯結
+      LEFT JOIN course_area ON course_session.area_id = course_area.id  -- 根據 course_session 的 area_id 來聯結 course_area
+      WHERE 1=1
+      GROUP BY course.id
+      `;
+
+    let params = [];
+
+    // ✅ 篩選條件
+    if (typeList.length > 0) {
+      if (typeList.length === 1) {
+        sql += ` AND course.type_id = ?`; // 單選情況
+        params.push(typeList[0]);
+        console.log("type單選", params);
+      } else {
+        sql += ` AND course.type_id IN (${typeList.map(() => "?").join(",")})`; // 多選情況
+        params.push(...typeList); // 將 typeList 的元素推入 params 陣列
+        console.log("type多選", params);
+      }
+    }
+
+    if (placeList.length > 0) {
+      if (placeList.length === 1) {
+        sql += ` AND course_session.area_id = ?`; // 單選情況
+        params.push(placeList[0]);
+        console.log("place單選", params);
+      } else {
+        sql += ` AND course_session.area_id IN (${placeList
+          .map(() => "?")
+          .join(",")})`; // 多選情況
+        params.push(...placeList); // 將 placeList 的元素推入 params 陣列
+        console.log("place多選", params);
+      }
+    }
+
+    // if (minPrice) {
+    //   sql += ` AND course.price >= ?`;
+    //   params.push(minPrice);
+    // }
+    // if (maxPrice) {
+    //   sql += ` AND course.price <= ?`;
+    //   params.push(maxPrice);
+    // }
+    const [courses] = await pool.execute(sql, params);
     if (courses.length == 0) {
       console.log("課程列表不存在");
     }
+
+    console.log("📌 執行 SQL：", sql); // 🛠 Debug
+    console.log("📌 SQL 參數：", params); // 🛠 Debug
+
+    const [types] = await pool.execute(`      
+      SELECT *
+      FROM course_type 
+      WHERE is_deleted = 0
+    `);
+    if (types.length == 0) {
+      console.log("課程類別不存在");
+    }
+
+    const [places] = await pool.execute(`      
+      SELECT *
+      FROM course_area
+    `);
+    if (places.length == 0) {
+      console.log("上課地點不存在");
+    }
+
     const [latest] = await pool.execute(`
       SELECT c.id AS courseId, c.name AS courseName, cm.url AS img_url       
       FROM course_session cs 
@@ -44,7 +122,11 @@ export const getCourses = async () => {
     if (newest.length == 0) {
       console.log("最新建立課程不存在");
     }
-    return { courses, latest, newest };
+
+    // console.log("課程類別:", types); // 檢查是否有類別資料
+    // console.log("上課地點:", places); // 檢查是否有地點資料
+
+    return { courses, types, places, latest, newest };
   } catch (err) {
     throw new Error(" 無法取得課程列表：" + err.message);
   }

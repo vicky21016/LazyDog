@@ -354,7 +354,6 @@ export const uploadHotelImage = async (req, res) => {
 
     const imageUrl = `/uploads/hotels/${req.file.filename}`;
 
-    // ✅ 存入資料庫
     const imageId = await insertHotelImage(hotelId, imageUrl);
 
     res.json({ status: "success", image_id: imageId, image_url: imageUrl });

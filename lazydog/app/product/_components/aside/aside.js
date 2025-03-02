@@ -10,7 +10,6 @@ import Link from "next/link";
 import { FetchAsideProvider, useAsideFetch } from "@/hooks/product/use-fetch";
 
 export default function Aside({
-  newUrl = "",
   changeUrl = () => {},
   keyword = {},
   setKeyword = () => {},
@@ -22,7 +21,6 @@ export default function Aside({
 }) {
   return (
     <FetchAsideProvider
-      newUrl={newUrl}
       changeUrl={changeUrl}
       keyword={keyword}
       setKeyword={setKeyword}
@@ -39,7 +37,6 @@ export default function Aside({
 
 function AsideContent() {
   const {
-    newUrl,
     changeUrl,
     keyword,
     setKeyword,
@@ -126,7 +123,7 @@ function AsideContent() {
   const [isChecked, setIsChecked] = useState(true);
 
   return (
-    <aside className={styles.Sidebar}>
+    <aside className={`${styles.Sidebar}`}>
       <div className={styles.SearchTable}>
         <img src="/product/font/search.png" alt="" />
         <input
@@ -168,8 +165,6 @@ function AsideContent() {
               setClearSearch={setClearSearch}
               isChecked={isChecked}
               setIsChecked={setIsChecked}
-              newUrl={newUrl}
-              changeUrl={changeUrl}
             />
           ))
         : categoryName?.map((v, i) => (
@@ -234,7 +229,7 @@ function AsideContent() {
         </button>
       </div>
 
-      <Link href="">
+      <Link href="" className="d-none d-lg-block">
         <figure>
           <img
             src="/product/DM/DM_aside.png"

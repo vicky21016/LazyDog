@@ -328,12 +328,16 @@ export const updateFavorite = async (req, res) => {
 
     const product = await updateFavoriteInfo(userID, productIDlist, isDeleted);
     if (product.affectedRows == 0) {
-      throw new Error("更新商品失敗");
+      res.status(200).json({
+        status: "success",
+        message: `收藏資料更新功，無新增資料`,
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        message: `用戶ID：${userID} 更新收藏成功`,
+      });
     }
-    res.status(200).json({
-      status: "success",
-      message: `用戶ID：${userID} 更新收藏成功`,
-    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
