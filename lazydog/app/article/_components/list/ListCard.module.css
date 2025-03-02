@@ -89,8 +89,10 @@
   width: 818.69px;
   height: 684px;
   border: none;
+ 
   /* display: flex; */
   gap: 16px;
+
 }
 
 .card img {
