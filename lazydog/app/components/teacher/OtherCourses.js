@@ -28,7 +28,7 @@ const OtherCourses = () => {
         <div key={index} className="col-12 col-md-6 col-lg-3">
           <Link href={card.link} passHref className="text-decoration-none">
             <div className={styles.card7} style={{ width: "18.75rem" }}>
-              <img src={card.imgSrc} className="card-img-top" alt="..." />
+              <img src={card.imgSrc} className={`card-img-top ${styles.cardImg}`} alt="..." />
               <div className={styles.card7Title}>{card.name}</div>
             </div>
           </Link>

@@ -8,12 +8,12 @@ import Filter from "../../components/teacher/Filter";
 import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "./list.module.css";
 import Page from "../../course/_components/list/pagination";
-// import style from "../../pages/menu.module.css";
 import style1 from "../../product/list/list.module.css";
 
 export default function App() {
   const { teachers = [] } = useTeachers();
   const [filtered, setFiltered] = useState([]);
+  const [filterOpen, setFilterOpen] = useState(false); // 控制篩選選單開關
 
   // 當 `teachers` 資料載入時，設定 `filtered` 預設為所有老師
   useEffect(() => {
@@ -43,6 +43,18 @@ export default function App() {
     setPage(1); // 篩選後重置分頁到第 1 頁
   };
 
+  // 點擊畫面其他地方時，自動關閉篩選選單
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (filterOpen && !event.target.closest(`.${styles.asideContainer}`) && !event.target.closest(`.${styles.filterButton}`)) {
+        setFilterOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [filterOpen]);
+
   return (
     <>
       <Header />
@@ -65,18 +77,27 @@ export default function App() {
             />
             <div className={`mt-4 ${style1.Title}`}>
               <h3 className={style1.list}>師資列表</h3>
-              <div className={style1.TitleFilter}>
-                <img src="/product/font/filter.png" alt="" />
+              <div className={`${style1.TitleFilter} ${styles.filterButton}`} onClick={() => setFilterOpen(!filterOpen)}>
+                <img src="/product/font/filter.png" alt="篩選" />
                 <h6>依熱門排序</h6>
               </div>
             </div>
           </section>
           <section className={styles.pdArea}>
             <div className="row">
+              {/* 桌機版篩選選單 */}
               <div className={`col-3 ${styles.asideContainer}`}>
                 <Filter filterChange={filter} />
               </div>
-              <div className="col-9">
+
+              {/* 手機版篩選選單 (滑入效果) */}
+              <div className={`${styles.mobileFilter} ${filterOpen ? styles.showFilter : ""}`}>
+                <Filter filterChange={filter} />
+                <button className={styles.closeButton} onClick={() => setFilterOpen(false)}>關閉</button>
+              </div>
+
+              {/* 師資列表 */}
+              <div className="col-md-9 col-12">
                 <div className="row mt-1 g-5 mb-5">
                   {currentTeacher.length > 0 ? (
                     currentTeacher.map((teacher) => (
