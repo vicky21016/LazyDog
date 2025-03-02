@@ -45,14 +45,14 @@ export default function App() {
 
   // 點擊畫面其他地方時，自動關閉篩選選單
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const clickOutside = (event) => {
       if (filterOpen && !event.target.closest(`.${styles.asideContainer}`) && !event.target.closest(`.${styles.filterButton}`)) {
         setFilterOpen(false);
       }
     };
 
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
+    document.addEventListener("click", clickOutside);
+    return () => document.removeEventListener("click", clickOutside);
   }, [filterOpen]);
 
   return (
