@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import styles from "../../../styles/modules/operatorCamera.module.css";
 import couponStyles from "../../../styles/modules/userCoupon.module.css";
@@ -7,35 +6,75 @@ import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 import Header from "../../components/layout/header";
 import MyMenu from "../../components/layout/myMenu";
-import { getCoupons, claimCouponByCode } from "@/services/couponService";
+import { getCouponss, claimCouponByCode } from "@/services/couponService";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function ProfileCouponPage(props) {
   const router = useRouter();
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
   const [coupons, setCoupons] = useState([]); // 優惠券列表
   const [couponCode, setCouponCode] = useState(""); // 優惠券代碼
   const [error, setError] = useState(""); // 錯誤訊息
-  const [selectedCategory, setSelectedCategory] = useState("全部"); // 當前選擇的分類
+  const userId = user?.id;
 
-  const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+  // 狀態篩選（已使用、未使用、逾期、全部）
+  const statusOptions = ["全部", "已使用", "未使用", "逾期"];
+  const [selectedStatus, setSelectedStatus] = useState("全部");
+
+  // 類型篩選（旅館、商品、課程等）
+  const [selectedCategory, setSelectedCategory] = useState("全部");
+
+  // 從後端的 `coupon_usage.status` 轉換前端顯示
+  const statusMapping = {
+    全部: "all",
+    已使用: "used",
+    未使用: "claimed",
+    逾期: "expired",
+  };
 
   // 取得優惠券
   useEffect(() => {
+    if (!userId) return;
+
     const fetchCoupons = async () => {
       try {
-        const response = await getCoupons();
-        if (!response || !response.success) {
-          console.error("獲取優惠券失敗：", response?.error || "未知錯誤");
-          return;
+        setLoading(true);
+        const statusFilter = statusMapping[selectedStatus] || "all";
+        const response = await getCouponss(statusFilter, "all");
+
+        if (response && response.success) {
+          const mappedCoupons = response.data.map((coupon) => ({
+            id: coupon.id,
+            status:
+              coupon.status === "claimed"
+                ? "未使用"
+                : coupon.status === "used"
+                ? "已使用"
+                : "逾期",
+            price: coupon.value,
+            description: coupon.name,
+            expiry: `${new Date(
+              coupon.start_time
+            ).toLocaleDateString()} - ${new Date(
+              coupon.end_time
+            ).toLocaleDateString()}`,
+            type: coupon.type || "旅館", // 確保類型有預設值
+          }));
+
+          setCoupons(mappedCoupons);
+        } else {
+          setError(response?.error || "獲取優惠券失敗，請稍後再試");
         }
-        setCoupons(response.data || []);
       } catch (error) {
-        console.error("獲取優惠券時發生錯誤：", error);
+        setError("獲取優惠券失敗，請稍後再試");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCoupons();
-  }, []);
+  }, [userId, selectedStatus]);
 
   // 領取優惠券
   const handleClaimCoupon = async () => {
@@ -51,7 +90,7 @@ export default function ProfileCouponPage(props) {
         alert("優惠券領取成功！");
         setCouponCode(""); // 清空輸入框
         // 重新獲取優惠券
-        const updatedCoupons = await getCoupons();
+        const updatedCoupons = await getCouponss("all", "all");
         setCoupons(updatedCoupons.data || []);
       } else {
         setError(response.error || "領取優惠券失敗，請檢查代碼是否正確");
@@ -83,6 +122,16 @@ export default function ProfileCouponPage(props) {
       const userId = getUserIdFromToken();
       if (!userId) return;
 
+      // 如果是查看歷史紀錄，設置狀態為「已使用」
+      if (path === "profileCouponStatus") {
+        setSelectedStatus("已使用");
+        // 如果需要滾動到優惠券列表區域
+        const couponSection = document.querySelector(".coupon-section");
+        if (couponSection) {
+          couponSection.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+
       router.push(`/hotel-coupon/${path}?userId=${userId}`);
     }
   };
@@ -91,34 +140,39 @@ export default function ProfileCouponPage(props) {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
 
-  // 根據選擇的分類過濾優惠券
-  const filteredCoupons =
-    selectedCategory == "全部"
-      ? coupons
-      : coupons.filter((coupon) => coupon.type == selectedCategory);
+  // 根據選擇的分類和狀態過濾優惠券
+  const filteredCoupons = coupons.filter((coupon) => {
+    const statusMatch =
+      selectedStatus === "全部" || coupon.status === selectedStatus;
+    const categoryMatch =
+      selectedCategory === "全部" || coupon.type === selectedCategory;
+    return statusMatch && categoryMatch;
+  });
 
-  // 動態生成分類標籤
+  // 獲取可用的優惠券類型
   const categories = [
     "全部",
-    ...new Set(
-      coupons.map((coupon) =>
-        coupon.type
-          ? coupon.type.charAt(0).toUpperCase() + coupon.type.slice(1)
-          : "其他"
-      )
-    ),
+    ...new Set(coupons.map((coupon) => coupon.type || "其他")),
   ];
+
+  if (loading) {
+    return <p>加載中...</p>;
+  }
+
+  if (error) {
+    return <p className="text-danger">{error}</p>;
+  }
 
   return (
     <>
       <Header />
       <div className="container mt-5">
         <div className="row">
-          {/* 左側 */}
+          {/* 左側選單 */}
           <div className="d-none d-md-block col-md-3">
             <MyMenu />
           </div>
-          {/* 右側 */}
+          {/* 右側內容 */}
           <div className="col-12 col-md-9 coupon-section">
             <h5 className="mb-3">我的優惠券</h5>
 
@@ -155,11 +209,10 @@ export default function ProfileCouponPage(props) {
 
             {/* 錯誤訊息顯示 */}
             {error && <p className="text-danger mt-2">{error}</p>}
-
-            {/* 優惠券分類標籤 */}
+            {/* 類型篩選 */}
             <ul className={`nav ${couponStyles.suNavTabs}`}>
-              {categories.map((category, index) => (
-                <li key={`category-${category}`} className="nav-item">
+              {categories.map((category) => (
+                <li key={category} className="nav-item">
                   <a
                     className={`nav-link ${
                       selectedCategory === category ? "active" : ""
@@ -173,29 +226,49 @@ export default function ProfileCouponPage(props) {
               ))}
             </ul>
 
+            {/* 狀態篩選 */}
+            <ul className={`nav ${couponStyles.suNavTabs}`}>
+              {statusOptions.map((status) => (
+                <li key={status} className="nav-item">
+                  <a
+                    className={`nav-link ${
+                      selectedStatus === status ? "active" : ""
+                    } ${couponStyles.suNavLink}`}
+                    href="#"
+                    onClick={() => setSelectedStatus(status)}
+                  >
+                    {status}
+                  </a>
+                </li>
+              ))}
+            </ul>
+
             {/* 優惠券列表 */}
             {filteredCoupons.length > 0 ? (
-              filteredCoupons.map((coupon, index) => (
+              filteredCoupons.map((coupon) => (
                 <div
-                  key={`coupon-${coupon.id ? coupon.id : `index-${index}`}`}
+                  key={coupon.id}
                   className={`mt-2 ${couponStyles.suCouponCard}`}
                 >
                   <span className={couponStyles.suPrice}>
-                    NT{coupon.value || 0}
+                    NT{coupon.price || 0}
                   </span>
                   <div className={couponStyles.suDetails}>
                     <p>
-                      <strong>{coupon.name || "未命名優惠券"}</strong>
+                      <strong>{coupon.description || "未命名優惠券"}</strong>
                     </p>
                     <p className="text-muted">
-                      有效期限:{" "}
-                      {coupon.end_time
-                        ? new Date(coupon.end_time).toLocaleDateString()
-                        : "無期限"}
+                      有效期限: {coupon.expiry || "無期限"}
                     </p>
-                    <p className={couponStyles.suExpired}>
-                      {coupon.status === "used" ? "⚠ 已使用" : "可使用"}
-                    </p>
+                    {coupon.status === "已使用" && (
+                      <p className={couponStyles.suUsed}>⚠ 已使用</p>
+                    )}
+                    {coupon.status === "逾期" && (
+                      <p className={couponStyles.suExpired}>⚠ 已逾期</p>
+                    )}
+                    {coupon.status === "未使用" && (
+                      <p className={couponStyles.suUnused}>可使用</p>
+                    )}
                   </div>
                   <div className={couponStyles.suAction}>
                     <a href="#">前往購物</a>
