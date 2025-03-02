@@ -5,14 +5,13 @@ import styles from "../../../styles/modules/operatorCamera.module.css";
 import { useRouter } from "next/navigation";
 import My from "../../components/hotel/my";
 import Header from "../../components/layout/header";
-import Pagination from "../../components/hotel/page";
 import { getCoupons, softDeleteCoupon } from "@/services/couponService"; // 導入 API 函數
 
 export default function CouponListPage() {
   const [coupons, setCoupons] = useState([]); // 存儲優惠券數據
   const [selectedCoupon, setSelectedCoupon] = useState(null); // 存儲當前選中的優惠券
   const router = useRouter();
-
+  const { user } = useAuth();
   // 加載優惠券數據
   useEffect(() => {
     const fetchCoupons = async () => {
@@ -219,7 +218,6 @@ export default function CouponListPage() {
                 </div>
               </div>
             )}
-            <Pagination/>
             <div className="d-flex justify-content-end mt-3">
               <button
                 className="btn btn-sm btn-primary"
