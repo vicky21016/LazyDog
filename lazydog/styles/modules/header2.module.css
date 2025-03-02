@@ -193,18 +193,15 @@
 }
 
 /*  rwd */
-@media (max-width: 768px) {
-  .lumi-logo1 {
-    display: none;
-  }
-}
-
 @media (max-width: 1250px) {
   .lumi-logo1 {
     display: none;
   }
 }
 @media (max-width: 768px) {
+  .lumi-header {
+    padding: 10px 15px;
+  }
   .lumi-logo1 {
     display: none;
   }
