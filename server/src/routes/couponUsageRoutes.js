@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.get("/", verifyToken, verifyRole(["user"]), getCouponss);
+router.get("/usage", verifyToken, verifyRole(["user"]), getCouponss);
 router.post("/claim", verifyToken, verifyRole(["user"]), claimCoupon);
 router.post("/typing", verifyToken, verifyRole(["user"]), claimCouponByCode);
 router.patch("/use/:couponId", verifyToken, verifyRole(["user"]), useCoupon);

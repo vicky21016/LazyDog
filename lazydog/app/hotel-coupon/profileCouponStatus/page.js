@@ -2,66 +2,77 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/modules/operatorCamera.module.css";
 import couponStyles from "../../../styles/modules/userCoupon.module.css";
-import {  getCouponss } from "@/services/couponService";
+import { getCouponss, claimCouponByCode } from "@/services/couponService";
 import { useRouter } from "next/navigation";
-import { usePhotoUpload } from "@/hooks/usePhotoUpload";
+import { useAuth } from "@/hooks/use-auth";
 import Header from "../../components/layout/header";
 import MyMenu from "../../components/layout/myMenu";
 
 export default function ProfileCouponPage(props) {
-  const [filter, setFilter] = useState("all");
-  const [coupons, setCoupons] = useState([]); // 存儲從 API 獲取的優惠券數據
-  const [loading, setLoading] = useState(true); // 加載狀態
-  const [error, setError] = useState(""); // 錯誤訊息
-
+  const { user } = useAuth();
+  const [coupons, setCoupons] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const userId = user?.id;
   const router = useRouter();
-  const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+  const [couponCode, setCouponCode] = useState("");
 
-  // 獲取用戶優惠券
-  const [token, setToken] = useState(null);
+  // 分類標籤
+  const categories = ["已使用", "未使用", "逾期", "全部"];
+  const [selectedCategory, setSelectedCategory] = useState("全部");
+
+  // 對應後端的 `coupon_usage.status`
+  const statusMapping = {
+    "全部": "all",
+    "已使用": "used",
+    "未使用": "claimed",
+    "逾期": "expired"
+  };
 
   useEffect(() => {
-    setToken(localStorage.getItem("loginWithToken"));
-  }, []);
-  
-  useEffect(() => {
-    if (!token) return;
-  
+    if (!userId) return;
+
     const fetchCoupons = async () => {
       try {
-        const response = await getCouponss();
-        setCoupons(response?.data || []);
+        setLoading(true);
+        const filter = statusMapping[selectedCategory] || "all";
+        const response = await getCouponss(filter, "all");
+
+        if (response && response.success) {
+          const mappedCoupons = response.data.map((coupon) => ({
+            id: coupon.id,
+            status:
+              coupon.status === "claimed"
+                ? "未使用"
+                : coupon.status === "used"
+                ? "已使用"
+                : "逾期",
+            price: coupon.value,
+            description: coupon.name,
+            expiry: `${new Date(coupon.start_time).toLocaleDateString()} - ${new Date(
+              coupon.end_time
+            ).toLocaleDateString()}`
+          }));
+
+          setCoupons(mappedCoupons);
+        } else {
+          setError(response?.error || "獲取優惠券失敗，請稍後再試");
+        }
       } catch (error) {
         setError("獲取優惠券失敗，請稍後再試");
       } finally {
         setLoading(false);
       }
     };
-  
+
     fetchCoupons();
-  }, [token]);
-  
-  
-
-  // 根據狀態過濾優惠券
-  const filterStatus = (status) => {
-    setFilter(status);
-  };
-
-  const filteredCoupons = coupons.filter((coupon) =>
-    filter == "all" ? true : coupon.status == filter
-  );
+  }, [userId, selectedCategory]);
 
   const changepage = (path) => {
     if (path) {
       router.push(`/hotel-coupon/${path}`);
     }
   };
-
-  useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.bundle.min.js");
-  }, []);
 
   if (loading) {
     return <p>加載中...</p>;
@@ -76,11 +87,9 @@ export default function ProfileCouponPage(props) {
       <Header />
       <div className="container mt-5">
         <div className="row">
-          {/* 左邊*/}
           <div className="d-none d-md-block col-md-3">
             <MyMenu />
           </div>
-          {/* 右邊 */}
           <div className="col-12 col-md-9 coupon-section">
             <h5 className="mb-3">我的優惠券</h5>
 
@@ -101,72 +110,25 @@ export default function ProfileCouponPage(props) {
               </a>
             </div>
 
-            <div className={couponStyles.suCouponInputGroup}>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="請輸入優惠代碼"
-              />
-              <button className="btn btn-primary">領取</button>
-            </div>
-
-            <ul className={`nav mb-3 ${couponStyles.suNavTabs}`}>
-              <li className="nav-item">
-                <a
-                  className={`nav-link active ${couponStyles.suNavLink}`}
-                  href="#"
-                >
-                  全部
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className={`nav-link ${couponStyles.suNavLink}`} href="#">
-                  商品優惠 (05)
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className={`nav-link ${couponStyles.suNavLink}`} href="#">
-                  課程優惠 (10)
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className={`nav-link ${couponStyles.suNavLink}`} href="#">
-                  旅館優惠 (10)
-                </a>
-              </li>
+            {/* 優惠券分類標籤 */}
+            <ul className={`nav ${couponStyles.suNavTabs}`}>
+              {categories.map((category) => (
+                <li key={category} className="nav-item">
+                  <a
+                    className={`nav-link ${
+                      selectedCategory === category ? "active" : ""
+                    } ${couponStyles.suNavLink}`}
+                    href="#"
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category}
+                  </a>
+                </li>
+              ))}
             </ul>
 
-            <div
-              className={`status-filter active mb-3 ${couponStyles.statusFilter}`}
-            >
-              <button
-                className={filter === "used" ? "active" : ""}
-                onClick={() => filterStatus("used")}
-              >
-                已使用
-              </button>
-              <button
-                className={filter === "unused" ? "active" : ""}
-                onClick={() => filterStatus("unused")}
-              >
-                未使用
-              </button>
-              <button
-                className={filter === "expired" ? "active" : ""}
-                onClick={() => filterStatus("expired")}
-              >
-                逾期
-              </button>
-              <button
-                className={filter === "all" ? "active" : ""}
-                onClick={() => filterStatus("all")}
-              >
-                全部
-              </button>
-            </div>
-
             {/* 優惠券清單 */}
-            {filteredCoupons.map((coupon) => (
+            {coupons.map((coupon) => (
               <div
                 key={coupon.id}
                 className={`coupon-card ${couponStyles.suCouponCard} ${
@@ -181,14 +143,14 @@ export default function ProfileCouponPage(props) {
                     <strong>{coupon.description}</strong>
                   </p>
                   <p className="text-muted">有效期限: {coupon.expiry}</p>
-                  {coupon.status === "expired" && (
+                  {coupon.status === "逾期" && (
                     <p className={couponStyles.suExpired}>⚠ 已逾期</p>
                   )}
-                  {coupon.status === "used" && (
+                  {coupon.status === "已使用" && (
                     <p className={couponStyles.suUsed}>⚠ 已使用</p>
                   )}
                 </div>
-                {coupon.status === "unused" && (
+                {coupon.status === "未使用" && (
                   <div className={couponStyles.suUnused}>尚未使用</div>
                 )}
               </div>

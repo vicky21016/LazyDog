@@ -96,7 +96,7 @@ export const updateCoupon = async (req, res) => {
 
     console.log(" 更新請求：", { id, couponData, user_id, role });
 
-    // 🛠 確保只有管理者 (operator, teacher) 才能更新
+    //  確保只有管理者 (operator, teacher) 才能更新
     if (!["operator", "teacher"].includes(role)) {
       return res.status(403).json({ error: "無權限更新優惠券" });
     }

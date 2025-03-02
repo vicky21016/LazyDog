@@ -109,24 +109,50 @@ export const claimUserCouponByCode = async (userId, code) => {
   }
 };
 
-export const getUserCoupons = async (userId) => {
+export const getUserCoupons = async (userId, status, type) => {
   try {
-    const [coupons] = await pool.query(
-      `SELECT uc.id, uc.status, uc.claimed_at, c.name, c.type, c.value, c.start_time, c.end_time
-       FROM coupon_usage uc
-       JOIN coupons c ON uc.coupon_id = c.id
-       WHERE uc.user_id = ? AND uc.is_deleted = 0
-       ORDER BY uc.claimed_at DESC`,
-      [userId]
-    );
-    console.log("查詢結果:", coupons); // 確保 SQL 有回應
-  
+    let query = `
+      SELECT 
+        uc.id, 
+        uc.status,  -- 這裡的 status 來自 coupon_usage
+        uc.claimed_at, 
+        c.name, 
+        c.type, 
+        c.value, 
+        c.start_time, 
+        c.end_time
+      FROM 
+        coupon_usage uc
+      JOIN 
+        coupons c ON uc.coupon_id = c.id
+      WHERE 
+        uc.user_id = ? 
+        AND uc.is_deleted = 0
+    `;
+
+    const params = [userId];
+
+    if (status !== "all") {
+      query += ` AND uc.status = ?`; // 使用 coupon_usage 的 status
+      params.push(status);
+    }
+    
+    if (type !== "all") {
+      query += ` AND c.type = ?`;
+      params.push(type);
+    }
+
+    query += ` ORDER BY uc.claimed_at DESC`;
+
+    const [coupons] = await pool.query(query, params);
+    
     return { success: true, data: coupons };
   } catch (error) {
-    console.error("SQL 查詢錯誤:", error); // 確保有錯誤資訊
-    throw new Error("資料庫查詢失敗");  
+    console.error("SQL 查詢錯誤:", error);
+    return { success: false, error: "資料庫查詢失敗" };
   }
 };
+
 
 
 export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
