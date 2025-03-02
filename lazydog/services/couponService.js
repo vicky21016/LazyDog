@@ -73,10 +73,14 @@ export const getCouponByCode = async (code) => {
 //  新增優惠券
 export const createCoupon = async (couponData, token) => {
   if (!token) {
+    console.error("未授權請求，請重新登入");
     return { error: "未授權請求，請重新登入" };
   }
 
   try {
+    console.log("使用的 token:", token);
+    console.log("傳入的 couponData:", couponData);
+
     const res = await fetch("http://localhost:5000/api/coupon", {
       method: "POST",
       headers: {
@@ -86,15 +90,20 @@ export const createCoupon = async (couponData, token) => {
       body: JSON.stringify(couponData),
     });
 
+    console.log("API 響應狀態:", res.status);
+
     if (!res.ok) {
       const errorData = await res.json();
       console.error("新增優惠券失敗:", errorData);
       return { error: `新增失敗 (${res.status}): ${errorData.error}` };
     }
 
-    return await res.json();
+    const responseData = await res.json();
+    console.log("API 響應數據:", responseData);
+    return responseData;
   } catch (error) {
     console.error("API 錯誤:", error);
+    console.error("錯誤堆棧:", error.stack); // 打印錯誤堆棧
     return { error: "發生錯誤，請稍後再試" };
   }
 };

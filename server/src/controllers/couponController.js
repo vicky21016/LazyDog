@@ -65,7 +65,7 @@ export const getCouponByCode = async (req, res) => {
 };
 
 export const createCoupon = async (req, res) => {
-  console.log("📌 進入 createCoupon，解析 req.user:", req.user); // ✅ 檢查是否有用戶資訊
+  console.log(" 進入 createCoupon，解析 req.user:", req.user); 
 
   try {
     const user_id = req.user?.id;

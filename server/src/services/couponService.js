@@ -110,23 +110,27 @@ export const createCoupons = async (couponData) => {
   try {
     const {
       name,
-      discount_type, 
+      discount_type,
       is_global = 0,
       content = "",
       value,
-      min_order_value = 0, 
+      min_order_value = 0,
       start_time,
       end_time,
-      status = "active", 
+      status = "active",
       max_usage = 1,
-      max_usage_per_user = 1, 
+      max_usage_per_user = 1,
       code,
     } = couponData;
 
+    console.log("傳入的 couponData:", couponData);
+
+    // 檢查必填欄位
     if (!name || !discount_type || !value || !start_time || !end_time || !code) {
       throw new Error("缺少必要的欄位");
     }
 
+    // 格式化日期時間
     const formatDateTime = (date) => {
       return new Date(date).toISOString().slice(0, 19).replace("T", " ");
     };
@@ -134,9 +138,13 @@ export const createCoupons = async (couponData) => {
     const startTimeFormatted = start_time ? formatDateTime(start_time) : null;
     const endTimeFormatted = end_time ? formatDateTime(end_time) : null;
 
+    console.log("格式化後的 start_time:", startTimeFormatted);
+    console.log("格式化後的 end_time:", endTimeFormatted);
+
     const isGlobalSafe = is_global ? 1 : 0; // 確保是數字
     const contentSafe = content ?? "";
 
+    // 執行 SQL 查詢
     const [result] = await pool.query(
       `INSERT INTO coupons 
           (name, discount_type, is_global, content, value, min_order_value, start_time, end_time, status, max_usage, max_usage_per_user, code, created_at, updated_at, is_deleted) 
@@ -157,13 +165,16 @@ export const createCoupons = async (couponData) => {
       ]
     );
 
+    console.log("SQL 查詢結果:", result);
+
     if (!result || !result.insertId) {
       throw new Error("無法創建優惠券，請檢查數據庫");
     }
 
     return { success: true, id: result.insertId, name, discount_type, code };
   } catch (err) {
-    console.error(" 無法創建優惠券:", err.message);
+    console.error("無法創建優惠券:", err.message);
+    console.error("錯誤堆棧:", err.stack); // 打印錯誤堆棧
     return { success: false, error: "無法創建優惠券：" + err.message };
   }
 };

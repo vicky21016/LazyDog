@@ -8,6 +8,7 @@ import Header from "../../components/layout/header";
 import MyMenu from "../../components/layout/myMenu";
 import { getCouponss, claimCouponByCode } from "@/services/couponService";
 import { useAuth } from "@/hooks/use-auth";
+import Swal from "sweetalert2"; // 導入 sweetalert2
 
 export default function ProfileCouponPage(props) {
   const router = useRouter();
@@ -47,9 +48,9 @@ export default function ProfileCouponPage(props) {
           const mappedCoupons = response.data.map((coupon) => ({
             id: coupon.id,
             status:
-              coupon.status === "claimed"
+              coupon.status == "claimed"
                 ? "未使用"
-                : coupon.status === "used"
+                : coupon.status == "used"
                 ? "已使用"
                 : "逾期",
             price: coupon.value,
@@ -83,21 +84,37 @@ export default function ProfileCouponPage(props) {
       setError("請輸入優惠券代碼");
       return;
     }
-
+  
     try {
       const response = await claimCouponByCode(couponCode);
       if (response.success) {
-        alert("優惠券領取成功！");
+        // 成功提示
+        await Swal.fire({
+          icon: "success",
+          title: "領取成功！",
+          text: "優惠券已成功領取。",
+          confirmButtonText: "確定",
+        });
+  
         setCouponCode(""); // 清空輸入框
-        // 重新獲取優惠券
-        const updatedCoupons = await getCouponss("all", "all");
-        setCoupons(updatedCoupons.data || []);
       } else {
-        setError(response.error || "領取優惠券失敗，請檢查代碼是否正確");
+        // 失敗提示
+        await Swal.fire({
+          icon: "error",
+          title: "領取失敗",
+          text: response.error || "領取優惠券失敗，請檢查代碼是否正確",
+          confirmButtonText: "確定",
+        });
       }
     } catch (error) {
       console.error("領取優惠券時發生錯誤：", error);
-      setError("發生錯誤，請稍後再試");
+      // 錯誤提示
+      await Swal.fire({
+        icon: "error",
+        title: "發生錯誤",
+        text: "發生錯誤，請稍後再試",
+        confirmButtonText: "確定",
+      });
     }
   };
 
@@ -143,9 +160,9 @@ export default function ProfileCouponPage(props) {
   // 根據選擇的分類和狀態過濾優惠券
   const filteredCoupons = coupons.filter((coupon) => {
     const statusMatch =
-      selectedStatus === "全部" || coupon.status === selectedStatus;
+      selectedStatus == "全部" || coupon.status === selectedStatus;
     const categoryMatch =
-      selectedCategory === "全部" || coupon.type === selectedCategory;
+      selectedCategory == "全部" || coupon.type === selectedCategory;
     return statusMatch && categoryMatch;
   });
 
@@ -232,7 +249,7 @@ export default function ProfileCouponPage(props) {
                 <li key={status} className="nav-item">
                   <a
                     className={`nav-link ${
-                      selectedStatus === status ? "active" : ""
+                      selectedStatus == status ? "active" : ""
                     } ${couponStyles.suNavLink}`}
                     href="#"
                     onClick={() => setSelectedStatus(status)}
@@ -260,13 +277,13 @@ export default function ProfileCouponPage(props) {
                     <p className="text-muted">
                       有效期限: {coupon.expiry || "無期限"}
                     </p>
-                    {coupon.status === "已使用" && (
+                    {coupon.status == "已使用" && (
                       <p className={couponStyles.suUsed}>⚠ 已使用</p>
                     )}
-                    {coupon.status === "逾期" && (
+                    {coupon.status == "逾期" && (
                       <p className={couponStyles.suExpired}>⚠ 已逾期</p>
                     )}
-                    {coupon.status === "未使用" && (
+                    {coupon.status == "未使用" && (
                       <p className={couponStyles.suUnused}>可使用</p>
                     )}
                   </div>
