@@ -11,8 +11,10 @@ import Link from "next/link";
 import Product from './_components/product'
 import Course from './_components/course'
 import Hotel from './_components/hotel'
+import { useOrder } from "@/hooks/use-order";
 export default function ProfileCouponPage(props) {
     const router = useRouter();
+    const { orders } = useOrder();
     const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
         usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
     const changepage = (path) => {
@@ -62,7 +64,7 @@ export default function ProfileCouponPage(props) {
                         </ul>
 
                        
-                        <Product/>
+                        <Product orders={orders} />
                         {/* 商品 */}
                         <Course/>
                        

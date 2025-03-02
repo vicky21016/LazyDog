@@ -1,7 +1,7 @@
 // hooks/use-order.js
 "use client";
 import { useState, useEffect } from "react";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify"; // 確保有引入 toast
 
 export function useOrder() {
@@ -123,7 +123,7 @@ export function useOrder() {
       setError(null); // 清空錯誤訊息
 
       // 從 localStorage 取得 token
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("loginWithToken");
 
       // 如果沒有 token，表示使用者未登入
       if (!token) {
@@ -131,9 +131,12 @@ export function useOrder() {
         setIsLoading(false); // 停止載入
         return; // 停止執行後續程式碼
       }
+
+      let userId;
       try {
         const decoded = jwtDecode(token); // 解碼 token
-        userId = decoded.user_id; // 取得 userId
+        userId = decoded.id; // 取得 userId
+        // console.log(userId);
       } catch (err) {
         console.log(err);
         setError("token錯誤"); // 設定錯誤訊息
@@ -146,7 +149,7 @@ export function useOrder() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: token, // 在 Authorization header 中傳送 token
+            Authorization: `Bearer ${token}`, // 在 Authorization header 中傳送 token (should be modified to use bearer)
           },
         });
 
@@ -160,6 +163,7 @@ export function useOrder() {
           setIsLoading(false);
           throw new Error(result.message); // 如果API回傳狀態是error，拋出錯誤
         }
+        console.log(result);
 
         // 將 productID_list, price_list, amount_list 轉換為陣列
         const formattedOrders = result.orders.map((order) => ({
@@ -174,6 +178,7 @@ export function useOrder() {
             ? order.amount_list.split(",").map(Number)
             : [],
         }));
+        console.log(formattedOrders);
 
         setOrders(formattedOrders); // 更新訂單資料
         setIsLoading(false); // 結束載入 (成功)
@@ -181,8 +186,12 @@ export function useOrder() {
         setError(err.message); // 設定錯誤訊息
         setIsLoading(false); // 結束載入 (失敗)
       }
+      
     };
     fetchOrders();
+
+
+
   }, []); // dependency array 為空，確保只執行一次
 
   return {
@@ -191,5 +200,6 @@ export function useOrder() {
     error,
     createProductOrder,
     createHotelOrder,
+    createCourseOrder
   }; // 回傳訂單資料、載入狀態和錯誤訊息 ,createOrder
 }
