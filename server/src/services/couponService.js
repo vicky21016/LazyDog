@@ -106,26 +106,41 @@ export const getCouponByCodes = async (code, userId) => {
   }
 };
 
-export const createCoupons = async (couponData) => {
+export const createCoupons = async (couponData, operatorId) => {
   try {
     const {
       name,
-      discount_type, 
+      discount_type,
       is_global = 0,
       content = "",
       value,
-      min_order_value = 0, 
+      min_order_value = 0,
       start_time,
       end_time,
-      status = "active", 
+      status = "active",
       max_usage = 1,
-      max_usage_per_user = 1, 
+      max_usage_per_user = 1,
       code,
     } = couponData;
 
-    if (!name || !discount_type || !value || !start_time || !end_time || !code) {
-      throw new Error("缺少必要的欄位");
+    console.log("傳入的 couponData:", couponData);
+
+    if (!name || !discount_type || !value || !start_time || !end_time || !code || !operatorId) {
+      throw new Error("缺少必要的欄位 (name, discount_type, value, start_time, end_time, code, operatorId)");
     }
+
+    // 從 hotel 表中查詢 hotel_id
+    const [hotelResult] = await pool.query(
+      `SELECT id FROM hotel WHERE operator_id = ? LIMIT 1`,
+      [operatorId]
+    );
+
+    if (!hotelResult || hotelResult.length == 0) {
+      throw new Error("找不到對應的旅館資訊，請確認 operator_id 是否正確");
+    }
+
+    const hotel_id = hotelResult[0].id;
+    console.log("查詢到的 hotel_id:", hotel_id);
 
     const formatDateTime = (date) => {
       return new Date(date).toISOString().slice(0, 19).replace("T", " ");
@@ -134,13 +149,13 @@ export const createCoupons = async (couponData) => {
     const startTimeFormatted = start_time ? formatDateTime(start_time) : null;
     const endTimeFormatted = end_time ? formatDateTime(end_time) : null;
 
-    const isGlobalSafe = is_global ? 1 : 0; // 確保是數字
+    const isGlobalSafe = is_global ? 1 : 0;
     const contentSafe = content ?? "";
 
     const [result] = await pool.query(
       `INSERT INTO coupons 
-          (name, discount_type, is_global, content, value, min_order_value, start_time, end_time, status, max_usage, max_usage_per_user, code, created_at, updated_at, is_deleted) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
+       (name, discount_type, is_global, content, value, min_order_value, start_time, end_time, status, max_usage, max_usage_per_user, code, hotel_id, created_at, updated_at, is_deleted) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
       [
         name,
         discount_type,
@@ -154,6 +169,7 @@ export const createCoupons = async (couponData) => {
         max_usage,
         max_usage_per_user,
         code,
+        hotel_id, 
       ]
     );
 
@@ -161,9 +177,9 @@ export const createCoupons = async (couponData) => {
       throw new Error("無法創建優惠券，請檢查數據庫");
     }
 
-    return { success: true, id: result.insertId, name, discount_type, code };
+    return { success: true, id: result.insertId, name, discount_type, code, hotel_id };
   } catch (err) {
-    console.error(" 無法創建優惠券:", err.message);
+    console.error("無法創建優惠券:", err.message);
     return { success: false, error: "無法創建優惠券：" + err.message };
   }
 };

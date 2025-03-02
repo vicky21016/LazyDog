@@ -62,7 +62,7 @@ export default function ArticleDetail() {
         <Content article={article} /> {/* 傳遞文章資料給 Content 組件 */}
 
         {/* 留言區 */}
-        <div className="chat" style={{ background: "#FFF6E8", padding: "0.5px" }}>
+        {/* <div className="chat" style={{ background: "#FFF6E8", padding: "0.5px" }}>
           <h3 className="mt-3 ms-3">留言</h3>
           <ul className="list-unstyled">
             {comments.length > 0 ? (
@@ -89,10 +89,10 @@ export default function ArticleDetail() {
               ></input>
             </li>
           </ul>
-        </div>
+        </div> */}
 
         {/* 延伸閱讀 */}
-        <div className="more-read">
+        {/* <div className="more-read">
           <h3 className="mt-5">延伸閱讀</h3>
           <div className="row">
             {articles
@@ -102,7 +102,7 @@ export default function ArticleDetail() {
                 <Card key={article.id} {...article} />
               ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

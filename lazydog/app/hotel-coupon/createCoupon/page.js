@@ -4,13 +4,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { createCoupon } from "@/services/couponService";
 import Header from "../../components/layout/header";
 import { useAuth } from "@/hooks/use-auth";
-
 import My from "../../components/hotel/my";
 import styles from "../../../styles/modules/operatorHotel.module.css";
+import Swal from "sweetalert2";
 
 export default function CreateCouponPage() {
   const router = useRouter();
-  const { user, token } = useAuth();
+  const { user } = useAuth();
+  const [token, setToken] = useState("");
   const [coupon, setCoupon] = useState({
     name: "",
     code: "",
@@ -24,6 +25,13 @@ export default function CreateCouponPage() {
     status: "active",
     max_usage_per_user: "",
   });
+
+  useEffect(() => {
+    const savedToken = localStorage.getItem("loginWithToken");
+    if (savedToken) {
+      setToken(savedToken);
+    }
+  }, []);
 
   // 生成隨機優惠碼
   const generateCode = () => {
@@ -41,8 +49,25 @@ export default function CreateCouponPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    if (!token) {
-      alert("請先登入");
+    let authToken = token || localStorage.getItem("loginWithToken");
+  
+    if (!authToken) {
+      Swal.fire({
+        icon: "error",
+        title: "請先登入",
+        text: "請登入後再新增優惠券",
+        confirmButtonText: "確定",
+      });
+      return;
+    }
+  
+    if (!user || !user.id) { 
+      Swal.fire({
+        icon: "error",
+        title: "無法新增",
+        text: "無法確認您的旅館資訊，請聯絡管理員",
+        confirmButtonText: "確定",
+      });
       return;
     }
   
@@ -50,33 +75,51 @@ export default function CreateCouponPage() {
       name: coupon.name,
       code: coupon.code,
       discount_type: coupon.discount_type,
-      is_global: coupon.targetAudience === "all" ? 1 : 0, 
+      is_global: coupon.targetAudience === "all" ? 1 : 0,
       content: coupon.description,
       value: Number(coupon.discount_value),
       min_order_value: Number(coupon.min_order_value),
       max_usage: Number(coupon.max_usage),
       max_usage_per_user: Number(coupon.max_usage_per_user),
-      start_time: coupon.start_time ? `${coupon.start_time}T00:00:00Z` : "",
-      end_time: coupon.end_time ? `${coupon.end_time}T23:59:59Z` : "",
+      start_time: coupon.start_time ? `${coupon.start_time}T00:00:00Z` : null,
+      end_time: coupon.end_time ? `${coupon.end_time}T23:59:59Z` : null,
       status: coupon.status,
     };
   
-    console.log(" 送出的資料:", formattedCoupon);
-  
     try {
-      const result = await createCoupon(formattedCoupon, token); 
+      console.log("🔍 傳遞給後端的 Operator ID:", user.id);
+
+      const result = await createCoupon(formattedCoupon,authToken, user.id); 
       if (result.success) {
-        alert("優惠券新增成功！");
+        await Swal.fire({
+          icon: "success",
+          title: "新增成功！",
+          text: "優惠券已成功建立 🎉",
+          timer: 2000,
+          showConfirmButton: false,
+        });
         router.push("/hotel-coupon/couponList");
       } else {
-        alert(`新增失敗：${result.error}`);
+        Swal.fire({
+          icon: "error",
+          title: "新增失敗",
+          text: result.error || "請檢查輸入資料是否正確",
+          confirmButtonText: "確定",
+        });
       }
     } catch (error) {
       console.error("新增優惠券失敗:", error);
-      alert("發生錯誤，請稍後再試");
+      Swal.fire({
+        icon: "error",
+        title: "發生錯誤",
+        text: "請稍後再試",
+        confirmButtonText: "確定",
+      });
     }
   };
   
+  
+
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);

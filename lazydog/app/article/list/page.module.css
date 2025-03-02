@@ -41,6 +41,7 @@
   height: 30px;
   display: flex;
   justify-content: end;
+  margin:25px 0;
 }
 
 .top {
@@ -106,6 +107,7 @@
   border: none;
   display: flex;
   justify-self: end;
+  margin-bottom: 10px;
 }
 
 .card {
@@ -252,11 +254,19 @@
 
 .asideCategory p{
     color: #f5842b;
+    font-size: 20px;
+    border-radius: 5px;
+    padding-left: 5px;
 }
 .asideCategory p:hover{
  background-color: #f5842b;
  color: aliceblue;
 }
+.asideCategory p:active{
+  background-color: #66c5bd;
+  color: aliceblue;
+ }
+ 
 /* @media screen */
 @media screen and (max-width: 390px) {
   .middle {

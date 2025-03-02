@@ -114,13 +114,17 @@ export const getUserCoupons = async (userId, status, type) => {
     let query = `
       SELECT 
         uc.id, 
-        uc.status,  -- 這裡的 status 來自 coupon_usage
+        uc.status AS usage_status,  -- 來自 coupon_usage
         uc.claimed_at, 
         c.name, 
         c.type, 
         c.value, 
         c.start_time, 
-        c.end_time
+        c.end_time,
+        CASE 
+          WHEN uc.status = 'claimed' AND c.end_time < NOW() THEN 'expired' 
+          ELSE uc.status 
+        END AS status -- 動態標記逾期優惠券
       FROM 
         coupon_usage uc
       JOIN 
@@ -133,10 +137,14 @@ export const getUserCoupons = async (userId, status, type) => {
     const params = [userId];
 
     if (status !== "all") {
-      query += ` AND uc.status = ?`; // 使用 coupon_usage 的 status
-      params.push(status);
+      if (status === "expired") {
+        query += ` AND c.end_time < NOW() AND uc.status = 'claimed'`;
+      } else {
+        query += ` AND uc.status = ?`;
+        params.push(status);
+      }
     }
-    
+
     if (type !== "all") {
       query += ` AND c.type = ?`;
       params.push(type);
@@ -145,13 +153,14 @@ export const getUserCoupons = async (userId, status, type) => {
     query += ` ORDER BY uc.claimed_at DESC`;
 
     const [coupons] = await pool.query(query, params);
-    
+
     return { success: true, data: coupons };
   } catch (error) {
     console.error("SQL 查詢錯誤:", error);
     return { success: false, error: "資料庫查詢失敗" };
   }
 };
+
 
 
 

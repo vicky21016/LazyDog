@@ -77,6 +77,8 @@ export const createCoupon = async (couponData, token) => {
   }
 
   try {
+
+
     const res = await fetch("http://localhost:5000/api/coupon", {
       method: "POST",
       headers: {
@@ -86,21 +88,19 @@ export const createCoupon = async (couponData, token) => {
       body: JSON.stringify(couponData),
     });
 
+
     if (!res.ok) {
       const errorData = await res.json();
-      console.error("新增優惠券失敗:", errorData);
       return { error: `新增失敗 (${res.status}): ${errorData.error}` };
     }
 
-    return await res.json();
+    const responseData = await res.json();
+    return responseData;
   } catch (error) {
-    console.error("API 錯誤:", error);
+
     return { error: "發生錯誤，請稍後再試" };
   }
 };
-
-
-
 
 //  更新
 export const updateCoupon = async (id, data) => {
