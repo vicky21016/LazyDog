@@ -172,24 +172,32 @@ export const softDeleteCoupon = async (couponId) => {
   }
 };
 
-export const getCouponss = async () => {
-  if (typeof window == "undefined") return null; // 避免 SSR 時執行
+export const getCouponss = async (status, type) => {
+  if (typeof window === "undefined") return null; // 確保只在瀏覽器執行
 
   const token = localStorage.getItem("loginWithToken");
- 
+
+  if (!token) {
+    console.warn("沒有 Token，請重新登入");
+    return null;
+  }
 
   try {
-    const res = await fetch("http://localhost:5000/api/coupon/usage", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await fetch(
+      `http://localhost:5000/api/coupon/usage/usage?status=${status}&type=${type}`, // 只傳 status 和 type
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // 用 Token 驗證身份
+        },
+      }
+    );
 
-    if (res.status == 403) {
-      console.warn("權限不足，請重新登入");
-      return null;
+    if (!res.ok) {
+      const errorResponse = await res.json(); // 解析錯誤訊息
+      console.error(`API 請求失敗，狀態碼：${res.status}，錯誤訊息：`, errorResponse);
+      return { success: false, error: errorResponse.message || "API 請求失敗" };
     }
 
     const response = await res.json();
@@ -199,6 +207,8 @@ export const getCouponss = async () => {
     return { success: false, error: "無法獲取優惠券紀錄" };
   }
 };
+
+
 
 
 // 領取優惠券(手領)

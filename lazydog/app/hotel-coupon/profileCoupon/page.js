@@ -54,7 +54,7 @@ export default function ProfileCouponPage(props) {
         const updatedCoupons = await getCoupons();
         setCoupons(updatedCoupons.data || []);
       } else {
-        setError(response.error);
+        setError(response.error || "領取優惠券失敗，請檢查代碼是否正確");
       }
     } catch (error) {
       console.error("領取優惠券時發生錯誤：", error);
@@ -62,9 +62,28 @@ export default function ProfileCouponPage(props) {
     }
   };
 
+  const getUserIdFromToken = () => {
+    const token = localStorage.getItem("loginWithToken");
+    if (!token) {
+      console.warn("沒有 Token，請重新登入");
+      return null;
+    }
+
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1])); // 解析 JWT Token
+      return payload.id;
+    } catch (error) {
+      console.error("Token 解析失敗:", error);
+      return null;
+    }
+  };
+
   const changepage = (path) => {
     if (path) {
-      router.push(`/hotel-coupon/${path}`);
+      const userId = getUserIdFromToken();
+      if (!userId) return;
+
+      router.push(`/hotel-coupon/${path}?userId=${userId}`);
     }
   };
 
@@ -76,15 +95,17 @@ export default function ProfileCouponPage(props) {
   const filteredCoupons =
     selectedCategory == "全部"
       ? coupons
-      : coupons.filter((coupon) => coupon.type === selectedCategory);
+      : coupons.filter((coupon) => coupon.type == selectedCategory);
 
   // 動態生成分類標籤
   const categories = [
     "全部",
     ...new Set(
       coupons.map((coupon) =>
-        coupon.type ? coupon.type.toLowerCase() : "其他"
-      ) // 過濾 undefined 並統一格式
+        coupon.type
+          ? coupon.type.charAt(0).toUpperCase() + coupon.type.slice(1)
+          : "其他"
+      )
     ),
   ];
 
@@ -154,38 +175,33 @@ export default function ProfileCouponPage(props) {
 
             {/* 優惠券列表 */}
             {filteredCoupons.length > 0 ? (
-              filteredCoupons.map(
-                (
-                  coupon,
-                  index 
-                ) => (
-                  <div
-                    key={`coupon-${coupon.id || `index-${index}`}`}
-                    className={`mt-2 ${couponStyles.suCouponCard}`}
-                  >
-                    <span className={couponStyles.suPrice}>
-                      NT{coupon.value || 0}
-                    </span>
-                    <div className={couponStyles.suDetails}>
-                      <p>
-                        <strong>{coupon.name || "未命名優惠券"}</strong>
-                      </p>
-                      <p className="text-muted">
-                        有效期限:{" "}
-                        {coupon.end_time
-                          ? new Date(coupon.end_time).toLocaleDateString()
-                          : "無期限"}
-                      </p>
-                      <p className={couponStyles.suExpired}>
-                        {coupon.status === "used" ? "⚠ 已使用" : "可使用"}
-                      </p>
-                    </div>
-                    <div className={couponStyles.suAction}>
-                      <a href="#">前往購物</a>
-                    </div>
+              filteredCoupons.map((coupon, index) => (
+                <div
+                  key={`coupon-${coupon.id ? coupon.id : `index-${index}`}`}
+                  className={`mt-2 ${couponStyles.suCouponCard}`}
+                >
+                  <span className={couponStyles.suPrice}>
+                    NT{coupon.value || 0}
+                  </span>
+                  <div className={couponStyles.suDetails}>
+                    <p>
+                      <strong>{coupon.name || "未命名優惠券"}</strong>
+                    </p>
+                    <p className="text-muted">
+                      有效期限:{" "}
+                      {coupon.end_time
+                        ? new Date(coupon.end_time).toLocaleDateString()
+                        : "無期限"}
+                    </p>
+                    <p className={couponStyles.suExpired}>
+                      {coupon.status === "used" ? "⚠ 已使用" : "可使用"}
+                    </p>
                   </div>
-                )
-              )
+                  <div className={couponStyles.suAction}>
+                    <a href="#">前往購物</a>
+                  </div>
+                </div>
+              ))
             ) : (
               <p className="text-muted mt-3">目前沒有符合此分類的優惠券</p>
             )}
