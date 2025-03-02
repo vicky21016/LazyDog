@@ -34,7 +34,7 @@ export default function MyArticle() {
                     </Link>
                   </button>
                 </div>
-                <div className="py-1" style={{ backgroundColor: "#EDEDED", borderRadius: "5px", height: "750px", overflowY: "scroll" }}>
+                <div className="" style={{ borderRadius: "5px", height: "750px", overflowY: "scroll" }}>
                   {loading && <p>加載中...</p>}
                   {error && <p style={{ color: "red" }}>{error}</p>}
                   {articles.length > 0 ? articles.map((article) => (
