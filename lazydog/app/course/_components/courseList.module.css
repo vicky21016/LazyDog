@@ -6,7 +6,7 @@
 .new {
   width: 100vw;
   height: 450px;
-  border-radius: 30px;
+  /* border-radius: 30px; */
   overflow: hidden;
   display: flex;
   padding: 13px 3px;
@@ -14,11 +14,12 @@
   align-self: stretch;
   overflow: hidden;
   justify-content: center;
+  margin: 0;
   z-index: 1;
 
   .swiperrr {
-    border-radius: 10px;
-    overflow: hidden;
+    /* border-radius: 10px; */
+    /* overflow: hidden; */
   }
 
   .newCard {
@@ -447,8 +448,8 @@
     width: 280px;
   }
   .img {
-    width: 100%;
-    height: auto;
+    width: 280px;
+    height: 280px;
     object-fit: cover;
     border: 1px solid var(--text-Wh, #f7f7f7);
     margin-bottom: 8px;
@@ -586,6 +587,7 @@
       .cardImg {
         width: 240px;
         height: 240px;
+        object-fit: cover;
         margin-bottom: 27px;
         border: 0.1px solid #f7efef;
       }

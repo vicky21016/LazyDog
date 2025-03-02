@@ -1,4 +1,7 @@
-import { decode } from "jsonwebtoken";
+import { fileURLToPath } from "url";
+import path from "path";
+import fs from "fs";
+
 import {
   getTeacherInfo,
   updateTeacherInfo,
@@ -76,19 +79,19 @@ export const getCourseId = async (req, res) => {
 
 export const createCourse = async (req, res) => {
   try {
-    // 檢查上傳的圖片
+    console.log("後端收到的req.body:", req.body);
+
+    // const { courseData, sessionData } = req.body;
+    const courseData = JSON.parse(req.body.courseData);
+    const sessionData = JSON.parse(req.body.sessionData);
     const imgData = {
       mainImage: req.files?.mainImage?.[0]
-        ? `/teacherSign/img/${req.files.mainImage[0].filename}`
+        ? req.files.mainImage[0].filename
         : null,
       otherImages: req.files?.otherImages
-        ? req.files.otherImages.map(
-            (file) => `/teacherSign/img/${file.filename}`
-          )
+        ? req.files.otherImages.map((file) => file.filename)
         : [],
     };
-
-    const { courseData, sessionData } = req.body;
 
     const result = await createCourseWithSession(
       courseData,
@@ -126,7 +129,8 @@ export const updateCourse = async (req, res) => {
     console.log("📂 解析後的檔案:", req.files); // 🛠️ 查看 multer 是否成功處理圖片
     console.log("📨 解析後的 body:", req.body); // 🛠️ 查看請求 body 是否正確
 
-    const { courseId, sessionId, courseData, sessionData } = req.body;
+    const { courseId, sessionId, courseData, sessionData, deletedPics } =
+      req.body;
 
     if (!courseId || !sessionId || !courseData || !sessionData) {
       return res.status(400).json({
@@ -141,21 +145,55 @@ export const updateCourse = async (req, res) => {
       ? req.files["otherImages"].map((file) => file.filename)
       : [];
 
+    let parsedDeletedPics = [];
+    if (deletedPics) {
+      try {
+        parsedDeletedPics = JSON.parse(deletedPics);
+        // console.log("JSON PARSE結果: ", deletedPics);
+      } catch (error) {
+        console.error("❌ 解析 deletedPics 失敗:", error);
+        return res.status(400).json({ error: "無效的 deletedPics 格式" });
+      }
+    }
+    // 刪除圖片
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const rootDir = path.resolve(__dirname, "../../../lazydog");
+    const courseImgPath = path.join(rootDir, "/public/course/img"); // 設定圖片存放的路徑
+    if (parsedDeletedPics && parsedDeletedPics.length > 0) {
+      parsedDeletedPics.forEach((pic) => {
+        const filePath = path.join(courseImgPath, pic.url); // 取得檔案的完整路徑
+
+        // 刪除圖片檔案
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.error("刪除圖片失敗:", err);
+          } else {
+            console.log(`刪除圖片成功: ${filePath}`);
+          }
+        });
+      });
+    }
+
     const result = await updateCourseWithSession(
       courseId,
       JSON.parse(courseData),
       sessionId,
       JSON.parse(sessionData),
-      { mainImage: mainpicName, otherImages: otherpicsName }
+      {
+        mainImage: mainpicName,
+        otherImages: otherpicsName,
+        deletedPics,
+      }
     );
     console.log("更新結果:", result);
 
     res.status(200).json({
       message: "課程更新成功",
-      courseId,
-      sessionId,
-      mainImage: mainpicName,
-      otherImages: otherpicsName,
+      // courseId,
+      // sessionId,
+      // mainImage: mainpicName,
+      // otherImages: otherpicsName,
     });
   } catch (err) {
     res.status(500).json({ error: "無法更新課程" + err.message });
