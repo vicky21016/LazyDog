@@ -11,7 +11,6 @@ export default function CouponListPage() {
   const [coupons, setCoupons] = useState([]); // 存儲優惠券數據
   const [selectedCoupon, setSelectedCoupon] = useState(null); // 存儲當前選中的優惠券
   const router = useRouter();
-  const { user } = useAuth();
   // 加載優惠券數據
   useEffect(() => {
     const fetchCoupons = async () => {
