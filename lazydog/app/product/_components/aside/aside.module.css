@@ -1,5 +1,5 @@
 .Sidebar {
-  width: 242px;
+  max-width: 242px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -16,12 +16,13 @@
     border: none;
     outline: none;
     font-size: 16px;
+    background-color: transparent;
   }
 }
 
 .FilterGroup {
   width: 100%;
-  padding: 5px 25px 10px;
+  padding: 10px 25px 10px;
   border-bottom: 1px solid var(--gray);
   display: flex;
   flex-direction: column;
@@ -84,7 +85,7 @@
     height: 50px;
   }
 }
-.FormHot {
+/* .FormHot {
   display: flex;
   align-items: center;
   width: 90px;
@@ -96,7 +97,7 @@
   &:hover {
     color: var(--tiffany);
   }
-}
+} */
 .ShowMore {
   cursor: pointer;
   color: var(--Orange);

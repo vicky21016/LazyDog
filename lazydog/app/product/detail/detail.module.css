@@ -33,7 +33,7 @@
   flex: 1 0 0;
   gap: 15px;
   .ProductInfoImg {
-    width: 540px;
+    /* max-width: 540px; */
     margin-left: 43px;
     border-radius: 4px;
     overflow: hidden;
@@ -57,25 +57,30 @@
     border-radius: 4px;
   }
   .ProductInfoImgSmallBtn {
-    margin: 0 10px;
+    margin: auto 10px;
     display: flex;
     align-items: center;
-    height: 100%;
+    justify-content: center;
+    min-width: 35px;
+    height: 35px;
+    border: 1px solid var(--orange);
+    border-radius: 50%;
   }
 }
 .ProductInfoDetail {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 30px;
+  /* gap: 30px; */
   flex: 1 0 0;
+  padding-top: 30px;
 }
 .ProductInfoContent {
   display: flex;
   padding: 0px 10px 30px 10px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 40px;
+  gap: 30px;
   .InfoProductName {
     font-weight: bold;
   }
@@ -173,8 +178,9 @@
 .InfoBtnGroup {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-around; */
   align-items: center;
+  gap: 15px;
   button {
     background: var(--orange);
     border: 1px solid var(--orange);
@@ -182,8 +188,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 300px;
+    max-width: 300px;
+    flex: 1 0 0;
     padding: 25px 55px;
+    text-wrap: nowrap;
   }
   h5 {
     font-weight: bold;
@@ -242,7 +250,7 @@
     line-height: 2;
   }
   figure {
-    width: 840px;
+    max-width: 840px;
     margin: auto;
   }
   img {
@@ -259,11 +267,12 @@
     display: flex;
     padding-bottom: 30px;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 30px;
   }
 }
 .ScoreBar {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 80px;
@@ -311,11 +320,12 @@
 } */
 /* ------商品評價(卡片)------- */
 .RateCardGroup {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
-  gap: 30px;
+  /* gap: 30px; */
 }
 .RateMore {
   width: 100%;
@@ -407,10 +417,25 @@
   flex-direction: column;
   align-items: flex-start;
 }
+.AlsoBuyContent {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  .ProductInfoImgSmallBtn {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border: 1px solid var(--orange);
+    border-radius: 50%;
+  }
+}
 .AlsoBuyList {
   display: flex;
   align-items: center;
-  gap: 60px;
+  gap: 30px;
 }
 
 /* --------------------------- */
@@ -429,10 +454,25 @@
   flex-direction: column;
   align-items: flex-start;
 }
+.OtherLikeContent {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  .ProductInfoImgSmallBtn {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border: 1px solid var(--orange);
+    border-radius: 50%;
+  }
+}
 .OtherLikeList {
   display: flex;
   align-items: center;
-  gap: 60px;
+  gap: 30px;
 }
 /* --------------------------- */
 /* ---------card元件(備份css)----------- */

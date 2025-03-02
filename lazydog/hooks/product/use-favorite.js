@@ -35,10 +35,11 @@ export function FavoriteProvider({ children }) {
 
   useEffect(() => {
     const updateFavorite = async () => {
-      // console.log(favorite);
       let methodType = "POST";
-      favoriteData?.data.find((v) => v.user_id === user?.id);
-      methodType = "PATCH";
+      if (favoriteData?.data) {
+        if (favoriteData?.data.find((v) => v.user_id === user?.id))
+          methodType = "PATCH";
+      }
       if (user?.id > 0) {
         const formData = new FormData();
         formData.append("userID", user?.id);
@@ -97,10 +98,11 @@ export function DetailFavoriteProvider({ children }) {
 
   useEffect(() => {
     const updateFavorite = async () => {
-      console.log(favorite);
       let methodType = "POST";
-      favoriteData?.data.find((v) => v.user_id === user?.id);
-      methodType = "PATCH";
+      if (favoriteData?.data) {
+        if (favoriteData?.data.find((v) => v.user_id === user?.id))
+          methodType = "PATCH";
+      }
       if (user?.id > 0) {
         const formData = new FormData();
         formData.append("userID", user?.id);
@@ -126,7 +128,11 @@ export function DetailFavoriteProvider({ children }) {
   const [heartHover, setHeartHover] = useState(false);
   const [heartState, setHeartState] = useState(false);
   useEffect(() => {
-    if (favorite?.includes(product)) setHeartState(true);
+    if (favorite?.includes(product)) {
+      setHeartState(true);
+    } else {
+      setHeartState(false);
+    }
   }, [favorite]);
   return (
     <DetailFavoriteContext.Provider
@@ -169,6 +175,7 @@ export function CardFavoriteProvider({
     mutate: favoriteMutate,
   } = useSWR(favoriteAPI, fetcher);
   useEffect(() => {
+    favoriteMutate();
     if (favoriteData?.data) {
       const userFavorite = favoriteData?.data.find(
         (v) => v.user_id == user?.id
@@ -183,8 +190,13 @@ export function CardFavoriteProvider({
   const [heartState, setHeartState] = useState(false);
 
   useEffect(() => {
-    if (favorite?.includes(productID)) setHeartState(true);
+    if (favorite?.includes(productID)) {
+      setHeartState(true);
+    } else {
+      setHeartState(false);
+    }
   }, [favorite]);
+  // console.log(favorite);
   return (
     <CardFavoriteContext.Provider
       value={{
