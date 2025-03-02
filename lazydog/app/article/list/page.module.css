@@ -1,7 +1,7 @@
 .mainDog {
   width: 100%;
   height: 700px;
-  background-image: url('http://localhost:5000/api/articles/f9a46935-35cb-4ce6-b5d7-73ff1ad52b87.png');
+  background-image: url('http://localhost:5000/api/articles/image3.png');
   background-size: cover;
   display: flex;
   justify-content: center;
@@ -266,27 +266,47 @@
   background-color: #66c5bd;
   color: aliceblue;
  }
- 
+ .RWDH4{
+  display: none;
+}
+.RWDfilter p{
+  color: #f5842b;
+  font-size: 20px;
+  border-radius: 5px;
+  padding-left: 5px;
+}
+.RWDfilter{
+  display: none;
+  }
+  .activePage {
+    background-color: #f5842b; /* 背景色为粉色 */
+    color: white; /* 文字颜色为白色 */
+    border-radius: 50%;
+}
 /* @media screen */
 @media screen and (max-width: 390px) {
-  .middle {
-    width: 366px;
-    height: auto;
-    display: flex;
-    align-items: flex-end;
-    flex-direction: column;
-    gap: 50px;
-    position: absolute;
-    left: 12px;
-    top: 537px;
+  .mainDog{
+    height: 250px;
   }
-
-  .bottom {
-    position: absolute;
-    top: 4250px;
+  .container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+  .RWDH4{
     display: block;
   }
-
+  .H4{
+    display: none;
+  
+  }
+  .aside {
+   
+    display: none;
+  }
+ .RWDfilter{
+display: block;
+}
   .post-button {
     justify-content: center;
   }
