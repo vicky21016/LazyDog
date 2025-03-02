@@ -93,7 +93,6 @@ export const getFilteredHotelsS = async (filters) => {
       throw new Error(`API 錯誤，HTTP 狀態碼: ${response.status}`);
 
     const data = await response.json();
-    console.log(" API 回應:", data);
     return data;
   } catch (error) {
     console.error(" 查詢飯店錯誤:", error);
@@ -208,7 +207,7 @@ export const getHotelPriceRange = async (hotelId) =>
 //房型跟庫存
 export const getAllRoomTypes = async () => fetchAPI(ROOM_TYPES_URL);
 export const getHotelRoomById = async (hotelId) =>
-  fetchAPI(`${HOTEL_ROOM_TYPES_URL}/${hotelId}`);
+  fetchAPI(`${HOTEL_ROOM_TYPES_URL}/hotel/${hotelId}`);
 
 //OP ONLY
 export const createHotelRoom = async (roomData) =>
@@ -283,8 +282,22 @@ export const getHotelReviews = async (hotelId) =>
   fetchAPI(`${HOTEL_REVIEW_URL}/${hotelId}`);
 export const addHotelReview = async (hotelId, reviewData) =>
   fetchAuthAPI(HOTEL_REVIEW_URL, "POST", { hotelId, ...reviewData });
-export const replyHotelReview = async (reviewId, replyData) =>
-  fetchAuthAPI(`${HOTEL_REVIEW_URL}/${reviewId}/reply`, "POST", replyData);
+export const replyHotelReview = async (reviewId, replyContent) => {
+  const token = localStorage.getItem("loginWithToken");
+  if (!token) throw new Error("未登入，請重新登入");
+
+  const response = await fetch(`http://localhost:5000/api/hotel_review/${reviewId}/reply`, {
+    method: "POST", 
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ reply: replyContent }), 
+  });
+
+  return response;
+};
+
 export const deleteHotelReview = async (reviewId) =>
   fetchAuthAPI(`${HOTEL_REVIEW_URL}/${reviewId}`, "DELETE");
 export const ratingAv = async () => fetchAPI(`${HOTEL_REVIEW_URL}/average`);

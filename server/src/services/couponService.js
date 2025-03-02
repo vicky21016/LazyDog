@@ -110,33 +110,46 @@ export const createCoupons = async (couponData) => {
   try {
     const {
       name,
-      type,
-      is_global,
-      content,
+      discount_type, 
+      is_global = 0,
+      content = "",
       value,
-      min_order_value,
+      min_order_value = 0, 
       start_time,
       end_time,
-      status,
-      max_usage,
-      max_usage_per_user,
+      status = "active", 
+      max_usage = 1,
+      max_usage_per_user = 1, 
       code,
     } = couponData;
 
+    if (!name || !discount_type || !value || !start_time || !end_time || !code) {
+      throw new Error("缺少必要的欄位");
+    }
+
+    const formatDateTime = (date) => {
+      return new Date(date).toISOString().slice(0, 19).replace("T", " ");
+    };
+
+    const startTimeFormatted = start_time ? formatDateTime(start_time) : null;
+    const endTimeFormatted = end_time ? formatDateTime(end_time) : null;
+
+    const isGlobalSafe = is_global ? 1 : 0; // 確保是數字
+    const contentSafe = content ?? "";
+
     const [result] = await pool.query(
       `INSERT INTO coupons 
-          (name, type,is_global, content, value, min_order_value, start_time,end_time,status, max_usage, max_usage_per_user, code, 
-          created_at, updated_at, is_deleted) 
-          VALUES (?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
+          (name, discount_type, is_global, content, value, min_order_value, start_time, end_time, status, max_usage, max_usage_per_user, code, created_at, updated_at, is_deleted) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
       [
         name,
-        type,
-        is_global,
-        content,
+        discount_type,
+        isGlobalSafe,
+        contentSafe,
         value,
         min_order_value,
-        start_time,
-        end_time,
+        startTimeFormatted,
+        endTimeFormatted,
         status,
         max_usage,
         max_usage_per_user,
@@ -144,51 +157,77 @@ export const createCoupons = async (couponData) => {
       ]
     );
 
-    return { id: result.insertId, name, type, code };
+    if (!result || !result.insertId) {
+      throw new Error("無法創建優惠券，請檢查數據庫");
+    }
+
+    return { success: true, id: result.insertId, name, discount_type, code };
   } catch (err) {
-    throw new Error("無法創新優惠券：" + err.message);
+    console.error(" 無法創建優惠券:", err.message);
+    return { success: false, error: "無法創建優惠券：" + err.message };
   }
 };
 
+
 export const updateCouponById = async (id, couponData) => {
   try {
+    console.log(" 接收到的更新數據:", couponData);
+
     if (!id) {
       return { error: "缺少 id，無法更新優惠券" };
     }
 
-    if (!couponData || Object.keys(couponData).length == 0) {
+    if (!couponData || Object.keys(couponData).length === 0) {
       return { error: "沒有提供更新欄位" };
     }
 
-    // 移除不能更新的欄位
-    const { created_at, code, ...updateFields } = couponData;
+    // 確保 discount_type不是 undefined
+    const discountType =
+      couponData.discount_type && typeof couponData.discount_type === "string"
+        ? couponData.discount_type.toLowerCase()
+        : "fixed"; // 預設為 "fixed"
 
-    console.log("需要更新的欄位:", updateFields);
+    console.log(" 最終 discountType:", discountType);
 
-    // 確保有要更新的欄位
+    // 過濾掉 undefined 或 null
+    const updateFields = Object.fromEntries(
+      Object.entries({
+        name: couponData.name,
+        content: couponData.content,
+        value: couponData.value,
+        min_order_value: couponData.min_order_value,
+        start_time: couponData.start_time,
+        end_time: couponData.end_time,
+        status: couponData.status,
+        max_usage: couponData.max_usage,
+        max_usage_per_user: couponData.max_usage_per_user,
+        code: couponData.code,
+        discount_type: discountType, 
+      }).filter(([_, value]) => value !== undefined && value !== null)
+    );
+
     const keys = Object.keys(updateFields);
     if (keys.length === 0) {
       return { error: "沒有可更新的欄位" };
     }
 
-    // 產生動態 SQL
     const values = Object.values(updateFields);
     const setClause = keys.map((key) => `${key} = ?`).join(", ");
-    const setClauseWithUpdatedAt = `${setClause}, updated_at = NOW()`;
+    const sqlQuery = `UPDATE coupons SET ${setClause}, updated_at = NOW() WHERE id = ?`;
+    values.push(id); // `id` 放在最後
 
-    values.push(id); // id 放在最後
+    console.log(" SQL 查詢:", sqlQuery);
+    console.log(" SQL 參數:", values);
 
-    const [result] = await pool.query(
-      `UPDATE coupons SET ${setClauseWithUpdatedAt} WHERE id = ?`,
-      values
-    );
+    const [result] = await pool.query(sqlQuery, values);
 
-    if (!result || result.affectedRows == 0) {
+    if (!result || result.affectedRows === 0) {
       return { error: `更新失敗，找不到 id=${id} 的優惠券或沒有變更` };
     }
 
     return { message: `優惠券 id=${id} 更新成功` };
   } catch (error) {
+    console.error(" 更新優惠券錯誤:", error);
     return { error: "無法更新優惠券：" + error.message };
   }
 };

@@ -176,11 +176,10 @@ export const createCourseWithSession = async (
     await connection.beginTransaction();
 
     const [courseResult] = await connection.query(
-      `INSERT INTO course (type_id, img_id, name, description, duration, price, notice, qa, is_deleted) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO course (type_id, name, description, duration, price, notice, qa, is_deleted) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         courseData.type_id,
-        courseData.img_id,
         courseData.name,
         courseData.description,
         courseData.duration,
@@ -188,31 +187,26 @@ export const createCourseWithSession = async (
         courseData.notice,
         courseData.qa,
         0,
-        // 預設 is_deleted 為 0
       ]
     );
-
     const courseId = courseResult.insertId;
 
     const [sessionResult] = await connection.query(
-      `INSERT INTO course_session (course_id, area_id, teacher_id, max_people, curr_people, remaining_slots, start_date, end_date, class_dates, deadline_date, start_time, end_time, is_deleted, created_at, update_at) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+      `INSERT INTO course_session (course_id, area_id, teacher_id, max_people, start_date, class_dates, start_time, end_time, is_deleted, created_at, update_at) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         courseId,
         sessionData.area_id,
         sessionData.teacher_id,
         sessionData.max_people,
-        sessionData.curr_people,
-        sessionData.remaining_slots,
         sessionData.start_date,
-        sessionData.end_date,
         sessionData.class_dates,
-        sessionData.deadline_date,
         sessionData.start_time,
         sessionData.end_time,
-        0, // 預設 is_deleted 為 0
+        0,
       ]
     );
+    const sessionId = sessionResult.insertId;
 
     let img_id = "";
 
@@ -225,12 +219,6 @@ export const createCourseWithSession = async (
       );
       mainImageId = mainImgResult.insertId;
       img_id = mainImgResult.insertId;
-
-      // 更新課程的 img_id 欄位
-      await connection.query(`UPDATE course SET img_id = ? WHERE id = ?`, [
-        mainImageId,
-        courseId,
-      ]);
     }
 
     // 處理其他圖片
@@ -238,14 +226,15 @@ export const createCourseWithSession = async (
       for (const url of imgData.otherImages) {
         await connection.query(
           `INSERT INTO course_img (course_id, main_pic, url) VALUES (?, ?, ?)`,
-          [courseId, 0, url] // 其他圖片，main_pic = 0
+          [courseId, 0, url]
         );
       }
     }
 
-    await connection.commit(); // 提交交易
-    return { courseId, sessionId: sessionResult.insertId, mainImageId };
+    await connection.commit();
+    return { courseId, sessionId, mainImageId };
   } catch (err) {
+    await connection.rollback();
     console.log("錯誤:", err);
     throw new Error(" 無法建立課程：" + err.message);
   } finally {
@@ -354,15 +343,20 @@ export const updateCourseWithSession = async (
       }
     }
 
+    // **處理刪除的圖片**
+    if (imgData?.deletedPics?.length > 0) {
+      const deletedPicsArray = JSON.parse(imgData.deletedPics);
+      const picIdsToDelete = deletedPicsArray.map((pic) => pic.id); // 取出所有圖片的 id
+
+      await connection.query(
+        `DELETE FROM course_img WHERE id IN (?) AND course_id = ?`,
+        [picIdsToDelete, courseId]
+      );
+      console.log("🗑️ 已刪除圖片 ID:", picIdsToDelete);
+    }
+
     // 更新其他圖片
     if (imgData?.otherImages?.length > 0) {
-      // 先刪除舊的其他圖片
-      await connection.query(
-        `DELETE FROM course_img WHERE course_id = ? AND main_pic = 0`,
-        [courseId]
-      );
-
-      // 插入新的其他圖片
       for (const filename of imgData.otherImages) {
         await connection.query(
           `INSERT INTO course_img (course_id, main_pic, url) VALUES (?, ?, ?)`,

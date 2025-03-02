@@ -1,66 +1,103 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-// import styles from "../../../styles/modules/operatorCamera.module.css";
-import {useHotelReview } from "@/hooks/useHotelReview";
-import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
+import { useHotelReview } from "@/hooks/useHotelReview"; 
+import { useAuth } from "@/hooks/use-auth"; 
+import { useRouter, useParams } from "next/navigation";
 import Header from "../../../components/layout/header";
-import My from "../../../components/hotel/my"
-// ReviewList
-// reviews.js 裡get+post+delete+put做API連結後台，
-//下面都是假資料參考用就好
+import My from "../../../components/hotel/my";
+
 const ReviewList = () => {
+  const { user } = useAuth(); 
   const [modalData, setModalData] = useState({});
   const replyInputRef = useRef(null);
   const router = useRouter();
-  
+  const [reviews, setReviews] = useState([]);
+
   const { id } = useParams();
-  const { review } = useHotelReview(id);
-  console.log(review);
-  
+  const { review } = useHotelReview(); 
+
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
-  const changepage = (path) => {
-    if (path) {
-      router.push(`/hotel-coupon/${path}`);
-    }
-  };
 
-  const reviews = review.map((item) => ({
-   
-      customer: `${item.user_name}`,
-      order: `${item.id}`,
-      date: `${item.created_at}`,
-      rating: `${item.rating}`,
-      content: `${item.comment}`
-      ,
-      replied: true,
+  useEffect(() => {
+    if (!review) return;
+    const formattedReviews = review.map((item) => ({
+      customer: item.user_name,
+      order: item.id,
+      date: item.created_at,
+      rating: item.rating,
+      content: item.comment,
+      replied: !!item.reply,
+      reply: item.reply || "",
       status: "公開",
     }));
+
+    setReviews(formattedReviews);
+  }, [review]);
+
   const loadReview = (review) => {
     setModalData(review);
   };
 
-  const replyReview = () => {
+  const replyReview = async () => {
+    if (!user) {
+      alert("請先登入再回覆評論");
+      return;
+    }
+
     const replyContent = replyInputRef.current.value.trim();
-    if (replyContent) {
-      alert(`回覆成功：${replyContent}`);
-      replyInputRef.current.value = ""; // 清空
-    } else {
+    if (!replyContent) {
       alert("請先填寫回覆內容");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("loginWithToken");
+      if (!token) throw new Error("未登入，請重新登入");
+
+      const response = await fetch(
+        `http://localhost:5000/api/hotel_review/${modalData.order}/reply`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            operator_id: user.id, 
+            reply: replyContent,
+          }),
+        }
+      );
+
+      if (!response.ok) throw new Error("回覆失敗");
+
+      setModalData((prev) => ({
+        ...prev,
+        reply: replyContent,
+      }));
+
+      setReviews((prevReviews) =>
+        prevReviews.map((r) =>
+          r.order == modalData.order ? { ...r, reply: replyContent, replied: true } : r
+        )
+      );
+
+      replyInputRef.current.value = "";
+      alert("回覆成功！");
+    } catch (error) {
+      alert("回覆失敗，請稍後再試");
+      console.error("回覆評論錯誤:", error);
     }
   };
 
   return (
     <>
-    <Header />
+      <Header />
       <div className="container mt-5">
         <div className="row">
-          {/* 左邊*/}
-         <My/>
-
-          {/* 右邊 */}
+          <My />
           <div className="col-md-9">
             <h5 className="mb-4">評論列表</h5>
             <div className="table-responsive">
@@ -87,23 +124,13 @@ const ReviewList = () => {
                       <td>{review.content}</td>
                       <td>{review.replied ? "已回覆" : "未回覆"}</td>
                       <td>
-                        <span
-                          className={`badge ${
-                            review.status == "公開"
-                              ? "bg-success"
-                              : "bg-warning"
-                          }`}
-                        >
+                        <span className={`badge ${review.status === "公開" ? "bg-success" : "bg-warning"}`}>
                           {review.status}
                         </span>
                       </td>
                       <td>
-                        <button
-                          className="btn btn-sm btn-primary"
-                          data-bs-toggle="modal"
-                          data-bs-target="#reviewModal"
-                          onClick={() => loadReview(review)}
-                        >
+                        <button className="btn btn-sm btn-primary" data-bs-toggle="modal"
+                          data-bs-target="#reviewModal" onClick={() => loadReview(review)}>
                           檢視 / 回覆
                         </button>
                       </td>
@@ -116,66 +143,27 @@ const ReviewList = () => {
         </div>
 
         {/* Modal */}
-        <div
-          className="modal fade"
-          id="reviewModal"
-          tabIndex="-1"
-          aria-labelledby="reviewModalLabel"
-          aria-hidden="true"
-        >
+        <div className="modal fade" id="reviewModal" tabIndex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="reviewModalLabel">
-                  評論詳細資訊
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
+                <h5 className="modal-title" id="reviewModalLabel">評論詳細資訊</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div className="modal-body">
-                <p>
-                  <strong>顧客名稱：</strong> {modalData.customer || "N/A"}
-                </p>
-                <p>
-                  <strong>訂單編號：</strong> {modalData.order || "N/A"}
-                </p>
-                <p>
-                  <strong>評論日期：</strong> {modalData.date || "N/A"}
-                </p>
-                <p>
-                  <strong>評分：</strong> {modalData.rating || "N/A"}
-                </p>
-                <p>
-                  <strong>評論內容：</strong>
-                </p>
+                <p><strong>顧客名稱：</strong> {modalData.customer || "N/A"}</p>
+                <p><strong>訂單編號：</strong> {modalData.order || "N/A"}</p>
+                <p><strong>評論日期：</strong> {modalData.date || "N/A"}</p>
+                <p><strong>評分：</strong> {modalData.rating || "N/A"}</p>
+                <p><strong>評論內容：</strong></p>
                 <p className="border p-2">{modalData.content || "N/A"}</p>
                 <label className="form-label mt-3">回覆：</label>
-                <textarea
-                  ref={replyInputRef}
-                  className="form-control"
-                  rows="3"
-                  placeholder={review.reply ? review.reply : "請輸入回覆內容..."}
-                ></textarea>
+                <textarea ref={replyInputRef} className="form-control" rows="3"
+                  placeholder={modalData.reply || "請輸入回覆內容..."}></textarea>
               </div>
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  取消
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={replyReview}
-                >
-                  送出回覆
-                </button>
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" className="btn btn-primary" onClick={replyReview}>送出回覆</button>
               </div>
             </div>
           </div>

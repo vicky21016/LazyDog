@@ -109,17 +109,60 @@ export const claimUserCouponByCode = async (userId, code) => {
   }
 };
 
-export const getUserCoupons = async (userId) => {
+export const getUserCoupons = async (userId, status, type) => {
   try {
-    const [coupons] = await pool.query(
-      `SELECT uc.id, uc.status, uc.claimed_at, c.name, c.type, c.value, c.start_time, c.end_time FROM coupon_usage uc JOIN coupons c ON uc.coupon_id = c.id WHERE uc.user_id = ? AND uc.is_deleted = 0 ORDER BY uc.claimed_at DESC`,
-      [userId]
-    );
+    let query = `
+      SELECT 
+        uc.id, 
+        uc.status AS usage_status,  -- 來自 coupon_usage
+        uc.claimed_at, 
+        c.name, 
+        c.type, 
+        c.value, 
+        c.start_time, 
+        c.end_time,
+        CASE 
+          WHEN uc.status = 'claimed' AND c.end_time < NOW() THEN 'expired' 
+          ELSE uc.status 
+        END AS status -- 動態標記逾期優惠券
+      FROM 
+        coupon_usage uc
+      JOIN 
+        coupons c ON uc.coupon_id = c.id
+      WHERE 
+        uc.user_id = ? 
+        AND uc.is_deleted = 0
+    `;
+
+    const params = [userId];
+
+    if (status !== "all") {
+      if (status === "expired") {
+        query += ` AND c.end_time < NOW() AND uc.status = 'claimed'`;
+      } else {
+        query += ` AND uc.status = ?`;
+        params.push(status);
+      }
+    }
+
+    if (type !== "all") {
+      query += ` AND c.type = ?`;
+      params.push(type);
+    }
+
+    query += ` ORDER BY uc.claimed_at DESC`;
+
+    const [coupons] = await pool.query(query, params);
+
     return { success: true, data: coupons };
   } catch (error) {
-    throw new Error(error.message);
+    console.error("SQL 查詢錯誤:", error);
+    return { success: false, error: "資料庫查詢失敗" };
   }
 };
+
+
+
 
 export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
   const connection = await pool.getConnection();

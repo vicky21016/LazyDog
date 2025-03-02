@@ -3,53 +3,71 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../../styles/modules/operatorCamera.module.css";
 import { useRouter } from "next/navigation";
-import My from "../../components/hotel/my"
+import My from "../../components/hotel/my";
 import Header from "../../components/layout/header";
+import { getCoupons, softDeleteCoupon } from "@/services/couponService"; // 導入 API 函數
+
 export default function CouponListPage() {
-  const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [coupons, setCoupons] = useState([]); // 存儲優惠券數據
+  const [selectedCoupon, setSelectedCoupon] = useState(null); // 存儲當前選中的優惠券
   const router = useRouter();
- 
-  const changepage = (path) => {
-    if (path) {
-      router.push(`/hotel-coupon/${path}`);
+
+  // 加載優惠券數據
+  useEffect(() => {
+    const fetchCoupons = async () => {
+      try {
+        const response = await getCoupons(); // 調用 API 獲取優惠券
+        console.log("API 返回的數據：", response); // 打印數據
+
+        if (response && response.success && Array.isArray(response.data)) {
+          setCoupons(response.data); // 確保存入的是 data
+        } else {
+          console.error("API 返回的數據格式錯誤：", response);
+          setCoupons([]); // 設置為空數組
+        }
+      } catch (error) {
+        console.error("獲取優惠券失敗：", error);
+        setCoupons([]); // 設置為空數組
+      }
+    };
+
+    fetchCoupons();
+  }, []);
+
+  // 切換頁面
+  const handlePageChange = (path) => {
+    router.push(`/hotel-coupon/${path}`);
+  };
+
+  // 加載單個優惠券詳細信息
+  const loadCoupon = (coupon) => {
+    setSelectedCoupon(coupon);
+  };
+
+  // 刪除優惠券
+  const handleDeleteCoupon = async (couponId) => {
+    const confirmDelete = window.confirm("確定要刪除這張優惠券嗎？");
+    if (!confirmDelete) return;
+
+    try {
+      const result = await softDeleteCoupon(couponId); // 調用 API 刪除優惠券
+      if (result.success) {
+        setCoupons((prevCoupons) =>
+          prevCoupons.filter((coupon) => coupon.id !== couponId)
+        );
+        alert("優惠券已刪除");
+      } else {
+        alert("刪除失敗：" + result.message);
+      }
+    } catch (error) {
+      console.error("刪除優惠券失敗：", error);
+      alert("刪除優惠券時發生錯誤");
     }
   };
 
-  const coupons = [
-    {
-      code: "SWW2024",
-      name: "新春折扣",
-      details: "滿 1000 減 200",
-      startDate: "2024/03/01",
-      endDate: "2024/03/10",
-      applicableTo: "所有用戶",
-      usage: 1,
-      status: "啟用",
-    },
-    {
-      code: "VIP50",
-      name: "會員專屬折扣",
-      details: "50% 折扣",
-      startDate: "2024/02/15",
-      endDate: "2024/03/15",
-      applicableTo: "會員限定",
-      usage: 2,
-      status: "啟用",
-    },
-    {
-      code: "SUMMER10",
-      name: "夏日優惠",
-      details: "滿 500 減 50",
-      startDate: "2024/06/01",
-      endDate: "2024/06/30",
-      applicableTo: "所有用戶",
-      usage: 5,
-      status: "已過期",
-    },
-  ];
-
-  const loadCoupon = (coupon) => {
-    setSelectedCoupon(coupon);
+  // 編輯優惠券
+  const handleEditCoupon = (couponId) => {
+    router.push(`/hotel-coupon/editCoupon?id=${couponId}`);
   };
 
   useEffect(() => {
@@ -61,7 +79,7 @@ export default function CouponListPage() {
       <Header />
       <div className="container mt-5">
         <div className="row">
-          {/* 左邊*/}
+          {/* 左邊 */}
           <My />
 
           {/* 右邊 */}
@@ -76,7 +94,6 @@ export default function CouponListPage() {
                     <th>優惠內容</th>
                     <th>開始日期</th>
                     <th>結束日期</th>
-                    <th>適用對象</th>
                     <th>使用次數</th>
                     <th>狀態</th>
                     <th>操作</th>
@@ -84,31 +101,52 @@ export default function CouponListPage() {
                 </thead>
                 <tbody>
                   {coupons.map((coupon) => (
-                    <tr key={coupon.code} className="text-center">
+                    <tr key={coupon.id} className="text-center">
                       <td>{coupon.code}</td>
                       <td>{coupon.name}</td>
-                      <td>{coupon.details}</td>
-                      <td>{coupon.startDate}</td>
-                      <td>{coupon.endDate}</td>
-                      <td>{coupon.applicableTo}</td>
-                      <td>{coupon.usage}</td>
+                      <td>{coupon.value || "無"}</td>
+                      <td>
+                        {coupon.start_time
+                          ? coupon.start_time.split("T")[0]
+                          : "未設定"}
+                      </td>
+                      <td>
+                        {coupon.end_time
+                          ? coupon.end_time.split("T")[0]
+                          : "未設定"}
+                      </td>
+                      <td>{coupon.usage || 0}</td>
                       <td>
                         <span
                           className={`badge ${
-                            coupon.status === "啟用"
+                            coupon.status === "active"
                               ? "bg-success"
+                              : coupon.status === "expired"
+                              ? "bg-warning"
                               : "bg-secondary"
-                          } ${styles.seconday}`}
+                          }`}
                         >
                           {coupon.status}
                         </span>
                       </td>
                       <td>
                         <button
-                          className="btn btn-sm btn-primary"
+                          className="btn btn-sm btn-primary me-2"
                           onClick={() => loadCoupon(coupon)}
                         >
                           檢視
+                        </button>
+                        <button
+                          className="btn btn-sm btn-warning me-2"
+                          onClick={() => handleEditCoupon(coupon.id)}
+                        >
+                          編輯
+                        </button>
+                        <button
+                          className="btn btn-sm btn-danger"
+                          onClick={() => handleDeleteCoupon(coupon.id)}
+                        >
+                          刪除
                         </button>
                       </td>
                     </tr>
@@ -142,10 +180,24 @@ export default function CouponListPage() {
                         <strong>優惠名稱：</strong> {selectedCoupon.name}
                       </p>
                       <p>
-                        <strong>優惠內容：</strong> {selectedCoupon.details}
+                        <strong>優惠內容：</strong>{" "}
+                        {selectedCoupon.value
+                          ? Number(selectedCoupon.value).toFixed(2)
+                          : "無"}
                       </p>
                       <p>
-                        <strong>有效期限：</strong> {selectedCoupon.endDate}
+                        <strong>有效期限：</strong>
+                        {selectedCoupon?.start_time
+                          ? new Date(selectedCoupon.start_time)
+                              .toISOString()
+                              .split("T")[0]
+                          : "未設定"}{" "}
+                        ~{" "}
+                        {selectedCoupon?.end_time
+                          ? new Date(selectedCoupon.end_time)
+                              .toISOString()
+                              .split("T")[0]
+                          : "未設定"}
                       </p>
                     </div>
                     <div className="modal-footer">
@@ -157,7 +209,7 @@ export default function CouponListPage() {
                       </button>
                       <button
                         className="btn btn-warning"
-                        onClick={() => changepage("editCoupon")}
+                        onClick={() => handleEditCoupon(selectedCoupon.id)}
                       >
                         編輯
                       </button>
@@ -170,7 +222,7 @@ export default function CouponListPage() {
             <div className="d-flex justify-content-end mt-3">
               <button
                 className="btn btn-sm btn-primary"
-                onClick={() => changepage("createCoupon")}
+                onClick={() => handlePageChange("createCoupon")}
               >
                 + 新增優惠券
               </button>

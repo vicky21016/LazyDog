@@ -29,11 +29,12 @@
 
 .labels:focus,
 .controls:focus,
+.options:active,
 input:focus,
 input:active {
   outline: none !important;
   box-shadow: none !important;
-  border-color: #a1a1a1 !important;
+  border-color: #fca85f !important;
 }
 
 /* 右邊 */
@@ -68,6 +69,10 @@ input:active {
     padding-left: 2px;
     letter-spacing: 1px;
   }
+  /* .select:focus,
+  .select option:checked {
+    background-color: #ff9538;
+  } */
 
   /* 目前改不了顏色 */
   .pleaseChoose {

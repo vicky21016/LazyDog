@@ -67,7 +67,8 @@ export default function CourseIntro({ course, session, place }) {
         showConfirmButton: false,
       });
     } else {
-      onAddCourse(c, selectDate, selectedTime);
+      console.log("加入購物車的數據:", { c, s, selectDate, selectedTime });
+      onAddCourse(c, s, selectDate, selectedTime);
       Swal.fire({
         // icon: "success",
         title: "已加入購物車",

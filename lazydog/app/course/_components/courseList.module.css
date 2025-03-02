@@ -4,27 +4,19 @@
 
 /* 活動輪播 */
 .new {
-  width: 100vw;
-  height: 450px;
-  border-radius: 30px;
+  position: relative;
+  width: 100%;
+  height: 400px;
   overflow: hidden;
   display: flex;
-  padding: 13px 3px;
-  align-items: flex-start;
-  align-self: stretch;
-  overflow: hidden;
+  align-items: center;
   justify-content: center;
+  margin: 0 auto;
+  padding: 13px 3px;
   z-index: 1;
+  border-radius: 48px;
 
-  .swiperrr {
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  .newCard {
-    /* position: relative; */
-    width: 100%;
-  }
+  /* 勿刪  照片slide備用 */
   /* 
   .newImg {
     width:  100%;
@@ -37,12 +29,14 @@
     height: 100%;
     object-fit: cover;
     object-position: center top;
+    /* border-radius: 10px; */
   }
   .newVideoPeople {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 60%;
+    object-position: center 80%;
+    /* border-radius: 10px; */
   }
   .bottom {
     position: absolute;
@@ -447,8 +441,8 @@
     width: 280px;
   }
   .img {
-    width: 100%;
-    height: auto;
+    width: 280px;
+    height: 280px;
     object-fit: cover;
     border: 1px solid var(--text-Wh, #f7f7f7);
     margin-bottom: 8px;
@@ -586,6 +580,7 @@
       .cardImg {
         width: 240px;
         height: 240px;
+        object-fit: cover;
         margin-bottom: 27px;
         border: 0.1px solid #f7efef;
       }

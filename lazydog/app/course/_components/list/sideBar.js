@@ -1,11 +1,71 @@
-'use client'
+"use client";
 
-import React, { useState, useEffect } from 'react'
-import styles from "../courseList.module.css"
+import React, { useState, useEffect } from "react";
+import styles from "../courseList.module.css";
 import Link from "next/link";
 
+export default function SideBar({ filters, setFilters }) {
+  const [types, setTypes] = useState([]);
+  const [places, setPlaces] = useState([]);
 
-export default function SideBar() {
+  useEffect(() => {
+    fetch(`http://localhost:5000/teacher/createGet`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("loginWithToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setTypes(data.data.types);
+        setPlaces(data.data.places);
+      })
+      .catch((err) => {
+        console.error("Error fetching data:", err);
+      });
+  }, []);
+
+  const [keyword, setKeyword] = useState("");
+  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedPlaces, setSelectedPlaces] = useState([]);
+  const [minPrice, setMinPrice] = useState(200);
+  const [maxPrice, setMaxPrice] = useState(1000);
+
+  // 搜尋關鍵字
+  const handleKeywordChange = (e) => {
+    setKeyword(e.target.value);
+    setFilters((prev) => ({ ...prev, keyword: e.target.value }));
+  };
+
+  // 更新課程類別篩選
+  const handleTypeChange = (id) => {
+    setFilters((prev) => ({
+      ...prev,
+      types: prev.types.includes(id)
+        ? prev.types.filter((t) => t !== id)
+        : [...prev.types, id],
+    }));
+  };
+
+  // 更新地點篩選
+  const handlePlaceChange = (id) => {
+    setFilters((prev) => ({
+      ...prev,
+      places: prev.places.includes(id)
+        ? prev.places.filter((p) => p !== id)
+        : [...prev.places, id],
+    }));
+  };
+
+  // 更新價格範圍
+  const handlePriceChange = (e, type) => {
+    setFilters((prev) => ({
+      ...prev,
+      [type]: Number(e.target.value),
+    }));
+  };
+
   return (
     <>
       {/* 篩選 */}
@@ -15,15 +75,20 @@ export default function SideBar() {
           <img
             className={styles.searchIcon}
             src="/course/img/searchIcon.png"
-              alt={`搜尋課程內容`}
+            alt={`搜尋課程內容`}
           />
           <input
             type="text"
             className={styles.searchInput}
-            id="courseInput"
             placeholder="搜尋課程"
+            value={keyword}
+            onChange={handleKeywordChange}
           />
-          <img className={styles.xIcon} src="/course/img/x.png" alt={`清除搜尋內容`} />
+          <img
+            className={styles.xIcon}
+            src="/course/img/x.png"
+            alt={`清除搜尋內容`}
+          />
         </div>
         {/* 課程類別 */}
         <div className={styles.filterGroup}>
@@ -32,75 +97,26 @@ export default function SideBar() {
             <img
               className={styles.arrowDown}
               src="/course/img/arrow-down.png"
-                alt={`點選看更多 課程類別`}
+              alt={`點選看更多 課程類別`}
             />
           </div>
           <div className={styles.filter}>
-            <div className={`form-check ${styles.checks}`}>
-              <input
-                className={`form-check-input ${styles.checkbox}`}
-                type="checkbox"
-                id="train"
-              />
-              <label
-                className={`form-check-label ${styles.labels}`}
-                htmlFor="train"
-              >
-                寵物訓練
-              </label>
-            </div>
-            <div className={`form-check ${styles.checks}`}>
-              <input
-                className={`form-check-input ${styles.checkbox}`}
-                type="checkbox"
-                id="food"
-              />
-              <label
-                className={`form-check-label ${styles.labels}`}
-                htmlFor="food"
-              >
-                寵膳食育
-              </label>
-            </div>
-            <div className={`form-check ${styles.checks}`}>
-              <input
-                className={`form-check-input ${styles.checkbox}`}
-                type="checkbox"
-                id="beauty"
-              />
-              <label
-                className={`form-check-label ${styles.labels}`}
-                htmlFor="beauty"
-              >
-                寵物美容
-              </label>
-            </div>
-            <div className={`form-check ${styles.checks}`}>
-              <input
-                className={`form-check-input ${styles.checkbox}`}
-                type="checkbox"
-                id="takecare"
-              />
-              <label
-                className={`form-check-label ${styles.labels}`}
-                htmlFor="takecare"
-              >
-                寵物照護
-              </label>
-            </div>
-            <div className={`form-check ${styles.checks}`}>
-              <input
-                className={`form-check-input ${styles.checkbox}`}
-                type="checkbox"
-                id="profession"
-              />
-              <label
-                className={`form-check-label ${styles.labels}`}
-                htmlFor="profession"
-              >
-                商業思維與專業培訓
-              </label>
-            </div>
+            {types.map((t) => (
+              <div key={t.type_id} className={`form-check ${styles.checks}`}>
+                <input
+                  className={`form-check-input ${styles.checkbox}`}
+                  type="checkbox"
+                  checked={filters.types.includes(t.id)}
+                  onChange={() => handleTypeChange(t.id)}
+                />
+                <label
+                  className={`form-check-label ${styles.labels}`}
+                  htmlFor="train"
+                >
+                  {t.name}
+                </label>
+              </div>
+            ))}
           </div>
         </div>
         {/* 上課地點 */}
@@ -114,71 +130,22 @@ export default function SideBar() {
             />
           </div>
           <div className={styles.filter}>
-            <div className={`form-check ${styles.checks}`}>
-              <input
-                className={`form-check-input ${styles.checkbox}`}
-                type="checkbox"
-                id="train"
-              />
-              <label
-                className={`form-check-label ${styles.labels}`}
-                htmlFor="train"
-              >
-                台北
-              </label>
-            </div>
-            <div className={`form-check ${styles.checks}`}>
-              <input
-                className={`form-check-input ${styles.checkbox}`}
-                type="checkbox"
-                id="food"
-              />
-              <label
-                className={`form-check-label ${styles.labels}`}
-                htmlFor="food"
-              >
-                台中
-              </label>
-            </div>
-            <div className={`form-check ${styles.checks}`}>
-              <input
-                className={`form-check-input ${styles.checkbox}`}
-                type="checkbox"
-                id="beauty"
-              />
-              <label
-                className={`form-check-label ${styles.labels}`}
-                htmlFor="beauty"
-              >
-                高雄
-              </label>
-            </div>
-            <div className={`form-check ${styles.checks}`}>
-              <input
-                className={`form-check-input ${styles.checkbox}`}
-                type="checkbox"
-                id="takecare"
-              />
-              <label
-                className={`form-check-label ${styles.labels}`}
-                htmlFor="takecare"
-              >
-                線上直播
-              </label>
-            </div>
-            <div className={`form-check ${styles.checks}`}>
-              <input
-                className={`form-check-input ${styles.checkbox}`}
-                type="checkbox"
-                id="profession"
-              />
-              <label
-                className={`form-check-label ${styles.labels}`}
-                htmlFor="profession"
-              >
-                線上預錄
-              </label>
-            </div>
+            {places.map((p) => (
+              <div key={p.id} className={`form-check ${styles.checks}`}>
+                <input
+                  className={`form-check-input ${styles.checkbox}`}
+                  type="checkbox"
+                  checked={filters.places.includes(p.id)}
+                  onChange={() => handlePlaceChange(p.id)}
+                />
+                <label
+                  className={`form-check-label ${styles.labels}`}
+                  htmlFor="train"
+                >
+                  {p.region}
+                </label>
+              </div>
+            ))}
           </div>
         </div>
         {/* 🔹 價格篩選區 */}
@@ -195,9 +162,9 @@ export default function SideBar() {
               <input
                 id="filterMin"
                 type="number"
-                defaultValue={200}
+                value={filters.minPrice}
+                onChange={(e) => handlePriceChange(e, "minPrice")}
                 min={0}
-                max={10000}
               />
               <span>元</span>
             </div>
@@ -208,22 +175,22 @@ export default function SideBar() {
               <input
                 id="filterMax"
                 type="number"
-                defaultValue={1000}
-                min={0}
-                max={10000}
+                value={filters.maxPrice}
+                onChange={(e) => handlePriceChange(e, "maxPrice")}
+                max={100000}
               />
               <span>元</span>
             </div>
           </div>
           {/* Bootstrap Slider */}
-          <input
+          {/* <input
             id="priceRange"
             type="text"
             data-slider-min={0}
             data-slider-max={10000}
             data-slider-step={100}
             data-slider-value="[200,1000]"
-          />
+          /> */}
         </div>
         {/* 清除按鈕 */}
         <button id="resetFilter" className={styles.clearFilterBtn}>
@@ -237,16 +204,6 @@ export default function SideBar() {
             <img src="/course/img/girlPic.png" alt={`最新課程優惠中`} />
           </Link>
         </div>
-
-        {/* <a href>
-                <figure>
-                  <img
-                    src="/course/hotel-images/page-image/hotelad2.png"
-                    alt
-                    className={`mx-4`}
-                  />
-                </figure>
-              </a> */}
       </aside>
     </>
   );

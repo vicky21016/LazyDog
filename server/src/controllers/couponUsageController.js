@@ -18,10 +18,10 @@ export const claimCoupon = async (req, res) => {
 };
 export const claimCouponByCode = async (req, res) => {
   try {
-    const { userId, code } = req.body;
-
-    if (!userId || !code) {
-      return res.status(400).json({ error: "缺少 userId 或優惠券代碼" });
+    const { code } = req.body;
+    const userId = req.user.id;
+    if (!code) {
+      return res.status(400).json({ error: "請提供優惠券代碼" });
     }
 
     const result = await claimUserCouponByCode(userId, code);
@@ -31,15 +31,22 @@ export const claimCouponByCode = async (req, res) => {
   }
 };
 
-export const getCoupons = async (req, res) => {
+export const getCouponss = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const result = await getUserCoupons(userId);
+    const userId = req.user.id; // 從 Token 中獲取 userId
+    const { status, type } = req.query;
+
+    console.log("🚀 getCouponss 中的 req.user:", req.user);
+    console.log("🚀 從 Token 獲取的 userId:", userId);
+
+    const result = await getUserCoupons(userId, status, type);
     res.status(200).json(result);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("控制器錯誤:", error);
+    res.status(500).json({ success: false, error: "資料庫查詢失敗" });
   }
 };
+
 
 export const useCoupon = async (req, res) => {
   try {
