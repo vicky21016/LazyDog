@@ -104,7 +104,7 @@ export default function ProfileCouponPage(props) {
             <div className="suFeatureLinks mb-3">
               <a
                 className={couponStyles.suFeatureLinks1}
-                href="#"
+                onClick={() => changepage("fontcoupon")}
                 style={{ cursor: "pointer" }}
               >
                 領取免運券

@@ -31,15 +31,22 @@ export const claimCouponByCode = async (req, res) => {
   }
 };
 
-export const getCoupons = async (req, res) => {
+export const getCouponss = async (req, res) => {
   try {
-    const userId = req.user.id;
+    console.log("請求的使用者:", req.user); // 確保 user 存在
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(403).json({ error: "未授權，無法獲取優惠券" });
+    }
+
     const result = await getUserCoupons(userId);
     res.status(200).json(result);
   } catch (error) {
+    console.error("獲取優惠券失敗:", error.message);
     res.status(400).json({ error: error.message });
   }
 };
+
 
 export const useCoupon = async (req, res) => {
   try {

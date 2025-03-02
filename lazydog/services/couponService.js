@@ -172,18 +172,35 @@ export const softDeleteCoupon = async (couponId) => {
   }
 };
 
-export const getUserCoupons = async () => {
-  const token = getToken();
-  const res = await fetch(COUPON_USAGE_URL, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const getCouponss = async () => {
+  if (typeof window == "undefined") return null; // 避免 SSR 時執行
 
-  return await res.json();
+  const token = localStorage.getItem("loginWithToken");
+ 
+
+  try {
+    const res = await fetch("http://localhost:5000/api/coupon/usage", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status == 403) {
+      console.warn("權限不足，請重新登入");
+      return null;
+    }
+
+    const response = await res.json();
+    return response;
+  } catch (error) {
+    console.error("獲取優惠券紀錄時發生錯誤：", error);
+    return { success: false, error: "無法獲取優惠券紀錄" };
+  }
 };
+
+
 // 領取優惠券(手領)
 export const claimCoupon = async (couponId) => {
   const token = localStorage.getItem("loginWithToken");
