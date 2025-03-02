@@ -184,8 +184,8 @@ export const searchKeywordS = async (keyword) => {
       LEFT JOIN article_type ON articles.category_id = article_type.id
       LEFT JOIN comment ON articles.id = comment.article_id 
       LEFT JOIN users AS comment_users ON comment.user_id = comment_users.id
-      WHERE (articles.title LIKE ? OR articles.content LIKE ? OR users.name LIKE ? ) AND articles.is_deleted = 0 AND users.is_deleted = 0`,
-      [`%${keyword}%`, `%${keyword}%`, `%${keyword}%`]
+      WHERE (articles.title LIKE ?) AND articles.is_deleted = 0 AND users.is_deleted = 0`,
+      [`%${keyword}%`]
     );
     // console.log(articles)
     return articles;
