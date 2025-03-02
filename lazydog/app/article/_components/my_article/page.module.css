@@ -35,6 +35,9 @@
 /* ------MyArticle-------- */
 .articleHisHieght {
   height: auto;
+  box-shadow: 0px 1px 5px .1px rgba(105, 105, 105, 0.75);
+  
+  /* overflow: hidden; */
 }
 .linkheight {
   height: 130px;
