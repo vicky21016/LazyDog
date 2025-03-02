@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 export function useTeachers() {
 
   const [teachers, setTeachers] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchTeachers = async () => {
       let API = "http://localhost:5000/teachers/list";
@@ -21,7 +21,9 @@ export function useTeachers() {
 
       } catch (err) {
         console.log(err.message);
-      }
+      }finally {
+        setLoading(false);
+    }
     };
 
     fetchTeachers();
@@ -29,5 +31,5 @@ export function useTeachers() {
 useEffect(() => {
 
 }, [teachers]);
-  return { teachers }; // 返回 teachers 資料
+  return { teachers, loading  }; // 返回 teachers 資料
 }
