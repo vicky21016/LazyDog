@@ -15,6 +15,8 @@ import { useOrder } from "@/hooks/use-order";
 export default function ProfileCouponPage(props) {
     const router = useRouter();
     const { orders } = useOrder();
+    console.log(orders);
+    
     const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
         usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
     const changepage = (path) => {

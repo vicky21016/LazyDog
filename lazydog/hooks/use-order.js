@@ -166,27 +166,27 @@ export function useOrder() {
         console.log(result);
 
         // 將 productID_list, price_list, amount_list 轉換為陣列
-        const formattedOrders = result.orders.map((order) => ({
-          ...order,
-          productID_list: order.productID_list
-            ? order.productID_list.split(",")
-            : [],
-          price_list: order.price_list
-            ? order.price_list.split(",").map(Number)
-            : [],
-          amount_list: order.amount_list
-            ? order.amount_list.split(",").map(Number)
-            : [],
-        }));
-        console.log(formattedOrders);
-
-        setOrders(formattedOrders); // 更新訂單資料
-        setIsLoading(false); // 結束載入 (成功)
+        // const formattedOrders = result.orders.map((order) => ({
+        //   ...order,
+        //   productID_list: order.productID_list
+        //     ? order.productID_list.split(",")
+        //     : [],
+        //   price_list: order.price_list
+        //     ? order.price_list.split(",").map(Number)
+        //     : [],
+        //   amount_list: order.amount_list
+        //     ? order.amount_list.split(",").map(Number)
+        //     : [],
+        // }));
+        // console.log(formattedOrders);
+        setOrders(result.orders);
+        // setOrders(formattedOrders); // 更新訂單資料
+        // setIsLoading(false); // 結束載入 (成功)
       } catch (err) {
         setError(err.message); // 設定錯誤訊息
         setIsLoading(false); // 結束載入 (失敗)
       }
-      
+
     };
     fetchOrders();
 
