@@ -9,9 +9,10 @@ import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "./list.module.css";
 import Page from "../../course/_components/list/pagination";
 import style1 from "../../product/list/list.module.css";
+import style from "../../pages/menu.module.css";
 
 export default function App() {
-  const { teachers = [] } = useTeachers();
+  const { teachers = [] , loading} = useTeachers();
   const [filtered, setFiltered] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false); // 控制篩選選單開關
 
@@ -54,6 +55,14 @@ export default function App() {
     document.addEventListener("click", clickOutside);
     return () => document.removeEventListener("click", clickOutside);
   }, [filterOpen]);
+
+  if (loading) return
+  <>
+      <div className={style.container2}>
+          <div className={style.loader27}></div>
+         </div>
+       </>
+
 
   return (
     <>

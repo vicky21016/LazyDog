@@ -9,7 +9,7 @@ import style from "../../pages/menu.module.css";
 
 export default function Profile () {
   const { id } = useParams();
-  const { teacher } = useTeacherDetail(id);
+  const { teacher, loading } = useTeacherDetail(id);
   // 取得當前頁面的 URL
   const currentURL = `http://localhost:3000/teacher/info/${id}`
 
@@ -25,7 +25,7 @@ export default function Profile () {
     window.open(`https://www.instagram.com/`, "_blank");
   };
 
-  if (!teacher) {
+  if (loading) {
     return (
       <div className={style.container2}>
         <div className={style.loader27}></div>
