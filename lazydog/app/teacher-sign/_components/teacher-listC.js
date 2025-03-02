@@ -25,7 +25,7 @@ export default function TeacherListC() {
       });
   }, []);
   // console.log(data?);
-  console.log(mycourse);
+  // console.log(mycourse);
 
   return (
     <>
