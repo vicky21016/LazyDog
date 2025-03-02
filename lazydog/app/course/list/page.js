@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "../_components/courseList.module.css";
@@ -13,45 +14,64 @@ import OtherCourseCard from "../_components/list/other-course-card";
 
 export default function CourseListPage() {
   const [courses, setCourses] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
     keyword: "", // 新增搜尋關鍵字
     types: [],
     places: [],
-    minPrice: 600,
-    maxPrice: 8000,
+    // minPrice: 600,
+    // maxPrice: 8000,
   });
 
   // 取得篩選後的課程
   useEffect(() => {
     setLoading(true);
-    const query = new URLSearchParams();
 
-    if (filters.keyword) query.append("keyword", filters.keyword);
-    if (filters.types.length) query.append("types", filters.types.join(","));
-    if (filters.places.length) query.append("places", filters.places.join(","));
-    query.append("minPrice", filters.minPrice);
-    query.append("maxPrice", filters.maxPrice);
+    const fetchCourses = async () => {
+      try {
+        const query = new URLSearchParams({
+          keyword: filters.keyword || "", // 確保 keyword 存在
+          typeF: filters.types.length ? filters.types.join(",") : "", // 確保 key 存在
+          placeF: filters.places.length ? filters.places.join(",") : "", // 確保 key 存在
+        });
 
-    fetch(`http://localhost:5000/api/course?${query.toString()}`)
-      .then((res) => res.json())
-      .then((data) => {
+        // if (filters.types.length)
+        //   query.append("typeF", filters.types.join(","));
+        // if (filters.places.length)
+        //   query.append("placeF", filters.places.join(","));
+
+        console.log("查詢參數:", query.toString());
+        console.log("目前篩選:", filters);
+
+        const res = await fetch(
+          `http://localhost:5000/api/course?${query.toString()}`
+        );
+        const data = await res.json();
+
+        console.log("後端回應:", data);
+
         setCourses(data?.data?.courses || []);
-        setLoading(false);
-      })
-      .catch((err) => {
+        setTypes(data?.data?.types || []);
+        setPlaces(data?.data?.places || []);
+      } catch (err) {
         console.error("Error fetching courses:", err);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchCourses();
   }, [filters]);
 
   // 分頁
-  // const [currPage, setCurrPage] = useState(1);
-  // const perPage = 9;
-  // const totalPages = Math.max(1, Math.ceil((course?.length || 0) / perPage));
+  const [currPage, setCurrPage] = useState(1);
+  const perPage = 9;
+  const totalPages = Math.max(1, Math.ceil(courses?.length / perPage));
 
-  // const startIndex = (currPage - 1) * perPage;
-  // const currentCourses = course?.slice(startIndex, startIndex + perPage);
+  const startIndex = (currPage - 1) * perPage;
+  const currentCourses = courses?.slice(startIndex, startIndex + perPage);
   return (
     <>
       <Header />
@@ -59,13 +79,18 @@ export default function CourseListPage() {
       <main className={styles.list}>
         <div className={`container ${styles.section1}`}>
           <div className={`row `}>
-            <SideBar filters={filters} setFilters={setFilters} />
-            <CourseCard courses={courses} loading={loading} />
-            {/* <Pagination
+            <SideBar
+              types={types}
+              places={places}
+              filters={filters}
+              setFilters={setFilters}
+            />
+            <CourseCard courses={courses} loading={loading} filters={filters} />
+            <Pagination
               totalPages={totalPages}
               currPage={currPage}
               setCurrPage={setCurrPage}
-            /> */}
+            />
           </div>
         </div>
         <div className={`container ${styles.section2}`}>

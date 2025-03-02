@@ -30,8 +30,8 @@ export default function MyCard({ id, title, cover_image, created_at }) {
     return (
         <>
             <div className={`${styles.articleHisHieght} row my-3`} style={{ backgroundColor: 'white', width: '100%' }}>
-                <img className="col-md-4" src={cover_image} alt="" style={{ maxHeight:'193.96px',objectFit: 'cover' }} />
-                <div className="col-md-8">
+                <img className="col col-md-4 col-xs-8" src={cover_image} alt="" style={{ maxHeight:'193.96px',objectFit: 'cover' }} />
+                <div className="col col-md-8 col-xs-8">
                     <div className="row h-100">
                         <div className="col-md-10 py-2">
                             <div className={`${styles.linkheight}`}>

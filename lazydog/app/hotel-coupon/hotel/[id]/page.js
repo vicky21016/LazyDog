@@ -91,7 +91,7 @@ const changepage = (path) => {
                 <div className={`section ${hotelStyles.suSection}`}>
                   <h5>基本資訊</h5>
                   <div className="mb-3">
-                    <label className="form-label">旅館名稱 *</label>
+                    <label className="form-label">旅館名稱 <span style={{ color: "red" }}>*</span></label>
                     <input
                       type="text"
                       className="form-control"
@@ -100,7 +100,7 @@ const changepage = (path) => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">地址 *</label>
+                    <label className="form-label">地址 <span style={{ color: "red" }}>*</span></label>
                     <input
                       type="text"
                       className="form-control"
@@ -111,7 +111,7 @@ const changepage = (path) => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">電話 *</label>
+                    <label className="form-label">電話 <span style={{ color: "red" }}>*</span></label>
                     <input
                       type="text"
                       className="form-control"

@@ -5,11 +5,7 @@ import React, { useState } from "react";
 import styles from "../courseList.module.css";
 import Card from "./card";
 
-export default function CourseCard({ courses, loading }) {
-  // const url = "http://localhost:5000/api/course";
-  // const { data, loading, error } = useFetch(url);
-  // const course = data?.data?.courses;
-
+export default function CourseCard({ courses = [], loading }) {
   return (
     <>
       <div className={`col-lg-9 ${styles.right}`}>
@@ -35,6 +31,7 @@ export default function CourseCard({ courses, loading }) {
             {courses?.map((course) => {
               return <Card key={course.id} course={course} />;
             })}
+
             {/* {currentCourses?.map((course) => {
             return <Card key={course.id} course={course} />;
           })} */}
