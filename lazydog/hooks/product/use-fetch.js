@@ -335,6 +335,9 @@ export function FetchDetailProvider({ children }) {
       newImage.onerror = () => setCardPic("/product/img/default.webp");
     }
   }, [productName]);
+
+  const CardInt = width >= 1200 ? 5 : width >= 992 ? 4 : width >= 768 ? 3 : 2;
+
   return (
     <DetailFetchContext.Provider
       value={{
@@ -358,6 +361,7 @@ export function FetchDetailProvider({ children }) {
         rateAvg,
         int,
         dec,
+        CardInt,
         hotSale,
         sameBuy,
         mutate,

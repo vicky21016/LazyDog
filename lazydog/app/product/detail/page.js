@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import styles from "./detail.module.css";
 import ProductCard from "../_components/card/card";
 import RateCard from "../_components/rate/ratecard";
@@ -33,6 +33,7 @@ function DetailContent() {
   const { user } = useAuth();
   const { onAddProduct, productItems } = useCart();
   const {
+    width,
     product,
     router,
     loginRoute,
@@ -52,6 +53,7 @@ function DetailContent() {
     rateAvg,
     int,
     dec,
+    CardInt,
     hotSale,
     sameBuy,
     mutate,
@@ -92,6 +94,13 @@ function DetailContent() {
     }
   };
 
+  const [also, setAlso] = useState(0);
+  const [hot, setHot] = useState(0);
+  useEffect(() => {
+    setAlso(0);
+    setHot(0);
+    setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
+  }, [width]);
   return (
     <div className={`${styles.Container} container`}>
       <section className={styles.Breadcrumbs}>
@@ -106,8 +115,8 @@ function DetailContent() {
           {productData?.category}
         </Link>
       </section>
-      <section className={styles.ProductInfo}>
-        <div className={styles.ProductInfoImgGroup}>
+      <section className={`${styles.ProductInfo} row`}>
+        <div className={`${styles.ProductInfoImgGroup}`}>
           <figure className={styles.ProductInfoImg}>
             <img
               src={cardPic}
@@ -116,7 +125,7 @@ function DetailContent() {
             />
           </figure>
           <div className={styles.ProductInfoImgSmall}>
-            {img.sm.length > 0 && (
+            {img.sm.length > 0 && width >= 768 && (
               <button
                 type="button"
                 className={styles.ProductInfoImgSmallBtn}
@@ -136,7 +145,7 @@ function DetailContent() {
             )}
             {img.sm &&
               img.sm.map((v, i) => {
-                if (i < 5) {
+                if (i < (width < 768 ? 4 : 5)) {
                   return (
                     <figure
                       key={`smPic${i}`}
@@ -160,7 +169,7 @@ function DetailContent() {
                   );
                 }
               })}
-            {img.sm.length > 0 && (
+            {img.sm.length > 0 && width >= 768 && (
               <button
                 type="button"
                 className={styles.ProductInfoImgSmallBtn}
@@ -180,7 +189,7 @@ function DetailContent() {
             )}
           </div>
         </div>
-        <div className={styles.ProductInfoDetail}>
+        <div className={`${styles.ProductInfoDetail}`}>
           <div className={styles.ProductInfoContent}>
             <div className={styles.InfoFavoriteGroup}>
               <button
@@ -496,19 +505,23 @@ function DetailContent() {
                   ))}
                 </div>
               </div>
-              <div className={styles.RateCardGroup}>
+              <div className={`${styles.RateCardGroup} row g-3`}>
                 {rateData.rate &&
                   rateData.rate.map((v, i) => {
                     if (i < rate) {
                       return (
-                        <RateCard
+                        <div
                           key={`rateCard${i}`}
-                          rate={v}
-                          users={rateData.user[i]}
-                          img={rateData.img[i]}
-                          comment={rateData.comment[i]}
-                          date={rateData.date[i]}
-                        />
+                          className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4"
+                        >
+                          <RateCard
+                            rate={v}
+                            users={rateData.user[i]}
+                            img={rateData.img[i]}
+                            comment={rateData.comment[i]}
+                            date={rateData.date[i]}
+                          />
+                        </div>
                       );
                     }
                   })}
@@ -518,7 +531,7 @@ function DetailContent() {
                   type="button"
                   className={styles.RateMore}
                   onClick={() => {
-                    setRate(rate + 3);
+                    setRate(rate + (width >= 1200 ? 3 : width >= 768 ? 2 : 1));
                   }}
                 >
                   顯示更多評價
@@ -529,7 +542,7 @@ function DetailContent() {
                   type="button"
                   className={styles.RateMore}
                   onClick={() => {
-                    setRate(3);
+                    setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
                   }}
                 >
                   隱藏額外評價
@@ -541,31 +554,80 @@ function DetailContent() {
       </section>
       <section className={styles.AlsoBuy}>
         <h4 className={styles.AlsoBuyTitle}>其他人也買了...</h4>
-        <ul className={styles.AlsoBuyList}>
-          {sameBuy.length > 0 &&
-            sameBuy?.map((v, i) => (
-              <ProductCard
-                key={`ProductCard${i}`}
-                productID={v}
-                favorite={favorite}
-                setFavorite={setFavorite}
-              />
-            ))}
-        </ul>
+        <div className={styles.AlsoBuyContent}>
+          <button
+            type="button"
+            className={styles.ProductInfoImgSmallBtn}
+            onClick={() => {
+              setAlso(also - 1 < 0 ? also : also - 1);
+            }}
+          >
+            <img src="/product/font/left(orange).png" alt="" />
+          </button>
+          <ul className={`${styles.AlsoBuyList} row`}>
+            {sameBuy.length > 0 &&
+              sameBuy?.map((v, i) => {
+                if (i < CardInt + also && i >= also) {
+                  return (
+                    <ProductCard
+                      key={`ProductCard${i}`}
+                      productID={v}
+                      favorite={favorite}
+                      setFavorite={setFavorite}
+                    />
+                  );
+                }
+              })}
+          </ul>
+          <button
+            type="button"
+            className={styles.ProductInfoImgSmallBtn}
+            onClick={() => {
+              setAlso(also + 1 > sameBuy.length - CardInt ? also : also + 1);
+            }}
+          >
+            <img src="/product/font/right(orange).png" alt="" />
+          </button>
+        </div>
       </section>
       <section className={styles.OtherLike}>
         <h4 className={styles.OtherLikeTitle}>看看其他好物...</h4>
-        <ul className={styles.OtherLikeList}>
-          {hotSale.length > 0 &&
-            hotSale?.map((v, i) => (
-              <ProductCard
-                key={`ProductCard${i}`}
-                productID={v}
-                favorite={favorite}
-                setFavorite={setFavorite}
-              />
-            ))}
-        </ul>
+
+        <div className={styles.OtherLikeContent}>
+          <button
+            type="button"
+            className={styles.ProductInfoImgSmallBtn}
+            onClick={() => {
+              setHot(hot - 1 < 0 ? hot : hot - 1);
+            }}
+          >
+            <img src="/product/font/left(orange).png" alt="" />
+          </button>
+          <ul className={`${styles.OtherLikeList} row`}>
+            {hotSale.length > 0 &&
+              hotSale?.map((v, i) => {
+                if (i < CardInt + hot && i >= hot) {
+                  return (
+                    <ProductCard
+                      key={`ProductCard${i}`}
+                      productID={v}
+                      favorite={favorite}
+                      setFavorite={setFavorite}
+                    />
+                  );
+                }
+              })}
+          </ul>
+          <button
+            type="button"
+            className={styles.ProductInfoImgSmallBtn}
+            onClick={() => {
+              setHot(hot + 1 > hotSale.length - CardInt ? hot : hot + 1);
+            }}
+          >
+            <img src="/product/font/right(orange).png" alt="" />
+          </button>
+        </div>
       </section>
     </div>
   );

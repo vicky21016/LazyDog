@@ -55,6 +55,9 @@ export default function ListPage(props) {
           </div>
           {products && (
             <div className={styles.Title}>
+              <div className="d-none d-lg-flex">
+                <h5>目前共{products.length}項商品</h5>
+              </div>
               <div className={`${styles.Breadcrumbs} d-lg-none`}>
                 <Link href="/">首頁</Link>
                 <img src="/product/font/right.png" alt="" />
@@ -197,7 +200,7 @@ export default function ListPage(props) {
               alt=""
             />
           </button>
-          <div className={`${styles.collapseAside}`}>
+          <div className={`${styles.collapseAside} d-lg-none`}>
             <div
               className={`${styles.collapseHorizontal} collapse collapse-horizontal`}
               id="collapseWidthExample"

@@ -104,7 +104,12 @@ function CardContent() {
         )}
       </figure>
       <div className={styles.ProductCardInfo}>
-        <p className={styles.ProductCardName}>{productName}</p>
+        <p className={`${styles.ProductCardName} d-none d-xxl-flex`}>
+          {productName}
+        </p>
+        <p className={`${styles.ProductCardNameSm} d-xxl-none`}>
+          {productName}
+        </p>
         <h5 className={`${styles.ProductCardPrice} d-none d-xl-block`}>
           NT$ {products?.price}
         </h5>

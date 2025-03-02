@@ -157,15 +157,26 @@
     color: var(--Black);
     display: flex;
     align-items: start;
-    /* max-width: 185px; */
+    justify-content: flex-start;
     height: 72px;
     overflow: hidden;
+  }
+  .ProductCardNameSm {
+    color: var(--Black);
+    display: flex;
+    align-items: start;
+    justify-content: flex-start;
+    max-width: 116.69px;
+    height: 72px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .ProductCardPrice {
     color: var(--Orange);
   }
   .ProductCardPriceSm {
     width: 100%;
+
     color: var(--Orange);
   }
 }

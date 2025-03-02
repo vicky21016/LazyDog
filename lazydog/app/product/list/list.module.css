@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 50px;
+  gap: 20px;
   margin-bottom: 150px;
 }
 /* ----------廣告區---------- */
@@ -143,7 +143,7 @@
   align-items: center;
   justify-content: center;
   z-index: 2;
-  top: -60px;
+  top: -35px;
   border: 1px solid var(--Orange) !important;
   border-radius: 50%;
   width: 35px;
@@ -151,12 +151,14 @@
 }
 .collapseAside {
   position: absolute;
-  top: -60px;
+  top: -50px;
   left: 30px;
   z-index: 1;
-  background: var(--White);
-  padding: 10px 25px;
+  /* background: var(--White); */
   .collapseHorizontal {
+    margin-left: 10px;
+    padding: 10px 25px;
+    background: var(--White);
     transition: width 0.05s ease, height 0.05s ease;
   }
 }

@@ -75,6 +75,9 @@ function CategoryContent() {
           </div>
           {products && (
             <div className={styles.Title}>
+              <div className="d-none d-lg-flex">
+                <h5>目前共{products.length}項商品</h5>
+              </div>
               <div className={`${styles.Breadcrumbs} d-lg-none`}>
                 <Link href="/">首頁</Link>
                 <img src="/product/font/right.png" alt="" />
