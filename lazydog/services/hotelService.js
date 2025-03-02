@@ -48,8 +48,8 @@ const fetchAuthAPI = async (url, method = "GET", body = null) => {
 // 取得所有飯店
 export const getAllHotels = async (sortOption = "") => {
   let query = "";
-  if (sortOption === "review") query = "?sort=review";
-  if (sortOption === "rating") query = "?sort=rating";
+  if (sortOption == "review") query = "?sort=review";
+  if (sortOption == "rating") query = "?sort=rating";
   return fetchAPI(`${API_URL}${query}`);
 };
 

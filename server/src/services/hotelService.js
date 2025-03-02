@@ -29,9 +29,9 @@ export const getHotels = async (sortOption) => {
   try {
     const baseQuery = buildBaseHotelQuery();
     const orderByClause =
-      sortOption === "review"
+      sortOption == "review"
         ? "ORDER BY review_count DESC"
-        : sortOption === "rating"
+        : sortOption == "rating"
         ? "ORDER BY avg_rating DESC"
         : "ORDER BY h.id DESC";
 
@@ -273,7 +273,7 @@ export const updateMainImages = async (hotelId, imageId) => {
       [imageId, hotelId]
     );
 
-    if (imageExists.length === 0) {
+    if (imageExists.length == 0) {
       throw new Error("找不到該圖片，或圖片已刪除");
     }
 
@@ -295,11 +295,14 @@ export const updateMainImages = async (hotelId, imageId) => {
 
 //  將圖片插入 `hotel_images` 資料表
 export const insertHotelImage = async (hotelId, imageUrl) => {
+  const baseUrl = "http://localhost:5000";
+  const fullImageUrl = imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
+
   const [result] = await pool.query(
-    "INSERT INTO hotel_images (hotel_id, image_url) VALUES (?, ?)",
-    [hotelId, imageUrl]
+    "INSERT INTO hotel_images (hotel_id, url) VALUES (?, ?)",
+    [hotelId, fullImageUrl]
   );
-  return result.insertId; // 回傳新圖片的 ID
+  return result.insertId;
 };
 
 // 刪除 `hotel_images` 中的圖片

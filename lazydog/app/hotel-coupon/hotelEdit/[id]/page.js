@@ -158,288 +158,286 @@ export default function HotelEditPage() {
       alert("更新失敗，請重試");
     }
   };
-// 設為主圖片
-const handleSetMainImage = async (imageId) => {
-  if (!hotel || !hotel.id) {
-    Swal.fire("錯誤", "找不到旅館 ID", "error");
-    return;
-  }
+  // 設為主圖片
+  const handleSetMainImage = async (imageId) => {
+    if (!hotel || !hotel.id) {
+      Swal.fire("錯誤", "找不到旅館 ID", "error");
+      return;
+    }
 
-  try {
-    const token = localStorage.getItem("loginWithToken");
-    if (!token) throw new Error("未登入，請重新登入");
+    try {
+      const token = localStorage.getItem("loginWithToken");
+      if (!token) throw new Error("未登入，請重新登入");
 
-    const response = await fetch(
-      `http://localhost:5000/api/hotels/${hotel.id}/main-image/${imageId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+      const response = await fetch(
+        `http://localhost:5000/api/hotels/${hotel.id}/main-image/${imageId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    if (!response.ok) throw new Error("無法更新主圖片");
+      if (!response.ok) throw new Error("無法更新主圖片");
 
-    // 更新前端狀態
-    setImages((prevImages) =>
-      prevImages.map((img) => ({
-        ...img,
-        isMain: img.id === imageId, // 標記主圖片
-      }))
-    );
+      // 更新前端狀態
+      setImages((prevImages) =>
+        prevImages.map((img) => ({
+          ...img,
+          isMain: img.id === imageId, // 標記主圖片
+        }))
+      );
 
-    Swal.fire("成功", "主圖片已更新", "success").then(() => {
-      router.refresh(); // 刷新頁面
+      Swal.fire("成功", "主圖片已更新", "success").then(() => {
+        router.refresh(); // 刷新頁面
+      });
+    } catch (error) {
+      Swal.fire("錯誤", error.message, "error");
+    }
+  };
+
+  // 刪除圖片
+  const handleDeleteImage = async (imageId) => {
+    if (!hotel || !hotel.id) {
+      Swal.fire("錯誤", "找不到旅館 ID", "error");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("loginWithToken");
+      if (!token) throw new Error("未登入，請重新登入");
+
+      const response = await fetch(
+        `http://localhost:5000/api/hotels/${hotel.id}/image/${imageId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (!response.ok) throw new Error("刪除失敗");
+
+      // 更新前端狀態
+      setImages((prevImages) => prevImages.filter((img) => img.id !== imageId));
+
+      Swal.fire("成功", "圖片已刪除", "success");
+    } catch (error) {
+      Swal.fire("錯誤", error.message, "error");
+    }
+  };
+  // 上傳圖片
+  const handleHotelImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("image", file); // 確保 key 是 "image"
+
+    try {
+      const token = localStorage.getItem("loginWithToken");
+      if (!token) throw new Error("未登入，請重新登入");
+
+      const hotelId = hotel?.id; // 確保這是 hotel.id
+      console.log("Hotel ID:", hotelId); // 檢查 hotel.id 是否正確
+
+      const response = await fetch(
+        `http://localhost:5000/api/hotels/${hotelId}/images`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        }
+      );
+
+      if (!response.ok) throw new Error("圖片上傳失敗");
+
+      const data = await response.json();
+      console.log("API 回應:", data); // 檢查 API 回應
+      setImages((prevImages) => [
+        ...prevImages,
+        { id: data.image_id, url: data.image_url, isMain: false },
+      ]);
+
+      Swal.fire("成功", "旅館圖片已上傳", "success");
+    } catch (error) {
+      Swal.fire("錯誤", error.message, "error");
+    }
+  };
+  // 房型圖片上傳
+  const handleRoomImageUpload = async (roomId, event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const token = localStorage.getItem("loginWithToken");
+      if (!token) throw new Error("未登入，請重新登入");
+
+      const response = await fetch(
+        `http://localhost:5000/api/hotel_room_types/${roomId}/upload`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok || !data.image_url)
+        throw new Error(data.error || "圖片上傳失敗");
+
+      // 更新前端狀態
+      setRooms((prevRooms) =>
+        prevRooms.map((room) =>
+          room.id === roomId ? { ...room, image_url: data.image_url } : room
+        )
+      );
+
+      Swal.fire("成功", "房型圖片已更新", "success");
+    } catch (error) {
+      Swal.fire("錯誤", error.message, "error");
+    }
+  };
+
+  // 更新房型
+  const handleUpdateRoom = async (roomId) => {
+    const updatedData = roomFormData[roomId];
+
+    try {
+      const token = localStorage.getItem("loginWithToken");
+      if (!token) throw new Error("未登入，請重新登入");
+
+      const response = await fetch(
+        `http://localhost:5000/api/hotel_room_types/${roomId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (!response.ok) throw new Error("更新失敗");
+
+      Swal.fire("成功", "房型已更新", "success");
+    } catch (error) {
+      Swal.fire("錯誤", error.message, "error");
+    }
+  };
+
+  // 刪除房型
+  const handleDeleteRoom = async (roomId) => {
+    const confirmDelete = await Swal.fire({
+      title: "確定要刪除這個房型嗎？",
+      text: "刪除後無法恢復！",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "刪除",
+      cancelButtonText: "取消",
     });
-  } catch (error) {
-    Swal.fire("錯誤", error.message, "error");
-  }
-};
 
-// 刪除圖片
-const handleDeleteImage = async (imageId) => {
-  if (!hotel || !hotel.id) {
-    Swal.fire("錯誤", "找不到旅館 ID", "error");
-    return;
-  }
+    if (!confirmDelete.isConfirmed) return;
 
-  try {
-    const token = localStorage.getItem("loginWithToken");
-    if (!token) throw new Error("未登入，請重新登入");
+    try {
+      const token = localStorage.getItem("loginWithToken");
+      if (!token) throw new Error("未登入，請重新登入");
 
-    const response = await fetch(
-      `http://localhost:5000/api/hotel_images/${imageId}`,
-      {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+      const response = await fetch(
+        `http://localhost:5000/api/hotel_room_types/${roomId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-    if (!response.ok) throw new Error("刪除失敗");
+      if (!response.ok) throw new Error("刪除失敗");
 
-    // 更新前端狀態
-    setImages((prevImages) => prevImages.filter((img) => img.id !== imageId));
+      // 更新前端狀態
+      setRooms((prevRooms) => prevRooms.filter((room) => room.id !== roomId));
 
-    Swal.fire("成功", "圖片已刪除", "success");
-  } catch (error) {
-    Swal.fire("錯誤", error.message, "error");
-  }
-};
+      Swal.fire("成功", "房型已刪除", "success");
+    } catch (error) {
+      Swal.fire("錯誤", error.message, "error");
+    }
+  };
 
-// 上傳圖片
-const handleHotelImageUpload = async (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
+  // 新增房型
+  const handleAddRoom = async () => {
+    if (!selectedRoomType) {
+      Swal.fire("錯誤", "請先選擇房型", "error");
+      return;
+    }
 
-  const formData = new FormData();
-  formData.append("image", file);
+    if (!newRoomPrice || newRoomPrice <= 0) {
+      Swal.fire("錯誤", "請輸入有效的價格", "error");
+      return;
+    }
 
-  try {
-    const token = localStorage.getItem("loginWithToken");
-    if (!token) throw new Error("未登入，請重新登入");
+    if (!newRoomQuantity || newRoomQuantity <= 0) {
+      Swal.fire("錯誤", "請輸入有效的房間數量", "error");
+      return;
+    }
 
-    const response = await fetch(
-      `http://localhost:5000/api/hotels/${id}/images`,
-      {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      }
-    );
+    const formData = new FormData();
+    formData.append("hotel_id", hotel.id);
+    formData.append("room_type_id", selectedRoomType);
+    formData.append("quantity", newRoomQuantity);
+    formData.append("price_per_night", newRoomPrice);
 
-    if (!response.ok) throw new Error("圖片上傳失敗");
+    if (newRoomImage) {
+      formData.append("image", newRoomImage);
+    }
 
-    const data = await response.json();
-    setImages((prevImages) => [
-      ...prevImages,
-      { id: data.image_id, url: data.image_url, isMain: false },
-    ]);
+    try {
+      const token = localStorage.getItem("loginWithToken");
+      if (!token) throw new Error("未登入，請重新登入");
 
-    Swal.fire("成功", "旅館圖片已上傳", "success");
-  } catch (error) {
-    Swal.fire("錯誤", error.message, "error");
-  }
-};
+      const response = await fetch(
+        "http://localhost:5000/api/hotel_room_types/",
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        }
+      );
 
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "新增房型失敗");
 
-// 房型圖片上傳
-const handleRoomImageUpload = async (roomId, event) => {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const formData = new FormData();
-  formData.append("image", file);
-
-  try {
-    const token = localStorage.getItem("loginWithToken");
-    if (!token) throw new Error("未登入，請重新登入");
-
-    const response = await fetch(
-      `http://localhost:5000/api/hotel_room_types/${roomId}/upload`,
-      {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      }
-    );
-
-    const data = await response.json();
-    if (!response.ok || !data.image_url)
-      throw new Error(data.error || "圖片上傳失敗");
-
-    // 更新前端狀態
-    setRooms((prevRooms) =>
-      prevRooms.map((room) =>
-        room.id === roomId ? { ...room, image_url: data.image_url } : room
-      )
-    );
-
-    Swal.fire("成功", "房型圖片已更新", "success");
-  } catch (error) {
-    Swal.fire("錯誤", error.message, "error");
-  }
-};
-
-// 更新房型
-const handleUpdateRoom = async (roomId) => {
-  const updatedData = roomFormData[roomId];
-
-  try {
-    const token = localStorage.getItem("loginWithToken");
-    if (!token) throw new Error("未登入，請重新登入");
-
-    const response = await fetch(
-      `http://localhost:5000/api/hotel_room_types/${roomId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      // 更新前端狀態
+      setRooms((prevRooms) => [
+        ...prevRooms,
+        {
+          id: data.room_id,
+          room_type_id: selectedRoomType,
+          room_type_name:
+            roomTypes.find((type) => type.id == selectedRoomType)?.name ||
+            "未知房型",
+          quantity: newRoomQuantity,
+          price_per_night: newRoomPrice,
+          image_url: data.image_url || "/default-room.jpg",
         },
-        body: JSON.stringify(updatedData),
-      }
-    );
+      ]);
 
-    if (!response.ok) throw new Error("更新失敗");
+      // 清空表單
+      setSelectedRoomType("");
+      setNewRoomQuantity(1);
+      setNewRoomPrice("");
+      setNewRoomImage(null);
 
-    Swal.fire("成功", "房型已更新", "success");
-  } catch (error) {
-    Swal.fire("錯誤", error.message, "error");
-  }
-};
-
-// 刪除房型
-const handleDeleteRoom = async (roomId) => {
-  const confirmDelete = await Swal.fire({
-    title: "確定要刪除這個房型嗎？",
-    text: "刪除後無法恢復！",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#3085d6",
-    confirmButtonText: "刪除",
-    cancelButtonText: "取消",
-  });
-
-  if (!confirmDelete.isConfirmed) return;
-
-  try {
-    const token = localStorage.getItem("loginWithToken");
-    if (!token) throw new Error("未登入，請重新登入");
-
-    const response = await fetch(
-      `http://localhost:5000/api/hotel_room_types/${roomId}`,
-      {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-
-    if (!response.ok) throw new Error("刪除失敗");
-
-    // 更新前端狀態
-    setRooms((prevRooms) => prevRooms.filter((room) => room.id !== roomId));
-
-    Swal.fire("成功", "房型已刪除", "success");
-  } catch (error) {
-    Swal.fire("錯誤", error.message, "error");
-  }
-};
-
-// 新增房型
-const handleAddRoom = async () => {
-  if (!selectedRoomType) {
-    Swal.fire("錯誤", "請先選擇房型", "error");
-    return;
-  }
-
-  if (!newRoomPrice || newRoomPrice <= 0) {
-    Swal.fire("錯誤", "請輸入有效的價格", "error");
-    return;
-  }
-
-  if (!newRoomQuantity || newRoomQuantity <= 0) {
-    Swal.fire("錯誤", "請輸入有效的房間數量", "error");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("hotel_id", hotel.id);
-  formData.append("room_type_id", selectedRoomType);
-  formData.append("quantity", newRoomQuantity);
-  formData.append("price_per_night", newRoomPrice);
-
-  if (newRoomImage) {
-    formData.append("image", newRoomImage);
-  }
-
-  try {
-    const token = localStorage.getItem("loginWithToken");
-    if (!token) throw new Error("未登入，請重新登入");
-
-    const response = await fetch(
-      "http://localhost:5000/api/hotel_room_types/",
-      {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      }
-    );
-
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "新增房型失敗");
-
-    // 更新前端狀態
-    setRooms((prevRooms) => [
-      ...prevRooms,
-      {
-        id: data.room_id,
-        room_type_id: selectedRoomType,
-        room_type_name:
-          roomTypes.find((type) => type.id == selectedRoomType)?.name ||
-          "未知房型",
-        quantity: newRoomQuantity,
-        price_per_night: newRoomPrice,
-        image_url: data.image_url || "/default-room.jpg",
-      },
-    ]);
-
-    // 清空表單
-    setSelectedRoomType("");
-    setNewRoomQuantity(1);
-    setNewRoomPrice("");
-    setNewRoomImage(null);
-
-    Swal.fire("成功", "房型已新增", "success");
-  } catch (error) {
-    Swal.fire("錯誤", error.message, "error");
-  }
-};
-
-
-
+      Swal.fire("成功", "房型已新增", "success");
+    } catch (error) {
+      Swal.fire("錯誤", error.message, "error");
+    }
+  };
 
   return (
     <>
@@ -561,7 +559,6 @@ const handleAddRoom = async () => {
                             type="button"
                             className={`btn btn-danger btn-sm mt-1 ${hotelStyles.suDeleteBtn}`}
                             onClick={() => handleDeleteImage(img.id)}
-                            disabled={hotel.main_image_id === img.id}
                           >
                             x
                           </button>

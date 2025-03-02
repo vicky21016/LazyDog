@@ -317,7 +317,10 @@ export const uploadHotelImage = async (req, res) => {
       return res.status(400).json({ error: "請上傳圖片" });
     }
 
-    const imageUrl = `/uploads/hotels/${req.file.filename}`;
+    // 修正這行，確保存完整 URL
+    const baseUrl = "http://localhost:5000";
+    const imageUrl = `${baseUrl}/uploads/hotel/${req.file.filename}`;
+    
     const imageId = await insertHotelImage(hotelId, imageUrl);
 
     res.json({ status: "success", image_id: imageId, image_url: imageUrl });
