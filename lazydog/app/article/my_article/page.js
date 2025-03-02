@@ -6,6 +6,7 @@ import useMyArticles from "@/hooks/useMyArticles"; // ✅ 改用新 Hook
 import Header from "../../components/layout/header";
 import MyMenu from "../../components/layout/myMenu";
 import MyCard from "../_components/my_article/article_card";
+import MyCard2 from "../_components/my_article/article_card2";
 import Link from "next/link";
 
 
@@ -35,11 +36,14 @@ export default function MyArticle() {
                   </button>
                 </div>
                 <div className="" style={{ borderRadius: "5px", height: "750px", overflowY: "scroll" }}>
-                  {loading && <p>加載中...</p>}
+                  {/* {loading && <p>加載中...</p>} */}
                   {error && <p style={{ color: "red" }}>{error}</p>}
-                  {articles.length > 0 ? articles.map((article) => (
+                  {/* {articles.length > 0 ? articles.map((article) => (
                     <MyCard key={article.id} id={article.id} title={article.title} cover_image={article.cover_image || "/images/default-cover.jpg"} created_at={new Date(article.created_at).toLocaleDateString()} />
-                  )) : <p>您尚未發布任何文章。</p>}
+                  )) : <p>您尚未發布任何文章。</p>} */}
+                  {articles.length > 0 ? articles.map((article) => (
+                    <MyCard2 key={article.id} id={article.id} title={article.title} cover_image={article.cover_image || "/images/default-cover.jpg"} created_at={new Date(article.created_at).toLocaleDateString()} />
+                  )) : <p></p>}
                 </div>
               </div>
             </div>

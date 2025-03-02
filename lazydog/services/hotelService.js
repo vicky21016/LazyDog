@@ -13,7 +13,8 @@ const HOTEL_FAVORITES_URL = "http://localhost:5000/api/hotel_favorites";
 const HOTEL_REVIEW_URL = "http://localhost:5000/api/hotel_review";
 
 const getToken = () => localStorage.getItem("loginWithToken");
-//  統一 處理
+
+// 統一處理 API 請求
 const fetchAPI = async (url, method = "GET", body = null) => {
   try {
     const options = { method, headers: {} };
@@ -25,12 +26,12 @@ const fetchAPI = async (url, method = "GET", body = null) => {
     if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
     return await res.json();
   } catch (error) {
-    console.error(` API 錯誤 (${method} ${url}):`, error);
+    console.error(`API 錯誤 (${method} ${url}):`, error);
     return null;
   }
 };
 
-//  自動附帶 `Authorization`
+// 自動附帶 `Authorization`
 const fetchAuthAPI = async (url, method = "GET", body = null) => {
   const token = getToken();
   const options = {
@@ -43,158 +44,60 @@ const fetchAuthAPI = async (url, method = "GET", body = null) => {
   if (body) options.body = JSON.stringify(body);
   return fetchAPI(url, method, body);
 };
-
 // 所有 C
+// 取得所有飯店
 export const getAllHotels = async (sortOption = "") => {
   let query = "";
   if (sortOption == "review") query = "?sort=review";
   if (sortOption == "rating") query = "?sort=rating";
-
-  try {
-    const response = await fetch(`http://localhost:5000/api/hotels${query}`);
-    if (!response.ok) throw new Error(`API 回應錯誤: ${response.status}`);
-    return await response.json();
-  } catch (error) {
-    console.error("獲取飯店列表失敗:", error);
-    return [];
-  }
+  return fetchAPI(`${API_URL}${query}`);
 };
 
-export const getHotelById = async (id) => {
-  try {
-    const response = await fetch(`${API_URL}/${id}`);
-    if (!response.ok) {
-      throw new Error(`HTTP 錯誤！狀態碼: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("API 取得飯店錯誤:", error);
-    throw error;
-  }
-};
+// 取得特定飯店
+export const getHotelById = async (id) => fetchAPI(`${API_URL}/${id}`);
 
+// 取得飯店總數
 export const fetchHotelsCount = async () => fetchAPI(`${API_URL}/count`);
+
+// 取得分頁飯店
 export const getPaginatedHotels = async (page = 1, limit = 10) =>
   fetchAPI(`${API_URL}/paginated?limit=${limit}&offset=${(page - 1) * limit}`);
 
-// 前端過濾篩選
-export const getFilteredHotelsS = async (filters) => {
-  try {
-    console.log(" 發送 API 篩選請求:", filters);
+// 篩選飯店
+export const getFilteredHotelsS = async (filters) =>
+  fetchAPI(`${API_URL}/filter`, "POST", filters);
 
-    const response = await fetch("http://localhost:5000/api/hotels/filter", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(filters),
-    });
+// 取得負責人飯店
+export const getOperatorHotels = async (id) =>
+  fetchAuthAPI(`${API_URL}/operator/${id}`);
 
-    if (!response.ok)
-      throw new Error(`API 錯誤，HTTP 狀態碼: ${response.status}`);
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(" 查詢飯店錯誤:", error);
-    return [];
-  }
-};
-
-export const getOperatorHotels = async (id) => {
-  try {
-    const response = await fetchAuthAPI(
-      `http://localhost:5000/api/operator/${id}`
-    );
-    if (!response.ok) {
-      throw new Error(`API 回應錯誤: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("獲取負責人飯店列表失敗:", error);
-    return [];
-  }
-};
-
+// 新增飯店
 export const createHotel = async (formData) =>
   fetchAuthAPI(API_URL, "POST", formData);
+
+// 更新飯店
 export const updateHotel = async (id, formData) =>
   fetchAuthAPI(`${API_URL}/${id}`, "PATCH", formData);
-export const softDeleteHotel = async (hotelId) => {
-  const token = localStorage.getItem("loginWithToken");
-  if (!token) {
-    alert("未登入，請重新登入");
-    return false;
-  }
 
-  try {
-    const response = await fetch(
-      `http://localhost:5000/api/hotels/${hotelId}/soft-delete`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+// 軟刪除飯店
+export const softDeleteHotel = async (hotelId) =>
+  fetchAuthAPI(`${API_URL}/${hotelId}/soft-delete`, "PATCH");
 
-    const result = await response.json();
+// 更新主圖片
+export const updateMainImage = async (hotelId, imageId) =>
+  fetchAuthAPI(`${API_URL}/${hotelId}/main-image/${imageId}`, "PATCH");
 
-    if (!response.ok) {
-      console.error("刪除失敗:", result);
-      alert(`刪除失敗: ${result.error || "請重試"}`);
-      return false;
-    }
-
-    return true;
-  } catch (error) {
-    console.error("刪除 API 失敗:", error);
-    alert("刪除請求失敗，請檢查網路或伺服器");
-    return false;
-  }
-};
-export const updateMainImage = async (hotelId, imageId) => {
-  console.log("更新主圖片:", { hotelId, imageId }); // 這裡檢查傳入的 ID 是否正確
-
-  try {
-    const response = await fetch(
-      `/api/hotels/${hotelId}/main-image/${imageId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!response.ok) throw new Error("更新主圖片失敗");
-    return true;
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
-};
-export const deleteHotelImage = async (hotelId, imageId) => {
-  try {
-    const response = await fetch(
-      `http://localhost:5000/api/hotels/${hotelId}/images/${imageId}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!response.ok) throw new Error("刪除圖片失敗");
-    return true;
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
-};
-//標籤C
+// 刪除飯店圖片
+export const deleteHotelImage = async (hotelId, imageId) =>
+  fetchAuthAPI(`${API_URL}/${hotelId}/images/${imageId}`, "DELETE");
+// 取得所有標籤
 export const getAllTags = async () => fetchAPI(`${HOTEL_TAGS_URL}/tags`);
+
+// 取得飯店標籤
 export const getHotelTags = async (hotelId) =>
   fetchAPI(`${HOTEL_TAGS_URL}/${hotelId}`);
+
+// 移除飯店標籤
 export const removeHotelTag = async (hotelId, tagId) =>
   fetchAuthAPI(`${HOTEL_TAGS_URL}/${hotelId}/${tagId}`, "PATCH");
 //價格
@@ -205,54 +108,66 @@ export const getRoomBasePrices = async () => fetchAPI(`${ROOM_BASE_PRICE_URL}`);
 export const getHotelPriceRange = async (hotelId) =>
   fetchAPI(`${ROOM_BASE_PRICE_URL}/range/${hotelId}`);
 //房型跟庫存
+// 取得所有房型
 export const getAllRoomTypes = async () => fetchAPI(ROOM_TYPES_URL);
+
+// 取得飯店房型
 export const getHotelRoomById = async (hotelId) =>
   fetchAPI(`${HOTEL_ROOM_TYPES_URL}/hotel/${hotelId}`);
 
-//OP ONLY
+// 新增飯店房型
 export const createHotelRoom = async (roomData) =>
   fetchAuthAPI(HOTEL_ROOM_TYPES_URL, "POST", roomData);
 
+// 更新飯店房型
 export const updateHotelRoom = async (roomId, updateData) =>
   fetchAuthAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, "PATCH", updateData);
 
+// 刪除飯店房型
 export const deleteHotelRoom = async (roomId) =>
   fetchAuthAPI(`${HOTEL_ROOM_TYPES_URL}/${roomId}`, "DELETE");
 
-//OP END
-
-//房間庫存
+// 取得房間庫存
 export const getRoomInventory = async (hotelId) =>
   fetchAPI(`${ROOM_INVENTORY_URL}/${hotelId}`);
 
-//OP ONLY
+// 更新房間庫存
 export const updateRoomInventory = async (roomInventoryId, updateData) =>
   fetchAuthAPI(`${ROOM_INVENTORY_URL}/${roomInventoryId}`, "PATCH", updateData);
-//OP END
 
 //hotel的圖C
 export const getAllHotelImages = async () => fetchAPI(HOTEL_IMAGES_URL);
 export const getByHotelId = async (hotelId) =>
   fetchAPI(`${HOTEL_IMAGES_URL}/hotel/${hotelId}`);
 
-//訂單C
+// 取得所有訂單
 export const getAllHotelOrders = async () => fetchAuthAPI(HOTEL_ORDERS_URL);
+
+// 取得特定訂單
 export const getOrderById = async (orderId) =>
   fetchAuthAPI(`${HOTEL_ORDERS_URL}/${orderId}`);
+
+// 新增訂單
 export const createNewOrder = async (orderData) =>
   fetchAuthAPI(HOTEL_ORDERS_URL, "POST", orderData);
-// OP ONLY
+
+// 更新訂單
 export const updateOrder = async (orderId, updateData) =>
   fetchAuthAPI(`${HOTEL_ORDERS_URL}/${orderId}`, "PATCH", updateData);
+
+// 更新訂單狀態
 export const changeOrderStatus = async (orderId, status) =>
   fetchAuthAPI(`${HOTEL_ORDERS_URL}/${orderId}/status`, "PATCH", { status });
+
+// 更新訂單付款狀態
 export const updateOrderPayment = async (orderId, paymentStatus) =>
   fetchAuthAPI(`${HOTEL_ORDERS_URL}/${orderId}/payment`, "PATCH", {
     paymentStatus,
   });
+
+// 軟刪除訂單
 export const softDeleteOrder = async (orderId) =>
   fetchAuthAPI(`${HOTEL_ORDERS_URL}/${orderId}/soft-delete`, "PATCH");
-//OP END
 
 //訂單裡面狗的資料
 export const getAllOrderDogs = async () => fetchAuthAPI(ORDER_DOGS_URL);
@@ -270,34 +185,36 @@ export const deleteOrderDog = async (dogId) =>
   fetchAuthAPI(`${ORDER_DOGS_URL}/${dogId}`, "DELETE");
 //END
 
-//收藏C
+
+
+// 取得使用者收藏
 export const getUserFavorites = async () => fetchAuthAPI(HOTEL_FAVORITES_URL);
+
+// 新增收藏
 export const addHotelToFavorites = async (hotelId) =>
   fetchAuthAPI(HOTEL_FAVORITES_URL, "POST", { hotelId });
+
+// 移除收藏
 export const removeHotelToFavorites = async (hotelId) =>
   fetchAuthAPI(`${HOTEL_FAVORITES_URL}/${hotelId}`, "DELETE");
 
-//ReviewC
+// 取得飯店評價
 export const getHotelReviews = async (hotelId) =>
   fetchAPI(`${HOTEL_REVIEW_URL}/${hotelId}`);
+
+// 新增評價
 export const addHotelReview = async (hotelId, reviewData) =>
   fetchAuthAPI(HOTEL_REVIEW_URL, "POST", { hotelId, ...reviewData });
-export const replyHotelReview = async (reviewId, replyContent) => {
-  const token = localStorage.getItem("loginWithToken");
-  if (!token) throw new Error("未登入，請重新登入");
 
-  const response = await fetch(`http://localhost:5000/api/hotel_review/${reviewId}/reply`, {
-    method: "POST", 
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ reply: replyContent }), 
+// 回覆評價
+export const replyHotelReview = async (reviewId, replyContent) =>
+  fetchAuthAPI(`${HOTEL_REVIEW_URL}/${reviewId}/reply`, "POST", {
+    reply: replyContent,
   });
 
-  return response;
-};
-
+// 刪除評價
 export const deleteHotelReview = async (reviewId) =>
   fetchAuthAPI(`${HOTEL_REVIEW_URL}/${reviewId}`, "DELETE");
+
+// 取得平均評價
 export const ratingAv = async () => fetchAPI(`${HOTEL_REVIEW_URL}/average`);

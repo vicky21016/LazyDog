@@ -20,14 +20,14 @@ import styles1 from "../../../../styles/modules/toggle.module.css";
 export default function App () {
   const [selectedTab, setSelectedTab] = useState("experience");
     const { id } = useParams();
-    const { teacher } = useTeacherDetail(id);
+    const { teacher, loading } = useTeacherDetail(id);
 
     const [activeTab, setActiveTab] = useState("exps");
 
   const handleRadioChange = (tab) => {
     setSelectedTab(tab);
 
-    if (!teacher) return
+    if (loading) return
     <>
         <div className={style.container2}>
             <div className={style.loader27}></div>

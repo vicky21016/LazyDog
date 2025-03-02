@@ -1,43 +1,41 @@
 import pool from "../config/mysql.js";
+const buildBaseHotelQuery = () => {
+  return `
+    SELECT h.*, 
+           hi.url AS main_image_url,
+           IFNULL(r.avg_rating, 0) AS avg_rating,
+           IFNULL(r.review_count, 0) AS review_count, 
+           IFNULL(rp.min_price, 9999999) AS min_price
+    FROM hotel h
+    LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
+    LEFT JOIN (
+        SELECT hotel_id, 
+               ROUND(AVG(rating), 1) AS avg_rating,
+               COUNT(id) AS review_count
+        FROM hotel_reviews
+        GROUP BY hotel_id
+    ) r ON h.id = r.hotel_id
+    LEFT JOIN (
+        SELECT hotel_id, MIN(price) AS min_price
+        FROM room_inventory
+        WHERE available_quantity > 0
+        GROUP BY hotel_id
+    ) rp ON h.id = rp.hotel_id
+    WHERE h.is_deleted = 0
+  `;
+};
 export const getHotels = async (sortOption) => {
   const connection = await pool.getConnection();
   try {
-    let orderByClause = ""; // 預設不排序
+    const baseQuery = buildBaseHotelQuery();
+    const orderByClause =
+      sortOption == "review"
+        ? "ORDER BY review_count DESC"
+        : sortOption == "rating"
+        ? "ORDER BY avg_rating DESC"
+        : "ORDER BY h.id DESC";
 
-    if (sortOption == "review") {
-      orderByClause = "ORDER BY review_count DESC"; // 依評價總數排序
-    } else if (sortOption == "rating") {
-      orderByClause = "ORDER BY avg_rating DESC"; // 依星級排序
-    } else {
-      orderByClause = "ORDER BY h.id DESC"; // 預設排序
-    }
-
-    let query = `
-      SELECT h.*, 
-             hi.url AS main_image_url,
-             IFNULL(r.avg_rating, 0) AS avg_rating,
-             IFNULL(r.review_count, 0) AS review_count, 
-             IFNULL(rp.min_price, 9999999) AS min_price
-      FROM hotel h
-      LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
-      LEFT JOIN (
-          SELECT hotel_id, 
-                 ROUND(AVG(rating), 1) AS avg_rating,
-                 COUNT(id) AS review_count
-          FROM hotel_reviews
-          GROUP BY hotel_id
-      ) r ON h.id = r.hotel_id
-      LEFT JOIN (
-          SELECT hotel_id, MIN(price) AS min_price
-          FROM room_inventory
-          WHERE available_quantity > 0
-          GROUP BY hotel_id
-      ) rp ON h.id = rp.hotel_id
-      WHERE h.is_deleted = 0 
-      GROUP BY h.id
-      ${orderByClause}
-    `;
-
+    const query = `${baseQuery} GROUP BY h.id ${orderByClause}`;
     const [hotels] = await connection.query(query);
     return hotels;
   } catch (error) {
@@ -60,36 +58,35 @@ export const searchHotels = async (keyword) => {
 };
 
 export const getId = async (id, checkInDate, checkOutDate) => {
+  const connection = await pool.getConnection();
   try {
-    const [hotels] = await pool.query(
-      `SELECT h.*, 
-              hi.url AS main_image_url,
-              IFNULL(r.avg_rating, 0) AS avg_rating, 
-              IFNULL(rp.min_price, 9999999) AS min_price
-       FROM hotel h
-       LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
-       LEFT JOIN (
-          SELECT hotel_id, ROUND(AVG(rating), 1) AS avg_rating
-          FROM hotel_reviews
-          GROUP BY hotel_id
-       ) r ON h.id = r.hotel_id
-       LEFT JOIN (
-          SELECT hotel_id, MIN(price) AS min_price
-          FROM room_inventory
-          WHERE date BETWEEN ? AND ?
-          GROUP BY hotel_id
-       ) rp ON h.id = rp.hotel_id
-       WHERE h.id = ? AND h.is_deleted = 0`,
-      [checkInDate, checkOutDate, id]
-    );
+    const baseQuery = buildBaseHotelQuery();
+    const query = `
+      ${baseQuery}
+      AND h.id = ?
+      AND EXISTS (
+        SELECT 1 FROM room_inventory ri
+        WHERE ri.hotel_id = h.id 
+        AND ri.date BETWEEN ? AND ?
+        AND ri.available_quantity > 0
+      )
+    `;
 
-    if (hotels.length == 0) {
+    const [hotels] = await connection.query(query, [
+      id,
+      checkInDate,
+      checkOutDate,
+    ]);
+
+    if (hotels.length === 0) {
       throw new Error(`找不到 id=${id} 的旅館`);
     }
 
     return hotels[0];
   } catch (error) {
     throw new Error(`無法取得 id=${id} 旅館: ` + error.message);
+  } finally {
+    connection.release();
   }
 };
 
@@ -125,10 +122,22 @@ export const createHotels = async (hotelData) => {
     await connection.beginTransaction();
 
     const {
-      operator_id, 
-      name, link, county, district, address, phone, room_total,
-      introduce, latitude, longitude, map_link,
-      check_in_time, check_out_time, contact_email, url
+      operator_id,
+      name,
+      link,
+      county,
+      district,
+      address,
+      phone,
+      room_total,
+      introduce,
+      latitude,
+      longitude,
+      map_link,
+      check_in_time,
+      check_out_time,
+      contact_email,
+      url,
     } = hotelData;
 
     const [hotelResult] = await connection.query(
@@ -136,7 +145,23 @@ export const createHotels = async (hotelData) => {
         (operator_id, name, link, county, district, address, phone, room_total, introduce, latitude, 
          longitude, map_link, check_in_time, check_out_time, contact_email, created_at, updated_at, is_deleted) 
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
-      [operator_id, name, link, county, district, address, phone, room_total, introduce, latitude, longitude, map_link, check_in_time, check_out_time, contact_email]
+      [
+        operator_id,
+        name,
+        link,
+        county,
+        district,
+        address,
+        phone,
+        room_total,
+        introduce,
+        latitude,
+        longitude,
+        map_link,
+        check_in_time,
+        check_out_time,
+        contact_email,
+      ]
     );
 
     await connection.commit();
@@ -148,107 +173,93 @@ export const createHotels = async (hotelData) => {
     connection.release();
   }
 };
-
-
-export const updateHotelById = async (updateData) => {
+export const uploadHotelImages = async (hotelId, images) => {
+  const connection = await pool.getConnection();
   try {
-    // 解構賦值排除不應該更新的欄位(目前寫在{}裡的欄位) ...updateFields展開 運算值是剩下欄位
-    //updateFields變成一個新的物件來存放剩餘可更新欄位
+    await connection.beginTransaction();
 
-    const {
-      id,
-      created_at,
-      average_rating,
-      total_reviews,
-      main_image_id,
-      deleteImageIds = [],
-      newImages = [],
-      ...updateFields
-    } = updateData;
+    const values = images.map((img) => [
+      hotelId,
+      img.url,
+      img.description || null,
+    ]);
+    const [result] = await connection.query(
+      `INSERT INTO hotel_images (hotel_id, url, description) VALUES ?`,
+      [values]
+    );
 
-    if (!id) {
-      return { error: "缺少 id，無法更新旅館" };
-    }
-
-    // 如果 updateFields 是空的，不更新
-    if (
-      Object.keys(updateFields).length == 0 &&
-      deleteImageIds.length == 0 &&
-      newImages.length == 0 &&
-      !main_image_id
-    ) {
-      return { error: "沒有提供更新欄位或新增刪除圖片" };
-    }
-
-    const connection = await pool.getConnection();
-    try {
-      await connection.beginTransaction();
-      //  動態生成 SQL **需要再研究 **
-      if (Object.keys(updateFields).length > 0) {
-        const keys = Object.keys(updateFields);
-        const values = Object.values(updateFields);
-        const set = keys.map((key) => `${key} = ?`).join(", ");
-        values.push(id);
-
-        const [result] = await pool.query(
-          `UPDATE hotel SET ${set}, updated_at = NOW() WHERE id = ?`,
-          values
-        );
-        if (result.affectedRows == 0) {
-          return { error: "更新失敗，找不到該旅館" };
-        }
-      }
-      if (deleteImageIds.length > 0) {
-        await pool.query(
-          `UPDATE hotel_images SET is_deleted = 1, updated_at = NOW() WHERE id IN (${deleteImageIds
-            .map(() => "?")
-            .join(", ")})`,
-          deleteImageIds
-        );
-      }
-
-      if (newImages.length > 0) {
-        const newImageValues = newImages.map(() => "(?, ?, ?)").join(", ");
-        const newImageData = newImages.flatMap((img) => [
-          id,
-          img.url,
-          img.description || null,
-        ]);
-        console.log("即將存入的圖片:", newImageData);
-
-        await connection.query(
-          `INSERT INTO hotel_images (hotel_id, url, description) VALUES ${newImageValues}`,
-          newImageData
-        );
-      }
-      //這邊是換main_image_id
-      if (main_image_id) {
-        const [imageExists] = await connection.query(
-          "SELECT id FROM hotel_images WHERE id = ? AND hotel_id = ? AND is_deleted = 0",
-          [main_image_id, id]
-        );
-
-        if (imageExists.length == 0) {
-          throw new Error("選擇的 main_image_id 無效，請選擇該飯店的有效圖片");
-        }
-
-        await connection.query(
-          "UPDATE hotel SET main_image_id = ?, updated_at = NOW() WHERE id = ?",
-          [main_image_id, id]
-        );
-      }
-      await connection.commit();
-      return {
-        message: `旅館 id=${id} 更新成功,${deleteImageIds.length} 張圖片已刪除，${newImages.length} 張圖片已新增`,
-      };
-    } catch (error) {
-      await connection.rollback();
-      return { error: "更新失敗：" + error.message };
-    } finally {
-      connection.release();
-    }
+    await connection.commit();
+    return { insertedCount: result.affectedRows };
   } catch (error) {
-    return { error: "無法更新旅館：" + error.message };
+    await connection.rollback();
+    throw new Error("圖片上傳失敗：" + error.message);
+  } finally {
+    connection.release();
+  }
+};
+export const deleteHotelImages = async (imageIds) => {
+  const connection = await pool.getConnection();
+  try {
+    await connection.beginTransaction();
+
+    const [result] = await connection.query(
+      `UPDATE hotel_images SET is_deleted = 1, updated_at = NOW() WHERE id IN (?)`,
+      [imageIds]
+    );
+
+    await connection.commit();
+    return { deletedCount: result.affectedRows };
+  } catch (error) {
+    await connection.rollback();
+    throw new Error("圖片刪除失敗：" + error.message);
+  } finally {
+    connection.release();
+  }
+};
+export const updateHotelById = async (updateData) => {
+  const {
+    id,
+    deleteImageIds = [],
+    newImages = [],
+    ...updateFields
+  } = updateData;
+
+  if (!id) {
+    return { error: "缺少 id，無法更新旅館" };
+  }
+
+  const connection = await pool.getConnection();
+  try {
+    await connection.beginTransaction();
+
+    // 更新旅館基本資訊
+    if (Object.keys(updateFields).length > 0) {
+      const keys = Object.keys(updateFields);
+      const values = Object.values(updateFields);
+      const set = keys.map((key) => `${key} = ?`).join(", ");
+      await connection.query(
+        `UPDATE hotel SET ${set}, updated_at = NOW() WHERE id = ?`,
+        [...values, id]
+      );
+    }
+
+    // 刪除圖片
+    if (deleteImageIds.length > 0) {
+      await deleteHotelImages(deleteImageIds);
+    }
+
+    // 新增圖片
+    if (newImages.length > 0) {
+      await uploadHotelImages(id, newImages);
+    }
+
+    await connection.commit();
+    return { message: "旅館更新成功" };
+  } catch (error) {
+    await connection.rollback();
+    return { error: "更新失敗：" + error.message };
+  } finally {
+    connection.release();
   }
 };
 export const updateMainImages = async (hotelId, imageId) => {
@@ -266,70 +277,41 @@ export const updateMainImages = async (hotelId, imageId) => {
       throw new Error("找不到該圖片，或圖片已刪除");
     }
 
-    console.log("即將更新主圖片，hotelId:", hotelId, "imageId:", imageId);
-
-    // 確保 `hotel.main_image_id` 與 `hotel_images.image_type` 一致
-    const [currentMain] = await connection.query(
-      "SELECT id FROM hotel_images WHERE hotel_id = ? AND image_type = 'main'",
-      [hotelId]
-    );
-
-    if (currentMain.length > 0) {
-      console.log("當前主圖片 ID:", currentMain[0].id);
-    } else {
-      console.log("沒有找到當前主圖片");
-    }
-
-    // **1. 將原本的 `main` 圖片改為 `room`**
+    // 更新主圖片
     await connection.query(
-      "UPDATE hotel_images SET image_type = 'room' WHERE hotel_id = ? AND image_type = 'main'",
-      [hotelId]
-    );
-
-    // **2. 設定新的 `main` 圖片**
-    await connection.query(
-      "UPDATE hotel_images SET image_type = 'main' WHERE id = ?",
-      [imageId]
-    );
-
-    // **3. 更新 `hotel.main_image_id`**
-    const [updateResult] = await connection.query(
-      "UPDATE hotel SET main_image_id = ? WHERE id = ?",
+      "UPDATE hotel SET main_image_id = ?, updated_at = NOW() WHERE id = ?",
       [imageId, hotelId]
     );
-
-    console.log("hotel main_image_id 更新結果:", updateResult);
 
     await connection.commit();
     return { message: "主圖片更新成功" };
   } catch (error) {
     await connection.rollback();
-    console.error("更新主圖片失敗:", error);
-    throw error;
+    throw new Error("更新主圖片失敗：" + error.message);
   } finally {
     connection.release();
   }
 };
 
-
-// ✅ 將圖片插入 `hotel_images` 資料表
+//  將圖片插入 `hotel_images` 資料表
 export const insertHotelImage = async (hotelId, imageUrl) => {
+  const baseUrl = "http://localhost:5000";
+  const fullImageUrl = imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
+
   const [result] = await pool.query(
-    "INSERT INTO hotel_images (hotel_id, image_url) VALUES (?, ?)",
-    [hotelId, imageUrl]
+    "INSERT INTO hotel_images (hotel_id, url) VALUES (?, ?)",
+    [hotelId, fullImageUrl]
   );
-  return result.insertId; // 回傳新圖片的 ID
+  return result.insertId;
 };
 
-// ✅ 刪除 `hotel_images` 中的圖片
+// 刪除 `hotel_images` 中的圖片
 export const deleteImageById = async (imageId) => {
-  const [result] = await pool.query(
-    "DELETE FROM hotel_images WHERE id = ?",
-    [imageId]
-  );
+  const [result] = await pool.query("DELETE FROM hotel_images WHERE id = ?", [
+    imageId,
+  ]);
   return result.affectedRows > 0; // 回傳是否刪除成功
 };
-
 
 export const deleteHotelImagesByIds = async (imageIds, isSoftDelete = true) => {
   const connection = await pool.getConnection();
@@ -344,7 +326,9 @@ export const deleteHotelImagesByIds = async (imageIds, isSoftDelete = true) => {
 
     // 先檢查這些圖片是否存在
     const [existingImages] = await connection.query(
-      `SELECT id FROM hotel_images WHERE id IN (${queryIds.map(() => "?").join(", ")})`,
+      `SELECT id FROM hotel_images WHERE id IN (${queryIds
+        .map(() => "?")
+        .join(", ")})`,
       queryIds
     );
 
@@ -354,12 +338,16 @@ export const deleteHotelImagesByIds = async (imageIds, isSoftDelete = true) => {
 
     if (isSoftDelete) {
       await connection.query(
-        `UPDATE hotel_images SET is_deleted = 1, updated_at = NOW() WHERE id IN (${queryIds.map(() => "?").join(", ")})`,
+        `UPDATE hotel_images SET is_deleted = 1, updated_at = NOW() WHERE id IN (${queryIds
+          .map(() => "?")
+          .join(", ")})`,
         queryIds
       );
     } else {
       await connection.query(
-        `DELETE FROM hotel_images WHERE id IN (${queryIds.map(() => "?").join(", ")})`,
+        `DELETE FROM hotel_images WHERE id IN (${queryIds
+          .map(() => "?")
+          .join(", ")})`,
         queryIds
       );
     }
@@ -373,7 +361,6 @@ export const deleteHotelImagesByIds = async (imageIds, isSoftDelete = true) => {
     connection.release();
   }
 };
-
 
 export const insertHotelImages = async (images) => {
   const connection = await pool.getConnection();
@@ -437,7 +424,6 @@ export const insertHotelImages = async (images) => {
     connection.release();
   }
 };
-
 
 export const softDeleteHotelById = async (hotelId, operatorId) => {
   const connection = await pool.getConnection();

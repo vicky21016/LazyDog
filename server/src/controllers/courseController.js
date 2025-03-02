@@ -3,10 +3,34 @@ import { getCourses, getId, searchCourses } from "../services/courseService.js";
 
 export const getAllCourse = async (req, res) => {
   try {
-    const courses = await getCourses();
+    // const { type, place, minPrice, maxPrice, keyword } = req.query;
+    const { keyword = "", typeF = "", placeF = "" } = req.query;
+    console.log("📌 接收到的查詢參數:", req.query);
+
+    const typeList = typeF ? typeF.split(",") : [];
+    const placeList = placeF ? placeF.split(",") : [];
+
+    console.log("後端接收到的篩選條件 轉換：", {
+      keyword,
+      typeList,
+      placeList,
+    });
+
+    const { courses, types, places, latest, newest } = await getCourses({
+      keyword,
+      typeList,
+      placeList,
+    });
+
     res.status(200).json({
       status: "success",
-      data: courses,
+      data: {
+        courses: courses || [],
+        types: types || [],
+        places: places || [],
+        latest: latest || [],
+        newest: newest || [],
+      },
       message: "讀取course資料表成功!",
     });
   } catch (error) {

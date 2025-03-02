@@ -135,6 +135,19 @@
   height: 80px;
   object-fit: cover;
 }
+/*--------------------------*/
+.asideRead2 {
+  display: none;
+  width: 100%;
+  gap: 12px;
+  margin: 37px 0;
+}
+
+.asideRead2 img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
 
 .tt {
   flex-direction: column;
@@ -184,16 +197,11 @@
 
 /* @media screen */
 @media screen and (max-width: 390px) {
-  .middle {
-    width: 366px;
-    height: auto;
+  .asideRead2 {
     display: flex;
-    align-items: flex-end;
-    flex-direction: column;
-    gap: 50px;
-    position: absolute;
-    left: 12px;
-    top: 537px;
+    width: 100%;
+    gap: 12px;
+    margin: 37px 0;
   }
 
   .bottom {
@@ -207,9 +215,11 @@
   }
   .card{
     width: 366px;
+    height: 400px;
   }
   .card img{
     width: 366px;
+    height: 200px;
   }
   .page{
     position: relative;

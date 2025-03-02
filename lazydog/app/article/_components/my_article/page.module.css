@@ -47,6 +47,8 @@
   text-decoration: none;
   color: black;
   font-size: 18px;
+  max-height: 80px;
+  overflow: hidden;
 }
 .link:hover {
   text-decoration: none;

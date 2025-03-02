@@ -48,10 +48,9 @@ export default function CreateCouponPage() {
   // 提交表單
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    let authToken = token || localStorage.getItem("loginWithToken"); // 確保 token 來自 localStorage
-    console.log("目前 token:", authToken); // 確保 token 存在
-
+  
+    let authToken = token || localStorage.getItem("loginWithToken");
+  
     if (!authToken) {
       Swal.fire({
         icon: "error",
@@ -61,8 +60,17 @@ export default function CreateCouponPage() {
       });
       return;
     }
-
-    // 🔹 `formattedCoupon` 定義
+  
+    if (!user || !user.id) { 
+      Swal.fire({
+        icon: "error",
+        title: "無法新增",
+        text: "無法確認您的旅館資訊，請聯絡管理員",
+        confirmButtonText: "確定",
+      });
+      return;
+    }
+  
     const formattedCoupon = {
       name: coupon.name,
       code: coupon.code,
@@ -77,25 +85,21 @@ export default function CreateCouponPage() {
       end_time: coupon.end_time ? `${coupon.end_time}T23:59:59Z` : null,
       status: coupon.status,
     };
-
-    console.log("送出的資料:", formattedCoupon); // 確保資料格式正確
-
+  
     try {
-      const result = await createCoupon(formattedCoupon, authToken);
+      console.log("🔍 傳遞給後端的 Operator ID:", user.id);
+
+      const result = await createCoupon(formattedCoupon,authToken, user.id); 
       if (result.success) {
-        // ✅ 提交成功，顯示 SweetAlert2 提示框
         await Swal.fire({
           icon: "success",
           title: "新增成功！",
           text: "優惠券已成功建立 🎉",
-          timer: 2000, // 2秒後自動關閉
+          timer: 2000,
           showConfirmButton: false,
         });
-
-        // ✅ 2 秒後跳轉到優惠券列表
         router.push("/hotel-coupon/couponList");
       } else {
-        // ❌ 提交失敗，顯示錯誤訊息
         Swal.fire({
           icon: "error",
           title: "新增失敗",
@@ -105,7 +109,6 @@ export default function CreateCouponPage() {
       }
     } catch (error) {
       console.error("新增優惠券失敗:", error);
-      // ❌ 提交失敗時的 SweetAlert2
       Swal.fire({
         icon: "error",
         title: "發生錯誤",
@@ -114,6 +117,8 @@ export default function CreateCouponPage() {
       });
     }
   };
+  
+  
 
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
