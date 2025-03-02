@@ -4,28 +4,7 @@ import React, { useState, useEffect } from "react";
 import styles from "../courseList.module.css";
 import Link from "next/link";
 
-export default function SideBar({ filters, setFilters }) {
-  const [types, setTypes] = useState([]);
-  const [places, setPlaces] = useState([]);
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/teacher/createGet`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("loginWithToken")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setTypes(data.data.types);
-        setPlaces(data.data.places);
-      })
-      .catch((err) => {
-        console.error("Error fetching data:", err);
-      });
-  }, []);
-
+export default function SideBar({ types, places, filters, setFilters }) {
   const [keyword, setKeyword] = useState("");
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedPlaces, setSelectedPlaces] = useState([]);
@@ -88,6 +67,10 @@ export default function SideBar({ filters, setFilters }) {
             className={styles.xIcon}
             src="/course/img/x.png"
             alt={`清除搜尋內容`}
+            onClick={() => {
+              setKeyword("");
+              setFilters((prev) => ({ ...prev, keyword: "" }));
+            }}
           />
         </div>
         {/* 課程類別 */}
@@ -101,17 +84,17 @@ export default function SideBar({ filters, setFilters }) {
             />
           </div>
           <div className={styles.filter}>
-            {types.map((t) => (
+            {types?.map((t) => (
               <div key={t.type_id} className={`form-check ${styles.checks}`}>
                 <input
                   className={`form-check-input ${styles.checkbox}`}
                   type="checkbox"
-                  checked={filters.types.includes(t.id)}
-                  onChange={() => handleTypeChange(t.id)}
+                  checked={filters.types.includes(t.type_id)}
+                  onChange={() => handleTypeChange(t.type_id)}
                 />
                 <label
                   className={`form-check-label ${styles.labels}`}
-                  htmlFor="train"
+                  htmlFor={t.type_id}
                 >
                   {t.name}
                 </label>
@@ -130,7 +113,7 @@ export default function SideBar({ filters, setFilters }) {
             />
           </div>
           <div className={styles.filter}>
-            {places.map((p) => (
+            {places?.map((p) => (
               <div key={p.id} className={`form-check ${styles.checks}`}>
                 <input
                   className={`form-check-input ${styles.checkbox}`}
@@ -140,7 +123,7 @@ export default function SideBar({ filters, setFilters }) {
                 />
                 <label
                   className={`form-check-label ${styles.labels}`}
-                  htmlFor="train"
+                  htmlFor={p.id}
                 >
                   {p.region}
                 </label>
@@ -149,11 +132,10 @@ export default function SideBar({ filters, setFilters }) {
           </div>
         </div>
         {/* 🔹 價格篩選區 */}
-        <div className={`${styles.filteGroup} ${styles.priceFilterContainer}`}>
+        {/* <div className={`${styles.filteGroup} ${styles.priceFilterContainer}`}>
           <div className={`${styles.bar} ${styles.priceBar}`}>
             <h6 className={styles.filterTitle}>價格篩選</h6>
           </div>
-          {/* 價格輸入框 */}
           <div className={styles.priceInputGroup}>
             <div className={styles.priceInput}>
               <label className={`visually-hidden`} htmlFor="filterMin">
@@ -182,18 +164,21 @@ export default function SideBar({ filters, setFilters }) {
               <span>元</span>
             </div>
           </div>
-          {/* Bootstrap Slider */}
-          {/* <input
-            id="priceRange"
-            type="text"
-            data-slider-min={0}
-            data-slider-max={10000}
-            data-slider-step={100}
-            data-slider-value="[200,1000]"
-          /> */}
-        </div>
+        </div> */}
         {/* 清除按鈕 */}
-        <button id="resetFilter" className={styles.clearFilterBtn}>
+        <button
+          id="resetFilter"
+          className={styles.clearFilterBtn}
+          onClick={() =>
+            setFilters({
+              keyword: "",
+              types: [],
+              places: [],
+              minPrice: 600,
+              maxPrice: 8000,
+            })
+          }
+        >
           清除搜尋
         </button>
         {/* 廣告 */}
