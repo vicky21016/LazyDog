@@ -5,6 +5,7 @@ import styles from "../../../styles/modules/operatorCamera.module.css";
 import { useRouter } from "next/navigation";
 import My from "../../components/hotel/my";
 import Header from "../../components/layout/header";
+import Pagination from "../../components/hotel/page";
 import { getCoupons, softDeleteCoupon } from "@/services/couponService"; // 導入 API 函數
 
 export default function CouponListPage() {
@@ -218,7 +219,7 @@ export default function CouponListPage() {
                 </div>
               </div>
             )}
-
+            <Pagination/>
             <div className="d-flex justify-content-end mt-3">
               <button
                 className="btn btn-sm btn-primary"
