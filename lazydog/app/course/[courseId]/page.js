@@ -36,14 +36,6 @@ export default function CourseIdPage() {
       });
   }, [courseCode]);
 
-  // const { data, loading, error } = useFetch(
-  //   `http://localhost:5000/api/course/${courseCode}`
-  // )
-
-  // console.log(data);
-  // console.log("Course data:", course);
-  // console.log("Session data:", session);
-
   return (
     <>
       <Header />
