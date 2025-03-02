@@ -1,5 +1,5 @@
-// 用MVC架構，步驟二 Controller 處理請求 
-import { getCourses, getId, searchCourses} from "../services/courseService.js";
+// 用MVC架構，步驟二 Controller 處理請求
+import { getCourses, getId, searchCourses } from "../services/courseService.js";
 
 export const getAllCourse = async (req, res) => {
   try {
@@ -7,7 +7,7 @@ export const getAllCourse = async (req, res) => {
     res.status(200).json({
       status: "success",
       data: courses,
-      message: "讀取course資料表成功!"
+      message: "讀取course資料表成功!",
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -16,43 +16,42 @@ export const getAllCourse = async (req, res) => {
 
 export const getSearch = async (req, res) => {
   try {
-    const { keyword } = req.query
+    const { keyword } = req.query;
     // console.log({keyword});
     if (!keyword) {
-      return res.status(400).json({ error: '請提供關鍵字' })
+      return res.status(400).json({ error: "請提供關鍵字" });
     }
 
-    const courses = await searchCourses(keyword)
+    const courses = await searchCourses(keyword);
     if (!courses.length) {
-      return res.status(404).json({ error: '查無資料' })
+      return res.status(404).json({ error: "查無資料" });
     }
 
     res.status(200).json({
-      status: 'success',
+      status: "success",
       data: courses,
       message: `查詢： ${keyword} 相關成功，共${courses.length}筆資料`,
-    })
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({ error: error.message });
   }
-}
+};
 
 export const getIdCourse = async (req, res) => {
-  try{
-    const {id} = req.params;
+  try {
+    const { id } = req.params;
     // console.log("找到旅館ID", id);
 
     if (isNaN(id)) {
       return res.status(400).json({ error: "請提供有效的課程 ID" });
     }
 
-    const course = await getId(id);    
+    const course = await getId(id);
     res.json(course);
-  }catch(err){
-    res.status(500).json({err:err.message})
+  } catch (err) {
+    res.status(500).json({ err: err.message });
   }
 };
-
 
 // export const createCourse = async (req, res) => {
 //   const {courseData, sessionData} = req.body;
@@ -109,5 +108,3 @@ export const getIdCourse = async (req, res) => {
 //     res.status(500).json({ error: err.message });
 //   }
 // };
-
-

@@ -1,23 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { useFetch } from "@/hooks/use-fetch";
+// import { useFetch } from "@/hooks/use-fetch";
 import styles from "../courseList.module.css";
 import Card from "./card";
-import Pagination from "./pagination";
 
-export default function CourseCard() {
-  const url = "http://localhost:5000/api/course";
-  const { data, loading, error } = useFetch(url);
-  const course = data?.data?.courses;
-
-  // 分頁
-  const [currPage, setCurrPage] = useState(1);
-  const perPage = 9;
-  const totalPages = Math.max(1, Math.ceil((course?.length || 0) / perPage));
-
-  const startIndex = (currPage - 1) * perPage;
-  const currentCourses = course?.slice(startIndex, startIndex + perPage);
+export default function CourseCard({ courses, loading }) {
+  // const url = "http://localhost:5000/api/course";
+  // const { data, loading, error } = useFetch(url);
+  // const course = data?.data?.courses;
 
   return (
     <>
@@ -28,23 +19,27 @@ export default function CourseCard() {
         </div>
         <div className={styles.medium}>
           <div className={styles.count}>
-            共計 <span className={styles.countNum}>{course?.length}</span> 堂課
+            共計 <span className={styles.countNum}>{courses?.length}</span> 堂課
           </div>
           <div className={styles.hot}>
             <img src="/course/img/sort.png" alt={`依熱門程度排序`} />
             依熱門程度排序
           </div>
         </div>
-        <div className={styles.courseGroup}>
-          {currentCourses?.map((course) => {
+        {loading ? (
+          <p>載入中...</p>
+        ) : courses.length === 0 ? (
+          <p>沒有符合條件的課程</p>
+        ) : (
+          <div className={styles.courseGroup}>
+            {courses?.map((course) => {
+              return <Card key={course.id} course={course} />;
+            })}
+            {/* {currentCourses?.map((course) => {
             return <Card key={course.id} course={course} />;
-          })}
-        </div>
-        <Pagination
-          totalPages={totalPages}
-          currPage={currPage}
-          setCurrPage={setCurrPage}
-        />
+          })} */}
+          </div>
+        )}
       </div>
     </>
   );

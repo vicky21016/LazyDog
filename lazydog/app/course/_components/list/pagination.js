@@ -1,11 +1,9 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
 import styles from "../courseList.module.css";
 
-
-export default function Pagination({totalPages, currPage, setCurrPage}) {
-
+export default function Pagination({ totalPages, currPage, setCurrPage }) {
   return (
     <>
       <nav className={styles.navigation} aria-label="Page navigation">
