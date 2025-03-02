@@ -297,7 +297,7 @@ export default function HotelEditPage() {
         )
       );
 
-      Swal.fire("成功", "房型圖片已更新", "success");
+      Swal.fire("成功", "房型圖片已上傳", "success");
     } catch (error) {
       Swal.fire("錯誤", error.message, "error");
     }
@@ -306,11 +306,11 @@ export default function HotelEditPage() {
   // 更新房型
   const handleUpdateRoom = async (roomId) => {
     const updatedData = roomFormData[roomId];
-
+  
     try {
       const token = localStorage.getItem("loginWithToken");
       if (!token) throw new Error("未登入，請重新登入");
-
+  
       const response = await fetch(
         `http://localhost:5000/api/hotel_room_types/${roomId}`,
         {
@@ -322,14 +322,17 @@ export default function HotelEditPage() {
           body: JSON.stringify(updatedData),
         }
       );
-
+  
       if (!response.ok) throw new Error("更新失敗");
-
-      Swal.fire("成功", "房型已更新", "success");
+  
+      await Swal.fire("成功", "房型已更新", "success"); // **等待 `Swal.fire()` 完全顯示完畢**
+      
+      router.refresh(); // **確保更新成功後才刷新頁面**
     } catch (error) {
-      Swal.fire("錯誤", error.message, "error");
+      await Swal.fire("錯誤", error.message, "error");
     }
   };
+  
 
   // 刪除房型
   const handleDeleteRoom = async (roomId) => {
@@ -343,13 +346,13 @@ export default function HotelEditPage() {
       confirmButtonText: "刪除",
       cancelButtonText: "取消",
     });
-
-    if (!confirmDelete.isConfirmed) return;
-
+  
+    if (!confirmDelete.isConfirmed) return; // 如果使用者取消，就不執行刪除
+  
     try {
       const token = localStorage.getItem("loginWithToken");
       if (!token) throw new Error("未登入，請重新登入");
-
+  
       const response = await fetch(
         `http://localhost:5000/api/hotel_room_types/${roomId}`,
         {
@@ -357,17 +360,20 @@ export default function HotelEditPage() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
+  
       if (!response.ok) throw new Error("刪除失敗");
-
+  
       // 更新前端狀態
       setRooms((prevRooms) => prevRooms.filter((room) => room.id !== roomId));
-
-      Swal.fire("成功", "房型已刪除", "success");
+  
+      await Swal.fire("成功", "房型已刪除", "success"); // **等待 `Swal.fire()` 完全顯示完畢**
+      
+      router.refresh(); // **確保刪除成功後才刷新頁面**
     } catch (error) {
-      Swal.fire("錯誤", error.message, "error");
+      await Swal.fire("錯誤", error.message, "error");
     }
   };
+  
 
   // 新增房型
   const handleAddRoom = async () => {
