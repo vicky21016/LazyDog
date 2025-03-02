@@ -40,9 +40,9 @@ export default function News() {
           }}
           // navigation={true}
           modules={[Autoplay, Pagination]}
-          className={`mySwiper ${styles.swiperrr}`}
+          className={`mySwiper `}
         >
-          <SwiperSlide className={styles.newCard}>
+          <SwiperSlide>
             <video
               autoPlay
               loop
