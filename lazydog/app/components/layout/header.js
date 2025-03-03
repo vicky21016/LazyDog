@@ -20,13 +20,16 @@ export default function Header(props) {
     });
     return () => unsubscribe();
   }, []);
+  const [PDOpen, setPDOpen] = useState(false);
+  const [teacherOpen, setTeacherOpen] = useState(false);
+  const [userOpen, setUserOpen] = useState(false);
   return (
     <header className={styles["lumi-header"]}>
       <Link href="/" className={styles["lumi-logo"]}>
         <img src="/images/logo.png" alt="Logo" />
         <div className={styles.lumiLogo1}>LAZYDOG</div>
       </Link>
-      <nav>
+      <nav className={styles["lumi-nav"]}>
         <ul className={styles["lumi-ul"]}>
           <div className={styles["dropdown"]}>
             <li>
@@ -177,35 +180,113 @@ export default function Header(props) {
         </div>
       </div>
       {/* 手機板 */}
-      <div
-        className={`${styles.mobileMenu}`}
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
+      <div className={`${styles.mobileMenu}`}>
         <i
+          onClick={() => setMenuOpen(!menuOpen)}
           className={`${styles.menu} ${menuOpen ? "bi bi-x-lg" : "bi bi-list"}`}
         ></i>
         <nav className={styles["mobileMenubar"]}>
-          <ul
-            className={`${styles.mobileDrop} ${styles.lumiUl} ${
-              menuOpen ? styles.show : ""
-            }`}
-          >
+          <ul className={`${styles.mobileDrop} ${menuOpen ? styles.show : ""}`}>
             <li>
               <Link href="/home">關於我們</Link>
             </li>
-            <li>
-              <Link href="/product/list">寵物用品</Link>
+            <li className={styles["dropdown"]}>
+              <div
+                onClick={() => {
+                  setPDOpen(!PDOpen);
+                  setUserOpen(false);
+                  setTeacherOpen(false);
+                }}
+              >
+                <Link href="" className={styles["dropbtn"]}>
+                  寵物用品
+                </Link>
+              </div>
+              <div
+                className={`${
+                  PDOpen
+                    ? styles["dropdown-contentOn"]
+                    : styles["dropdown-contentOff"]
+                }`}
+              >
+                <a
+                  href={`/product/list/category?category=乾糧`}
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                >
+                  乾糧
+                </a>
+                <a
+                  href={`/product/list/category?category=罐頭`}
+                  className={styles["dropdown-link"]}
+                >
+                  罐頭
+                </a>
+                <a
+                  href={`/product/list/category?category=零食`}
+                  className={styles["dropdown-link"]}
+                >
+                  零食
+                </a>
+                <a
+                  href={`/product/list/category?category=保健食品`}
+                  className={styles["dropdown-link"]}
+                >
+                  保健食品
+                </a>
+                <a
+                  href={`/product/list/category?category=美容用品`}
+                  className={styles["dropdown-link"]}
+                >
+                  美容用品
+                </a>
+                <a
+                  href={`/product/list/category?category=清潔用品`}
+                  className={styles["dropdown-link"]}
+                >
+                  清潔用品
+                </a>
+                <a
+                  href={`/product/list/category?category=外出用品`}
+                  className={styles["dropdown-link"]}
+                >
+                  外出用品
+                </a>
+                <a
+                  href={`/product/list/category?category=居家用品`}
+                  className={styles["dropdown-link"]}
+                >
+                  居家用品
+                </a>
+                <a
+                  href={`/product/list/category?category=玩具`}
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                >
+                  玩具
+                </a>
+              </div>
             </li>
             <li>
               <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>
             </li>
-            <div className={styles["dropdown"]}>
-              <li>
-                <Link href="/teacher" className={styles["dropbtn"]}>
+            <li className={styles["dropdown"]}>
+              <div
+                onClick={() => {
+                  setTeacherOpen(!teacherOpen);
+                  setUserOpen(false);
+                  setPDOpen(false);
+                }}
+              >
+                <Link href="" className={styles["dropbtn"]}>
                   寵物課程
                 </Link>
-              </li>
-              <div className={styles["dropdown-content"]}>
+              </div>
+              <div
+                className={`${
+                  teacherOpen
+                    ? styles["dropdown-contentOn"]
+                    : styles["dropdown-contentOff"]
+                }`}
+              >
                 <Link
                   href="/course/list"
                   className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
@@ -219,15 +300,27 @@ export default function Header(props) {
                   師資
                 </Link>
               </div>
-            </div>
+            </li>
             <li>
               <Link href="/article/list">毛孩文章</Link>
             </li>
-            <div className={styles["dropdown"]}>
-              <li>
-                <Link href="/pages">會員中心</Link>
-              </li>
-              <div className={styles["dropdown-content"]}>
+            <li className={styles["dropdown"]}>
+              <div
+                onClick={() => {
+                  setUserOpen(!userOpen);
+                  setPDOpen(false);
+                  setTeacherOpen(false);
+                }}
+              >
+                <Link href="">會員中心</Link>
+              </div>
+              <div
+                className={`${
+                  userOpen
+                    ? styles["dropdown-contentOn"]
+                    : styles["dropdown-contentOff"]
+                }`}
+              >
                 <Link
                   href="/pages"
                   className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
@@ -244,12 +337,12 @@ export default function Header(props) {
                   登出
                 </div>
               </div>
-            </div>
-            <div>
+            </li>
+            <li>
               <Link href="/cart/CartList">
                 <i className="bi bi-cart2"></i>購物車
               </Link>
-            </div>
+            </li>
           </ul>
         </nav>
       </div>
