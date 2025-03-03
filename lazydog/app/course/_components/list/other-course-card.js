@@ -53,7 +53,7 @@ export default function OtherCourseCard() {
         <div className={styles.sBars}>
           <div className={styles.sbar} />
           <div className={styles.btns}>
-            {/* <img
+            <img
               className={styles.arrowLeft}
               src="/course/img/arrow-left.png"
               alt={`往左箭頭`}
@@ -62,7 +62,7 @@ export default function OtherCourseCard() {
               className={styles.arrowRight}
               src="/course/img/arrow-right.png"
               alt={`往右箭頭`}
-            /> */}
+            />
           </div>
         </div>
         <div className={styles.sCards}>

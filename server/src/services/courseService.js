@@ -33,18 +33,16 @@ export const getCourses = async ({
 
     // ✅ 課程類別篩選
     if (typeList.length > 0) {
-      sql += ` AND course.type_id IN (${typeList.map(() => "?").join(",")})`;
-      params.push(...typeList);
-      console.log("type", params);
+      sql += ` AND course.type_id IN (${typeList.join(",")})`;
     }
 
     // ✅ 上課地點篩選
     if (placeList.length > 0) {
-      sql += ` AND course_session.area_id IN (${placeList
-        .map(() => "?")
-        .join(",")})`;
-      params.push(...placeList);
-      console.log("place", params);
+      sql += ` AND course_session.area_id IN (${placeList.join(",")})`;
+    }
+
+    if (keyword.length > 0) {
+      sql += ` AND (course.name LIKE '%${keyword}%' )`;
     }
 
     // ✅ SQL 排序與分組
@@ -53,7 +51,7 @@ export const getCourses = async ({
     console.log("📌 執行 SQL：", sql); // 🛠 Debug
     console.log("📌 SQL 參數：", params); // 🛠 Debug
 
-    const [courses] = await pool.execute(sql, params);
+    const [courses] = await pool.execute(sql);
     if (courses.length == 0) {
       console.log("課程列表不存在");
     }

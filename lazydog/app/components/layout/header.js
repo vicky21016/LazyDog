@@ -150,7 +150,6 @@ export default function Header(props) {
           <Link href="/pages" className={styles["lumi-user-icon"]}>
             <i className="bi bi-person" />
           </Link>
-
           {user ? (
             <div className={styles["dropdown-content"]}>
               <Link
