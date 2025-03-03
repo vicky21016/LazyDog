@@ -65,7 +65,6 @@ function CardContent() {
   } = useCardFetch();
   const { setFavorite, heartHover, setHeartHover, heartState, setHeartState } =
     useCardFavorite();
-  // const [hoverState, setHoverState] = useState(false);
   return (
     <li
       className={`${styles.ProductCard} col`}
@@ -113,9 +112,9 @@ function CardContent() {
         <h5 className={`${styles.ProductCardPrice} d-none d-xl-block`}>
           NT$ {products?.price}
         </h5>
-        <p className={`${styles.ProductCardPriceSm} d-xl-none`}>
+        <h5 className={`${styles.ProductCardPriceSm} d-xl-none`}>
           NT$ {products?.price}
-        </p>
+        </h5>
       </div>
       <div
         className={`${
