@@ -35,7 +35,7 @@ export default function ArticleDetail() {
   return (
     <>
       <Header />
-      <div className={`container ${styles.container}`}>
+      <div className="container" style={{ marginTop: '70px' }}>
         <nav
           className={`my-4 ${styles.breadcrumb}`}
           style={{ "--bs-breadcrumb-divider": ">" }}

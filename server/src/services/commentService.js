@@ -35,3 +35,34 @@ export const createCommentS = async (createComment) => {
       connection.release();
     }
   };
+
+  export const deleteCommentS = async (commentId) => {
+    console.log(commentId)
+    const connection = await pool.getConnection();
+    try {
+        // 開始事務
+        await connection.beginTransaction();
+
+        // 執行 SQL 刪除留言
+        const [result] = await connection.query(
+            `DELETE FROM comment WHERE id = ?`, 
+            [commentId]
+        );
+
+        if (result.affectedRows === 0) {
+            throw new Error("留言未找到或已被刪除");
+        }
+
+        // 提交事務
+        await connection.commit();
+
+        return { message: "留言刪除成功" };
+
+    } catch (err) {
+        // 回滾事務
+        await connection.rollback();
+        throw new Error("留言刪除失敗：" + err.message);
+    } finally {
+        connection.release();
+    }
+};

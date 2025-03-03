@@ -78,7 +78,7 @@ export default function HotelHomePage() {
             setHotels(hotelData);
             setFilteredHotels(hotelData);
           })
-          .catch((error) => console.error("獲取飯店失敗:", error));
+          .catch((error) => console.error("搜尋失敗:", error));
       }
     }
   }, []);
@@ -140,7 +140,7 @@ export default function HotelHomePage() {
         }
       } catch (error) {
         if (error.name !== "AbortError") {
-          console.error("獲取飯店失敗:", error);
+          console.error("獲取資料失敗:", error);
         }
       }
     };
@@ -176,7 +176,7 @@ export default function HotelHomePage() {
 
       router.push(`/hotel-coupon/fonthotelHome?${queryString}`);
     } catch (error) {
-      console.error("篩選飯店錯誤:", error);
+      console.error("篩選錯誤:", error);
       setFilteredHotels([]);
     }
   };
@@ -210,7 +210,7 @@ export default function HotelHomePage() {
       setFilteredHotels(data);
       setCurrentPage(1);
     } catch (error) {
-      console.error(" 獲取飯店失敗:", error);
+      console.error(" 獲取篩選失敗:", error);
     }
   };
 
