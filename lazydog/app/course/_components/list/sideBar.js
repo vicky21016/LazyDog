@@ -77,11 +77,11 @@ export default function SideBar({ types, places, filters, setFilters }) {
         <div className={styles.filterGroup}>
           <div className={styles.bar}>
             <h6 className={styles.filterTitle}>課程類別</h6>
-            <img
+            {/* <img
               className={styles.arrowDown}
               src="/course/img/arrow-down.png"
               alt={`點選看更多 課程類別`}
-            />
+            /> */}
           </div>
           <div className={styles.filter}>
             {types?.map((t) => (
@@ -106,11 +106,11 @@ export default function SideBar({ types, places, filters, setFilters }) {
         <div className={styles.filterGroup}>
           <div className={styles.bar}>
             <h6 className={styles.filterTitle}>上課地點</h6>
-            <img
+            {/* <img
               className={styles.arrowDown}
               src="/course/img/arrow-down.png"
               alt={`點選看更多 上課地點`}
-            />
+            /> */}
           </div>
           <div className={styles.filter}>
             {places?.map((p) => (
@@ -182,7 +182,7 @@ export default function SideBar({ types, places, filters, setFilters }) {
           清除搜尋
         </button>
         {/* 廣告 */}
-        <div className={styles.ad}>
+        <div className={`sm-none ${styles.ad}`}>
           <p className={styles.adWords}>最新課程優惠中!</p>
           <button className={styles.buynow}>BUY NOW</button>
           <Link href="/product/list">

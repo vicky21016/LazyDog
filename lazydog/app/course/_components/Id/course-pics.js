@@ -10,7 +10,7 @@ export default function CoursePics({ imgs }) {
     <>
       <div className={styles.left}>
         <div className={styles.pics}>
-          {imgs?.map((img) => (
+          {imgs?.slice(1).map((img) => (
             <img key={img.id} src={`/course/img/${img?.url}`} alt="" />
           ))}
         </div>
