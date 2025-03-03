@@ -143,33 +143,55 @@ export default function HotelEditPage() {
     return `${hours}:${minutes}`;
   };
 
-  // 儲存
+  // 儲存 //不展示
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("loginWithToken");
       if (!token) throw new Error("未登入，請重新登入");
 
-      const response = await fetch(`http://localhost:5000/api/hotels/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...formData,
-          businessHours: JSON.stringify(formData.businessHours),
-        }),
-      });
+      if (!hotel || !hotel.id) {
+        throw new Error("找不到對應的旅館 ID");
+      }
+
+      let formattedBusinessHours = formData.businessHours;
+      if (typeof formData.businessHours !== "string") {
+        formattedBusinessHours = JSON.stringify(formData.businessHours);
+      }
+
+      const updateData = {
+        ...formData,
+        businessHours: formattedBusinessHours,
+      };
+
+      console.log(" 發送 PATCH 請求:", updateData);
+
+      const response = await fetch(
+        `http://localhost:5000/api/hotels/${hotel.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updateData),
+        }
+      );
+
+      const data = await response.json();
+      console.log("API 回應:", data);
 
       if (!response.ok) throw new Error(`更新失敗，錯誤碼: ${response.status}`);
 
-      alert("更新成功！");
-      router.push(`/hotel-coupon/hotelDetail/${id}`);
+      Swal.fire("成功", "旅館資料已更新", "success").then(() => {
+        router.push(`/hotel-coupon/hotel/${id}`);
+        router.refresh();
+      });
     } catch (error) {
-      console.error("更新失敗:", error);
-      alert("更新失敗，請重試");
+      console.error(" 更新失敗:", error);
+      Swal.fire("錯誤", error.message, "error");
     }
   };
+
   // 設為主圖片
   const handleSetMainImage = async (imageId) => {
     if (!hotel || !hotel.id) {
@@ -745,11 +767,11 @@ export default function HotelEditPage() {
                             更新房型
                           </button>
                           <button
-                            type="button" 
+                            type="button"
                             className="btn btn-sm btn-danger"
                             onClick={async () =>
                               await handleDeleteRoom(room.id)
-                            } 
+                            }
                           >
                             刪除房型
                           </button>

@@ -11,9 +11,13 @@ import My from "../../../components/hotel/my";
 export default function HotelDetailPage() {
   const router = useRouter();
   const { id } = useParams();
-  const { hotel, loading, images } = useHotel(id);
+  const { hotel, loading, hotelImages } = useHotel(id);
   const hotelId = hotel?.id;
   const [isDeleted, setIsDeleted] = useState(false);
+
+  useEffect(() => {
+    console.log("🔍 取得的旅館圖片:", hotelImages);
+  }, [hotelImages]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -43,9 +47,9 @@ export default function HotelDetailPage() {
     }
   }
 
-const changepage = (path) => {
-  router.push(`/hotel-coupon/${path}`);
-};
+  const changepage = (path) => {
+    router.push(`/hotel-coupon/${path}`);
+  };
 
   //  軟刪除函數
   const handleSoftDelete = async () => {
@@ -91,7 +95,9 @@ const changepage = (path) => {
                 <div className={`section ${hotelStyles.suSection}`}>
                   <h5>基本資訊</h5>
                   <div className="mb-3">
-                    <label className="form-label">旅館名稱 <span style={{ color: "red" }}>*</span></label>
+                    <label className="form-label">
+                      旅館名稱 <span style={{ color: "red" }}>*</span>
+                    </label>
                     <input
                       type="text"
                       className="form-control"
@@ -100,7 +106,9 @@ const changepage = (path) => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">地址 <span style={{ color: "red" }}>*</span></label>
+                    <label className="form-label">
+                      地址 <span style={{ color: "red" }}>*</span>
+                    </label>
                     <input
                       type="text"
                       className="form-control"
@@ -111,7 +119,9 @@ const changepage = (path) => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">電話 <span style={{ color: "red" }}>*</span></label>
+                    <label className="form-label">
+                      電話 <span style={{ color: "red" }}>*</span>
+                    </label>
                     <input
                       type="text"
                       className="form-control"
@@ -124,19 +134,31 @@ const changepage = (path) => {
                 {/* 旅館圖片區域 */}
                 <div className={`section ${hotelStyles.suSection}`}>
                   <h5>旅館圖片</h5>
-                  <div
-                    id="imagePreviewContainer"
-                    className="d-flex flex-wrap gap-3 mb-2"
-                  >
-                    {images && images.length > 0 ? (
-                      images.map((img, index) => (
-                        <div key={index} className={hotelStyles.suImageCard}>
-                          <img
-                            src={img.url || "/images/no-image.png"}
-                            alt={`旅館圖片${index + 1}`}
-                          />
-                        </div>
-                      ))
+                  <div className="d-flex flex-wrap gap-3 mb-2">
+                    {hotelImages.length > 0 ? (
+                      hotelImages.map((img, index) => {
+                        const imageUrl = img.url.startsWith("http")
+                          ? img.url // 若 API 已提供完整網址，直接使用
+                          : `http://localhost:5000${img.url}`; // 若是相對路徑，加上 API URL
+
+                        return (
+                          <div key={index} className={hotelStyles.suImageCard}>
+                            <img
+                              src={imageUrl}
+                              alt={`旅館圖片${index + 1}`}
+                              className="img-thumbnail"
+                              style={{
+                                width: "120px",
+                                height: "120px",
+                                objectFit: "cover",
+                              }}
+                              onError={(e) =>
+                                (e.target.src = "/images/no-image.png")
+                              } // 若圖片載入失敗，顯示預設圖片
+                            />
+                          </div>
+                        );
+                      })
                     ) : (
                       <p className="text-muted">無圖片可顯示</p>
                     )}

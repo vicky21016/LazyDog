@@ -217,12 +217,7 @@ export const deleteHotelImages = async (imageIds) => {
   }
 };
 export const updateHotelById = async (updateData) => {
-  const {
-    id,
-    deleteImageIds = [],
-    newImages = [],
-    ...updateFields
-  } = updateData;
+  const { id, ...updateFields } = updateData;
 
   if (!id) {
     return { error: "缺少 id，無法更新旅館" };
@@ -232,25 +227,24 @@ export const updateHotelById = async (updateData) => {
   try {
     await connection.beginTransaction();
 
-    // 更新旅館基本資訊
     if (Object.keys(updateFields).length > 0) {
       const keys = Object.keys(updateFields);
       const values = Object.values(updateFields);
       const set = keys.map((key) => `${key} = ?`).join(", ");
-      await connection.query(
+
+      console.log("🔍 更新 SQL:", `UPDATE hotel SET ${set} WHERE id = ${id}`);
+      console.log("🔍 更新值:", values);
+
+      const [result] = await connection.query(
         `UPDATE hotel SET ${set}, updated_at = NOW() WHERE id = ?`,
         [...values, id]
       );
-    }
 
-    // 刪除圖片
-    if (deleteImageIds.length > 0) {
-      await deleteHotelImages(deleteImageIds);
-    }
+      console.log("🔍 SQL 更新結果:", result);
 
-    // 新增圖片
-    if (newImages.length > 0) {
-      await uploadHotelImages(id, newImages);
+      if (result.affectedRows === 0) {
+        throw new Error("資料沒有變更或旅館 ID 不存在");
+      }
     }
 
     await connection.commit();
@@ -262,6 +256,7 @@ export const updateHotelById = async (updateData) => {
     connection.release();
   }
 };
+
 export const updateMainImages = async (hotelId, imageId) => {
   const connection = await pool.getConnection();
   try {
