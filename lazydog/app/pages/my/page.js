@@ -10,7 +10,7 @@ export default function MyMenu() {
   const pathname = usePathname();
   const menuItems = [
     { name: "會員資料", path: "/my/settings" },
-    { name: "訂單紀錄", path: "/my/orders" },
+    { name: "訂單紀錄", path: "/orders" },
     { name: "我的優惠", path: "/my/coupons" },
     { name: "我的收藏", path: "/my/favorite" },
     { name: "我的文章", path: "/my/posts" },

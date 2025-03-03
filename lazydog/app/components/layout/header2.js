@@ -7,14 +7,13 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "@/hooks/use-auth";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebase } from "../utils/firebase";
-import styles from "../../../styles/modules/header2.module.css"; 
-
+import styles from "../../../styles/modules/header2.module.css";
 
 export default function Header(props) {
   const [usernow, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false); // 控制選單展開
   const { user, logout } = useAuth();
-  
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -28,7 +27,7 @@ export default function Header(props) {
         <img className={styles.logo} src="/header/img/logo.png" alt="Logo" />
         <div className={styles["lumi-logo1"]}>LAZYDOG</div>
       </Link>
-      <nav>
+      <nav className={styles["lumi-nav"]}>
         <ul className={styles["lumi-ul2"]}>
           <div className={styles["dropdown"]}>
             <li>
@@ -135,27 +134,26 @@ export default function Header(props) {
           </li>
         </ul>
       </nav>
-     
-       
+
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
           <Link href="/pages" className={styles["lumi-user-icon2"]}>
             {/* <FontAwesomeIcon icon={faUser} /> */}
             <i className="bi bi-person"></i>
           </Link>
-           {user ? (
-          <div className={styles["dropdown-content"]}>
-            <Link href="/pages" className={styles["dropdown-link"]}>
-              個人資料
-            </Link>
-            <Link href="/favorite" className={styles["dropdown-link"]}>
-              我的收藏
-            </Link>
-            <div onClick={logout} className={styles["dropdown-link"]}>
-              登出
+          {user ? (
+            <div className={styles["dropdown-content"]}>
+              <Link href="/pages" className={styles["dropdown-link"]}>
+                個人資料
+              </Link>
+              <Link href="/favorite" className={styles["dropdown-link"]}>
+                我的收藏
+              </Link>
+              <div onClick={logout} className={styles["dropdown-link"]}>
+                登出
+              </div>
             </div>
-          </div>
-          ):null}
+          ) : null}
         </div>
         <div className={styles["lumi-cart-icon2"]}>
           <Link href="/cart/CartList" className={styles["lumi-cart-icon2"]}>
@@ -165,7 +163,7 @@ export default function Header(props) {
         </div>
       </div>
       {/* 手機板 */}
-      <div
+      {/* <div
         className={`${styles.mobileMenu}`}
         onClick={() => setMenuOpen(!menuOpen)}
       >
@@ -226,6 +224,172 @@ export default function Header(props) {
                 <i className="bi bi-cart2"></i>購物車
               </Link>
             </div>
+          </ul>
+        </nav>
+      </div> */}
+      <div className={`${styles.mobileMenu}`}>
+        <i
+          onClick={() => setMenuOpen(!menuOpen)}
+          className={`${styles.menu} ${menuOpen ? "bi bi-x-lg" : "bi bi-list"}`}
+        ></i>
+        <nav className={styles["mobileMenubar"]}>
+          <ul className={`${styles.mobileDrop} ${menuOpen ? styles.show : ""}`}>
+            <li>
+              <Link href="/home">關於我們</Link>
+            </li>
+            <li className={styles["dropdown"]}>
+              <div
+                onClick={() => {
+                  setPDOpen(!PDOpen);
+                  setUserOpen(false);
+                  setTeacherOpen(false);
+                }}
+              >
+                <Link href="" className={styles["dropbtn"]}>
+                  寵物用品
+                </Link>
+              </div>
+              <div
+                className={`${
+                  PDOpen
+                    ? styles["dropdown-contentOn"]
+                    : styles["dropdown-contentOff"]
+                }`}
+              >
+                <a
+                  href={`/product/list/category?category=乾糧`}
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                >
+                  乾糧
+                </a>
+                <a
+                  href={`/product/list/category?category=罐頭`}
+                  className={styles["dropdown-link"]}
+                >
+                  罐頭
+                </a>
+                <a
+                  href={`/product/list/category?category=零食`}
+                  className={styles["dropdown-link"]}
+                >
+                  零食
+                </a>
+                <a
+                  href={`/product/list/category?category=保健食品`}
+                  className={styles["dropdown-link"]}
+                >
+                  保健食品
+                </a>
+                <a
+                  href={`/product/list/category?category=美容用品`}
+                  className={styles["dropdown-link"]}
+                >
+                  美容用品
+                </a>
+                <a
+                  href={`/product/list/category?category=清潔用品`}
+                  className={styles["dropdown-link"]}
+                >
+                  清潔用品
+                </a>
+                <a
+                  href={`/product/list/category?category=外出用品`}
+                  className={styles["dropdown-link"]}
+                >
+                  外出用品
+                </a>
+                <a
+                  href={`/product/list/category?category=居家用品`}
+                  className={styles["dropdown-link"]}
+                >
+                  居家用品
+                </a>
+                <a
+                  href={`/product/list/category?category=玩具`}
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                >
+                  玩具
+                </a>
+              </div>
+            </li>
+            <li>
+              <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>
+            </li>
+            <li className={styles["dropdown"]}>
+              <div
+                onClick={() => {
+                  setTeacherOpen(!teacherOpen);
+                  setUserOpen(false);
+                  setPDOpen(false);
+                }}
+              >
+                <Link href="" className={styles["dropbtn"]}>
+                  寵物課程
+                </Link>
+              </div>
+              <div
+                className={`${
+                  teacherOpen
+                    ? styles["dropdown-contentOn"]
+                    : styles["dropdown-contentOff"]
+                }`}
+              >
+                <Link
+                  href="/course/list"
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                >
+                  課程
+                </Link>
+                <Link
+                  href="/teacher/list"
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                >
+                  師資
+                </Link>
+              </div>
+            </li>
+            <li>
+              <Link href="/article/list">毛孩文章</Link>
+            </li>
+            <li className={styles["dropdown"]}>
+              <div
+                onClick={() => {
+                  setUserOpen(!userOpen);
+                  setPDOpen(false);
+                  setTeacherOpen(false);
+                }}
+              >
+                <Link href="">會員中心</Link>
+              </div>
+              <div
+                className={`${
+                  userOpen
+                    ? styles["dropdown-contentOn"]
+                    : styles["dropdown-contentOff"]
+                }`}
+              >
+                <Link
+                  href="/pages"
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                >
+                  個人資料
+                </Link>
+                <Link href="/favorite" className={styles["dropdown-link"]}>
+                  我的收藏
+                </Link>
+                <div
+                  onClick={logout}
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                >
+                  登出
+                </div>
+              </div>
+            </li>
+            <li>
+              <Link href="/cart/CartList">
+                <i className="bi bi-cart2"></i>購物車
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>

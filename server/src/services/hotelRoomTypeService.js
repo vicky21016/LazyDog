@@ -102,7 +102,6 @@ export const createHotelRooms = async (data) => {
       image_url,
     } = data;
 
-    // 確保 `room_type_id` 存在
     const [roomTypeCheck] = await pool.execute(
       "SELECT id FROM room_type WHERE id = ?",
       [room_type_id]
@@ -126,7 +125,6 @@ export const createHotelRooms = async (data) => {
       }
     }
 
-    // 確保圖片為完整網址
     finalImageUrl = finalImageUrl
     ? `http://localhost:5000${finalImageUrl}`
     : `http://localhost:5000/uploads/hotel/1-l-room.webp`;

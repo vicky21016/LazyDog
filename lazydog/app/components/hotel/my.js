@@ -35,7 +35,7 @@ export default function My() {
        },
      ]; 
   return (
-    <div className=" d-none d-md-block col-md-3">
+    <div className=" d-none d-md-block col-md-3 col-lg-2">
       <div className={` p-3 ${style.container}`}>
         <div className="text-center">
           <div className="position-relative d-inline-block">
