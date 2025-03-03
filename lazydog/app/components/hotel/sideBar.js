@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useContext } from "react";
 import styles from "@/styles/modules/fontHotelHome.module.css";
 import GoogleMapComponent from "../../components/hotel/GoogleMapComponent";
 import Link from "next/link";
@@ -196,7 +196,6 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
     setSelectedRating("");
     setIsSearching(true);
   
-    // ✅ 重新獲取全局價格範圍，然後再更新滑桿
     await fetchPriceRange();
   
     if (priceSliderRef.current?.noUiSlider) {

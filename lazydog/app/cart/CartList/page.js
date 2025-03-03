@@ -67,9 +67,9 @@ export default function CartListPage(props) {
         <div className={styles.cartImg}>
           <img src="/cart/cattlist.png" />
         </div>
-        
+
         <div className="container">
-        <Breadcrumb
+          <Breadcrumb
             links={[
               { label: "首頁 ", href: "/" },
               {
@@ -80,10 +80,7 @@ export default function CartListPage(props) {
             ]}
           />
           <div className={`${styles.customTable} row my-5`}>
-            <table
-              className="col-lg-8 col-md-auto col-auto mb-5 me-5"
-              
-            >
+            <table className="col-lg-8 col-md-auto col-auto mb-5 me-5">
               {productItems.length > 0 && (
                 <>
                   <Thead />
@@ -198,6 +195,9 @@ export default function CartListPage(props) {
                           </button>
                         </td>
                         <td>{cartItem.count * cartItem.price}</td>
+                        {/* 新增日期顯示 */}
+                        <td>{cartItem.checkInDate}</td>
+                        <td>{cartItem.checkOutDate}</td>
                         <td>
                           <button
                             style={{
@@ -222,7 +222,6 @@ export default function CartListPage(props) {
             {/* 顯示摘要區 */}
             <aside
               className={`${styles.aside} col-lg-3 col-md-auto col-auto mb-5`}
-              
             >
               <div className={`${styles.summary} aside-card mb-5`}>
                 <h5 className="mb-4">訂單明細</h5>
@@ -244,7 +243,6 @@ export default function CartListPage(props) {
                   <span>旅館小計</span>
                   <span>{`Rs. ${totalHotelAmount}`}</span>
                 </div>
-          
               </div>
 
               {/* 折扣區 */}
@@ -298,7 +296,7 @@ export default function CartListPage(props) {
               <h4 className="mb-5">加購其他優惠商品</h4>
               <Other cards={teacherData} />
             </div>
-            <hr className="mb-5"/>
+            <hr className="mb-5" />
             <div>
               <h4 className="mb-5">看看其他精選商品 </h4>
               <Other cards={teacherData} />
