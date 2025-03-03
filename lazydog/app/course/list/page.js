@@ -9,7 +9,8 @@ import Header from "@/app/components/layout/header";
 import News from "../_components/list/news";
 import SideBar from "../_components/list/sideBar";
 import CourseCard from "../_components/list/course-card";
-import Pagination from "../_components/list/pagination";
+import Pagination from "../_components/list/page";
+// import Pagination from "../_components/list/pagination";
 import OtherCourseCard from "../_components/list/other-course-card";
 
 export default function CourseListPage() {
@@ -66,6 +67,13 @@ export default function CourseListPage() {
   }, [filters]);
 
   // 分頁
+  // const [currPage, setCurrPage] = useState(1);
+  // const perPage = 9;
+  // const totalPages = Math.max(1, Math.ceil(courses?.length / perPage));
+
+  // const startIndex = (currPage - 1) * perPage;
+  // const currentCourses = courses?.slice(startIndex, startIndex + perPage);
+
   const [currPage, setCurrPage] = useState(1);
   const perPage = 9;
   const totalPages = Math.max(1, Math.ceil(courses?.length / perPage));
@@ -85,11 +93,15 @@ export default function CourseListPage() {
               filters={filters}
               setFilters={setFilters}
             />
-            <CourseCard courses={courses} loading={loading} filters={filters} />
+            <CourseCard
+              courses={currentCourses}
+              loading={loading}
+              filters={filters}
+            />
             <Pagination
               totalPages={totalPages}
-              currPage={currPage}
-              setCurrPage={setCurrPage}
+              currentPage={currPage}
+              onPageChange={setCurrPage}
             />
           </div>
         </div>

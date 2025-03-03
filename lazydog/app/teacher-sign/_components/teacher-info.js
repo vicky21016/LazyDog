@@ -160,7 +160,7 @@ export default function TeacherInfo() {
                 </div>
               </div>
             </div>
-            <div className={`col-md-12 mt-3`}>
+            <div className={`col-md-12 mt-3 pb-5 border-bottom`}>
               <label className={`form-label ${styles.labels}`}>
                 師資照片
                 <span className={styles.must}>* </span>
@@ -193,7 +193,7 @@ export default function TeacherInfo() {
               </div>
             </div>
             {/* 按鈕區 */}
-            <div className={`d-flex justify-content-end border-top mt-5`}>
+            <div className={`d-grid gap-2 col-3 mx-auto  mt-3`}>
               <button
                 type="submit"
                 className={`btn btn-primary btn-sm px-4 mt-4 ${styles.submitBtn}`}
