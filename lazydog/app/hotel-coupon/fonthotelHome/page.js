@@ -150,33 +150,24 @@ export default function HotelHomePage() {
   }, [sortOption, isFiltered]);
 
   //  觸發篩選 API
-   const handleSearch = async (newParams) => {
+  const handleSearch = async (newParams) => {
     setIsFiltered(true);
     const updatedParams = { ...searchParams, ...newParams };
-
-
+  
     setSearchParams(updatedParams);
     if (typeof window !== "undefined") {
       sessionStorage.setItem("searchParams", JSON.stringify(updatedParams));
     }
-
+  
     try {
       const data = await getFilteredHotelsS(updatedParams);
       setFilteredHotels(data);
       setCurrentPage(1);
-
-      const queryString = new URLSearchParams(
-        Object.entries(updatedParams).reduce((acc, [key, value]) => {
-          if (value !== null && value !== "" && value !== undefined) {
-            acc[key] = Array.isArray(value) ? value.join(",") : value.toString();
-          }
-          return acc;
-        }, {})
-      ).toString();
-
+  
+      const queryString = qs.stringify(updatedParams, { arrayFormat: "brackets" });
       router.push(`/hotel-coupon/fonthotelHome?${queryString}`);
     } catch (error) {
-      console.error("篩選錯誤:", error);
+      console.error("錯誤:", error);
       setFilteredHotels([]);
     }
   };
