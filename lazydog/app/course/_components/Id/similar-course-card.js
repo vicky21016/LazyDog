@@ -13,21 +13,16 @@ export default function SimilarCourseCard({ simiCourse }) {
           <div className={styles.sBars}>
             <div className={styles.sbar} />
             <div className={styles.btns}>
-              {/* <img
-                    className={styles.arrowLeft}
-                    src="/course/img/arrow-left.png"
-
-                    alt={`往左箭頭`}
-
-
-                  />
-                  <img
-                    className={styles.arrowRight}
-                    src="/course/img/arrow-right.png"
-
-                    alt={`往右箭頭`}
-
-                  /> */}
+              <img
+                className={styles.arrowLeft}
+                src="/course/img/arrow-left.png"
+                alt={`往左箭頭`}
+              />
+              <img
+                className={styles.arrowRight}
+                src="/course/img/arrow-right.png"
+                alt={`往右箭頭`}
+              />
             </div>
           </div>
           <div className={styles.sCards}>
