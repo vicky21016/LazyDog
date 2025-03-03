@@ -86,12 +86,18 @@ export default function App() {
             />
             <div className={`mt-4 ${style1.Title}`}>
               <h3 className={style1.list}>師資列表</h3>
-              <div className={`${style1.TitleFilter} ${styles.filterButton}`} onClick={() => setFilterOpen(!filterOpen)}>
+              <div className={`${style1.TitleFilter} ${styles.filterButton}`}>
                 <img src="/product/font/filter.png" alt="篩選" />
                 <h6>依熱門排序</h6>
               </div>
             </div>
           </section>
+          <button className={styles.right}>
+            <img
+              src={`/product/font/right(orange).png`}
+              onClick={() => setFilterOpen(!filterOpen)}
+            />
+          </button>
           <section className={styles.pdArea}>
             <div className="row">
               {/* 桌機版篩選選單 */}
@@ -100,9 +106,18 @@ export default function App() {
               </div>
 
               {/* 手機版篩選選單 (滑入效果) */}
-              <div className={`${styles.mobileFilter} ${filterOpen ? styles.showFilter : ""}`}>
+              <div
+                className={`${styles.mobileFilter} ${
+                  filterOpen ? styles.showFilter : ""
+                }`}
+              >
                 <Filter filterChange={filter} />
-                <button className={styles.closeButton} onClick={() => setFilterOpen(false)}>關閉</button>
+                <button
+                  className={styles.closeButton}
+                  onClick={() => setFilterOpen(false)}
+                >
+                  關閉
+                </button>
               </div>
 
               {/* 師資列表 */}
@@ -123,7 +138,11 @@ export default function App() {
                     <p className="text-center">沒有符合條件的老師</p>
                   )}
                 </div>
-                <Page totalPages={totalPages} currPage={page} setCurrPage={setPage} />
+                <Page
+                  totalPages={totalPages}
+                  currPage={page}
+                  setCurrPage={setPage}
+                />
               </div>
             </div>
           </section>
