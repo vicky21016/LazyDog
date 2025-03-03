@@ -195,7 +195,7 @@ export default function CourseIntro({ course, session, place }) {
         <h2 className={styles.price}>
           ${" "}
           <span className={styles.number}>
-            {Number(c?.price).toLocaleString("zh-Tw")}
+            {c?.price && Number(c?.price).toLocaleString("zh-Tw")}
           </span>
         </h2>
 
