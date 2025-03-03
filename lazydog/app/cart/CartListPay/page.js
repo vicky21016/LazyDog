@@ -118,15 +118,13 @@ export default function CartListPayPage(props) {
       const payForm = createEcpayForm(resData.data.params, resData.data.action);
 
       if (isDev) console.log(payForm);
-
-      if (window.confirm("確認要導向至ECPay(綠界金流)進行付款?")) {
-        if (productItems.length > 0) {
+ if (productItems.length > 0) {
           const newOrder = {
             user_id: user.id,
             orderID: `PD${new Date().getTime()}`,
             coupon_id: "",
             discount_amount: 0,
-            productID_list: productItems.map((item) => item.id),
+            productID_list: productItems.map((item) => item.productID),
             price_list: productItems.map((item) => item.price),
             amount_list: productItems.map((item) => item.count),
             total_price: totalProductAmount,
@@ -138,24 +136,27 @@ export default function CartListPayPage(props) {
           await setProductOrder(newOrder);
           await createProductOrder(newOrder);
         }
+      if (window.confirm("確認要導向至ECPay(綠界金流)進行付款?")) {
+       
         if (courseItems.length > 0) {
-          const newOrder = {
-            user_id: user.id,
-            orderID: `CR${new Date().getTime()}`,
-            coupon_id: "",
-            discount_amount: 0,
-            productID_list: courseItems.map((item) => item.id),
-            price_list: courseItems.map((item) => item.price),
-            amount_list: courseItems.map((item) => item.count),
-            total_price: totalCourseAmount,
-            final_amount: totalCourseAmount,
-            created_at: new Date(),
-            is_deleted: 0,
-            payment_status: "Unpaid",
-          };
-          await setProductOrder(newOrder);
-          await createProductOrder(newOrder);
+          courseItems.forEach(async (courseItem) => {
+            const newOrder = {
+              course_id: courseItem.id,
+              user_id: user.id,
+              quantity: courseItem.count,
+              total_price: courseItem.price * courseItem.count, // 確保計算單筆課程總價
+              payment_status: "Unpaid",
+              payment_method: courseItem.payment_method || "Not Specified", // 預設值
+              cancellation_policy: courseItem.cancellation_policy || "Standard Policy",
+              remark: courseItem.remark || "",
+            };
+
+            await setCourseOrder(newOrder);
+            await createCourseOrder(newOrder);
+          });
         }
+
+       
         if (hotelItems.length > 0) {
           hotelItems.forEach(async (hotelItem) => {
             const newOrder = {
