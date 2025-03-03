@@ -20,7 +20,9 @@ export default function Header(props) {
     });
     return () => unsubscribe();
   }, []);
-
+  const [PDOpen, setPDOpen] = useState(false);
+  const [teacherOpen, setTeacherOpen] = useState(false);
+  const [userOpen, setUserOpen] = useState(false);
   return (
     <header className={styles["lumi-header2"]}>
       <Link href="/" className={styles["lumi-logo2"]}>
