@@ -39,20 +39,19 @@ export default function CourseIdPage() {
   return (
     <>
       <Header />
-      <Breadcrumb course={course} />
-      <div>
-        <div className={styles.section1}>
-          <CoursePics imgs={imgs} />
-          <div className={styles.right}>
+      <div className="container">
+        <Breadcrumb course={course} />
+      </div>
+      <div className="container">
+        <div className={`row ${styles.section1}`}>
+          <div className="col-12 col-md-5 col-lg-6 order-md-1 order-2 px-4">
+            <CoursePics imgs={imgs} />
+          </div>
+          <div className={`col-12 col-md-7 col-lg-6 order-md-2 order-1 px-5`}>
             <CourseIntro course={course} session={session} place={place} />
           </div>
         </div>
         <div className={styles.section2}>
-          <img
-            className={styles.brownWave}
-            src="/course/img/brownWave.png"
-            alt=""
-          />
           <SimilarCourseCard simiCourse={simiCourse} />
         </div>
       </div>

@@ -9,12 +9,17 @@ export default function CourseIntro({ course, session, place }) {
   const c = course?.[0];
   const s = session?.[0];
 
-  // const defaultTeachImg = "/course/img/user.jpg"
+  const [expanded, setExpanded] = useState(false);
+  const maxLength = 100; // 顯示的字數上限
+  const displayText = expanded
+    ? c?.description
+    : c?.description?.length > maxLength
+    ? c?.description.substring(0, maxLength) + "..."
+    : c?.description;
 
+  // const defaultTeachImg = "/course/img/user.jpg"
   // console.log(s);
-  console.log("CourseIntro - Course:", course);
-  // console.log("CourseIntro - Session:", session);
-  // console.log("CourseIntro - Place:", place);
+  // console.log("CourseIntro - Course:", course);
 
   const [selectDate, setSelectDate] = useState(""); // 選擇的日期
   const [selectedTime, setSelectedTime] = useState("");
@@ -71,7 +76,7 @@ export default function CourseIntro({ course, session, place }) {
       console.log("加入購物車的數據:", { c, s, selectDate, selectedTime });
       onAddCourse(c, s, selectDate, selectedTime);
       Swal.fire({
-        // icon: "success",
+        icon: "success",
         title: "已加入購物車",
         showClass: {
           popup: `
@@ -105,30 +110,11 @@ export default function CourseIntro({ course, session, place }) {
       )}`;
       window.open(googleMapsUrl, "_blank");
     }
-    // else if (index < 5) {
-    //   // 第四～第五筆資料彈出 Swal 對話框
-    //   Swal.fire({
-    //     html: `
-    //         <p>
-    //           <a href="https://reurl.cc/XRdR6j" target="_blank" style="color: blue; text-decoration: underline;">
-    //             <strong>ZOOM下載使用教學參考</strong>
-    //           </a>
-    //         </p>
-    //         <p>
-    //           <a href="https://reurl.cc/nv9vz8" target="_blank" style="color: blue; text-decoration: underline;">
-    //             <strong>直播觀看教學方式說明</strong>
-    //           </a>
-    //         </p>
-
-    //       `,
-    //     showConfirmButton: false,
-    //   });
-    // }
   };
 
   return (
     <>
-      <div className={styles.courseIntro}>
+      <div className={`${styles.right} ${styles.courseIntro}`}>
         <img
           className={styles.mainPic}
           src={`/course/img/${c?.img_url}`}
@@ -143,7 +129,17 @@ export default function CourseIntro({ course, session, place }) {
             alt=""
           />
         </div>
-        <p className={styles.description}>{c?.description}</p>
+        <p className={styles.description}>
+          {displayText}{" "}
+          {c?.description?.length > maxLength && (
+            <span
+              className={styles.toggleBtn}
+              onClick={() => setExpanded(!expanded)}
+            >
+              {expanded ? " ...收 " : "看更多"}
+            </span>
+          )}
+        </p>
 
         <div className={styles.teacher}>
           <h2 className={styles.teachTitle}>關於講師</h2>
@@ -153,7 +149,7 @@ export default function CourseIntro({ course, session, place }) {
                 ? `/teacher/info/${s?.teacher_id}`
                 : `/course/img/user.jpg`
             }
-            className={`d-flex gap-3 ${styles.tConnect}`}
+            className={`d-flex gap-2 ${styles.tConnect}`}
           >
             <img
               className={styles.teachPic}
