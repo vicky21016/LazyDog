@@ -46,9 +46,7 @@ export function CartProvider({ children }) {
   };
 
   // 增加旅館的邏輯
-  const onAddHotel = (hotel, amount = 1) => {
-    console.log({ hotel });
-
+  const onAddHotel = (hotel, amount = 1, checkInDate, checkOutDate) => {
     const foundIndex = hotelItems.findIndex((v) => v.id === hotel.id);
     if (foundIndex !== -1) {
       const nextItems = hotelItems.map((v) =>
@@ -56,7 +54,12 @@ export function CartProvider({ children }) {
       );
       setHotelItems(nextItems);
     } else {
-      const newItem = { ...hotel, count: amount };
+      const newItem = { 
+        ...hotel, 
+        count: amount, 
+        checkInDate, 
+        checkOutDate 
+      };
       setHotelItems([newItem, ...hotelItems]);
     }
   };
