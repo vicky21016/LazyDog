@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
@@ -9,6 +9,7 @@ import style from "../../../styles/modules/menu.module.css";
 export default function My() {
   const pathname = usePathname();
   const { user } = useAuth();
+  const [mobileMenu, setmobileMenu] = useState(false);
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
 
@@ -46,8 +47,92 @@ export default function My() {
   ];
 
   return (
-    <div className=" d-none d-md-block col-md-3">
-      <div className={` p-3 ${style.container}`}>
+    <>
+    {/* 手機版選單按鈕 */}
+    <button
+    className="btn d-block d-md-none"
+    onClick={() => {
+      setmobileMenu(!mobileMenu);
+    }}
+  >
+    {mobileMenu ? "關閉選單" : "打開選單"}
+  </button>
+  <div className="col-md-3 col-12">
+      <div className={` p-3 ${style.container} d-block d-md-none ${mobileMenu ? "" : "d-none"}`}>
+        <div className="text-center">
+          <div className="position-relative d-inline-block">
+            <img
+              ref={avatarRef}
+              src="/hotel/hotel-images/page-image/Dog2.png"
+              alt="User Avatar"
+              className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
+            />
+
+            <div className={styles.dropdownItem}>
+              <button
+                className={`btn btn-light ${styles.suCameraIcon}`}
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  src="/hotel/hotel-images/page-image/icon-camera.png"
+                  alt="相機"
+                  className={styles.suCameraIconImg}
+                />
+              </button>
+              <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
+                <li>
+                  <button
+                    className={`text-danger dropdown-item ${styles.suDropdownItem}`}
+                    onClick={deletePhoto}
+                  >
+                    刪除照片
+                  </button>
+                </li>
+                <li>
+                  <label
+                    onClick={uploadPhoto}
+                    className={`dropdown-item ${styles.dropdownItem}`}
+                  >
+                    上傳照片
+                  </label>
+                  <input
+                    type="file"
+                    id="uploadPhoto"
+                    accept="image/*"
+                    className="d-none"
+                    ref={fileInputRef}
+                    onChange={fileChange}
+                  />
+                </li>
+              </ul>
+            </div>
+          </div>
+          <h5 className="mt-2">{user?.name}</h5>
+          <p className="text-muted">{user?.email}</p>
+          <button
+            className={`btn btn-outline-success btn-sm ${styles.suBtnSecondary}`}
+          >
+            已認證
+          </button>
+        </div>
+        <hr />
+        <List animated selection>
+          {menuItems.map((menuItem) => (
+            <List.Item
+              key={menuItem.path}
+              active={menuItem.path === pathname}
+              className={`${style.item}`}
+            >
+              <Link className={`${style.link}`} href={menuItem.path}>
+                <span>{menuItem.icon}</span> {menuItem.name}
+              </Link>
+            </List.Item>
+          ))}
+        </List>
+      </div>
+      <div className={` p-3 ${style.container} d-none d-md-block`}>
         <div className="text-center">
           <div className="position-relative d-inline-block">
             <img
@@ -122,5 +207,6 @@ export default function My() {
         </List>
       </div>
     </div>
+    </>
   );
 }
