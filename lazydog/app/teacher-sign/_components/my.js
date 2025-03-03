@@ -40,7 +40,7 @@ export default function My() {
     },
     {
       name: "會員資料",
-      path: "/pages",
+      path: "/teacher-sign/pages",
       icon: <i className="bi bi-person-fill "></i>,
     },
   ];
