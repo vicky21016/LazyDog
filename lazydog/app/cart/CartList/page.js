@@ -139,7 +139,10 @@ export default function CartListPage(props) {
                     {courseItems.map((cartItem) => (
                       <tr key={cartItem.id}>
                         <td className={styles.table}>
-                          <img src={cartItem.img} alt={cartItem.name} />
+                          <img
+                            src={`/course/img/${cartItem.img_url}`}
+                            alt={cartItem.name}
+                          />
                         </td>
                         <td>{cartItem.name}</td>
                         <td>{cartItem.price}</td>
