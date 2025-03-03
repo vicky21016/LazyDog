@@ -160,41 +160,35 @@ export const createHotel = async (req, res) => {
 };
 export const updateHotel = async (req, res) => {
   try {
-    const id = validateHotelId(req.params.id);
-    let { deleteImageIds, ...hotelData } = req.body;
+    const userId = req.user.id; // ✅ 從 JWT token 取得登入的 user_id
+    const { deleteImageIds, ...hotelData } = req.body;
 
-    if (deleteImageIds) {
-      deleteImageIds = Array.isArray(deleteImageIds)
-        ? deleteImageIds.map(Number).filter((id) => !isNaN(id))
-        : [];
+    // ✅ 透過 userId 取得該使用者管理的 hotel_id
+    const [hotelRows] = await pool.query(
+      "SELECT id FROM hotel WHERE operator_id = ? LIMIT 1",
+      [userId]
+    );
+
+    if (hotelRows.length === 0) {
+      return res.status(403).json({ error: "沒有權限更新此旅館" });
     }
 
-    if (deleteImageIds.length > 0) {
-      const deleteResult = await deleteHotelImagesByIds(deleteImageIds, false);
-      if (deleteResult.error) return res.status(500).json(deleteResult);
-    }
+    const hotelId = hotelRows[0].id; // ✅ 取得旅館 ID
 
-    let newImages = [];
-    if (req.files && req.files.length > 0) {
-      newImages = req.files.map((file) => ({
-        url: `/uploads/hotel/${file.filename}`,
-        description: null,
-        hotel_id: id,
-      }));
-      const insertResult = await insertHotelImages(newImages);
-      if (insertResult.error) return res.status(500).json(insertResult);
-    }
+    // ✅ 更新旅館資訊
+    const updatedHotel = await updateHotelById({ id: hotelId, ...hotelData });
 
-    const updatedHotel = await updateHotelById({ id, ...hotelData });
     if (!updatedHotel) {
-      return res.status(404).json({ error: `找不到 id=${id} 或該旅館已刪除` });
+      return res.status(404).json({ error: `找不到 id=${hotelId} 或該旅館已刪除` });
     }
 
-    res.json({ message: `旅館 id=${id} 更新成功` });
+    res.json({ message: `旅館 id=${hotelId} 更新成功` });
   } catch (error) {
     handleError(res, error, "更新旅館失敗");
   }
 };
+
+
 
 export const updateMainImage = async (req, res) => {
   try {
