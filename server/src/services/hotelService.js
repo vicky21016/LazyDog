@@ -59,7 +59,6 @@ export const searchHotels = async (keyword) => {
 export const getId = async (id, checkInDate, checkOutDate) => {
   const connection = await pool.getConnection();
   try {
-    // ✅ 修正 SQL，確保不會因 `room_inventory` 沒有資料而導致查詢失敗
     const query = `
       SELECT h.*, hi.url AS main_image_url
       FROM hotel h
@@ -75,17 +74,15 @@ export const getId = async (id, checkInDate, checkOutDate) => {
 
     let hotel = hotels[0];
 
-    // 🔹 如果 `hotel.main_image_id` 為 `null`，則避免 `id != null` 出錯
     let mainImageIdCondition = hotel.main_image_id ? `AND id != ?` : ``;
     let queryParams = hotel.main_image_id ? [id, hotel.main_image_id] : [id];
 
-    // ✅ 查詢 `hotel_images`，確保 `is_deleted = 0`
     const [hotelImages] = await connection.query(
       `SELECT * FROM hotel_images WHERE hotel_id = ? ${mainImageIdCondition} AND is_deleted = 0`,
       queryParams
     );
 
-    hotel.hotel_images = hotelImages || []; // ✅ 確保 `hotel_images` 陣列存在
+    hotel.hotel_images = hotelImages || []; // 陣列存在
 
     return hotel;
   } catch (error) {
@@ -102,7 +99,7 @@ export const getOperatorTZJ = async (req) => {
       throw new Error("找不到 operatorId，請確認你的 token 是否正確");
     }
 
-    const operatorId = Number(req.user.id); // 確保是數字
+    const operatorId = Number(req.user.id); // 是數字
     if (isNaN(operatorId)) {
       throw new Error(`operatorId 不是數字: ${req.user.id}`);
     }
@@ -475,7 +472,7 @@ export const softDeleteHotelById = async (hotelId, operatorId) => {
   }
 };
 
-/**  從資料庫獲取篩選後 */
+/* 從資料庫獲取篩選後 */
 export const getFilteredHotels = async (filters) => {
   let query = `
   SELECT DISTINCT h.*, 
