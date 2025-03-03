@@ -54,3 +54,11 @@
 .teacher {
   background-color: #fdfaf5;
 } 
+
+@media (max-width: 768px) {
+
+.dog div{
+font-size: 20px;
+}
+
+}

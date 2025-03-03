@@ -42,7 +42,7 @@
   color: white;
   font-size: 42px;
   font-weight: 700;
-  letter-spacing: 6px;
+  letter-spacing: 8px;
   margin: 0;
 }
 .person {
@@ -91,7 +91,7 @@
   transition: 0.4s;
   color: #3b3330;
   box-shadow: rgba(60, 60, 60, 0.35) 0px 5px 15px;
-  border-radius: 20px;
+  /* border-radius: 20px; */
 }
 
 .card7:hover {
@@ -172,10 +172,18 @@
   height: 300px;
   margin: 10px;
 }
- 
+ .container{
+  padding: 30px;
+ }
+ .server{
+  font-size: 36px;
+    background-size: 100% auto;
+    background-position: center;
+    height: 180px;
+ }
 }
 
 .cardImg{
-  height: 150px;
+  height: 180px;
   object-fit: cover;
 }

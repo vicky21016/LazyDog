@@ -10,9 +10,9 @@ export default function TeacherSection () {
 
   return (
     <section className="">
-      <div className={` pt-5 text-center ${style.teacher}`}>
-        <h3 className="mb-5 lumi-m-title">嚴選的師資團隊</h3>
-        <div className=" mb-5">
+      <div className={` pt-5 text-center ${style.teacher} `}>
+        <h3 className="mb-5 lumi-m-title ">嚴選的師資團隊</h3>
+        <div className={`mb-5 ${styles.container}`}>
           <p>
             我們對寵物師資的挑選份外嚴格，必須有豐富的經驗、耐心、傾聽能力、堅強的心志，才能陪伴飼主和狗狗一起經歷改變。
           </p>
@@ -23,9 +23,7 @@ export default function TeacherSection () {
 
         <div className="d-flex mb-5 justify-content-center">
           <Link
-            className={` text-center text-decoration-none ${
-              style.teacherBtn
-            }`}
+            className={` text-center text-decoration-none ${style.teacherBtn}`}
             href="/teacher/list"
           >
             read more
@@ -36,7 +34,7 @@ export default function TeacherSection () {
         </div>
       </div>
 
-      <div className={` text-center ${style.container}`}>
+      <div className={` text-center ${style.container} ${styles.container}`}>
         <div className={` text-center row ${style.dog}`}>
           <div className={` col-4 `}>
             <div>803</div>
@@ -58,7 +56,7 @@ export default function TeacherSection () {
       <div>
         <img className="" src="/teacher-img/yello2.png" alt="" />
       </div>
-      <div className="lumi-all-wrapper pb-5">
+      <div className={`lumi-all-wrapper pb-5 ${styles.container}`}>
         <h3 className="my-5 lumi-m-title ">推薦師資</h3>
         <OtherTeacher />
       </div>
