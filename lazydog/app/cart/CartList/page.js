@@ -229,19 +229,19 @@ export default function CartListPage(props) {
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>商品小計</span>
-                  <span>{`Rs. ${totalProductAmount}`}</span>
+                  <span>{`NT$ ${totalProductAmount}`}</span>
                 </div>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>課程小計</span>
-                  <span>{`Rs. ${totalCourseAmount}`}</span>
+                  <span>{`NT$ ${totalCourseAmount}`}</span>
                 </div>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>旅館小計</span>
-                  <span>{`Rs. ${totalHotelAmount}`}</span>
+                  <span>{`NT$ ${totalHotelAmount}`}</span>
                 </div>
               </div>
 
