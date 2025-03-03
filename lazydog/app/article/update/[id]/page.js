@@ -3,7 +3,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './App.css';
 import FroalaEditorWrapper from '../../_components/update/content';
 import Link from 'next/link';
 import useArticles from "@/hooks/useArticle";
@@ -109,7 +108,7 @@ export default function UpdateArticlePage({ params }) {
   return (
     <>
       <Header />
-      <div className="container">
+      <div className="container" style={{marginTop:'75px'}}>
         <div className="row">
           <div className="col-lg-3 col-sm-12">
             <Link href="/article/my_article" className="btn btn-primary mb-3">

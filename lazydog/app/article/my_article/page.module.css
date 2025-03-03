@@ -61,3 +61,32 @@
   background-color: #66c5bd;
   color: white;
 }
+
+.container2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 300px auto 20px;
+}
+
+.loader27 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0000;
+  animation: loader27-animation 1s infinite alternate linear;
+  background: radial-gradient(circle closest-side, #F6CE5B 94%, #0000)
+    right/calc(200% - 1em) 100%;
+}
+
+.loader27::before {
+  content: "Loading...";
+  background: inherit;
+  background-clip: text;
+  background-image: radial-gradient(circle closest-side, #fff 94%, #F5842B);
+}
+
+@keyframes loader27-animation {
+  100% {
+    background-position: left;
+  }
+}

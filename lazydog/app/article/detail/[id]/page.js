@@ -14,11 +14,12 @@ import useArticles from "@/hooks/useArticle";
 import Header from "../../../components/layout/header";
 
 
-
 export default function ArticleDetail() {
   const { id } = useParams(); // 取得網址中的文章 ID
   const { articles, article, comments, getArticle, loading, error } = useArticles()
   // console.log(comments)
+  
+  
 
   // **當 ID 變更時，載入對應的文章**
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function ArticleDetail() {
   return (
     <>
       <Header />
-      <div className={`container ${styles.container}`}>
+      <div className="container" style={{ marginTop: '70px' }}>
         <nav
           className={`my-4 ${styles.breadcrumb}`}
           style={{ "--bs-breadcrumb-divider": ">" }}
@@ -48,12 +49,12 @@ export default function ArticleDetail() {
                 毛孩文章
               </Link>
             </li>
-            {/* <li className="breadcrumb-item ">
-            <Link className={`${styles.link}`} href="#">
+            <li className="breadcrumb-item ">
+              {/* <Link className={`${styles.link}`} href="#">
               <i class="bi bi-chevron-right"></i>
               {article?.category_name}
-            </Link>
-          </li> */}
+            </Link> */}
+            </li>
             <li className="breadcrumb-item active" aria-current="page">
               <i class="bi bi-chevron-right"></i>  {article?.title || "標題尚未加載"}
             </li>

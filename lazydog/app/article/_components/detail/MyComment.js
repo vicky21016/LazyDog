@@ -10,12 +10,14 @@ const CommentSection = () => {
     const [commentContent, setCommentContent] = useState("");
     const { createComment, loading, error, data } = useComment();
     const { id } = useParams();
-    const { user, loading: authLoading } = useAuth();
+    const { user, loading: authLoading, } = useAuth();
 
     // 設置默認頭像
     const defaultAvatar = '/path/to/default-avatar.jpg';
-    const modifiedAvatar = user?.avatar ? user.avatar.replace('/images/', '/') : defaultAvatar;
-
+    // const modifiedAvatar = user?.avatar ? user.avatar.replace('/images/', '/') : defaultAvatar;
+    const modifiedAvatar = user.avatar 
+    // console.log(defaultAvatar)
+    // console.log(modifiedAvatar)
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!commentContent.trim()) {
@@ -27,7 +29,7 @@ const CommentSection = () => {
             const commentData = {
                 content: commentContent,
                 article_id: id,
-                user_id: user.id,
+                user_id: user.id
             };
 
             await createComment(commentData);
@@ -53,6 +55,9 @@ const CommentSection = () => {
                         src={modifiedAvatar}
                         alt=""
                     />
+                </div>
+                <div className="d-flex justify-content-center">
+                    <div style={{ color: '#66c5bd', fontWeight: 'bold' }}>{user.name}</div>
                 </div>
             </div>
             <div className="w-100 d-flex" style={{ height: "40px" }}>

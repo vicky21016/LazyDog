@@ -11,6 +11,8 @@ import AsideCard from '../_components/list/AsideCard';
 import AsideCard2 from '../_components/list/AsideCard2';
 import { useAuth } from "@/hooks/use-auth";
 import Header from "../../components/layout/header";
+import { ScrollMotionContainer, ScrollMotionItem } from '../ListMotion'
+
 
 const ArticlePage = () => {
   const { articles, loading, error } = useArticles();
@@ -20,7 +22,7 @@ const ArticlePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 5;
   const { user } = useAuth()
- 
+
 
 
   // 判斷有無使用者登入
@@ -120,7 +122,7 @@ const ArticlePage = () => {
               </label>
             </div>
             <div className={styles.asideCategory}>
-              <h2 className='mb-3'>類別</h2>
+              <h4 className='mb-3'>類別</h4>
               <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(null); }}
               >
                 <p>全部</p>
@@ -207,13 +209,18 @@ const ArticlePage = () => {
             <button className={styles.filter} onClick={handleSortToggle}>
               <i className="bi bi-filter"></i> 依時間排序 {sortOrder === 'asc' ? '↑' : '↓'}
             </button>
-            {currentArticles.length > 0 ? (
-              currentArticles.map((article) => (
-                <MainCard key={article.id} {...article} />
-              ))
-            ) : (
-              <p>沒有符合條件的文章</p>
-            )}
+              {currentArticles.length > 0 ? (
+                currentArticles.map((article) => (
+                 
+                    // element="div"
+                   
+                    <MainCard key={article.id} {...article} />
+                  
+                ))
+              ) : (
+                <p>沒有符合條件的文章</p>
+              )}
+            
             <div >
               <h4 className={styles.RWDH4}>延伸閱讀</h4>
               {articles

@@ -168,7 +168,6 @@ export const searchKeywordS = async (keyword) => {
     if (!keyword|| keyword.trim() == "" ) {
       return { error: "請提供有效的搜尋關鍵字" };
     }
-    console.log("我在server端的try李面的if下面")
     const [articles] = await pool.execute(
       `SELECT articles.*,
       article_img.url AS cover_image,

@@ -8,6 +8,7 @@
   align-items: center;
   position: relative; /* 讓 ::before 定位 */
   overflow: hidden;
+  margin-top:100px; ;
 }
 
 .mainDog::before {
@@ -250,6 +251,10 @@
   justify-content: center;
 }
 
+}
+.asideCategory{
+  border-bottom:2 solid rgb(175, 173, 173);
+  margin-bottom: 15px;
 }
 
 .asideCategory p{

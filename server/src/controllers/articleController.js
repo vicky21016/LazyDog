@@ -15,7 +15,7 @@ export const getArticles = async (req, res) => {
           ...article,
           created_at: new Date(article.created_at).toISOString().split('T')[0], // 只取日期
           updated_at: new Date(article.updated_at).toISOString().split('T')[0],  // 只取日期
-          cover_image: article.cover_image || "http://localhost:5000/api/articles/image2.jpg" // 設定預設圖片
+          cover_image: article.cover_image || "http://localhost:5000/api/articles/image4.jpg" // 設定預設圖片
       }));
 
       res.json(formattedArticles);
@@ -59,6 +59,7 @@ export const getId = async (req, res) => {
       results.forEach(row => {
           if (row.comment_id && !commentMap.has(row.comment_id)) {
               commentMap.set(row.comment_id, {
+                  id:row.comment_id,
                   content: row.comment_content,
                   author: row.commenter_name,
                   author_img: row.commenter_img
