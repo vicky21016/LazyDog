@@ -161,16 +161,15 @@ export default function HotelHomePage() {
   
     try {
       const data = await getFilteredHotelsS(updatedParams);
+      console.log("篩選結果:", data); // ✅ 確保有回應數據
       setFilteredHotels(data);
       setCurrentPage(1);
-  
-      const queryString = qs.stringify(updatedParams, { arrayFormat: "brackets" });
-      router.push(`/hotel-coupon/fonthotelHome?${queryString}`);
     } catch (error) {
-      console.error("錯誤:", error);
+      console.error("篩選錯誤:", error);
       setFilteredHotels([]);
     }
   };
+  
   
 
   //  清除篩選條件

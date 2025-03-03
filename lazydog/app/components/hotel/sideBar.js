@@ -130,6 +130,12 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
       if (priceData) {
         setMinPrice(priceData.min_price ?? 0);
         setMaxPrice(priceData.max_price ?? 10000);
+        if (priceSliderRef.current?.noUiSlider) {
+          priceSliderRef.current.noUiSlider.set([
+            priceData.min_price,
+            priceData.max_price,
+          ]);
+        }
       }
     } catch (error) {
       console.error("獲取價格範圍失敗:", error);
@@ -170,7 +176,6 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
       tags: selectedTags.length > 0 ? selectedTags.map(Number) : [],
     };
 
-
     try {
       await onSearch(filterParams, true);
       setIsSearching(false);
@@ -180,26 +185,28 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
   };
 
   const handleClear = async () => {
-
-    setIsFiltered(false); // 讓 `fetchHotels()` 可以重新載入所有飯店
-
+    setIsFiltered(false);
+  
     if (onClear) {
       onClear();
     }
-
-    setMinPrice(0);
-    setMaxPrice(10000);
+  
     setSelectedRoomType("");
     setSelectedTags([]);
     setSelectedRating("");
     setIsSearching(true);
-
+  
+    // ✅ 重新獲取全局價格範圍，然後再更新滑桿
+    await fetchPriceRange();
+  
     if (priceSliderRef.current?.noUiSlider) {
-      priceSliderRef.current.noUiSlider.set([0, 10000]);
+      const globalPrice = await getGlobalPriceRange();
+      priceSliderRef.current.noUiSlider.set([globalPrice.min_price, globalPrice.max_price]);
     }
-
-    await fetchHotels(); // 重新載入所有飯店
+  
+    await fetchHotels();
   };
+  
 
   return (
     <>

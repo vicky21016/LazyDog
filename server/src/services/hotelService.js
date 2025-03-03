@@ -92,7 +92,6 @@ export const getId = async (id, checkInDate, checkOutDate) => {
   }
 };
 
-
 export const getOperatorTZJ = async (req) => {
   try {
     if (!req.user || !req.user.id) {
@@ -235,13 +234,10 @@ export const updateHotelById = async (updateData) => {
       const values = Object.values(updateFields);
       const set = keys.map((key) => `${key} = ?`).join(", ");
 
-      
-
       const [result] = await connection.query(
         `UPDATE hotel SET ${set}, updated_at = NOW() WHERE id = ?`,
         [...values, id]
       );
-
 
       if (result.affectedRows == 0) {
         throw new Error("資料沒有變更或旅館 ID 不存在");
@@ -474,74 +470,70 @@ export const softDeleteHotelById = async (hotelId, operatorId) => {
 
 /* 從資料庫獲取篩選後 */
 export const getFilteredHotels = async (filters) => {
+  console.log("filters from request:", filters);
+
   let query = `
-  SELECT DISTINCT h.*, 
-    hi.url AS main_image_url,
-    COALESCE(r.avg_rating, 0) AS avg_rating,
-    COALESCE(r.review_count, 0) AS review_count,
-    COALESCE(inv.min_price, 9999999) AS min_price
-  FROM hotel h
-  LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
-  LEFT JOIN (
-      SELECT hotel_id, 
-            ROUND(AVG(rating), 1) AS avg_rating, 
-            COUNT(id) AS review_count
-      FROM hotel_reviews
-      GROUP BY hotel_id
-  ) r ON h.id = r.hotel_id
-  LEFT JOIN (
-      SELECT hrt.hotel_id, COALESCE(MIN(hrt.price_per_night), 9999999) AS min_price
-      FROM hotel_room_types hrt
-      GROUP BY hrt.hotel_id
-  ) inv ON h.id = inv.hotel_id
-  WHERE h.is_deleted = 0 
-`;
+    SELECT DISTINCT h.*, 
+      hi.url AS main_image_url,
+      COALESCE(r.avg_rating, 0) AS avg_rating,
+      COALESCE(r.review_count, 0) AS review_count,
+      hrt.min_price
+    FROM hotel h
+    LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
+    LEFT JOIN (
+        SELECT hotel_id, 
+              ROUND(AVG(rating), 1) AS avg_rating, 
+              COUNT(id) AS review_count
+        FROM hotel_reviews
+        GROUP BY hotel_id
+    ) r ON h.id = r.hotel_id
+    INNER JOIN (
+        SELECT hotel_id, MIN(price_per_night) AS min_price
+        FROM hotel_room_types
+        WHERE price_per_night BETWEEN ? AND ?  
+        GROUP BY hotel_id
+    ) hrt ON h.id = hrt.hotel_id
+    WHERE h.is_deleted = 0
+  `;
 
-let queryParams = [];
+  let queryParams = [filters.min_price ?? 0, Math.min(filters.max_price ?? 10000, 10000)];
 
-if (filters.min_price !== null && filters.max_price !== null) {
-  query += ` AND (inv.min_price BETWEEN ? AND ?)`;
-  queryParams.push(filters.min_price, filters.max_price);
-}
+  if (filters.min_rating !== null) {
+    query += ` AND r.avg_rating >= ?`;
+    queryParams.push(filters.min_rating);
+  }
 
-if (filters.min_rating !== null) {
-  query += ` AND r.avg_rating >= ?`;
-  queryParams.push(filters.min_rating);
-}
+  if (filters.city) {
+    query += ` AND h.county = ?`;
+    queryParams.push(filters.city);
+  }
 
-if (filters.city) {
-  query += ` AND h.county = ?`;
-  queryParams.push(filters.city);
-}
+  if (filters.district) {
+    query += ` AND h.district = ?`;
+    queryParams.push(filters.district);
+  }
 
-if (filters.district) {
-  query += ` AND h.district = ?`;
-  queryParams.push(filters.district);
-}
+  if (filters.room_type_id) {
+    query += ` AND EXISTS (
+      SELECT 1 FROM hotel_room_types hrt2
+      WHERE hrt2.hotel_id = h.id
+      AND hrt2.room_type_id = ?
+    )`;
+    queryParams.push(filters.room_type_id);
+  }
 
-if (filters.room_type_id) {
-  query += ` AND EXISTS (
-    SELECT 1 FROM hotel_room_types hrt
-    WHERE hrt.hotel_id = h.id 
-    AND hrt.room_type_id = ?
-  )`;
-  queryParams.push(filters.room_type_id);
-}
+  if (filters.tags && filters.tags.length > 0) {
+    query += ` AND h.id IN (
+      SELECT hotel_id FROM hotel_tags
+      WHERE tag_id IN (${filters.tags.map(() => "?").join(", ")})
+    )`;
+    queryParams.push(...filters.tags);
+  }
 
-if (filters.tags.length > 0) {
-  query += ` AND (
-    SELECT COUNT(*) FROM hotel_tags ht
-    WHERE ht.hotel_id = h.id 
-    AND ht.tag_id IN (${filters.tags.map(() => "?").join(", ")})
-  ) = ?`;
-  queryParams.push(...filters.tags, filters.tags.length);
-}
+  console.log("SQL 查詢:", query);
+  console.log("參數:", queryParams);
 
-//  Debug Log專區
-// console.log("SQL 查詢:", query);
-// console.log(" 參數:", queryParams);
-
-const [hotels] = await pool.query(query, queryParams);
-return hotels;
+  const [hotels] = await pool.query(query, queryParams);
+  return hotels;
 };
 
