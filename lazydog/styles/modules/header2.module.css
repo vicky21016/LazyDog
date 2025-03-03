@@ -130,7 +130,7 @@
     display: none;
     position: absolute;
     top: 10;
-    left: -50;
+    right: 5px;
     background-color: #ff9538;
     min-width: 100px;
     border-radius: 10px;
