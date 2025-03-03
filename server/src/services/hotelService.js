@@ -238,17 +238,15 @@ export const updateHotelById = async (updateData) => {
       const values = Object.values(updateFields);
       const set = keys.map((key) => `${key} = ?`).join(", ");
 
-      console.log("🔍 更新 SQL:", `UPDATE hotel SET ${set} WHERE id = ${id}`);
-      console.log("🔍 更新值:", values);
+      
 
       const [result] = await connection.query(
         `UPDATE hotel SET ${set}, updated_at = NOW() WHERE id = ?`,
         [...values, id]
       );
 
-      console.log("🔍 SQL 更新結果:", result);
 
-      if (result.affectedRows === 0) {
+      if (result.affectedRows == 0) {
         throw new Error("資料沒有變更或旅館 ID 不存在");
       }
     }
@@ -479,55 +477,74 @@ export const softDeleteHotelById = async (hotelId, operatorId) => {
 
 /**  從資料庫獲取篩選後 */
 export const getFilteredHotels = async (filters) => {
-  const connection = await pool.getConnection();
-  try {
-    let query = `
-      SELECT DISTINCT h.*, 
-       hi.url AS main_image_url,
-       COALESCE(r.avg_rating, 0) AS avg_rating, 
-       COALESCE(r.review_count, 0) AS review_count, 
-       COALESCE(inv.min_price, 9999999) AS min_price,
-       COALESCE(inv.max_price, 0) AS max_price
-      FROM hotel h
-      LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
-      LEFT JOIN (
-          SELECT hotel_id, 
-                 ROUND(AVG(rating), 1) AS avg_rating, 
-                 COUNT(id) AS review_count
-          FROM hotel_reviews
-          GROUP BY hotel_id
-      ) r ON h.id = r.hotel_id
-      LEFT JOIN (
-        SELECT hrt.hotel_id, 
-               COALESCE(MIN(hrt.price_per_night), 9999999) AS min_price,
-               COALESCE(MAX(hrt.price_per_night), 0) AS max_price
-        FROM hotel_room_types hrt
-        WHERE hrt.price_per_night > 0
-        GROUP BY hrt.hotel_id
-      ) inv ON h.id = inv.hotel_id
-      WHERE h.is_deleted = 0 `;
+  let query = `
+  SELECT DISTINCT h.*, 
+    hi.url AS main_image_url,
+    COALESCE(r.avg_rating, 0) AS avg_rating,
+    COALESCE(r.review_count, 0) AS review_count,
+    COALESCE(inv.min_price, 9999999) AS min_price
+  FROM hotel h
+  LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
+  LEFT JOIN (
+      SELECT hotel_id, 
+            ROUND(AVG(rating), 1) AS avg_rating, 
+            COUNT(id) AS review_count
+      FROM hotel_reviews
+      GROUP BY hotel_id
+  ) r ON h.id = r.hotel_id
+  LEFT JOIN (
+      SELECT hrt.hotel_id, COALESCE(MIN(hrt.price_per_night), 9999999) AS min_price
+      FROM hotel_room_types hrt
+      GROUP BY hrt.hotel_id
+  ) inv ON h.id = inv.hotel_id
+  WHERE h.is_deleted = 0 
+`;
 
-    let queryParams = [];
+let queryParams = [];
 
-    // 價格篩選
-    if (filters.minPrice !== undefined && filters.maxPrice !== undefined) {
-      query += ` AND (inv.min_price BETWEEN ? AND ? OR inv.max_price BETWEEN ? AND ? )`;
-      queryParams.push(Number(filters.minPrice), Number(filters.maxPrice), Number(filters.minPrice), Number(filters.maxPrice));
-    }
+if (filters.min_price !== null && filters.max_price !== null) {
+  query += ` AND (inv.min_price BETWEEN ? AND ?)`;
+  queryParams.push(filters.min_price, filters.max_price);
+}
 
-    // 評分篩選
-    if (filters.rating !== null && filters.rating !== undefined) {
-      query += ` AND (r.avg_rating IS NULL OR r.avg_rating >= ? )`;
-      queryParams.push(Number(filters.rating));
-    }
+if (filters.min_rating !== null) {
+  query += ` AND r.avg_rating >= ?`;
+  queryParams.push(filters.min_rating);
+}
 
-    query += ` GROUP BY h.id`;
-    const [hotels] = await connection.query(query, queryParams);
-    return hotels;
-  } catch (error) {
-    throw new Error("無法取得篩選飯店：" + error.message);
-  } finally {
-    connection.release();
-  }
+if (filters.city) {
+  query += ` AND h.county = ?`;
+  queryParams.push(filters.city);
+}
+
+if (filters.district) {
+  query += ` AND h.district = ?`;
+  queryParams.push(filters.district);
+}
+
+if (filters.room_type_id) {
+  query += ` AND EXISTS (
+    SELECT 1 FROM hotel_room_types hrt
+    WHERE hrt.hotel_id = h.id 
+    AND hrt.room_type_id = ?
+  )`;
+  queryParams.push(filters.room_type_id);
+}
+
+if (filters.tags.length > 0) {
+  query += ` AND (
+    SELECT COUNT(*) FROM hotel_tags ht
+    WHERE ht.hotel_id = h.id 
+    AND ht.tag_id IN (${filters.tags.map(() => "?").join(", ")})
+  ) = ?`;
+  queryParams.push(...filters.tags, filters.tags.length);
+}
+
+//  Debug Log專區
+// console.log("SQL 查詢:", query);
+// console.log(" 參數:", queryParams);
+
+const [hotels] = await pool.query(query, queryParams);
+return hotels;
 };
 

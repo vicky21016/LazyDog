@@ -263,15 +263,14 @@ export const getFilteredHotelsS = async (req, res) => {
       checkInDate: req.body.checkInDate || null,
       checkOutDate: req.body.checkOutDate || null,
       min_rating: req.body.minRating ? parseFloat(req.body.minRating) : null,
-      min_price: req.body.minPrice ? parseFloat(req.body.minPrice) : 0, // 預設最低價格 0
-      max_price: req.body.maxPrice ? parseFloat(req.body.maxPrice) : 10000, // 預設最高價格 10000
+      min_price: req.body.minPrice ? parseFloat(req.body.minPrice) : null,
+      max_price: req.body.maxPrice ? parseFloat(req.body.maxPrice) : null,
       room_type_id: req.body.roomTypeId ? parseInt(req.body.roomTypeId) : null,
       tags: req.body.tags
         ? req.body.tags.map(Number).filter((n) => !isNaN(n))
         : [],
     };
 
-    console.log("篩選條件:", filters); // 確保數據正確
 
     const hotels = await getFilteredHotels(filters);
     res.json(hotels);
@@ -279,6 +278,7 @@ export const getFilteredHotelsS = async (req, res) => {
     handleError(res, error, "獲取篩選飯店失敗");
   }
 };
+
 
 //刪除單張圖片
 export const deleteHotelImage = async (req, res) => {

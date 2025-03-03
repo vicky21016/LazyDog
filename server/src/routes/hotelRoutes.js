@@ -45,11 +45,9 @@ router.get("/price-range/all", async (req, res) => {
       WHERE price_per_night IS NOT NULL AND price_per_night > 0;
     `;
     
-    console.log("🔍 正在執行 SQL 查詢...");
     
     const [rows] = await pool.query(query);
     
-    console.log("🔹 查詢結果:", rows);
 
     if (!rows || rows.length == 0) {
       console.log(" 沒有查詢到價格範圍資料！");
@@ -58,8 +56,7 @@ router.get("/price-range/all", async (req, res) => {
 
     res.json(rows[0]);
   } catch (error) {
-    console.error(" 獲取全域價格範圍失敗:", error);
-    res.status(500).json({ error: "無法獲取全域價格範圍", details: error.message });
+    res.status(500).json({ error: "無法獲取全價格範圍", details: error.message });
   }
 });
 
@@ -83,7 +80,6 @@ router.get("/price-range/:hotelId", async (req, res) => {
 
     res.json(rows[0]);
   } catch (error) {
-    console.error(`獲取 hotel_id=${hotelId} 的價格範圍失敗:`, error);
     res.status(500).json({ error: "無法獲取飯店價格範圍" });
   }
 });
