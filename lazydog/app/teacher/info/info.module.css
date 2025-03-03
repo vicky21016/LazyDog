@@ -77,3 +77,11 @@ max-height: 650px; */
     color: #ff9538;
     font-weight: 600;
   }
+
+  @media (max-width: 768px) {
+
+.container{
+  padding: 30px;
+}
+ 
+}

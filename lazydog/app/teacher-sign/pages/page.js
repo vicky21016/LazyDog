@@ -3,12 +3,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
-import Header from "../components/layout/header";
-import MyMenu from "../components/layout/myMenu";
-import Bread from "../components/teacher/breadcrumb";
-import Input from "../components/forms/Input";
-import styles from "./menu.module.css";
-import style from "../../styles/modules/menu.module.css";
+import Header from "../../components/layout/header";
+import MyMenu from "../_components/my";
+import Bread from "../../components/teacher/breadcrumb";
+import Input from "../../components/forms/Input";
+import styles from "../../pages/menu.module.css";
+import style from "../../../styles/modules/menu.module.css";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
 // import { auth, signOut, onAuth } from "./firebase";
 
@@ -129,7 +129,7 @@ export default function Menu() {
           
             <MyMenu />
           
-          <div className="col-12 col-lg-9">
+          <div className="col-12 col-md-9">
             <div className={`${styles["container"]}`}>
               <h4 className={`mb-4 ${styles["information"]}`}>基本資料</h4>
               <form

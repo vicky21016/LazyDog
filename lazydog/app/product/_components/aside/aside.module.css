@@ -3,9 +3,14 @@
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  @media (max-width: 991px) {
+    overflow-y: auto;
+    scrollbar-width: none;
+    height: 94vh;
+  }
 }
 .SearchTable {
-  height: 40px;
+  min-height: 40px;
   padding: 0px 25px;
   display: flex;
   align-items: center;

@@ -9,7 +9,7 @@ export default function AppLayout({ children }) {
   return (
     <FetchListProvider>
       <FavoriteProvider>
-        <div suppressHydrationWarning>
+        <div className="PDLayout" suppressHydrationWarning>
           <Header />
           {children}
         </div>

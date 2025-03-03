@@ -13,7 +13,8 @@ export default function HotelEditPage() {
   const { id } = useParams(); // 取得旅館 ID
   const {
     hotel,
-    images: hotelImages,
+    hotelImages,
+    roomImages,
     rooms: hotelRooms,
     roomTypes,
   } = useHotel(id);
@@ -22,11 +23,17 @@ export default function HotelEditPage() {
   const imageUploadRef = useRef(null);
   const [images, setImages] = useState([]);
   const [rooms, setRooms] = useState([]);
+  const [roomImagesState, setRoomImagesState] = useState([]); // 房型圖片
   const [loading, setLoading] = useState(true);
   const [selectedRoomType, setSelectedRoomType] = useState("");
   const [newRoomQuantity, setNewRoomQuantity] = useState(1);
   const [newRoomPrice, setNewRoomPrice] = useState("");
   const [newRoomImage, setNewRoomImage] = useState(null);
+  const [newRoomDescription, setNewRoomDescription] = useState("");
+  const [newRoomPetCapacity, setNewRoomPetCapacity] = useState("");
+  const [newRoomAllowedSize, setNewRoomAllowedSize] = useState("");
+  const [newRoomFoodProvided, setNewRoomFoodProvided] = useState("");
+
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
   const [roomFormData, setRoomFormData] = useState({});
@@ -52,10 +59,15 @@ export default function HotelEditPage() {
         room_type_name:
           roomTypes.find((type) => type.id == room.room_type_id)?.name ||
           "未知房型",
+        image_url:
+          roomImages.find((img) => img.room_type_id === room.room_type_id)
+            ?.image_url || "/lazydog.png",
       }));
-      setRooms([...updatedRooms]); //  確保房型名稱正確
+      setRooms([...updatedRooms]); // 確保房型名稱正確
+      setRoomImagesState(roomImages); // 設定房型圖片
     }
-  }, [hotelRooms, roomTypes]); // 確保房型名稱可以被綁定
+  }, [hotelRooms, roomTypes, roomImages]); // 確保房型圖片也會觸發更新
+
   useEffect(() => {
     if (rooms.length > 0) {
       const initialRoomData = {};
@@ -63,7 +75,7 @@ export default function HotelEditPage() {
         initialRoomData[room.id] = {
           quantity: room.quantity,
           price_per_night: room.price_per_night,
-          image_url: room.image_url || "/default-room.jpg",
+          image_url: room.image_url || "/lazydog.png",
           room_type_name: room.room_type_name || "未知房型",
         };
       });
@@ -131,33 +143,55 @@ export default function HotelEditPage() {
     return `${hours}:${minutes}`;
   };
 
-  // 儲存
+  // 儲存 //不展示
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("loginWithToken");
       if (!token) throw new Error("未登入，請重新登入");
 
-      const response = await fetch(`http://localhost:5000/api/hotels/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...formData,
-          businessHours: JSON.stringify(formData.businessHours),
-        }),
-      });
+      if (!hotel || !hotel.id) {
+        throw new Error("找不到對應的旅館 ID");
+      }
+
+      let formattedBusinessHours = formData.businessHours;
+      if (typeof formData.businessHours !== "string") {
+        formattedBusinessHours = JSON.stringify(formData.businessHours);
+      }
+
+      const updateData = {
+        ...formData,
+        businessHours: formattedBusinessHours,
+      };
+
+      console.log(" 發送 PATCH 請求:", updateData);
+
+      const response = await fetch(
+        `http://localhost:5000/api/hotels/${hotel.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updateData),
+        }
+      );
+
+      const data = await response.json();
+      console.log("API 回應:", data);
 
       if (!response.ok) throw new Error(`更新失敗，錯誤碼: ${response.status}`);
 
-      alert("更新成功！");
-      router.push(`/hotel-coupon/hotelDetail/${id}`);
+      Swal.fire("成功", "旅館資料已更新", "success").then(() => {
+        router.push(`/hotel-coupon/hotel/${id}`);
+        router.refresh();
+      });
     } catch (error) {
-      console.error("更新失敗:", error);
-      alert("更新失敗，請重試");
+      console.error(" 更新失敗:", error);
+      Swal.fire("錯誤", error.message, "error");
     }
   };
+
   // 設為主圖片
   const handleSetMainImage = async (imageId) => {
     if (!hotel || !hotel.id) {
@@ -186,13 +220,12 @@ export default function HotelEditPage() {
       setImages((prevImages) =>
         prevImages.map((img) => ({
           ...img,
-          isMain: img.id === imageId, // 標記主圖片
+          isMain: img.id == imageId, // 標記主圖片
         }))
       );
 
-      Swal.fire("成功", "主圖片已更新", "success").then(() => {
-        router.refresh(); // 刷新頁面
-      });
+      Swal.fire("成功", "主圖片已更新", "success").then(() => {});
+      router.refresh(); // 刷新頁面
     } catch (error) {
       Swal.fire("錯誤", error.message, "error");
     }
@@ -254,7 +287,6 @@ export default function HotelEditPage() {
       if (!response.ok) throw new Error("圖片上傳失敗");
 
       const data = await response.json();
-      console.log("API 回應:", data); // 檢查 API 回應
       setImages((prevImages) => [
         ...prevImages,
         { id: data.image_id, url: data.image_url, isMain: false },
@@ -290,7 +322,6 @@ export default function HotelEditPage() {
       if (!response.ok || !data.image_url)
         throw new Error(data.error || "圖片上傳失敗");
 
-      // 更新前端狀態
       setRooms((prevRooms) =>
         prevRooms.map((room) =>
           room.id === roomId ? { ...room, image_url: data.image_url } : room
@@ -305,41 +336,64 @@ export default function HotelEditPage() {
 
   // 更新房型
   const handleUpdateRoom = async (roomId) => {
+    if (!roomId) {
+      await Swal.fire("錯誤", "找不到房型 ID", "error");
+      return;
+    }
+
     const updatedData = roomFormData[roomId];
-  
+
     try {
       const token = localStorage.getItem("loginWithToken");
       if (!token) throw new Error("未登入，請重新登入");
-  
+
+      const formData = new FormData();
+
+      Object.keys(updatedData).forEach((key) => {
+        if (
+          updatedData[key] !== undefined &&
+          updatedData[key] !== null &&
+          key !== "image_url"
+        ) {
+          formData.append(key, updatedData[key]);
+        }
+      });
+
+      if (updatedData.imageFile) {
+        formData.append("image", updatedData.imageFile);
+      }
+
       const response = await fetch(
         `http://localhost:5000/api/hotel_room_types/${roomId}`,
         {
           method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(updatedData),
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
-  
-      if (!response.ok) throw new Error("更新失敗");
-  
-      // 顯示成功訊息
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "更新失敗");
+
+      setRooms((prevRooms) =>
+        prevRooms.map((room) =>
+          room.id === roomId
+            ? {
+                ...room,
+                ...updatedData,
+                image_url: data.image_url || room.image_url,
+              }
+            : room
+        )
+      );
+
       await Swal.fire("成功", "房型已更新", "success");
-  
-      // 刷新頁面
-      router.refresh();
     } catch (error) {
-      // 顯示錯誤訊息
       await Swal.fire("錯誤", error.message, "error");
     }
   };
-  
 
   // 刪除房型
   const handleDeleteRoom = async (roomId) => {
-    // 確認刪除
     const confirmDelete = await Swal.fire({
       title: "確定要刪除這個房型嗎？",
       text: "刪除後無法恢復！",
@@ -350,15 +404,16 @@ export default function HotelEditPage() {
       confirmButtonText: "刪除",
       cancelButtonText: "取消",
     });
-  
-    // 如果使用者取消，就不執行刪除
-    if (!confirmDelete.isConfirmed) return;
-  
+
+    if (!confirmDelete.isConfirmed) {
+      console.log(" 取消刪除房型");
+      return;
+    }
+
     try {
       const token = localStorage.getItem("loginWithToken");
       if (!token) throw new Error("未登入，請重新登入");
-  
-      // 發送刪除請求
+
       const response = await fetch(
         `http://localhost:5000/api/hotel_room_types/${roomId}`,
         {
@@ -366,24 +421,22 @@ export default function HotelEditPage() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-  
-      // 檢查請求是否成功
-      if (!response.ok) throw new Error("刪除失敗");
-  
-      // 更新前端狀態
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "刪除失敗");
+      }
+
       setRooms((prevRooms) => prevRooms.filter((room) => room.id !== roomId));
-  
-      // 顯示成功訊息
+
       await Swal.fire("成功", "房型已刪除", "success");
-  
-      // 刷新頁面
+
       router.refresh();
     } catch (error) {
-      // 顯示錯誤訊息
       await Swal.fire("錯誤", error.message, "error");
     }
   };
-  
 
   // 新增房型
   const handleAddRoom = async () => {
@@ -391,53 +444,68 @@ export default function HotelEditPage() {
       Swal.fire("錯誤", "請先選擇房型", "error");
       return;
     }
-  
+
     if (!newRoomPrice || newRoomPrice <= 0) {
       Swal.fire("錯誤", "請輸入有效的價格", "error");
       return;
     }
-  
+
     if (!newRoomQuantity || newRoomQuantity <= 0) {
       Swal.fire("錯誤", "請輸入有效的房間數量", "error");
       return;
     }
-  
+
     const formData = new FormData();
-    formData.append("hotel_id", hotel.id);
-    formData.append("room_type_id", selectedRoomType);
-    formData.append("quantity", newRoomQuantity);
-    formData.append("price_per_night", newRoomPrice);
-  
+    formData.append("hotel_id", hotel?.id); // 必填
+    formData.append("room_type_id", selectedRoomType); // 必填
+    formData.append("quantity", newRoomQuantity); // 必填
+    formData.append("price_per_night", newRoomPrice); // 必填
+    formData.append(
+      "description",
+      newRoomDescription ? newRoomDescription : "無描述"
+    );
+    formData.append(
+      "pet_capacity",
+      newRoomPetCapacity && !isNaN(newRoomPetCapacity)
+        ? parseInt(newRoomPetCapacity, 10)
+        : 0
+    );
+    formData.append(
+      "allowed_pet_size",
+      newRoomAllowedSize ? newRoomAllowedSize : "無限制"
+    );
+    formData.append(
+      "default_food_provided",
+      newRoomFoodProvided ? newRoomFoodProvided : "否"
+    );
+
     if (newRoomImage) {
       formData.append("image", newRoomImage);
     }
-  
-    // 檢查 FormData 內容
+
     for (let [key, value] of formData.entries()) {
-      console.log(key, value);
+      console.log(`${key}: ${value}`);
     }
-  
+
     try {
       const token = localStorage.getItem("loginWithToken");
       if (!token) throw new Error("未登入，請重新登入");
-  
+
       const response = await fetch(
-        "http://localhost:5000/api/hotel_room_types/",
+        "http://localhost:5000/api/hotel_room_types",
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
           body: formData,
         }
       );
-  
+
       const data = await response.json();
-      console.log("API 回應:", data);
-  
+
       if (!response.ok) {
         throw new Error(data.error || "新增房型失敗");
       }
-  
-      // 更新前端狀態
+
       setRooms((prevRooms) => [
         ...prevRooms,
         {
@@ -448,16 +516,27 @@ export default function HotelEditPage() {
             "未知房型",
           quantity: newRoomQuantity,
           price_per_night: newRoomPrice,
-          image_url: data.image_url || "/default-room.jpg",
+          description: newRoomDescription,
+          pet_capacity: newRoomPetCapacity,
+          allowed_pet_size: newRoomAllowedSize,
+          default_food_provided: newRoomFoodProvided,
+          image_url: data.image_url || "/lazydog.png",
         },
       ]);
-  
-      // 清空表單
+
+      const updatedRoomsResponse = await fetch(
+        `http://localhost:5000/api/hotel_room_types`
+      );
+      const updatedRooms = await updatedRoomsResponse.json();
       setSelectedRoomType("");
       setNewRoomQuantity(1);
       setNewRoomPrice("");
+      setNewRoomDescription("");
+      setNewRoomPetCapacity("");
+      setNewRoomAllowedSize("");
+      setNewRoomFoodProvided("");
       setNewRoomImage(null);
-  
+      setRooms(updatedRooms);
       Swal.fire("成功", "房型已新增", "success");
     } catch (error) {
       console.error("新增房型失敗:", error);
@@ -556,14 +635,14 @@ export default function HotelEditPage() {
                           style={{
                             maxWidth: "120px",
                             border:
-                              img.id === hotel.main_image_id
+                              img.id == hotel.main_image_id
                                 ? "2px solid blue"
                                 : "1px solid #ddd",
                           }}
                         />
 
                         {/* 主圖片標記 */}
-                        {hotel.main_image_id === img.id && (
+                        {hotel.main_image_id == img.id && (
                           <span className="badge bg-primary position-absolute top-0 start-0 m-2">
                             主圖片
                           </span>
@@ -616,99 +695,91 @@ export default function HotelEditPage() {
                 <h5 className="mb-3">房型管理</h5>
 
                 {/*  顯示現有房型 */}
-                {rooms.length > 0 ? (
-                  rooms.map((room, index) => (
-                    <div
-                      key={room.id || index}
-                      className="border p-3 mb-2 rounded"
-                    >
-                      <div className="d-flex align-items-center">
-                        {/* ✅ 顯示房型圖片 */}
-                        <img
-                          src={room.image_url || "/default-room.jpg"}
-                          alt="房型圖片"
-                          className="img-thumbnail me-3"
-                          style={{
-                            width: "80px",
-                            height: "80px",
-                            objectFit: "cover",
-                          }}
-                        />
-                        <div className="flex-grow-1">
-                          {/* ✅ 房型名稱 */}
-                          <p className="mb-1">
-                            <strong>{room.room_type_name || "未知房型"}</strong>
-                            （數量：
-                            <input
-                              type="number"
-                              value={
-                                roomFormData[room.id]?.quantity || room.quantity
-                              }
-                              onChange={(e) =>
-                                handleRoomChange(
-                                  room.id,
-                                  "quantity",
-                                  e.target.value
-                                )
-                              }
-                              className="form-control d-inline-block ms-1"
-                              style={{ width: "70px" }}
-                            />
-                            ）
-                          </p>
-
-                          {/* ✅ 價格輸入框 */}
-                          <p className="mb-1">
-                            價格：
-                            <input
-                              type="number"
-                              value={
-                                roomFormData[room.id]?.price_per_night ||
-                                room.price_per_night
-                              }
-                              onChange={(e) =>
-                                handleRoomChange(
-                                  room.id,
-                                  "price_per_night",
-                                  e.target.value
-                                )
-                              }
-                              className="form-control d-inline-block ms-1"
-                              style={{ width: "100px" }}
-                            />{" "}
-                            元
-                          </p>
-
+                {rooms.map((room, index) => (
+                  <div
+                    key={room.id || index}
+                    className="border p-3 mb-2 rounded"
+                  >
+                    <div className="d-flex align-items-center">
+                      {/* 顯示房型圖片 */}
+                      <img
+                        src={`${room.image_url}?t=${new Date().getTime()}`} // 加上時間戳
+                        alt="房型圖片"
+                        className="img-thumbnail me-3"
+                        style={{
+                          width: "80px",
+                          height: "80px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <div className="flex-grow-1">
+                        <p className="mb-1">
+                          <strong>{room.room_type_name || "未知房型"}</strong>
+                          （數量：
                           <input
-                            type="file"
-                            className="form-control mt-2"
-                            accept="image/*"
-                            onChange={(e) => handleRoomImageUpload(room.id, e)}
+                            type="number"
+                            value={
+                              roomFormData[room.id]?.quantity || room.quantity
+                            }
+                            onChange={(e) =>
+                              handleRoomChange(
+                                room.id,
+                                "quantity",
+                                e.target.value
+                              )
+                            }
+                            className="form-control d-inline-block ms-1"
+                            style={{ width: "70px" }}
                           />
-
-                     
-                          <div className="mt-2">
-                            <button
-                              className="btn btn-sm btn-success me-2"
-                              onClick={() => handleUpdateRoom(room.id)}
-                            >
-                              更新房型
-                            </button>
-
-                            <button
-                              className="btn btn-sm btn-danger"
-                              onClick={() => handleDeleteRoom(room.id)}
-                            >
-                              刪除房型
-                            </button>
-                          </div>
+                          ）
+                        </p>
+                        <p className="mb-1">
+                          價格：
+                          <input
+                            type="number"
+                            value={
+                              roomFormData[room.id]?.price_per_night ||
+                              room.price_per_night
+                            }
+                            onChange={(e) =>
+                              handleRoomChange(
+                                room.id,
+                                "price_per_night",
+                                e.target.value
+                              )
+                            }
+                            className="form-control d-inline-block ms-1"
+                            style={{ width: "100px" }}
+                          />{" "}
+                          元
+                        </p>
+                        <input
+                          type="file"
+                          className="form-control mt-2"
+                          accept="image/*"
+                          onChange={(e) => handleRoomImageUpload(room.id, e)}
+                        />
+                        <div className="mt-2">
+                          <button
+                            className="btn btn-sm btn-success me-2"
+                            onClick={() => handleUpdateRoom(room.id)}
+                          >
+                            更新房型
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-danger"
+                            onClick={async () =>
+                              await handleDeleteRoom(room.id)
+                            }
+                          >
+                            刪除房型
+                          </button>
                         </div>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <p className="text-muted">目前沒有房型，請新增。</p>
-                )}
+                  </div>
+                ))}
 
                 {/*  新增房型 */}
                 <hr />
@@ -746,6 +817,45 @@ export default function HotelEditPage() {
                       value={newRoomPrice}
                       onChange={(e) => setNewRoomPrice(e.target.value)}
                     />
+
+                    <label>描述</label>
+                    <textarea
+                      className="form-control mb-3"
+                      value={newRoomDescription}
+                      onChange={(e) => setNewRoomDescription(e.target.value)}
+                      rows="3"
+                      placeholder="請輸入房型描述"
+                    ></textarea>
+
+                    <label>寵物容納數量</label>
+                    <input
+                      type="number"
+                      className="form-control mb-3"
+                      value={newRoomPetCapacity}
+                      onChange={(e) => setNewRoomPetCapacity(e.target.value)}
+                    />
+
+                    <label>允許的寵物大小</label>
+                    <select
+                      className="form-control mb-3"
+                      value={newRoomAllowedSize}
+                      onChange={(e) => setNewRoomAllowedSize(e.target.value)}
+                    >
+                      <option value="">請選擇允許的寵物大小</option>
+                      <option value="小型">小型</option>
+                      <option value="中型">中型</option>
+                      <option value="大型">大型</option>
+                    </select>
+
+                    <label>是否提供預設飼料</label>
+                    <select
+                      className="form-control mb-3"
+                      value={newRoomFoodProvided}
+                      onChange={(e) => setNewRoomFoodProvided(e.target.value)}
+                    >
+                      <option value="是">是</option>
+                      <option value="否">否</option>
+                    </select>
 
                     <label>上傳圖片</label>
                     <input

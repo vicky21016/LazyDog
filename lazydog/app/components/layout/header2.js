@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -21,6 +21,20 @@ export default function Header(props) {
     return () => unsubscribe();
   }, []);
 
+  const menuRef = useRef(null);
+  useEffect(() => {
+    const clickOutside = (event) => {
+      if (menuOpen && !event.target.closest(`.${styles.mobileMenu}`)) {
+        menuRef.current.click();
+      }
+    };
+    document.addEventListener("click", clickOutside);
+    return () => document.removeEventListener("click", clickOutside);
+  }, [menuOpen]);
+
+  const [PDOpen, setPDOpen] = useState(false);
+  const [teacherOpen, setTeacherOpen] = useState(false);
+  const [userOpen, setUserOpen] = useState(false);
   return (
     <header className={styles["lumi-header2"]}>
       <Link href="/" className={styles["lumi-logo2"]}>
@@ -229,6 +243,7 @@ export default function Header(props) {
       </div> */}
       <div className={`${styles.mobileMenu}`}>
         <i
+          ref={menuRef}
           onClick={() => setMenuOpen(!menuOpen)}
           className={`${styles.menu} ${menuOpen ? "bi bi-x-lg" : "bi bi-list"}`}
         ></i>

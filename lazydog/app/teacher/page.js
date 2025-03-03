@@ -12,9 +12,9 @@ export default function App() {
   return (
     <div>
       <Header />
-      <div className="">
+      <div className="mt-5">
         <section className="text-center">
-          <h2 className={`${styles["server"]}`}>師資服務</h2>
+          <h2 className={`${styles.server}`}>師資服務</h2>
         </section>
         <TeacherSection />
         <section>

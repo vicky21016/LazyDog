@@ -103,10 +103,10 @@ export const removeHotelTag = async (hotelId, tagId) =>
 //價格
 // 取得所有飯店的價格範圍
 export const getGlobalPriceRange = async () =>
-  fetchAPI(`${ROOM_BASE_PRICE_URL}/range`);
+  fetchAPI(`http://localhost:5000/api/hotels/price-range/all`);
 export const getRoomBasePrices = async () => fetchAPI(`${ROOM_BASE_PRICE_URL}`);
 export const getHotelPriceRange = async (hotelId) =>
-  fetchAPI(`${ROOM_BASE_PRICE_URL}/range/${hotelId}`);
+  fetchAPI(`http://localhost:5000/api/hotels/price-range/${hotelId}`);
 //房型跟庫存
 // 取得所有房型
 export const getAllRoomTypes = async () => fetchAPI(ROOM_TYPES_URL);
@@ -191,8 +191,29 @@ export const deleteOrderDog = async (dogId) =>
 export const getUserFavorites = async () => fetchAuthAPI(HOTEL_FAVORITES_URL);
 
 // 新增收藏
-export const addHotelToFavorites = async (hotelId) =>
-  fetchAuthAPI(HOTEL_FAVORITES_URL, "POST", { hotelId });
+export const addHotelToFavorites = async (hotelId) => {
+  const token = localStorage.getItem("token"); // 假設 Token 存在 localStorage
+
+  if (!token) {
+    throw new Error("未登入，無法收藏旅館");
+  }
+
+  const response = await fetch("http://localhost:5000/api/hotel_favorites", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, // 加入 Token
+    },
+    body: JSON.stringify({ hotelId }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`收藏旅館失敗: ${response.statusText}`);
+  }
+
+  return response.json();
+};
+
 
 // 移除收藏
 export const removeHotelToFavorites = async (hotelId) =>

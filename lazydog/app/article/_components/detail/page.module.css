@@ -33,7 +33,7 @@
 }
 
 .articleContent{
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .articleContent img{
@@ -55,6 +55,23 @@
   width: 100%;
   margin:20px 0 ;
 } */
+.customToggle{
+  background-color: #ffffff00;
+}
+.customToggle::after {
+  display: none; /* 隱藏倒三角形 */
+}
+.customDropdownMenu {
+  min-width: 80px; /* 設置下拉式選單的最小寬度 */
+  padding: 10px 0; /* 設置內邊距 */
+ 
+}
+.item:hover {
+  background-color: #66c5bd;
+  color: rgb(0, 0, 0);
+}
+/* #FFF6E8 */
+/*#66c5bd*/
 
 @media screen and (min-width: 390px) {
     .chat{

@@ -76,11 +76,10 @@ export default function CouponListPage() {
   return (
     <>
       <Header />
-      <div className="container mt-5">
+      <div className={`container  ${styles.wrapper}`}>
         <div className="row">
           {/* 左邊 */}
-          <My />
-
+          <My />          
           {/* 右邊 */}
           <div className="col-12 col-md-9">
             <h5 className="mb-4">優惠券列表</h5>

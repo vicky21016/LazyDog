@@ -173,7 +173,7 @@ export default function Filter({ filterChange }) {
             </tr>
            ))}
           <tr>
-            <td className={`${styles.tdTable} ${styles.checkboxTable}`}>
+            <td className={`mt-5 ${styles.tdTable} ${styles.checkboxTable}`}>
               <button className={styles.clear} onClick={clearFilters}>
                 清除搜尋
               </button>
@@ -182,15 +182,15 @@ export default function Filter({ filterChange }) {
         </thead>
       </table>
       {/* <div className={styles.con1}>廣告</div> */}
-      <figure>
+      {/* <figure>
         <Link href="/product/list">
           <img
             src="/product/DM/DM_aside.png"
             alt="廣告"
-            className="img-fluid"
+            className={`${styles.imgFluid}`}
           />
         </Link>
-      </figure>
+      </figure> */}
     </aside>
   );
 }

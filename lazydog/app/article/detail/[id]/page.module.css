@@ -40,6 +40,40 @@
 /* img{
   width: 100%;  
 } */
+
+.link {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  max-height: 80px;
+  overflow: hidden;
+}
+.link:hover {
+  text-decoration: none;
+  color: #f5842b;
+}
+.link2 {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+}
+.link2:hover {
+  text-decoration: none;
+  color: white;
+}
+/* -------button---------- */
+.customToggle::after {
+  display: none; /* 隱藏倒三角形 */
+}
+.customDropdownMenu {
+  min-width: 80px; /* 設置下拉式選單的最小寬度 */
+  padding: 10px 0; /* 設置內邊距 */
+}
+.item:hover {
+  background-color: #66c5bd;
+  color: white;
+}
+
 @media screen and (min-width: 390px) {
     .chat{
         width: 390px;
