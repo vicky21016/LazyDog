@@ -103,10 +103,10 @@ export const removeHotelTag = async (hotelId, tagId) =>
 //價格
 // 取得所有飯店的價格範圍
 export const getGlobalPriceRange = async () =>
-  fetchAPI(`${ROOM_BASE_PRICE_URL}/range`);
+  fetchAPI(`http://localhost:5000/api/hotels/price-range/all`);
 export const getRoomBasePrices = async () => fetchAPI(`${ROOM_BASE_PRICE_URL}`);
 export const getHotelPriceRange = async (hotelId) =>
-  fetchAPI(`${ROOM_BASE_PRICE_URL}/range/${hotelId}`);
+  fetchAPI(`http://localhost:5000/api/hotels/price-range/${hotelId}`);
 //房型跟庫存
 // 取得所有房型
 export const getAllRoomTypes = async () => fetchAPI(ROOM_TYPES_URL);

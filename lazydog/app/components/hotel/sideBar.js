@@ -10,7 +10,6 @@ import {
   getHotelPriceRange,
   getGlobalPriceRange,
   getAllRoomTypes,
-
 } from "@/services/hotelService";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";

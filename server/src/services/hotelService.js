@@ -486,7 +486,8 @@ export const getFilteredHotels = async (filters) => {
        hi.url AS main_image_url,
        COALESCE(r.avg_rating, 0) AS avg_rating, 
        COALESCE(r.review_count, 0) AS review_count, 
-       COALESCE(inv.min_price, 9999999) AS min_price
+       COALESCE(inv.min_price, 9999999) AS min_price,
+       COALESCE(inv.max_price, 0) AS max_price
       FROM hotel h
       LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
       LEFT JOIN (
@@ -497,64 +498,27 @@ export const getFilteredHotels = async (filters) => {
           GROUP BY hotel_id
       ) r ON h.id = r.hotel_id
       LEFT JOIN (
-    SELECT hrt.hotel_id, COALESCE(MIN(hrt.price_per_night), 9999999) AS min_price
-    FROM hotel_room_types hrt
-    GROUP BY hrt.hotel_id
-) inv ON h.id = inv.hotel_id
-WHERE h.is_deleted = 0 `;
+        SELECT hrt.hotel_id, 
+               COALESCE(MIN(hrt.price_per_night), 9999999) AS min_price,
+               COALESCE(MAX(hrt.price_per_night), 0) AS max_price
+        FROM hotel_room_types hrt
+        WHERE hrt.price_per_night > 0
+        GROUP BY hrt.hotel_id
+      ) inv ON h.id = inv.hotel_id
+      WHERE h.is_deleted = 0 `;
+
     let queryParams = [];
 
     // 價格篩選
     if (filters.minPrice !== undefined && filters.maxPrice !== undefined) {
-      query += ` AND (inv.min_price IS NULL OR inv.min_price BETWEEN ? AND ?)`;
-      queryParams.push(Number(filters.minPrice), Number(filters.maxPrice));
+      query += ` AND (inv.min_price BETWEEN ? AND ? OR inv.max_price BETWEEN ? AND ? )`;
+      queryParams.push(Number(filters.minPrice), Number(filters.maxPrice), Number(filters.minPrice), Number(filters.maxPrice));
     }
 
     // 評分篩選
     if (filters.rating !== null && filters.rating !== undefined) {
-      query += ` AND (r.avg_rating IS NULL OR r.avg_rating >= ?)`;
+      query += ` AND (r.avg_rating IS NULL OR r.avg_rating >= ? )`;
       queryParams.push(Number(filters.rating));
-    }
-
-    // 房型篩選
-    if (filters.roomType) {
-      query += ` AND EXISTS (
-        SELECT 1 FROM hotel_room_types hrt
-        WHERE hrt.hotel_id = h.id 
-        AND hrt.room_type_id = ?
-      )`;
-      queryParams.push(Number(filters.roomType));
-    }
-
-    // 標籤篩選
-    if (filters.tags && filters.tags.length > 0) {
-      query += ` AND (
-        SELECT COUNT(*) FROM hotel_tags ht
-        WHERE ht.hotel_id = h.id 
-        AND ht.tag_id IN (${filters.tags.map(() => "?").join(", ")})
-      ) = ?`;
-      queryParams.push(...filters.tags, filters.tags.length);
-    }
-
-    // 地區篩選
-    if (filters.city) {
-      query += ` AND h.county = ?`;
-      queryParams.push(filters.city);
-    }
-    if (filters.district) {
-      query += ` AND h.district = ?`;
-      queryParams.push(filters.district);
-    }
-
-    // 訂房日期篩選
-    if (filters.checkInDate && filters.checkOutDate) {
-      query += ` AND EXISTS (
-        SELECT 1 FROM room_inventory ri
-        WHERE ri.hotel_id = h.id 
-        AND ri.date BETWEEN ? AND ?
-        AND ri.available_quantity > 0
-      )`;
-      queryParams.push(filters.checkInDate, filters.checkOutDate);
     }
 
     query += ` GROUP BY h.id`;
@@ -566,3 +530,4 @@ WHERE h.is_deleted = 0 `;
     connection.release();
   }
 };
+
