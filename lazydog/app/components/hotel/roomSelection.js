@@ -5,7 +5,7 @@ import { getHotelRoomById, getRoomInventory } from "@/services/hotelService";
 import { useCart } from "@/hooks/use-cart";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
-
+import Swal from "sweetalert2";
 const RoomSelection = ({ hotelId, checkInDate, checkOutDate }) => {
   const { user } = useAuth();
   const [rooms, setRooms] = useState([]);
@@ -88,14 +88,26 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate }) => {
     });
   };
 
-  const handleAddToCart = (room) => {
+  const handleAddToCart = async (room) => {
+    // 檢查用戶是否登入
     if (!user) {
-      alert("請先登入");
-      router.push(loginRoute);
+      Swal.fire({
+        icon: "warning",
+        title: "請先登入",
+        text: "您需要登入才能加入購物車！",
+        confirmButtonText: "前往登入",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push(loginRoute); // 跳轉到登入頁面
+        }
+      });
       return;
     }
-
+  
+    // 獲取選擇的數量
     const quantity = selectedQuantities[room.id] || 1;
+  
+    // 構建要加入購物車的房間資料
     const hotelToAdd = {
       id: room.id,
       name: room.room_type_name,
@@ -105,8 +117,27 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate }) => {
       provideFood: room.default_food_provided,
       count: quantity,
     };
-
-    onAddHotel(hotelToAdd);
+  
+    try {
+      // 調用加入購物車的函數
+      onAddHotel(hotelToAdd);
+  
+      // 顯示成功訊息
+      Swal.fire({
+        icon: "success",
+        title: "加入購物車成功",
+        text: `${room.room_type_name} 已成功加入購物車！`,
+        showConfirmButton: false,
+        timer: 1500, // 1.5 秒後自動關閉
+      });
+    } catch (error) {
+      console.error("加入購物車失敗:", error);
+      Swal.fire({
+        icon: "error",
+        title: "加入購物車失敗",
+        text: "請稍後再試！",
+      });
+    }
   };
 
   return (
