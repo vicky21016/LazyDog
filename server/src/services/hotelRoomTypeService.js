@@ -5,17 +5,17 @@ const handleDatabaseError = (error, customMessage) => {
 };
 export const getAllHotelRooms = async () => {
   try {
-    const [rows] = await pool.execute(`
-      SELECT hrt.*, 
-             rt.name AS room_type_name, 
-             rt.description AS room_type_description,
-             COALESCE(hi.url, hrt.image_url) AS image_url
-      FROM hotel_room_types hrt
-      JOIN room_type rt ON hrt.room_type_id = rt.id
-      LEFT JOIN hotel_images hi ON hrt.room_type_id = hi.room_type_id
-      WHERE hrt.is_deleted = 0
-      GROUP BY hrt.id
-    `);
+    const [rows] = await pool.execute(
+      `SELECT hrt.*, 
+              rt.name AS room_type_name, 
+              rt.description AS room_type_description, 
+              COALESCE(MAX(hi.url), hrt.image_url) AS image_url 
+       FROM hotel_room_types hrt
+       JOIN room_type rt ON hrt.room_type_id = rt.id
+       LEFT JOIN hotel_images hi ON hrt.room_type_id = hi.room_type_id
+       WHERE hrt.is_deleted = 0
+       GROUP BY hrt.id`
+    );
     return rows;
   } catch (error) {
     handleDatabaseError(error, "無法取得旅館房型");
@@ -28,12 +28,10 @@ export const getHotelRoomByIds = async (hotelId) => {
       `SELECT hrt.*, 
               rt.name AS room_type_name, 
               rt.description AS room_type_description, 
-              COALESCE(hi.url, hrt.image_url) AS image_url 
+              hrt.image_url AS image_url 
        FROM hotel_room_types hrt
        JOIN room_type rt ON hrt.room_type_id = rt.id
-       LEFT JOIN hotel_images hi ON hrt.room_type_id = hi.room_type_id AND hi.image_type = 'room'
-       WHERE hrt.hotel_id = ? AND hrt.is_deleted = 0
-       GROUP BY hrt.id`,
+       WHERE hrt.hotel_id = ? AND hrt.is_deleted = 0`,
       [hotelId]
     );
 
@@ -65,15 +63,16 @@ export const getHotelRoomByOperatorId = async (operatorId) => {
       `SELECT hrt.*, 
               rt.name AS room_type_name, 
               rt.description AS room_type_description, 
-              COALESCE(hi.url, hrt.image_url) AS image_url 
+              COALESCE(
+                (SELECT hi.url 
+                 FROM hotel_images hi 
+                 WHERE hi.room_type_id = hrt.room_type_id AND hi.image_type = 'room' 
+                 ORDER BY hi.created_at DESC 
+                 LIMIT 1), 
+                hrt.image_url
+              ) AS image_url 
        FROM hotel_room_types hrt
        JOIN room_type rt ON hrt.room_type_id = rt.id
-       LEFT JOIN (
-          SELECT room_type_id, url 
-          FROM hotel_images 
-          WHERE image_type = 'room'
-          ORDER BY created_at DESC
-       ) hi ON hrt.room_type_id = hi.room_type_id
        WHERE hrt.hotel_id = ? AND hrt.is_deleted = 0
        GROUP BY hrt.id`,
       [hotelId]
@@ -102,33 +101,10 @@ export const createHotelRooms = async (data) => {
       image_url,
     } = data;
 
-    const [roomTypeCheck] = await pool.execute(
-      "SELECT id FROM room_type WHERE id = ?",
-      [room_type_id]
-    );
-    if (roomTypeCheck.length == 0) {
-      throw new Error(`room_type_id ${room_type_id} 不存在`);
+    if (!hotel_id || !room_type_id || !quantity || !price_per_night || !image_url) {
+      throw new Error("缺少必填欄位");
     }
 
-    let finalImageUrl = image_url;
-
-    if (!image_url) {
-      // 改從 `room_type` 找預設圖片
-      const [imageCheck] = await pool.execute(
-        "SELECT default_image_url FROM room_type WHERE id = ?",
-        [room_type_id]
-      );
-      if (imageCheck.length > 0) {
-        finalImageUrl = imageCheck[0].default_image_url;
-      } else {
-        finalImageUrl = `http://localhost:5000/uploads/hotel/1-l-room.webp`;
-      }
-    }
-
-    finalImageUrl = finalImageUrl
-    ? `http://localhost:5000${finalImageUrl}`
-    : `http://localhost:5000/uploads/hotel/1-l-room.webp`;
-  
     const [result] = await pool.query(
       `INSERT INTO hotel_room_types 
         (hotel_id, room_type_id, quantity, price_per_night, description, pet_capacity, allowed_pet_size, default_food_provided, image_url, created_at, updated_at) 
@@ -142,13 +118,14 @@ export const createHotelRooms = async (data) => {
         pet_capacity,
         allowed_pet_size,
         default_food_provided,
-        finalImageUrl,
+        image_url, // 確保 image_url 是正確的路徑
       ]
     );
 
-    return { id: result.insertId, ...data, image_url: finalImageUrl };
+    return { id: result.insertId, ...data };
   } catch (error) {
-    throw new Error("無法新增 hotel 房型: " + error.message);
+    console.error("創建酒店房間時發生錯誤：", error);
+    throw new Error("無法創建酒店房間：" + error.message);
   }
 };
 
@@ -165,15 +142,18 @@ export const updateHotelRooms = async (id, data) => {
     } = data;
 
     // 取得原本的房型資訊
-    const [existingRoom] = await pool.query(
+    const [rows] = await pool.query(
       "SELECT hotel_id, is_deleted FROM hotel_room_types WHERE id = ?",
       [id]
     );
 
-    if (existingRoom.length === 0) {
+    if (rows.length === 0) {
       throw new Error(`找不到 id=${id} 的房型`);
     }
-    if (existingRoom[0].is_deleted === 1) {
+
+    const existingRoom = rows[0];
+
+    if (existingRoom.is_deleted == 1) {
       throw new Error(`id=${id} 的房型已被刪除，無法更新`);
     }
 
@@ -206,22 +186,22 @@ export const updateHotelRooms = async (id, data) => {
     }
     if (image_url !== undefined) {
       updateQuery += "image_url=?, ";
-      updateParams.push(image_url !== "" ? image_url : null);
+      updateParams.push(image_url ? image_url : null);
     }
 
-    if (updateParams.length === 0) {
+    if (updateParams.length == 0) {
       throw new Error("沒有可更新的欄位");
     }
 
-    updateQuery += "updated_at=NOW() WHERE id=? AND is_deleted = 0";
-    updateParams.push(id);
+    // 移除最後的逗號和空格
+    updateQuery = updateQuery.slice(0, -2);
 
-    console.log("更新 SQL:", updateQuery);
-    console.log("參數:", updateParams);
+    updateQuery += " WHERE id=? AND is_deleted = 0";
+    updateParams.push(id);
 
     const [result] = await pool.query(updateQuery, updateParams);
 
-    if (result.affectedRows === 0) {
+    if (result.affectedRows == 0) {
       throw new Error(`更新失敗，可能是傳入的數據與現有數據相同`);
     }
 
@@ -231,40 +211,46 @@ export const updateHotelRooms = async (id, data) => {
   }
 };
 
-
 export const deleteHotelRooms = async (id) => {
-  const connection = await pool.getConnection();
+  const connection = await pool.getConnection(); // 取得資料庫連接
   try {
-    await connection.beginTransaction();
+    await connection.beginTransaction(); // 開始事務
 
-    // 1️⃣ 先檢查是否有關聯的 `room_inventory` 資料
+    const [existingRoom] = await connection.query(
+      "SELECT id FROM hotel_room_types WHERE id = ?",
+      [id]
+    );
+    if (existingRoom.length == 0) {
+      throw new Error(`找不到 ID=${id} 的房型`);
+    }
+
     const [relatedInventory] = await connection.query(
       "SELECT * FROM room_inventory WHERE room_type_id = ?",
       [id]
     );
-
     if (relatedInventory.length > 0) {
-      // 先刪除 `room_inventory` 相關記錄，避免外鍵 (FOREIGN KEY) 限制
-      await connection.query("DELETE FROM room_inventory WHERE room_type_id = ?", [id]);
+      await connection.query(
+        "DELETE FROM room_inventory WHERE room_type_id = ?",
+        [id]
+      );
     }
 
-    // 2️⃣ 刪除 `hotel_images` 內關聯此 `room_type_id` 的圖片（如果有的話）
-    await connection.query("DELETE FROM hotel_images WHERE room_type_id = ?", [id]);
-
-    // 3️⃣ 最後刪除 `hotel_room_types` 內的房型
-    const [result] = await connection.query("DELETE FROM hotel_room_types WHERE id = ?", [id]);
+    const [result] = await connection.query(
+      "DELETE FROM hotel_room_types WHERE id = ?",
+      [id]
+    );
 
     if (result.affectedRows === 0) {
       throw new Error(`刪除失敗，找不到房型 ID=${id}`);
     }
 
-    await connection.commit();
+    await connection.commit(); // 提交事務
     return { message: `成功刪除房型 ID=${id}` };
   } catch (error) {
-    await connection.rollback();
+    await connection.rollback(); // 回滾事務
     throw new Error(`無法刪除旅館房型 (ID: ${id}): ` + error.message);
   } finally {
-    connection.release();
+    connection.release(); // 釋放連接
   }
 };
 
