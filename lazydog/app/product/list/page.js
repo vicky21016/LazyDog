@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./list.module.css";
 import Aside from "../_components/aside/aside";
 import Link from "next/link";
@@ -35,6 +35,22 @@ export default function ListPage(props) {
   const [listOpen, setListOpen] = useState(false);
   const [pageInput, setPageInput] = useState("選擇分頁");
   const [collapseBtn, setCollapseBtn] = useState(false);
+  const collapseRef = useRef(null);
+  useEffect(() => {
+    const clickOutside = (event) => {
+      if (listOpen && !event.target.closest(`.${styles.dropdown}`)) {
+        setListOpen(false);
+      }
+      if (dropDown && !event.target.closest(`.${styles.TitleFilter}`)) {
+        setDropDown(false);
+      }
+      if (collapseBtn && !event.target.closest(`.${styles.collapseAside}`)) {
+        collapseRef.current.click();
+      }
+    };
+    document.addEventListener("click", clickOutside);
+    return () => document.removeEventListener("click", clickOutside);
+  }, [listOpen, dropDown, collapseBtn]);
   return (
     <>
       <div className={`${styles.collapseAside} d-lg-none`}>
@@ -53,13 +69,14 @@ export default function ListPage(props) {
               sortName={sortName}
             />
             <button
+              ref={collapseRef}
               className={`${styles.collapseAsideBtn} btn`}
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#collapseWidthExample"
               aria-expanded="false"
               aria-controls="collapseWidthExample"
-              onClick={() => setCollapseBtn(!collapseBtn)}
+              onClick={() => setTimeout(() => setCollapseBtn(false), 50)}
             >
               <img src={`/product/font/left(orange).png`} alt="" />
             </button>
@@ -72,7 +89,7 @@ export default function ListPage(props) {
               data-bs-target="#collapseWidthExample"
               aria-expanded="false"
               aria-controls="collapseWidthExample"
-              onClick={() => setCollapseBtn(!collapseBtn)}
+              onClick={() => setCollapseBtn(true)}
             >
               <img src={`/product/font/right(orange).png`} alt="" />
             </button>
