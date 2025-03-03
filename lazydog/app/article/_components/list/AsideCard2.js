@@ -7,7 +7,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 export default function AsideCard({ id, title, cover_image, created_at }) {
     return (
         <>
-            <div className={styles.asideRead}>
+           
+            <div className={styles.asideRead2}>
                 <img
                     src={cover_image}
                     alt=""

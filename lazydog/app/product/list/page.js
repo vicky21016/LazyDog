@@ -10,7 +10,10 @@ import { useFavorite } from "@/hooks/product/use-favorite";
 
 export default function ListPage(props) {
   const {
+    width,
     products,
+    int,
+    productLine,
     emptyMessage,
     changeUrl,
     minPrice,
@@ -28,7 +31,10 @@ export default function ListPage(props) {
     error,
   } = useListFetch();
   const { favorite, setFavorite } = useFavorite();
-
+  const [dropDown, setDropDown] = useState(false);
+  const [listOpen, setListOpen] = useState(false);
+  const [pageInput, setPageInput] = useState("選擇分頁");
+  const [collapseBtn, setCollapseBtn] = useState(false);
   return (
     <>
       <div className={`${styles.Container} container`}>
@@ -40,7 +46,7 @@ export default function ListPage(props) {
           </a>
         </section>
         <section className={styles.BreadcrumbsTitle}>
-          <div className={styles.Breadcrumbs}>
+          <div className={`${styles.Breadcrumbs} d-none d-lg-flex`}>
             <Link href="/">首頁</Link>
             <img src="/product/font/right.png" alt="" />
             <Link className={styles.BreadcrumbsActive} href="/product/list">
@@ -49,24 +55,68 @@ export default function ListPage(props) {
           </div>
           {products && (
             <div className={styles.Title}>
-              <h5>商品目錄</h5>
-              <div className={styles.TitleFilter}>
-                <img src="/product/font/filter.png" alt="" />
+              <div className="d-none d-lg-flex">
+                <h5>目前共{products.length}項商品</h5>
+              </div>
+              <div className={`${styles.Breadcrumbs} d-lg-none`}>
+                <Link href="/">首頁</Link>
+                <img src="/product/font/right.png" alt="" />
+                <Link className={styles.BreadcrumbsActive} href="/product/list">
+                  商品目錄
+                </Link>
+              </div>
+              <div
+                className={styles.TitleFilter}
+                onMouseEnter={() => {
+                  setDropDown(true);
+                }}
+                onMouseLeave={() => {
+                  setDropDown(false);
+                }}
+              >
+                <img
+                  onClick={() => {
+                    setDropDown(!dropDown);
+                  }}
+                  src={`/product/font/${
+                    sortName.includes("名稱")
+                      ? "filter-a"
+                      : sortName.includes("價格")
+                      ? "filter-m"
+                      : sortName.includes("時間")
+                      ? "filter-d"
+                      : "filter"
+                  }.png`}
+                  alt=""
+                />
                 <div className={styles["dropdown"]}>
-                  <li>
+                  <li
+                    onClick={() => {
+                      setDropDown(!dropDown);
+                    }}
+                  >
                     <h6 className={styles["dropbtn"]}>{sortName}</h6>
                   </li>
-                  <div className={styles["dropdown-content"]}>
+                  <div
+                    className={`${
+                      width <= 1024 && dropDown
+                        ? styles["dropdown-contentOn"]
+                        : width <= 1024
+                        ? styles["dropdown-contentOff"]
+                        : styles["dropdown-content"]
+                    }`}
+                  >
                     <h6
                       className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
                       onClick={() => {
                         changeUrl(
                           `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=name`
                         );
-                        setSortName("依商品名稱排序");
+                        setSortName("↓商品名稱");
+                        setDropDown(false);
                       }}
                     >
-                      依商品名稱排序
+                      ↓商品名稱
                     </h6>
                     <h6
                       className={styles["dropdown-link"]}
@@ -74,10 +124,11 @@ export default function ListPage(props) {
                         changeUrl(
                           `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=price`
                         );
-                        setSortName("依商品價格⬆排序");
+                        setSortName("↑商品價格");
+                        setDropDown(false);
                       }}
                     >
-                      依商品價格⬆排序
+                      ↑商品價格
                     </h6>
                     <h6
                       className={styles["dropdown-link"]}
@@ -85,21 +136,23 @@ export default function ListPage(props) {
                         changeUrl(
                           `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=priceDown`
                         );
-                        setSortName("依商品價格⬇排序");
+                        setSortName("↓商品價格");
+                        setDropDown(false);
                       }}
                     >
-                      依商品價格⬇排序
+                      ↓商品價格
                     </h6>
                     <h6
-                      className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                      className={`${styles["dropdown-link"]}`}
                       onClick={() => {
                         changeUrl(
                           `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=update`
                         );
-                        setSortName("依上架時間⬆排序");
+                        setSortName("↑上架時間");
+                        setDropDown(false);
                       }}
                     >
-                      依上架時間⬆排序
+                      ↑上架時間
                     </h6>
                     <h6
                       className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
@@ -107,10 +160,11 @@ export default function ListPage(props) {
                         changeUrl(
                           `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}&sort=updateDown`
                         );
-                        setSortName("依上架時間⬇排序");
+                        setSortName("↓上架時間");
+                        setDropDown(false);
                       }}
                     >
-                      依上架時間⬇排序
+                      ↓上架時間
                     </h6>
                   </div>
                 </div>
@@ -119,23 +173,57 @@ export default function ListPage(props) {
           )}
         </section>
         <section className={styles.PdArea}>
-          <Aside
-            changeUrl={changeUrl}
-            setPageNow={setPageNow}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            setMaxPrice={setMaxPrice}
-            setMinPrice={setMinPrice}
-            sortName={sortName}
-          />
+          <div className="d-none d-lg-flex">
+            <Aside
+              changeUrl={changeUrl}
+              setPageNow={setPageNow}
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              setMaxPrice={setMaxPrice}
+              setMinPrice={setMinPrice}
+              sortName={sortName}
+            />
+          </div>
+          <button
+            className={`${styles.collapseAsideBtn} btn d-lg-none`}
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseWidthExample"
+            aria-expanded="false"
+            aria-controls="collapseWidthExample"
+            onClick={() => setCollapseBtn(!collapseBtn)}
+          >
+            <img
+              src={`/product/font/${
+                collapseBtn ? "left(orange)" : "right(orange)"
+              }.png`}
+              alt=""
+            />
+          </button>
+          <div className={`${styles.collapseAside} d-lg-none`}>
+            <div
+              className={`${styles.collapseHorizontal} collapse collapse-horizontal`}
+              id="collapseWidthExample"
+            >
+              <Aside
+                changeUrl={changeUrl}
+                setPageNow={setPageNow}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                setMaxPrice={setMaxPrice}
+                setMinPrice={setMinPrice}
+                sortName={sortName}
+              />
+            </div>
+          </div>
           {!products && <h2>{emptyMessage}</h2>}
           {products && (
             <main className={styles.PdList}>
-              {[...Array(6)].map((value, index) => {
+              {[...Array(productLine)].map((value, index) => {
                 return (
                   <ul className={styles.ProductCardGroup} key={index}>
                     {product?.map((v, i) => {
-                      if (index * 4 <= i && i < (index + 1) * 4)
+                      if (index * int <= i && i < (index + 1) * int)
                         return (
                           <Card
                             key={v.productID}
@@ -150,58 +238,135 @@ export default function ListPage(props) {
               })}
               <nav>
                 <ul className={styles.ProductListPagination}>
-                  <li className={`${styles.PageArrow}`}>
-                    <Link
-                      onClick={() =>
-                        setPageNow(pageNow - 1 == 0 ? 1 : pageNow - 1)
-                      }
-                      href={`/product/list?page=${
-                        pageNow - 1 == 0 ? 1 : pageNow - 1
-                      }`}
-                    >
-                      <img src="/product/font/left(orange).png" alt="" />
-                    </Link>
-                  </li>
-                  {[...Array(pages)].map((v, i) => {
-                    if (
-                      i == 0 ||
-                      i == pageNow - 3 ||
-                      i == pageNow - 2 ||
-                      i == pageNow - 1 ||
-                      i == pageNow ||
-                      i == pageNow + 1 ||
-                      i == pages - 1
-                    ) {
-                      return (
-                        <li
-                          key={`li${i}`}
-                          className={`${styles.PageItem} page-item ${
-                            i + 1 == pageNow ? styles.PageItemActive : ""
-                          }`}
-                        >
-                          <Link
-                            onClick={() => setPageNow(i + 1)}
-                            className={`${styles.PageLink} page-link `}
-                            href={`/product/list?page=${i + 1}`}
-                          >
-                            {i + 1}
-                          </Link>
-                        </li>
-                      );
-                    }
-                  })}
-                  <li className={`${styles.PageArrow}`}>
+                  {products.length > 24 && (
+                    <li className={`${styles.PageArrow}`}>
+                      <Link
+                        onClick={() => {
+                          setPageNow(pageNow - 1 == 0 ? 1 : pageNow - 1);
+                          pageNow - 1 > 1
+                            ? setPageInput(`第 ${pageNow - 1} 頁`)
+                            : setPageInput("選擇分頁");
+                        }}
+                        href={`/product/list?page=${
+                          pageNow - 1 == 0 ? 1 : pageNow - 1
+                        }`}
+                      >
+                        <img src="/product/font/left(orange).png" alt="" />
+                      </Link>
+                    </li>
+                  )}
+                  <li
+                    className={`${styles.PageItem} page-item ${
+                      pageNow == 1 ? styles.PageItemActive : ""
+                    }`}
+                  >
                     <Link
                       onClick={() => {
-                        setPageNow(pageNow + 1 > pages ? pageNow : pageNow + 1);
+                        setPageNow(1);
+                        setPageInput("選擇分頁");
                       }}
-                      href={`/product/list?page=${
-                        pageNow + 1 > pages ? pageNow : pageNow + 1
-                      }`}
+                      className={`${styles.PageLink} page-link `}
+                      href={`/product/list?page=${1}`}
                     >
-                      <img src="/product/font/right(orange).png" alt="" />
+                      1
                     </Link>
                   </li>
+                  {pages >= 3 && (
+                    <div
+                      className={`${styles.dropdown}`}
+                      onMouseEnter={() => {
+                        setListOpen(true);
+                      }}
+                      onMouseLeave={() => {
+                        setListOpen(false);
+                      }}
+                    >
+                      <button
+                        className={`btn dropdown-toggle ${
+                          styles.dropdownToggle
+                        } ${
+                          pageInput !== "選擇分頁" ? styles.PageItemActive : ""
+                        }`}
+                        type="button"
+                        onClick={() =>
+                          width > 1024 ? "" : setListOpen(!listOpen)
+                        }
+                      >
+                        {pageInput}
+                      </button>
+                      <ul
+                        className={`${
+                          listOpen
+                            ? styles.dropdownMenu
+                            : styles.dropdownMenuOff
+                        } dropdown-menu`}
+                      >
+                        {[...Array(pages)].map((v, i) => {
+                          if (i > 0 && i < pages - 1) {
+                            return (
+                              <li
+                                key={`li${i}`}
+                                className={`dropdown-item ${
+                                  styles.dropdownItem
+                                } ${
+                                  pageNow == i + 1 ? styles.PageItemActive : ""
+                                }`}
+                              >
+                                <Link
+                                  onClick={() => {
+                                    setPageNow(i + 1);
+                                    setPageInput(`第 ${i + 1} 頁`);
+                                    setListOpen(false);
+                                  }}
+                                  className={`${styles.PageLink} page-link`}
+                                  href={`/product/list?page=${i + 1}`}
+                                >
+                                  {i + 1}
+                                </Link>
+                              </li>
+                            );
+                          }
+                        })}
+                      </ul>
+                    </div>
+                  )}
+                  {products.length > 24 && (
+                    <li
+                      className={`${styles.PageItem} page-item ${
+                        pageNow == pages ? styles.PageItemActive : ""
+                      }`}
+                    >
+                      <Link
+                        onClick={() => {
+                          setPageNow(pages);
+                          setPageInput("選擇分頁");
+                        }}
+                        className={`${styles.PageLink} page-link `}
+                        href={`/product/list?page=${pages}`}
+                      >
+                        {pages}
+                      </Link>
+                    </li>
+                  )}
+                  {products.length > 24 && (
+                    <li className={`${styles.PageArrow}`}>
+                      <Link
+                        onClick={() => {
+                          setPageNow(
+                            pageNow + 1 > pages ? pageNow : pageNow + 1
+                          );
+                          pageNow + 1 >= pages
+                            ? setPageInput("選擇分頁")
+                            : setPageInput(`第 ${pageNow + 1} 頁`);
+                        }}
+                        href={`/product/list?page=${
+                          pageNow + 1 > pages ? pageNow : pageNow + 1
+                        }`}
+                      >
+                        <img src="/product/font/right(orange).png" alt="" />
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </nav>
             </main>

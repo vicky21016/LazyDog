@@ -8,6 +8,7 @@ import Link from "next/link";
 import useArticles from '@/hooks/useArticle';
 import MainCard from '../_components/list/ListCard';
 import AsideCard from '../_components/list/AsideCard';
+import AsideCard2 from '../_components/list/AsideCard2';
 import { useAuth } from "@/hooks/use-auth";
 import Header from "../../components/layout/header";
 
@@ -19,6 +20,8 @@ const ArticlePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 5;
   const { user } = useAuth()
+ 
+
 
   // 判斷有無使用者登入
   const handleClick = (event) => {
@@ -81,7 +84,7 @@ const ArticlePage = () => {
 
   return (
     <>
-    <Header />
+      <Header />
       <div className={`${styles.mainDog} mb-3`}>
         <h1 style={{ fontWeight: 'bold' }}>毛孩文章</h1>
       </div>
@@ -102,7 +105,7 @@ const ArticlePage = () => {
 
         {/* 左側搜尋與分類 */}
         <div className={styles.content}>
-          <aside >
+          <aside className={styles.aside} >
             <div className="input-group my-3" style={{ border: '.2px solid grey', borderRadius: '5px' }}>
               <input
                 type="text"
@@ -118,7 +121,8 @@ const ArticlePage = () => {
             </div>
             <div className={styles.asideCategory}>
               <h2 className='mb-3'>類別</h2>
-              <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(null); }}>
+              <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(null); }}
+              >
                 <p>全部</p>
               </a>
               <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(1); }}>
@@ -135,7 +139,7 @@ const ArticlePage = () => {
               </a>
             </div>
             <div >
-              <h4>延伸閱讀</h4>
+              <h4 className={styles.H4}>延伸閱讀</h4>
               {articles
                 .sort(() => Math.random() - 0.5)
                 .slice(0, 5)
@@ -147,6 +151,59 @@ const ArticlePage = () => {
 
           {/* 主要內容 */}
           <main >
+            <div className={styles.RWDfilter}>
+              <div className="input-group my-3" style={{ border: '.2px solid grey', borderRadius: '5px' }}>
+                <input
+                  type="text"
+                  className="form-control"
+                  style={{ border: 'none', height: '40px', borderRadius: '5px' }}
+                  placeholder="搜尋文章..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
+                <label className="input-group-text" style={{ background: 'none', border: 'none' }}>
+                  <i className="bi bi-search"></i>
+                </label>
+              </div>
+              <div className="accordion accordion-flush">
+                <div className="accordion-item">
+                  <h2 className="accordion-header" id="flush-headingOne">
+                    <button
+                      className="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne"
+                      aria-expanded="false"
+                      aria-controls="collapseOne">
+                      類別
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseOne"
+                    className="accordion-collapse collapse"
+                    aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <div className="accordion-body">
+                      <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(null); }}>
+                        <p>全部</p>
+                      </a>
+                      <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(1); }}>
+                        <p>保健與營養</p>
+                      </a>
+                      <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(5); }}>
+                        <p>開箱</p>
+                      </a>
+                      <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(2); }}>
+                        <p>食譜</p>
+                      </a>
+                      <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(3); }}>
+                        <p>善終</p>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <button className={styles.filter} onClick={handleSortToggle}>
               <i className="bi bi-filter"></i> 依時間排序 {sortOrder === 'asc' ? '↑' : '↓'}
             </button>
@@ -157,54 +214,73 @@ const ArticlePage = () => {
             ) : (
               <p>沒有符合條件的文章</p>
             )}
-            {/* 分頁 */}
-
+            <div >
+              <h4 className={styles.RWDH4}>延伸閱讀</h4>
+              {articles
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 5)
+                .map((article) => (
+                  <AsideCard2
+                    key={article.id} {...article} />
+                ))}
+            </div>
           </main>
 
         </div>
         {totalPages > 1 && (
           <nav className="page">
             <ul className={styles.ArticlePage}>
-              <li className={`${styles.PageItem} page-item`}>
+              {/* 前一页按钮 */}
+              <li className={`${styles.PageItem} page-item ${page === 1 ? 'disabled' : ''}`}>
                 <a
                   className={`${styles.PageLink} page-link`}
                   href="#"
-                  onClick={(e) => { e.preventDefault(); handlePageChange(page - 1); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (page > 1) handlePageChange(page - 1);
+                  }}
                 >
                   <i className="bi bi-arrow-left"></i>
                 </a>
               </li>
-              {[...Array(totalPages)].map((_, i) => (
-                <li key={i + 1} className={`${styles.PageItem} page-item`}>
-                  <a
-                    className={`${styles.PageLink} page-link`}
-                    href="#"
-                    onClick={(e) => { e.preventDefault(); handlePageChange(i + 1); }}
-                    style={page === i + 1 ? { fontWeight: 'bold' } : {}}
-                  >
-                    {i + 1}
-                  </a>
-                </li>
-              ))}
-              <li className={`${styles.PageItem} page-item`}>
+
+              {/* 动态生成页码范围 */}
+              {[...Array(totalPages)]
+                .map((_, i) => i + 1) // 生成 1 到 totalPages 的数组
+                .filter((i) => i >= page - 1 && i <= page + 1) // 只保留当前页及其前后各一页
+                .map((i) => (
+                  <li key={i} className={`${styles.PageItem} page-item`}>
+                    <a
+                      className={`${styles.PageLink} page-link ${page === i ? styles.activePage : ''}`} // 当前页添加 activePage 类
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(i);
+                      }}
+                    >
+                      {i}
+                    </a>
+                  </li>
+                ))}
+
+              {/* 下一页按钮 */}
+              <li className={`${styles.PageItem} page-item ${page === totalPages ? 'disabled' : ''}`}>
                 <a
                   className={`${styles.PageLink} page-link`}
                   href="#"
-                  onClick={(e) => { e.preventDefault(); handlePageChange(page + 1); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (page < totalPages) handlePageChange(page + 1);
+                  }}
                 >
                   <i className="bi bi-arrow-right"></i>
                 </a>
               </li>
             </ul>
           </nav>
-
         )}
 
-
-
       </div>
-
-
     </>
   );
 };

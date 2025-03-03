@@ -19,7 +19,7 @@ export default function RatecardRatecard({
   const [good, setGood] = useState(false);
 
   return (
-    <div className={styles.RateCard}>
+    <div className={`${styles.RateCard}`}>
       <div className={styles.RateCardText}>
         <div className={styles.RateCardUser}>
           <button type="button">
