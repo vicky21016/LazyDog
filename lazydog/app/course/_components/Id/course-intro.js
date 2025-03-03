@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "../courseId.module.css";
 import { useCart } from "@/hooks/use-cart";
 export default function CourseIntro({ course, session, place }) {
@@ -11,7 +12,7 @@ export default function CourseIntro({ course, session, place }) {
   // const defaultTeachImg = "/course/img/user.jpg"
 
   // console.log(s);
-  // console.log("CourseIntro - Course:", course);
+  console.log("CourseIntro - Course:", course);
   // console.log("CourseIntro - Session:", session);
   // console.log("CourseIntro - Place:", place);
 
@@ -48,7 +49,7 @@ export default function CourseIntro({ course, session, place }) {
     if (!selectDate || !selectedTime) {
       Swal.fire({
         icon: "error",
-        title: "請選擇地梯次和時間",
+        title: "請選擇梯次和時間",
         showClass: {
           popup: `
             animate__animated
@@ -96,6 +97,35 @@ export default function CourseIntro({ course, session, place }) {
     }
   };
 
+  const handlePlaceClick = (p, index) => {
+    if (index < 3) {
+      // 第一～第三筆資料連結到 Google Maps
+      const googleMapsUrl = `https://www.google.com/maps/search/?q=${encodeURIComponent(
+        p.address
+      )}`;
+      window.open(googleMapsUrl, "_blank");
+    }
+    // else if (index < 5) {
+    //   // 第四～第五筆資料彈出 Swal 對話框
+    //   Swal.fire({
+    //     html: `
+    //         <p>
+    //           <a href="https://reurl.cc/XRdR6j" target="_blank" style="color: blue; text-decoration: underline;">
+    //             <strong>ZOOM下載使用教學參考</strong>
+    //           </a>
+    //         </p>
+    //         <p>
+    //           <a href="https://reurl.cc/nv9vz8" target="_blank" style="color: blue; text-decoration: underline;">
+    //             <strong>直播觀看教學方式說明</strong>
+    //           </a>
+    //         </p>
+
+    //       `,
+    //     showConfirmButton: false,
+    //   });
+    // }
+  };
+
   return (
     <>
       <div className={styles.courseIntro}>
@@ -114,16 +144,15 @@ export default function CourseIntro({ course, session, place }) {
           />
         </div>
         <p className={styles.description}>{c?.description}</p>
-        <h2 className={styles.price}>
-          NT${" "}
-          <span className={styles.number}>
-            {Number(c?.price).toLocaleString("zh-Tw")}
-          </span>
-        </h2>
+
         <div className={styles.teacher}>
           <h2 className={styles.teachTitle}>關於講師</h2>
           <a
-            href={s?.teacher_id ? `/teacher/info/${s?.teacher_id}` : "#"}
+            href={
+              s?.teacher_id
+                ? `/teacher/info/${s?.teacher_id}`
+                : `/course/img/user.jpg`
+            }
             className={`d-flex gap-3 ${styles.tConnect}`}
           >
             <img
@@ -163,6 +192,12 @@ export default function CourseIntro({ course, session, place }) {
             )
           )}
         </div>
+        <h2 className={styles.price}>
+          ${" "}
+          <span className={styles.number}>
+            {Number(c?.price).toLocaleString("zh-Tw")}
+          </span>
+        </h2>
 
         {/* 日期 */}
         <select
@@ -176,7 +211,7 @@ export default function CourseIntro({ course, session, place }) {
             請選擇梯次
           </option>
           {uniqueDates.map((date, index) => (
-            <option className={`${styles.options}`} key={index} value={date}>
+            <option key={index} value={date}>
               {date}
             </option>
           ))}
@@ -204,181 +239,157 @@ export default function CourseIntro({ course, session, place }) {
           加入購物車
         </button>
         <div className={styles.ps}>
+          {/* 注意事項 */}
           <div
             type="button"
             className={styles.notice}
-            data-bs-toggle="modal"
-            data-bs-target="#noticeModal"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#noticeOffcanvas"
+            aria-controls="noticeOffcanvas"
           >
             <h5 className={styles.noticeTitle}>注意事項</h5>
             <img src="/course/img/rightBlack.svg" alt="" />
-            {/* Modal */}
             <div
-              className={`modal ${styles.fade}`}
-              id="noticeModal"
-              tabIndex={-1}
-              aria-labelledby="noticeModalLabel"
-              aria-hidden="true"
+              className={`offcanvas offcanvas-end`} // offcanvas-end 表示從右邊滑出
+              tabIndex="-1"
+              id="noticeOffcanvas"
+              aria-labelledby="noticeOffcanvasLabel"
+              data-bs-backdrop="true"
             >
+              <div className="offcanvas-header">
+                <h5 id="noticeOffcanvasLabel">注意事項</h5>
+                <button
+                  type="button"
+                  className="btn-close text-reset"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                />
+              </div>
               <div
-                className={`modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable`}
+                className={`offcanvas-body ${styles.scrollOrg} ${styles.offcanvaBody}`}
               >
-                <div className={`modal-content`}>
-                  <div className={`modal-header`}>
-                    <h5 className={`modal-title`} id="noticeModalLabel">
-                      注意事項
-                    </h5>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    />
-                  </div>
-                  <div className={`modal-body`}>{c?.notice}</div>
-                  <div className={`modal-footer`}>
-                    <button
-                      type="button"
-                      className={`btn btn-secondary`}
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
+                {c?.notice}
               </div>
             </div>
           </div>
+
+          {/* QA */}
           <div
             type="button"
             className={styles.qa}
-            data-bs-toggle="modal"
-            data-bs-target="#qaModal"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#qaOffcanvas"
+            aria-controls="qaOffcanvas"
           >
             <h5 className={styles.qaTitle}>Q&amp;A</h5>
             <img src="/course/img/rightBlack.svg" alt="" />
-            {/* Modal */}
             <div
-              className={`modal ${styles.fade}`}
-              id="qaModal"
-              tabIndex={-1}
-              aria-labelledby="qaModalLabel"
-              aria-hidden="true"
+              className={`offcanvas offcanvas-end ${styles.offcanvas}`}
+              tabIndex="-1"
+              id="qaOffcanvas"
+              aria-labelledby="qaOffcanvasLabel"
             >
+              <div className="offcanvas-header">
+                <h5 id="qaOffcanvasLabel">Q&amp;A</h5>
+                <button
+                  type="button"
+                  className="btn-close text-reset"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                />
+              </div>
               <div
-                className={`modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable`}
+                className={`offcanvas-body ${styles.scrollOrg} ${styles.offcanvaBody}`}
               >
-                <div className={`modal-content`}>
-                  <div className={`modal-header`}>
-                    <h5 className={`modal-title`} id="qaModalLabel">
-                      Q&amp;A
-                    </h5>
-                    <button
-                      type="button"
-                      className={`btn-close`}
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    />
-                  </div>
-                  <div className={`modal-body`}>{c?.qa}</div>
-                  <div className={`modal-footer`}>
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
+                {c?.qa}
               </div>
             </div>
           </div>
+
+          {/* 其他 */}
           <div
             type="button"
             className={styles.other}
-            data-bs-toggle="modal"
-            data-bs-target="#otherModal"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#otherOffcanvas"
+            aria-controls="otherOffcanvas"
           >
             <h5 className={styles.otherTitle}>其他</h5>
             <img src="/course/img/rightBlack.svg" alt="" />
-            {/* Modal */}
             <div
-              className={`modal ${styles.fade}`}
-              id="otherModal"
-              tabIndex={-1}
-              aria-labelledby="otherModalLabel"
-              aria-hidden="true"
+              className={`offcanvas offcanvas-end ${styles.offcanvas}`}
+              tabIndex="-1"
+              id="otherOffcanvas"
+              aria-labelledby="otherOffcanvasLabel"
             >
+              <div className="offcanvas-header">
+                <h5 id="otherOffcanvasLabel">其他</h5>
+                <button
+                  type="button"
+                  className="btn-close text-reset"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                />
+              </div>
               <div
-                className={`modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable`}
+                className={`offcanvas-body ${styles.scrollOrg} ${styles.offcanvaBody}`}
               >
-                <div className={`modal-content`}>
-                  <div className={`modal-header`}>
-                    <h5 className={`modal-title`} id="otherModalLabel">
-                      其他
-                    </h5>
-                    <button
-                      type="button"
-                      className={`btn-close`}
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    />
-                  </div>
-                  <div className={`modal-body`}>
-                    <div className={`container-fluid`}>
-                      <h5>上課地點</h5>
-                      {place?.map((p) => (
-                        <div key={p.id} className={`row`}>
-                          <div className={`col-5 col-md-2`}>{p.region}</div>
-                          <div className={`col-7 col-md-4`}>{p.address}</div>
-                        </div>
-                      ))}
+                <div className="container-fluid">
+                  <h5 className="pb-3">上課地點</h5>
+                  {place?.slice(0, 3).map((p, index) => (
+                    <div key={p.id} className="row my-4 border-bottom">
+                      <div className="col-12 col-md-3">{p.region}</div>
+                      <div
+                        className="col-12 col-md-9 pb-5"
+                        onClick={() => handlePlaceClick(p, index)}
+                      >
+                        <span className={`${styles.address}`}>{p.address}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div className={`modal-footer`}>
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                  </div>
+                  ))}
+                  {place?.slice(3, 5).map((p, index) => (
+                    <div key={p.id} className="row my-4 border-bottom">
+                      <div className="col-12 col-md-3">{p.region}</div>
+                      <div
+                        className="col-12 col-md-9 pb-4"
+                        // onClick={() => handlePlaceClick(p, index + 3)}
+                      >
+                        {p.address}
+                        <p className="mt-3">
+                          <a
+                            href="https://reurl.cc/XRdR6j"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              color: "blue",
+                              // textDecoration: "underline",
+                            }}
+                          >
+                            <strong>ZOOM下載使用教學參考</strong>
+                          </a>
+                        </p>
+                        <p>
+                          <a
+                            href="https://reurl.cc/nv9vz8"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              color: "blue",
+                              // textDecoration: "underline",
+                            }}
+                          >
+                            <strong>直播觀看教學方式說明</strong>
+                          </a>
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* <div
-              className={styles.notice}
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasRight"
-              aria-controls="offcanvasRight"
-            >
-              <h5>注意事項</h5>
-              <img src="./img/rightBlack.svg" alt="" />
-              <div
-                class="offcanvas offcanvas-end"
-                tabindex="-1"
-                id="offcanvasRight"
-                aria-labelledby="offcanvasRightLabel"
-              >
-                <div class="offcanvas-header">
-                  <h5 id="offcanvasRightLabel">Offcanvas right</h5>
-                  <button
-                    type="button"
-                    class="btn-close text-reset"
-                    data-bs-dismiss="offcanvas"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div class="offcanvas-body">...</div>
-              </div>
-            </div> */}
     </>
   );
 }

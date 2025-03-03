@@ -34,6 +34,11 @@ export default function My() {
       icon: <i className="bi bi-building-fill "></i>,
     },
     {
+      name: "訂單紀錄",
+      path: "/teacher-sign/orderlist",
+      icon: <i class="bi bi-bag-check"></i>,
+    },
+    {
       name: "會員資料",
       path: "/pages",
       icon: <i className="bi bi-person-fill "></i>,

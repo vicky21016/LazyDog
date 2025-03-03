@@ -86,34 +86,40 @@ input:active {
       margin-top: 30px;
       margin-bottom: 20px;
       padding: 25px 25px 30px 17px;
+
+      .cTh2,
+      .cTh3,
+      .cTh4 {
+        text-align: center;
+        /* display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 2;
+              overflow: hidden; */
+        color: var(--text-Bk, #3e3e3e);
+        text-overflow: ellipsis;
+        font-family: "Noto Sans TC";
+        font-size: 18px;
+        font-style: normal;
+        font-weight: bolder;
+      }
+      .cTh1 {
+        width: 140px;
+      }
+      .cTh2 {
+        width: 200px;
+        padding: 5px;
+      }
+      .cTh3 {
+        width: 211px;
+      }
+      .cTh4 {
+        width: 80px;
+      }
     }
-    .cTh2,
-    .cTh3,
-    .cTh4 {
-      text-align: center;
-      /* display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden; */
-      color: var(--text-Bk, #3e3e3e);
-      text-overflow: ellipsis;
-      font-family: "Noto Sans TC";
-      font-size: 18px;
-      font-style: normal;
-      font-weight: bolder;
-    }
-    .cTh1 {
-      width: 140px;
-    }
-    .cTh2 {
-      width: 200px;
-      padding: 5px;
-    }
-    .cTh3 {
-      width: 211px;
-    }
-    .cTh4 {
-      width: 80px;
+
+    .cTbodys {
+      height: 680px; /* 設定最大高度，根據需要調整 */
+      overflow-y: auto; /* 當內容超過 max-height 時顯示滾動條 */
     }
 
     /* 內容 */
@@ -186,7 +192,7 @@ input:active {
       font-weight: 500;
     }
   }
-  .pagination {
+  /* .pagination {
     display: flex;
     gap: 5px;
     padding: 50px 0 15px;
@@ -212,10 +218,10 @@ input:active {
       color: #fff;
     }
 
-    /* .pageItem.active .pageLink {
+    .pageItem.active .pageLink {
         background-color: #f5842b;
         color: #fff;
         border-radius: 60%;
-        } */
-  }
+        }
+  } */
 }

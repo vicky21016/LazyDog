@@ -3,9 +3,12 @@
 import React, { useState, useEffect } from "react";
 import styles from "../css/teacherSignList.module.css";
 import Link from "next/link";
+import Pagination from "@/app/course/_components/list/page";
 
 export default function TeacherListC() {
   const [mycourse, setMycourse] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [coursesPerPage] = useState(4); // 每頁顯示的課程數量
 
   useEffect(() => {
     fetch(`http://localhost:5000/teacher/mycourse`, {
@@ -27,6 +30,18 @@ export default function TeacherListC() {
   // console.log(data?);
   // console.log(mycourse);
 
+  // 計算總頁數
+  const totalPages = Math.ceil(mycourse.length / coursesPerPage);
+
+  // 根據目前頁面來選擇顯示的課程
+  const lastIdx = currentPage * coursesPerPage;
+  const firstIdx = lastIdx - coursesPerPage;
+  const currentCourses = mycourse.slice(firstIdx, lastIdx);
+
+  // 處理頁碼變更
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   return (
     <>
       <div className={`col-lg-9 col-md-12 col-12`}>
@@ -50,7 +65,7 @@ export default function TeacherListC() {
               <div className={styles.cTh4}>地點</div>
             </div>
             <div className={`${styles.cTbodys}`}>
-              {mycourse.map((m) => (
+              {currentCourses.map((m) => (
                 <Link
                   key={m.session_id}
                   className={styles.cTbody}
@@ -71,7 +86,12 @@ export default function TeacherListC() {
               ))}
             </div>
           </div>
-          <nav aria-label="Page navigation">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+          {/* <nav aria-label="Page navigation">
             <ul
               className={`pagination justify-content-center ${styles.pagination}`}
             >
@@ -108,7 +128,7 @@ export default function TeacherListC() {
                 </a>
               </li>
             </ul>
-          </nav>
+          </nav> */}
         </div>
       </div>
     </>

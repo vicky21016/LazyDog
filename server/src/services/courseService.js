@@ -4,8 +4,8 @@ import pool from "../config/mysql.js";
 // 用MVC架構，步驟一 Model 負責資料庫操作
 export const getCourses = async ({
   keyword,
-  typeList,
-  placeList,
+  typeList = [],
+  placeList = [],
   // minPrice,
   // maxPrice,
 }) => {
@@ -27,53 +27,36 @@ export const getCourses = async ({
       LEFT JOIN course_session ON course.id = course_session.course_id  -- 加入與 course_session 的聯結
       LEFT JOIN course_area ON course_session.area_id = course_area.id  -- 根據 course_session 的 area_id 來聯結 course_area
       WHERE 1=1
-      GROUP BY course.id
       `;
 
     let params = [];
 
-    // ✅ 篩選條件
+    // ✅ 課程類別篩選
     if (typeList.length > 0) {
-      if (typeList.length === 1) {
-        sql += ` AND course.type_id = ?`; // 單選情況
-        params.push(typeList[0]);
-        console.log("type單選", params);
-      } else {
-        sql += ` AND course.type_id IN (${typeList.map(() => "?").join(",")})`; // 多選情況
-        params.push(...typeList); // 將 typeList 的元素推入 params 陣列
-        console.log("type多選", params);
-      }
+      sql += ` AND course.type_id IN (${typeList.map(() => "?").join(",")})`;
+      params.push(...typeList);
+      console.log("type", params);
     }
 
+    // ✅ 上課地點篩選
     if (placeList.length > 0) {
-      if (placeList.length === 1) {
-        sql += ` AND course_session.area_id = ?`; // 單選情況
-        params.push(placeList[0]);
-        console.log("place單選", params);
-      } else {
-        sql += ` AND course_session.area_id IN (${placeList
-          .map(() => "?")
-          .join(",")})`; // 多選情況
-        params.push(...placeList); // 將 placeList 的元素推入 params 陣列
-        console.log("place多選", params);
-      }
+      sql += ` AND course_session.area_id IN (${placeList
+        .map(() => "?")
+        .join(",")})`;
+      params.push(...placeList);
+      console.log("place", params);
     }
 
-    // if (minPrice) {
-    //   sql += ` AND course.price >= ?`;
-    //   params.push(minPrice);
-    // }
-    // if (maxPrice) {
-    //   sql += ` AND course.price <= ?`;
-    //   params.push(maxPrice);
-    // }
+    // ✅ SQL 排序與分組
+    sql += ` GROUP BY course.id`;
+
+    console.log("📌 執行 SQL：", sql); // 🛠 Debug
+    console.log("📌 SQL 參數：", params); // 🛠 Debug
+
     const [courses] = await pool.execute(sql, params);
     if (courses.length == 0) {
       console.log("課程列表不存在");
     }
-
-    console.log("📌 執行 SQL：", sql); // 🛠 Debug
-    console.log("📌 SQL 參數：", params); // 🛠 Debug
 
     const [types] = await pool.execute(`      
       SELECT *
