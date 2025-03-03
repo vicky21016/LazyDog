@@ -325,10 +325,13 @@ export default function HotelEditPage() {
   
       if (!response.ok) throw new Error("更新失敗");
   
-      await Swal.fire("成功", "房型已更新", "success"); // **等待 `Swal.fire()` 完全顯示完畢**
-      
-      router.refresh(); // **確保更新成功後才刷新頁面**
+      // 顯示成功訊息
+      await Swal.fire("成功", "房型已更新", "success");
+  
+      // 刷新頁面
+      router.refresh();
     } catch (error) {
+      // 顯示錯誤訊息
       await Swal.fire("錯誤", error.message, "error");
     }
   };
@@ -336,6 +339,7 @@ export default function HotelEditPage() {
 
   // 刪除房型
   const handleDeleteRoom = async (roomId) => {
+    // 確認刪除
     const confirmDelete = await Swal.fire({
       title: "確定要刪除這個房型嗎？",
       text: "刪除後無法恢復！",
@@ -347,12 +351,14 @@ export default function HotelEditPage() {
       cancelButtonText: "取消",
     });
   
-    if (!confirmDelete.isConfirmed) return; // 如果使用者取消，就不執行刪除
+    // 如果使用者取消，就不執行刪除
+    if (!confirmDelete.isConfirmed) return;
   
     try {
       const token = localStorage.getItem("loginWithToken");
       if (!token) throw new Error("未登入，請重新登入");
   
+      // 發送刪除請求
       const response = await fetch(
         `http://localhost:5000/api/hotel_room_types/${roomId}`,
         {
@@ -361,15 +367,19 @@ export default function HotelEditPage() {
         }
       );
   
+      // 檢查請求是否成功
       if (!response.ok) throw new Error("刪除失敗");
   
       // 更新前端狀態
       setRooms((prevRooms) => prevRooms.filter((room) => room.id !== roomId));
   
-      await Swal.fire("成功", "房型已刪除", "success"); // **等待 `Swal.fire()` 完全顯示完畢**
-      
-      router.refresh(); // **確保刪除成功後才刷新頁面**
+      // 顯示成功訊息
+      await Swal.fire("成功", "房型已刪除", "success");
+  
+      // 刷新頁面
+      router.refresh();
     } catch (error) {
+      // 顯示錯誤訊息
       await Swal.fire("錯誤", error.message, "error");
     }
   };
@@ -381,31 +391,36 @@ export default function HotelEditPage() {
       Swal.fire("錯誤", "請先選擇房型", "error");
       return;
     }
-
+  
     if (!newRoomPrice || newRoomPrice <= 0) {
       Swal.fire("錯誤", "請輸入有效的價格", "error");
       return;
     }
-
+  
     if (!newRoomQuantity || newRoomQuantity <= 0) {
       Swal.fire("錯誤", "請輸入有效的房間數量", "error");
       return;
     }
-
+  
     const formData = new FormData();
     formData.append("hotel_id", hotel.id);
     formData.append("room_type_id", selectedRoomType);
     formData.append("quantity", newRoomQuantity);
     formData.append("price_per_night", newRoomPrice);
-
+  
     if (newRoomImage) {
       formData.append("image", newRoomImage);
     }
-
+  
+    // 檢查 FormData 內容
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+  
     try {
       const token = localStorage.getItem("loginWithToken");
       if (!token) throw new Error("未登入，請重新登入");
-
+  
       const response = await fetch(
         "http://localhost:5000/api/hotel_room_types/",
         {
@@ -414,10 +429,14 @@ export default function HotelEditPage() {
           body: formData,
         }
       );
-
+  
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "新增房型失敗");
-
+      console.log("API 回應:", data);
+  
+      if (!response.ok) {
+        throw new Error(data.error || "新增房型失敗");
+      }
+  
       // 更新前端狀態
       setRooms((prevRooms) => [
         ...prevRooms,
@@ -432,15 +451,16 @@ export default function HotelEditPage() {
           image_url: data.image_url || "/default-room.jpg",
         },
       ]);
-
+  
       // 清空表單
       setSelectedRoomType("");
       setNewRoomQuantity(1);
       setNewRoomPrice("");
       setNewRoomImage(null);
-
+  
       Swal.fire("成功", "房型已新增", "success");
     } catch (error) {
+      console.error("新增房型失敗:", error);
       Swal.fire("錯誤", error.message, "error");
     }
   };
@@ -659,7 +679,6 @@ export default function HotelEditPage() {
                             元
                           </p>
 
-                          {/* ✅ 更新房型圖片 */}
                           <input
                             type="file"
                             className="form-control mt-2"
@@ -667,7 +686,7 @@ export default function HotelEditPage() {
                             onChange={(e) => handleRoomImageUpload(room.id, e)}
                           />
 
-                          {/* ✅ 更新 & 刪除按鈕 */}
+                     
                           <div className="mt-2">
                             <button
                               className="btn btn-sm btn-success me-2"
