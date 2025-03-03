@@ -1,12 +1,13 @@
 .lumi-header {
   display: flex;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   padding: 10px 63px;
   justify-content: space-between;
   align-items: center;
-  background-color: transparent;
+  background-color: white;
   z-index: 1000;
 }
 .lumi-logo {
@@ -133,7 +134,8 @@
     display: none;
     position: absolute;
     top: 10;
-    left: -50;
+    /* left: -50; */
+    right: 5px;
     background-color: #ff9538;
     min-width: 100px;
     border-radius: 10px;
@@ -184,6 +186,12 @@
     }
     .dropdown-contentOff {
       display: none;
+    }
+    .dropdown-link-top:hover {
+      border-radius: 10px 10px 0 0;
+    }
+    .dropdown-link-bottom:hover {
+      border-radius: 0 0 10px 10px;
     }
   }
   .show {

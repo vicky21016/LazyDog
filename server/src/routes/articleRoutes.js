@@ -69,6 +69,7 @@ router.get("/author/:author_id", async (req, res) => {
 
   try {
     const articles = await getArticlesByAuthorS(author_id);
+
     const formattedArticles = articles.map(article => ({
       ...article,
       cover_image: article.cover_image || "http://localhost:5000/api/articles/image2.jpg" // 設定預設圖片

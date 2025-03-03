@@ -17,6 +17,7 @@ import {
 } from "../controllers/hotelController.js";
 import { verifyToken, verifyRole } from "../middlewares/authMiddleware.js";
 import { upload } from "../middlewares/upload.js";
+import pool from "../config/mysql.js";
 
 const router = express.Router();
 
@@ -30,6 +31,62 @@ router.post("/filter", getFilteredHotelsS); // 篩選飯店（POST）
 router.get("/", getAllHotels); // 查詢所有飯店
 router.get("/search", getSearch); // 搜尋飯店
 router.get("/:id", getByIds); // 取得特定飯店
+
+// ------------------------------
+// **新增：價格範圍 API**
+// ------------------------------
+router.get("/price-range/all", async (req, res) => {
+  try {
+    const query = `
+      SELECT 
+        COALESCE(NULLIF(MIN(price_per_night), 0), 500) AS min_price, 
+        COALESCE(NULLIF(MAX(price_per_night), 0), 10000) AS max_price
+      FROM hotel_room_types
+      WHERE price_per_night IS NOT NULL AND price_per_night > 0;
+    `;
+    
+    
+    const [rows] = await pool.query(query);
+    
+
+    if (!rows || rows.length == 0) {
+      console.log(" 沒有查詢到價格範圍資料！");
+      return res.json({ min_price: 500, max_price: 10000 });
+    }
+
+    res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: "無法獲取全價格範圍", details: error.message });
+  }
+});
+
+
+// 取得特定飯店的最低 / 最高房價
+router.get("/price-range/:hotelId", async (req, res) => {
+  const { hotelId } = req.params;
+  try {
+    const query = `
+      SELECT 
+        COALESCE(MIN(price_per_night), 0) AS min_price, 
+        COALESCE(MAX(price_per_night), 10000) AS max_price
+      FROM hotel_room_types 
+      WHERE hotel_id = ? AND price_per_night IS NOT NULL AND price_per_night > 0;
+    `;
+    const [rows] = await pool.query(query, [hotelId]);
+
+    if (!rows || rows.length == 0) {
+      return res.status(404).json({ error: `找不到 hotel_id=${hotelId} 的價格資料` });
+    }
+
+    res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: "無法獲取飯店價格範圍" });
+  }
+});
+
+
+
+
 
 // ------------------------------
 // 受保護路由（需要驗證權限）

@@ -17,8 +17,13 @@ const router = express.Router();
 router.get("/", getAllHotelRoom);
 router.get("/hotel/:hotelId", getHotelRoomById);
 //operator可以
-router.post("/", verifyToken, verifyRole(["operator"]), createHotelRoom);
-router.patch("/:id", verifyToken, verifyRole(["operator"]), updateHotelRoom);
+router.post("/", 
+  verifyToken, 
+  verifyRole(["operator"]), 
+  upload.single("image"),
+  createHotelRoom
+);
+router.patch("/:id", verifyToken, verifyRole(["operator"]),upload.single("image"), updateHotelRoom);
 router.delete("/:id", verifyToken, verifyRole(["operator"]), deleteHotelRoom);
 router.get("/room-types", getAllRoomTypesController);
 router.get("/operator/:operatorId", getHotelRoomsByOperator);

@@ -64,6 +64,9 @@
   color: white;
 }
 /* -------button---------- */
+.customToggle{
+  background-color: #ffffff00;
+}
 .customToggle::after {
   display: none; /* 隱藏倒三角形 */
 }

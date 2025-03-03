@@ -5,50 +5,70 @@ import { getHotelRoomById, getRoomInventory } from "@/services/hotelService";
 import { useCart } from "@/hooks/use-cart";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
-
-const RoomSelection = ({ hotelId }) => {
+import Swal from "sweetalert2";
+const RoomSelection = ({ hotelId, checkInDate, checkOutDate }) => {
   const { user } = useAuth();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const { onAddHotel } = useCart();
   const router = useRouter();
-  const [cartRate, setCartRate] = useState(0);
   const loginRoute = "/login";
   const [selectedQuantities, setSelectedQuantities] = useState({});
 
   useEffect(() => {
     if (!hotelId) {
-      console.warn(" 錯誤: `hotelId` 為 undefined，無法載入房型");
+      console.warn("錯誤: `hotelId` 為 undefined，無法載入房型");
       setLoading(false);
       return;
     }
 
     const fetchRooms = async () => {
       try {
-        let roomTypes = await getHotelRoomById(hotelId);
-        if (!Array.isArray(roomTypes)) {
-          console.error(" API 回傳房型格式錯誤:", roomTypes);
-          roomTypes = []; // 確保不為 `null`
+        let response = await getHotelRoomById(hotelId);
+        console.log("API 回傳的房型資料:", response);
+
+        if (!response || response.status !== "success" || !Array.isArray(response.data)) {
+          console.error(" API 回傳房型格式錯誤:", response);
+          setRooms([]);
+          return;
         }
 
-        const roomData = await Promise.all(
+        let roomTypes = response.data;
+        console.log("API 回傳的房型陣列:", roomTypes);
+
+        if (!Array.isArray(roomTypes) || roomTypes.length === 0) {
+          console.warn("API 回傳空的房型資料");
+          setRooms([]);
+          return;
+        }
+
+        // 如果有提供日期，就查詢 `room_inventory`
+        let roomData = await Promise.all(
           roomTypes.map(async (room) => {
-            let inventory = await getRoomInventory(room.id);
-            if (!Array.isArray(inventory)) {
-              console.warn(` `, room.id, "無房間庫存資料");
-              inventory = [];
+            let availableRooms = room.quantity; // 預設為 `hotel_room_types.quantity`
+
+            if (checkInDate && checkOutDate) {
+              // 從 `room_inventory` 查詢可用數量
+              let inventory = await getRoomInventory(room.id, checkInDate, checkOutDate);
+              console.log(` ${room.room_type_name} 的庫存:`, inventory);
+
+              if (Array.isArray(inventory) && inventory.length > 0) {
+                availableRooms = inventory[0].available_quantity;
+              }
             }
 
             return {
               ...room,
-              price: inventory.length
-                ? inventory[0].price
-                : room.price_per_night,
-              available: inventory.length ? inventory[0].available_quantity : 0,
+              price: room.price_per_night, // 直接用 `price_per_night`
+              imageUrl: room.image_url && room.image_url.startsWith("http")
+                ? room.image_url
+                : "lazydog.png", // 預設圖片，避免 `next/image` 出錯
+              available: availableRooms, // 最終可用房數
             };
           })
         );
 
+        console.log(" 最終要存入 `rooms` state 的資料:", roomData);
         setRooms(roomData);
       } catch (error) {
         console.error(" 房型載入失敗:", error);
@@ -59,36 +79,67 @@ const RoomSelection = ({ hotelId }) => {
     };
 
     fetchRooms();
-  }, [hotelId]);
+  }, [hotelId, checkInDate, checkOutDate]);
+
   const handleQuantityChange = (roomId, quantity) => {
     setSelectedQuantities({
       ...selectedQuantities,
       [roomId]: quantity,
     });
   };
-  const handleAddToCart = (room) => {
+
+  const handleAddToCart = async (room) => {
+    // 檢查用戶是否登入
     if (!user) {
-      alert("請先登入");
-      router.push(loginRoute);
+      Swal.fire({
+        icon: "warning",
+        title: "請先登入",
+        text: "您需要登入才能加入購物車！",
+        confirmButtonText: "前往登入",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push(loginRoute); // 跳轉到登入頁面
+        }
+      });
       return;
     }
-
+  
+    // 獲取選擇的數量
     const quantity = selectedQuantities[room.id] || 1;
+  
+    // 構建要加入購物車的房間資料
     const hotelToAdd = {
       id: room.id,
       name: room.room_type_name,
       price: room.price,
-      imageUrl: room.image_url?.startsWith("http")
-        ? room.image_url
-        : `http://localhost:5000${room.image_url}`,
+      imageUrl: room.imageUrl,
       petSize: room.allowed_pet_size,
       provideFood: room.default_food_provided,
       count: quantity,
     };
-
-    onAddHotel(hotelToAdd);
-    setCartRate(cartRate + 1);
+  
+    try {
+      // 調用加入購物車的函數
+      onAddHotel(hotelToAdd);
+  
+      // 顯示成功訊息
+      Swal.fire({
+        icon: "success",
+        title: "加入購物車成功",
+        text: `${room.room_type_name} 已成功加入購物車！`,
+        showConfirmButton: false,
+        timer: 1500, // 1.5 秒後自動關閉
+      });
+    } catch (error) {
+      console.error("加入購物車失敗:", error);
+      Swal.fire({
+        icon: "error",
+        title: "加入購物車失敗",
+        text: "請稍後再試！",
+      });
+    }
   };
+
   return (
     <>
       <h4 className="my-5">房型選擇</h4>
@@ -101,35 +152,37 @@ const RoomSelection = ({ hotelId }) => {
               <div className={`card ${hotelStyles.suRoomCard}`}>
                 <Image
                   className={hotelStyles.suRoomImage}
-                  src={
-                    room.image_url?.startsWith("http")
-                      ? room.image_url
-                      : `http://localhost:5000${room.image_url}`
-                  }
+                  src={room.imageUrl}
                   alt={room.room_type_name || "房型圖片"}
                   width={300}
                   height={200}
-                  unoptimized // 暫時加上這個屬性來略過 next/image 的最佳化
+                  unoptimized
                 />
-
                 <div className="card-body">
                   <h3>{room.room_type_name}</h3>
                   <p className={hotelStyles.suRoomPrice}>
-                    價格: {room.price}元
+                    價格: {room.price} 元
                   </p>
                   <p>允許寵物體型: {room.allowed_pet_size}</p>
                   <p>
                     是否提供食物: {room.default_food_provided ? "是" : "否"}
                   </p>
-                  <select className="my-4 form-select">
-                    <option>選擇數量</option>
+                  <select
+                    className="my-4 form-select"
+                    onChange={(e) =>
+                      handleQuantityChange(room.id, Number(e.target.value))
+                    }
+                  >
+                    <option value="">選擇數量</option>
                     {[...Array(room.available).keys()].map((num) => (
-                      <option key={num + 1}>{num + 1}</option>
+                      <option key={num + 1} value={num + 1}>
+                        {num + 1}
+                      </option>
                     ))}
                   </select>
                   <button
                     className={hotelStyles.suRoomBookBtn}
-                    disabled={room.available == 0}
+                    disabled={room.available === 0}
                     onClick={() => handleAddToCart(room)}
                     type="button"
                   >

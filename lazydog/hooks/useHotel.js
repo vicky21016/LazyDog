@@ -6,23 +6,24 @@ export function useHotel(operatorId = null) {
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [images, setImages] = useState([]);
-  const [roomTypes, setRoomTypes] = useState([]);
-  const [rooms, setRooms] = useState([]);
+  const [hotelImages, setHotelImages] = useState([]); // 旅館圖片
+  const [roomImages, setRoomImages] = useState([]); // 房型圖片
+  const [roomTypes, setRoomTypes] = useState([]); // 房型類型
+  const [rooms, setRooms] = useState([]); // 房型資料
 
   useEffect(() => {
-    console.log("operatorId:", operatorId);
-    console.log("authLoading:", authLoading);
-    console.log("user:", user);
-  
-    if (authLoading || !user || !operatorId) return; // 確保 operatorId 存在
-  
+    // console.log("operatorId:", operatorId);
+    // console.log("authLoading:", authLoading);
+    // console.log("user:", user);
+
+    if (authLoading || !user || !operatorId) return;
+
     const fetchHotelData = async () => {
       try {
         const token = localStorage.getItem("loginWithToken");
         if (!token) throw new Error("未登入，請重新登入");
-  
-        console.log("Fetching hotel data...");
+
+        // 1️⃣ 取得旅館基本資訊
         const hotelRes = await fetch(
           `http://localhost:5000/api/hotels/operator/${operatorId}`,
           {
@@ -32,35 +33,20 @@ export function useHotel(operatorId = null) {
             },
           }
         );
-  
+
         if (!hotelRes.ok)
           throw new Error(`無法獲取旅館資訊，錯誤碼: ${hotelRes.status}`);
-  
+
         const hotelResult = await hotelRes.json();
-        const hotelData = Array.isArray(hotelResult) ? hotelResult[0] : hotelResult;
-  
+        const hotelData = Array.isArray(hotelResult)
+          ? hotelResult[0]
+          : hotelResult;
+
         if (!hotelData || !hotelData.id) throw new Error("找不到旅館資料");
         setHotel(hotelData);
-        console.log("取得的旅館 ID:", hotelData.id);
-  
-        // 取得旅館圖片
-        const imageRes = await fetch(
-          `http://localhost:5000/api/hotel_images/hotel/${hotelData.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-  
-        if (imageRes.ok) {
-          const imageResult = await imageRes.json();
-          console.log("取得的旅館圖片:", imageResult.data);
-          setImages(imageResult.data || []);
-        }
-  
-        // 取得所有房型種類
+
+        await fetchHotelImages(hotelData.id, token);
+
         const roomTypeRes = await fetch(
           `http://localhost:5000/api/hotel_room_types/room-types`,
           {
@@ -70,16 +56,38 @@ export function useHotel(operatorId = null) {
             },
           }
         );
-  
+
         let roomTypeData = [];
         if (roomTypeRes.ok) {
           const roomTypeResult = await roomTypeRes.json();
           roomTypeData = roomTypeResult.data || [];
-          console.log("取得的房型種類:", roomTypeData);
           setRoomTypes(roomTypeData);
         }
-  
-        // 取得房型資料
+
+        // 4️⃣ 取得房型圖片
+        const roomImageRes = await fetch(
+          `http://localhost:5000/api/hotel_room_types/hotel/${hotelData.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        let roomImageData = [];
+        if (roomImageRes.ok) {
+          const roomImageResult = await roomImageRes.json();
+
+          if (roomImageResult && Array.isArray(roomImageResult.data)) {
+            roomImageData = roomImageResult.data;
+            setRoomImages(roomImageData);
+          } else {
+            console.warn("房型圖片資料格式不正確:", roomImageResult);
+          }
+        }
+
+        // 5️⃣ 取得房型資料
         const roomRes = await fetch(
           `http://localhost:5000/api/hotel_room_types/operator/${operatorId}`,
           {
@@ -89,22 +97,29 @@ export function useHotel(operatorId = null) {
             },
           }
         );
-  
+
         if (!roomRes.ok)
           throw new Error(`無法獲取房型，錯誤碼: ${roomRes.status}`);
-  
+
         const roomResult = await roomRes.json();
-        console.log("取得的房型資料:", roomResult.data);
-  
+
         if (roomResult.status == "success" && Array.isArray(roomResult.data)) {
-          const mappedRooms = roomResult.data.map((room) => ({
-            ...room,
-            room_type_name:
-              roomTypeData.find((rt) => rt.id == room.room_type_id)?.name ||
-              "未知房型",
-          }));
-  
-          console.log("設定的房型:", mappedRooms);
+          const mappedRooms = roomResult.data.map((room) => {
+            const matchingImage = roomImageData.find(
+              (image) => image.room_type_id === room.room_type_id
+            );
+
+            return {
+              ...room,
+              room_type_name:
+                roomTypeData.find((rt) => rt.id == room.room_type_id)?.name ||
+                "未知房型",
+              image_url: matchingImage
+                ? `${matchingImage.image_url}?t=${new Date().getTime()}`
+                : "/lazydog.png",
+            };
+          });
+
           setRooms(mappedRooms);
         } else {
           console.warn("未獲取到房型資料:", roomResult);
@@ -116,9 +131,45 @@ export function useHotel(operatorId = null) {
         setLoading(false);
       }
     };
-  
+
     fetchHotelData();
-  }, [operatorId, user, authLoading]); // 確保 useEffect 會觸發
-  
-  return { hotel, loading, error, images, roomTypes, rooms, setRooms };
+  }, [operatorId, user, authLoading]);
+
+  // **修正 fetchHotelImages 讓它確保執行**
+  const fetchHotelImages = async (hotelId, token) => {
+    try {
+      const hotelImageRes = await fetch(
+        `http://localhost:5000/api/hotel_images/hotel/${hotelId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!hotelImageRes.ok) throw new Error("無法獲取旅館圖片");
+
+      const hotelImageResult = await hotelImageRes.json();
+
+      if (hotelImageResult && Array.isArray(hotelImageResult.data)) {
+        setHotelImages(hotelImageResult.data);
+      } else {
+        console.warn(" 旅館圖片資料格式不正確:", hotelImageResult);
+      }
+    } catch (error) {
+      console.error(" 獲取旅館圖片錯誤:", error);
+    }
+  };
+
+  return {
+    hotel,
+    loading,
+    error,
+    hotelImages,
+    roomImages,
+    roomTypes,
+    rooms,
+    setRooms,
+  };
 }

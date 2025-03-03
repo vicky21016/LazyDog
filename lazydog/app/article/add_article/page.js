@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation'; // 引入 useRouter
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './App.css';
 import FroalaEditorWrapper from '../_components/add_article/content';
 import Link from 'next/link';
 import useArticles from "@/hooks/useArticle";
@@ -93,7 +92,7 @@ export default function AddArticlePage() {
     <>
       <Header />
 
-      <div className="container">
+      <div className="container" style={{marginTop:'75px'}}>
         <div className="row">
           <div className="col-lg-3 col-sm-12">
             <Link href="/article/list" className="btn btn-primary mb-3">

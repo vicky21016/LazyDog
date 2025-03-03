@@ -136,8 +136,8 @@
   }
   
   .clear {
-    width: 220px;
-    height: 35px;
+    width: 260px;
+    height: 40px;
     padding: 6px 16px;
     align-self: stretch;
     color: #F5842B;
@@ -160,14 +160,14 @@
 /* 手機版篩選選單 (預設隱藏) */
 .mobileFilter {
   position: fixed;
-  top: 0;
+  top: 62px;
   left: -100%;
   width: 80%;
   height: 100vh;
   background: white;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   transition: left 0.3s ease-in-out;
-  z-index: 1000;
+  z-index: 1;
   padding: 20px;
 }
 
@@ -192,6 +192,14 @@
   background: #bbb;
 }
 
+.imgFluid{
+  padding: 30px;
+}
+.right{
+  display: none;
+  border-radius: 50%;
+  border: #F5842B;
+}
 /* 手機篩選按鈕 (點擊後打開篩選) */
 .filterButton {
   cursor: pointer;
@@ -201,9 +209,18 @@
   .mobileFilter {
     display: none;
   }
+
 }
 @media (max-width: 768px) {
   .asideContainer {
     display: none;
   }
+    .container{
+    padding: 30px;
+  }
+  .right{
+  display: block;
+  border-radius: 50%;
+  border: #F5842B;
+}
   }
