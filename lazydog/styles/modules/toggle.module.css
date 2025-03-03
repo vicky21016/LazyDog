@@ -35,7 +35,7 @@
 
 /* teacher */
 .server {
-  background-image: url(../../public/teacher-img/bag.png);
+  background-image: url('/teacher-img/bag.png');
   height: 450px;
   justify-content: center;
   align-content: center;
@@ -144,6 +144,64 @@
   padding: 20px;
   display: block;
 }
+.textContainer{
+   position: relative;
+  z-index: 1;
+  
+}
+
+/* 圖片容器 */
+.imagesContainer {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 0;
+  
+.leftImage {
+  position: absolute;
+  left: 320px;
+  top: 60px;
+  transform: translateY(-50%);
+  width: 90px;
+}
+
+.rightImage {
+  position: absolute;
+  right: 300px;
+  bottom: 200px;
+  transform: translateY(50%);
+  width: 100px;
+}
+}
+
+.container{
+  position: relative;
+}
+/* .imageContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  margin-top: 20px;
+  .leftImages {
+  display: flex;
+  flex-direction: column; 
+  gap: 10px; 
+}
+
+.leftImage {
+  width: 80px;
+  height: auto;
+}
+
+.rightImage {
+  position: absolute;
+left: 1540px;
+
+top: -100px;
+}
+} */
 
 /* @keyframes slideAnimation {
   0% {
