@@ -1,17 +1,14 @@
 /* header2  開頭 */
 .lumi-header2 {
   display: flex;
-  /* position: absolute; */
   position: fixed;
-  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
   top: 0;
   left: 0;
   width: 100%;
-  padding: 20px 63px;
+  padding: 10px 63px;
   justify-content: space-between;
   align-items: center;
-  background-color: #f5832b00;
-  /* backdrop-filter: blur(20px); */
+  background-color: #f5832b;
   transition: background 0.3s ease-in-out;
   z-index: 1000;
 }
@@ -181,6 +178,12 @@
     }
     .dropdown-contentOff {
       display: none;
+    }
+    .dropdown-link-top:hover {
+      border-radius: 10px 10px 0 0;
+    }
+    .dropdown-link-bottom:hover {
+      border-radius: 0 0 10px 10px;
     }
   }
   .show {
