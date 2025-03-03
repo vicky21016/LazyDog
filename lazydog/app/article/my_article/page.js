@@ -1,25 +1,38 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import useMyArticles from "@/hooks/useMyArticles"; // ✅ 改用新 Hook
 import Header from "../../components/layout/header";
 import MyMenu from "../../components/layout/myMenu";
-import MyCard from "../_components/my_article/article_card";
 import MyCard2 from "../_components/my_article/article_card2";
 import Link from "next/link";
+import { ScrollMotionContainer, ScrollMotionItem } from '../ListMotion'
+import styles from './page.module.css'
 
 
 export default function MyArticle() {
   const { user } = useAuth();
   const userId = user?.id;
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const { articles } = useMyArticles(userId); // ✅ 只載入該用戶的文章
 
-  const { articles, loading, error } = useMyArticles(userId); // ✅ 只載入該用戶的文章
+  useEffect(() => {
+    if (!articles.length) return; // 如果 articles 為空，則不執行後續邏輯
+    setCheckingAuth(false);
+  }, [articles]);
+  if (checkingAuth) {
+    return (
+      <div className={styles.container2}>
+        <div className={styles.loader27}></div>
+      </div>
+    );
+  }
 
   return (
     <>
       <Header />
-      <div className="container mt-5">
+      <div className="container" style={{marginTop:'75px'}}>
         <div className="row">
           <div className="d-none d-md-block col-md-3">
             <MyMenu />
@@ -35,16 +48,24 @@ export default function MyArticle() {
                     </Link>
                   </button>
                 </div>
-                <div className="" style={{ borderRadius: "5px", height: "750px", overflowY: "scroll" }}>
-                  {/* {loading && <p>加載中...</p>} */}
-                  {error && <p style={{ color: "red" }}>{error}</p>}
+                <ScrollMotionContainer
+                  // element="div"
+                  style={{ borderRadius: "5px", height: "750px", overflowY: "scroll" }}>
+
+                  {articles.length > 0 && articles.map((article) => (
+                    <ScrollMotionItem
+                      // element="div"
+                      type="up">
+                      <MyCard2 key={article.id} id={article.id} title={article.title} cover_image={article.cover_image || "/images/default-cover.jpg"} created_at={new Date(article.created_at).toLocaleDateString()} /> </ScrollMotionItem>
+                  ))}
                   {/* {articles.length > 0 ? articles.map((article) => (
-                    <MyCard key={article.id} id={article.id} title={article.title} cover_image={article.cover_image || "/images/default-cover.jpg"} created_at={new Date(article.created_at).toLocaleDateString()} />
-                  )) : <p>您尚未發布任何文章。</p>} */}
-                  {articles.length > 0 ? articles.map((article) => (
-                    <MyCard2 key={article.id} id={article.id} title={article.title} cover_image={article.cover_image || "/images/default-cover.jpg"} created_at={new Date(article.created_at).toLocaleDateString()} />
-                  )) : <p></p>}
-                </div>
+                    <ScrollMotionItem
+                      element="div"
+                      type="up">
+                      <MyCard2 key={article.id} id={article.id} title={article.title} cover_image={article.cover_image || "/images/default-cover.jpg"} created_at={new Date(article.created_at).toLocaleDateString()} /> </ScrollMotionItem>
+                  )) : <p></p>} */}
+
+                </ScrollMotionContainer>
               </div>
             </div>
           </div>

@@ -6,7 +6,7 @@ import styles from "../my_article/page.module.css";
 import Link from "next/link";
 import { Dropdown, Modal, Button } from "react-bootstrap";
 
-export default function MyCard({ id, title, cover_image, created_at }) {
+export default function MyCard2({ id, title, cover_image, created_at }) {
     console.log(cover_image)
     const { deleteArticle } = useArticle(); // 取得刪除文章的函數
     const [showModal, setShowModal] = useState(false);
@@ -26,31 +26,30 @@ export default function MyCard({ id, title, cover_image, created_at }) {
         }
 
     };
-
     return (
         <>
-            <div className="card mb-3" style={{ width: '100%',maxHeight:'955px' }}>
+            <div
+                className="card mb-3" style={{ width: '100%', maxHeight: '955px' }}>
                 <div className="row g-0">
                     <div className="col-md-4">
                         <img src={cover_image} className="img-fluid rounded-start" alt="..." />
                     </div>
-                    <div className="col-md-8"  style={{ display: 'flex', alignItems:'center' }}>
+                    <div className="col-md-8" style={{ display: 'flex', alignItems: 'center' }}>
                         <div className="card-body">
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                
-                                <Link 
-                                className={`${styles.link}`} 
-                                href={{ pathname: `/article/my_detail/${id}`, query: { list: "true" } }}
-                                style={{marginRight:'3px'}}
-                                >title即現在哪title即現在哪title即現在哪title即現在哪title即現在哪
-                                    {title}title即現在哪title即現在哪title即現在哪title即現在哪title即現在哪
-                                    title即現在哪title即現在哪title即現在哪title即現在哪title即現在哪title即現在哪title即現在哪title即現在哪
+
+                                <Link
+                                    className={`${styles.link}`}
+                                    href={{ pathname: `/article/my_detail/${id}`, query: { list: "true" } }}
+                                    style={{ marginRight: '3px' }}
+                                >
+                                    {title}
                                 </Link>
                                 <Dropdown>
                                     <Dropdown.Toggle variant="light" id="dropdown-basic" className={`${styles.customToggle}`}>
                                         <i className="bi bi-three-dots"></i>
                                     </Dropdown.Toggle>
-                                    <Dropdown.Menu className={`${styles.customDropdownMenu}`} style={{ width: '25px', backgroundColor: '#FFF6E8' }}>
+                                    <Dropdown.Menu className={`${styles.customDropdownMenu}`} style={{ width: '25px',backgroundColor:'#FFF6E8' }}>
                                         <Dropdown.Item className={`${styles.item}`} href="#">
                                             <Link
                                                 className={`${styles.link2}`}
@@ -80,10 +79,9 @@ export default function MyCard({ id, title, cover_image, created_at }) {
                                     </Modal.Footer>
                                 </Modal>
                             </div>
-
-                            <p 
-                            className="card-text mt-3"
-                             ><small className="text-muted">{created_at}</small></p>
+                            <p
+                                className="card-text mt-3"
+                            ><small className="text-muted">{created_at}</small></p>
                         </div>
                     </div>
                 </div>
