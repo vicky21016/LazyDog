@@ -191,8 +191,29 @@ export const deleteOrderDog = async (dogId) =>
 export const getUserFavorites = async () => fetchAuthAPI(HOTEL_FAVORITES_URL);
 
 // 新增收藏
-export const addHotelToFavorites = async (hotelId) =>
-  fetchAuthAPI(HOTEL_FAVORITES_URL, "POST", { hotelId });
+export const addHotelToFavorites = async (hotelId) => {
+  const token = localStorage.getItem("token"); // 假設 Token 存在 localStorage
+
+  if (!token) {
+    throw new Error("未登入，無法收藏旅館");
+  }
+
+  const response = await fetch("http://localhost:5000/api/hotel_favorites", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, // 加入 Token
+    },
+    body: JSON.stringify({ hotelId }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`收藏旅館失敗: ${response.statusText}`);
+  }
+
+  return response.json();
+};
+
 
 // 移除收藏
 export const removeHotelToFavorites = async (hotelId) =>

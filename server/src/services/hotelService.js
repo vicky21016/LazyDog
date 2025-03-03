@@ -1,27 +1,26 @@
 import pool from "../config/mysql.js";
 const buildBaseHotelQuery = () => {
   return `
-    SELECT h.*, 
-           hi.url AS main_image_url,
-           IFNULL(r.avg_rating, 0) AS avg_rating,
-           IFNULL(r.review_count, 0) AS review_count, 
-           IFNULL(rp.min_price, 9999999) AS min_price
-    FROM hotel h
-    LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
-    LEFT JOIN (
-        SELECT hotel_id, 
-               ROUND(AVG(rating), 1) AS avg_rating,
-               COUNT(id) AS review_count
-        FROM hotel_reviews
-        GROUP BY hotel_id
-    ) r ON h.id = r.hotel_id
-    LEFT JOIN (
-        SELECT hotel_id, MIN(price) AS min_price
-        FROM room_inventory
-        WHERE available_quantity > 0
-        GROUP BY hotel_id
-    ) rp ON h.id = rp.hotel_id
-    WHERE h.is_deleted = 0
+   SELECT h.*, 
+       hi.url AS main_image_url,
+       IFNULL(r.avg_rating, 0) AS avg_rating,
+       IFNULL(r.review_count, 0) AS review_count, 
+       IFNULL(rp.min_price, 9999999) AS min_price
+FROM hotel h
+LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
+LEFT JOIN (
+    SELECT hotel_id, 
+           ROUND(AVG(rating), 1) AS avg_rating,
+           COUNT(id) AS review_count
+    FROM hotel_reviews
+    GROUP BY hotel_id
+) r ON h.id = r.hotel_id
+LEFT JOIN (
+    SELECT hrt.hotel_id, MIN(hrt.price_per_night) AS min_price
+    FROM hotel_room_types hrt
+    GROUP BY hrt.hotel_id
+) rp ON h.id = rp.hotel_id
+
   `;
 };
 export const getHotels = async (sortOption) => {
@@ -60,35 +59,42 @@ export const searchHotels = async (keyword) => {
 export const getId = async (id, checkInDate, checkOutDate) => {
   const connection = await pool.getConnection();
   try {
-    const baseQuery = buildBaseHotelQuery();
+    // ✅ 修正 SQL，確保不會因 `room_inventory` 沒有資料而導致查詢失敗
     const query = `
-      ${baseQuery}
-      AND h.id = ?
-      AND EXISTS (
-        SELECT 1 FROM room_inventory ri
-        WHERE ri.hotel_id = h.id 
-        AND ri.date BETWEEN ? AND ?
-        AND ri.available_quantity > 0
-      )
+      SELECT h.*, hi.url AS main_image_url
+      FROM hotel h
+      LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
+      WHERE h.id = ?
     `;
 
-    const [hotels] = await connection.query(query, [
-      id,
-      checkInDate,
-      checkOutDate,
-    ]);
+    const [hotels] = await connection.query(query, [id]);
 
     if (hotels.length === 0) {
       throw new Error(`找不到 id=${id} 的旅館`);
     }
 
-    return hotels[0];
+    let hotel = hotels[0];
+
+    // 🔹 如果 `hotel.main_image_id` 為 `null`，則避免 `id != null` 出錯
+    let mainImageIdCondition = hotel.main_image_id ? `AND id != ?` : ``;
+    let queryParams = hotel.main_image_id ? [id, hotel.main_image_id] : [id];
+
+    // ✅ 查詢 `hotel_images`，確保 `is_deleted = 0`
+    const [hotelImages] = await connection.query(
+      `SELECT * FROM hotel_images WHERE hotel_id = ? ${mainImageIdCondition} AND is_deleted = 0`,
+      queryParams
+    );
+
+    hotel.hotel_images = hotelImages || []; // ✅ 確保 `hotel_images` 陣列存在
+
+    return hotel;
   } catch (error) {
     throw new Error(`無法取得 id=${id} 旅館: ` + error.message);
   } finally {
     connection.release();
   }
 };
+
 
 export const getOperatorTZJ = async (req) => {
   try {
@@ -291,7 +297,9 @@ export const updateMainImages = async (hotelId, imageId) => {
 //  將圖片插入 `hotel_images` 資料表
 export const insertHotelImage = async (hotelId, imageUrl) => {
   const baseUrl = "http://localhost:5000";
-  const fullImageUrl = imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
+  const fullImageUrl = imageUrl.startsWith("http")
+    ? imageUrl
+    : `${baseUrl}${imageUrl}`;
 
   const [result] = await pool.query(
     "INSERT INTO hotel_images (hotel_id, url) VALUES (?, ?)",
@@ -489,14 +497,11 @@ export const getFilteredHotels = async (filters) => {
           GROUP BY hotel_id
       ) r ON h.id = r.hotel_id
       LEFT JOIN (
-          SELECT ri.hotel_id, COALESCE(MIN(ri.price), 9999999) AS min_price
-          FROM room_inventory ri
-          WHERE ri.available_quantity > 0
-          GROUP BY ri.hotel_id
-      ) inv ON h.id = inv.hotel_id
-      WHERE h.is_deleted = 0
-    `;
-
+    SELECT hrt.hotel_id, COALESCE(MIN(hrt.price_per_night), 9999999) AS min_price
+    FROM hotel_room_types hrt
+    GROUP BY hrt.hotel_id
+) inv ON h.id = inv.hotel_id
+WHERE h.is_deleted = 0 `;
     let queryParams = [];
 
     // 價格篩選

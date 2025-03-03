@@ -10,7 +10,7 @@ import {
   getHotelPriceRange,
   getGlobalPriceRange,
   getAllRoomTypes,
-  getFilteredHotelsS,
+
 } from "@/services/hotelService";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
@@ -176,10 +176,6 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
       console.error("Sidebar 篩選 API 錯誤:", error);
     }
   };
-  
-  
-  
-  
   
   
   const handleClear = async () => {
