@@ -191,7 +191,7 @@ export default function CartListPayPage(props) {
         </div>
         <div className="container lumi-all-wrapper">
           <h4 className="mb-5">購買資訊</h4>
-          <form action>
+          <form action="">
             <div className="row">
               <main
                 className="col-lg-5 col-md-auto col-auto me-5"
@@ -317,7 +317,7 @@ export default function CartListPayPage(props) {
                       <span>
                         <span>{item.name}</span>x<span>{item.count}</span>
                       </span>
-                      <span>{`Rs. ${item.price * item.count}`}</span>
+                      <span>{`NT$ ${item.price * item.count}`}</span>
                     </div>
                   ))}
 
@@ -329,13 +329,13 @@ export default function CartListPayPage(props) {
                       <span>
                         <span>{item.name}</span>x<span>{item.count}</span>
                       </span>
-                      <span>{`Rs. ${item.price * item.count}`}</span>
+                      <span>{`NT$ ${item.price * item.count}`}</span>
                     </div>
                   ))}
 
                   <div className="d-flex justify-content-between mt-5">
                     <span className={styles.subtext}>總價</span>
-                    <span>{`Rs. ${amountValue}`}</span>
+                    <span>{`NT$ ${amountValue}`}</span>
                   </div>
                 </div>
                 <hr className="mb-5"/>
