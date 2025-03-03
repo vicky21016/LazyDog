@@ -338,3 +338,45 @@ export const deleteItemInfo = async (productID) => {
     throw new Error(`刪除編號：${productID}的商品資料失敗`);
   }
 };
+
+export const getAllReviews = async (userID) => {
+  try {
+    const [products] = await pool.execute(
+      `SELECT * FROM yi_reviews WHERE user_id = ${userID}`
+    );
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error("取得評論列表失敗");
+  }
+};
+
+export const createNewReviews = async (userID, productID, rating, comment) => {
+  try {
+    const [products] = await pool.execute(
+      "INSERT INTO yi_reviews (user_id,productID,rating,comment,good,updated_at,created_at,is_deleted) VALUES ( ?, ?, ?, ?, 0, NOW(), NOW(), 0)",
+      [userID, productID, rating, comment]
+    );
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error("新增評論資料失敗");
+  }
+};
+
+export const updateReviewsInfo = async (updateFields, value) => {
+  try {
+    const [products] = await pool.execute(
+      `UPDATE yi_reviews SET ${updateFields.join(
+        ","
+      )} WHERE (user_id = ? and productID = ?) `,
+      value
+    );
+    // const [warnings] = await pool.query("SHOW WARNINGS");
+    // console.log("警告:", warnings);
+    return products;
+  } catch (error) {
+    console.log(error);
+    throw new Error("更新評論資料失敗");
+  }
+};

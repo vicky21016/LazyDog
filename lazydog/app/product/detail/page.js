@@ -16,9 +16,6 @@ import {
   useDetailFavorite,
 } from "@/hooks/product/use-favorite";
 
-import useSWR from "swr";
-import { useSearchParams, useRouter } from "next/navigation";
-
 export default function DetailPage() {
   return (
     <FetchDetailProvider>
@@ -93,6 +90,10 @@ function DetailContent() {
       collapseRef.current.click();
     }
   };
+
+  const [fullInfo, setFullInfo] = useState(false);
+  const [infoImg, setInfoImg] = useState(false);
+  const [spec, setSpec] = useState(false);
 
   const [also, setAlso] = useState(0);
   const [hot, setHot] = useState(0);
@@ -335,35 +336,58 @@ function DetailContent() {
           </div>
         </div>
       </section>
-      <nav
-        className={`sticky-top ${
-          scrollY >= offset + 250 ? styles.StickyTop : styles.StickyTopOff
-        }`}
-      >
-        <ul>
-          {productData?.full_info && (
-            <li>
-              <h5>
-                <Link href="#collapse-heading1">商品介紹</Link>
-              </h5>
-            </li>
-          )}
-          {(img.info || productData?.info_text) && (
-            <li>
-              <h5>
-                <Link href="#collapse-heading2">商品詳細</Link>
-              </h5>
-            </li>
-          )}
-          {productData?.spec && (
-            <li>
-              <h5>
-                <Link href="#collapse-heading3">商品規格</Link>
-              </h5>
-            </li>
-          )}
-        </ul>
-      </nav>
+      {width < 768 && (
+        <nav
+          className={`sticky-top ${
+            scrollY >= offset + 250 ? styles.StickyTop : styles.StickyTopOff
+          }`}
+        >
+          <ul>
+            {productData?.full_info && (
+              <li>
+                <h5>
+                  <Link
+                    onClick={() => {
+                      setFullInfo(true);
+                    }}
+                    href="#collapse-heading1"
+                  >
+                    商品介紹
+                  </Link>
+                </h5>
+              </li>
+            )}
+            {(img.info || productData?.info_text) && (
+              <li>
+                <h5>
+                  <Link
+                    onClick={() => {
+                      setInfoImg(true);
+                    }}
+                    href="#collapse-heading2"
+                  >
+                    商品詳細
+                  </Link>
+                </h5>
+              </li>
+            )}
+            {productData?.spec && (
+              <li>
+                <h5>
+                  <Link
+                    onClick={() => {
+                      setSpec(true);
+                    }}
+                    href="#collapse-heading3"
+                  >
+                    商品規格
+                  </Link>
+                </h5>
+              </li>
+            )}
+          </ul>
+        </nav>
+      )}
       <section
         ref={elementRef}
         className={`${styles.ProductDetail} accordion accordion-flush`}
@@ -385,7 +409,9 @@ function DetailContent() {
             </div>
             <div
               id="collapse1"
-              className="accordion-collapse collapse show"
+              className={`accordion-collapse collapse show ${
+                fullInfo ? "show" : ""
+              }`}
               aria-labelledby="collapse-heading1"
             >
               <div
@@ -415,7 +441,7 @@ function DetailContent() {
             </div>
             <div
               id="collapse2"
-              className="accordion-collapse collapse"
+              className={`accordion-collapse collapse ${infoImg ? "show" : ""}`}
               aria-labelledby="collapse-heading2"
             >
               <div className={`accordion-body ${styles.AccordionBody}`}>
@@ -456,7 +482,7 @@ function DetailContent() {
             </div>
             <div
               id="collapse3"
-              className="accordion-collapse collapse"
+              className={`accordion-collapse collapse ${spec ? "show" : ""}`}
               aria-labelledby="collapse-heading3"
             >
               <div
@@ -489,21 +515,24 @@ function DetailContent() {
             aria-labelledby="collapse-heading4"
           >
             <div className={`accordion-body ${styles.AccordionBody}`}>
-              <div className={styles.ScoreBar}>
-                <div className={styles.Score}>
-                  <h5>商品評價</h5>
-                  <h2>{rateAvg}</h2>
-                  <StarGroup rate={rateAvg} />
+              <div className={styles.ScoreBarAndSetReviews}>
+                <div className={styles.ScoreBar}>
+                  <div className={styles.Score}>
+                    <h5>商品評價</h5>
+                    <h2>{rateAvg}</h2>
+                    <StarGroup rate={rateAvg} />
+                  </div>
+                  <div className={styles.StarBarGroup}>
+                    {[...Array(5)].map((v, i) => (
+                      <StarBar
+                        key={`starBar${i}`}
+                        index={5 - i}
+                        rate={rateData["rate"]}
+                      />
+                    ))}
+                  </div>
                 </div>
-                <div className={styles.StarBarGroup}>
-                  {[...Array(5)].map((v, i) => (
-                    <StarBar
-                      key={`starBar${i}`}
-                      index={5 - i}
-                      rate={rateData["rate"]}
-                    />
-                  ))}
-                </div>
+                {user.id > 0 && <div className={styles.SetReviews}>123</div>}
               </div>
               <div className={`${styles.RateCardGroup} row g-3`}>
                 {rateData.rate &&
