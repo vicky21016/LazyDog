@@ -32,15 +32,16 @@ export function CartProvider({ children }) {
   };
 
   // 課程增減邏輯
-  const onAddCourse = (course, amount = 1, session, time) => {
+  const onAddCourse = (course, session, time) => {
+ 
     const foundIndex = courseItems.findIndex((v) => v.id === course.id);
     if (foundIndex !== -1) {
       const nextItems = courseItems.map((v) =>
-        v.id === course.id ? { ...v, count: v.count + amount } : v
+        v.id === course.id ? { ...v, count: v.count + 1 } : v
       );
       setCourseItems(nextItems);
     } else {
-      const newItem = { ...course, count: amount };
+      const newItem = { ...course, count: 1 };
       setCourseItems([newItem, ...courseItems]);
     }
   };

@@ -15,7 +15,7 @@ import { useOrder } from "@/hooks/use-order";
 export default function ProfileCouponPage(props) {
     const router = useRouter();
     const { orders } = useOrder();
-    console.log(orders);
+    
     
     const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
         usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
@@ -27,6 +27,8 @@ export default function ProfileCouponPage(props) {
     useEffect(() => {
         import("bootstrap/dist/js/bootstrap.bundle.min.js");
     }, []);
+    console.log(orders);
+    
     return (
         <>
             <Header />
@@ -50,7 +52,7 @@ export default function ProfileCouponPage(props) {
                             </li>
                             <li className="nav-item">
                                 <a className={`nav-link ${couponStyles.suNavLink}`} href="#">
-                                    商品 (05)
+                                    商品 ({orders.length})
                                 </a>
                             </li>
                             <li className="nav-item">
