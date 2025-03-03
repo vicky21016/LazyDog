@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import "../../../../html/hotel-coupon/css/fontHotelHome.css";
 import hotelStyles from "../../../../styles/modules/fontHotelDetail.module.css";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 import Image from "next/image";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
 import { useGoogleMap } from "@/hooks/useGoogleMap";

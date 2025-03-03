@@ -59,35 +59,42 @@ export const searchHotels = async (keyword) => {
 export const getId = async (id, checkInDate, checkOutDate) => {
   const connection = await pool.getConnection();
   try {
-    const baseQuery = buildBaseHotelQuery();
+    // ✅ 修正 SQL，確保不會因 `room_inventory` 沒有資料而導致查詢失敗
     const query = `
-      ${baseQuery}
-      AND h.id = ?
-      AND EXISTS (
-        SELECT 1 FROM room_inventory ri
-        WHERE ri.hotel_id = h.id 
-        AND ri.date BETWEEN ? AND ?
-        AND ri.available_quantity > 0
-      )
+      SELECT h.*, hi.url AS main_image_url
+      FROM hotel h
+      LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
+      WHERE h.id = ?
     `;
 
-    const [hotels] = await connection.query(query, [
-      id,
-      checkInDate,
-      checkOutDate,
-    ]);
+    const [hotels] = await connection.query(query, [id]);
 
     if (hotels.length === 0) {
       throw new Error(`找不到 id=${id} 的旅館`);
     }
 
-    return hotels[0];
+    let hotel = hotels[0];
+
+    // 🔹 如果 `hotel.main_image_id` 為 `null`，則避免 `id != null` 出錯
+    let mainImageIdCondition = hotel.main_image_id ? `AND id != ?` : ``;
+    let queryParams = hotel.main_image_id ? [id, hotel.main_image_id] : [id];
+
+    // ✅ 查詢 `hotel_images`，確保 `is_deleted = 0`
+    const [hotelImages] = await connection.query(
+      `SELECT * FROM hotel_images WHERE hotel_id = ? ${mainImageIdCondition} AND is_deleted = 0`,
+      queryParams
+    );
+
+    hotel.hotel_images = hotelImages || []; // ✅ 確保 `hotel_images` 陣列存在
+
+    return hotel;
   } catch (error) {
     throw new Error(`無法取得 id=${id} 旅館: ` + error.message);
   } finally {
     connection.release();
   }
 };
+
 
 export const getOperatorTZJ = async (req) => {
   try {
