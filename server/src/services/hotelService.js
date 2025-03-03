@@ -470,7 +470,7 @@ export const softDeleteHotelById = async (hotelId, operatorId) => {
 
 /* 從資料庫獲取篩選後 */
 export const getFilteredHotels = async (filters) => {
-  console.log("filters from request:", filters);
+  // console.log("filters from request:", filters);
 
   let query = `
     SELECT DISTINCT h.*, 
@@ -496,7 +496,10 @@ export const getFilteredHotels = async (filters) => {
     WHERE h.is_deleted = 0
   `;
 
-  let queryParams = [filters.min_price ?? 0, Math.min(filters.max_price ?? 10000, 10000)];
+  let queryParams = [
+    filters.min_price ?? 0,
+    Math.min(filters.max_price ?? 10000, 10000),
+  ];
 
   if (filters.min_rating !== null) {
     query += ` AND r.avg_rating >= ?`;
@@ -530,10 +533,6 @@ export const getFilteredHotels = async (filters) => {
     queryParams.push(...filters.tags);
   }
 
-  console.log("SQL 查詢:", query);
-  console.log("參數:", queryParams);
-
   const [hotels] = await pool.query(query, queryParams);
   return hotels;
 };
-

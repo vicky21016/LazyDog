@@ -9,10 +9,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart"; // 引入useCart以便取得購物車資料
 import { useOrder } from "@/hooks/use-order";
+import { useCoupons } from "@/hooks/use-coupon";
 import Header from "../../components/layout/header";
 import Input from "../../components/forms/Input";
 import InputFiled from "../../components/forms/InputField";
-import styles from "../css/CartList.module.css"
+import styles from "../css/CartList.module.css";
 import Hotel from "../../components/cart/hotel";
 import Course from "../../components/cart/course";
 export default function CartListPayPage(props) {
@@ -30,7 +31,9 @@ export default function CartListPayPage(props) {
     created_at: "",
     is_deleted: "",
   });
-  const [hotelOrder, sethotelOrder] = useState({});
+  const [hotelOrder, setHotelOrder] = useState({
+    orderID: `HT${new Date().getTime()}`,
+  });
   // 檢查是否登入
   const { isAuth } = useAuth();
   // 建立ref，用來放置form表單
@@ -41,6 +44,7 @@ export default function CartListPayPage(props) {
   const itemsRef = useRef(null);
 
   // 從useCart取得購物車資料
+  // 購物車資料
   const {
     productItems,
     courseItems,
@@ -49,6 +53,27 @@ export default function CartListPayPage(props) {
     totalCourseAmount,
     totalHotelAmount,
   } = useCart();
+  const totalAmount = totalProductAmount + totalCourseAmount + totalHotelAmount;
+
+  // 根據購物車類型選擇 `orderTable`
+  let orderTable = "hotel_order"; // 默認為 hotel_order
+  if (productItems.length > 0) orderTable = "yi_orderlist";
+  if (courseItems.length > 0) orderTable = "course_orders";
+
+  const {
+    availableCoupons,
+    selectedCoupon,
+    setSelectedCoupon,
+    discountAmount,
+    finalAmount,
+    applyCoupon,
+  } = useCoupons(
+    totalAmount, // 購物車總金額
+    productOrder?.orderID || hotelOrder?.orderID, // 訂單 ID
+    orderTable, // 訂單類型
+    user?.token, // 用戶 token
+    user?.id // 用戶 ID
+  );
 
   const { createProductOrder, createHotelOrder } = useOrder();
   // 確保商品資料正確
@@ -59,7 +84,7 @@ export default function CartListPayPage(props) {
 `;
 
   // const amountValue = totalProductAmount;
-  const amountValue = totalProductAmount + totalCourseAmount + totalHotelAmount;
+  // const amountValue = totalProductAmount + totalCourseAmount + totalHotelAmount;
 
   const productItemsValue = productItems
     .map((item) => `${item.name} x ${item.count}`)
@@ -98,7 +123,7 @@ export default function CartListPayPage(props) {
 
     // 先連到node伺服器後端，取得LINE Pay付款網址
     const res = await fetch(
-      `http://localhost:5000/ecpay-test-only?amount=${amountValue}&items=${itemsValue}`,
+      `http://localhost:5000/ecpay-test-only?amount=${totalAmount}&items=${itemsValue}`,
       {
         method: "GET",
         credentials: "include",
@@ -118,44 +143,44 @@ export default function CartListPayPage(props) {
       const payForm = createEcpayForm(resData.data.params, resData.data.action);
 
       if (isDev) console.log(payForm);
-
+      if (productItems.length > 0) {
+        const newOrder = {
+          user_id: user.id,
+          orderID: `PD${new Date().getTime()}`,
+          coupon_id: "",
+          discount_amount: 0,
+          productID_list: productItems.map((item) => item.productID),
+          price_list: productItems.map((item) => item.price),
+          amount_list: productItems.map((item) => item.count),
+          total_price: totalProductAmount,
+          final_amount: totalProductAmount,
+          created_at: new Date(),
+          is_deleted: 0,
+          payment_status: "Unpaid",
+        };
+        await setProductOrder(newOrder);
+        await createProductOrder(newOrder);
+      }
       if (window.confirm("確認要導向至ECPay(綠界金流)進行付款?")) {
-        if (productItems.length > 0) {
-          const newOrder = {
-            user_id: user.id,
-            orderID: `PD${new Date().getTime()}`,
-            coupon_id: "",
-            discount_amount: 0,
-            productID_list: productItems.map((item) => item.id),
-            price_list: productItems.map((item) => item.price),
-            amount_list: productItems.map((item) => item.count),
-            total_price: totalProductAmount,
-            final_amount: totalProductAmount,
-            created_at: new Date(),
-            is_deleted: 0,
-            payment_status: "Unpaid",
-          };
-          await setProductOrder(newOrder);
-          await createProductOrder(newOrder);
-        }
         if (courseItems.length > 0) {
-          const newOrder = {
-            user_id: user.id,
-            orderID: `CR${new Date().getTime()}`,
-            coupon_id: "",
-            discount_amount: 0,
-            productID_list: courseItems.map((item) => item.id),
-            price_list: courseItems.map((item) => item.price),
-            amount_list: courseItems.map((item) => item.count),
-            total_price: totalCourseAmount,
-            final_amount: totalCourseAmount,
-            created_at: new Date(),
-            is_deleted: 0,
-            payment_status: "Unpaid",
-          };
-          await setProductOrder(newOrder);
-          await createProductOrder(newOrder);
+          courseItems.forEach(async (courseItem) => {
+            const newOrder = {
+              course_id: courseItem.id,
+              user_id: user.id,
+              quantity: courseItem.count,
+              total_price: courseItem.price * courseItem.count, // 確保計算單筆課程總價
+              payment_status: "Unpaid",
+              payment_method: courseItem.payment_method || "Not Specified", // 預設值
+              cancellation_policy:
+                courseItem.cancellation_policy || "Standard Policy",
+              remark: courseItem.remark || "",
+            };
+
+            await setCourseOrder(newOrder);
+            await createCourseOrder(newOrder);
+          });
         }
+
         if (hotelItems.length > 0) {
           hotelItems.forEach(async (hotelItem) => {
             const newOrder = {
@@ -190,12 +215,9 @@ export default function CartListPayPage(props) {
         </div>
         <div className="container lumi-all-wrapper">
           <h4 className="mb-5">購買資訊</h4>
-          <form action>
+          <form action="">
             <div className="row">
-              <main
-                className="col-lg-5 col-md-auto col-auto me-5"
-               
-              >
+              <main className="col-lg-5 col-md-auto col-auto me-5">
                 <div className="mb-3 row">
                   <div className="col-md-6">
                     <label htmlFor="first-name" className="form-label">
@@ -287,24 +309,22 @@ export default function CartListPayPage(props) {
                   />
                 </div>
               </main>
-              <aside
-                className={`col-lg-5 col-md-7 col-10 ${styles.list}`}
-                
-              >
-                <div className="aside1 ">
+              <aside className={`col-lg-5 col-md-7 col-10 ${styles.list}`}>
+                <div className="aside1">
                   <div className="d-flex justify-content-between mb-4">
                     <span className={styles.text}>產品</span>
                     <span>Subtotal</span>
                   </div>
+
                   {productItems.map((item) => (
                     <div
                       key={item.id}
                       className="d-flex justify-content-between mb-2"
                     >
                       <span>
-                        <span>{item.name}</span>x<span>{item.count}</span>
+                        {item.name} x {item.count}
                       </span>
-                      <span>{`Rs. ${item.price * item.count}`}</span>
+                      <span>NT$ {item.price * item.count}</span>
                     </div>
                   ))}
 
@@ -314,9 +334,9 @@ export default function CartListPayPage(props) {
                       className="d-flex justify-content-between mb-2"
                     >
                       <span>
-                        <span>{item.name}</span>x<span>{item.count}</span>
+                        {item.name} x {item.count}
                       </span>
-                      <span>{`Rs. ${item.price * item.count}`}</span>
+                      <span>NT$ {item.price * item.count}</span>
                     </div>
                   ))}
 
@@ -326,21 +346,51 @@ export default function CartListPayPage(props) {
                       className="d-flex justify-content-between mb-2"
                     >
                       <span>
-                        <span>{item.name}</span>x<span>{item.count}</span>
+                        {item.name} x {item.count}
                       </span>
-                      <span>{`Rs. ${item.price * item.count}`}</span>
+                      <span>NT$ {item.price * item.count}</span>
                     </div>
                   ))}
 
-                  <div className="d-flex justify-content-between mt-5">
-                    <span className={styles.subtext}>總價</span>
-                    <span>{`Rs. ${amountValue}`}</span>
+                  <div className="d-flex flex-column mt-4">
+                    <label>使用優惠券</label>
+                    <select
+                      className="form-select"
+                      value={selectedCoupon || ""}
+                      onChange={(e) => {
+                        const selectedId = e.target.value;
+                        setSelectedCoupon(selectedId);
+                        applyCoupon(selectedId);
+                      }}
+                    >
+                      <option value="">選擇優惠券</option>
+                      {availableCoupons.map((coupon) => (
+                        <option key={coupon.id} value={coupon.id}>
+                          {coupon.name} - {coupon.value}{" "}
+                          {coupon.discount_type === "percentage" ? "%" : "NT$"}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="d-flex justify-content-between mt-3">
+                    <span className="subtext">折扣金額</span>
+                    <span>- NT$ {discountAmount}</span>
+                  </div>
+                  <div className="d-flex justify-content-between mt-3">
+                    <span className="subtext">最終金額</span>
+                    <span>NT$ {finalAmount}</span>
                   </div>
                 </div>
-                <hr className="mb-5"/>
-                <button className={styles.btn} type="button" onClick={handleEcpay}>
-              付款
-            </button>
+
+                <hr className="mb-5" />
+                <button
+                  className={styles.btn}
+                  type="button"
+                  onClick={handleEcpay}
+                >
+                  付款
+                </button>
                 {/* <div className="aside2">
                   <h1>付款</h1>
                   <label>
@@ -417,8 +467,6 @@ export default function CartListPayPage(props) {
             </div>
 
             <div ref={payFormDiv}></div>
-
-            
           </form>
         </div>
       </div>

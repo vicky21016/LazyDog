@@ -147,7 +147,22 @@ router.post("/productOrders", async (req, res) => {
         : [],
     }));
 
-    res.json({ status: "success", orders: formattedOrders });
+    const firstProductID = formattedOrders[0].productID_list[0]; // 取第一個
+    console.log(firstProductID);
+    
+    const sqlimg = `
+        SELECT * FROM yi_img 
+        WHERE productID = ? 
+        AND is_deleted = 0 
+        ORDER BY created_at DESC 
+        LIMIT 1
+    `;
+    
+    const [imageResult] = await pool.execute(sqlimg, [firstProductID]);
+    
+    console.log(imageResult);
+    
+    res.json({ status: "success", orders: formattedOrders, firstProductImg: imageResult.length > 0 ? imageResult[0] : null, });
   } catch (err) {
     res.status(500).json({ status: "error", message: err.message });
   }
@@ -192,9 +207,7 @@ router.post("/course", async (req, res) => {
 
 // 旅館
 router.post("/hotel", async (req, res) => {
-  console.log(123);
 
-  console.log(req.body);
 
   const {
     hotel_id,

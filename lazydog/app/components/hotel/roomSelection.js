@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+"use client"
+
+import React, { useState, useEffect,useContext } from "react";
 import hotelStyles from "../../../styles/modules/fontHotelDetail.module.css";
 import Image from "next/image";
 import { getHotelRoomById, getRoomInventory } from "@/services/hotelService";
@@ -103,10 +105,10 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate }) => {
       });
       return;
     }
-  
+
     // 獲取選擇的數量
     const quantity = selectedQuantities[room.id] || 1;
-  
+
     // 構建要加入購物車的房間資料
     const hotelToAdd = {
       id: room.id,
@@ -116,12 +118,14 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate }) => {
       petSize: room.allowed_pet_size,
       provideFood: room.default_food_provided,
       count: quantity,
+      checkInDate, // 傳遞入住日期
+      checkOutDate, // 傳遞退房日期
     };
-  
+
     try {
       // 調用加入購物車的函數
       onAddHotel(hotelToAdd);
-  
+
       // 顯示成功訊息
       Swal.fire({
         icon: "success",
