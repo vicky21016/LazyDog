@@ -37,7 +37,6 @@ export const getHotelRoomByIds = async (hotelId) => {
 
     return rows;
   } catch (error) {
-    console.error(`SQL 查詢錯誤: ${error.message}`);
     throw new Error(
       `找不到 hotel_id=${hotelId} 的房型，錯誤訊息：` + error.message
     );
@@ -80,7 +79,6 @@ export const getHotelRoomByOperatorId = async (operatorId) => {
 
     return rows;
   } catch (error) {
-    console.error(`SQL 查詢錯誤: ${error.message}`);
     throw new Error(
       `找不到 operator_id=${operatorId} 的房型，錯誤訊息：` + error.message
     );
@@ -124,7 +122,6 @@ export const createHotelRooms = async (data) => {
 
     return { id: result.insertId, ...data };
   } catch (error) {
-    console.error("創建酒店房間時發生錯誤：", error);
     throw new Error("無法創建酒店房間：" + error.message);
   }
 };
@@ -212,45 +209,48 @@ export const updateHotelRooms = async (id, data) => {
 };
 
 export const deleteHotelRooms = async (id) => {
-  const connection = await pool.getConnection(); // 取得資料庫連接
+  const connection = await pool.getConnection();
   try {
-    await connection.beginTransaction(); // 開始事務
+    await connection.beginTransaction();
 
     const [existingRoom] = await connection.query(
       "SELECT id FROM hotel_room_types WHERE id = ?",
       [id]
     );
-    if (existingRoom.length == 0) {
+    if (existingRoom.length === 0) {
       throw new Error(`找不到 ID=${id} 的房型`);
     }
 
+    // 刪除 `room_inventory`（如果有關聯）
     const [relatedInventory] = await connection.query(
-      "SELECT * FROM room_inventory WHERE room_type_id = ?",
+      "SELECT * FROM room_inventory WHERE hotel_room_type_id = ?", 
       [id]
     );
     if (relatedInventory.length > 0) {
       await connection.query(
-        "DELETE FROM room_inventory WHERE room_type_id = ?",
+        "DELETE FROM room_inventory WHERE hotel_room_type_id = ?", 
         [id]
       );
     }
 
+    // 刪除 `hotel_room_types`
     const [result] = await connection.query(
       "DELETE FROM hotel_room_types WHERE id = ?",
       [id]
     );
 
-    if (result.affectedRows === 0) {
-      throw new Error(`刪除失敗，找不到房型 ID=${id}`);
+
+    if (result.affectedRows == 0) {
+      throw new Error(`刪除失敗，房型 ID=${id} 可能不存在`);
     }
 
-    await connection.commit(); // 提交事務
-    return { message: `成功刪除房型 ID=${id}` };
+    await connection.commit();
+    return { message: `成功刪除房型 ID=${id}`, affectedRows: result.affectedRows };
   } catch (error) {
-    await connection.rollback(); // 回滾事務
+    await connection.rollback();
     throw new Error(`無法刪除旅館房型 (ID: ${id}): ` + error.message);
   } finally {
-    connection.release(); // 釋放連接
+    connection.release();
   }
 };
 

@@ -13,8 +13,8 @@ export default function HotelEditPage() {
   const { id } = useParams(); // 取得旅館 ID
   const {
     hotel,
-    hotelImages, // ✅ 旅館圖片
-    roomImages, // ✅ 房型圖片
+    hotelImages,
+    roomImages,
     rooms: hotelRooms,
     roomTypes,
   } = useHotel(id);
@@ -61,7 +61,7 @@ export default function HotelEditPage() {
           "未知房型",
         image_url:
           roomImages.find((img) => img.room_type_id === room.room_type_id)
-            ?.image_url || "/default-room.jpg",
+            ?.image_url || "/lazydog.png",
       }));
       setRooms([...updatedRooms]); // 確保房型名稱正確
       setRoomImagesState(roomImages); // 設定房型圖片
@@ -75,7 +75,7 @@ export default function HotelEditPage() {
         initialRoomData[room.id] = {
           quantity: room.quantity,
           price_per_night: room.price_per_night,
-          image_url: room.image_url || "/default-room.jpg",
+          image_url: room.image_url || "/lazydog.png",
           room_type_name: room.room_type_name || "未知房型",
         };
       });
@@ -300,7 +300,6 @@ export default function HotelEditPage() {
       if (!response.ok || !data.image_url)
         throw new Error(data.error || "圖片上傳失敗");
 
-      // 更新前端狀態
       setRooms((prevRooms) =>
         prevRooms.map((room) =>
           room.id === roomId ? { ...room, image_url: data.image_url } : room
@@ -317,6 +316,7 @@ export default function HotelEditPage() {
   const handleUpdateRoom = async (roomId) => {
     if (!roomId) {
       await Swal.fire("錯誤", "找不到房型 ID", "error");
+      return;
     }
 
     const updatedData = roomFormData[roomId];
@@ -327,14 +327,16 @@ export default function HotelEditPage() {
 
       const formData = new FormData();
 
-      // 遍歷物件，將所有數據加入 FormData
       Object.keys(updatedData).forEach((key) => {
-        if (updatedData[key] !== undefined && updatedData[key] !== null) {
+        if (
+          updatedData[key] !== undefined &&
+          updatedData[key] !== null &&
+          key !== "image_url"
+        ) {
           formData.append(key, updatedData[key]);
         }
       });
 
-      // 如果有新的圖片，才加入 FormData
       if (updatedData.imageFile) {
         formData.append("image", updatedData.imageFile);
       }
@@ -343,16 +345,13 @@ export default function HotelEditPage() {
         `http://localhost:5000/api/hotel_room_types/${roomId}`,
         {
           method: "PATCH",
-          headers: { Authorization: `Bearer ${token}` }, // 不加 "Content-Type"，讓 fetch 自動設置
-          body: formData, // 直接傳 FormData
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      if (!response.ok) throw new Error("更新失敗");
-
       const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "更新失敗");
 
-      // ✅ 更新前端房型資料（保持即時更新）
       setRooms((prevRooms) =>
         prevRooms.map((room) =>
           room.id === roomId
@@ -373,7 +372,6 @@ export default function HotelEditPage() {
 
   // 刪除房型
   const handleDeleteRoom = async (roomId) => {
-    // 確認刪除
     const confirmDelete = await Swal.fire({
       title: "確定要刪除這個房型嗎？",
       text: "刪除後無法恢復！",
@@ -385,14 +383,15 @@ export default function HotelEditPage() {
       cancelButtonText: "取消",
     });
 
-    // 如果使用者取消，就不執行刪除
-    if (!confirmDelete.isConfirmed) return;
+    if (!confirmDelete.isConfirmed) {
+      console.log(" 取消刪除房型");
+      return;
+    }
 
     try {
       const token = localStorage.getItem("loginWithToken");
       if (!token) throw new Error("未登入，請重新登入");
 
-      // 發送刪除請求
       const response = await fetch(
         `http://localhost:5000/api/hotel_room_types/${roomId}`,
         {
@@ -401,19 +400,18 @@ export default function HotelEditPage() {
         }
       );
 
-      // 檢查請求是否成功
-      if (!response.ok) throw new Error("刪除失敗");
+      const data = await response.json();
 
-      // 更新前端狀態
+      if (!response.ok) {
+        throw new Error(data.error || "刪除失敗");
+      }
+
       setRooms((prevRooms) => prevRooms.filter((room) => room.id !== roomId));
 
-      // 顯示成功訊息
       await Swal.fire("成功", "房型已刪除", "success");
 
-      // 刷新頁面
       router.refresh();
     } catch (error) {
-      // 顯示錯誤訊息
       await Swal.fire("錯誤", error.message, "error");
     }
   };
@@ -486,9 +484,6 @@ export default function HotelEditPage() {
         throw new Error(data.error || "新增房型失敗");
       }
 
-      // 檢查圖片 URL
-      console.log("API 回傳的圖片 URL:", data.image_url);
-
       setRooms((prevRooms) => [
         ...prevRooms,
         {
@@ -503,7 +498,7 @@ export default function HotelEditPage() {
           pet_capacity: newRoomPetCapacity,
           allowed_pet_size: newRoomAllowedSize,
           default_food_provided: newRoomFoodProvided,
-          image_url: data.image_url || "/default-room.jpg",
+          image_url: data.image_url || "/lazydog.png",
         },
       ]);
 
@@ -514,7 +509,7 @@ export default function HotelEditPage() {
       setSelectedRoomType("");
       setNewRoomQuantity(1);
       setNewRoomPrice("");
-      setNewRoomDescription(""); // ✅ 清空輸入
+      setNewRoomDescription("");
       setNewRoomPetCapacity("");
       setNewRoomAllowedSize("");
       setNewRoomFoodProvided("");
@@ -750,8 +745,11 @@ export default function HotelEditPage() {
                             更新房型
                           </button>
                           <button
+                            type="button" 
                             className="btn btn-sm btn-danger"
-                            onClick={() => handleDeleteRoom(room.id)}
+                            onClick={async () =>
+                              await handleDeleteRoom(room.id)
+                            } 
                           >
                             刪除房型
                           </button>
