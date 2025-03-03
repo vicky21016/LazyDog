@@ -178,10 +178,6 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
   };
   
   
-  
-  
-  
-  
   const handleClear = async () => {
     console.log("清除篩選條件開始");
 
