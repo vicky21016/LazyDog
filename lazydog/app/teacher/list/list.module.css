@@ -160,7 +160,7 @@
 /* 手機版篩選選單 (預設隱藏) */
 .mobileFilter {
   position: fixed;
-  top: 0;
+  top: 62px;
   left: -100%;
   width: 80%;
   height: 100vh;
@@ -195,7 +195,11 @@
 .imgFluid{
   padding: 30px;
 }
-
+.right{
+  display: none;
+  border-radius: 50%;
+  border: #F5842B;
+}
 /* 手機篩選按鈕 (點擊後打開篩選) */
 .filterButton {
   cursor: pointer;
@@ -214,4 +218,9 @@
     .container{
     padding: 30px;
   }
+  .right{
+  display: block;
+  border-radius: 50%;
+  border: #F5842B;
+}
   }

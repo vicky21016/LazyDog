@@ -53,6 +53,9 @@
 }
 .teacher {
   background-color: #fdfaf5;
+  background-image: url("/teacher-img/26.png");
+  background-position: center;
+  background-repeat: no-repeat; 
 } 
 
 @media (max-width: 768px) {
