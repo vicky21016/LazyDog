@@ -9,8 +9,8 @@ import Header from "../components/layout/header2";
 import { useDetailFetch } from "@/hooks/product/use-fetch";
 
 export default function HomePage(props) {
-  const { hotSale } = useDetailFetch();
-  console.log(hotSale);
+  // const { hotSale } = useDetailFetch();
+  // console.log(hotSale);
   return (
     <>
       <Header />

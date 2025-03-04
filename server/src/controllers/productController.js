@@ -631,6 +631,7 @@ export const createReviews = async (req, res) => {
 export const updateReviews = async (req, res) => {
   try {
     const { userID, productID, rating, comment, good, isDeleted } = req.body;
+    // console.log(req.body);
     if (!userID) {
       return res.status(401).json({
         status: "error",

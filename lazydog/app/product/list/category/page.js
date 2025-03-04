@@ -5,7 +5,7 @@ import styles from "./category.module.css";
 import Aside from "../../_components/aside/aside";
 import Link from "next/link";
 import Card from "../../_components/card/card";
-import { useCategoryFetch } from "@/hooks/product/use-fetch";
+import { useCategoryFetch, useDetailFetch } from "@/hooks/product/use-fetch";
 import { useFavorite } from "@/hooks/product/use-favorite";
 
 export default function CategoryPage() {
@@ -34,6 +34,9 @@ export default function CategoryPage() {
     isLoading,
     error,
   } = useCategoryFetch();
+  const { CardInt, hotSale } = useDetailFetch();
+  const [hot, setHot] = useState(0);
+
   const { favorite, setFavorite } = useFavorite();
   const [dropDown, setDropDown] = useState(false);
   const [listOpen, setListOpen] = useState(false);
@@ -55,6 +58,13 @@ export default function CategoryPage() {
     document.addEventListener("click", clickOutside);
     return () => document.removeEventListener("click", clickOutside);
   }, [listOpen, dropDown, collapseBtn]);
+  if (error) {
+    return (
+      <div className="container">
+        <img style={{ width: "100%" }} src="/product/404.png" />
+      </div>
+    );
+  }
   return (
     <>
       <div className={`${styles.collapseAside} d-lg-none`}>
@@ -256,7 +266,51 @@ export default function CategoryPage() {
               sortName={sortName}
             />
           </div>
-          {!products && <h2>{emptyMessage}</h2>}
+          {!products && (
+            <div className={styles.empty}>
+              <h2>{emptyMessage}</h2>
+              <section className={styles.OtherLike}>
+                <h4 className={styles.OtherLikeTitle}>要不要看看其他好物...</h4>
+                <div className={styles.OtherLikeContent}>
+                  <button
+                    type="button"
+                    className={styles.ProductInfoImgSmallBtn}
+                    onClick={() => {
+                      setHot(hot - 1 < 0 ? hot : hot - 1);
+                    }}
+                  >
+                    <img src="/product/font/left(orange).png" alt="" />
+                  </button>
+                  <ul className={`${styles.OtherLikeList} row`}>
+                    {hotSale.length > 0 &&
+                      hotSale?.map((v, i) => {
+                        if (i < CardInt + hot && i >= hot) {
+                          return (
+                            <Card
+                              key={`Card${i}`}
+                              productID={v}
+                              favorite={favorite}
+                              setFavorite={setFavorite}
+                            />
+                          );
+                        }
+                      })}
+                  </ul>
+                  <button
+                    type="button"
+                    className={styles.ProductInfoImgSmallBtn}
+                    onClick={() => {
+                      setHot(
+                        hot + 1 > hotSale.length - CardInt ? hot : hot + 1
+                      );
+                    }}
+                  >
+                    <img src="/product/font/right(orange).png" alt="" />
+                  </button>
+                </div>
+              </section>
+            </div>
+          )}
           {products && (
             <main className={styles.PdList}>
               {[...Array(productLine)].map((value, index) => {

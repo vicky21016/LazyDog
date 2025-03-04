@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./rate.module.css";
 import StarGroup from "./stargroup";
+
+import { useReviewsUpdate } from "@/hooks/product/use-reviews";
 
 export default function Ratecard({
   rateNow = false,
@@ -15,6 +18,7 @@ export default function Ratecard({
   goodNum = 0,
   date = "",
 }) {
+  const router = useRouter();
   const rateNum = rate.toString();
   const years = date.slice(0, 4);
   const months = date.slice(5, 7);
@@ -23,6 +27,16 @@ export default function Ratecard({
   const [good, setGood] = useState(false);
   const [rateUpdate, setRateUpdate] = useState(false);
   const [newRate, setNewRate] = useState(rateNum);
+  const [deleteRate, setDeleteRate] = useState(false);
+  const { formData, handleSubmit, reviewsChange } = useReviewsUpdate({
+    id,
+    productID,
+    newRate,
+    comment,
+    setRateUpdate,
+    deleteRate,
+    setDeleteRate,
+  });
 
   return (
     <div className={`${styles.RateCard}`}>
@@ -30,7 +44,14 @@ export default function Ratecard({
         <>
           <div className={styles.RateCardText}>
             <div className={styles.RateCardUser}>
-              <button type="button">
+              <button
+                type="button"
+                onClick={() => {
+                  setTimeout(() => {
+                    router.push("/pages");
+                  }, 100);
+                }}
+              >
                 <img src={`http://localhost:5000/auth/${img}`} alt="" />
                 <h6>{user}</h6>
                 <h6>{rateNow ? "(您)" : ""}</h6>
@@ -75,12 +96,18 @@ export default function Ratecard({
         </>
       )}
       {rateUpdate && (
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className={styles.RateCardText}>
             <div className={styles.RateCardUser}>
-              <button type="button">
+              <button
+                type="button"
+                onClick={() => {
+                  setTimeout(() => {
+                    router.push("/pages");
+                  }, 100);
+                }}
+              >
                 <img src={`http://localhost:5000/auth/${img}`} alt="" />
-
                 <h6>{user}</h6>
                 <h6>{rateNow ? "(您)" : ""}</h6>
               </button>
@@ -94,15 +121,27 @@ export default function Ratecard({
                 />
               </div>
             </div>
-            <textarea defaultValue={`${comment}`} />
+            <textarea
+              name="comment"
+              value={formData.comment}
+              onChange={reviewsChange}
+            />
           </div>
           <div className={styles.RateCardBtnDate}>
-            <div style={{ width: "47.13px" }}></div>
-            {rateNow && (
+            <div style={{ width: "47.13px" }}>
               <button
+                style={{ "white-space": "nowrap" }}
+                type="button"
                 className={styles.UpdateRateBtn}
-                onClick={() => setRateUpdate(false)}
+                onClick={() => {
+                  setDeleteRate(true);
+                }}
               >
+                刪除評論
+              </button>
+            </div>
+            {rateNow && (
+              <button type="submit" className={styles.UpdateRateBtn}>
                 更新評論
               </button>
             )}

@@ -342,7 +342,7 @@ export const deleteItemInfo = async (productID) => {
 export const getAllReviews = async (userID) => {
   try {
     const [products] = await pool.execute(
-      `SELECT yi_reviews.*,users.name As user,users.user_img As userImg FROM yi_reviews JOIN users ON yi_reviews.user_id = users.id WHERE yi_reviews.user_id = ${userID}`
+      `SELECT yi_reviews.*,users.name As user,users.user_img As userImg FROM yi_reviews JOIN users ON yi_reviews.user_id = users.id WHERE yi_reviews.user_id = ${userID} and yi_reviews.is_deleted = 0`
     );
     return products;
   } catch (error) {

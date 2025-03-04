@@ -231,7 +231,7 @@ export function useDetailFetch() {
   const [amount, setAmount] = useState(1);
   const [cardPic, setCardPic] = useState("/product/img/default.webp");
 
-  const url = `http://localhost:5000/api/products/${product}`;
+  const url = product ? `http://localhost:5000/api/products/${product}` : null;
   const url2 = "http://localhost:5000/api/products/order";
   const fetcher = async (url) => {
     try {
