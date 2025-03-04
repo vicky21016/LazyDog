@@ -32,7 +32,6 @@ export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
         }
 
         const couponIds = usageResponse.data.map((u) => u.coupon_id);
-        console.log("使用者擁有的 coupon_id:", couponIds);
 
         if (couponIds.length == 0) {
           setAvailableCoupons([]);
