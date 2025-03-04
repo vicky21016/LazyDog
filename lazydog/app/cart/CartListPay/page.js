@@ -34,6 +34,9 @@ export default function CartListPayPage(props) {
   const [hotelOrder, setHotelOrder] = useState({
     orderID: `HT${new Date().getTime()}`,
   });
+
+  const [courseOrder, setCourseOrder] = useState({});
+
   // 檢查是否登入
   const { isAuth } = useAuth();
   // 建立ref，用來放置form表單
@@ -77,7 +80,8 @@ export default function CartListPayPage(props) {
     user?.id
   );
 
-  const { createProductOrder, createHotelOrder } = useOrder();
+  const { createProductOrder, createHotelOrder, createCourseOrder } =
+    useOrder();
   // 確保商品資料正確
   const itemsValue = `
   ${productItems.map((item) => `${item.name} x ${item.count}`).join(", ")}#
@@ -147,25 +151,26 @@ export default function CartListPayPage(props) {
       const payForm = createEcpayForm(resData.data.params, resData.data.action);
 
       if (isDev) console.log(payForm);
-      if (productItems.length > 0) {
-        const newOrder = {
-          user_id: user.id,
-          orderID: `PD${new Date().getTime()}`,
-          coupon_id: "",
-          discount_amount: 0,
-          productID_list: productItems.map((item) => item.productID),
-          price_list: productItems.map((item) => item.price),
-          amount_list: productItems.map((item) => item.count),
-          total_price: totalProductAmount,
-          final_amount: totalProductAmount,
-          created_at: new Date(),
-          is_deleted: 0,
-          payment_status: "Unpaid",
-        };
-        await setProductOrder(newOrder);
-        await createProductOrder(newOrder);
-      }
+
       if (window.confirm("確認要導向至ECPay(綠界金流)進行付款?")) {
+        if (productItems.length > 0) {
+          const newOrder = {
+            user_id: user.id,
+            orderID: `PD${new Date().getTime()}`,
+            coupon_id: "",
+            discount_amount: 0,
+            productID_list: productItems.map((item) => item.productID),
+            price_list: productItems.map((item) => item.price),
+            amount_list: productItems.map((item) => item.count),
+            total_price: totalProductAmount,
+            final_amount: totalProductAmount,
+            created_at: new Date(),
+            is_deleted: 0,
+            payment_status: "Unpaid",
+          };
+          await setProductOrder(newOrder);
+          await createProductOrder(newOrder);
+        }
         if (courseItems.length > 0) {
           courseItems.forEach(async (courseItem) => {
             const newOrder = {

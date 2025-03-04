@@ -299,13 +299,25 @@ router.post("/hotelOrders", async (req, res) => {
       ORDER BY created_at DESC
     `;
 
+    // const [orders] = await pool.execute(sql, [user_id]);
+    // const [hotelImages] = await pool.execute(
+    //   `SELECT * FROM hotel_images WHERE is_deleted = 0 AND hotel_id = ?`,
+    //   [orders[0].hotel_id]
+    // );
+
     const [orders] = await pool.execute(sql, [user_id]);
 
-    const sqlimg = `SELECT * FROM hotel_images WHERE is_deleted = 0 AND hotel_id = ?`;
+    for (const order of orders) {
+      const [hotelImages] = await pool.execute(
+        `SELECT * FROM hotel_images WHERE is_deleted = 0 AND hotel_id = ?`,
+        [order.hotel_id]
+      );
+      order.images = hotelImages; // 把圖片資料加到 order 內
+    }
 
-    const hotelImages = await pool.execute(sqlimg, [orders[0].hotel_id]);
+    console.log(orders);
 
-    console.log(hotelImages[0]);
+    // console.log(hotelImages[0]?.url);
 
     if (orders.length === 0) {
       return res.json({

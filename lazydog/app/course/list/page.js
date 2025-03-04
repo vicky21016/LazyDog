@@ -9,7 +9,8 @@ import Header from "@/app/components/layout/header";
 import News from "../_components/list/news";
 import SideBar from "../_components/list/sideBar";
 import CourseCard from "../_components/list/course-card";
-import Pagination from "../_components/list/page";
+import Page from "@/app/components/hotel/page";
+
 import OtherCourseCard from "../_components/list/other-course-card";
 
 export default function CourseListPage() {
@@ -89,7 +90,7 @@ export default function CourseListPage() {
               loading={loading}
               filters={filters}
             />
-            <Pagination
+            <Page
               totalPages={totalPages}
               currentPage={currPage}
               onPageChange={setCurrPage}
