@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../../components/layout/header";
 import "bootstrap/dist/css/bootstrap.min.css"; // 引入 Bootstrap 样式
 import "bootstrap/dist/js/bootstrap.bundle.min"; // 引入 Bootstrap 的 JS 及其依赖
-import styles from "../css/CartList.module.css"
+import styles from "../css/CartList.module.css";
 import { useSearchParams } from "next/navigation";
 import { isDev } from "@/config";
 
@@ -30,6 +30,9 @@ export default function CartListPayFinshPage(props) {
   }, []);
 
   if (isDev) console.log("RtnCode", searchParams?.get("RtnCode"));
+  useEffect(() => {
+    require("bootstrap/dist/js/bootstrap.bundle.min.js");
+  }, []);
 
   return (
     <>
@@ -39,7 +42,9 @@ export default function CartListPayFinshPage(props) {
           <img src="/cart/Group6.png" alt="Cart Image" />
         </div>
         <div className="container">
-          <p className="gobacktext pt-5 text-center">{countdown}秒後回到購物畫面</p>{" "}
+          <p className="gobacktext pt-5 text-center">
+            {countdown}秒後回到購物畫面
+          </p>{" "}
           <div className="row">
             <main
               className="col-lg-4 col-md-8 col-12"
@@ -129,10 +134,7 @@ export default function CartListPayFinshPage(props) {
                 </div>
               </div>
             </main>
-            <aside
-              className={`col-lg-4 col-md-8 col-8 p-4 ${styles.aside}`}
-              
-            >
+            <aside className={`col-lg-4 col-md-8 col-8 p-4 ${styles.aside}`}>
               <div className=" pb-5">
                 <h6 className="mb-4">以下為回傳資料:</h6>
                 <p>交易編號: {searchParams?.get("MerchantTradeNo")}</p>

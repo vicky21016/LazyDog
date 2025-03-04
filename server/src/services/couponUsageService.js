@@ -168,21 +168,37 @@ export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
     await connection.beginTransaction();
 
     console.log(
-      "收到請求 - userId:",
+      "收到請求 - userId:", 
       userId,
       "couponId:",
       couponId,
       "orderId:",
-      orderId,
+      orderId || "未提供",
       "orderTable:",
-      orderTable
-    ); //確認一下之後可以刪掉
+      orderTable || "未提供"
+    ); // 確認一下之後可以刪掉
 
     const validTables = ["hotel_order", "course_orders", "yi_orderlist"];
     if (!validTables.includes(orderTable)) {
-      throw new Error("無效的訂單類型");
+      throw new Error(`無效的訂單類型: ${orderTable}`);
     }
 
+    //  如果沒有 `orderId`，先標記優惠券為「reserved」，等付款時再綁定 
+    if (!orderId) {
+      await connection.query(
+        `UPDATE coupon_usage 
+         SET status = 'reserved', used_at = NOW(), updated_at = NOW()
+         WHERE user_id = ? AND coupon_id = ? AND status = 'claimed' AND is_deleted = 0`,
+        [userId, couponId]
+      );
+      await connection.commit();
+      return {
+        success: true,
+        message: "優惠券已保留，請在付款時綁定訂單",
+      };
+    }
+
+    //  查詢訂單 
     const [[order]] = await connection.query(
       `SELECT id, total_price, coupon_id FROM ${orderTable} WHERE id = ? AND user_id = ?`,
       [orderId, userId]
@@ -193,6 +209,7 @@ export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
       throw new Error("此訂單已使用其他優惠券");
     }
 
+    //  查詢優惠券 
     const [[coupon]] = await connection.query(
       `SELECT * FROM coupons WHERE id = ? AND is_deleted = 0`,
       [couponId]
@@ -200,47 +217,46 @@ export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
 
     if (!coupon) throw new Error("優惠券不存在或已刪除");
 
-    //  claimed
+    //  檢查使用者是否已擁有此優惠券 
     const [[couponUsage]] = await connection.query(
-      `SELECT * FROM coupon_usage WHERE user_id = ? AND coupon_id = ? AND status = 'claimed' AND is_deleted = 0`,
+      `SELECT * FROM coupon_usage WHERE user_id = ? AND coupon_id = ? AND status IN ('claimed', 'reserved') AND is_deleted = 0`,
       [userId, couponId]
     );
 
     if (!couponUsage) throw new Error("優惠券無法使用或已使用");
+
+    //  如果優惠券有限定訂單類型，檢查是否匹配 
     if (!coupon.is_global && couponUsage.order_table !== orderTable) {
       throw new Error(
         `此優惠券僅適用於 ${couponUsage.order_table}，不可用於 ${orderTable}`
       );
     }
-    //低蕭
+
+    //  檢查最低消費門檻 
     if (coupon.min_order_value && order.total_price < coupon.min_order_value) {
       throw new Error(`此優惠券需消費滿 ${coupon.min_order_value} 元才可使用`);
     }
-    // 計算折扣後的價格
+
+    //  計算折扣後的價格 
     const orderTotalPrice = order.total_price || 0;
     const discountAmount = Math.min(coupon.value, orderTotalPrice);
-    // 確保折扣不超過總價
-    const finalAmount = orderTotalPrice - discountAmount;
+    const finalAmount = orderTotalPrice - discountAmount; // 確保折扣不超過總價
 
+    //  更新優惠券狀態為「used」 
     await connection.query(
       `UPDATE coupon_usage 
        SET status = 'used', used_at = NOW(), updated_at = NOW(), order_id = ?, order_table = ? 
-       WHERE user_id = ? AND coupon_id = ? AND status = 'claimed' AND is_deleted = 0`,
+       WHERE user_id = ? AND coupon_id = ? AND status IN ('claimed', 'reserved') AND is_deleted = 0`,
       [orderId, orderTable, userId, couponId]
     );
 
-    // 更新折扣金額和最終金額
-    if (orderTable == "hotel_order" || orderTable == "course_orders") {
-      await connection.query(
-        `UPDATE ${orderTable} SET discount_amount = ?, final_amount = ?, coupon_id = ?  WHERE id = ?`,
-        [discountAmount, finalAmount, couponId, orderId]
-      );
-    } else if (orderTable == "yi_orderlist") {
-      await connection.query(
-        `UPDATE yi_orderlist SET discount_amount = ? , final_amount = ?, coupon_id = ? WHERE id = ?`,
-        [discountAmount, finalAmount, couponId, orderId]
-      );
-    }
+    // 更新 `orderTable` 內的 `discount_amount` 和 `final_amount` 
+    await connection.query(
+      `UPDATE ${orderTable} 
+       SET discount_amount = ?, final_amount = ?, coupon_id = ?  
+       WHERE id = ?`,
+      [discountAmount, finalAmount, couponId, orderId]
+    );
 
     await connection.commit();
     return {
@@ -251,11 +267,13 @@ export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
     };
   } catch (error) {
     await connection.rollback();
+    console.error(" 優惠券應用失敗:", error.message); 
     throw new Error(error.message);
   } finally {
     connection.release();
   }
 };
+
 
 export const deleteUserCoupon = async (userId, couponId) => {
   try {
