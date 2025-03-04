@@ -80,7 +80,7 @@ export function useReviewsUpdate({
     }
   }, [formData]);
 
-  console.log(reviewsData?.data);
+  // console.log(reviewsData?.data);
   async function updateReviews(form) {
     let methodType = "PATCH";
     if (reviewsData?.data) {

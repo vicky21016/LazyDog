@@ -29,6 +29,9 @@ function DetailContent() {
   const userID = user?.id;
   const { onAddProduct, productItems } = useCart();
   const {
+    userName,
+    userImg,
+    history,
     width,
     product,
     router,
@@ -112,7 +115,7 @@ function DetailContent() {
     setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
   }, [width]);
 
-  // console.log(reviews);
+  // console.log(user);
   if (error) {
     return (
       <div className="container">
@@ -565,6 +568,18 @@ function DetailContent() {
                     />
                   </div>
                 )}
+                {user?.id > 0 && history && !reviews && (
+                  <div className={`${styles.SetReviews} col-12 col-lg-6`}>
+                    <RateCard
+                      history={history}
+                      rateNow={rateNow}
+                      id={userID}
+                      productID={productID}
+                      user={userName}
+                      img={userImg}
+                    />
+                  </div>
+                )}
               </div>
               <div className={`${styles.RateCardGroup} row g-3`}>
                 {rateData.rate &&
@@ -602,7 +617,7 @@ function DetailContent() {
                     顯示更多評價
                   </button>
                 )}
-              {rateData.rate && rateData.rate.length <= rate && (
+              {rateData.rate && rateData.rate.length < rate && (
                 <button
                   type="button"
                   className={styles.RateMore}

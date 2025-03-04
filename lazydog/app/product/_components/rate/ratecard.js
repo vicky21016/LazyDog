@@ -9,6 +9,7 @@ import { useReviewsUpdate } from "@/hooks/product/use-reviews";
 
 export default function Ratecard({
   rateNow = false,
+  history = false,
   id = "",
   productID = "",
   user = "",
@@ -40,7 +41,7 @@ export default function Ratecard({
 
   return (
     <div className={`${styles.RateCard}`}>
-      {!rateUpdate && (
+      {!rateUpdate && !history && (
         <>
           <div className={styles.RateCardText}>
             <div className={styles.RateCardUser}>
@@ -96,6 +97,62 @@ export default function Ratecard({
         </>
       )}
       {rateUpdate && (
+        <form onSubmit={handleSubmit}>
+          <div className={styles.RateCardText}>
+            <div className={styles.RateCardUser}>
+              <button
+                type="button"
+                onClick={() => {
+                  setTimeout(() => {
+                    router.push("/pages");
+                  }, 100);
+                }}
+              >
+                <img src={`http://localhost:5000/auth/${img}`} alt="" />
+                <h6>{user}</h6>
+                <h6>{rateNow ? "(您)" : ""}</h6>
+              </button>
+              <div className={styles.StarGroup}>
+                <p>評分更新：</p>
+                <StarGroup
+                  rateUpdate={rateUpdate}
+                  rate={rateNum}
+                  newRate={newRate}
+                  setNewRate={setNewRate}
+                />
+              </div>
+            </div>
+            <textarea
+              name="comment"
+              value={formData.comment}
+              onChange={reviewsChange}
+            />
+          </div>
+          <div className={styles.RateCardBtnDate}>
+            <div style={{ width: "47.13px" }}>
+              <button
+                style={{ "white-space": "nowrap" }}
+                type="button"
+                className={styles.UpdateRateBtn}
+                onClick={() => {
+                  setDeleteRate(true);
+                }}
+              >
+                刪除評論
+              </button>
+            </div>
+            {rateNow && (
+              <button type="submit" className={styles.UpdateRateBtn}>
+                更新評論
+              </button>
+            )}
+            <p>
+              {years} {months} {days}
+            </p>
+          </div>
+        </form>
+      )}
+      {history && (
         <form onSubmit={handleSubmit}>
           <div className={styles.RateCardText}>
             <div className={styles.RateCardUser}>
