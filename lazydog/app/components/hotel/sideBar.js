@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef,useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import styles from "@/styles/modules/fontHotelHome.module.css";
 import GoogleMapComponent from "../../components/hotel/GoogleMapComponent";
 import Link from "next/link";
@@ -186,26 +186,28 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
 
   const handleClear = async () => {
     setIsFiltered(false);
-  
+
     if (onClear) {
       onClear();
     }
-  
+
     setSelectedRoomType("");
     setSelectedTags([]);
     setSelectedRating("");
     setIsSearching(true);
-  
+
     await fetchPriceRange();
-  
+
     if (priceSliderRef.current?.noUiSlider) {
       const globalPrice = await getGlobalPriceRange();
-      priceSliderRef.current.noUiSlider.set([globalPrice.min_price, globalPrice.max_price]);
+      priceSliderRef.current.noUiSlider.set([
+        globalPrice.min_price,
+        globalPrice.max_price,
+      ]);
     }
-  
+
     await fetchHotels();
   };
-  
 
   return (
     <>

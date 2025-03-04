@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
 import { useRouter } from "next/navigation";
 
-const HotelCard = ({ image,hotel }) => {
+const HotelCard = ({ image, hotel }) => {
   const router = useRouter();
 
   // 確保 `image` 存在
@@ -10,7 +10,8 @@ const HotelCard = ({ image,hotel }) => {
 
   const goToDetail = () => {
     if (hotel?.id) {
-      router.push(`/hotel-coupon/fonthotelDetail/${hotel.id}/`);    }
+      router.push(`/hotel-coupon/fonthotelDetail/${hotel.id}/`);
+    }
   };
   return (
     <div className="row">
@@ -25,7 +26,13 @@ const HotelCard = ({ image,hotel }) => {
           <p>{hotel.introduce}</p>
         </div>
         <div className={`col-md-3 col-3 ${styles.suPriceBox}`}>
-          <div className={`mb-3 ${styles.suReview}`}>⭐ {hotel.avg_rating}</div>
+          <div className={`mb-3 ${styles.suReview}`}>
+            <img
+              src="/product/font/star-fill.png"
+              style={{ width: "27px", height: "24px" }}
+            />{" "}
+            {hotel.avg_rating}
+          </div>
           {hotel.review_count || 0}則評論
           <button className={`ms-4 ${styles.suBookBtn}`} onClick={goToDetail}>
             查看價格
