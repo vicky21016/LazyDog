@@ -55,7 +55,7 @@ export default function CartListPayPage(props) {
   } = useCart();
   const totalAmount = totalProductAmount + totalCourseAmount + totalHotelAmount;
 
-  // 根據購物車類型選擇 `orderTable`
+  // 根據購物車類型選擇 `orderTable`//看要不要拔除
   let orderTable = "hotel_order"; // 默認為 hotel_order
   if (productItems.length > 0) orderTable = "yi_orderlist";
   if (courseItems.length > 0) orderTable = "course_orders";
@@ -365,17 +365,7 @@ export default function CartListPayPage(props) {
                         const selectedId = e.target.value;
                         console.log("Selected Coupon ID:", selectedId);
 
-                        setSelectedCoupon(selectedId); // ✅ 確保這裡是 `coupons.id`
-
-                        const discount = calculateDiscount(selectedId);
-                        console.log("Calculated Discount:", discount);
-
-                        if (typeof setDiscountAmount === "function") {
-                          setDiscountAmount(discount);
-                          console.log("Updated Discount Amount:", discount);
-                        } else {
-                          console.error("setDiscountAmount is not a function");
-                        }
+                        setSelectedCoupon(selectedId); //測試
                       }}
                     >
                       <option value="">選擇優惠券</option>
