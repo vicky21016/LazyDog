@@ -182,7 +182,7 @@ export default function Filter({ filterChange }) {
         </thead>
       </table>
       {/* <div className={styles.con1}>廣告</div> */}
-      {/* <figure>
+      <figure>
         <Link href="/product/list">
           <img
             src="/product/DM/DM_aside.png"
@@ -190,7 +190,7 @@ export default function Filter({ filterChange }) {
             className={`${styles.imgFluid}`}
           />
         </Link>
-      </figure> */}
+      </figure>
     </aside>
   );
 }

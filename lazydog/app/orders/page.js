@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-// import styles from "../../styles/modules/operatorCamera.module.css";
+import styles from "../../styles/modules/operatorCamera.module.css";
 import couponStyles from "./userCoupon.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
@@ -11,6 +11,7 @@ import Link from "next/link";
 import Product from "./_components/product";
 import Course from "./_components/course";
 import Hotel from "./_components/hotel";
+import Bread from "../components/teacher/breadcrumb";
 import { useOrder } from "@/hooks/use-order";
 export default function ProfileCouponPage(props) {
   const router = useRouter();
@@ -31,12 +32,23 @@ export default function ProfileCouponPage(props) {
   return (
     <>
       <Header />
-      <div className="container mt-5">
-        <div className="row">
+      <div className={`container ${styles.height}`}>
+        <Bread
+          links={[
+            { label: "首頁 ", href: "/" },
+
+            {
+              label: "個人資料",
+              href: "/pages",
+              active: true,
+            },
+          ]}
+        />
+        <div className="row mt-4">
           {/* 左邊*/}
-          <div className="d-none d-md-block col-md-3">
-            <MyMenu />
-          </div>
+
+          <MyMenu />
+
           {/* 右邊 */}
           <div className=" col-12 col-md-9 coupon-section">
             <h5 className="mb-3">我的訂單</h5>
