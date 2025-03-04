@@ -100,12 +100,18 @@ function DetailContent() {
   const [spec, setSpec] = useState(false);
   const [also, setAlso] = useState(0);
   const [hot, setHot] = useState(0);
-
+  const [rateNow, setRateNow] = useState(false);
+  useEffect(() => {
+    if (user?.id > 0) {
+      setRateNow(true);
+    }
+  }, [user?.id]);
   useEffect(() => {
     setAlso(0);
     setHot(0);
     setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
   }, [width]);
+
   console.log(reviews);
   return (
     <div className={`${styles.Container} container`}>
@@ -538,6 +544,7 @@ function DetailContent() {
                 {user?.id > 0 && reviews && (
                   <div className={`${styles.SetReviews} col-12 col-lg-6`}>
                     <RateCard
+                      rateNow={rateNow}
                       user={reviews.user}
                       img={reviews.userImg}
                       rate={reviews.rating}
