@@ -31,9 +31,7 @@ export default function CartListPayPage(props) {
     created_at: "",
     is_deleted: "",
   });
-  const [hotelOrder, setHotelOrder] = useState({
-    orderID: `HT${new Date().getTime()}`,
-  });
+  const [hotelOrder, setHotelOrder] = useState({});
 
   const [courseOrder, setCourseOrder] = useState({});
 
@@ -59,6 +57,7 @@ export default function CartListPayPage(props) {
   const totalAmount = totalProductAmount + totalCourseAmount + totalHotelAmount;
 
   // 根據購物車類型選擇 `orderTable`//看要不要拔除 //看要不要拔除
+  let orderTable = "";
   if (hotelItems.length > 0) orderTable = "hotel_order";
   if (productItems.length > 0) orderTable = "yi_orderlist";
   if (courseItems.length > 0) orderTable = "course_orders";
