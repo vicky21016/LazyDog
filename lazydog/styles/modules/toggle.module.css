@@ -35,8 +35,11 @@
 
 /* teacher */
 .server {
-  background-image: url('/teacher-img/bag.png');
-  height: 450px;
+  background-image: url('/teacher-img/2.png');
+  background-size: cover;  
+  /* background-position: center;  */
+  background-repeat: no-repeat;
+  height: 550px;
   justify-content: center;
   align-content: center;
   color: white;
@@ -234,10 +237,10 @@ top: -100px;
   padding: 30px;
  }
  .server{
-  font-size: 36px;
+  font-size: 24px;
     background-size: 100% auto;
     background-position: center;
-    height: 180px;
+    height: 140px;
  }
 }
 
