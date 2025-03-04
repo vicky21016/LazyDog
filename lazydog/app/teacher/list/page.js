@@ -68,6 +68,19 @@ export default function App() {
     <>
       <Header />
       <div className="lumi-all-wrapper">
+        <div className={`${styles.collapseAside} d-lg-none`}>
+          <div className={`${styles.collapseAsideContent}`}>
+            {/* <button className={styles.right}> */}
+            
+              <img
+                src={`/product/font/right(orange).png`}
+                onClick={() => setFilterOpen(!filterOpen)}
+                className={`${styles.collapseAsideBtn} btn`}
+              />
+            {/* </button> */}
+            
+          </div>
+        </div>
         <div className={styles.container}>
           <section className={style1.DmArea}>
             <a href="">
@@ -92,12 +105,7 @@ export default function App() {
               </div>
             </div>
           </section>
-          <button className={styles.right}>
-            <img
-              src={`/product/font/right(orange).png`}
-              onClick={() => setFilterOpen(!filterOpen)}
-            />
-          </button>
+
           <section className={styles.pdArea}>
             <div className="row">
               {/* 桌機版篩選選單 */}
@@ -111,13 +119,16 @@ export default function App() {
                   filterOpen ? styles.showFilter : ""
                 }`}
               >
-                <Filter filterChange={filter} />
-                <button
+                {/* <button
                   className={styles.closeButton}
                   onClick={() => setFilterOpen(false)}
                 >
-                  關閉
-                </button>
+                  <img
+                    src={`/product/font/right(orange).png`}
+                    onClick={() => setFilterOpen(!filterOpen)}
+                  />
+                </button> */}
+                <Filter filterChange={filter} />
               </div>
 
               {/* 師資列表 */}

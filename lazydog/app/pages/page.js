@@ -126,10 +126,10 @@ export default function Menu() {
       </div>
       <div className="row">
         <div className={`${style.wrapper}`}>
-          <div className="d-none d-md-block col-md-3">
+          
             <MyMenu />
-          </div>
-          <div className="col-12 col-md-9">
+          
+          <div className="col-12 col-lg-9">
             <div className={`${styles["container"]}`}>
               <h4 className={`mb-4 ${styles["information"]}`}>基本資料</h4>
               <form

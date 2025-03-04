@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import hotelStyles from "../../../../styles/modules/operatorHotel.module.css";
+import styles from "../../../../styles/modules/operatorCamera.module.css";
 import { useHotel } from "@/hooks/useHotel";
 import { useRouter, useParams } from "next/navigation";
 import { softDeleteHotel } from "@/services/hotelService";
@@ -84,7 +85,7 @@ export default function HotelDetailPage() {
   return (
     <>
       <Header />
-      <div className={`container my-5 ${isDeleted ? "opacity-50" : ""}`}>
+      <div className={`container ${styles.wrapper} ${isDeleted ? "opacity-50" : ""}`}>
         <div className="row">
           <My />
 
