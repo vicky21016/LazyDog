@@ -45,7 +45,7 @@ export const createCommentS = async (createComment) => {
 
         // 執行 SQL 刪除留言
         const [result] = await connection.query(
-            `DELETE FROM comment WHERE id = ?`, 
+            `UPDATE comment SET is_deleted = 1 WHERE id = ? AND is_deleted = 0`, 
             [commentId]
         );
 

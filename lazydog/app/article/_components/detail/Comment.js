@@ -6,10 +6,14 @@ import { Dropdown, Modal, Button } from "react-bootstrap";
 import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
+// import useArticles from "@/hooks/useArticle";
+import useComment from "@/hooks/useComment";
 
-export default function Comment({ content, author, author_img }) {
+export default function Comment({ content, author, author_img, id }) {
     const [showModal, setShowModal] = useState(false);
     const { user } = useAuth();
+    const { deleteComment, loading } = useComment(); // 從 useComment 鉤子中獲取 deleteComment
+    console.log(id);
 
     // 控制 Modal 的顯示與隱藏
     const handleClose = () => setShowModal(false);
@@ -18,7 +22,8 @@ export default function Comment({ content, author, author_img }) {
     // 刪除評論
     const handleDelete = async () => {
         try {
-            // await deleteArticle(id); // 調用刪除 API（需實現）
+            await deleteComment(id); // 調用刪除 API
+            console.log(id)
             handleClose(); // 關閉 Modal
             window.location.reload(); // 重新加載頁面
         } catch (error) {
@@ -38,13 +43,13 @@ export default function Comment({ content, author, author_img }) {
                     </div>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginLeft: "2rem", width: "100%" }}>
-                    <div style={{width:'95%'}}>
+                    <div style={{ width: '95%' }}>
                         {content}
                     </div>
 
                     {/* 條件渲染 Dropdown */}
                     {user?.name === author && (
-                        <Dropdown >
+                        <Dropdown>
                             <Dropdown.Toggle
                                 variant="light"
                                 id="dropdown-basic"
@@ -56,14 +61,6 @@ export default function Comment({ content, author, author_img }) {
                                 className={`${styles.customDropdownMenu}`}
                                 style={{ width: "25px", backgroundColor: "orange" }}
                             >
-                                <Dropdown.Item className={`${styles.item}`}>
-                                    <Link
-                                        className={`${styles.link2}`}
-                                        href="" // 替換為實際的編輯頁面路徑
-                                    >
-                                        編輯
-                                    </Link>
-                                </Dropdown.Item>
                                 <Dropdown.Item
                                     className={`${styles.item}`}
                                     onClick={handleShow}
@@ -86,8 +83,8 @@ export default function Comment({ content, author, author_img }) {
                     <Button variant="secondary" onClick={handleClose}>
                         取消
                     </Button>
-                    <Button variant="danger" onClick={handleDelete}>
-                        確認刪除
+                    <Button variant="danger" onClick={handleDelete} disabled={loading}>
+                        {loading ? "刪除中..." : "確認刪除"}
                     </Button>
                 </Modal.Footer>
             </Modal>

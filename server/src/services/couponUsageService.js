@@ -162,8 +162,6 @@ export const getUserCoupons = async (userId, status, type) => {
 };
 
 
-
-
 export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
   const connection = await pool.getConnection();
   try {

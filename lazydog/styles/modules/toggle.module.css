@@ -35,11 +35,16 @@
 
 /* teacher */
 .server {
+
+   background-image: url(../../public/teacher-img/bag.png); 
+  height: 450px;
+
   background-image: url('/teacher-img/2.png');
   background-size: cover;  
   /* background-position: center;  */
   background-repeat: no-repeat;
   height: 550px;
+
   justify-content: center;
   align-content: center;
   color: white;

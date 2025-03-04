@@ -45,7 +45,9 @@ export default function Header(props) {
         <ul className={styles["lumi-ul"]}>
           <div className={styles["dropdown"]}>
             <li>
-              <Link href="/home">關於我們</Link>
+              <Link className={styles.LumiSB} href="/home">
+                關於我們
+              </Link>
             </li>
             <div className={styles["dropdown-content"]}>
               <Link
@@ -64,7 +66,10 @@ export default function Header(props) {
           </div>
           <div className={styles["dropdown"]}>
             <li>
-              <Link href="/product/list" className={styles["dropbtn"]}>
+              <Link
+                href="/product/list"
+                className={`${styles["dropbtn"]} ${styles.LumiSB}`}
+              >
                 寵物用品
               </Link>
             </li>
@@ -126,11 +131,16 @@ export default function Header(props) {
             </div>
           </div>
           <li>
-            <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>
+            <Link className={styles.LumiSB} href="/hotel-coupon/fonthotelHome">
+              寵物旅館
+            </Link>
           </li>
           <div className={styles["dropdown"]}>
             <li>
-              <Link href="/teacher" className={styles["dropbtn"]}>
+              <Link
+                href="/teacher"
+                className={`${styles["dropbtn"]} ${styles.LumiSB}`}
+              >
                 寵物課程
               </Link>
             </li>
@@ -150,7 +160,9 @@ export default function Header(props) {
             </div>
           </div>
           <li>
-            <Link href="/article/list">毛孩文章</Link>
+            <Link className={styles.LumiSB} href="/article/list">
+              毛孩文章
+            </Link>
           </li>
         </ul>
       </nav>

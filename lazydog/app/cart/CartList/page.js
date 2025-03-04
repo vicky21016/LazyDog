@@ -68,7 +68,7 @@ export default function CartListPage(props) {
           <img src="/cart/cattlist.png" />
         </div>
 
-        <div className="container">
+        <div className={`container ${styles.height}`}>
           <Breadcrumb
             links={[
               { label: "首頁 ", href: "/" },
@@ -87,7 +87,9 @@ export default function CartListPage(props) {
                   <tbody>
                     {/* 顯示商品 */}
                     {productItems.map((cartItem) => {
-                      const imgName = cartItem?.img.split(",");
+                      const imgName = cartItem?.img
+                        ? cartItem.img.split(",")
+                        : [""];
                       return (
                         <tr key={cartItem.id}>
                           <td className={styles.table}>
@@ -223,7 +225,7 @@ export default function CartListPage(props) {
             </table>
 
             {/* 顯示摘要區 */}
-            <aside className={`${styles.aside} col-md-4  mb-5`}>
+            <aside className={`${styles.aside} col-md-3  mb-5`}>
               <div className={`${styles.summary} aside-card mb-5`}>
                 <h5 className="mb-4">訂單明細</h5>
                 <div
@@ -236,7 +238,7 @@ export default function CartListPage(props) {
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>課程小計</span>
-                  {/* <span>{`NT$ ${totalCourseAmount}`}</span> */}
+                  <span>{`NT$ ${totalCourseAmount}`}</span>
                 </div>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
@@ -273,8 +275,8 @@ export default function CartListPage(props) {
                   商品結帳
                 </button> */}
                 <Link
-                  style={{ backgroundColor: "#f2662b", color: "#fff" }}
-                  className="btn w-50"
+                  
+                  className={`btn w-50 ${styles.btn}`}
                   href={{
                     pathname: "/cart/CartListPay",
                     // query: {

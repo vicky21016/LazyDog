@@ -34,6 +34,9 @@ export default function CartListPayPage(props) {
   const [hotelOrder, setHotelOrder] = useState({
     orderID: `HT${new Date().getTime()}`,
   });
+
+  const [courseOrder, setCourseOrder] = useState({});
+
   // 檢查是否登入
   const { isAuth } = useAuth();
   // 建立ref，用來放置form表單
@@ -55,8 +58,8 @@ export default function CartListPayPage(props) {
   } = useCart();
   const totalAmount = totalProductAmount + totalCourseAmount + totalHotelAmount;
 
-  // 根據購物車類型選擇 `orderTable`//看要不要拔除
-  let orderTable = "hotel_order"; // 默認為 hotel_order
+  // 根據購物車類型選擇 `orderTable`//看要不要拔除 //看要不要拔除
+  if (hotelItems.length > 0) orderTable = "hotel_order";
   if (productItems.length > 0) orderTable = "yi_orderlist";
   if (courseItems.length > 0) orderTable = "course_orders";
 
@@ -77,7 +80,8 @@ export default function CartListPayPage(props) {
     user?.id
   );
 
-  const { createProductOrder, createHotelOrder } = useOrder();
+  const { createProductOrder, createHotelOrder, createCourseOrder } =
+    useOrder();
   // 確保商品資料正確
   const itemsValue = `
   ${productItems.map((item) => `${item.name} x ${item.count}`).join(", ")}#
@@ -147,25 +151,26 @@ export default function CartListPayPage(props) {
       const payForm = createEcpayForm(resData.data.params, resData.data.action);
 
       if (isDev) console.log(payForm);
-      if (productItems.length > 0) {
-        const newOrder = {
-          user_id: user.id,
-          orderID: `PD${new Date().getTime()}`,
-          coupon_id: "",
-          discount_amount: 0,
-          productID_list: productItems.map((item) => item.productID),
-          price_list: productItems.map((item) => item.price),
-          amount_list: productItems.map((item) => item.count),
-          total_price: totalProductAmount,
-          final_amount: totalProductAmount,
-          created_at: new Date(),
-          is_deleted: 0,
-          payment_status: "Unpaid",
-        };
-        await setProductOrder(newOrder);
-        await createProductOrder(newOrder);
-      }
+
       if (window.confirm("確認要導向至ECPay(綠界金流)進行付款?")) {
+        if (productItems.length > 0) {
+          const newOrder = {
+            user_id: user.id,
+            orderID: `PD${new Date().getTime()}`,
+            coupon_id: "",
+            discount_amount: 0,
+            productID_list: productItems.map((item) => item.productID),
+            price_list: productItems.map((item) => item.price),
+            amount_list: productItems.map((item) => item.count),
+            total_price: totalProductAmount,
+            final_amount: totalProductAmount,
+            created_at: new Date(),
+            is_deleted: 0,
+            payment_status: "Unpaid",
+          };
+          await setProductOrder(newOrder);
+          await createProductOrder(newOrder);
+        }
         if (courseItems.length > 0) {
           courseItems.forEach(async (courseItem) => {
             const newOrder = {
@@ -191,8 +196,8 @@ export default function CartListPayPage(props) {
               hotel_id: hotelItem.id, // 假設您hotel有hotel_id
               user_id: user.id,
               dog_count: hotelItem.count, // 假設您hotel有dog_count
-              check_in: "null", // 假設您hotel有check_in
-              check_out: "null", // 假設您hotel有check_out
+              check_in: hotelItem.checkInDate, // 假設您hotel有check_in
+              check_out: hotelItem.checkOutDate, // 假設您hotel有check_out
               total_price: totalHotelAmount,
               payment_status: "Unpaid",
               remark: "",

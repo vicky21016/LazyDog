@@ -32,8 +32,7 @@ export function CartProvider({ children }) {
   };
 
   // 課程增減邏輯
-  const onAddCourse = (course, session, time) => {
- 
+  const onAddCourse = (course) => {
     const foundIndex = courseItems.findIndex((v) => v.id === course.id);
     if (foundIndex !== -1) {
       const nextItems = courseItems.map((v) =>
@@ -55,11 +54,11 @@ export function CartProvider({ children }) {
       );
       setHotelItems(nextItems);
     } else {
-      const newItem = { 
-        ...hotel, 
-        count: amount, 
-        checkInDate, 
-        checkOutDate 
+      const newItem = {
+        ...hotel,
+        count: amount,
+        checkInDate,
+        checkOutDate,
       };
       setHotelItems([newItem, ...hotelItems]);
     }

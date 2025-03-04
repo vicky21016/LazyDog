@@ -17,7 +17,7 @@ import Header from "../../../components/layout/header";
 export default function ArticleDetail() {
   const { id } = useParams(); // 取得網址中的文章 ID
   const { articles, article, comments, getArticle, loading, error } = useArticles()
-  // console.log(comments)
+  console.log(comments)
   
   
 
@@ -37,7 +37,7 @@ export default function ArticleDetail() {
   return (
     <>
       <Header />
-      <div className="container" style={{ marginTop: '70px' }}>
+      <div className="container" style={{ marginTop: '100px' }}>
         <nav
           className={`my-4 ${styles.breadcrumb}`}
           style={{ "--bs-breadcrumb-divider": ">" }}
@@ -64,7 +64,7 @@ export default function ArticleDetail() {
         <Content article={article} /> {/* 傳遞文章資料給 Content 組件 */}
 
         {/* 留言區 */}
-        <div className="chat" style={{ background: "#FFF6E8", padding: "0.5px", marginTop: "150px" }}>
+        <div className="chat" style={{ background: "#FFF6E8", padding: "15px", marginTop: "150px", borderRadius:'20px',border:'.1px solid grey '}}>
           <h3 className="mt-3 ms-3">留言</h3>
           <ul className="list-unstyled">
             {comments.length === 0 ? (
@@ -76,6 +76,7 @@ export default function ArticleDetail() {
                   content={comment.content}
                   author={comment.author}
                   author_img={comment.author_img}
+                  id={comment.id}
                 />
               ))
             )}
@@ -101,7 +102,7 @@ export default function ArticleDetail() {
 
         {/* 延伸閱讀 */}
         <div className="more-read">
-          <h3 className="mt-5">延伸閱讀</h3>
+          <h3 className="mt-5 mb-4">延伸閱讀</h3>
           <div className="row">
             {articles
               .sort(() => Math.random() - 0.5) // 亂數排序
