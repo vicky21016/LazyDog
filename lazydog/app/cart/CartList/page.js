@@ -188,7 +188,13 @@ export default function CartListPage(props) {
                         <td className={styles.table}>
                           <img src={cartItem.imageUrl} alt={cartItem.name} />
                         </td>
-                        <td>{cartItem.name}</td>
+                        <td>
+                          {cartItem.name}
+                          <br />
+                          入住: {cartItem.checkInDate || "未填寫"}
+                          <br />
+                          退房: {cartItem.checkOutDate || "未填寫"}
+                        </td>
                         <td>{cartItem.price}</td>
                         <td className={`${styles.Btn}`}>
                           <button onClick={() => onIncrease(cartItem.id)}>
@@ -201,8 +207,6 @@ export default function CartListPage(props) {
                         </td>
                         <td>{cartItem.count * cartItem.price}</td>
                         {/* 新增日期顯示 */}
-                        {/* <td>{cartItem.checkInDate}</td>
-                        <td>{cartItem.checkOutDate}</td> */}
                         <td>
                           <button
                             style={{
@@ -275,7 +279,6 @@ export default function CartListPage(props) {
                   商品結帳
                 </button> */}
                 <Link
-                  
                   className={`btn w-50 ${styles.btn}`}
                   href={{
                     pathname: "/cart/CartListPay",

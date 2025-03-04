@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import moment from "moment";
 import Swal from "sweetalert2"; // 導入 SweetAlert
 import "../../../../html/hotel-coupon/css/fontHotelHome.css";
 import hotelStyles from "../../../../styles/modules/fontHotelDetail.module.css";
@@ -25,32 +26,47 @@ import RoomSelection from "../../../components/hotel/roomSelection";
 export default function HotelDetailPage({ params }) {
   const { id } = params;
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // 從 URL 中提取 checkIn 和 checkOut
+  const initialCheckInDate = searchParams.get("checkInDate") || "";
+  const initialCheckOutDate = searchParams.get("checkOutDate") || "";
+  const initialQuantity = searchParams.get("quantity") || 1;
+
+  // 狀態管理
   const [hotel, setHotel] = useState(null);
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1);
-  const [isFiltered, setIsFiltered] = useState(false);
+  const [quantity, setQuantity] = useState(initialQuantity);
   const [isFavorite, setIsFavorite] = useState(false);
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
+  const [checkInDate, setCheckInDate] = useState(initialCheckInDate);
+  const [checkOutDate, setCheckOutDate] = useState(initialCheckOutDate);
 
-  // 確保 `sessionStorage` 只在瀏覽器內部操作
-  const getInitialSearchParams = () => {
-    if (typeof window !== "undefined") {
-      const storedParams = sessionStorage.getItem("searchParams");
-      return storedParams ? JSON.parse(storedParams) : {};
-    }
-    return {};
-  };
+  const checkInDateFromUrl = searchParams.get("checkInDate") || "";
+  const checkOutDateFromUrl = searchParams.get("checkOutDate") || "";
+  const quantityFromUrl = searchParams.get("quantity") || 1;
 
-  const [searchParams, setSearchParams] = useState(getInitialSearchParams);
-
+  // 確保 state 也更新
+  useEffect(() => {
+    setCheckInDate(checkInDateFromUrl);
+    setCheckOutDate(checkOutDateFromUrl);
+    setQuantity(quantityFromUrl);
+  }, [checkInDateFromUrl, checkOutDateFromUrl, quantityFromUrl]);
   useEffect(() => {
     if (typeof window !== "undefined") {
-      sessionStorage.setItem("searchParams", JSON.stringify(searchParams));
-    }
-  }, [searchParams]);
+      const storedParams = JSON.parse(sessionStorage.getItem("searchParams"));
 
+      if (storedParams) {
+        if (!checkInDate) setCheckInDate(storedParams.checkInDate || "");
+        if (!checkOutDate) setCheckOutDate(storedParams.checkOutDate || "");
+        if (!quantity) setQuantity(storedParams.quantity || 1);
+      }
+    }
+  }, []);
+
+  // 使用 useLocationSelector 獲取 location
   const {
     location,
     locationModalRef,
@@ -62,17 +78,19 @@ export default function HotelDetailPage({ params }) {
     clearLocation,
   } = useLocationSelector();
 
+  // 獲取旅館資料
   useEffect(() => {
     if (!id) return;
     fetchHotelData();
   }, [id]);
 
+  // 獲取旅館資料的函數
   const fetchHotelData = async () => {
     setLoading(true);
     try {
       const hotelData = await getHotelById(id);
       if (!hotelData) {
-        console.error(" Hotel data is null");
+        console.error("Hotel data is null");
         return;
       }
       setHotel(hotelData);
@@ -85,7 +103,7 @@ export default function HotelDetailPage({ params }) {
 
       // 取得 RoomType
       const roomTypes = await getHotelRoomById(id);
-      if (!Array.isArray(roomTypes) || roomTypes.length == 0) {
+      if (!Array.isArray(roomTypes) || roomTypes.length === 0) {
         console.warn("無房型資料");
         setRooms([]);
         return;
@@ -104,7 +122,7 @@ export default function HotelDetailPage({ params }) {
       );
       setRooms(roomData);
     } catch (error) {
-      console.error(" 獲取旅館資訊失敗:", error);
+      console.error("獲取旅館資訊失敗:", error);
       setRooms([]);
     } finally {
       setLoading(false);
@@ -113,14 +131,14 @@ export default function HotelDetailPage({ params }) {
 
   // 處理搜尋邏輯
   const handleSearch = async (newParams) => {
-    setIsFiltered(true); //  加入這行修正
-    const updatedParams = { ...searchParams, ...newParams };
+    const updatedParams = {
+      checkInDate,
+      checkOutDate,
+      quantity,
+      ...newParams,
+    };
 
-    setSearchParams(updatedParams);
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("searchParams", JSON.stringify(updatedParams));
-    }
-
+    // 更新 URL 參數
     const paramsString = new URLSearchParams(
       Object.entries(updatedParams)
         .filter(([_, value]) => value !== null && value !== undefined)
@@ -187,6 +205,10 @@ export default function HotelDetailPage({ params }) {
         clearLocation={clearLocation}
         setQuantity={setQuantity}
         onSearch={handleSearch}
+        checkInDate={checkInDate}
+        checkOutDate={checkOutDate}
+        onCheckInDateChange={setCheckInDate}
+        onCheckOutDateChange={setCheckOutDate}
       />
       {/* 簡介 */}
       <div className="container mt-5">
@@ -225,7 +247,10 @@ export default function HotelDetailPage({ params }) {
                     onClick={handleFavorite} // 綁定點擊事件
                   ></i>
                 </h3>
-
+                {/* <p>入住時間: {checkInDate}</p>
+                <p>退房時間: {checkOutDate}</p>
+                <p>數量: {quantity}</p> */}
+                {/* 測試用 */}
                 <p className={hotelStyles.suIntroduce}>
                   {hotel.introduce || "暫無介紹"}
                 </p>
@@ -233,13 +258,17 @@ export default function HotelDetailPage({ params }) {
             </div>
 
             {/* 房型選擇 */}
-            <RoomSelection hotelId={id} />
+            <RoomSelection
+              hotelId={id}
+              checkIn={checkInDate}
+              checkOut={checkOutDate}
+            />
           </>
         ) : (
           <p className="text-center">飯店不存在</p>
         )}
       </div>
-      {/* 我們的努力 */} {/* KEEP */}
+      {/* 我們的努力 */}
       <div className={hotelStyles.suEffortSection}>
         <div className="container text-center">
           <h2 className={hotelStyles.suEffortTitle}>我們的努力，看的見</h2>
@@ -274,8 +303,6 @@ export default function HotelDetailPage({ params }) {
           </div>
         </div>
       </div>
-      {/* KEEP */}
-      {/* KEEP */}
       {/* Google 地圖 */}
       <div className={hotelStyles.suMapContainer}>
         <h1 className="map-title text-center mt-5">

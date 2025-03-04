@@ -185,12 +185,19 @@ export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
 
     //  如果沒有 `orderId`，先標記優惠券為「reserved」，等付款時再綁定 
     if (!orderId) {
-      await connection.query(
+      const [updateResult] = await connection.query(
         `UPDATE coupon_usage 
-         SET status = 'reserved', used_at = NOW(), updated_at = NOW()
-         WHERE user_id = ? AND coupon_id = ? AND status = 'claimed' AND is_deleted = 0`,
+         SET status = 'reserved', used_at = NOW(), updated_at = NOW() 
+         WHERE user_id = ? AND coupon_id = ? 
+           AND status IN ('claimed', 'reserved') 
+           AND is_deleted = 0`,
         [userId, couponId]
       );
+
+      console.log("更新優惠券狀態為 reserved，影響行數:", updateResult.affectedRows);
+      if (updateResult.affectedRows === 0) {
+        throw new Error("沒有更新任何優惠券，請檢查條件是否符合");
+      }
       await connection.commit();
       return {
         success: true,
@@ -249,15 +256,21 @@ export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
        WHERE user_id = ? AND coupon_id = ? AND status IN ('claimed', 'reserved') AND is_deleted = 0`,
       [orderId, orderTable, userId, couponId]
     );
-
+    console.log("更新優惠券狀態為 used，影響行數:", couponUpdateResult.affectedRows);
+    if (couponUpdateResult.affectedRows === 0) {
+      throw new Error("優惠券狀態更新失敗，請檢查條件是否符合");
+    }
     // 更新 `orderTable` 內的 `discount_amount` 和 `final_amount` 
-    await connection.query(
+    const [orderUpdateResult] = await connection.query(
       `UPDATE ${orderTable} 
        SET discount_amount = ?, final_amount = ?, coupon_id = ?  
        WHERE id = ?`,
       [discountAmount, finalAmount, couponId, orderId]
     );
-
+    console.log("更新訂單折扣，影響行數:", orderUpdateResult.affectedRows);
+    if (orderUpdateResult.affectedRows === 0) {
+      throw new Error("訂單折扣更新失敗，請檢查條件是否符合");
+    }
     await connection.commit();
     return {
       success: true,
