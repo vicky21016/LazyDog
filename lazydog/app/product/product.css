@@ -15,8 +15,8 @@
   --rice: #fff6e8;
   --Gray: #bcbcbc;
   --gray: #bcbcbc;
-  /* scrollbar-width: thin; */
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  /* scrollbar-width: none; */
   scrollbar-color: var(--Orange) var(--White);
 
   ul {

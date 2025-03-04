@@ -5,21 +5,10 @@ import styles from "./category.module.css";
 import Aside from "../../_components/aside/aside";
 import Link from "next/link";
 import Card from "../../_components/card/card";
-import {
-  FetchCategoryProvider,
-  useCategoryFetch,
-} from "@/hooks/product/use-fetch";
+import { useCategoryFetch } from "@/hooks/product/use-fetch";
 import { useFavorite } from "@/hooks/product/use-favorite";
 
 export default function CategoryPage() {
-  return (
-    <FetchCategoryProvider>
-      <CategoryContent />
-    </FetchCategoryProvider>
-  );
-}
-
-function CategoryContent() {
   const {
     width,
     products,
@@ -75,11 +64,9 @@ function CategoryContent() {
             id="collapseWidthExample"
           >
             <Aside
-              newUrl={newUrl}
               changeUrl={changeUrl}
               keyword={keyword}
               setKeyword={setKeyword}
-              setPageNow={setPageNow}
               minPrice={minPrice}
               maxPrice={maxPrice}
               setMaxPrice={setMaxPrice}
@@ -259,11 +246,9 @@ function CategoryContent() {
         <section className={styles.PdArea}>
           <div className="d-none d-lg-flex">
             <Aside
-              newUrl={newUrl}
               changeUrl={changeUrl}
               keyword={keyword}
               setKeyword={setKeyword}
-              setPageNow={setPageNow}
               minPrice={minPrice}
               maxPrice={maxPrice}
               setMaxPrice={setMaxPrice}

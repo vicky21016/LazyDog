@@ -3,20 +3,28 @@ import { useState, useEffect } from "react";
 
 const useScreenSize = () => {
   const [screenSize, setScreenSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: 0,
+    height: 0,
   });
 
   useEffect(() => {
-    const handleResize = () => {
-      setScreenSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setScreenSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+      // 初始化螢幕大小
+      handleResize();
+
+      // 監聽螢幕大小變化
+      window.addEventListener("resize", handleResize);
+
+      // 清理事件監聽器
+      return () => window.removeEventListener("resize", handleResize);
+    }
   }, []);
 
   return screenSize;

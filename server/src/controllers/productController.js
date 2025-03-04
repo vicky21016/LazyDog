@@ -13,6 +13,9 @@ import {
   updateItemInfo,
   deleteFavoriteInfo,
   deleteItemInfo,
+  getAllReviews,
+  createNewReviews,
+  updateReviewsInfo,
 } from "../services/productService.js";
 
 export const getAll = async (req, res) => {
@@ -330,7 +333,7 @@ export const updateFavorite = async (req, res) => {
     if (product.affectedRows == 0) {
       res.status(200).json({
         status: "success",
-        message: `收藏資料更新功，無新增資料`,
+        message: `收藏資料更新成功，無新增資料`,
       });
     } else {
       res.status(200).json({
@@ -568,6 +571,157 @@ export const deleteItem = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const getReviews = async (req, res) => {
+  try {
+    const { userID } = req.query;
+    if (!userID) {
+      return res.status(401).json({
+        status: "error",
+        message: "請從正規管道進入查詢評論列表頁面",
+      });
+    }
+    const reviews = await getAllReviews(userID);
+    if (!reviews.length) {
+      res.status(200).json({
+        status: "success",
+        message: `用戶ID：${userID} 查詢評論列表成功，目前資料庫無評論資料`,
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        data: reviews,
+        message: `用戶ID：${userID} 查詢評論列表成功，共${reviews.length}筆資料`,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const createReviews = async (req, res) => {
+  try {
+    const { userID, productID, rating, comment } = req.body;
+    if (!userID) {
+      return res.status(401).json({
+        status: "error",
+        message: "請從正規管道進入新增評論頁面",
+      });
+    }
+    if (productID !== "") {
+      if (!productID) throw new Error("請提供商品編號");
+      const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
+      if (!regForPD.test(productID)) {
+        return connectError(req, res);
+      }
+    }
+    const product = await createNewReviews(userID, productID, rating, comment);
+    if (product.affectedRows == 0) {
+      throw new Error("新增評論失敗");
+    }
+    res.status(201).json({
+      status: "success",
+      message: `用戶ID：${userID} 新增評論成功`,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const updateReviews = async (req, res) => {
+  try {
+    const { userID, productID, rating, comment, good, isDeleted } = req.body;
+    if (!userID) {
+      return res.status(401).json({
+        status: "error",
+        message: "請從正規管道進入更新收藏頁面",
+      });
+    }
+    if (productID !== "") {
+      if (!productID) throw new Error("請提供商品編號");
+      const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
+      if (!regForPD.test(productID)) {
+        return connectError(req, res);
+      }
+    }
+    const updateFields = [];
+    const value = [];
+    const fieldNames = [
+      "rating",
+      "comment",
+      "good",
+      "is_deleted",
+      "updated_at",
+    ];
+    const updateContent = [rating, comment, good, isDeleted, userID, productID];
+    for (let i = 0; i < updateContent.length; i++) {
+      if (updateContent[i]) {
+        if (i == 4) {
+          updateFields.push(`${fieldNames[i]} = ?`);
+          value.push(new Date().toISOString());
+          value.push(updateContent[i]);
+        } else if (i == 5) {
+          value.push(updateContent[i]);
+        } else {
+          updateFields.push(`${fieldNames[i]} = ?`);
+          value.push(updateContent[i]);
+        }
+      }
+    }
+    // console.log(updateFields, value);
+    const product = await updateReviewsInfo(updateFields, value);
+    if (product.affectedRows == 0) {
+      res.status(200).json({
+        status: "success",
+        message: `評論資料更新成功，無新增資料`,
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        message: `用戶ID：${userID} 更新評論成功`,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// export const softDeleteReviews = async (req, res) => {
+//   try {
+//     const { userID, productIDlist } = req.body;
+//     if (!userID) {
+//       return res.status(401).json({
+//         status: "error",
+//         message: "請從正規管道進入更新收藏頁面",
+//       });
+//     }
+//     console.log(userID);
+//     let isDeleted = 0;
+//     if (productIDlist !== "") {
+//       const productIDs = productIDlist.split(",");
+//       productIDs.map((productID, i) => {
+//         if (!productID) throw new Error("請提供商品編號");
+//         const regForPD = /^PD([A-Z]{2}0[1-3])(25)(\d{3})$/;
+//         if (!regForPD.test(productID)) {
+//           return connectError(req, res);
+//         }
+//       });
+//     } else {
+//       isDeleted = 1;
+//     }
+
+//     const product = await updateReviewsInfo(userID, productIDlist, isDeleted);
+//     if (product.affectedRows == 0) {
+//       throw new Error("更新商品失敗");
+//     }
+//     res.status(200).json({
+//       status: "success",
+//       message: `用戶ID：${userID} 更新收藏成功`,
+//     });
+//   } catch (error) {
+//     res.status(400).json({ error: error.message });
+//   }
+// };
 
 export const connectError = async (req, res) => {
   res.status(404).json({
