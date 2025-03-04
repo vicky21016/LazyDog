@@ -210,7 +210,7 @@ export default function Header(props) {
                   setTeacherOpen(false);
                 }}
               >
-                <Link href="" className={styles["dropbtn"]}>
+                <Link href="/product/list" className={styles["dropbtn"]}>
                   寵物用品
                 </Link>
               </div>

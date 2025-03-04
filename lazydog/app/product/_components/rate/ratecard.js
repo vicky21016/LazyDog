@@ -5,6 +5,7 @@ import styles from "./rate.module.css";
 import StarGroup from "./stargroup";
 
 export default function Ratecard({
+  rateNow = false,
   user = "",
   img = "",
   rate = "",
@@ -25,7 +26,9 @@ export default function Ratecard({
         <div className={styles.RateCardUser}>
           <button type="button">
             <img src={`http://localhost:5000/auth/${img}`} alt="" />
-            <h6>{user}</h6>
+            <h6>
+              {user}({rateNow ? "您的評論" : ""})
+            </h6>
           </button>
           <div className={styles.StarGroup}>
             <StarGroup rate={rateNum} />
@@ -49,6 +52,9 @@ export default function Ratecard({
           </button>
           <p>{goodNum}</p>
         </div>
+        {rateNow && (
+          <button className={styles.UpdateRateBtn}>編輯您的評論</button>
+        )}
         <p>
           {years} {months} {days}
         </p>

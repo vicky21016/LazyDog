@@ -29,7 +29,7 @@
     "dotenv": "^16.4.7",
     "firebase": "^11.3.0",
     "flatpickr": "^4.6.13",
-    "framer-motion": "^12.4.7",
+    "framer-motion": "^12.4.10",
     "froala-editor": "^4.4.0",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",

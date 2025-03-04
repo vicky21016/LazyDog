@@ -69,6 +69,15 @@
       width: 100%;
     }
   }
+  .UpdateRateBtn {
+    color: var(--Orange);
+    border-radius: 20px;
+    padding: 3px 10px;
+    &:hover {
+      background: var(--Orange);
+      color: var(--white);
+    }
+  }
 }
 /* RateStar */
 .StarGroup {
