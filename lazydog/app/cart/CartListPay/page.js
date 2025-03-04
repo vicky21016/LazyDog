@@ -55,8 +55,8 @@ export default function CartListPayPage(props) {
   } = useCart();
   const totalAmount = totalProductAmount + totalCourseAmount + totalHotelAmount;
 
-  // 根據購物車類型選擇 `orderTable`//看要不要拔除
-  let orderTable = "hotel_order"; // 默認為 hotel_order
+  // 根據購物車類型選擇 `orderTable`//看要不要拔除 //看要不要拔除
+  if (hotelItems.length > 0) orderTable = "hotel_order";
   if (productItems.length > 0) orderTable = "yi_orderlist";
   if (courseItems.length > 0) orderTable = "course_orders";
 
