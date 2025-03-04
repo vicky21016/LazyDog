@@ -30,7 +30,6 @@ export default function FilterGroup({
 
   const [checkedItems, setCheckedItems] = useState(categoryCheckbox);
   const handleCheckboxChange = (e, v, name) => {
-    // console.log(1);
     setCheckedItems((prev) => ({
       ...prev,
       [v]: e.target.checked,
@@ -174,17 +173,24 @@ export default function FilterGroup({
           );
         }
       });
+
       return newState;
     });
   };
 
+  // useEffect(() => {
+  //   if (isChecked == false) {
+  //     resetCheckboxes();
+  //   }
+  //   setIsChecked(true);
+  // }, [isChecked]);
   useEffect(() => {
-    if (isChecked == false) {
+    if (isChecked === false) {
       resetCheckboxes();
+      setIsChecked(true); // 更新父元件狀態
+      console.log(1);
     }
-    setIsChecked(true);
-  }, [isChecked]);
-
+  }, [isChecked, setIsChecked]);
   return (
     <>
       <div className={styles.FilterGroup}>
@@ -199,7 +205,6 @@ export default function FilterGroup({
                 <input
                   className={`form-check-input ${styles.FormCheckInput}`}
                   type="checkbox"
-                  // id={`checkbox-${v}`}
                   name={v}
                   checked={checkedItems[v]}
                   onChange={(e) => {

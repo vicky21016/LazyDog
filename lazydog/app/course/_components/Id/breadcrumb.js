@@ -8,20 +8,24 @@ export default function Breadcrumb({ course }) {
 
   return (
     <>
-      <nav className={styles.breadcrumbs}>
+      <nav className={`px-4 ${styles.breadcrumbs}`}>
         <ul>
           <li>
-            <a href={`/home`}>首頁</a>
+            <a className={styles.home} href={`/home`}>
+              首頁
+            </a>
           </li>
           <img src="/course/img/right.svg" alt="" />
           <li>
-            <a href={`/course/list`}>課程列表</a>
+            <a className={styles.courseList} href={`/course/list`}>
+              課程列表
+            </a>
           </li>
           <img src="/course/img/right.svg" alt="" />
           <li>
-
-            <a href="">{c?.name}</a>
-
+            <a className={styles.courseName} href="">
+              {c?.name}
+            </a>
           </li>
         </ul>
       </nav>

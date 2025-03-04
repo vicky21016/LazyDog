@@ -1,22 +1,11 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import useSWR from "swr";
 import useScreenSize from "./use-Screen";
 
-const ListFetchContext = createContext(null);
-ListFetchContext.displayName = "ListFetchContext";
-const CategoryFetchContext = createContext(null);
-CategoryFetchContext.displayName = "CategoryFetchContext";
-const DetailFetchContext = createContext(null);
-DetailFetchContext.displayName = "DetailFetchContext";
-const CardFetchContext = createContext(null);
-CardFetchContext.displayName = "CardFetchContext";
-const AsideFetchContext = createContext(null);
-AsideFetchContext.displayName = "AsideFetchContext";
-
-export function FetchListProvider({ children }) {
+export function useListFetch() {
   const [newUrl, setNewUrl] = useState("http://localhost:5000/api/products");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(30000);
@@ -68,36 +57,30 @@ export function FetchListProvider({ children }) {
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
   const productLine = Math.ceil(product?.length / (width >= 768 ? 4 : 2));
   const int = width >= 1200 ? 4 : width >= 768 ? 3 : 2;
-  return (
-    <ListFetchContext.Provider
-      value={{
-        width,
-        products,
-        int,
-        productLine,
-        emptyMessage,
-        changeUrl,
-        minPrice,
-        setMinPrice,
-        maxPrice,
-        setMaxPrice,
-        sortName,
-        setSortName,
-        pages,
-        pageNow,
-        setPageNow,
-        product,
-        mutate,
-        isLoading,
-        error,
-      }}
-    >
-      {children}
-    </ListFetchContext.Provider>
-  );
+  return {
+    width,
+    products,
+    int,
+    productLine,
+    emptyMessage,
+    changeUrl,
+    minPrice,
+    setMinPrice,
+    maxPrice,
+    setMaxPrice,
+    sortName,
+    setSortName,
+    pages,
+    pageNow,
+    setPageNow,
+    product,
+    mutate,
+    isLoading,
+    error,
+  };
 }
 
-export function FetchCategoryProvider({ children }) {
+export function useCategoryFetch() {
   const query = useSearchParams();
   const category = query.get("category");
   const [sortName, setSortName] = useState("條件排序");
@@ -210,40 +193,34 @@ export function FetchCategoryProvider({ children }) {
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
   const productLine = Math.ceil(product?.length / (width >= 768 ? 4 : 2));
   const int = width >= 1200 ? 4 : width >= 768 ? 3 : 2;
-  return (
-    <CategoryFetchContext.Provider
-      value={{
-        width,
-        products,
-        int,
-        productLine,
-        emptyMessage,
-        category,
-        keyword,
-        setKeyword,
-        newUrl,
-        changeUrl,
-        minPrice,
-        setMinPrice,
-        maxPrice,
-        setMaxPrice,
-        sortName,
-        setSortName,
-        pages,
-        pageNow,
-        setPageNow,
-        product,
-        mutate,
-        isLoading,
-        error,
-      }}
-    >
-      {children}
-    </CategoryFetchContext.Provider>
-  );
+  return {
+    width,
+    products,
+    int,
+    productLine,
+    emptyMessage,
+    category,
+    keyword,
+    setKeyword,
+    newUrl,
+    changeUrl,
+    minPrice,
+    setMinPrice,
+    maxPrice,
+    setMaxPrice,
+    sortName,
+    setSortName,
+    pages,
+    pageNow,
+    setPageNow,
+    product,
+    mutate,
+    isLoading,
+    error,
+  };
 }
 
-export function FetchDetailProvider({ children }) {
+export function useDetailFetch() {
   const { width, height } = useScreenSize();
   const query = useSearchParams();
   const product = query.get("productID");
@@ -274,6 +251,7 @@ export function FetchDetailProvider({ children }) {
     mutate: orderMutate,
   } = useSWR(url2, fetcher);
   const productData = data?.data[0];
+  const productID = productData?.productID;
   const productName = productData?.name;
   const img = {
     list: [],
@@ -290,19 +268,21 @@ export function FetchDetailProvider({ children }) {
   const productDiscount = 0;
 
   const rateData = {
-    rate: [],
-    comment: [],
     user: [],
     img: [],
+    rate: [],
+    comment: [],
+    good: [],
     date: [],
   };
   let rateAvg = 0;
   if (data?.data) {
     data?.data.map((v, i) => {
-      rateData["rate"].push(v.rate);
       rateData["user"].push(v.user);
       rateData["img"].push(v.userImg);
+      rateData["rate"].push(v.rate);
       rateData["comment"].push(v.comment);
+      rateData["good"].push(v.good);
       rateData["date"].push(v.commentTime);
     });
     let rateSum = 0;
@@ -338,43 +318,38 @@ export function FetchDetailProvider({ children }) {
 
   const CardInt = width >= 1200 ? 5 : width >= 992 ? 4 : width >= 768 ? 3 : 2;
 
-  return (
-    <DetailFetchContext.Provider
-      value={{
-        width,
-        product,
-        router,
-        loginRoute,
-        productData,
-        productName,
-        productDiscount,
-        img,
-        picNow,
-        setPicNow,
-        rate,
-        setRate,
-        amount,
-        setAmount,
-        cardPic,
-        setCardPic,
-        rateData,
-        rateAvg,
-        int,
-        dec,
-        CardInt,
-        hotSale,
-        sameBuy,
-        mutate,
-        isLoading,
-        error,
-      }}
-    >
-      {children}
-    </DetailFetchContext.Provider>
-  );
+  return {
+    width,
+    product,
+    router,
+    loginRoute,
+    productData,
+    productID,
+    productName,
+    productDiscount,
+    img,
+    picNow,
+    setPicNow,
+    rate,
+    setRate,
+    amount,
+    setAmount,
+    cardPic,
+    setCardPic,
+    rateData,
+    rateAvg,
+    int,
+    dec,
+    CardInt,
+    hotSale,
+    sameBuy,
+    mutate,
+    isLoading,
+    error,
+  };
 }
 
-export function FetchCardProvider({ children, productID = "" }) {
+export function useCardFetch({ productID = "" }) {
   const router = useRouter();
   const loginRoute = "/login";
   const { width, height } = useScreenSize();
@@ -421,45 +396,38 @@ export function FetchCardProvider({ children, productID = "" }) {
     }
   }, [productName]);
 
-  return (
-    <CardFetchContext.Provider
-      value={{
-        width,
-        productID,
-        router,
-        loginRoute,
-        products,
-        productName,
-        cardHover,
-        setCardHover,
-        cartHover,
-        setCartHover,
-        cartRate,
-        setCartRate,
-        cardPic,
-        setCardPic,
-        cardRef,
-        simulateClick,
-        mutate,
-        isLoading,
-        error,
-      }}
-    >
-      {children}
-    </CardFetchContext.Provider>
-  );
+  return {
+    width,
+    productID,
+    router,
+    loginRoute,
+    products,
+    productName,
+    cardHover,
+    setCardHover,
+    cartHover,
+    setCartHover,
+    cartRate,
+    setCartRate,
+    cardPic,
+    setCardPic,
+    cardRef,
+    simulateClick,
+    mutate,
+    isLoading,
+    error,
+  };
 }
 
-export function FetchAsideProvider({
-  children,
+export function useAsideFetch({
   changeUrl = () => {},
-  keyword = {},
+  keyword = "",
   setKeyword = () => {},
   minPrice = 0,
-  maxPrice = 0,
+  maxPrice = 30000,
   setMaxPrice = () => {},
   setMinPrice = () => {},
-  sortName = "",
+  sortName = "條件排序",
 }) {
   const pathname = usePathname();
   const query = useSearchParams();
@@ -501,35 +469,59 @@ export function FetchAsideProvider({
   const i = categoryName.findIndex((v) => v == query.get("category"));
   useEffect(() => {}, [pathname, query]);
 
-  return (
-    <AsideFetchContext.Provider
-      value={{
-        changeUrl,
-        keyword,
-        setKeyword,
-        minPrice,
-        maxPrice,
-        setMaxPrice,
-        setMinPrice,
-        sortName,
-        category,
-        categoryName,
-        categoryClass,
-        i,
-        pathname,
-        query,
-        mutate,
-        isLoading,
-        error,
-      }}
-    >
-      {children}
-    </AsideFetchContext.Provider>
-  );
+  return {
+    changeUrl,
+    keyword,
+    setKeyword,
+    minPrice,
+    maxPrice,
+    setMaxPrice,
+    setMinPrice,
+    sortName,
+    category,
+    categoryName,
+    categoryClass,
+    i,
+    pathname,
+    query,
+    mutate,
+    isLoading,
+    error,
+  };
 }
 
-export const useListFetch = () => useContext(ListFetchContext);
-export const useCategoryFetch = () => useContext(CategoryFetchContext);
-export const useDetailFetch = () => useContext(DetailFetchContext);
-export const useCardFetch = () => useContext(CardFetchContext);
-export const useAsideFetch = () => useContext(AsideFetchContext);
+export function useReviewFetch({ productID = "", userID = "" }) {
+  const router = useRouter();
+  const loginRoute = "/login";
+  const { width, height } = useScreenSize();
+
+  const url = userID
+    ? `http://localhost:5000/api/products/reviews?userID=${userID}`
+    : null;
+  const fetcher = async (url) => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("資料要求失敗");
+      return res.json();
+    } catch (err) {
+      console.error("資料要求失敗:", err);
+      throw err;
+    }
+  };
+  const {
+    data: reviewData,
+    isLoading: reviewLoading,
+    error: reviewError,
+    mutate: reviewMutate,
+  } = useSWR(url, fetcher);
+
+  const reviews = reviewData?.data.find((v) => v.productID == productID);
+
+  return {
+    width,
+    reviews,
+    reviewMutate,
+    reviewLoading,
+    reviewError,
+  };
+}

@@ -7,44 +7,19 @@ import noUiSlider from "nouislider";
 import FilterGroup from "./filtergroup";
 import FilterLinkGroup from "./filterlinkgroup";
 import Link from "next/link";
-import { FetchAsideProvider, useAsideFetch } from "@/hooks/product/use-fetch";
+import { useAsideFetch } from "@/hooks/product/use-fetch";
 
 export default function Aside({
   changeUrl = () => {},
   keyword = {},
   setKeyword = () => {},
   minPrice = 0,
-  maxPrice = 0,
+  maxPrice = 30000,
   setMaxPrice = () => {},
   setMinPrice = () => {},
-  sortName = "",
+  sortName = "條件排序",
 }) {
-  return (
-    <FetchAsideProvider
-      changeUrl={changeUrl}
-      keyword={keyword}
-      setKeyword={setKeyword}
-      minPrice={minPrice}
-      maxPrice={maxPrice}
-      setMaxPrice={setMaxPrice}
-      setMinPrice={setMinPrice}
-      sortName={sortName}
-    >
-      <AsideContent />
-    </FetchAsideProvider>
-  );
-}
-
-function AsideContent() {
   const {
-    changeUrl,
-    keyword,
-    setKeyword,
-    minPrice,
-    maxPrice,
-    setMaxPrice,
-    setMinPrice,
-    sortName,
     category,
     categoryName,
     categoryClass,
@@ -54,7 +29,16 @@ function AsideContent() {
     mutate,
     isLoading,
     error,
-  } = useAsideFetch();
+  } = useAsideFetch({
+    changeUrl,
+    keyword,
+    setKeyword,
+    minPrice,
+    maxPrice,
+    setMaxPrice,
+    setMinPrice,
+    sortName,
+  });
   const priceSliderRef = useRef(null);
 
   const handleMinPriceChange = (e) => {
@@ -121,7 +105,7 @@ function AsideContent() {
 
   const [clearSearch, setClearSearch] = useState("");
   const [isChecked, setIsChecked] = useState(true);
-
+  // console.log(isChecked);
   return (
     <aside className={`${styles.Sidebar}`}>
       <div className={styles.SearchTable}>
@@ -131,10 +115,10 @@ function AsideContent() {
           value={clearSearch}
           onChange={(e) => {
             setClearSearch(e.target.value);
+            setIsChecked(false);
           }}
           placeholder="搜尋商品"
           onKeyUp={(e) => {
-            setIsChecked(false);
             changeUrl(
               `http://localhost:5000/api/products/search?${
                 query.get("category")

@@ -208,10 +208,16 @@
 /* --------------------------- */
 /* ------商品詳細(手風琴)------- */
 .StickyTop {
-  background: #fff;
-  padding-block: 20px;
+  background: transparent;
+  padding-block: 19px;
+  margin-left: 20px;
   width: 100%;
+  @media (width < 576px) {
+    background: white;
+    margin-left: 0;
+  }
   ul {
+    width: 100%;
     display: flex;
     justify-content: space-around;
   }
@@ -250,11 +256,11 @@
     line-height: 2;
   }
   figure {
-    max-width: 840px;
+    max-width: 700px;
     margin: auto;
-  }
-  img {
-    width: 100%;
+    img {
+      width: 100%;
+    }
   }
   p {
     line-height: 1.8;
@@ -271,11 +277,18 @@
     gap: 30px;
   }
 }
-.ScoreBar {
+.ScoreBarAndSetReviews {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 80px;
+  justify-content: space-between;
+  /* gap: 80px; */
+}
+.ScoreBar {
+  /* width: 100%; */
+  display: flex;
+  align-items: center;
+  gap: 40px;
 }
 .Score {
   display: flex;
@@ -290,6 +303,8 @@
   justify-content: center;
   align-items: flex-start;
   gap: 5px;
+}
+.SetReviews {
 }
 /* ----StarGroup(備份css---- */
 /* .StarGroup {
