@@ -1,5 +1,33 @@
+/* 滾軸樣式 */
+.scrollOrg {
+  --sb-track-color: #bcbcbc38;
+  --sb-thumb-color: #f7a96d;
+  --sb-size: 4px;
+}
+
+.scrollOrg::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+.scrollOrg::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 4px;
+}
+
+.scrollOrg::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 4px;
+  /* border: 1px solid #232E33; */
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .scrollOrg {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}
+
 .list {
-  margin-top: 80px;
+  margin-top: 50px;
 }
 
 /* 活動輪播 */
@@ -11,7 +39,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
+  margin: 40px auto 0;
   padding: 13px 3px;
   z-index: 1;
   /* border-radius: 48px; */
@@ -106,13 +134,18 @@
     background: #fff;
     padding: 40px 15px;
     border-radius: 10px;
-    /* margin-bottom: 120x; */
+  }
+  @media (max-width: 992px) {
+    .sidebar {
+      padding: 0px 15px;
+    }
   }
 
   .filterTitle {
     font-weight: bold;
     font-size: 20px;
     line-height: 39px;
+    letter-spacing: 1px;
     margin: 0;
   }
 
@@ -128,7 +161,7 @@
     border: 0.5px solid var(--text-Gy, #bcbcbc);
     padding: 0 20px;
     flex: 1;
-    margin: 26px 0 50px;
+    margin: 26px 40px 35px 0px;
     overflow: hidden;
   }
   .searchIcon {
@@ -139,11 +172,11 @@
     outline: none;
     background: transparent;
     width: 100%;
-    color: var(--text-Gy, #807d7d);
-    font-size: 16px;
-    font-weight: bold;
-    letter-spacing: 0.98px;
-    padding: 0 10px;
+    color: #9c9a9a;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    padding: 0 10px 2px 20px;
     cursor: pointer;
   }
   .searchInput:focus::placeholder {
@@ -153,6 +186,12 @@
     display: none;
     width: 15px;
     cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
   }
   .searchInput:not(:placeholder-shown) + .xIcon {
     display: block; /* 當有輸入時顯示 xIcon */
@@ -163,8 +202,9 @@
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    border-bottom: 0.1px solid #bcbcbc;
-    padding: 10px 25px;
+    width: 85%;
+    border-bottom: 0.1px solid #d4d3d3;
+    padding: 12px 25px;
     margin-bottom: 28px;
   }
 
@@ -173,14 +213,13 @@
     height: 8px;
   }
   .filter {
-    padding: 0 25px;
+    padding: 0 24px;
   }
   .checks {
-    margin: 15px 0;
+    margin: 25px 0;
   }
   .checkbox {
     transform: scale(1.5);
-    margin-right: 23px;
     margin-top: 6px;
   }
   .checkbox:focus,
@@ -188,13 +227,14 @@
     box-shadow: none !important; /* 移除點擊後的藍色高亮 */
   }
   .labels {
-    font-size: 16px;
-    line-height: 30px;
+    font-size: 1rem;
     font-weight: 400;
+    letter-spacing: 1px;
+    padding-left: 12px;
   }
 
   /* 價格篩選 */
-  .priceFilterContainer {
+  /* .priceFilterContainer {
     background: #fff;
     text-align: center;
   }
@@ -213,7 +253,6 @@
   .priceInput {
     display: flex;
     align-items: center;
-    /* gap: 5px; */
     border: 2px solid #ff9900;
     border-radius: 20px;
     padding: 5px 10px;
@@ -225,7 +264,7 @@
     text-align: center;
     width: 50px;
     font-size: 12px;
-  }
+  } */
 
   /* 滑桿 */
   .range-slider {
@@ -258,20 +297,30 @@
   /* 篩選按鈕 */
   .clearFilterBtn {
     background: none;
-    border: 1px solid #ff9900;
+    border: 0.5px solid #ff9538;
     width: 100%;
     color: #ff9900;
-    padding: 8px 20px;
+    padding: 10px 20px;
     border-radius: 30px;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 450;
+    letter-spacing: 1.8px;
     cursor: pointer;
-    margin: 100px 0 65px;
-  }
+    /* margin: 50px 20px 95px 10px; */
+    margin: 26px 40px 85px 0px;
+    transition: 0.4s;
 
-  .clear-filter-btn:hover {
-    background: #ff9900;
-    color: white;
+    &:hover {
+      background: #ff9538;
+      color: white;
+    }
+  }
+  @media (max-width: 992px) {
+    .clearFilterBtn {
+      width: 82%;
+      margin: 26px 60px 85px 20px;
+      /* padding: 10px 5px; */
+    }
   }
 
   /* 廣告 */
@@ -285,27 +334,35 @@
     align-self: stretch;
     border-radius: 15px;
     background: var(--Color-3, #66c5bd);
-    width: 259px;
+    width: 95%;
     padding: 32px 33px 0;
     margin: 0 auto;
     overflow: hidden;
     box-shadow: 0px 4px 7.5px 0px rgba(0, 0, 0, 0.25);
+
+    @media (max-width: 1262px) {
+      display: none;
+    }
   }
   .adWords {
     color: var(--real-wh, #fff);
     text-align: center;
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     font-family: "Kosugi Maru";
-    font-size: 36px;
+    font-size: 2.3rem;
     font-style: normal;
-    font-weight: 400;
-    line-height: 135%; /* 48.6px */
+    font-weight: bold;
+    line-height: 140%; /* 48.6px */
     letter-spacing: 2.88px;
+    padding-top: 10px;
+    @media (max-width: 922px) {
+      font-size: 28px;
+    }
   }
   .buynow {
     display: flex;
     height: 62px;
-    padding: 10px 40px;
+    /* padding: 8px 20px; */
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -318,14 +375,19 @@
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     white-space: nowrap;
     font-family: "Dangrek", sans-serif;
-    font-size: 23px;
+    font-size: 1.5rem;
     font-style: normal;
     font-weight: bold;
     line-height: normal;
     letter-spacing: 3.64px;
+
+    @media (max-width: 922px) {
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
   }
   .girlPic {
-    box-shadow: 0px 4px 7.5px 0px rgba(0, 0, 0, 0.25);
+    min-width: 200px;
   }
 
   /*自訂 Slider */
@@ -380,14 +442,19 @@
   .right {
     position: relative;
     padding: 21px 0 0 40px;
+    margin-bottom: 150px;
+
+    @media (max-width: 992px) {
+      padding: 0 10px;
+    }
   }
   .top {
     margin: 45px 0 50px;
   }
   .sTitle {
-    margin-bottom: 23px;
+    margin-bottom: 28px;
     color: var(--text-Bk, #3e3e3e);
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: bolder;
     line-height: 39px; /* 121.875% */
     letter-spacing: 3.2px;
@@ -427,26 +494,53 @@
 
   /* 卡片 */
   .courseGroup {
-    display: flex;
+    /* display: flex; */
     height: auto;
-    max-width: 1060px;
-    align-items: flex-start;
-    align-content: flex-start;
-    gap: 80px 50px;
+    /* max-width: 1060px; */
+    /* align-items: flex-start; */
+    /* align-content: flex-start; */
+    gap: 50px 0px;
     flex-wrap: wrap;
+
+    @media (max-width: 992px) {
+      /* gap: 0; */
+    }
   }
+
   .courseCard {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 280px;
+    width: 100%;
+    border-radius: 3px;
+    padding: 15px;
+    cursor: pointer;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+
+    &:hover {
+      transform: scale(1.05); /* 放大 5% */
+      box-shadow: rgba(60, 60, 60, 0.35) 0px 10px 20px; /* 添加陰影提升立體感 */
+    }
+
+    @media (max-width: 992px) {
+      width: 100%;
+    }
   }
+
   .img {
-    width: 280px;
-    height: 280px;
+    width: 100%;
+    /* width: 280px; */
+    /* height: 280px; */
     object-fit: cover;
     border: 1px solid var(--text-Wh, #f7f7f7);
+    /* border-radius: 5px; */
     margin-bottom: 8px;
+
+    @media (max-width: 992px) {
+      width: 100%;
+      height: auto;
+      /* object-fit: ; */
+    }
   }
   .tag {
     display: flex;
@@ -455,13 +549,13 @@
     /* text-align: center; */
     /* width: 71px; */
     /* height: 23px; */
-    padding: 4px 7px;
+    padding: 5px 8px;
     border-radius: 3px;
     background: var(--Color, #f5842b);
     color: var(--real-wh, #fff);
     white-space: nowrap;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: 1.5px;
     margin: 8px 0 14px;
     box-sizing: border-box;
@@ -474,11 +568,16 @@
     word-wrap: break-word;
     color: var(--Color, #3b3330);
     text-overflow: ellipsis;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
-    letter-spacing: 0.8px;
+    letter-spacing: 1px;
+    padding: 0 5px;
     margin-top: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
+    @media (max-width: 992px) {
+      font-size: 16px;
+      letter-spacing: 0px;
+    }
   }
   .intro {
     display: -webkit-box;
@@ -491,10 +590,18 @@
     align-self: stretch;
     color: var(--Color, #3b3330);
     text-overflow: ellipsis;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 400;
-    line-height: 24px;
-    padding: 0 2px;
+    line-height: 20px;
+    letter-spacing: 1.4px;
+    padding: 0 5px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+
+    @media (max-width: 992px) {
+      font-size: 12px;
+      letter-spacing: 0px;
+    }
   }
 }
 
@@ -571,19 +678,28 @@
       display: flex;
       padding: 13px 3px;
       align-items: flex-start;
-      gap: 88px;
+      /* gap: 88px; */
       align-self: stretch;
       overflow: hidden;
       text-align: center;
       .sCard {
         cursor: pointer;
+        transition: 0.4s;
+
+        &:hover {
+          translate: 0 -15px;
+        }
       }
       .cardImg {
-        width: 240px;
-        height: 240px;
+        /* width: 240px; */
+        /* height: 240px; */
+        width: 100%;
         object-fit: cover;
         margin-bottom: 27px;
-        border: 0.1px solid #f7efef;
+        border: 0.1px solid #f5f1f1;
+        @media (max-width: 992px) {
+          margin-bottom: 15px;
+        }
       }
       .cardName {
         display: -webkit-box;
@@ -600,4 +716,32 @@
       }
     }
   }
+}
+
+/* 手機 */
+.filterIcon {
+  display: flex;
+  justify-content: left;
+  color: #3e3e3e;
+  width: 100%;
+  padding-bottom: 20px;
+
+  &:hover {
+    color: #ff9538;
+  }
+
+  &:active {
+    color: #ff9538;
+    border: none;
+  }
+}
+.filterIconWord {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  padding-left: 8px;
+}
+.offcanvasBody {
+  padding: 16px 16px 0px 40px;
+  overflow-x: hidden;
 }
