@@ -301,11 +301,16 @@ router.post("/hotelOrders", async (req, res) => {
 
     const [orders] = await pool.execute(sql, [user_id]);
 
-    const sqlimg = `SELECT * FROM hotel_images WHERE is_deleted = 0 AND hotel_id = ?`;
+    // const sqlimg = `SELECT * FROM hotel_images WHERE is_deleted = 0 AND hotel_id = ?`;
+    // const hotelImages = await pool.execute(sqlimg, [orders[0].hotel_id]);
+    // const hotelImagess = hotelImages[0];
 
-    const hotelImages = await pool.execute(sqlimg, [orders[0].hotel_id]);
+    const [hotelImages] = await pool.execute(
+      `SELECT * FROM hotel_images WHERE is_deleted = 0 AND hotel_id = ?`,
+      [orders[0].hotel_id]
+    );
 
-    console.log(hotelImages[0]);
+    console.log(hotelImages[0]?.url);
 
     if (orders.length === 0) {
       return res.json({
