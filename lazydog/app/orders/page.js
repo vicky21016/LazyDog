@@ -26,7 +26,7 @@ export default function ProfileCouponPage(props) {
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
-  console.log(hotelOrders);
+  // console.log(hotelOrders);
 
   return (
     <>
