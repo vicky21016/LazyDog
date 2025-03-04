@@ -235,7 +235,7 @@ function DetailContent() {
               </button>
               <h6>{heartState ? "已加入收藏" : "加入收藏"}</h6>
             </div>
-            <h2 className={styles.InfoProductName}>{productData?.name}</h2>
+            <h3 className={styles.InfoProductName}>{productData?.name}</h3>
             <div className={styles.InfoRateGroup}>
               {int && (
                 <>
@@ -269,7 +269,7 @@ function DetailContent() {
             </div>
             <div className={styles.InfoPriceGroup}>
               <h5>{productDiscount > 0 ? `限時促銷價格：` : `價格：`}</h5>
-              <h2>NT$ {productData?.price}</h2>
+              <h4>NT$ {productData?.price}</h4>
               {productDiscount > 0 && <h4>NT$ {productData?.price}</h4>}
             </div>
             <div className={styles.InfoQtyGroup}>
@@ -292,7 +292,7 @@ function DetailContent() {
                 onChange={(e) => {
                   setAmount(() => {
                     const value = Number(e.target.value);
-                    if (value >= 999) return 999;
+                    if (value >= productData?.stock) return productData?.stock;
                     if (value <= 0) return 1;
                     return value;
                   });
@@ -302,7 +302,9 @@ function DetailContent() {
                 className={styles.QtyPlus}
                 onClick={() => {
                   setAmount((prevAmount) =>
-                    prevAmount + 1 >= 999 ? 999 : prevAmount + 1
+                    prevAmount + 1 >= productData?.stock
+                      ? productData?.stock
+                      : prevAmount + 1
                   );
                 }}
               >
@@ -545,6 +547,8 @@ function DetailContent() {
                   <div className={`${styles.SetReviews} col-12 col-lg-6`}>
                     <RateCard
                       rateNow={rateNow}
+                      id={reviews.id}
+                      productID={productID}
                       user={reviews.user}
                       img={reviews.userImg}
                       rate={reviews.rating}

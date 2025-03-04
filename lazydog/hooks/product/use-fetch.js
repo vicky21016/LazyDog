@@ -515,7 +515,7 @@ export function useReviewFetch({ productID = "", userID = "" }) {
     mutate: reviewMutate,
   } = useSWR(url, fetcher);
 
-  const reviews = reviewData?.data.find((v) => v.productID == productID);
+  const reviews = reviewData?.data?.find((v) => v.productID == productID);
 
   return {
     width,
