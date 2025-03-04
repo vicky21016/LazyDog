@@ -183,12 +183,12 @@ export default function ProfileCouponPage(props) {
   return (
     <>
       <Header />
-      <div className="container mt-5">
+      <div className={`container ${styles.height}`}>
         <div className="row">
           {/* 左側選單 */}
-          <div className="d-none d-md-block col-md-3">
+          
             <MyMenu />
-          </div>
+          
           {/* 右側內容 */}
           <div className="col-12 col-md-9 coupon-section">
             <h5 className="mb-3">我的優惠券</h5>
