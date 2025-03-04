@@ -232,6 +232,7 @@ export function useOrder() {
           setIsLoading(false);
           throw new Error(result.message);
         }
+        // console.log(result.hotelImages);
 
         setHotelOrders(result.orders); // 更新酒店訂單資料
         setIsLoading(false); // 結束載入 (成功)

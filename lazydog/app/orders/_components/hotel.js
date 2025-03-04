@@ -5,7 +5,8 @@ import couponStyles from "./userCoupon.module.css";
 const Hotel = ({ hotelOrders }) => {
   // 過濾出旅館類型的訂單，如果全部都是旅館訂單可以不用過濾
   // const filteredHotelOrders = hotelOrders.filter((order) => order.hotel_id);
-  console.log(hotelOrders);
+  // console.log(...hotelOrders);
+  // console.log(hotelOrders);
 
   return (
     <>
@@ -14,7 +15,7 @@ const Hotel = ({ hotelOrders }) => {
           {/* 假設圖片路徑是由 hotel_id 決定，需要根據資料庫設計調整 */}
           <Link href="">
             <img
-              src={`/images/hotel/hotel-images/page-image/hotel${order.img}`} // 根據hotel_id替換圖片
+              src={order.images[0].url}
               style={{ maxHeight: "100px" }}
               alt={`旅館訂單 ${order.id}`}
             />
