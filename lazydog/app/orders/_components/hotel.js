@@ -1,34 +1,38 @@
-import React from 'react';
-import Link from 'next/link'; // 如果你使用的是 Next.js 的 Link 元件
-import couponStyles from './userCoupon.module.css'; // 假設你有一個 CSS 模組
+import React from "react";
+import Link from "next/link";
+import couponStyles from "./userCoupon.module.css";
 
-const CouponCard = () => {
-  // 靜態資料
-  const staticData = {
-    imageUrl: "http://localhost:5000/api/articles/2df54e20-d6c0-11ee-beff-f3978ced.jpg",
-    title: "小森林寵物美容旅館",
-    stayPeriod: "2024/12/31~2025/12/31",
-    price: "NT2000000000",
-  };
+const Hotel = ({ hotelOrders }) => {
+  // 過濾出旅館類型的訂單，如果全部都是旅館訂單可以不用過濾
+  // const filteredHotelOrders = hotelOrders.filter((order) => order.hotel_id);
+  console.log(hotelOrders);
 
   return (
-    <div className={`mt-2 ${couponStyles.suCouponCard}`}>
-      <Link href="">
-        <img
-          src={staticData.imageUrl}
-          style={{ maxHeight: '100px' }}
-          alt={staticData.title}
-        />
-      </Link>
-      <div className={couponStyles.suDetails}>
-        <Link href="" style={{ color: '#f5842b' }}>
-          {staticData.title}
-        </Link>
-        <p className="text-muted">入住時間: {staticData.stayPeriod}</p>
-      </div>
-      <span className={couponStyles.suPrice}>{staticData.price}</span>
-    </div>
+    <>
+      {hotelOrders.map((order) => (
+        <div key={order.id} className={`mt-2 ${couponStyles.suCouponCard}`}>
+          {/* 假設圖片路徑是由 hotel_id 決定，需要根據資料庫設計調整 */}
+          <Link href="">
+            <img
+              src={`/images/hotel/hotel-images/page-image/hotel${order.img}`} // 根據hotel_id替換圖片
+              style={{ maxHeight: "100px" }}
+              alt={`旅館訂單 ${order.id}`}
+            />
+          </Link>
+          <div className={couponStyles.suDetails}>
+            <Link href="" style={{ color: "#f5842b" }}>
+              旅館編號: {order.hotel_id}{" "}
+              {/* 假設有旅館名稱，可以換成旅館名稱 */}
+            </Link>
+            <p className="text-muted">
+              入住時間: {order.check_in}~{order.check_out}
+            </p>
+          </div>
+          <span className={couponStyles.suPrice}>NT{order.final_amount}</span>
+        </div>
+      ))}
+    </>
   );
 };
 
-export default CouponCard;
+export default Hotel;
