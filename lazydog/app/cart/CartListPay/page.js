@@ -65,14 +65,16 @@ export default function CartListPayPage(props) {
     selectedCoupon,
     setSelectedCoupon,
     discountAmount,
+    setDiscountAmount,
     finalAmount,
+    calculateDiscount,
     applyCoupon,
   } = useCoupons(
-    totalAmount, // 購物車總金額
-    productOrder?.orderID || hotelOrder?.orderID, // 訂單 ID
-    orderTable, // 訂單類型
-    user?.token, // 用戶 token
-    user?.id // 用戶 ID
+    totalAmount,
+    productOrder?.orderID || hotelOrder?.orderID,
+    orderTable,
+    user?.token,
+    user?.id
   );
 
   const { createProductOrder, createHotelOrder } = useOrder();
@@ -120,7 +122,9 @@ export default function CartListPayPage(props) {
       toast.error("請先登入後再進行結帳");
       return;
     }
-
+    if (selectedCoupon) {
+      await applyCoupon(selectedCoupon);
+    }
     // 先連到node伺服器後端，取得LINE Pay付款網址
     const res = await fetch(
       `http://localhost:5000/ecpay-test-only?amount=${totalAmount}&items=${itemsValue}`,
@@ -359,8 +363,19 @@ export default function CartListPayPage(props) {
                       value={selectedCoupon || ""}
                       onChange={(e) => {
                         const selectedId = e.target.value;
-                        setSelectedCoupon(selectedId);
-                        applyCoupon(selectedId);
+                        console.log("Selected Coupon ID:", selectedId);
+
+                        setSelectedCoupon(selectedId); // ✅ 確保這裡是 `coupons.id`
+
+                        const discount = calculateDiscount(selectedId);
+                        console.log("Calculated Discount:", discount);
+
+                        if (typeof setDiscountAmount === "function") {
+                          setDiscountAmount(discount);
+                          console.log("Updated Discount Amount:", discount);
+                        } else {
+                          console.error("setDiscountAmount is not a function");
+                        }
                       }}
                     >
                       <option value="">選擇優惠券</option>
@@ -375,11 +390,11 @@ export default function CartListPayPage(props) {
 
                   <div className="d-flex justify-content-between mt-3">
                     <span className="subtext">折扣金額</span>
-                    <span>- NT$ {discountAmount}</span>
+                    <span>- NT$ {discountAmount.toFixed(0)}</span>
                   </div>
                   <div className="d-flex justify-content-between mt-3">
                     <span className="subtext">最終金額</span>
-                    <span>NT$ {finalAmount}</span>
+                    <span>NT$ {finalAmount.toFixed(0)}</span>
                   </div>
                 </div>
 
