@@ -325,3 +325,15 @@
   background-color: #ff9900;
   color: white;
 }
+
+@media (max-width: 768px) {
+
+  .rwd{
+    padding: 30px;
+  }
+  .suHotelCard img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  }
