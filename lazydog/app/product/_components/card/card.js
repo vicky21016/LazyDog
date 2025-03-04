@@ -6,31 +6,29 @@ import Link from "next/link";
 
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
-import { FetchCardProvider, useCardFetch } from "@/hooks/product/use-fetch";
+import { useCardFetch } from "@/hooks/product/use-fetch";
 import {
   CardFavoriteProvider,
   useCardFavorite,
 } from "@/hooks/product/use-favorite";
 
-export default function Card({
+export default function CardPage({
   productID = "",
   favorite = [],
   setFavorite = () => {},
 }) {
   return (
-    <FetchCardProvider productID={productID}>
-      <CardFavoriteProvider
-        productID={productID}
-        favorite={favorite}
-        setFavorite={setFavorite}
-      >
-        <CardContent />
-      </CardFavoriteProvider>
-    </FetchCardProvider>
+    <CardFavoriteProvider
+      productID={productID}
+      favorite={favorite}
+      setFavorite={setFavorite}
+    >
+      <CardContent productID={productID} />
+    </CardFavoriteProvider>
   );
 }
 
-function CardContent() {
+function CardContent({ productID = "" }) {
   const { user } = useAuth();
   const { onAddProduct, productItems } = useCart();
   const [productCount, setProductCount] = useState(0);
@@ -44,7 +42,6 @@ function CardContent() {
   }, [productItems]);
   const {
     width,
-    productID,
     router,
     loginRoute,
     products,
@@ -62,9 +59,16 @@ function CardContent() {
     mutate,
     isLoading,
     error,
-  } = useCardFetch();
-  const { setFavorite, heartHover, setHeartHover, heartState, setHeartState } =
-    useCardFavorite();
+  } = useCardFetch({ productID });
+  const {
+    favorite,
+    setFavorite,
+    heartHover,
+    setHeartHover,
+    heartState,
+    setHeartState,
+  } = useCardFavorite();
+
   return (
     <li
       className={`${styles.ProductCard} col`}
