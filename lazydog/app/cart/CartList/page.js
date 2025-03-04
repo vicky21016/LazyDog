@@ -87,7 +87,9 @@ export default function CartListPage(props) {
                   <tbody>
                     {/* 顯示商品 */}
                     {productItems.map((cartItem) => {
-                      const imgName = cartItem?.img.split(",");
+                      const imgName = cartItem?.img
+                        ? cartItem.img.split(",")
+                        : [""];
                       return (
                         <tr key={cartItem.id}>
                           <td className={styles.table}>

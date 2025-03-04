@@ -196,8 +196,8 @@ export default function CartListPayPage(props) {
               hotel_id: hotelItem.id, // 假設您hotel有hotel_id
               user_id: user.id,
               dog_count: hotelItem.count, // 假設您hotel有dog_count
-              check_in: "null", // 假設您hotel有check_in
-              check_out: "null", // 假設您hotel有check_out
+              check_in: hotelItem.checkInDate, // 假設您hotel有check_in
+              check_out: hotelItem.checkOutDate, // 假設您hotel有check_out
               total_price: totalHotelAmount,
               payment_status: "Unpaid",
               remark: "",
