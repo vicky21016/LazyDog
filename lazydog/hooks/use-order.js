@@ -8,6 +8,7 @@ export function useOrder() {
   const [orders, setOrders] = useState([]); // 儲存訂單資料
   const [isLoading, setIsLoading] = useState(false); // 是否正在載入資料
   const [error, setError] = useState(null); // 錯誤訊息
+  const [hotelOrders, setHotelOrders] = useState([]);
 
   // 創建商品訂單的函數
   const createProductOrder = async (orderData) => {
@@ -163,7 +164,7 @@ export function useOrder() {
           setIsLoading(false);
           throw new Error(result.message); // 如果API回傳狀態是error，拋出錯誤
         }
-        console.log(result);
+        // console.log(result.orders[0].imageResult);
 
         // 將 productID_list, price_list, amount_list 轉換為陣列
         // const formattedOrders = result.orders.map((order) => ({
@@ -186,20 +187,71 @@ export function useOrder() {
         setError(err.message); // 設定錯誤訊息
         setIsLoading(false); // 結束載入 (失敗)
       }
-
     };
+    const fetchHotelOrders = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      // 從 localStorage 取得 token
+      const token = localStorage.getItem("loginWithToken");
+
+      // 如果沒有 token，表示使用者未登入
+      if (!token) {
+        console.log("使用者未登入，無法獲取酒店訂單資料。");
+        setIsLoading(false); // 停止載入
+        return; // 停止執行後續程式碼
+      }
+
+      let userId;
+      try {
+        const decoded = jwtDecode(token); // 解碼 token
+        userId = decoded.id; // 取得 userId
+      } catch (err) {
+        console.log(err);
+        setError("token錯誤"); // 設定錯誤訊息
+        setIsLoading(false); // 停止載入
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5000/order/hotelOrders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // 在 Authorization header 中傳送 token
+          },
+        });
+
+        if (!res.ok) {
+          setIsLoading(false);
+          throw new Error("無法取得酒店訂單資料");
+        }
+
+        const result = await res.json();
+        if (result.status === "error") {
+          setIsLoading(false);
+          throw new Error(result.message);
+        }
+
+        setHotelOrders(result.orders); // 更新酒店訂單資料
+        setIsLoading(false); // 結束載入 (成功)
+      } catch (err) {
+        setError(err.message); // 設定錯誤訊息
+        setIsLoading(false); // 結束載入 (失敗)
+      }
+    };
+
+    fetchHotelOrders();
     fetchOrders();
-
-
-
   }, []); // dependency array 為空，確保只執行一次
 
   return {
     orders,
+    hotelOrders,
     isLoading,
     error,
     createProductOrder,
     createHotelOrder,
-    createCourseOrder
+    createCourseOrder,
   }; // 回傳訂單資料、載入狀態和錯誤訊息 ,createOrder
 }
