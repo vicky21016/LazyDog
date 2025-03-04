@@ -26,7 +26,7 @@ const geistMono = localFont({
 // });
 
 export const metadata = {
-  title: "Lazy Dog",
+  title: "ＬＡＺＹＤＯＧ",
   description:
     "website for Lazy Dog, an online store offer high quality dog stuff and services",
   icons: {
@@ -62,7 +62,6 @@ export default function RootLayout({ children }) {
           </body>
         </CartProvider>
       </AuthProvider>
-
     </html>
   );
 }
