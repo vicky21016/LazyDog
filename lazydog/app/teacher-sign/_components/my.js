@@ -48,165 +48,176 @@ export default function My() {
 
   return (
     <>
-    {/* 手機版選單按鈕 */}
-    <button
-    className="btn d-block d-md-none"
-    onClick={() => {
-      setmobileMenu(!mobileMenu);
-    }}
-  >
-    {mobileMenu ? "關閉選單" : "打開選單"}
-  </button>
-  <div className="col-md-3 col-12">
-      <div className={` p-3 ${style.container} d-block d-md-none ${mobileMenu ? "" : "d-none"}`}>
-        <div className="text-center">
-          <div className="position-relative d-inline-block">
+      <div className={`${styles.collapseAside} d-lg-none`}>
+        <div className={`${styles.collapseAsideContent}`}>
+          {/* 手機版選單按鈕 */}
+          <button className={styles.right}>
             <img
-              ref={avatarRef}
-              src="/hotel/hotel-images/page-image/Dog2.png"
-              alt="User Avatar"
-              className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
+              src={`/product/font/right(orange).png`}
+              onClick={() => setmobileMenu(!mobileMenu)}
             />
-
-            <div className={styles.dropdownItem}>
-              <button
-                className={`btn btn-light ${styles.suCameraIcon}`}
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <img
-                  src="/hotel/hotel-images/page-image/icon-camera.png"
-                  alt="相機"
-                  className={styles.suCameraIconImg}
-                />
-              </button>
-              <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
-                <li>
-                  <button
-                    className={`text-danger dropdown-item ${styles.suDropdownItem}`}
-                    onClick={deletePhoto}
-                  >
-                    刪除照片
-                  </button>
-                </li>
-                <li>
-                  <label
-                    onClick={uploadPhoto}
-                    className={`dropdown-item ${styles.dropdownItem}`}
-                  >
-                    上傳照片
-                  </label>
-                  <input
-                    type="file"
-                    id="uploadPhoto"
-                    accept="image/*"
-                    className="d-none"
-                    ref={fileInputRef}
-                    onChange={fileChange}
-                  />
-                </li>
-              </ul>
-            </div>
-          </div>
-          <h5 className="mt-2">{user?.name}</h5>
-          <p className="text-muted">{user?.email}</p>
-          <button
-            className={`btn btn-outline-success btn-sm ${styles.suBtnSecondary}`}
-          >
-            已認證
           </button>
         </div>
-        <hr />
-        <List animated selection>
-          {menuItems.map((menuItem) => (
-            <List.Item
-              key={menuItem.path}
-              active={menuItem.path === pathname}
-              className={`${style.item}`}
-            >
-              <Link className={`${style.link}`} href={menuItem.path}>
-                <span>{menuItem.icon}</span> {menuItem.name}
-              </Link>
-            </List.Item>
-          ))}
-        </List>
       </div>
-      <div className={` p-3 ${style.container} d-none d-md-block`}>
-        <div className="text-center">
-          <div className="position-relative d-inline-block">
-            <img
-              ref={avatarRef}
-              src="/hotel/hotel-images/page-image/Dog2.png"
-              alt="User Avatar"
-              className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
-            />
+      {/* <div className="col-md-3 col-12"> */}
+      <div
+        className={`${styles.mobileFilter} ${
+          mobileMenu ? styles.showFilter : ""
+        }`}
+      >
+  
+        <div className={` p-3 text-center`}>
+          <div className="text-center">
+            <div className="position-relative d-inline-block">
+              <img
+                ref={avatarRef}
+                src={user.avatar}
+                alt="User Avatar"
+                className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
+              />
 
-            <div className={styles.dropdownItem}>
-              <button
-                className={`btn btn-light ${styles.suCameraIcon}`}
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <img
-                  src="/hotel/hotel-images/page-image/icon-camera.png"
-                  alt="相機"
-                  className={styles.suCameraIconImg}
-                />
-              </button>
-              <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
-                <li>
-                  <button
-                    className={`text-danger dropdown-item ${styles.suDropdownItem}`}
-                    onClick={deletePhoto}
-                  >
-                    刪除照片
-                  </button>
-                </li>
-                <li>
-                  <label
-                    onClick={uploadPhoto}
-                    className={`dropdown-item ${styles.dropdownItem}`}
-                  >
-                    上傳照片
-                  </label>
-                  <input
-                    type="file"
-                    id="uploadPhoto"
-                    accept="image/*"
-                    className="d-none"
-                    ref={fileInputRef}
-                    onChange={fileChange}
+              <div className={styles.dropdownItem}>
+                <button
+                  className={`btn btn-light ${styles.suCameraIcon}`}
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="/hotel/hotel-images/page-image/icon-camera.png"
+                    alt="相機"
+                    className={styles.suCameraIconImg}
                   />
-                </li>
-              </ul>
+                </button>
+                <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
+                  <li>
+                    <button
+                      className={`text-danger dropdown-item ${styles.suDropdownItem}`}
+                      onClick={deletePhoto}
+                    >
+                      刪除照片
+                    </button>
+                  </li>
+                  <li>
+                    <label
+                      onClick={uploadPhoto}
+                      className={`dropdown-item ${styles.dropdownItem}`}
+                    >
+                      上傳照片
+                    </label>
+                    <input
+                      type="file"
+                      id="uploadPhoto"
+                      accept="image/*"
+                      className="d-none"
+                      ref={fileInputRef}
+                      onChange={fileChange}
+                    />
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
-          <h5 className="mt-2">{user?.name}</h5>
-          <p className="text-muted">{user?.email}</p>
-          <button
-            className={`btn btn-outline-success btn-sm ${styles.suBtnSecondary}`}
-          >
-            已認證
-          </button>
-        </div>
-        <hr />
-        <List animated selection>
-          {menuItems.map((menuItem) => (
-            <List.Item
-              key={menuItem.path}
-              active={menuItem.path === pathname}
-              className={`${style.item}`}
+            <h5 className="mt-2">{user?.name}</h5>
+            <p className="text-muted">{user?.email}</p>
+            <button
+              className={`btn btn-outline-success btn-sm ${styles.suBtnSecondary}`}
             >
-              <Link className={`${style.link}`} href={menuItem.path}>
-                <span>{menuItem.icon}</span> {menuItem.name}
-              </Link>
-            </List.Item>
-          ))}
-        </List>
+              已認證
+            </button>
+          </div>
+          <hr />
+          <List animated selection>
+            {menuItems.map((menuItem) => (
+              <List.Item
+                key={menuItem.path}
+                active={menuItem.path === pathname}
+                className={`${style.item}`}
+              >
+                <Link className={`${style.link}`} href={menuItem.path}>
+                  <span>{menuItem.icon}</span> {menuItem.name}
+                </Link>
+              </List.Item>
+            ))}
+          </List>
+        </div>
       </div>
-    </div>
+      <div className={`col-3 ${styles.asideContainer}`}>
+        <div className={` p-3 ${style.container}`}>
+          <div className="text-center">
+            <div className="position-relative d-inline-block">
+              <img
+                ref={avatarRef}
+                src={user.avatar}
+                alt="User Avatar"
+                className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
+              />
+
+              <div className={styles.dropdownItem}>
+                <button
+                  className={`btn btn-light ${styles.suCameraIcon}`}
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="/hotel/hotel-images/page-image/icon-camera.png"
+                    alt="相機"
+                    className={styles.suCameraIconImg}
+                  />
+                </button>
+                <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
+                  <li>
+                    <button
+                      className={`text-danger dropdown-item ${styles.suDropdownItem}`}
+                      onClick={deletePhoto}
+                    >
+                      刪除照片
+                    </button>
+                  </li>
+                  <li>
+                    <label
+                      onClick={uploadPhoto}
+                      className={`dropdown-item ${styles.dropdownItem}`}
+                    >
+                      上傳照片
+                    </label>
+                    <input
+                      type="file"
+                      id="uploadPhoto"
+                      accept="image/*"
+                      className="d-none"
+                      ref={fileInputRef}
+                      onChange={fileChange}
+                    />
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <h5 className="mt-2">{user?.name}</h5>
+            <p className="text-muted">{user?.email}</p>
+            <button
+              className={`btn btn-outline-success btn-sm ${styles.suBtnSecondary}`}
+            >
+              已認證
+            </button>
+          </div>
+          <hr />
+          <List animated selection>
+            {menuItems.map((menuItem) => (
+              <List.Item
+                key={menuItem.path}
+                active={menuItem.path === pathname}
+                className={`${style.item}`}
+              >
+                <Link className={`${style.link}`} href={menuItem.path}>
+                  <span>{menuItem.icon}</span> {menuItem.name}
+                </Link>
+              </List.Item>
+            ))}
+          </List>
+        </div>
+      </div>
+      {/* </div> */}
     </>
   );
 }
