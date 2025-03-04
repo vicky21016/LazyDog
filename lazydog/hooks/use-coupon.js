@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { getCouponss } from "@/services/couponService";
+import { getCouponss, getCoupons,useCoupon } from "@/services/couponService";
 
 export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
   const [availableCoupons, setAvailableCoupons] = useState([]);
@@ -7,103 +7,162 @@ export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
   const [discountAmount, setDiscountAmount] = useState(0);
   const [error, setError] = useState(null);
 
+  // 計算最終金額
   const finalAmount = useMemo(() => {
-    console.log("cartTotal:", cartTotal);
-    console.log("discountAmount:", discountAmount);
-    console.log("更新最終金額:", cartTotal - discountAmount);
+    console.log(
+      "Final Amount Calculation:",
+      cartTotal,
+      "-",
+      discountAmount,
+      "=",
+      cartTotal - discountAmount
+    );
     return cartTotal - discountAmount;
   }, [cartTotal, discountAmount]);
 
-  // 取得用戶擁有的優惠券
+  // 取得可用的優惠券 (從 coupon_usage 查找擁有的優惠券，再從 coupons 查詳細資料)
   useEffect(() => {
     const fetchCoupons = async () => {
       try {
-        const response = await getCouponss("claimed", "all");
-        console.log("API 回傳優惠券:", response.data);
-        if (response.success) {
-          setAvailableCoupons(response.data.map((c) => ({
-            ...c,
-            displayId: c.id,  
-            id: c.coupon_id, 
-          })));
+        const usageResponse = await getCouponss("claimed", "all");
+
+        if (!usageResponse.success || !usageResponse.data) {
+          console.error("無法獲取 coupon_usage:", usageResponse);
+          return;
+        }
+
+        const couponIds = usageResponse.data.map((u) => u.coupon_id);
+
+        if (couponIds.length == 0) {
+          setAvailableCoupons([]);
+          return;
+        }
+
+        const couponsResponse = await getCoupons(couponIds);
+        if (couponsResponse.success) {
+          const coupons = couponsResponse.data.map((c) => ({
+            id: c.id,
+            name: c.name,
+            value: c.value,
+            discount_type: c.type,
+            min_order_value: c.min_order_value,
+          }));
+
+          setAvailableCoupons(coupons);
+        } else {
+          console.error("無法獲取 coupons:", couponsResponse);
         }
       } catch (error) {
         console.error("獲取優惠券失敗:", error);
       }
     };
+
     fetchCoupons();
   }, []);
 
+  // 計算折扣金額
+  const calculateDiscount = (couponId) => {
+    const coupon = availableCoupons.find((c) => c.id === Number(couponId));
+
+    if (!coupon) {
+      console.error("優惠券不存在:", couponId);
+      return 0;
+    }
+
+    let discount = 0;
+    if (coupon.discount_type === "percentage") {
+      discount = (cartTotal * coupon.value) / 100;
+    } else {
+      discount = Math.min(coupon.value, cartTotal);
+    }
+
+    console.log("Final Calculated Discount:", discount);
+    return discount;
+  };
+
+  //  變化並更新折扣金額
+  useEffect(() => {
+    if (selectedCoupon) {
+      const discount = calculateDiscount(selectedCoupon);
+      setDiscountAmount(discount);
+    } else {
+      setDiscountAmount(0);
+    }
+  }, [selectedCoupon, cartTotal]);
+
   // 使用優惠券
   const applyCoupon = async (couponId) => {
-    console.log("選擇的優惠券 ID:", couponId);
-    console.log("cartTotal:", cartTotal);
+    console.log("Applying coupon with ID:", couponId);
   
     if (!couponId) {
-      console.error("❌ 未選擇優惠券");
+      console.error("未選擇優惠券");
       return;
     }
   
-    const couponUsage = availableCoupons.find((c) => c.id === Number(couponId));
-    if (!couponUsage) {
-      console.error("❌ 優惠券不存在");
+    const coupon = availableCoupons.find((c) => c.id === Number(couponId));
+  
+    if (!coupon) {
+      console.error("優惠券不存在:", couponId);
       return;
     }
   
-    console.log("使用的優惠券:", couponUsage);
-  
-    setSelectedCoupon(couponId);
-  
-    if (!orderId || !orderTable) {
-      console.error("❌ 找不到對應的訂單 ID 或訂單類型");
+    if (!orderId || !orderTable || !userId) {
+      console.error(" 缺少必要參數: orderId, orderTable, userId");
+      console.log("orderId:", orderId, "orderTable:", orderTable, "userId:", userId);
       return;
     }
+  
+    const validOrderTables = ["hotel_order", "course_orders", "yi_orderlist"];
+    const cleanedOrderTable = orderTable.trim(); // 避免空格錯誤
+  
+    if (!validOrderTables.includes(cleanedOrderTable)) {
+      console.error(" 無效的訂單類型:", cleanedOrderTable);
+      return;
+    }
+  
+    const requestBody = {
+      userId: Number(userId),
+      orderId: Number(orderId),
+      orderTable: cleanedOrderTable, 
+      couponId: Number(coupon.id),
+    };
+  
   
     try {
       const response = await fetch(
-        `http://localhost:5000/api/coupon/usage/use/${couponUsage.coupon_id}`,
+        `http://localhost:5000/api/coupon/usage/use/${coupon.id}`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            userId: userId,
-            orderId: orderId,
-            orderTable: orderTable,
-          }),
+          body: JSON.stringify(requestBody),
         }
       );
   
       const data = await response.json();
-      console.log("API 回應:", data);
-  
-      if (data.success) {
-        let discount = 0;
-        if (couponUsage.discount_type === "percentage") {
-          discount = (cartTotal * couponUsage.value) / 100;
-        } else {
-          discount = Math.min(couponUsage.value, cartTotal);
-        }
-  
-        console.log("計算後的折扣金額:", discount);
-        setDiscountAmount(discount);
-      } else {
-        setDiscountAmount(0);
-        console.error("❌ 優惠券無法使用:", data.message);
+      if (!response.ok) {
+        console.error(" 優惠券無法使用:", data.message);
+        return;
       }
+  
+      console.log(" 優惠券成功套用:", data);
     } catch (error) {
-      console.error("❌ 套用優惠券失敗:", error);
-      setDiscountAmount(0);
+      console.error(" 套用優惠券失敗:", error);
     }
   };
+  
+  
+
   return {
     availableCoupons,
     selectedCoupon,
     setSelectedCoupon,
     discountAmount,
     finalAmount,
+    setDiscountAmount,
+    calculateDiscount,
     applyCoupon,
     error,
   };
