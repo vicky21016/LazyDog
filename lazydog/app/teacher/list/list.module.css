@@ -264,7 +264,7 @@
     justify-content: center;
     z-index: 2;
     background: white;
-    border: 1px solid var(--Orange);
+    border: 1px solid #F5842B;
     width: 35px;
     height: 35px;
   }
