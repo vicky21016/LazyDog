@@ -57,11 +57,11 @@ export default function My() {
       {/* 手機版選單按鈕 */}
       <div className={`${styles.collapseAside} d-lg-none`}>
         <div className={`${styles.collapseAsideContent}`}>
-          <button className={styles.right}>
-            <img
-              src={`/product/font/right(orange).png`}
-              onClick={() => setmobileMenu(!mobileMenu)}
-            />
+          <button
+            className={styles.right}
+            onClick={() => setmobileMenu(!mobileMenu)}
+          >
+            <img src={`/product/font/right(orange).png`} />
           </button>
         </div>
       </div>
@@ -71,7 +71,6 @@ export default function My() {
           mobileMenu ? styles.showFilter : ""
         }`}
       >
-
         <div className={` p-3 text-center`}>
           <div className="text-center">
             <div className="position-relative d-inline-block">

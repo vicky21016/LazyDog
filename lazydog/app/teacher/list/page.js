@@ -71,14 +71,13 @@ export default function App() {
         <div className={`${styles.collapseAside} d-lg-none`}>
           <div className={`${styles.collapseAsideContent}`}>
             {/* <button className={styles.right}> */}
-            
-              <img
-                src={`/product/font/right(orange).png`}
-                onClick={() => setFilterOpen(!filterOpen)}
-                className={`${styles.collapseAsideBtn} btn`}
-              />
+
+            <img
+              src={`/product/font/right(orange).png`}
+              onClick={() => setFilterOpen(!filterOpen)}
+              className={`${styles.collapseAsideBtn} btn`}
+            />
             {/* </button> */}
-            
           </div>
         </div>
         <div className={styles.container}>
@@ -89,7 +88,7 @@ export default function App() {
               </figure>
             </a>
           </section>
-          <section className={style1.BreadcrumbsTitle}>
+          <section className={styles.BreadcrumbsTitle}>
             <Breadcrumb
               links={[
                 { label: "首頁 ", href: "/" },
@@ -98,10 +97,12 @@ export default function App() {
               ]}
             />
             <div className={`mt-4 ${style1.Title}`}>
-              <h3 className={style1.list}>師資列表</h3>
+              <div>
+                <h3 className={`mb-3 ${style1.list}`}>師資列表</h3>
+                <div className={` ${styles.sbar}`}></div>
+              </div>
               <div className={`${style1.TitleFilter} ${styles.filterButton}`}>
-                <img src="/product/font/filter.png" alt="篩選" />
-                <h6>依熱門排序</h6>
+                <h6>共計 {filtered.length} 位老師</h6>
               </div>
             </div>
           </section>
