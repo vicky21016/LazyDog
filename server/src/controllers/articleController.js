@@ -31,7 +31,7 @@ export const getId = async (req, res) => {
   const { id } = req.params;
   try {
       const results = await getIdS(id);
-      console.log(results);
+      // console.log(results);
 
       if (!results || results.length === 0) {
           return res.status(404).json({ message: "文章不存在" });

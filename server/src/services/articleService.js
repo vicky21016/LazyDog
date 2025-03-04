@@ -38,7 +38,7 @@ export const getIdS = async (id) => {
        LEFT JOIN article_type ON articles.category_id = article_type.id
        LEFT JOIN comment ON articles.id = comment.article_id 
        LEFT JOIN users AS comment_users ON comment.user_id = comment_users.id
-       WHERE articles.is_deleted = 0 AND users.is_deleted = 0 AND articles.id = ?`, [id]
+       WHERE articles.is_deleted = 0 AND users.is_deleted = 0 AND articles.id = ? AND comment.is_deleted = 0`, [id]
     );
     // console.log(articles)
     return articles;

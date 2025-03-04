@@ -209,6 +209,7 @@
 } 
 
 .ArticlePage {
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -310,7 +311,7 @@
     display: none;
   }
  .RWDfilter{
-display: block;
+  display: block;
 }
   .post-button {
     justify-content: center;
