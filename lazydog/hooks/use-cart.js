@@ -16,6 +16,8 @@ export function CartProvider({ children }) {
 
   // 商品增減邏輯
   const onAddProduct = (product, amount) => {
+    console.log(product);
+
     if (!amount) amount = 1;
     const foundIndex = productItems.findIndex(
       (v) => v.productID == product.productID
