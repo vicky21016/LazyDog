@@ -299,7 +299,7 @@
     background: none;
     border: 0.5px solid #ff9538;
     width: 100%;
-    color: #ff9900;
+    color: #ff9538;
     padding: 10px 20px;
     border-radius: 30px;
     font-size: 16px;
@@ -311,6 +311,7 @@
     transition: 0.4s;
 
     &:hover {
+      /* border: none; */
       background: #ff9538;
       color: white;
     }
@@ -460,7 +461,7 @@
     letter-spacing: 3.2px;
   }
   .sbar {
-    background-color: #f5842b;
+    background-color: #ff9538;
     width: 50px;
     height: 4px;
     border-radius: 5px;
@@ -512,8 +513,8 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    border-radius: 3px;
-    padding: 15px;
+    border-radius: 5px;
+    padding: 18px;
     cursor: pointer;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 
@@ -546,12 +547,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* text-align: center; */
-    /* width: 71px; */
-    /* height: 23px; */
+
+    height: 26px;
     padding: 5px 8px;
-    border-radius: 3px;
-    background: var(--Color, #f5842b);
+    border-radius: 5px;
+    background: var(--Color, #ff9538);
     color: var(--real-wh, #fff);
     white-space: nowrap;
     font-size: 13px;
@@ -659,7 +659,7 @@
       margin: 18px 0;
     }
     .sbar {
-      background-color: #f5842b;
+      background-color: #ff9538;
       width: 50px;
       height: 4px;
       border-radius: 5px;
@@ -696,7 +696,8 @@
         width: 100%;
         object-fit: cover;
         margin-bottom: 27px;
-        border: 0.1px solid #f5f1f1;
+        /* border: 0.1px solid #f5f1f1; */
+        border-radius: 3px;
         @media (max-width: 992px) {
           margin-bottom: 15px;
         }
@@ -710,8 +711,9 @@
         color: var(--Color, #3b3330);
         text-overflow: ellipsis;
         font-size: 17px;
-        font-weight: bold;
+        font-weight: 550;
         letter-spacing: 1.2px;
+        padding: 2px 0;
         margin: 0;
       }
     }
@@ -720,11 +722,17 @@
 
 /* 手機 */
 .filterIcon {
-  display: flex;
-  justify-content: left;
-  color: #3e3e3e;
-  width: 100%;
-  padding-bottom: 20px;
+  position: fixed;
+  top: 100px;
+  left: 0;
+  /* display: flex; */
+  /* justify-content: left; */
+  color: #ff9538;
+  background: #fff;
+  /* width: 100%; */
+  border: 0.8px solid #ff9538;
+  border-radius: 20px;
+  padding: 10px;
 
   &:hover {
     color: #ff9538;

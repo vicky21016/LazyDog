@@ -162,7 +162,7 @@ export default function SideBar({ types, places, filters, setFilters }) {
 
         {/* 手機版顯示 Offcanvas 按鈕 */}
         <button
-          className={`btn border-bottom d-md-none ${styles.filterIcon}`} // 只在小螢幕上顯示
+          className={`btn d-md-none ${styles.filterIcon}`} // 只在小螢幕上顯示
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#filterOffcanvas"
@@ -170,7 +170,7 @@ export default function SideBar({ types, places, filters, setFilters }) {
           aria-controls="filterOffcanvas"
         >
           <i className="bi bi-funnel-fill"></i>
-          <span className={styles.filterIconWord}>{"Filter"}</span>
+          {/* <span className={styles.filterIconWord}>{"Filter"}</span> */}
         </button>
         {/* Offcanvas 內容 */}
         <div
