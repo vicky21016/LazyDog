@@ -123,11 +123,12 @@ export default function CourseIntro({ course, session, place }) {
 
         <div className={styles.courseName}>
           <h2 className={styles.name}>{c?.name}</h2>
-          <img
+          <i className={`bi bi-heart ${styles.heartIcon}`}></i>
+          {/* <img
             className={styles.heartIcon}
             src="/course/img/heartIcon.svg"
             alt=""
-          />
+          /> */}
         </div>
         <p className={styles.description}>
           {displayText}{" "}
@@ -351,17 +352,15 @@ export default function CourseIntro({ course, session, place }) {
                         // onClick={() => handlePlaceClick(p, index + 3)}
                       >
                         {p.address}
-                        <p className="mt-3">
+                        <p className={`pt-2 ${styles.zoom}`}>
                           <a
                             href="https://reurl.cc/XRdR6j"
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{
-                              color: "blue",
-                              // textDecoration: "underline",
-                            }}
                           >
-                            <strong>ZOOM下載使用教學參考</strong>
+                            <strong className={styles.zoomWord}>
+                              ZOOM下載使用教學參考
+                            </strong>
                           </a>
                         </p>
                         <p>
@@ -369,12 +368,10 @@ export default function CourseIntro({ course, session, place }) {
                             href="https://reurl.cc/nv9vz8"
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{
-                              color: "blue",
-                              // textDecoration: "underline",
-                            }}
                           >
-                            <strong>直播觀看教學方式說明</strong>
+                            <strong className={styles.zoomWord}>
+                              直播觀看教學方式說明
+                            </strong>
                           </a>
                         </p>
                       </div>
