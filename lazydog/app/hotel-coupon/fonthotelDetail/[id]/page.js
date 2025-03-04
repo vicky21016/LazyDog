@@ -145,14 +145,22 @@ export default function HotelDetailPage({ params }) {
       router.push("/login"); // 跳轉到登入頁面
       return;
     }
-  
+
     try {
       if (isFavorite) {
         await removeHotelToFavorites(id);
-        Swal.fire({ icon: "success", title: "已移除收藏", text: "旅館已從您的收藏清單中移除！" });
+        Swal.fire({
+          icon: "success",
+          title: "已移除收藏",
+          text: "旅館已從您的收藏清單中移除！",
+        });
       } else {
         await addHotelToFavorites(id);
-        Swal.fire({ icon: "success", title: "已加入收藏", text: "旅館已加入您的收藏清單！" });
+        Swal.fire({
+          icon: "success",
+          title: "已加入收藏",
+          text: "旅館已加入您的收藏清單！",
+        });
       }
       setIsFavorite(!isFavorite);
     } catch (error) {
@@ -160,7 +168,6 @@ export default function HotelDetailPage({ params }) {
       Swal.fire({ icon: "error", title: "操作失敗", text: "請稍後再試！" });
     }
   };
-  
 
   const mapRef = useRef(null);
   useGoogleMap(lat, lng, mapRef);
@@ -181,7 +188,7 @@ export default function HotelDetailPage({ params }) {
         setQuantity={setQuantity}
         onSearch={handleSearch}
       />
-      {/* 旅館簡介 */}
+      {/* 簡介 */}
       <div className="container mt-5">
         <Breadcrumb
           links={[
