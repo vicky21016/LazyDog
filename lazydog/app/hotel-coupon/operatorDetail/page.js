@@ -88,7 +88,7 @@ export default function OperatorDetailPage() {
   return (
     <>
       <Header />
-      <div className="container mt-5">
+      <div className={`container ${styles.wrapper}`}>
         <div className="row">
           {/* 左邊 */}
           <My />

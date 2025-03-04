@@ -177,7 +177,7 @@
 }
 
 /* 關閉篩選按鈕 */
-.closeButton {
+/* .closeButton {
   display: block;
   width: 100%;
   padding: 10px;
@@ -186,11 +186,7 @@
   text-align: center;
   border: none;
   cursor: pointer;
-}
-
-.closeButton:hover {
-  background: #bbb;
-}
+} */
 
 .imgFluid{
   padding: 30px;
@@ -224,3 +220,52 @@
   border: #F5842B;
 }
   }
+
+  .collapseAside {
+  position: sticky;
+  width: 100%;
+  top: 74px;
+  @media (max-width: 768px) {
+    top: 62px;
+  }
+  z-index: 2;
+  .collapseAsideContent {
+    display: flex;
+    position: absolute;
+    z-index: 1;
+   
+    .collapseHorizontal {
+      position: relative;
+      margin-top: -10px;
+      padding: 10px 35px 10px 25px;
+      background: white;
+      border-right: 3px solid #F5842B;
+      
+      transition: width 0.05s ease, height 0.05s ease;
+      .collapseAsideBtn {
+        margin-left: 0;
+        padding: 0;
+        width: 11px;
+        position: absolute;
+        right: 13px;
+        top: 10px;
+        border: none;
+        
+      }
+    }
+  }
+  .collapseAsideBtn {
+    margin-left: 63px;
+    @media (max-width: 768px) {
+      margin-left: 15px;
+    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    background: white;
+    border: 1px solid var(--Orange);
+    width: 35px;
+    height: 35px;
+  }
+}

@@ -150,36 +150,26 @@ export default function HotelHomePage() {
   }, [sortOption, isFiltered]);
 
   //  觸發篩選 API
-   const handleSearch = async (newParams) => {
+  const handleSearch = async (newParams) => {
     setIsFiltered(true);
     const updatedParams = { ...searchParams, ...newParams };
-
-
+  
     setSearchParams(updatedParams);
     if (typeof window !== "undefined") {
       sessionStorage.setItem("searchParams", JSON.stringify(updatedParams));
     }
-
+  
     try {
       const data = await getFilteredHotelsS(updatedParams);
+      console.log("篩選結果:", data); // ✅ 確保有回應數據
       setFilteredHotels(data);
       setCurrentPage(1);
-
-      const queryString = new URLSearchParams(
-        Object.entries(updatedParams).reduce((acc, [key, value]) => {
-          if (value !== null && value !== "" && value !== undefined) {
-            acc[key] = Array.isArray(value) ? value.join(",") : value.toString();
-          }
-          return acc;
-        }, {})
-      ).toString();
-
-      router.push(`/hotel-coupon/fonthotelHome?${queryString}`);
     } catch (error) {
       console.error("篩選錯誤:", error);
       setFilteredHotels([]);
     }
   };
+  
   
 
   //  清除篩選條件

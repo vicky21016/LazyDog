@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useRouter, useParams } from "next/navigation";
 import Header from "../../../components/layout/header";
 import My from "../../../components/hotel/my";
+import styles from "../../../../styles/modules/operatorCamera.module.css";
 
 const ReviewList = () => {
   const { user } = useAuth(); 
@@ -95,7 +96,7 @@ const ReviewList = () => {
   return (
     <>
       <Header />
-      <div className="container mt-5">
+      <div className={`container ${styles.wrapper}`}>
         <div className="row">
           <My />
           <div className="col-md-9">

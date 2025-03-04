@@ -26,7 +26,7 @@ export default function News() {
 
   return (
     <>
-      <div className={`container ${styles.new}`}>
+      <div className={`container d-none d-lg-block ${styles.new}`}>
         {/* 影片slide */}
         <Swiper
           spaceBetween={100}
