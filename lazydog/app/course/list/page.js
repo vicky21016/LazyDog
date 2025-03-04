@@ -9,8 +9,8 @@ import Header from "@/app/components/layout/header";
 import News from "../_components/list/news";
 import SideBar from "../_components/list/sideBar";
 import CourseCard from "../_components/list/course-card";
-import Pagination from "../_components/list/page";
-// import Pagination from "../_components/list/pagination";
+import Page from "@/app/components/hotel/page";
+
 import OtherCourseCard from "../_components/list/other-course-card";
 
 export default function CourseListPage() {
@@ -19,11 +19,9 @@ export default function CourseListPage() {
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
-    keyword: "", // 新增搜尋關鍵字
+    keyword: "",
     types: [],
     places: [],
-    // minPrice: 600,
-    // maxPrice: 8000,
   });
 
   // 取得篩選後的課程
@@ -67,26 +65,19 @@ export default function CourseListPage() {
   }, [filters]);
 
   // 分頁
-  // const [currPage, setCurrPage] = useState(1);
-  // const perPage = 9;
-  // const totalPages = Math.max(1, Math.ceil(courses?.length / perPage));
-
-  // const startIndex = (currPage - 1) * perPage;
-  // const currentCourses = courses?.slice(startIndex, startIndex + perPage);
-
   const [currPage, setCurrPage] = useState(1);
   const perPage = 9;
   const totalPages = Math.max(1, Math.ceil(courses?.length / perPage));
-
   const startIndex = (currPage - 1) * perPage;
   const currentCourses = courses?.slice(startIndex, startIndex + perPage);
+
   return (
     <>
       <Header />
       <News />
       <main className={styles.list}>
         <div className={`container ${styles.section1}`}>
-          <div className={`row `}>
+          <div className={`row`}>
             <SideBar
               types={types}
               places={places}
@@ -94,11 +85,12 @@ export default function CourseListPage() {
               setFilters={setFilters}
             />
             <CourseCard
-              courses={currentCourses}
+              courses={courses}
+              currentCourses={currentCourses}
               loading={loading}
               filters={filters}
             />
-            <Pagination
+            <Page
               totalPages={totalPages}
               currentPage={currPage}
               onPageChange={setCurrPage}

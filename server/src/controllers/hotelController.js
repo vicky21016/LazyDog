@@ -54,6 +54,10 @@ export const getSearch = async (req, res) => {
 };
 export const getByIds = async (req, res) => {
   try {
+    if (!req.params.id) {
+      return res.status(400).json({ error: "請提供有效的飯店 ID" });
+    }
+
     const id = validateHotelId(req.params.id);
     const { checkInDate, checkOutDate } = req.query;
 
@@ -67,6 +71,7 @@ export const getByIds = async (req, res) => {
     handleError(res, error, "獲取飯店失敗");
   }
 };
+
 
 export const getOperatorHotels = async (req, res) => {
   try {
@@ -258,19 +263,25 @@ export const getFilteredHotelsS = async (req, res) => {
       checkInDate: req.body.checkInDate || null,
       checkOutDate: req.body.checkOutDate || null,
       min_rating: req.body.minRating ? parseFloat(req.body.minRating) : null,
-      min_price: req.body.minPrice ? parseFloat(req.body.minPrice) : null,
-      max_price: req.body.maxPrice ? parseFloat(req.body.maxPrice) : null,
+      min_price: req.body.minPrice ? Math.max(0, parseFloat(req.body.minPrice)) : 0, // ✅ 確保 min_price >= 0
+      max_price: req.body.maxPrice
+        ? Math.min(10000, parseFloat(req.body.maxPrice)) // ✅ 限制 max_price 最高 10000
+        : 10000,
       room_type_id: req.body.roomTypeId ? parseInt(req.body.roomTypeId) : null,
       tags: req.body.tags
         ? req.body.tags.map(Number).filter((n) => !isNaN(n))
         : [],
     };
+
     const hotels = await getFilteredHotels(filters);
     res.json(hotels);
   } catch (error) {
     handleError(res, error, "獲取篩選飯店失敗");
   }
 };
+
+
+
 //刪除單張圖片
 export const deleteHotelImage = async (req, res) => {
   try {

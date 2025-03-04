@@ -68,6 +68,18 @@ export default function App() {
     <>
       <Header />
       <div className="lumi-all-wrapper">
+        <div className={`${styles.collapseAside} d-lg-none`}>
+          <div className={`${styles.collapseAsideContent}`}>
+            {/* <button className={styles.right}> */}
+
+            <img
+              src={`/product/font/right(orange).png`}
+              onClick={() => setFilterOpen(!filterOpen)}
+              className={`${styles.collapseAsideBtn} btn`}
+            />
+            {/* </button> */}
+          </div>
+        </div>
         <div className={styles.container}>
           <section className={style1.DmArea}>
             <a href="">
@@ -76,7 +88,7 @@ export default function App() {
               </figure>
             </a>
           </section>
-          <section className={style1.BreadcrumbsTitle}>
+          <section className={styles.BreadcrumbsTitle}>
             <Breadcrumb
               links={[
                 { label: "首頁 ", href: "/" },
@@ -85,13 +97,16 @@ export default function App() {
               ]}
             />
             <div className={`mt-4 ${style1.Title}`}>
-              <h3 className={style1.list}>師資列表</h3>
-              <div className={`${style1.TitleFilter} ${styles.filterButton}`} onClick={() => setFilterOpen(!filterOpen)}>
-                <img src="/product/font/filter.png" alt="篩選" />
-                <h6>依熱門排序</h6>
+              <div>
+                <h3 className={`mb-3 ${style1.list}`}>師資列表</h3>
+                <div className={` ${styles.sbar}`}></div>
+              </div>
+              <div className={`${style1.TitleFilter} ${styles.filterButton}`}>
+                <h6>共計 {filtered.length} 位老師</h6>
               </div>
             </div>
           </section>
+
           <section className={styles.pdArea}>
             <div className="row">
               {/* 桌機版篩選選單 */}
@@ -100,9 +115,21 @@ export default function App() {
               </div>
 
               {/* 手機版篩選選單 (滑入效果) */}
-              <div className={`${styles.mobileFilter} ${filterOpen ? styles.showFilter : ""}`}>
+              <div
+                className={`${styles.mobileFilter} ${
+                  filterOpen ? styles.showFilter : ""
+                }`}
+              >
+                {/* <button
+                  className={styles.closeButton}
+                  onClick={() => setFilterOpen(false)}
+                >
+                  <img
+                    src={`/product/font/right(orange).png`}
+                    onClick={() => setFilterOpen(!filterOpen)}
+                  />
+                </button> */}
                 <Filter filterChange={filter} />
-                <button className={styles.closeButton} onClick={() => setFilterOpen(false)}>關閉</button>
               </div>
 
               {/* 師資列表 */}
@@ -123,7 +150,11 @@ export default function App() {
                     <p className="text-center">沒有符合條件的老師</p>
                   )}
                 </div>
-                <Page totalPages={totalPages} currPage={page} setCurrPage={setPage} />
+                <Page
+                  totalPages={totalPages}
+                  currPage={page}
+                  setCurrPage={setPage}
+                />
               </div>
             </div>
           </section>

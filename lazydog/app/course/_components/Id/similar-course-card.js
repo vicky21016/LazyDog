@@ -8,7 +8,7 @@ export default function SimilarCourseCard({ simiCourse }) {
   return (
     <>
       <div className={styles.similarCourses}>
-        <div className={`container ${styles.similarCourse}`}>
+        <div className={`${styles.similarCourse}`}>
           <h2 className={styles.sTitle}>相關課程</h2>
           <div className={styles.sBars}>
             <div className={styles.sbar} />
@@ -25,10 +25,10 @@ export default function SimilarCourseCard({ simiCourse }) {
               />
             </div>
           </div>
-          <div className={styles.sCards}>
+          <div className={`row gy-5 ${styles.sCards}`}>
             {simiCourse?.map((simi) => (
               <Link
-                className={styles.sCard}
+                className={`col-6 col-lg-3 p-4 ${styles.sCard}`}
                 key={simi.courseId}
                 href={`/course/${simi.courseId}`}
               >

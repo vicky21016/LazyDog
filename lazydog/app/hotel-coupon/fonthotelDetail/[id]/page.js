@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2"; // 導入 SweetAlert
 import "../../../../html/hotel-coupon/css/fontHotelHome.css";
 import hotelStyles from "../../../../styles/modules/fontHotelDetail.module.css";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 import Image from "next/image";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
 import { useGoogleMap } from "@/hooks/useGoogleMap";
@@ -12,6 +13,8 @@ import {
   getHotelById,
   getHotelRoomById,
   getRoomInventory,
+  addHotelToFavorites,
+  removeHotelToFavorites,
 } from "@/services/hotelService";
 
 import Header from "../../../components/layout/header";
@@ -31,7 +34,7 @@ export default function HotelDetailPage({ params }) {
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
 
-  //  確保 `sessionStorage` 只在瀏覽器內部操作
+  // 確保 `sessionStorage` 只在瀏覽器內部操作
   const getInitialSearchParams = () => {
     if (typeof window !== "undefined") {
       const storedParams = sessionStorage.getItem("searchParams");
@@ -129,6 +132,43 @@ export default function HotelDetailPage({ params }) {
 
     router.push(`/hotel-coupon/fonthotelHome?${paramsString}`);
   };
+
+  // 處理收藏邏輯
+  const handleFavorite = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Swal.fire({
+        icon: "warning",
+        title: "請先登入",
+        text: "您需要登入才能收藏旅館！",
+      });
+      router.push("/login"); // 跳轉到登入頁面
+      return;
+    }
+
+    try {
+      if (isFavorite) {
+        await removeHotelToFavorites(id);
+        Swal.fire({
+          icon: "success",
+          title: "已移除收藏",
+          text: "旅館已從您的收藏清單中移除！",
+        });
+      } else {
+        await addHotelToFavorites(id);
+        Swal.fire({
+          icon: "success",
+          title: "已加入收藏",
+          text: "旅館已加入您的收藏清單！",
+        });
+      }
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error("收藏操作失敗:", error);
+      Swal.fire({ icon: "error", title: "操作失敗", text: "請稍後再試！" });
+    }
+  };
+
   const mapRef = useRef(null);
   useGoogleMap(lat, lng, mapRef);
 
@@ -148,7 +188,7 @@ export default function HotelDetailPage({ params }) {
         setQuantity={setQuantity}
         onSearch={handleSearch}
       />
-      {/* 旅館簡介 */}
+      {/* 簡介 */}
       <div className="container mt-5">
         <Breadcrumb
           links={[
@@ -182,7 +222,7 @@ export default function HotelDetailPage({ params }) {
                       isFavorite ? "bi-heart-fill" : "bi-heart"
                     }  `}
                     style={{ color: "red", cursor: "pointer", float: "right" }}
-                    onClick={() => setIsFavorite(!isFavorite)}
+                    onClick={handleFavorite} // 綁定點擊事件
                   ></i>
                 </h3>
 

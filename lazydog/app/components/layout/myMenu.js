@@ -24,6 +24,7 @@ import styles from "../../../styles/modules/menu.module.css";
 export default function MyMenu() {
   const pathname = usePathname();
   const router = useRouter();
+  const [mobileMenu, setmobileMenu] = useState(false);
   const { user, logout, updateAvatar } = useAuth(); //  從 `useAuth` 獲取 `user` & `logout`
   const [profile, setProfile] = useState(null);
 
@@ -45,9 +46,7 @@ export default function MyMenu() {
     if (file) {
       updateAvatar(file);
       console.log(file);
-    
     }
-
   };
   const handleLogout = async () => {
     try {
@@ -73,100 +72,235 @@ export default function MyMenu() {
     { name: "修改密碼", path: "/pages/forgot-password", icon: faCirclePlus },
   ];
 
+  // 點擊畫面其他地方時，自動關閉篩選選單
+  useEffect(() => {
+    const clickOutside = (event) => {
+      if (
+        mobileMenu &&
+        !event.target.closest(`.${styles.asideContainer}`) &&
+        !event.target.closest(`.${styles.filterButton}`)
+      ) {
+        setmobileMenu(false);
+      }
+    };
+
+    document.addEventListener("click", clickOutside);
+    return () => document.removeEventListener("click", clickOutside);
+  }, [mobileMenu]);
+
   return (
-    <div className={`${styles.container}`}>
-      {/*  顯示會員頭像與名稱 */}
-      <div className="lumi-profile-section position-relative d-inline-block">
+    <>
+      {/* 手機版選單按鈕 */}
+      <button className={styles.right}>
         <img
-          ref={avatarRef}
-          src={profile?.avatar}
-          alt="User Avatar"
-          className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
-          width="50"
+          src={`/product/font/right(orange).png`}
+          onClick={() => setmobileMenu(!mobileMenu)}
         />
-        <FontAwesomeIcon
-          icon={faCamera}
-          onClick={handleClick}
-          style={{ cursor: "pointer" }}
-        />
-        <input
-          id="avatarInput"
-          type="file"
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-          accept="image/*"
-        />
+      </button>
 
-        {/* <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5> */}
-        <div className={styles.dropdownItem}>
-          <button
-            className={`btn btn-light ${styles.suCameraIcon}`}
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
+      {/* <div className="col-md-3 col-12"> */}
+      <div
+        className={`${styles.mobileFilter} ${
+          mobileMenu ? styles.showFilter : ""
+        }`}
+      >
+        <button
+          className={styles.closeButton}
+          onClick={() => setmobileMenu(false)}
+        >
+          關閉
+        </button>
+        <div className={`${styles.container}`}>
+          {/*  顯示會員頭像與名稱 */}
+          <div className="lumi-profile-section position-relative d-inline-block">
             <img
-              src="/hotel/hotel-images/page-image/icon-camera.png"
-              alt="相機"
-              className={styles.suCameraIconImg}
+              ref={avatarRef}
+              src={profile?.avatar}
+              alt="User Avatar"
+              className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
+              width="50"
             />
-          </button>
-          <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
-            <li>
-              <button
-                className={`text-danger dropdown-item ${styles.suDropdownItem}`}
-                onClick={deletePhoto}
-              >
-                刪除照片
-              </button>
-            </li>
-            <li>
-              <label
-                onClick={uploadPhoto}
-                className={`dropdown-item ${styles.dropdownItem}`}
-              >
-                上傳照片
-              </label>
-              <input
-                type="file"
-                id="uploadPhoto"
-                accept="image/*"
-                className="d-none"
-                ref={fileInputRef}
-                onChange={fileChange}
-              />
-            </li>
-          </ul>
-        </div>
-        <h5 className={`mb-4 ${styles.welcome}`}>
-          歡迎，{profile?.name || "會員"}！
-        </h5>
-      </div>
-      <hr className="mx-4"/>
-      <List animated selection>
-        {menuItems.map((menuItem) => (
-          <List.Item
-            key={menuItem.path}
-            active={menuItem.path === pathname}
-            className={`${styles.item}`}
-          >
-            <Link className={`${styles.link}`} href={menuItem.path}>
-              <span>
-                <FontAwesomeIcon icon={menuItem.icon} />
-              </span>{" "}
-              {menuItem.name}
-            </Link>
-          </List.Item>
-        ))}
+            <FontAwesomeIcon
+              icon={faCamera}
+              onClick={handleClick}
+              style={{ cursor: "pointer" }}
+            />
+            <input
+              id="avatarInput"
+              type="file"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+              accept="image/*"
+            />
 
-        {/* Google & 一般會員通用登出按鈕 */}
-        <List.Item className={`${styles.item}`} onClick={handleLogout}>
-          <span>
-            <FontAwesomeIcon icon={faRightFromBracket} />
-          </span>{" "}
-          登出
-        </List.Item>
-      </List>
-    </div>
+            {/* <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5> */}
+            <div className={styles.dropdownItem}>
+              <button
+                className={`btn btn-light ${styles.suCameraIcon}`}
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  src="/hotel/hotel-images/page-image/icon-camera.png"
+                  alt="相機"
+                  className={styles.suCameraIconImg}
+                />
+              </button>
+              <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
+                <li>
+                  <button
+                    className={`text-danger dropdown-item ${styles.suDropdownItem}`}
+                    onClick={deletePhoto}
+                  >
+                    刪除照片
+                  </button>
+                </li>
+                <li>
+                  <label
+                    onClick={uploadPhoto}
+                    className={`dropdown-item ${styles.dropdownItem}`}
+                  >
+                    上傳照片
+                  </label>
+                  <input
+                    type="file"
+                    id="uploadPhoto"
+                    accept="image/*"
+                    className="d-none"
+                    ref={fileInputRef}
+                    onChange={fileChange}
+                  />
+                </li>
+              </ul>
+            </div>
+            <h5 className={`mb-4 ${styles.welcome}`}>
+              歡迎，{profile?.name || "會員"}！
+            </h5>
+          </div>
+          <hr className="mx-4" />
+          <List animated selection>
+            {menuItems.map((menuItem) => (
+              <List.Item
+                key={menuItem.path}
+                active={menuItem.path === pathname}
+                className={`${styles.item}`}
+              >
+                <Link className={`${styles.link}`} href={menuItem.path}>
+                  <span>
+                    <FontAwesomeIcon icon={menuItem.icon} />
+                  </span>{" "}
+                  {menuItem.name}
+                </Link>
+              </List.Item>
+            ))}
+
+            {/* Google & 一般會員通用登出按鈕 */}
+            <List.Item className={`${styles.item}`} onClick={handleLogout}>
+              <span>
+                <FontAwesomeIcon icon={faRightFromBracket} />
+              </span>{" "}
+              登出
+            </List.Item>
+          </List>
+        </div>
+      </div>
+      <div className={`col-3 ${styles.asideContainer}`}>
+        <div className={`${styles.container}`}>
+          {/*  顯示會員頭像與名稱 */}
+          <div className="lumi-profile-section position-relative d-inline-block">
+            <img
+              ref={avatarRef}
+              src={profile?.avatar}
+              alt="User Avatar"
+              className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
+              width="50"
+            />
+            <FontAwesomeIcon
+              icon={faCamera}
+              onClick={handleClick}
+              style={{ cursor: "pointer" }}
+            />
+            <input
+              id="avatarInput"
+              type="file"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+              accept="image/*"
+            />
+
+            {/* <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5> */}
+            <div className={styles.dropdownItem}>
+              <button
+                className={`btn btn-light ${styles.suCameraIcon}`}
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  src="/hotel/hotel-images/page-image/icon-camera.png"
+                  alt="相機"
+                  className={styles.suCameraIconImg}
+                />
+              </button>
+              <ul className={`dropdown-menu ${styles.suDropdownMenu}`}>
+                <li>
+                  <button
+                    className={`text-danger dropdown-item ${styles.suDropdownItem}`}
+                    onClick={deletePhoto}
+                  >
+                    刪除照片
+                  </button>
+                </li>
+                <li>
+                  <label
+                    onClick={uploadPhoto}
+                    className={`dropdown-item ${styles.dropdownItem}`}
+                  >
+                    上傳照片
+                  </label>
+                  <input
+                    type="file"
+                    id="uploadPhoto"
+                    accept="image/*"
+                    className="d-none"
+                    ref={fileInputRef}
+                    onChange={fileChange}
+                  />
+                </li>
+              </ul>
+            </div>
+            <h5 className={`mb-4 ${styles.welcome}`}>
+              歡迎，{profile?.name || "會員"}！
+            </h5>
+          </div>
+          <hr className="mx-4" />
+          <List animated selection>
+            {menuItems.map((menuItem) => (
+              <List.Item
+                key={menuItem.path}
+                active={menuItem.path === pathname}
+                className={`${styles.item}`}
+              >
+                <Link className={`${styles.link}`} href={menuItem.path}>
+                  <span>
+                    <FontAwesomeIcon icon={menuItem.icon} />
+                  </span>{" "}
+                  {menuItem.name}
+                </Link>
+              </List.Item>
+            ))}
+
+            {/* Google & 一般會員通用登出按鈕 */}
+            <List.Item className={`${styles.item}`} onClick={handleLogout}>
+              <span>
+                <FontAwesomeIcon icon={faRightFromBracket} />
+              </span>{" "}
+              登出
+            </List.Item>
+          </List>
+        </div>
+      </div>
+    </>
   );
 }

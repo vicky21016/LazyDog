@@ -4,11 +4,13 @@ import React, { useState, useEffect } from "react";
 import styles from "./rate.module.css";
 import StarGroup from "./stargroup";
 
-export default function RatecardRatecard({
-  rate = "",
-  users = "",
+export default function Ratecard({
+  rateNow = false,
+  user = "",
   img = "",
+  rate = "",
   comment = "",
+  goodNum = 0,
   date = "",
 }) {
   const rateNum = rate.toString();
@@ -24,7 +26,9 @@ export default function RatecardRatecard({
         <div className={styles.RateCardUser}>
           <button type="button">
             <img src={`http://localhost:5000/auth/${img}`} alt="" />
-            <h6>{users}</h6>
+            <h6>
+              {user}({rateNow ? "您的評論" : ""})
+            </h6>
           </button>
           <div className={styles.StarGroup}>
             <StarGroup rate={rateNum} />
@@ -33,18 +37,24 @@ export default function RatecardRatecard({
         <p>{comment}</p>
       </div>
       <div className={styles.RateCardBtnDate}>
-        <button
-          className={styles.RateCardBtn}
-          type="button"
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          onClick={() => setGood(!good)}
-        >
-          <img
-            src={`/product/font/${good || hover ? "good-fill" : "good"}.png`}
-            alt=""
-          />
-        </button>
+        <div className={styles.RateCardGood}>
+          <button
+            className={styles.RateCardBtn}
+            type="button"
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            onClick={() => setGood(!good)}
+          >
+            <img
+              src={`/product/font/${good || hover ? "good-fill" : "good"}.png`}
+              alt=""
+            />
+          </button>
+          <p>{goodNum}</p>
+        </div>
+        {rateNow && (
+          <button className={styles.UpdateRateBtn}>編輯您的評論</button>
+        )}
         <p>
           {years} {months} {days}
         </p>

@@ -10,27 +10,23 @@ import Link from "next/link";
 
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
-import { FetchDetailProvider, useDetailFetch } from "@/hooks/product/use-fetch";
+import { useDetailFetch, useReviewFetch } from "@/hooks/product/use-fetch";
 import {
   DetailFavoriteProvider,
   useDetailFavorite,
 } from "@/hooks/product/use-favorite";
 
-import useSWR from "swr";
-import { useSearchParams, useRouter } from "next/navigation";
-
 export default function DetailPage() {
   return (
-    <FetchDetailProvider>
-      <DetailFavoriteProvider>
-        <DetailContent />
-      </DetailFavoriteProvider>
-    </FetchDetailProvider>
+    <DetailFavoriteProvider>
+      <DetailContent />
+    </DetailFavoriteProvider>
   );
 }
 
 function DetailContent() {
   const { user } = useAuth();
+  const userID = user?.id;
   const { onAddProduct, productItems } = useCart();
   const {
     width,
@@ -38,6 +34,7 @@ function DetailContent() {
     router,
     loginRoute,
     productData,
+    productID,
     productName,
     productDiscount,
     img,
@@ -60,6 +57,10 @@ function DetailContent() {
     isLoading,
     error,
   } = useDetailFetch();
+  const { reviews, reviewMutate, reviewLoading, reviewError } = useReviewFetch({
+    productID,
+    userID,
+  });
   const {
     favorite,
     setFavorite,
@@ -94,13 +95,24 @@ function DetailContent() {
     }
   };
 
+  const [fullInfo, setFullInfo] = useState(false);
+  const [infoImg, setInfoImg] = useState(false);
+  const [spec, setSpec] = useState(false);
   const [also, setAlso] = useState(0);
   const [hot, setHot] = useState(0);
+  const [rateNow, setRateNow] = useState(false);
+  useEffect(() => {
+    if (user?.id > 0) {
+      setRateNow(true);
+    }
+  }, [user?.id]);
   useEffect(() => {
     setAlso(0);
     setHot(0);
     setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
   }, [width]);
+
+  console.log(reviews);
   return (
     <div className={`${styles.Container} container`}>
       <section className={styles.Breadcrumbs}>
@@ -335,35 +347,58 @@ function DetailContent() {
           </div>
         </div>
       </section>
-      <nav
-        className={`sticky-top ${
-          scrollY >= offset + 250 ? styles.StickyTop : styles.StickyTopOff
-        }`}
-      >
-        <ul>
-          {productData?.full_info && (
-            <li>
-              <h5>
-                <Link href="#collapse-heading1">商品介紹</Link>
-              </h5>
-            </li>
-          )}
-          {(img.info || productData?.info_text) && (
-            <li>
-              <h5>
-                <Link href="#collapse-heading2">商品詳細</Link>
-              </h5>
-            </li>
-          )}
-          {productData?.spec && (
-            <li>
-              <h5>
-                <Link href="#collapse-heading3">商品規格</Link>
-              </h5>
-            </li>
-          )}
-        </ul>
-      </nav>
+      {width < 768 && (
+        <nav
+          className={`sticky-top ${
+            scrollY >= offset + 250 ? styles.StickyTop : styles.StickyTopOff
+          }`}
+        >
+          <ul>
+            {productData?.full_info && (
+              <li>
+                <h5>
+                  <Link
+                    onClick={() => {
+                      setFullInfo(true);
+                    }}
+                    href="#collapse-heading1"
+                  >
+                    商品介紹
+                  </Link>
+                </h5>
+              </li>
+            )}
+            {(img.info || productData?.info_text) && (
+              <li>
+                <h5>
+                  <Link
+                    onClick={() => {
+                      setInfoImg(true);
+                    }}
+                    href="#collapse-heading2"
+                  >
+                    商品詳細
+                  </Link>
+                </h5>
+              </li>
+            )}
+            {productData?.spec && (
+              <li>
+                <h5>
+                  <Link
+                    onClick={() => {
+                      setSpec(true);
+                    }}
+                    href="#collapse-heading3"
+                  >
+                    商品規格
+                  </Link>
+                </h5>
+              </li>
+            )}
+          </ul>
+        </nav>
+      )}
       <section
         ref={elementRef}
         className={`${styles.ProductDetail} accordion accordion-flush`}
@@ -385,7 +420,9 @@ function DetailContent() {
             </div>
             <div
               id="collapse1"
-              className="accordion-collapse collapse show"
+              className={`accordion-collapse collapse show ${
+                fullInfo ? "show" : ""
+              }`}
               aria-labelledby="collapse-heading1"
             >
               <div
@@ -415,7 +452,7 @@ function DetailContent() {
             </div>
             <div
               id="collapse2"
-              className="accordion-collapse collapse"
+              className={`accordion-collapse collapse ${infoImg ? "show" : ""}`}
               aria-labelledby="collapse-heading2"
             >
               <div className={`accordion-body ${styles.AccordionBody}`}>
@@ -428,14 +465,12 @@ function DetailContent() {
                         alt=""
                       />
                     ))}
-                  <figcaption>
-                    <h6
-                      dangerouslySetInnerHTML={{
-                        __html: productData?.info_text,
-                      }}
-                    ></h6>
-                  </figcaption>
                 </figure>
+                <h6
+                  dangerouslySetInnerHTML={{
+                    __html: productData?.info_text,
+                  }}
+                ></h6>
               </div>
             </div>
           </div>
@@ -456,7 +491,7 @@ function DetailContent() {
             </div>
             <div
               id="collapse3"
-              className="accordion-collapse collapse"
+              className={`accordion-collapse collapse ${spec ? "show" : ""}`}
               aria-labelledby="collapse-heading3"
             >
               <div
@@ -489,36 +524,52 @@ function DetailContent() {
             aria-labelledby="collapse-heading4"
           >
             <div className={`accordion-body ${styles.AccordionBody}`}>
-              <div className={styles.ScoreBar}>
-                <div className={styles.Score}>
-                  <h5>商品評價</h5>
-                  <h2>{rateAvg}</h2>
-                  <StarGroup rate={rateAvg} />
+              <div className={`${styles.ScoreBarAndSetReviews} row g-3`}>
+                <div className={`${styles.ScoreBar} col-12 col-lg-6`}>
+                  <div className={styles.Score}>
+                    <h5>商品評價</h5>
+                    <h2>{rateAvg}</h2>
+                    <StarGroup rate={rateAvg} />
+                  </div>
+                  <div className={styles.StarBarGroup}>
+                    {[...Array(5)].map((v, i) => (
+                      <StarBar
+                        key={`starBar${i}`}
+                        index={5 - i}
+                        rate={rateData["rate"]}
+                      />
+                    ))}
+                  </div>
                 </div>
-                <div className={styles.StarBarGroup}>
-                  {[...Array(5)].map((v, i) => (
-                    <StarBar
-                      key={`starBar${i}`}
-                      index={5 - i}
-                      rate={rateData["rate"]}
+                {user?.id > 0 && reviews && (
+                  <div className={`${styles.SetReviews} col-12 col-lg-6`}>
+                    <RateCard
+                      rateNow={rateNow}
+                      user={reviews.user}
+                      img={reviews.userImg}
+                      rate={reviews.rating}
+                      comment={reviews.comment}
+                      goodNum={reviews.good}
+                      date={reviews.updated_at}
                     />
-                  ))}
-                </div>
+                  </div>
+                )}
               </div>
               <div className={`${styles.RateCardGroup} row g-3`}>
                 {rateData.rate &&
                   rateData.rate.map((v, i) => {
-                    if (i < rate) {
+                    if (i < rate && rateData.user[i] !== reviews?.user) {
                       return (
                         <div
                           key={`rateCard${i}`}
                           className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4"
                         >
                           <RateCard
-                            rate={v}
-                            users={rateData.user[i]}
+                            user={rateData.user[i]}
                             img={rateData.img[i]}
+                            rate={v}
                             comment={rateData.comment[i]}
+                            goodNum={rateData.good[i]}
                             date={rateData.date[i]}
                           />
                         </div>
@@ -526,17 +577,20 @@ function DetailContent() {
                     }
                   })}
               </div>
-              {rateData.rate && rateData.rate.length > rate && (
-                <button
-                  type="button"
-                  className={styles.RateMore}
-                  onClick={() => {
-                    setRate(rate + (width >= 1200 ? 3 : width >= 768 ? 2 : 1));
-                  }}
-                >
-                  顯示更多評價
-                </button>
-              )}
+              {rateData.rate &&
+                rateData.rate.length - (reviews ? 1 : 0) > rate && (
+                  <button
+                    type="button"
+                    className={styles.RateMore}
+                    onClick={() => {
+                      setRate(
+                        rate + (width >= 1200 ? 3 : width >= 768 ? 2 : 1)
+                      );
+                    }}
+                  >
+                    顯示更多評價
+                  </button>
+                )}
               {rateData.rate && rateData.rate.length <= rate && (
                 <button
                   type="button"

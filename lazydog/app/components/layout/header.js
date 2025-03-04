@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -20,6 +20,18 @@ export default function Header(props) {
     });
     return () => unsubscribe();
   }, []);
+
+  const menuRef = useRef(null);
+  useEffect(() => {
+    const clickOutside = (event) => {
+      if (menuOpen && !event.target.closest(`.${styles.mobileMenu}`)) {
+        menuRef.current.click();
+      }
+    };
+    document.addEventListener("click", clickOutside);
+    return () => document.removeEventListener("click", clickOutside);
+  }, [menuOpen]);
+
   const [PDOpen, setPDOpen] = useState(false);
   const [teacherOpen, setTeacherOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
@@ -33,7 +45,9 @@ export default function Header(props) {
         <ul className={styles["lumi-ul"]}>
           <div className={styles["dropdown"]}>
             <li>
-              <Link href="/home">關於我們</Link>
+              <Link className={styles.LumiSB} href="/home">
+                關於我們
+              </Link>
             </li>
             <div className={styles["dropdown-content"]}>
               <Link
@@ -52,7 +66,10 @@ export default function Header(props) {
           </div>
           <div className={styles["dropdown"]}>
             <li>
-              <Link href="/product/list" className={styles["dropbtn"]}>
+              <Link
+                href="/product/list"
+                className={`${styles["dropbtn"]} ${styles.LumiSB}`}
+              >
                 寵物用品
               </Link>
             </li>
@@ -114,11 +131,16 @@ export default function Header(props) {
             </div>
           </div>
           <li>
-            <Link href="/hotel-coupon/fonthotelHome">寵物旅館</Link>
+            <Link className={styles.LumiSB} href="/hotel-coupon/fonthotelHome">
+              寵物旅館
+            </Link>
           </li>
           <div className={styles["dropdown"]}>
             <li>
-              <Link href="/teacher" className={styles["dropbtn"]}>
+              <Link
+                href="/teacher"
+                className={`${styles["dropbtn"]} ${styles.LumiSB}`}
+              >
                 寵物課程
               </Link>
             </li>
@@ -138,7 +160,9 @@ export default function Header(props) {
             </div>
           </div>
           <li>
-            <Link href="/article/list">毛孩文章</Link>
+            <Link className={styles.LumiSB} href="/article/list">
+              毛孩文章
+            </Link>
           </li>
         </ul>
       </nav>
@@ -181,6 +205,7 @@ export default function Header(props) {
       {/* 手機板 */}
       <div className={`${styles.mobileMenu}`}>
         <i
+          ref={menuRef}
           onClick={() => setMenuOpen(!menuOpen)}
           className={`${styles.menu} ${menuOpen ? "bi bi-x-lg" : "bi bi-list"}`}
         ></i>
@@ -197,7 +222,7 @@ export default function Header(props) {
                   setTeacherOpen(false);
                 }}
               >
-                <Link href="" className={styles["dropbtn"]}>
+                <Link href="/product/list" className={styles["dropbtn"]}>
                   寵物用品
                 </Link>
               </div>

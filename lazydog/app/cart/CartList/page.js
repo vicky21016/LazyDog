@@ -67,9 +67,9 @@ export default function CartListPage(props) {
         <div className={styles.cartImg}>
           <img src="/cart/cattlist.png" />
         </div>
-        
-        <div className="container">
-        <Breadcrumb
+
+        <div className={`container ${styles.height}`}>
+          <Breadcrumb
             links={[
               { label: "首頁 ", href: "/" },
               {
@@ -79,18 +79,17 @@ export default function CartListPage(props) {
               },
             ]}
           />
-          <div className={`${styles.customTable} row my-5`}>
-            <table
-              className="col-lg-8 col-md-auto col-auto mb-5 me-5"
-              
-            >
+          <div className={`${styles.customTable} row my-5 `}>
+            <table className="col-md-8 col-12 mb-5 ">
               {productItems.length > 0 && (
                 <>
                   <Thead />
                   <tbody>
                     {/* 顯示商品 */}
                     {productItems.map((cartItem) => {
-                      const imgName = cartItem?.img.split(",");
+                      const imgName = cartItem?.img
+                        ? cartItem.img.split(",")
+                        : [""];
                       return (
                         <tr key={cartItem.id}>
                           <td className={styles.table}>
@@ -142,7 +141,10 @@ export default function CartListPage(props) {
                     {courseItems.map((cartItem) => (
                       <tr key={cartItem.id}>
                         <td className={styles.table}>
-                          <img src={cartItem.img} alt={cartItem.name} />
+                          <img
+                            src={`/course/img/${cartItem.img_url}`}
+                            alt={cartItem.name}
+                          />
                         </td>
                         <td>{cartItem.name}</td>
                         <td>{cartItem.price}</td>
@@ -188,7 +190,7 @@ export default function CartListPage(props) {
                         </td>
                         <td>{cartItem.name}</td>
                         <td>{cartItem.price}</td>
-                        <td>
+                        <td className={`${styles.Btn}`}>
                           <button onClick={() => onIncrease(cartItem.id)}>
                             +
                           </button>
@@ -198,6 +200,9 @@ export default function CartListPage(props) {
                           </button>
                         </td>
                         <td>{cartItem.count * cartItem.price}</td>
+                        {/* 新增日期顯示 */}
+                        {/* <td>{cartItem.checkInDate}</td>
+                        <td>{cartItem.checkOutDate}</td> */}
                         <td>
                           <button
                             style={{
@@ -220,31 +225,27 @@ export default function CartListPage(props) {
             </table>
 
             {/* 顯示摘要區 */}
-            <aside
-              className={`${styles.aside} col-lg-3 col-md-auto col-auto mb-5`}
-              
-            >
+            <aside className={`${styles.aside} col-md-3  mb-5`}>
               <div className={`${styles.summary} aside-card mb-5`}>
                 <h5 className="mb-4">訂單明細</h5>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>商品小計</span>
-                  <span>{`Rs. ${totalProductAmount}`}</span>
+                  <span>{`NT$ ${totalProductAmount}`}</span>
                 </div>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>課程小計</span>
-                  <span>{`Rs. ${totalCourseAmount}`}</span>
+                  <span>{`NT$ ${totalCourseAmount}`}</span>
                 </div>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>旅館小計</span>
-                  <span>{`Rs. ${totalHotelAmount}`}</span>
+                  <span>{`NT$ ${totalHotelAmount}`}</span>
                 </div>
-          
               </div>
 
               {/* 折扣區 */}
@@ -274,8 +275,8 @@ export default function CartListPage(props) {
                   商品結帳
                 </button> */}
                 <Link
-                  style={{ backgroundColor: "#f2662b", color: "#fff" }}
-                  className="btn w-50"
+                  
+                  className={`btn w-50 ${styles.btn}`}
                   href={{
                     pathname: "/cart/CartListPay",
                     // query: {
@@ -298,7 +299,7 @@ export default function CartListPage(props) {
               <h4 className="mb-5">加購其他優惠商品</h4>
               <Other cards={teacherData} />
             </div>
-            <hr className="mb-5"/>
+            <hr className="mb-5" />
             <div>
               <h4 className="mb-5">看看其他精選商品 </h4>
               <Other cards={teacherData} />

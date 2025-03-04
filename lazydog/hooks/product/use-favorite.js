@@ -214,6 +214,6 @@ export function CardFavoriteProvider({
   );
 }
 
-export const useFavorite = () => useContext(FavoriteContext);
-export const useDetailFavorite = () => useContext(DetailFavoriteContext);
-export const useCardFavorite = () => useContext(CardFavoriteContext);
+export const useFavorite = () => useContext(FavoriteContext) || {};
+export const useDetailFavorite = () => useContext(DetailFavoriteContext) || {};
+export const useCardFavorite = () => useContext(CardFavoriteContext) || {};

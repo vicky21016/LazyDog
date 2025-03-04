@@ -18,9 +18,14 @@
   height: auto;
   object-fit: contain;
 }
-
+.height{
+  margin: 90px auto 0;
+}
 /* 表格樣式 */
-.customTable {
+.customTable { 
+  display: flex;
+  flex-wrap: nowrap; 
+  justify-content: space-between;
   border-collapse: collapse;
   text-align: center;
   width: 100%;
@@ -101,7 +106,9 @@
   right: 0;
   width: 180px;
 }
-
+.Btn{
+  width: 150px;
+}
 .Btn button{
   background-color: #fdf9f5;
   color: #BCBCBC;
@@ -139,4 +146,23 @@
 color: #f5842b;
 border: 2px solid;
 border-color: #f5842b;
+}
+
+
+/* sususususus */
+.form-select {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #f2662b;
+  box-shadow: 0 0 5px rgba(242, 102, 43, 0.5);
+}
+
+.subtext {
+  font-weight: bold;
 }

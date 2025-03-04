@@ -59,7 +59,7 @@
     font-size: 15px;
     letter-spacing: 2px;
     /* gap: 60px; */
-    a {
+    .LumiSB {
       text-decoration: none;
       color: rgba(59, 51, 48, 1);
       font-weight: bold;

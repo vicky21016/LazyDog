@@ -133,21 +133,50 @@ router.post("/productOrders", async (req, res) => {
       });
     }
 
-    // 解析 productID_list, price_list, amount_list 為陣列
-    const formattedOrders = orders.map((order) => ({
-      ...order,
-      productID_list: order.productID_list
-        ? order.productID_list.split(",")
-        : [],
-      price_list: order.price_list
-        ? order.price_list.split(",").map(Number)
-        : [],
-      amount_list: order.amount_list
-        ? order.amount_list.split(",").map(Number)
-        : [],
-    }));
+    const formattedOrders = await Promise.all(
+      orders.map(async (order) => {
+        const formattedOrder = {
+          ...order,
+          productID_list: order.productID_list
+            ? order.productID_list.split(",")
+            : [],
+          price_list: order.price_list
+            ? order.price_list.split(",").map(Number)
+            : [],
+          amount_list: order.amount_list
+            ? order.amount_list.split(",").map(Number)
+            : [],
+        };
 
-    res.json({ status: "success", orders: formattedOrders });
+        // 取得第一個 productID
+        const firstProductID = formattedOrder.productID_list[0];
+        // console.log(firstProductID);
+
+        // 查詢圖片
+        if (firstProductID) {
+          const sqlimg = `
+            SELECT * FROM yi_img
+            WHERE productID = ?
+            AND is_deleted = 0
+            ORDER BY created_at DESC
+          `;
+          const [imageResult] = await pool.execute(sqlimg, [firstProductID]);
+          // console.log(imageResult);
+
+          // 把查詢結果加入 order 物件中
+          formattedOrder.imageResult = imageResult;
+        }
+
+        return formattedOrder;
+      })
+    );
+
+    // console.log(formattedOrders);
+
+    res.json({
+      status: "success",
+      orders: formattedOrders,
+    });
   } catch (err) {
     res.status(500).json({ status: "error", message: err.message });
   }
@@ -192,10 +221,6 @@ router.post("/course", async (req, res) => {
 
 // 旅館
 router.post("/hotel", async (req, res) => {
-  console.log(123);
-
-  console.log(req.body);
-
   const {
     hotel_id,
     user_id,
@@ -208,7 +233,13 @@ router.post("/hotel", async (req, res) => {
     cancellation_policy,
     remark,
   } = req.body;
-  //預設折扣薇玲
+
+  // Basic validation
+  if (!hotel_id || !user_id || !check_in || !check_out) {
+    return res.status(400).json({ status: "error", message: "缺少必要參數" });
+  }
+
+  //預設折扣為零
   const discount_amount = 0;
   const final_amount = total_price;
 
@@ -239,6 +270,66 @@ router.post("/hotel", async (req, res) => {
       id: result.insertId,
       total_price,
       final_amount,
+    });
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
+// 檢視使用者旅館訂單
+router.post("/hotelOrders", async (req, res) => {
+  // 驗證 JWT Token，從 Token 中提取 user_id
+  let token = req.get("Authorization");
+  token = token.slice(7);
+  if (!token) {
+    return res
+      .status(401)
+      .json({ status: "error", message: "缺少 Token，請登入後再試" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const user_id = decoded.id;
+
+    // 查詢該使用者的所有訂單
+    const sql = `
+      SELECT *
+      FROM hotel_order 
+      WHERE user_id = ? AND is_deleted = 0
+      ORDER BY created_at DESC
+    `;
+
+    // const [orders] = await pool.execute(sql, [user_id]);
+    // const [hotelImages] = await pool.execute(
+    //   `SELECT * FROM hotel_images WHERE is_deleted = 0 AND hotel_id = ?`,
+    //   [orders[0].hotel_id]
+    // );
+
+    const [orders] = await pool.execute(sql, [user_id]);
+
+    for (const order of orders) {
+      const [hotelImages] = await pool.execute(
+        `SELECT * FROM hotel_images WHERE is_deleted = 0 AND hotel_id = ?`,
+        [order.hotel_id]
+      );
+      order.images = hotelImages; // 把圖片資料加到 order 內
+    }
+
+    console.log(orders);
+
+    // console.log(hotelImages[0]?.url);
+
+    if (orders.length === 0) {
+      return res.json({
+        status: "success",
+        message: "沒有找到相關訂單",
+        orders: [],
+      });
+    }
+
+    res.json({
+      status: "success",
+      orders: orders,
     });
   } catch (err) {
     res.status(500).json({ status: "error", message: err.message });
