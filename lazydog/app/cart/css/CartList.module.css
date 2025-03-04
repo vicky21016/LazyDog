@@ -101,7 +101,9 @@
   right: 0;
   width: 180px;
 }
-
+.Btn{
+  width: 150px;
+}
 .Btn button{
   background-color: #fdf9f5;
   color: #BCBCBC;
