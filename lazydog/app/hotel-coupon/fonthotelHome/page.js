@@ -212,7 +212,7 @@ export default function HotelHomePage() {
   return (
     <>
       <Header />
-      <div className="suBody">
+      <div className={`suBody`}>
         {/* 搜尋欄背景 */}
         <div
           className={styles.suSearchBg}
@@ -263,6 +263,7 @@ export default function HotelHomePage() {
         </div>
 
         {/* 主要內容 */}
+        <div className={` ${styles.rwd}`}>
         <div className="container mt-4">
           <div className="row">
             {/* 側邊篩選欄 */}
@@ -275,14 +276,15 @@ export default function HotelHomePage() {
             </aside>
 
             {/* 飯店列表 */}
-            <section className="col-lg-9">
+            <section className="col-lg-9 col-12">
+              <div className="row">
               {currentHotels.length > 0 ? (
                 currentHotels.map((hotel) => (
                   <HotelCard key={hotel.id} hotel={hotel} />
                 ))
               ) : (
                 <p className="text-center">沒有符合條件的飯店</p>
-              )}
+              )}</div>
             </section>
           </div>
         </div>
@@ -292,7 +294,7 @@ export default function HotelHomePage() {
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
-        />
+        /></div>
       </div>
     </>
   );
