@@ -11,7 +11,7 @@ export default function TeacherUpdatePage() {
   return (
     <>
       <Header />
-      <div className={`container mt-5 mb-5`}>
+      <div className={`container lumi-all-wrapper mb-5`}>
         <div className={`row`}>
           <My />
           <TeacherUpdateC />
