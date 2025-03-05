@@ -54,7 +54,7 @@ export default function Menu() {
       number: user?.number || "",
       floor: user?.floor || "",
     });
-    router.push("/pages");
+    router.push("/user");
   };
   const handleSubmit = async (e) => {
     console.log(user.id);
