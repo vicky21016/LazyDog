@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import Header from "../../../components/layout/header";
 import My from "../../../teacher-sign/_components/my"
+import styles from "../../../../styles/modules/operatorCamera.module.css"
 // ReviewList
 // reviews.js 裡get+post+delete+put做API連結後台，
 //下面都是假資料參考用就好
@@ -90,8 +91,8 @@ const ReviewList = () => {
                         <span
                           className={`badge ${
                             review.status === "公開"
-                              ? "bg-success"
-                              : "bg-warning"
+                              ? [styles.btn3]
+                              :[styles.btn]
                           }`}
                         >
                           {review.status}
@@ -99,7 +100,7 @@ const ReviewList = () => {
                       </td>
                       <td>
                         <button
-                          className="btn btn-sm btn-primary"
+                          className={`btn btn-sm ${styles.btn}`}
                           data-bs-toggle="modal"
                           data-bs-target="#reviewModal"
                           onClick={() => loadReview(review)}
@@ -166,14 +167,14 @@ const ReviewList = () => {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className={`btn ${styles.btn2}`}
                   data-bs-dismiss="modal"
                 >
                   取消
                 </button>
                 <button
                   type="button"
-                  className="btn btn-primary"
+                  className={`btn ${styles.btn}`}
                   onClick={replyReview}
                 >
                   送出回覆

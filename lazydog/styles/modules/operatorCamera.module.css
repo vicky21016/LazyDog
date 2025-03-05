@@ -108,6 +108,48 @@
   cursor: pointer;
 }
 
+.btn{
+  cursor: pointer;
+    outline: none;
+    border: 1px solid transparent;
+    color: white;
+    background-color: #ff9538;
+    border-radius: 5px;
+}
+.btn:hover {
+  background-color: #fdf9f5;
+  color: #ff9538;
+  border-color: #ff9538;
+}
+
+.btn2{
+  background-color: #fdf9f5;
+  color: #ff9538;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  border-color: #ff9538;
+  cursor: pointer;
+}
+.btn2:hover {
+  background-color: #ff9538;
+  color: white;
+  border-color: #ff9538;
+}
+
+.btn3{
+  cursor: pointer;
+    outline: none;
+    border: 1px solid transparent;
+    color: white;
+    background-color: #66C5BD;
+    border-radius: 5px;
+}
+.btn3:hover {
+  background-color: #fdf9f5;
+  color: #66C5BD;
+  border-color: #66C5BD;
+}
+
 @media (min-width: 768px) {
   .mobileFilter {
     display: none;
