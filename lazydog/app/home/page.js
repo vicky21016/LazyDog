@@ -7,7 +7,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "../../styles/modules/home.module.css";
 import Header from "../components/layout/header2";
 import { useDetailFetch } from "@/hooks/product/use-fetch";
-
+import TaiwanMap from "./_component/TaiwanMap";
 export default function HomePage(props) {
   // const { hotSale } = useDetailFetch();
   // console.log(hotSale);
@@ -170,7 +170,7 @@ export default function HomePage(props) {
         </div>
         <div className={styles.hotel}>
           <div className={styles.map}>
-            <img src="/home/img/taiwan.png" alt="" />
+            <TaiwanMap />
           </div>
           <div className={styles.hotelWords}>
             <h2 className={styles.h2}>毛孩的度假天堂</h2>
