@@ -160,7 +160,7 @@ export default function Header(props) {
               <Link href="/user" className={styles["dropdown-link"]}>
                 個人資料
               </Link>
-              <Link href="/favorite" className={styles["dropdown-link"]}>
+              <Link href="/user/userFavorite" className={styles["dropdown-link"]}>
                 我的收藏
               </Link>
               <div onClick={logout} className={styles["dropdown-link"]}>
