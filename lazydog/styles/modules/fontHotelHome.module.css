@@ -380,7 +380,17 @@
 }
 
 @media (max-width: 768px) {
-
+  .asideContainer {
+    display: none;
+  }
+    .container{
+    padding: 30px;
+  }
+  .right{
+  display: block;
+  border-radius: 50%;
+  border: #F5842B;
+}
   .rwd{
     padding: 30px;
   }
@@ -392,23 +402,14 @@
   .suPriceBox{
     display: none;
   }
-  .mobileFilter {
-    display: none;
+
   }
-  }
-  @media (max-width: 768px) {
-    .asideContainer {
+  @media (min-width: 768px) {
+    .mobileFilter {
       display: none;
     }
-      .container{
-      padding: 30px;
-    }
-    .right{
-    display: block;
-    border-radius: 50%;
-    border: #F5842B;
+  
   }
-    }
   
     .collapseAside {
     position: sticky;
