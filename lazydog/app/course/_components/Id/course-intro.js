@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "../courseId.module.css";
@@ -124,6 +126,7 @@ export default function CourseIntro({ course, session, place }) {
         <div className={styles.courseName}>
           <h2 className={styles.name}>{c?.name}</h2>
           <i className={`bi bi-heart ${styles.heartIcon}`}></i>
+          {/* <FontAwesomeIcon icon={faHeart} className={styles.heartIcon} /> */}
           {/* <img
             className={styles.heartIcon}
             src="/course/img/heartIcon.svg"
@@ -137,7 +140,7 @@ export default function CourseIntro({ course, session, place }) {
               className={styles.toggleBtn}
               onClick={() => setExpanded(!expanded)}
             >
-              {expanded ? " ...收 " : "看更多"}
+              {expanded ? " ...收合 " : "看更多"}
             </span>
           )}
         </p>
@@ -165,6 +168,9 @@ export default function CourseIntro({ course, session, place }) {
         </div>
         <div className={styles.startDate}>
           <img src="/course/img/flagIcon.svg" alt="" />
+          {/* <span className={styles.icons}>
+            <i class="bi bi-flag"></i>
+          </span> */}
           <h5 className={styles.dateTitle}>近期開課</h5>
           <p className={styles.date}>
             {s?.start_date
@@ -239,7 +245,7 @@ export default function CourseIntro({ course, session, place }) {
           {/* 注意事項 */}
           <div
             type="button"
-            className={styles.notice}
+            className={`${styles.notice}`}
             data-bs-toggle="offcanvas"
             data-bs-target="#noticeOffcanvas"
             aria-controls="noticeOffcanvas"
@@ -247,13 +253,13 @@ export default function CourseIntro({ course, session, place }) {
             <h5 className={styles.noticeTitle}>注意事項</h5>
             <img src="/course/img/rightBlack.svg" alt="" />
             <div
-              className={`offcanvas offcanvas-end`} // offcanvas-end 表示從右邊滑出
+              className={`offcanvas offcanvas-end mt-3`} // offcanvas-end 表示從右邊滑出
               tabIndex="-1"
               id="noticeOffcanvas"
               aria-labelledby="noticeOffcanvasLabel"
               data-bs-backdrop="true"
             >
-              <div className="offcanvas-header">
+              {/* <div className="offcanvas-header">
                 <h5 id="noticeOffcanvasLabel">注意事項</h5>
                 <button
                   type="button"
@@ -261,10 +267,11 @@ export default function CourseIntro({ course, session, place }) {
                   data-bs-dismiss="offcanvas"
                   aria-label="Close"
                 />
-              </div>
+              </div> */}
               <div
-                className={`offcanvas-body ${styles.scrollOrg} ${styles.offcanvaBody}`}
+                className={`offcanvas-body ${styles.scrollOrgTsai} ${styles.offcanvaBody}`}
               >
+                <h5 className="mt-5 py-4">注意事項</h5>
                 {c?.notice}
               </div>
             </div>
@@ -281,12 +288,13 @@ export default function CourseIntro({ course, session, place }) {
             <h5 className={styles.qaTitle}>Q&amp;A</h5>
             <img src="/course/img/rightBlack.svg" alt="" />
             <div
-              className={`offcanvas offcanvas-end ${styles.offcanvas}`}
+              className={`offcanvas offcanvas-end`}
               tabIndex="-1"
               id="qaOffcanvas"
               aria-labelledby="qaOffcanvasLabel"
+              data-bs-backdrop="true"
             >
-              <div className="offcanvas-header">
+              {/* <div className="offcanvas-header">
                 <h5 id="qaOffcanvasLabel">Q&amp;A</h5>
                 <button
                   type="button"
@@ -294,10 +302,11 @@ export default function CourseIntro({ course, session, place }) {
                   data-bs-dismiss="offcanvas"
                   aria-label="Close"
                 />
-              </div>
+              </div> */}
               <div
-                className={`offcanvas-body ${styles.scrollOrg} ${styles.offcanvaBody}`}
+                className={`offcanvas-body ${styles.scrollOrgTsai} ${styles.offcanvaBody}`}
               >
+                <h5 className="mt-5 py-4">Q&nbsp;&&nbsp;A</h5>
                 {c?.qa}
               </div>
             </div>
@@ -318,8 +327,9 @@ export default function CourseIntro({ course, session, place }) {
               tabIndex="-1"
               id="otherOffcanvas"
               aria-labelledby="otherOffcanvasLabel"
+              data-bs-backdrop="true"
             >
-              <div className="offcanvas-header">
+              {/* <div className="offcanvas-header">
                 <h5 id="otherOffcanvasLabel">其他</h5>
                 <button
                   type="button"
@@ -327,12 +337,12 @@ export default function CourseIntro({ course, session, place }) {
                   data-bs-dismiss="offcanvas"
                   aria-label="Close"
                 />
-              </div>
+              </div> */}
               <div
-                className={`offcanvas-body ${styles.scrollOrg} ${styles.offcanvaBody}`}
+                className={`offcanvas-body ${styles.scrollOrgTsai} ${styles.offcanvaBody}`}
               >
                 <div className="container-fluid">
-                  <h5 className="pb-3">上課地點</h5>
+                  <h5 className="mt-5 py-4">上課地點</h5>
                   {place?.slice(0, 3).map((p, index) => (
                     <div key={p.id} className="row my-4 border-bottom">
                       <div className="col-12 col-md-3">{p.region}</div>
@@ -348,7 +358,7 @@ export default function CourseIntro({ course, session, place }) {
                     <div key={p.id} className="row my-4 border-bottom">
                       <div className="col-12 col-md-3">{p.region}</div>
                       <div
-                        className="col-12 col-md-9 pb-4"
+                        className="col-12 col-md-9 pb-4 "
                         // onClick={() => handlePlaceClick(p, index + 3)}
                       >
                         {p.address}

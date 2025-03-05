@@ -27,19 +27,19 @@
 }
 
 .list {
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 /* 活動輪播 */
 .new {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 480px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 40px auto 0;
+  margin: 65px auto 0;
   padding: 13px 3px;
   z-index: 1;
   /* border-radius: 48px; */
@@ -158,11 +158,16 @@
     align-items: center;
     height: 54px;
     border-radius: 54px;
-    border: 0.5px solid var(--text-Gy, #bcbcbc);
+    border: 0.5px solid var(--text-Gy, #bcbcbc56);
     padding: 0 20px;
     flex: 1;
     margin: 26px 40px 35px 0px;
     overflow: hidden;
+    transition: 0.4s;
+
+    &:hover {
+      border: 0.5px solid var(--text-Gy, #bcbcbc);
+    }
   }
   .searchIcon {
     width: 21px;
@@ -370,10 +375,9 @@
     align-self: stretch;
     border: none;
     border-radius: var(--btn-rounded-pill, 100px);
-    background: var(--Color-5, #f6ce5b);
+    background: var(--Color-5, #f3cf62);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     color: #fff;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     white-space: nowrap;
     font-family: "Dangrek", sans-serif;
     font-size: 1.5rem;
@@ -381,6 +385,17 @@
     font-weight: bold;
     line-height: normal;
     letter-spacing: 3.64px;
+    transition: 0.4s;
+
+    &:hover {
+      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+      transform: scale(1.05);
+      translate: 0 -5px;
+    }
+    &:active {
+      background-color: #fdc724;
+    }
 
     @media (max-width: 922px) {
       font-size: 18px;
@@ -451,6 +466,9 @@
   }
   .top {
     margin: 45px 0 50px;
+    @media (max-width: 992px) {
+      margin: 45px 15px 50px;
+    }
   }
   .sTitle {
     margin-bottom: 28px;
@@ -479,6 +497,9 @@
     font-weight: 600;
     line-height: normal;
     letter-spacing: 0.84px;
+    @media (max-width: 992px) {
+      margin-left: 15px;
+    }
   }
 
   .hot {
@@ -651,12 +672,18 @@
       font-weight: bold;
       line-height: 39px;
       letter-spacing: 3.2px;
+      @media (max-width: 992px) {
+        margin-left: 15px;
+      }
     }
     .sBars {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 18px 0;
+      @media (max-width: 992px) {
+        margin-left: 15px;
+      }
     }
     .sbar {
       background-color: #ff9538;
@@ -683,11 +710,12 @@
       overflow: hidden;
       text-align: center;
       .sCard {
+        border-radius: 5px;
         cursor: pointer;
         transition: 0.4s;
 
         &:hover {
-          translate: 0 -15px;
+          translate: 0 -20px;
         }
       }
       .cardImg {
@@ -724,31 +752,54 @@
 .filterIcon {
   position: fixed;
   top: 100px;
-  left: 0;
-  /* display: flex; */
-  /* justify-content: left; */
+  right: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: #ff9538;
   background: #fff;
-  /* width: 100%; */
+  width: 41px;
+  height: 41px;
   border: 0.8px solid #ff9538;
-  border-radius: 20px;
-  padding: 10px;
-
-  &:hover {
-    color: #ff9538;
-  }
+  border-radius: 50%;
+  transition: 0.4s;
+  padding: 0;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  transition: width 0.4s ease, background-color 0.4s ease; /* 動畫過渡效果 */
 
   &:active {
-    color: #ff9538;
+    background-color: #fc861f;
+    color: #fff;
+  }
+  &:hover {
+    /* width: 120px; */
+    /* translate: 0 -5px; */
+    background-color: #ff9538;
+    color: #fff;
     border: none;
   }
+  /* 使用 ::after 顯示文字 */
+  &:hover::after {
+    content: "Filter"; /* 顯示的文字 */
+    position: absolute;
+    right: 50px; /* 讓文字顯示在按鈕右側 */
+    top: 50%;
+    transform: translateY(-50%); /* 使文字垂直置中 */
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: #fff;
+    background-color: #ff9538; /* 文字背景色與按鈕一致 */
+    padding: 8px 16px;
+    border-radius: 25px; /* 使文字背景有圓角 */
+  }
 }
-.filterIconWord {
+/* .filterIconWord {
   font-size: 15px;
   font-weight: 500;
   letter-spacing: 1px;
   padding-left: 8px;
-}
+} */
 .offcanvasBody {
   padding: 16px 16px 0px 40px;
   overflow-x: hidden;

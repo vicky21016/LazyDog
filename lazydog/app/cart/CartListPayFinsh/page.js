@@ -19,20 +19,26 @@ export default function CartListPayFinshPage(props) {
           localStorage.removeItem("productCart");
           localStorage.removeItem("courseCart");
           localStorage.removeItem("hotelCart");
-          window.location.href = "http://localhost:3000/product/list";
+  
+          if (typeof window !== "undefined") {
+            window.location.href = "http://localhost:3000/product/list";
+          }
         }
         return prev - 1;
       });
     }, 1000);
-
-    // 清除定時器
+  
     return () => clearInterval(timer);
   }, []);
+  
 
   if (isDev) console.log("RtnCode", searchParams?.get("RtnCode"));
   useEffect(() => {
-    require("bootstrap/dist/js/bootstrap.bundle.min.js");
+    if (typeof document !== "undefined") {
+      require("bootstrap/dist/js/bootstrap.bundle.min.js");
+    }
   }, []);
+  
 
   return (
     <>
