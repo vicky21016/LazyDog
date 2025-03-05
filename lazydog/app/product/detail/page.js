@@ -115,7 +115,7 @@ function DetailContent() {
     setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
   }, [width]);
 
-  // console.log(user);
+  // console.log(reviews);
   if (error) {
     return (
       <div className="container">
@@ -564,7 +564,8 @@ function DetailContent() {
                       rate={reviews.rating}
                       comment={reviews.comment}
                       goodNum={reviews.good}
-                      date={reviews.updated_at}
+                      date={reviews.updated_at_taipei}
+                      mutate={mutate}
                     />
                   </div>
                 )}
@@ -577,6 +578,7 @@ function DetailContent() {
                       productID={productID}
                       user={userName}
                       img={userImg}
+                      mutate={mutate}
                     />
                   </div>
                 )}
@@ -597,6 +599,7 @@ function DetailContent() {
                             comment={rateData.comment[i]}
                             goodNum={rateData.good[i]}
                             date={rateData.date[i]}
+                            mutate={mutate}
                           />
                         </div>
                       );
@@ -617,17 +620,19 @@ function DetailContent() {
                     顯示更多評價
                   </button>
                 )}
-              {rateData.rate && rateData.rate.length < rate && (
-                <button
-                  type="button"
-                  className={styles.RateMore}
-                  onClick={() => {
-                    setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
-                  }}
-                >
-                  隱藏額外評價
-                </button>
-              )}
+              {rateData.rate &&
+                rateData.rate.length > 3 &&
+                rateData.rate.length < rate && (
+                  <button
+                    type="button"
+                    className={styles.RateMore}
+                    onClick={() => {
+                      setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
+                    }}
+                  >
+                    隱藏額外評價
+                  </button>
+                )}
             </div>
           </div>
         </div>

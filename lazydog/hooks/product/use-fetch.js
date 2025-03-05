@@ -306,7 +306,6 @@ export function useDetailFetch() {
   const userName = orderData?.userName;
   const userImg = orderData?.userImg;
   const [history, setHistory] = useState(false);
-  // console.log(orderData);
   useEffect(() => {
     if (orderData?.history.includes(productID)) setHistory(true);
     orderMutate();
@@ -531,9 +530,8 @@ export function useReviewFetch({ productID = "", userID = "" }) {
     error: reviewError,
     mutate: reviewMutate,
   } = useSWR(url, fetcher);
-
   const reviews = reviewData?.data?.find((v) => v.productID == productID);
-
+  console.log(reviews);
   return {
     width,
     reviews,
