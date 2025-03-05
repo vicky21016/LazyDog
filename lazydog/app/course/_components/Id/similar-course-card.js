@@ -46,7 +46,7 @@ export default function SimilarCourseCard({ simiCourse }) {
           <div className={`row gy-5 ${styles.sCards}`}>
             {simiCourse?.map((simi) => (
               <Link
-                className={`col-6 col-lg-3 p-4 ${styles.sCard}`}
+                className={`col-6 col-lg-3 ${styles.sCard}`}
                 key={simi.courseId}
                 href={`/course/${simi.courseId}`}
               >
