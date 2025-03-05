@@ -5,31 +5,57 @@ body {
   position: relative;
   min-height: 990px;
   background-color: #f5842b;
+  overflow-x: hidden;
+  .paw1 {
+    width: 15%;
+    position: absolute;
+    left: -1%;
+    bottom: 25%;
+  }
 
   .words {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 50px;
-    padding: 50px 0 200px;
+    padding-bottom: 68px;
+    margin: 280px 0 150px;
+    @media (max-width: 1200px) {
+      margin: 150px 0 150px;
+    }
+    @media (max-width: 992px) {
+      margin: 80px 0 150px;
+    }
   }
-  .sales {
-    padding: 50px;
-    margin-top: 150px;
-    box-sizing: border-box;
-    z-index: 100;
-  }
-  .sale1Word  {
-    color:  #fff;
+
+  .sale11Word {
+    color: #fff;
     text-align: center;
-    font-family: "Noto Sans TC", sans-serif;
-    font-size: 54px;
-    font-style: normal;
+    font-size: 3.5rem;
     font-weight: 700;
-    line-height: 120%; /* 107.1px */
     letter-spacing: 15px;
+    /* text-wrap: nowrap; */
     margin-bottom: 35px;
+    @media (max-width: 1200px) {
+      font-size: 50px;
+    }
+    @media (max-width: 992px) {
+      font-size: 35px;
+    }
   }
+  .sale12Word {
+    color: #fff;
+    text-align: center;
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: 12.5px;
+    /* text-wrap: nowrap; */
+    margin-bottom: 35px;
+    @media (max-width: 1200px) {
+      font-size: 55px;
+      letter-spacing: 15px;
+    }
+    @media (max-width: 992px) {
+      font-size: 35px;
+    }
+  }
+
   .sale2 {
     display: flex;
     justify-content: center;
@@ -52,124 +78,125 @@ body {
       padding-bottom: 23px;
     }
   }
-  .sale3 {
+  .sale3Word {
+    /* text-align: center; */
+    /* overflow: hidden; */
+    color: var(--Color-6, #3b3330);
     text-align: center;
-
-    .sale3Word{
-      /* overflow: hidden; */
-      color: var(--Color-6, #3b3330);
-      text-align: center;
-      text-overflow: ellipsis;
-      font-family: "Noto Sans TC", sans-serif;
-      font-size: 24px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 180%; /* 43.2px */
-      letter-spacing: 6.24px;
-      margin: 60px 0 60px;
-    }
-    
+    text-overflow: ellipsis;
+    font-family: "Noto Sans TC", sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 180%; /* 43.2px */
+    letter-spacing: 6.24px;
+    margin: 60px 0 60px;
+  }
+  .sale3 {
+    display: flex;
+    justify-content: center;
     .sale3Btn {
-      width: 260px;
-      height: 67px;
-      padding: 14px 44px;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      border: none;
-      border-radius: 30px;
+      padding: 20px 70px;
+      border-radius: 96px;
       background: var(--Color-5, #f6ce5b);
-      color: var(--Color-6, #3b3330);
+      color: #3b3330;
       text-align: center;
-      font-family: "Noto Sans TC", sans-serif;
-      font-size: 24px;
-      font-style: normal;
+      font-size: 26px;
       font-weight: 700;
-      line-height: 39px; /* 162.5% */
-      letter-spacing: 1.2px;
+      letter-spacing: 0.8px;
       cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    .sale3Btn:hover{
+    .sale3Btn:hover {
       background-color: white;
-  border: 10px solid;
-  border-color: #f6ce5b;
+      color: #ff9538;
+      /* border: 2px solid #ff9538; */
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+      transform: translateY(-5px);
+    }
+    .sale3Btn:active {
+      transform: translateY(3px);
+    }
+  }
 }
-    }
-  }
-  .dog {
-    position: relative;
-    width: 508px;
-    height: 755px;
+.dog {
+  position: relative;
+
+  .paw2 {
+    position: absolute;
+    left: -30%;
+    top: 25%;
     z-index: 1;
-    /* background-image: url("../img/dogBackground.png"); */
-    /* background-repeat: no-repeat; */
-
-    .paw2 {
-      position: absolute;
-      left: -30%;
-      top: 25%;
-      z-index: -1;
-    }
-    .dogBackground {
-      position: absolute;
-      right: 2%;
-      bottom: -8%;
-      z-index: 1;
-    }
-
-    .lines {
-      position: absolute;
-      right: -35%;
-      top: 18%;
-      z-index: 0;
-    }
-
-    .dogPic {
-      position: absolute;
-      right: 13%;
-      bottom: -18%;
-      z-index: 2;
-    }
-    .paw3 {
-      position: absolute;
-      right: -34%;
-      bottom: -19%;
-      z-index: 1;
-    }
   }
-  .icons {
-    .paw1 {
-      position: absolute;
-      left: -1%;
-      bottom: 10%;
-    }
+  .paw3 {
+    position: absolute;
+    right: -34%;
+    bottom: -19%;
+    z-index: 1;
+  }
+  .dogBackground {
+    position: absolute;
+    left: 50%;
+    top: -20%;
+    transform: translateX(-50%);
+    z-index: 1;
+    width: 583px;
   }
 
-  .whiteWave {
+  .lines {
+    position: absolute;
+    right: -35%;
+    top: 18%;
+    z-index: 0;
+  }
+
+  .dogPic {
+    position: absolute;
+    left: 50%;
+    top: 23%;
+    transform: translateX(-50%);
+    z-index: 2;
+    width: 65%;
+  }
+}
+
+.whiteWave {
+  width: 100%;
+  height: auto;
+
+  img {
+    position: absolute;
+    bottom: 0px;
     width: 100%;
     height: auto;
-
-    img {
-      position: absolute;
-      bottom: 0px;
-      width: 100%;
-      height: auto;
-      z-index: 0;
-    }
+    z-index: 0;
   }
-
+}
 
 .section2 {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: relative;
   background-color: #fdfaf5;
   padding: 113px 0px 80px;
 
+  @media (max-width: 992px) {
+    padding: 113px 0px 20px;
+  }
+
   .words {
-    padding: 0px 68px;
-    margin-bottom: 100px;
+    margin: 0 100px 100px;
+    @media (max-width: 992px) {
+      margin: 0 50px 100px;
+    }
+    @media (max-width: 768px) {
+      margin: 0 10px 100px;
+    }
+
     .shopping {
       color: var(--Color-3, #66c5bd);
       /* leading-trim: both;
@@ -180,15 +207,22 @@ body {
       line-height: 52px;
       margin: 30px;
       letter-spacing: 2px;
+      @media (max-width: 768px) {
+        font-size: 38px;
+      }
     }
     .today {
-      color: var(--Color, #f5842b);
+      color: var(--Color, #ff9538);
       font-size: 48px;
       font-style: normal;
       font-weight: 600;
       line-height: 67px;
       margin: 30px;
       letter-spacing: 3px;
+      @media (max-width: 768px) {
+        font-size: 38px;
+        margin-bottom: 0px;
+      }
     }
   }
 
@@ -201,6 +235,10 @@ body {
       width: 251.227px;
       height: 235.902px;
     }
+    @media (max-width: 992px) {
+      right: 331.24px;
+      top: 61px;
+    }
     .cookieBag {
       position: absolute;
       right: 175.941px;
@@ -212,27 +250,21 @@ body {
   }
 
   .productCards {
-    display: flex;
     padding: 20px 0px;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    gap: 37px 72px;
-    align-self: stretch;
-    flex-wrap: wrap;
-    margin-bottom: 350px;
+    justify-content: space-evenly;
+    margin: 0 100px 350px;
 
     .card {
       justify-content: center;
       align-items: center;
+      padding: 0;
       width: 240px;
-      min-width: 240px;
       cursor: pointer;
       .pdPics {
         overflow: hidden;
         border-radius: var(--card-radius, 25px);
-        border: 2px solid #fec84d;
-        height: 240px;
+        border: 2px solid #ff9538;
+        height: 230px;
         margin-bottom: 29px;
         .dryfood {
           width: 100%;
@@ -273,6 +305,7 @@ body {
 .section3 {
   position: relative;
   background-color: #fff6e8;
+  padding: 50px 0;
 
   .discountPic {
     position: relative;
@@ -280,10 +313,12 @@ body {
     left: 50%;
     translate: -50% -75%;
     background-color: #f6ce5b;
-    width: 1335px;
+    width: 100%;
+    max-width: 1335px;
     height: 350px;
     border-radius: 30px;
     z-index: 2;
+    padding: 40px 20px;
 
     .discountPic3 {
       position: absolute;
@@ -414,11 +449,11 @@ body {
         line-height: normal;
         cursor: pointer;
       }
-      .bookBtn:hover{
+      .bookBtn:hover {
         background-color: white;
-  color: #f5842b;
-  border: 2px solid;
-  border-color: #f5842b;
+        color: #f5842b;
+        border: 2px solid;
+        border-color: #f5842b;
       }
     }
     .hotelViews {
@@ -495,18 +530,17 @@ body {
   }
   .userCards {
     display: flex;
-    width: 1920px;
     justify-content: center;
     align-items: center;
-    gap: 30px;
-    margin-bottom: 120px;
+    /* gap: 18px; */
+    margin: 0 0 120px;
 
     .card {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      width: 360px;
+      width: 340px;
       height: 240px;
       border-radius: 10px;
       background: #fffaf0;
@@ -644,7 +678,7 @@ body {
     bottom: -172px;
   }
 }
-.signupBtn:hover{
+.signupBtn:hover {
   background-color: white;
   color: #66c5bd;
   border: 2px solid;
@@ -652,7 +686,8 @@ body {
 }
 
 .btns {
-  .ticketIcon, .topIcon {
+  .ticketIcon,
+  .topIcon {
     position: fixed;
     width: 55px;
     height: 55px;
