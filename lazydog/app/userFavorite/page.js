@@ -16,6 +16,7 @@ import styles from "../../styles/modules/operatorCamera.module.css"
 
 export default function UserFavoritePage() {
   const { user } = useAuth();
+  const [pdFavoriteList, setPdFavoriteList] = useState([]);
   const [productFavorites, setProductFavorites] = useState([]); // 商品收藏
   const [hotelFavorites, setHotelFavorites] = useState([]); // 旅館收藏
   const [loading, setLoading] = useState(true);
@@ -28,20 +29,38 @@ export default function UserFavoritePage() {
   }, [user]);
 
   // 獲取商品詳情
-  const fetchProductDetails = async (productFavorites) => {
+  const fetchProductDetails = async (pdFavoriteList) => {
     try {
-      const productsWithDetails = await Promise.all(
-        productFavorites.map(async (fav) => {
-          const productDetail = await ById(fav.productID_list); 
-          console.log("商品詳情 API 回應:", productDetail);
-          return { ...fav, ...productDetail.data };
-        })
-      );
-      setProductFavorites(productsWithDetails);
-    } catch (error) {
-      console.error("獲取商品詳細資訊失敗:", error);
+      const promises = pdFavoriteList.map(async (product) => {
+        if (product) {
+          const res = await fetch(
+            `http://localhost:5000/api/products/${product}`
+          );
+          if (!res.ok) throw new Error(`資料要求失敗: ${product}`);
+          return await res.json();
+        }
+      });
+      const results = await Promise.all(promises);
+      let productsWithDetails = [];
+      console.log(results[0]);
+      if (results[0]) {
+        results.forEach((e) => {
+          productsWithDetails.push([
+            e.data[0].name,
+            `${e.data[0].name}${e.data[0].img.split(",")[0]}`,
+          ]);
+        });
+        setProductFavorites(productsWithDetails);
+      }
+    } catch (err) {
+      console.error("資料要求失敗:", err);
+      throw err;
     }
   };
+
+  useEffect(() => {
+    fetchProductDetails(pdFavoriteList);
+  }, [pdFavoriteList]);
 
   // 獲取所有收藏資料
   const fetchFavorites = async () => {
@@ -50,7 +69,7 @@ export default function UserFavoritePage() {
 
       // 取得旅館收藏
       const hotelResponse = await getHotelFavorites();
-      console.log("旅館收藏 API 回應:", hotelResponse); 
+      console.log("旅館收藏 API 回應:", hotelResponse);
 
       if (hotelResponse.success && Array.isArray(hotelResponse.data.data)) {
         console.log("更新 hotelFavorites:", hotelResponse.data.data);
@@ -64,7 +83,11 @@ export default function UserFavoritePage() {
       console.log("商品收藏 API 回應:", productResponse);
 
       if (productResponse.success && Array.isArray(productResponse.data)) {
-        fetchProductDetails(productResponse.data);
+        setPdFavoriteList(
+          productResponse?.data
+            ?.find((v) => v.user_id == user?.id)
+            .productID_list.split(",")
+        );
       } else {
         console.log("未獲取到商品收藏");
       }
@@ -231,9 +254,7 @@ export default function UserFavoritePage() {
                                 borderRadius: "50%",
                                 fontSize: "16px",
                               }}
-                              onClick={() =>
-                                handleRemoveHotelFavorite(item.id)
-                              }
+                              onClick={() => handleRemoveHotelFavorite(item.id)}
                             >
                               ✖
                             </button>

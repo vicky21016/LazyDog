@@ -18,6 +18,7 @@ export default function Ratecard({
   comment = "",
   goodNum = 0,
   date = "",
+  mutate = () => {},
 }) {
   const router = useRouter();
   const rateNum = rate.toString();
@@ -27,7 +28,7 @@ export default function Ratecard({
   const [hover, setHover] = useState(false);
   const [good, setGood] = useState(false);
   const [rateUpdate, setRateUpdate] = useState(false);
-  const [newRate, setNewRate] = useState(rateNum);
+  const [newRate, setNewRate] = useState(rateNum || 1);
   const [deleteRate, setDeleteRate] = useState(false);
   const { formData, handleSubmit, reviewsChange } = useReviewsUpdate({
     id,
@@ -37,8 +38,9 @@ export default function Ratecard({
     setRateUpdate,
     deleteRate,
     setDeleteRate,
+    mutate,
   });
-
+  // console.log(date);
   return (
     <div className={`${styles.RateCard}`}>
       {!rateUpdate && !history && (
@@ -166,13 +168,13 @@ export default function Ratecard({
               >
                 <img src={`http://localhost:5000/auth/${img}`} alt="" />
                 <h6>{user}</h6>
-                <h6>{rateNow ? "(您)" : ""}</h6>
+                <h6>{rateNow ? "(您已購買過此商品)" : ""}</h6>
               </button>
               <div className={styles.StarGroup}>
-                <p>評分更新：</p>
+                <p>評分：</p>
                 <StarGroup
-                  rateUpdate={rateUpdate}
-                  rate={rateNum}
+                  rateUpdate={true}
+                  rate={"1"}
                   newRate={newRate}
                   setNewRate={setNewRate}
                 />
@@ -185,21 +187,10 @@ export default function Ratecard({
             />
           </div>
           <div className={styles.RateCardBtnDate}>
-            <div style={{ width: "47.13px" }}>
-              <button
-                style={{ "white-space": "nowrap" }}
-                type="button"
-                className={styles.UpdateRateBtn}
-                onClick={() => {
-                  setDeleteRate(true);
-                }}
-              >
-                刪除評論
-              </button>
-            </div>
+            <div style={{ width: "47.13px" }}></div>
             {rateNow && (
               <button type="submit" className={styles.UpdateRateBtn}>
-                更新評論
+                留下您寶貴的評論
               </button>
             )}
             <p>

@@ -6,7 +6,7 @@ import styles from "./rate.module.css";
 export default function RatecardStarbar({
   rate = "",
   rateUpdate = false,
-  newRate = 0,
+  newRate = 1,
   setNewRate = () => {},
 }) {
   let int, dec;
@@ -15,6 +15,7 @@ export default function RatecardStarbar({
     if (!dec) dec = 0;
   }
   const [hover, setHover] = useState(rate);
+  // console.log(newRate);
   return (
     <>
       {int && !rateUpdate && (

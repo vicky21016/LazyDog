@@ -342,7 +342,7 @@ export const deleteItemInfo = async (productID) => {
 export const getAllReviews = async (userID) => {
   try {
     const [products] = await pool.execute(
-      `SELECT yi_reviews.*,users.name As user,users.user_img As userImg FROM yi_reviews JOIN users ON yi_reviews.user_id = users.id WHERE yi_reviews.user_id = ${userID} AND yi_reviews.is_deleted = 0`
+      `SELECT yi_reviews.*,users.name As user,users.user_img As userImg, DATE_ADD(yi_reviews.updated_at, INTERVAL 8 HOUR) AS updated_at_taipei FROM yi_reviews JOIN users ON yi_reviews.user_id = users.id WHERE yi_reviews.user_id = ${userID} AND yi_reviews.is_deleted = 0`
     );
     return products;
   } catch (error) {
@@ -366,15 +366,25 @@ export const createNewReviews = async (userID, productID, rating, comment) => {
 
 export const updateReviewsInfo = async (updateFields, value) => {
   try {
-    const [products] = await pool.execute(
-      `UPDATE yi_reviews SET ${updateFields.join(
-        ","
-      )} WHERE (user_id = ? AND productID = ?) `,
-      value
-    );
+    if (updateFields.includes("is_deleted = ?")) {
+      const [products] = await pool.execute(
+        `UPDATE yi_reviews SET ${updateFields.join(
+          ","
+        )} WHERE (user_id = ? AND productID = ?)`,
+        value
+      );
+      return products;
+    } else {
+      const [products] = await pool.execute(
+        `UPDATE yi_reviews SET ${updateFields.join(
+          ","
+        )} WHERE (user_id = ? AND productID = ? AND is_deleted = 0)`,
+        value
+      );
+      return products;
+    }
     // const [warnings] = await pool.query("SHOW WARNINGS");
     // console.log("警告:", warnings);
-    return products;
   } catch (error) {
     console.log(error);
     throw new Error("更新評論資料失敗");
