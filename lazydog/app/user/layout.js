@@ -15,7 +15,7 @@ export default function AppLayout({ children }) {
             { label: "首頁 ", href: "/" },
             {
               label: "個人資料",
-              href: "/pages",
+              href: "/user",
               active: true,
             },
           ]}

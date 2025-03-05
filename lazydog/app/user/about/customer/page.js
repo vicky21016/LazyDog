@@ -12,7 +12,7 @@ export default async function CustomerPage(props) {
 
               {
                 label: "客戶隱私權條款",
-                href: "/pages/about/customer",
+                href: "/user/about/customer",
                 active: true,
               },
             ]}
