@@ -222,89 +222,79 @@ router.post("/course", async (req, res) => {
 // 旅館
 router.post("/hotel", async (req, res) => {
   const {
-    hotel_id, // 這其實是 room_type_id
+    hotel_id,
+    room_id,
     user_id,
     dog_count,
     check_in,
     check_out,
     total_price,
+    final_amount,
     payment_status,
-    payment_method = "ECpay", // 預設為 "ECpay"
+    payment_method = "ECpay",
     cancellation_policy,
     remark,
   } = req.body;
 
-  console.log("收到的 room_type_id:", hotel_id);
+  console.log("🛒 收到的訂單數據:", req.body); // 確保收到的數據是正確的
 
-  // **基本驗證**
-  if (!hotel_id || !user_id || !check_in || !check_out) {
+  // 基本驗證ㄦ
+  if (!hotel_id || !room_id || !user_id || !check_in || !check_out) {
+    console.error(" 缺少必要參數:", req.body);
     return res.status(400).json({ status: "error", message: "缺少必要參數" });
   }
 
   try {
-    // **查詢 `hotel_id`（實際的旅館 ID）**
-    const [hotelData] = await pool.execute(
-      `SELECT hotel_id FROM hotel_room_types WHERE id = ?`,
-      [hotel_id]
-    );
-
-    if (hotelData.length === 0) {
-      return res.status(400).json({ status: "error", message: "找不到對應的旅館" });
-    }
-
-    const real_hotel_id = hotelData[0].hotel_id;
-    console.log("修正後的 hotel_id:", real_hotel_id);
-
-    // **確保 `room_type_id` 存入**
-    const room_type_id = hotel_id; // 這才是房型 ID
-
-    // **預設折扣為 0**
     const discount_amount = 0;
-    const final_amount = total_price;
+    const safe_final_amount = final_amount ?? total_price;
+    const safe_payment_status = payment_status ?? "pending";
+    const safe_payment_method = payment_method ?? "ECpay";
+    const safe_cancellation_policy = cancellation_policy ?? null;
+    const safe_remark = remark ?? null;
 
-    // **插入訂單**
+    // 插入訂單
     const [result] = await pool.execute(
       `INSERT INTO hotel_order 
-      (hotel_id, room_type_id, user_id, dog_count, check_in, check_out, status, discount_amount, 
-       total_price, final_amount, payment_status, payment_method, 
+      (hotel_id, room_type_id, user_id, dog_count, check_in, check_out, status, 
+       discount_amount, total_price, final_amount, payment_status, payment_method, 
        cancellation_policy, remark, created_at, updated_at, is_deleted) 
       VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
       [
-        real_hotel_id, // ✅ 存真正的 `hotel.id`
-        room_type_id, // ✅ 存 `room_type_id`
+        hotel_id,
+        room_id,
         user_id,
         dog_count,
         check_in,
         check_out,
         discount_amount,
         total_price,
-        final_amount,
-        payment_status,
-        payment_method,
-        cancellation_policy,
-        remark,
+        safe_final_amount,
+        safe_payment_status,
+        safe_payment_method,
+        safe_cancellation_policy,
+        safe_remark,
       ]
     );
 
-    console.log("Insert Result:", result);
+    console.log("✅ 訂單建立成功:", result);
 
     if (!result.insertId) {
-      return res.status(500).json({ status: "error", message: "訂單插入失敗，請檢查數據" });
+      return res
+        .status(500)
+        .json({ status: "error", message: "訂單插入失敗，請檢查數據" });
     }
 
     res.json({
       status: "success",
       id: result.insertId,
       total_price,
-      final_amount,
+      final_amount: safe_final_amount,
     });
   } catch (err) {
-    console.error("SQL Error:", err.message);
+    console.error(" SQL Error:", err);
     res.status(500).json({ status: "error", message: err.message });
   }
 });
-
-
 
 // 檢視使用者旅館訂單
 router.post("/hotelOrders", async (req, res) => {
@@ -312,7 +302,9 @@ router.post("/hotelOrders", async (req, res) => {
   let token = req.get("Authorization");
   token = token ? token.slice(7) : null;
   if (!token) {
-    return res.status(401).json({ status: "error", message: "缺少 Token，請登入後再試" });
+    return res
+      .status(401)
+      .json({ status: "error", message: "缺少 Token，請登入後再試" });
   }
 
   try {
@@ -343,9 +335,10 @@ router.post("/hotelOrders", async (req, res) => {
       );
 
       // 設定圖片來源
-      order.images = roomType.length > 0 && roomType[0].image_url
-        ? [{ url: roomType[0].image_url }]
-        : hotelImage.length > 0 && hotelImage[0].url
+      order.images =
+        roomType.length > 0 && roomType[0].image_url
+          ? [{ url: roomType[0].image_url }]
+          : hotelImage.length > 0 && hotelImage[0].url
           ? [{ url: hotelImage[0].url }]
           : [{ url: "/hotel/hotel-uploads/1-l-room.webp" }]; // 預設圖片
     }

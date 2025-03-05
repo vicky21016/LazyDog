@@ -125,13 +125,13 @@ export default function CartListPayPage(props) {
       toast.error("請先登入後再進行結帳");
       return;
     }
-  
+
     //  先產生訂單 ID
     const orderId = `PD${new Date().getTime()}`;
     console.log("Generated Order ID:", orderId);
-  
-    let computedFinalAmount = totalAmount; 
-  
+
+    let computedFinalAmount = totalAmount;
+
     try {
       //  先建立訂單
       if (productItems.length > 0) {
@@ -151,9 +151,9 @@ export default function CartListPayPage(props) {
           orderTable,
         };
         await createProductOrder(newOrder, orderTable);
-        computedFinalAmount = newOrder.final_amount; 
+        computedFinalAmount = newOrder.final_amount;
       }
-  
+
       if (courseItems.length > 0) {
         for (const courseItem of courseItems) {
           const newOrder = {
@@ -163,19 +163,20 @@ export default function CartListPayPage(props) {
             total_price: courseItem.price * courseItem.count,
             payment_status: "Unpaid",
             payment_method: courseItem.payment_method || "Not Specified",
-            cancellation_policy: courseItem.cancellation_policy || "Standard Policy",
+            cancellation_policy:
+              courseItem.cancellation_policy || "Standard Policy",
             remark: courseItem.remark || "",
             orderTable,
           };
           await createCourseOrder(newOrder, orderTable);
         }
       }
-  
+
       if (hotelItems.length > 0) {
         for (const hotelItem of hotelItems) {
           const newOrder = {
-            hotel_id: hotelItem.hotelId, // 使用旅館ID
-            room_id: hotelItem.id, // 使用房型ID
+            room_id: hotelItem.id,
+            hotel_id: hotelItem.hotelId,
             user_id: user.id,
             dog_count: hotelItem.count,
             check_in: hotelItem.checkInDate,
@@ -186,19 +187,16 @@ export default function CartListPayPage(props) {
             remark: "",
             orderTable,
           };
-          const hotelOrderResponse = await createHotelOrder(newOrder, orderTable);
-          if (!hotelOrderResponse.success) {
-            throw new Error("旅館訂單建立失敗");
-          }
+          await createHotelOrder(newOrder, orderTable);
           computedFinalAmount = newOrder.final_amount;
         }
       }
-  
+
       //  訂單建立完成後，再使用優惠券
       if (selectedCoupon) {
         await applyCoupon(selectedCoupon, orderId, orderTable, user.id);
       }
-  
+
       const res = await fetch(
         `http://localhost:5000/ecpay-test-only?amount=${computedFinalAmount}&items=${itemsValue}`,
         {
@@ -210,12 +208,15 @@ export default function CartListPayPage(props) {
           },
         }
       );
-  
+
       const resData = await res.json();
       if (isDev) console.log(resData);
-  
+
       if (resData.status == "success") {
-        const payForm = createEcpayForm(resData.data.params, resData.data.action);
+        const payForm = createEcpayForm(
+          resData.data.params,
+          resData.data.action
+        );
         if (window.confirm("確認要導向至ECPay(綠界金流)進行付款?")) {
           payForm.submit();
         }
@@ -226,7 +227,6 @@ export default function CartListPayPage(props) {
       toast.error("訂單建立或優惠券應用失敗，請稍後再試");
     }
   };
-
   return (
     <>
       <Header />
