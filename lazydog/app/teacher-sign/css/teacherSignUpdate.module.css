@@ -105,10 +105,13 @@ input:active {
     align-items: start;
     text-align: center;
     overflow: hidden;
+    flex-wrap: wrap;
+    column-gap: 12px;
+    row-gap: 20px;
     border: 0.8px solid #f5f3f3;
     border-radius: 8px;
     height: 250px;
-    padding: 8px;
+    padding: 12px;
     &:hover {
       border: 1.2px solid #fca85f;
       transition: 0.6s;

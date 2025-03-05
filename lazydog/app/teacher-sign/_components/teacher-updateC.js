@@ -508,7 +508,7 @@ export default function TeacherUpdateC() {
                   </>
                 )}
               </div>
-              <div className={`col-md-7 col-12 mt-0 mb-5 `}>
+              <div className={`col-md-7 col-12 mt-0 mb-5 p-0`}>
                 <div className={styles.otherPic}>
                   {otherpics?.map((other) => (
                     <div key={other.id} className={styles.imageCardOther}>
