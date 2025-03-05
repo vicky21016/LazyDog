@@ -127,21 +127,33 @@ input:active {
     width: 50px;
     height: 25px;
     background-color: #66c5bd;
-    border: none;
     font-weight: bold;
     letter-spacing: 1px;
     padding: 0;
-    margin-left: 15px;
+    margin-left: 15px;  
+    cursor: pointer;
+    outline: none;
+    border: 1px solid transparent;
+    color: white;
+    border-radius: 5px;
     &:hover {
-      background: #20b9ad;
+      background-color: #fdf9f5;
+        color: #66C5BD;
+        border-color: #66C5BD;
     }
   }
 
   .submitBtn {
-    background-color: #f5842b;
-    border: none;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid transparent;
+    color: white;
+    background-color: #ff9538;
+    border-radius: 5px;
     &:hover {
-      background-color: #e26404;
+      background-color: #fdf9f5;
+      color: #ff9538;
+      border-color: #ff9538;
     }
 
     /* .submitBtnA{
