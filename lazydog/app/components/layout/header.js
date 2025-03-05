@@ -54,13 +54,13 @@ export default function Header(props) {
             </li>
             <div className={styles["dropdown-content"]}>
               <Link
-                href="/pages/about/member"
+                href="/user/about/member"
                 className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
               >
                 會員條款條款與細則
               </Link>
               <Link
-                href="/pages/about/customer"
+                href="/user/about/customer"
                 className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
               >
                 客戶隱私權條款
@@ -174,13 +174,13 @@ export default function Header(props) {
       {/* 右上角的會員與購物車 */}
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
-          <Link href="/pages" className={styles["lumi-user-icon"]}>
+          <Link href="/user" className={styles["lumi-user-icon"]}>
             <i className="bi bi-person" />
           </Link>
           {user ? (
             <div className={styles["dropdown-content"]}>
               <Link
-                href="/pages"
+                href="/user"
                 className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
               >
                 個人資料
@@ -349,7 +349,7 @@ export default function Header(props) {
                 }`}
               >
                 <Link
-                  href="/pages"
+                  href="/user"
                   className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
                 >
                   個人資料
