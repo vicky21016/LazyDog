@@ -11,6 +11,7 @@ export function useReviewsUpdate({
   setRateUpdate = () => {},
   deleteRate = false,
   setDeleteRate = () => {},
+  mutate = () => {},
 }) {
   const fetcher = async (url) => {
     try {
@@ -40,7 +41,7 @@ export function useReviewsUpdate({
   });
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("表單提交:", formData);
+    // console.log("表單提交:", formData);
     updateReviews(formData);
     setRateUpdate(false);
   };
@@ -80,15 +81,17 @@ export function useReviewsUpdate({
     }
   }, [formData]);
 
-  // console.log(reviewsData?.data);
   async function updateReviews(form) {
     let methodType = "PATCH";
     if (reviewsData?.data) {
-      if (!reviewsData?.data.find((v) => v.productID === productID)) {
+      if (
+        !reviewsData?.data?.find(
+          (v) => v.productID === productID && v.is_deleted == 0
+        )
+      ) {
         methodType = "POST";
       }
     }
-    // console.log(form);
     if (id > 0) {
       let API = "http://localhost:5000/api/products/reviews";
       const formData = new FormData();
@@ -110,6 +113,7 @@ export function useReviewsUpdate({
       }
     }
     reviewsMutate();
+    mutate();
   }
 
   return {
