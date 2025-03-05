@@ -48,8 +48,8 @@ export const getCourses = async ({
     // ✅ SQL 排序與分組
     sql += ` GROUP BY course.id`;
 
-    console.log("📌 執行 SQL：", sql); // 🛠 Debug
-    console.log("📌 SQL 參數：", params); // 🛠 Debug
+    // console.log("📌 執行 SQL：", sql); // 🛠 Debug
+    // console.log("📌 SQL 參數：", params); // 🛠 Debug
 
     const [courses] = await pool.execute(sql);
     if (courses.length == 0) {
