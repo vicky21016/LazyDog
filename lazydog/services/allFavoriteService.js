@@ -5,6 +5,16 @@ const HOTEL_FAVORITE_URL = "http://localhost:5000/api/hotel_favorites";
 
 const getToken = () => localStorage.getItem("loginWithToken");
 
+export const getId = async (productId) => {
+  try {
+    const res = await fetch(`http://localhost:5000/api/products/${productId}`);
+    if (!res.ok) throw new Error("獲取商品詳細資訊失敗");
+    return await res.json();
+  } catch (error) {
+    console.error("獲取商品資訊錯誤:", error);
+    return null;
+  }
+};
 // 取得用戶收藏的產品
 export const getProductFavorites = async () => {
   const token = getToken();
@@ -18,8 +28,12 @@ export const getProductFavorites = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
+
     if (!res.ok) throw new Error("獲取產品收藏失敗");
-    return await res.json();
+
+    const response = await res.json();
+    console.log("API 取得的商品收藏:", response); // 🟢 確保數據正確
+    return { success: true, data: response.data }; // 確保 data 直接傳遞
   } catch (error) {
     console.error("獲取產品收藏失敗:", error);
     return { success: false, error: error.message };
