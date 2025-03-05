@@ -5,16 +5,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Header from "@/app/components/layout/header";
 import My from "../_components/my";
+import TeacherAside from "../_components/teacher-aside";
 import TeacherListC from "../_components/teacher-listC";
 
 export default function TeacherListPage() {
   return (
     <>
-      <Header/>
+      <Header />
       <div className={`container mt-5 mb-5`}>
         <div className={`row`}>
-          <My/>
-          <TeacherListC/>          
+          <My />
+          <TeacherListC />
         </div>
       </div>
     </>
