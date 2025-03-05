@@ -66,3 +66,31 @@ export const createCommentS = async (createComment) => {
         connection.release();
     }
 };
+
+// 根據使用者id調取所有該作者沒有被ban的留言
+export const getCommentByAuthorS = async (author_id) => {
+  try {
+    const [comment] = await pool.query(
+      `SELECT comment.*, 
+      users.name AS author_name,
+      articles.title AS title
+      FROM comment 
+      LEFT JOIN users ON comment.user_id = users.id
+      LEFT JOIN articles ON comment.article_id = articles.id
+      WHERE comment.is_deleted = 0 
+      AND users.is_deleted = 0 
+      AND articles.is_deleted = 0
+      AND comment.user_id = ?`,
+      [author_id]
+    );
+
+    if (articles.length === 0) {
+      return { message: "該作者沒有文章或文章已被刪除" };
+    }
+
+    return articles;
+  } catch (error) {
+    throw new Error(`獲取作者 ${author_id} 文章時發生錯誤：${error.message}`);
+  }
+};
+

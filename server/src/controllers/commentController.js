@@ -1,4 +1,4 @@
-import { createCommentS,deleteCommentS } from "../services/commentService.js";
+import { createCommentS,deleteCommentS,getCommentByAuthorS } from "../services/commentService.js";
 
 export const createComment = async (req, res) => {
     const { content, article_id, user_id } = req.body;
@@ -59,3 +59,26 @@ export const deleteComment = async (req, res) => {
         // console.log("捕獲到的錯誤:", error);
     }
 };
+
+export const getId = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const results = await getCommentByAuthorS(id);
+        // console.log(results);
+  
+        if (!results || results.length === 0) {
+            return res.status(404).json({ message: "文章不存在" });
+        }
+        // 組合留言資料
+        const comment = {
+            id: results.id,
+            title: results.title,
+            content: results.content,
+            article_id: results.article_id,
+            author_name: results.name,
+        };
+        res.json(comment);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+  };

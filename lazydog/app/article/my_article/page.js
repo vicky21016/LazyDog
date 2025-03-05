@@ -34,9 +34,10 @@ export default function MyArticle() {
       <Header />
       <div className="container" style={{marginTop:'75px'}}>
         <div className="row">
-          <div className="d-none d-md-block col-md-3">
-            <MyMenu />
-          </div>
+        <MyMenu />
+          {/* <div className="d-none d-md-block col-md-3">
+            
+          </div> */}
           <div className="col-md-9">
             <div className="w-100">
               <div>
