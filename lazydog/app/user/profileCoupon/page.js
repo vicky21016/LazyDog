@@ -3,10 +3,6 @@ import React, { useEffect, useState } from "react";
 import styles from "../../../styles/modules/operatorCamera.module.css";
 import couponStyles from "../../../styles/modules/userCoupon.module.css";
 import { useRouter } from "next/navigation";
-import { usePhotoUpload } from "@/hooks/usePhotoUpload";
-import Header from "../../components/layout/header";
-import MyMenu from "../../components/layout/myMenu";
-import Bread from "../../components/teacher/breadcrumb";
 import { getCouponss, claimCouponByCode } from "@/services/couponService";
 import { useAuth } from "@/hooks/use-auth";
 import Swal from "sweetalert2"; // 導入 sweetalert2
@@ -85,7 +81,7 @@ export default function ProfileCouponPage(props) {
       setError("請輸入優惠券代碼");
       return;
     }
-  
+
     try {
       const response = await claimCouponByCode(couponCode);
       if (response.success) {
@@ -96,7 +92,7 @@ export default function ProfileCouponPage(props) {
           text: "優惠券已成功領取。",
           confirmButtonText: "確定",
         });
-  
+
         setCouponCode(""); // 清空輸入框
       } else {
         // 失敗提示
@@ -182,134 +178,106 @@ export default function ProfileCouponPage(props) {
   }
 
   return (
-    <>
-      <Header />
-      <div className={`container ${styles.height}`}>
-      <Bread
-          links={[
-            { label: "首頁 ", href: "/" },
+    <div className="col-12 col-md-9 coupon-section">
+      <h5 className="mb-3">我的優惠券</h5>
 
-            {
-              label: "個人資料",
-              href: "/pages",
-              active: true,
-            },
-          ]}
-        />
-        <div className="mt-4 row">
-          {/* 左側選單 */}
-          
-            <MyMenu />
-          
-          {/* 右側內容 */}
-          <div className="col-12 col-md-9 coupon-section">
-            <h5 className="mb-3">我的優惠券</h5>
-
-            <div className="suFeatureLinks mb-3">
-              <a
-                className={couponStyles.suFeatureLinks1}
-                onClick={() => changepage("fontcoupon")}
-                style={{ cursor: "pointer" }}
-              >
-                領取免運券
-              </a>
-              <a
-                className={couponStyles.suFeatureLinks2}
-                onClick={() => changepage("profileCouponStatus")}
-                style={{ cursor: "pointer" }}
-              >
-                查看歷史紀錄
-              </a>
-            </div>
-
-            {/* 優惠券輸入 */}
-            <div className={couponStyles.suCouponInputGroup}>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="請輸入優惠代碼"
-                value={couponCode}
-                onChange={(e) => setCouponCode(e.target.value)}
-              />
-              <button className={`btn ${styles.btn}`} onClick={handleClaimCoupon}>
-                領取
-              </button>
-            </div>
-
-            {/* 錯誤訊息顯示 */}
-            {error && <p className="text-danger mt-2">{error}</p>}
-            {/* 類型篩選 */}
-            <ul className={`nav ${couponStyles.suNavTabs}`}>
-              {categories.map((category) => (
-                <li key={category} className="nav-item">
-                  <a
-                    className={`nav-link ${
-                      selectedCategory === category ? "active" : ""
-                    } ${couponStyles.suNavLink}`}
-                    href="#"
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    {category}
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-            {/* 狀態篩選 */}
-            <ul className={`nav ${couponStyles.suNavTabs}`}>
-              {statusOptions.map((status) => (
-                <li key={status} className="nav-item">
-                  <a
-                    className={`nav-link ${
-                      selectedStatus == status ? "active" : ""
-                    } ${couponStyles.suNavLink}`}
-                    href="#"
-                    onClick={() => setSelectedStatus(status)}
-                  >
-                    {status}
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-            {/* 優惠券列表 */}
-            {filteredCoupons.length > 0 ? (
-              filteredCoupons.map((coupon) => (
-                <div
-                  key={coupon.id}
-                  className={`mt-2 ${couponStyles.suCouponCard}`}
-                >
-                  <span className={couponStyles.suPrice}>
-                    NT{coupon.price || 0}
-                  </span>
-                  <div className={couponStyles.suDetails}>
-                    <p>
-                      <strong>{coupon.description || "未命名優惠券"}</strong>
-                    </p>
-                    <p className="text-muted">
-                      有效期限: {coupon.expiry || "無期限"}
-                    </p>
-                    {coupon.status == "已使用" && (
-                      <p className={couponStyles.suUsed}>⚠ 已使用</p>
-                    )}
-                    {coupon.status == "逾期" && (
-                      <p className={couponStyles.suExpired}>⚠ 已逾期</p>
-                    )}
-                    {coupon.status == "未使用" && (
-                      <p className={couponStyles.suUnused}>可使用</p>
-                    )}
-                  </div>
-                  <div className={couponStyles.suAction}>
-                    <a href="#">前往購物</a>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-muted mt-3">目前沒有符合此分類的優惠券</p>
-            )}
-          </div>
-        </div>
+      <div className="suFeatureLinks mb-3">
+        <a
+          className={couponStyles.suFeatureLinks1}
+          onClick={() => changepage("fontcoupon")}
+          style={{ cursor: "pointer" }}
+        >
+          領取免運券
+        </a>
+        <a
+          className={couponStyles.suFeatureLinks2}
+          onClick={() => changepage("profileCouponStatus")}
+          style={{ cursor: "pointer" }}
+        >
+          查看歷史紀錄
+        </a>
       </div>
-    </>
+
+      {/* 優惠券輸入 */}
+      <div className={couponStyles.suCouponInputGroup}>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="請輸入優惠代碼"
+          value={couponCode}
+          onChange={(e) => setCouponCode(e.target.value)}
+        />
+        <button className={`btn ${styles.btn}`} onClick={handleClaimCoupon}>
+          領取
+        </button>
+      </div>
+
+      {/* 錯誤訊息顯示 */}
+      {error && <p className="text-danger mt-2">{error}</p>}
+      {/* 類型篩選 */}
+      <ul className={`nav ${couponStyles.suNavTabs}`}>
+        {categories.map((category) => (
+          <li key={category} className="nav-item">
+            <a
+              className={`nav-link ${
+                selectedCategory === category ? "active" : ""
+              } ${couponStyles.suNavLink}`}
+              href="#"
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      {/* 狀態篩選 */}
+      <ul className={`nav ${couponStyles.suNavTabs}`}>
+        {statusOptions.map((status) => (
+          <li key={status} className="nav-item">
+            <a
+              className={`nav-link ${
+                selectedStatus == status ? "active" : ""
+              } ${couponStyles.suNavLink}`}
+              href="#"
+              onClick={() => setSelectedStatus(status)}
+            >
+              {status}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      {/* 優惠券列表 */}
+      {filteredCoupons.length > 0 ? (
+        filteredCoupons.map((coupon) => (
+          <div key={coupon.id} className={`mt-2 ${couponStyles.suCouponCard}`}>
+            <span className={couponStyles.suPrice}>NT{coupon.price || 0}</span>
+            <div className={couponStyles.suDetails}>
+              <p>
+                <strong>{coupon.description || "未命名優惠券"}</strong>
+              </p>
+              <p className="text-muted">
+                有效期限: {coupon.expiry || "無期限"}
+              </p>
+              {coupon.status == "已使用" && (
+                <p className={couponStyles.suUsed}>⚠ 已使用</p>
+              )}
+              {coupon.status == "逾期" && (
+                <p className={couponStyles.suExpired}>⚠ 已逾期</p>
+              )}
+              {coupon.status == "未使用" && (
+                <p className={couponStyles.suUnused}>可使用</p>
+              )}
+            </div>
+            <div className={couponStyles.suAction}>
+              <a href="#">前往購物</a>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className="text-muted mt-3">目前沒有符合此分類的優惠券</p>
+      )}
+    </div>
   );
 }

@@ -1,17 +1,18 @@
-.container {  
-  width: 100%;
+.container {
+  /* width: 100%; */
+  /* margin: 0 auto; */
+  margin-left: 50px;
   max-width: 410px;
-  margin: 0 auto;
   border-radius: 8px;
   padding: 28px;
   background-color: white;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
 }
-.text{
+.text {
   color: #3b3330;
   font-weight: 600;
 }
-.text-note{
+.text-note {
   font-size: 12px;
 }
 
@@ -48,7 +49,7 @@
   border-color: #ff9538;
 }
 
-.submit{
+.submit {
   background-color: #ff9538;
   color: white;
 }
@@ -57,14 +58,14 @@
   color: #ff9538;
   border-color: #ff9538;
 }
-.join{
+.join {
   font-weight: 600;
   color: #ff9538;
   text-decoration: none;
 }
 .wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  height: 40vh;
 }
