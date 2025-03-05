@@ -1,167 +1,233 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
-import { useReview } from "@/hooks/useCourseReview";
-import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
+import { useState, useEffect } from "react";
 import styles from "./operatorCamera.module.css";
+import { useAuth } from "@/hooks/use-auth";
+import { useDetailFetch, useReviewFetch } from "@/hooks/product/use-fetch";
+import Link from "next/link";
 
 export default function ReviewList() {
-  const [modalData, setModalData] = useState({});
-  const replyInputRef = useRef(null);
-  const router = useRouter();
-
-  const { id } = useParams();
-  const { review } = useReview(id);
-  console.log(review);
-
+  const { user } = useAuth();
+  const userID = user?.id;
+  const { width, router, productID, mutate, isLoading, error } =
+    useDetailFetch();
+  const {
+    userReviews,
+    userReview,
+    pages,
+    pageNow,
+    setPageNow,
+    reviewMutate,
+    reviewLoading,
+    reviewError,
+  } = useReviewFetch({
+    userID,
+  });
   const changepage = (path) => {
     if (path) {
-      router.push(`/hotel-coupon/${path}`);
+      router.push(`/product/detail?productID=${path}#productRate`);
     }
   };
-
-  const reviews = review.map((item) => ({
-    customer: `${item.user_name}`,
-    order: `${item.id}`,
-    date: `${item.created_at}`,
-    rating: `${item.rating}`,
-    content: `${item.comment}`,
-    replied: true,
-    status: "公開",
-  }));
-  const loadReview = (review) => {
-    setModalData(review);
-  };
-
-  const replyReview = () => {
-    const replyContent = replyInputRef.current.value.trim();
-    if (replyContent) {
-      alert(`回覆成功：${replyContent}`);
-      replyInputRef.current.value = ""; // 清空
-    } else {
-      alert("請先填寫回覆內容");
-    }
-  };
-
+  const [listOpen, setListOpen] = useState(false);
+  const [pageInput, setPageInput] = useState("選擇分頁");
+  useEffect(() => {
+    const clickOutside = (event) => {
+      if (listOpen && !event.target.closest(`.${styles.dropdown}`)) {
+        setListOpen(false);
+      }
+    };
+    document.addEventListener("click", clickOutside);
+    return () => document.removeEventListener("click", clickOutside);
+  }, [listOpen]);
   return (
-    <>
-      <div className={`col-md-9`}>
-        <h3 className="mb-4">評論列表</h3>
-        <div className="table-responsive">
-          <table className="table suTable table-striped table-hover">
-            <thead className="table-light">
-              <tr>
-                <th>顧客名稱</th>
-                <th>訂單編號</th>
-                <th>評論日期</th>
-                <th>評分</th>
-                <th>評論內容</th>
-                <th>是否回覆</th>
-                <th>狀態</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reviews.map((review, index) => (
-                <tr key={index}>
-                  <td>{review?.customer}</td>
-                  <td>{review?.order}</td>
-                  <td>{review?.date}</td>
-                  <td>{review?.rating}</td>
-                  <td>{review?.content}</td>
-                  <td>{review.reply ? "已回覆" : "未回覆"}</td>
-                  <td>
-                    <span
-                      className={`badge ${
-                        review.status === "公開" ? [styles.btn3] : [styles.btn]
-                      }`}
-                    >
-                      {review.status}
-                    </span>
+    <div className={`col-md-9 container`}>
+      <h3 className="mb-4">評論列表</h3>
+      <table className={`table table-striped table-hover ${styles.table}`}>
+        <thead className="table-light">
+          <tr className="row">
+            <th className="col-4 d-flex align-items-center justify-content-center">
+              商品名稱
+            </th>
+            <th className="col-2 d-flex align-items-center justify-content-center">
+              評論日期
+            </th>
+            <th className="col-1 d-flex align-items-center justify-content-center">
+              評分
+            </th>
+            <th className="col-4 d-flex align-items-center">評論內容</th>
+            <th className="col-1 d-flex align-items-center justify-content-center">
+              操作
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {userReview &&
+            userReview.map((v) => (
+              <tr key={v.id}>
+                <Link
+                  className="row"
+                  href={`/product/detail?productID=${v.productID}`}
+                >
+                  <td className="col-4 d-flex align-items-start">
+                    <img
+                      src={`/product/img/${encodeURIComponent(
+                        v.PDname
+                      )}_(1).webp`}
+                      alt=""
+                    />
+                    {v.PDname}
                   </td>
-                  <td>
+                  <td className="col-2 d-flex align-items-center justify-content-center">{`${v.updated_at.slice(
+                    0,
+                    10
+                  )}`}</td>
+                  <td className="col-1 d-flex align-items-center justify-content-center">
+                    {v.rating}
+                    <img
+                      style={{ width: "10px", paddingTop: "2px" }}
+                      src="/product/font/star-fill.png"
+                      alt=""
+                    />
+                  </td>
+                  <td className="col-4 d-flex align-items-center">
+                    {v.comment}
+                  </td>
+                  <td className="col-1 d-flex align-items-center justify-content-center">
                     <button
                       className={`btn btn-sm ${styles.btn}`}
-                      data-bs-toggle="modal"
-                      data-bs-target="#reviewModal"
-                      onClick={() => loadReview(review)}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        changepage(v.productID);
+                      }}
                     >
-                      檢視 / 回覆
+                      檢視
                     </button>
                   </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {/* Modal */}
-        <div
-          className="modal fade"
-          id="reviewModal"
-          tabIndex="-1"
-          aria-labelledby="reviewModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="reviewModalLabel">
-                  評論詳細資訊
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body">
-                <p>
-                  <strong>顧客名稱：</strong> {modalData.customer || "N/A"}
-                </p>
-                <p>
-                  <strong>訂單編號：</strong> {modalData.order || "N/A"}
-                </p>
-                <p>
-                  <strong>評論日期：</strong> {modalData.date || "N/A"}
-                </p>
-                <p>
-                  <strong>評分：</strong> {modalData.rating || "N/A"}
-                </p>
-                <p>
-                  <strong>評論內容：</strong>
-                </p>
-                <p className="border p-2">{modalData.content || "N/A"}</p>
-                <label className="form-label mt-3">回覆：</label>
-                <textarea
-                  ref={replyInputRef}
-                  className="form-control"
-                  rows="3"
-                  placeholder={
-                    review.reply ? review.reply : "請輸入回覆內容..."
+                </Link>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+      <nav>
+        <ul className={styles.ProductListPagination}>
+          {userReviews?.length > 24 && (
+            <li className={`${styles.PageArrow}`}>
+              <Link
+                onClick={() => {
+                  setPageNow(pageNow - 1 == 0 ? 1 : pageNow - 1);
+                  pageNow - 1 > 1
+                    ? setPageInput(`第 ${pageNow - 1} 頁`)
+                    : setPageInput("選擇分頁");
+                }}
+                href={`/user/review?page=${pageNow - 1 == 0 ? 1 : pageNow - 1}`}
+              >
+                <img src="/product/font/left(orange).png" alt="" />
+              </Link>
+            </li>
+          )}
+          <li
+            className={`${styles.PageItem} page-item ${
+              pageNow == 1 ? styles.PageItemActive : ""
+            }`}
+          >
+            <Link
+              onClick={() => {
+                setPageNow(1);
+                setPageInput("選擇分頁");
+              }}
+              className={`${styles.PageLink} page-link `}
+              href={`/user/review?page=${1}`}
+            >
+              1
+            </Link>
+          </li>
+          {pages >= 3 && (
+            <div
+              className={`${styles.dropdown}`}
+              onMouseEnter={() => {
+                setListOpen(true);
+              }}
+              onMouseLeave={() => {
+                setListOpen(false);
+              }}
+            >
+              <button
+                className={`btn dropdown-toggle ${styles.dropdownToggle} ${
+                  pageInput !== "選擇分頁" ? styles.PageItemActive : ""
+                }`}
+                type="button"
+                onClick={() => (width > 1024 ? "" : setListOpen(!listOpen))}
+              >
+                {pageInput}
+              </button>
+              <ul
+                className={`${
+                  listOpen ? styles.dropdownMenu : styles.dropdownMenuOff
+                } dropdown-menu`}
+              >
+                {[...Array(pages)].map((v, i) => {
+                  if (i > 0 && i < pages - 1) {
+                    return (
+                      <li
+                        key={`li${i}`}
+                        className={`dropdown-item ${styles.dropdownItem} ${
+                          pageNow == i + 1 ? styles.PageItemActive : ""
+                        }`}
+                      >
+                        <Link
+                          onClick={() => {
+                            setPageNow(i + 1);
+                            setPageInput(`第 ${i + 1} 頁`);
+                            setListOpen(false);
+                          }}
+                          className={`${styles.PageLink} page-link`}
+                          href={`/user/review?page=${i + 1}`}
+                        >
+                          {i + 1}
+                        </Link>
+                      </li>
+                    );
                   }
-                ></textarea>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className={`btn ${styles.btn2}`}
-                  data-bs-dismiss="modal"
-                >
-                  取消
-                </button>
-                <button
-                  type="button"
-                  className={`btn ${styles.btn}`}
-                  onClick={replyReview}
-                >
-                  送出回覆
-                </button>
-              </div>
+                })}
+              </ul>
             </div>
-          </div>
-        </div>
-      </div>
-    </>
+          )}
+          {userReviews?.length > 24 && (
+            <li
+              className={`${styles.PageItem} page-item ${
+                pageNow == pages ? styles.PageItemActive : ""
+              }`}
+            >
+              <Link
+                onClick={() => {
+                  setPageNow(pages);
+                  setPageInput("選擇分頁");
+                }}
+                className={`${styles.PageLink} page-link `}
+                href={`/user/review?page=${pages}`}
+              >
+                {pages}
+              </Link>
+            </li>
+          )}
+          {userReviews?.length > 24 && (
+            <li className={`${styles.PageArrow}`}>
+              <Link
+                onClick={() => {
+                  setPageNow(pageNow + 1 > pages ? pageNow : pageNow + 1);
+                  pageNow + 1 >= pages
+                    ? setPageInput("選擇分頁")
+                    : setPageInput(`第 ${pageNow + 1} 頁`);
+                }}
+                href={`/user/review?page=${
+                  pageNow + 1 > pages ? pageNow : pageNow + 1
+                }`}
+              >
+                <img src="/product/font/right(orange).png" alt="" />
+              </Link>
+            </li>
+          )}
+        </ul>
+      </nav>
+    </div>
   );
 }

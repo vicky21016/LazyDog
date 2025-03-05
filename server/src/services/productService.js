@@ -211,10 +211,6 @@ export const getProductId = async (productID) => {
       "SELECT yi_product.*,users.name As user,users.email As email,users.user_img As userImg,yi_category.name As category,yi_img.list_img As listImg,yi_img.info_img As infoImg,yi_img.lg_img As img,yi_img.sm_img As smImg,yi_reviews.rating As rate,yi_reviews.comment As comment,yi_reviews.good As good,yi_reviews.updated_at As commentTime FROM yi_product JOIN yi_category ON yi_product.category_id = yi_category.id JOIN yi_img ON yi_product.productID = yi_img.productID JOIN yi_reviews ON yi_product.productID = yi_reviews.productID JOIN users ON yi_reviews.user_id = users.id WHERE yi_product.productID = ? AND yi_product.is_deleted = 0 AND yi_reviews.is_deleted = 0",
       [productID]
     );
-    // const [reviews] = await pool.execute(
-    //   "SELECT * FROM yi_reviews WHERE productID = ? AND is_deleted = 0",
-    //   [productID]
-    // );
     return products;
   } catch (error) {
     console.log(error);
@@ -342,7 +338,7 @@ export const deleteItemInfo = async (productID) => {
 export const getAllReviews = async (userID) => {
   try {
     const [products] = await pool.execute(
-      `SELECT yi_reviews.*,users.name As user,users.user_img As userImg, DATE_ADD(yi_reviews.updated_at, INTERVAL 8 HOUR) AS updated_at_taipei FROM yi_reviews JOIN users ON yi_reviews.user_id = users.id WHERE yi_reviews.user_id = ${userID} AND yi_reviews.is_deleted = 0`
+      `SELECT yi_reviews.*,yi_product.name As PDname,users.name As user,users.user_img As userImg, DATE_ADD(yi_reviews.updated_at, INTERVAL 8 HOUR) AS updated_at_taipei FROM yi_reviews JOIN users ON yi_reviews.user_id = users.id JOIN yi_product ON yi_reviews.productID = yi_product.productID WHERE yi_reviews.user_id = ${userID} AND yi_reviews.is_deleted = 0`
     );
     return products;
   } catch (error) {

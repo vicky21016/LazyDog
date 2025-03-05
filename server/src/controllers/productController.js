@@ -151,7 +151,6 @@ export const getOrder = async (req, res) => {
     const { userID } = req.query;
     const orders = await getAllOrder();
     if (!orders.length) {
-      // throw new Error("查無訂單列表")
       res.status(200).json({
         status: "success",
         message: `查詢訂單列表成功，目前資料庫無訂單列表資料`,
@@ -160,7 +159,7 @@ export const getOrder = async (req, res) => {
       const productCount = {};
       let orderHistory = [];
       let userName, userImg;
-      if (userID) {
+      if (userID && orders.filter((v) => v.user_id == userID).length > 0) {
         orders
           .filter((v) => v.user_id == userID)
           .forEach((order) => {
@@ -171,24 +170,42 @@ export const getOrder = async (req, res) => {
           });
         userName = orders.find((v) => v.user_id == userID).userName;
         userImg = orders.find((v) => v.user_id == userID).userImg;
-      }
-      orders.forEach((order) => {
-        const products = order.productID_list.split(",");
-        products.forEach((product) => {
-          productCount[product] = (productCount[product] || 0) + 1;
+        orders.forEach((order) => {
+          const products = order.productID_list.split(",");
+          products.forEach((product) => {
+            productCount[product] = (productCount[product] || 0) + 1;
+          });
         });
-      });
-      const sortedProducts = Object.entries(productCount)
-        .map(([productID, count]) => ({ productID, count }))
-        .sort((a, b) => b.count - a.count);
-      res.status(200).json({
-        status: "success",
-        userName: userName,
-        userImg: userImg,
-        history: orderHistory,
-        data: sortedProducts,
-        message: `查詢訂單列表成功`,
-      });
+        const sortedProducts = Object.entries(productCount)
+          .map(([productID, count]) => ({ productID, count }))
+          .sort((a, b) => b.count - a.count);
+        res.status(200).json({
+          status: "success",
+          userName: userName,
+          userImg: userImg,
+          history: orderHistory,
+          data: sortedProducts,
+          message: `查詢訂單列表成功`,
+        });
+      } else {
+        orders.forEach((order) => {
+          const products = order.productID_list.split(",");
+          products.forEach((product) => {
+            productCount[product] = (productCount[product] || 0) + 1;
+          });
+        });
+        const sortedProducts = Object.entries(productCount)
+          .map(([productID, count]) => ({ productID, count }))
+          .sort((a, b) => b.count - a.count);
+        res.status(200).json({
+          status: "success",
+          userName: [],
+          userImg: [],
+          history: [],
+          data: sortedProducts,
+          message: `查詢訂單列表成功`,
+        });
+      }
     }
   } catch (error) {
     res.status(400).json({ error: error.message });

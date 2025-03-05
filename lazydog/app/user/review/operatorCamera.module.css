@@ -1,221 +1,262 @@
-.wrapper {
-  margin: 100px auto 0;
+:root {
+  --Orange: #f5842b;
+  --orange: #f5842b;
+  --Skin: #f1d5b6;
+  --skin: #f1d5b6;
+  --Tiffany: #66c5bd;
+  --tiffany: #66c5bd;
+  --White: #fdfaf5;
+  --white: #fdfaf5;
+  --Yellow: #f6ce5b;
+  --yellow: #f6ce5b;
+  --Black: #3b3330;
+  --black: #3b3330;
+  --Rice: #fff6e8;
+  --rice: #fff6e8;
+  --Gray: #bcbcbc;
+  --gray: #bcbcbc;
+  scrollbar-width: thin;
+  /* scrollbar-width: none; */
+  scrollbar-color: var(--Orange) var(--White);
+
+  /* div {
+    margin: 0;
+    padding: 0;
+  } */
+
+  h1 {
+    margin: 0;
+    padding: 0;
+    /* font-size: 32px;
+    font-weight: 700;
+    color: var(--Black); */
+    cursor: default;
+  }
+
+  h2 {
+    margin: 0;
+    padding: 0;
+    /* font-size: 24px;
+    font-weight: 500;
+    color: var(--Black); */
+    cursor: default;
+  }
+
+  h3 {
+    margin: 0;
+    padding: 0;
+    /* font-size: 20px;
+    color: var(--Black); */
+    cursor: default;
+  }
+
+  h4 {
+    margin: 0;
+    padding: 0;
+    /* font-size: 16px;
+    color: var(--Black); */
+    cursor: default;
+  }
+
+  h5 {
+    margin: 0;
+    padding: 0;
+    /* font-size: 14px;
+    color: var(--Black); */
+    cursor: default;
+  }
+
+  h6 {
+    margin: 0;
+    padding: 0;
+    /* font-size: 12px;
+    color: var(--Black); */
+    cursor: default;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+    /* font-size: 10px;
+    color: var(--Black); */
+    cursor: default;
+  }
 }
-.suAvatarImg {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border: 3px solid #ddd;
+.table {
+  width: 100%;
+  a {
+    padding: 0;
+  }
+  img {
+    width: 50px;
+    /* padding-right: 5px; */
+  }
+  th {
+    padding: 10px 0;
+  }
+  td {
+    padding: 0;
+    max-width: 323.98px;
+    max-height: 49px;
+    overflow: hidden;
+    gap: 5px;
+    &:hover {
+      color: #ff9538;
+      /* font-weight: bold; */
+    }
+  }
+  .btn {
+    cursor: pointer;
+    outline: none;
+    border: 1px solid transparent;
+    color: white;
+    background-color: #ff9538;
+    border-radius: 5px;
+  }
+  .btn:hover {
+    background-color: #fdf9f5;
+    color: #ff9538;
+    border-color: #ff9538;
+  }
 }
 
-.suCameraIcon {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  background: white;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
+/* ------------------------------ */
+.dropdown {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  .dropdownToggle {
+    border: 1px solid var(--Orange);
+    border-radius: 20px;
+    &.PageItemActive {
+      background: var(--Orange);
+      color: var(--White);
+    }
+  }
 }
-
-.suCameraIconImg {
-  width: 36px;
-  height: 36px;
-}
-
-.suDropdownMenu {
-  min-width: 120px;
-  text-align: center;
-}
-
-.suDropdownItem {
-  cursor: pointer;
-}
-.suBtnSecondary {
-  background-color: #66c5bd;
-  border-radius: 5px;
-  color: white;
-  border: 1px solid transparent;
-}
-.suBtnSecondary:hover {
-  background-color: white;
-  color: #66c5bd;
-  border: 2px solid;
-  border-color: #66c5bd;
-}
-.secondary {
-  background-color: #66c5bd;
-  border-radius: 5px;
-  color: white;
-  border: 1px solid transparent;
-}
-
-/* 桌機版篩選選單 */
-.asideContainer {
-  display: block;
-}
-
-/* 手機版篩選選單 (預設隱藏) */
-.mobileFilter {
-  position: fixed;
-  top: 62px;
-  left: -100%;
-  width: 80%;
-  height: 100vh;
-  background: white;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  transition: left 0.3s ease-in-out;
-  z-index: 1;
-  padding: 20px;
-}
-
-/* 當 `filterOpen` 為 true 時，篩選選單滑入畫面 */
-.showFilter {
-  left: 0;
-}
-
-/* 關閉篩選按鈕 */
-.closeButton {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  background: #ccc;
-  text-align: center;
-  border: none;
-  cursor: pointer;
-}
-
-.closeButton:hover {
-  background: #bbb;
-}
-
-.right {
+.dropdown-content {
   display: none;
-  border-radius: 30%;
-  width: 50px;
-  height: 50px;
-  border: #f5842b;
-  color: white;
-}
-/* 手機篩選按鈕 (點擊後打開篩選) */
-.filterButton {
-  cursor: pointer;
-}
-
-.btn {
-  cursor: pointer;
-  outline: none;
-  border: 1px solid transparent;
-  color: white;
+  position: absolute;
+  top: 21px;
+  right: -15px;
   background-color: #ff9538;
-  border-radius: 5px;
-}
-.btn:hover {
-  background-color: #fdf9f5;
-  color: #ff9538;
-  border-color: #ff9538;
-}
-
-.btn2 {
-  background-color: #fdf9f5;
-  color: #ff9538;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  border-color: #ff9538;
-  cursor: pointer;
-}
-.btn2:hover {
-  background-color: #ff9538;
+  min-width: 115px;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
   color: white;
-  border-color: #ff9538;
-}
-
-.btn3 {
-  cursor: pointer;
-  outline: none;
-  border: 1px solid transparent;
-  color: white;
-  background-color: #66c5bd;
-  border-radius: 5px;
-}
-.btn3:hover {
-  background-color: #fdf9f5;
-  color: #66c5bd;
-  border-color: #66c5bd;
-}
-
-@media (min-width: 768px) {
-  .mobileFilter {
-    display: none;
-  }
-}
-@media (max-width: 768px) {
-  .asideContainer {
-    display: none;
-  }
-  .container {
-    padding: 30px;
-  }
-  .right {
+  .dropdown-link {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
     display: block;
-    border-radius: 50%;
-    border: #f5842b;
   }
 }
-
-.collapseAside {
-  position: sticky;
+.dropdown-contentOn {
+  display: block;
+  position: absolute;
+  top: 21px;
+  right: -15px;
+  background-color: #ff9538;
+  min-width: 115px;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  color: white;
+  .dropdown-link {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+}
+.dropdown-contentOff {
+  display: none;
+}
+.dropdown-link-top:hover {
+  border-radius: 10px 10px 0 0;
+}
+.dropdown-link-bottom:hover {
+  border-radius: 0 0 10px 10px;
+}
+.dropdown-link:hover {
+  background-color: #ffffff;
+  color: #ff9538;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+/* ------------------ */
+.ProductListPagination {
   width: 100%;
-  top: 74px;
-  @media (max-width: 768px) {
-    top: 62px;
-  }
-  z-index: 2;
-  .collapseAsideContent {
-    display: flex;
-    position: absolute;
-    z-index: 1;
-
-    .collapseHorizontal {
-      position: relative;
-      margin-top: -10px;
-      padding: 10px 35px 10px 25px;
-      background: white;
-      border-right: 3px solid #f5842b;
-
-      transition: width 0.05s ease, height 0.05s ease;
-      .collapseAsideBtn {
-        margin-left: 0;
-        padding: 0;
-        width: 11px;
-        position: absolute;
-        right: 13px;
-        top: 10px;
-        border: none;
-      }
-    }
-  }
-  .collapseAsideBtn {
-    margin-left: 63px;
-    @media (max-width: 768px) {
-      margin-left: 15px;
-    }
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-    background: white;
-    border: 1px solid #f5842b;
-    width: 35px;
-    height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  .PageItem {
+    cursor: pointer;
   }
 }
-
-.height {
-  margin: 100px auto 0;
+.PageItem {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--Orange);
+  border-radius: 50%;
+  &:hover {
+    background: var(--Orange);
+    color: var(--White);
+  }
+  .PageLink {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &.PageItemActive {
+    background: var(--Orange);
+    color: var(--White);
+  }
+}
+.PageArrow {
+  display: flex;
+  align-items: center;
+  img {
+    display: block;
+  }
+}
+.dropdownMenuOff {
+  display: none;
+}
+.dropdownMenu {
+  display: flex;
+  flex-direction: column;
+  transform: translate(0px, 38px) !important;
+  inset: 0px 0px auto 0px !important;
+  min-width: 20px;
+  max-height: 150px;
+  overflow-y: auto;
+  .dropdownItem {
+    padding: 0;
+    &.PageItemActive {
+      background: var(--Orange);
+      color: var(--White);
+    }
+  }
+  .dropdownItem:hover {
+    background: var(--Orange);
+    color: var(--White);
+  }
+  .PageLink {
+    padding: 2px 10px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

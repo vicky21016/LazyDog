@@ -20,7 +20,7 @@ import {
   faCamera,
   faComment,
 } from "@fortawesome/free-solid-svg-icons";
-import styles from "../../../styles/modules/menu.module.css";
+import styles from "@/styles/modules/menu.module.css";
 
 export default function MyMenu() {
   const pathname = usePathname();
