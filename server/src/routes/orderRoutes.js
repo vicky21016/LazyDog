@@ -1,6 +1,7 @@
 import express from "express";
 import multer from "multer";
 import pool from "../config/mysql.js";
+import {useUserCoupon} from "../services/couponUsageService.js";
 import { resolve, dirname, extname } from "path";
 import { fileURLToPath } from "url";
 import jwt from "jsonwebtoken";
@@ -234,31 +235,27 @@ router.post("/hotel", async (req, res) => {
     payment_method = "ECpay",
     cancellation_policy,
     remark,
+    coupon_id,
   } = req.body;
 
-  console.log("🛒 收到的訂單數據:", req.body); // 確保收到的數據是正確的
 
-  // 基本驗證ㄦ
+  // 基本驗證
   if (!hotel_id || !room_id || !user_id || !check_in || !check_out) {
-    console.error(" 缺少必要參數:", req.body);
-    return res.status(400).json({ status: "error", message: "缺少必要參數" });
+    // console.error(" 缺少必要:", req.body);
+    return res.status(400).json({ status: "error", message: "缺少必要" });
   }
 
+  const connection = await pool.getConnection();
   try {
-    const discount_amount = 0;
-    const safe_final_amount = final_amount ?? total_price;
-    const safe_payment_status = payment_status ?? "pending";
-    const safe_payment_method = payment_method ?? "ECpay";
-    const safe_cancellation_policy = cancellation_policy ?? null;
-    const safe_remark = remark ?? null;
+    await connection.beginTransaction();
 
     // 插入訂單
-    const [result] = await pool.execute(
+    const [result] = await connection.execute(
       `INSERT INTO hotel_order 
       (hotel_id, room_type_id, user_id, dog_count, check_in, check_out, status, 
        discount_amount, total_price, final_amount, payment_status, payment_method, 
-       cancellation_policy, remark, created_at, updated_at, is_deleted) 
-      VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
+       cancellation_policy, remark, created_at, updated_at, is_deleted, coupon_id) 
+      VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0, ?)`,
       [
         hotel_id,
         room_id,
@@ -266,33 +263,42 @@ router.post("/hotel", async (req, res) => {
         dog_count,
         check_in,
         check_out,
-        discount_amount,
+        0, // discount_amount
         total_price,
-        safe_final_amount,
-        safe_payment_status,
-        safe_payment_method,
-        safe_cancellation_policy,
-        safe_remark,
+        final_amount ?? total_price,
+        payment_status ?? "pending",
+        payment_method,
+        cancellation_policy ?? null,
+        remark ?? null,
+        coupon_id || null,
       ]
     );
 
-    console.log("✅ 訂單建立成功:", result);
-
     if (!result.insertId) {
-      return res
-        .status(500)
-        .json({ status: "error", message: "訂單插入失敗，請檢查數據" });
+      throw new Error("訂單插入失敗，請檢查數據");
     }
+
+    const orderId = result.insertId;
+
+    // 如果有 coupon_id，調用 useUserCoupon 來更新 coupon_usage
+    if (coupon_id) {
+      await useUserCoupon(user_id, coupon_id, orderId, "hotel_order");
+    }
+
+    await connection.commit();
 
     res.json({
       status: "success",
-      id: result.insertId,
+      id: orderId,
       total_price,
-      final_amount: safe_final_amount,
+      final_amount: final_amount ?? total_price,
     });
-  } catch (err) {
-    console.error(" SQL Error:", err);
-    res.status(500).json({ status: "error", message: err.message });
+  } catch (error) {
+    await connection.rollback();
+    console.error(" 訂單建立或優惠券失敗:", error.message);
+    res.status(500).json({ status: "error", message: error.message });
+  } finally {
+    connection.release();
   }
 });
 
@@ -343,7 +349,6 @@ router.post("/hotelOrders", async (req, res) => {
           : [{ url: "/hotel/hotel-uploads/1-l-room.webp" }]; // 預設圖片
     }
 
-    console.log(orders);
 
     if (orders.length === 0) {
       return res.json({

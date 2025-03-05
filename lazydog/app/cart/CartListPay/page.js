@@ -128,7 +128,6 @@ export default function CartListPayPage(props) {
 
     //  先產生訂單 ID
     const orderId = `PD${new Date().getTime()}`;
-    console.log("Generated Order ID:", orderId);
 
     let computedFinalAmount = totalAmount;
 
@@ -186,6 +185,7 @@ export default function CartListPayPage(props) {
             payment_status: "Unpaid",
             remark: "",
             orderTable,
+            coupon_id: selectedCoupon || null,
           };
           await createHotelOrder(newOrder, orderTable);
           computedFinalAmount = newOrder.final_amount;
@@ -380,9 +380,7 @@ export default function CartListPayPage(props) {
                       value={selectedCoupon || ""}
                       onChange={(e) => {
                         const selectedId = e.target.value;
-                        console.log("Selected Coupon ID:", selectedId);
-
-                        setSelectedCoupon(selectedId); //測試
+                        setSelectedCoupon(selectedId); // 更新選中的優惠券 ID
                       }}
                     >
                       <option value="">選擇優惠券</option>

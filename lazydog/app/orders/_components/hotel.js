@@ -7,7 +7,6 @@ const Hotel = ({ hotelOrders }) => {
     return <p>目前沒有旅館訂單</p>;
   }
 
-  console.log("Hotel Orders:", hotelOrders);
 
   return (
     <>
