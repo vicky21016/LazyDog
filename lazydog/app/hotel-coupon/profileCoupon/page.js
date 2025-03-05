@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 import Header from "../../components/layout/header";
 import MyMenu from "../../components/layout/myMenu";
+import Bread from "../../components/teacher/breadcrumb";
 import { getCouponss, claimCouponByCode } from "@/services/couponService";
 import { useAuth } from "@/hooks/use-auth";
 import Swal from "sweetalert2"; // 導入 sweetalert2
@@ -184,7 +185,18 @@ export default function ProfileCouponPage(props) {
     <>
       <Header />
       <div className={`container ${styles.height}`}>
-        <div className="row">
+      <Bread
+          links={[
+            { label: "首頁 ", href: "/" },
+
+            {
+              label: "個人資料",
+              href: "/pages",
+              active: true,
+            },
+          ]}
+        />
+        <div className="mt-4 row">
           {/* 左側選單 */}
           
             <MyMenu />
@@ -219,7 +231,7 @@ export default function ProfileCouponPage(props) {
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
               />
-              <button className="btn btn-primary" onClick={handleClaimCoupon}>
+              <button className={`btn ${styles.btn}`} onClick={handleClaimCoupon}>
                 領取
               </button>
             </div>

@@ -141,12 +141,12 @@ export default function OperatorDetailPage() {
               <div className="d-flex justify-content-end mt-4">
                 <button
                   type="button"
-                  className="btn btn-outline-primary me-2"
+                  className={`btn me-2 ${styles.btn2}`}
                   onClick={openModal}
                 >
                   編輯
                 </button>
-                <button type="button" className="btn btn-warning">
+                <button type="button" className={`btn ${styles.btn}`}>
                   刪除
                 </button>
               </div>
@@ -224,7 +224,7 @@ export default function OperatorDetailPage() {
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn btn-secondary"
+                className={`btn ${styles.btn2}`}
                 data-bs-dismiss="modal"
                 onClick={closeModal}
               >
@@ -232,7 +232,7 @@ export default function OperatorDetailPage() {
               </button>
               <button
                 type="button"
-                className="btn btn-primary"
+                className={`btn ${styles.btn}`}
                 onClick={saveChanges}
               >
                 儲存變更
