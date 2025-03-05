@@ -148,23 +148,48 @@ export const getCategory = async (req, res) => {
 
 export const getOrder = async (req, res) => {
   try {
+    const { userID } = req.query;
     const orders = await getAllOrder();
-    if (!orders.length) throw new Error("查無訂單列表");
-    const productCount = {};
-    orders.forEach((order) => {
-      const products = order.productID_list.split(",");
-      products.forEach((product) => {
-        productCount[product] = (productCount[product] || 0) + 1;
+    if (!orders.length) {
+      // throw new Error("查無訂單列表")
+      res.status(200).json({
+        status: "success",
+        message: `查詢訂單列表成功，目前資料庫無訂單列表資料`,
       });
-    });
-    const sortedProducts = Object.entries(productCount)
-      .map(([productID, count]) => ({ productID, count }))
-      .sort((a, b) => b.count - a.count);
-    res.status(200).json({
-      status: "success",
-      data: sortedProducts,
-      message: `查詢訂單列表成功，共${sortedProducts.length}筆資料`,
-    });
+    } else {
+      const productCount = {};
+      let orderHistory = [];
+      let userName, userImg;
+      if (userID) {
+        orders
+          .filter((v) => v.user_id == userID)
+          .forEach((order) => {
+            orderHistory = [
+              ...orderHistory,
+              ...order.productID_list.split(","),
+            ].filter((item, index, self) => self.indexOf(item) === index);
+          });
+        userName = orders.find((v) => v.user_id == userID).userName;
+        userImg = orders.find((v) => v.user_id == userID).userImg;
+      }
+      orders.forEach((order) => {
+        const products = order.productID_list.split(",");
+        products.forEach((product) => {
+          productCount[product] = (productCount[product] || 0) + 1;
+        });
+      });
+      const sortedProducts = Object.entries(productCount)
+        .map(([productID, count]) => ({ productID, count }))
+        .sort((a, b) => b.count - a.count);
+      res.status(200).json({
+        status: "success",
+        userName: userName,
+        userImg: userImg,
+        history: orderHistory,
+        data: sortedProducts,
+        message: `查詢訂單列表成功`,
+      });
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -473,7 +498,7 @@ export const softDeleteFavorite = async (req, res) => {
         message: "請從正規管道進入更新收藏頁面",
       });
     }
-    console.log(userID);
+    // console.log(userID);
     let isDeleted = 0;
     if (productIDlist !== "") {
       const productIDs = productIDlist.split(",");
@@ -631,6 +656,7 @@ export const createReviews = async (req, res) => {
 export const updateReviews = async (req, res) => {
   try {
     const { userID, productID, rating, comment, good, isDeleted } = req.body;
+    // console.log(req.body);
     if (!userID) {
       return res.status(401).json({
         status: "error",

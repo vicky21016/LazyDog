@@ -173,7 +173,7 @@ export const getCategoryName = async (updateFields, value) => {
 export const getAllOrder = async (updateFields, value) => {
   try {
     const [products] = await pool.execute(
-      "SELECT * FROM yi_orderlist WHERE is_deleted = 0"
+      "SELECT yi_orderlist.*, users.name As userName, users.user_img AS userImg FROM yi_orderlist JOIN users ON yi_orderlist.user_id = users.id WHERE yi_orderlist.is_deleted = 0"
     );
     return products;
   } catch (error) {
@@ -208,7 +208,7 @@ export const getAllProductId = async (productID) => {
 export const getProductId = async (productID) => {
   try {
     const [products] = await pool.execute(
-      "SELECT yi_product.*,users.name As user,users.email As email,users.user_img As userImg,yi_category.name As category,yi_img.list_img As listImg,yi_img.info_img As infoImg,yi_img.lg_img As img,yi_img.sm_img As smImg,yi_reviews.rating As rate,yi_reviews.comment As comment,yi_reviews.good As good,yi_reviews.updated_at As commentTime FROM yi_product JOIN yi_category ON yi_product.category_id = yi_category.id JOIN yi_img ON yi_product.productID = yi_img.productID JOIN yi_reviews ON yi_product.productID = yi_reviews.productID JOIN users ON yi_reviews.user_id = users.id WHERE yi_product.productID = ? AND yi_product.is_deleted = 0",
+      "SELECT yi_product.*,users.name As user,users.email As email,users.user_img As userImg,yi_category.name As category,yi_img.list_img As listImg,yi_img.info_img As infoImg,yi_img.lg_img As img,yi_img.sm_img As smImg,yi_reviews.rating As rate,yi_reviews.comment As comment,yi_reviews.good As good,yi_reviews.updated_at As commentTime FROM yi_product JOIN yi_category ON yi_product.category_id = yi_category.id JOIN yi_img ON yi_product.productID = yi_img.productID JOIN yi_reviews ON yi_product.productID = yi_reviews.productID JOIN users ON yi_reviews.user_id = users.id WHERE yi_product.productID = ? AND yi_product.is_deleted = 0 AND yi_reviews.is_deleted = 0",
       [productID]
     );
     // const [reviews] = await pool.execute(
@@ -342,7 +342,7 @@ export const deleteItemInfo = async (productID) => {
 export const getAllReviews = async (userID) => {
   try {
     const [products] = await pool.execute(
-      `SELECT yi_reviews.*,users.name As user,users.user_img As userImg FROM yi_reviews JOIN users ON yi_reviews.user_id = users.id WHERE yi_reviews.user_id = ${userID}`
+      `SELECT yi_reviews.*,users.name As user,users.user_img As userImg FROM yi_reviews JOIN users ON yi_reviews.user_id = users.id WHERE yi_reviews.user_id = ${userID} AND yi_reviews.is_deleted = 0`
     );
     return products;
   } catch (error) {
@@ -369,7 +369,7 @@ export const updateReviewsInfo = async (updateFields, value) => {
     const [products] = await pool.execute(
       `UPDATE yi_reviews SET ${updateFields.join(
         ","
-      )} WHERE (user_id = ? and productID = ?) `,
+      )} WHERE (user_id = ? AND productID = ?) `,
       value
     );
     // const [warnings] = await pool.query("SHOW WARNINGS");

@@ -26,6 +26,9 @@ export default function Header(props) {
     const clickOutside = (event) => {
       if (menuOpen && !event.target.closest(`.${styles.mobileMenu}`)) {
         menuRef.current.click();
+        setPDOpen(false);
+        setTeacherOpen(false);
+        setUserOpen(false);
       }
     };
     document.addEventListener("click", clickOutside);
@@ -222,7 +225,7 @@ export default function Header(props) {
                   setTeacherOpen(false);
                 }}
               >
-                <Link href="/product/list" className={styles["dropbtn"]}>
+                <Link href="" className={styles["dropbtn"]}>
                   寵物用品
                 </Link>
               </div>
