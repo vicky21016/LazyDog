@@ -1,17 +1,23 @@
-'use client'
+"use client";
 
-import React, { useState, useEffect } from 'react'
-import styles from "../../pages/menu.module.css";
-export default function ComponentsInputFiled({ type, name, placeholder, icon, value, onChange }) {
+import React, { useState, useEffect } from "react";
+import styles from "@/app/user/menu.module.css";
+export default function ComponentsInputFiled({
+  type,
+  name,
+  placeholder,
+  icon,
+  value,
+  onChange,
+}) {
   return (
     <>
-    
       <div className="mb-3 ">
         <input
-        type={type}
+          type={type}
           name={name}
           placeholder={placeholder}
-          className={` p-2 rounded ${styles['filed']}`}
+          className={` p-2 rounded ${styles["filed"]}`}
           value={value} // 綁定 value 到狀態
           onChange={onChange}
         />
@@ -21,4 +27,3 @@ export default function ComponentsInputFiled({ type, name, placeholder, icon, va
     </>
   );
 }
-

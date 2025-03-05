@@ -64,12 +64,12 @@ export default function MyMenu() {
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
 
   const menuItems = [
-    { name: "會員資料", path: "/pages", icon: faUser },
-    { name: "訂單紀錄", path: "/orders", icon: faCartShopping },
-    { name: "我的優惠", path: "/hotel-coupon/profileCoupon", icon: faTicket },
-    { name: "我的收藏", path: "/userFavorite", icon: faHeart },
-    { name: "我的文章", path: "/article/my_article", icon: faPen },
-    { name: "修改密碼", path: "/pages/forgot-password", icon: faCirclePlus },
+    { name: "會員資料", path: "/user", icon: faUser },
+    { name: "訂單紀錄", path: "/user/orders", icon: faCartShopping },
+    { name: "我的優惠", path: "/user/profileCoupon", icon: faTicket },
+    { name: "我的收藏", path: "/user/userFavorite", icon: faHeart },
+    { name: "我的文章", path: "/user/my_article", icon: faPen },
+    { name: "修改密碼", path: "/user/forgot-password", icon: faCirclePlus },
   ];
 
   // 點擊畫面其他地方時，自動關閉篩選選單
@@ -92,14 +92,14 @@ export default function MyMenu() {
     <>
       {/* 手機版選單按鈕 */}
       <div className={`${styles.collapseAside} d-lg-none`}>
-      <div className={`${styles.collapseAsideContent}`}>
-      <button className={styles.right}>
-        <img
-          src={`/product/font/right(orange).png`}
-          onClick={() => setmobileMenu(!mobileMenu)}
-        />
-      </button>
-      </div>
+        <div className={`${styles.collapseAsideContent}`}>
+          <button className={styles.right}>
+            <img
+              src={`/product/font/right(orange).png`}
+              onClick={() => setmobileMenu(!mobileMenu)}
+            />
+          </button>
+        </div>
       </div>
       {/* <div className="col-md-3 col-12"> */}
       <div

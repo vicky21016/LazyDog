@@ -19,9 +19,9 @@ export default function SocialLogin() {
       </button>
 
       {/* LINE 登入按鈕 */}
-      <Link href="/line/google-login" className={`${styles.socialloginBtn}`}>
+      {/* <Link href="/line/google-login" className={`${styles.socialloginBtn}`}>
         <img src="/images/line.webp" alt="line" className={`${styles.lineIcon}`} />
-      </Link>
+      </Link> */}
     </div>
   );
 }
