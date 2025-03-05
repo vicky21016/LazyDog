@@ -27,9 +27,9 @@
   
   .hotelInfo {
     position: absolute;
-    bottom: -120px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 10px; /* 修改為左上角 */
+    left: 10px;
+    transform: none;
     background: rgba(255, 255, 255, 0.9);
     padding: 10px;
     border-radius: 10px;
@@ -43,4 +43,3 @@
     margin-top: 5px;
     border-radius: 5px;
   }
-  
