@@ -12,7 +12,7 @@ export default async function MemberPage(props) {
 
               {
                 label: "會員條款條款與細則",
-                href: "/pages/about/member",
+                href: "/user/about/member",
                 active: true,
               },
             ]}
