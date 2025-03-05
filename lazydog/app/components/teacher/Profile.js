@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
 import {useTeacherDetail } from "../../../hooks/useTeacherDetail";
 import styles from '../../teacher/info/info.module.css';
-import style from "../../pages/menu.module.css";
+import style from "../../user/menu.module.css";
 
 export default function Profile () {
   const { id } = useParams();

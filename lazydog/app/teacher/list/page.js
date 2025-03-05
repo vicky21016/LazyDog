@@ -9,7 +9,7 @@ import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "./list.module.css";
 import Page from "../../course/_components/list/pagination";
 import style1 from "../../product/list/list.module.css";
-import style from "../../pages/menu.module.css";
+import style from "../../user/menu.module.css";
 
 export default function App() {
   const { teachers = [] , loading} = useTeachers();

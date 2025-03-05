@@ -7,7 +7,7 @@ import Header from "../../components/layout/header";
 import MyMenu from "../_components/my";
 import Bread from "../../components/teacher/breadcrumb";
 import Input from "../../components/forms/Input";
-import styles from "../../pages/menu.module.css";
+import styles from "../../user/menu.module.css";
 import style from "../../../styles/modules/menu.module.css";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
 // import { auth, signOut, onAuth } from "./firebase";
@@ -54,7 +54,7 @@ export default function Menu() {
       number: user?.number || "",
       floor: user?.floor || "",
     });
-    router.push("/pages");
+    router.push("/user");
   };
   const handleSubmit = async (e) => {
     console.log(user.id);
