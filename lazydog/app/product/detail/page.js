@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, use } from "react";
 import styles from "./detail.module.css";
-import ProductCard from "../_components/card/card";
+import Card from "../_components/card/card";
 import RateCard from "../_components/rate/ratecard";
 import StarGroup from "../_components/rate/stargroup";
 import StarBar from "../_components/rate/starbar";
@@ -29,6 +29,9 @@ function DetailContent() {
   const userID = user?.id;
   const { onAddProduct, productItems } = useCart();
   const {
+    userName,
+    userImg,
+    history,
     width,
     product,
     router,
@@ -112,7 +115,14 @@ function DetailContent() {
     setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
   }, [width]);
 
-  console.log(reviews);
+  // console.log(user);
+  if (error) {
+    return (
+      <div className="container">
+        <img style={{ width: "100%" }} src="/product/404.png" />
+      </div>
+    );
+  }
   return (
     <div className={`${styles.Container} container`}>
       <section className={styles.Breadcrumbs}>
@@ -547,7 +557,7 @@ function DetailContent() {
                   <div className={`${styles.SetReviews} col-12 col-lg-6`}>
                     <RateCard
                       rateNow={rateNow}
-                      id={reviews.id}
+                      id={reviews.user_id}
                       productID={productID}
                       user={reviews.user}
                       img={reviews.userImg}
@@ -555,6 +565,18 @@ function DetailContent() {
                       comment={reviews.comment}
                       goodNum={reviews.good}
                       date={reviews.updated_at}
+                    />
+                  </div>
+                )}
+                {user?.id > 0 && history && !reviews && (
+                  <div className={`${styles.SetReviews} col-12 col-lg-6`}>
+                    <RateCard
+                      history={history}
+                      rateNow={rateNow}
+                      id={userID}
+                      productID={productID}
+                      user={userName}
+                      img={userImg}
                     />
                   </div>
                 )}
@@ -595,7 +617,7 @@ function DetailContent() {
                     顯示更多評價
                   </button>
                 )}
-              {rateData.rate && rateData.rate.length <= rate && (
+              {rateData.rate && rateData.rate.length < rate && (
                 <button
                   type="button"
                   className={styles.RateMore}
@@ -627,8 +649,8 @@ function DetailContent() {
               sameBuy?.map((v, i) => {
                 if (i < CardInt + also && i >= also) {
                   return (
-                    <ProductCard
-                      key={`ProductCard${i}`}
+                    <Card
+                      key={`Card${i}`}
                       productID={v}
                       favorite={favorite}
                       setFavorite={setFavorite}
@@ -650,7 +672,6 @@ function DetailContent() {
       </section>
       <section className={styles.OtherLike}>
         <h4 className={styles.OtherLikeTitle}>看看其他好物...</h4>
-
         <div className={styles.OtherLikeContent}>
           <button
             type="button"
@@ -666,8 +687,8 @@ function DetailContent() {
               hotSale?.map((v, i) => {
                 if (i < CardInt + hot && i >= hot) {
                   return (
-                    <ProductCard
-                      key={`ProductCard${i}`}
+                    <Card
+                      key={`Card${i}`}
                       productID={v}
                       favorite={favorite}
                       setFavorite={setFavorite}
