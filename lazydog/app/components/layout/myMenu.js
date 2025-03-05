@@ -93,7 +93,7 @@ export default function MyMenu() {
   return (
     <>
       {/* 手機版選單按鈕 */}
-      <div className={`${styles.collapseAside} d-lg-none`}>
+      <div className={`${styles.collapseAside} d-xl-none`}>
         <div className={`${styles.collapseAsideContent}`}>
           <button className={styles.right}>
             <img
