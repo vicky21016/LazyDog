@@ -94,7 +94,7 @@ try {
           </form>
           <p className={`${styles.logintext}`}>
             已經有帳號了嗎？{" "}
-            <Link href="/login" className={`${styles.lumiLogin}`}>
+            <Link href="/login" className={`${styles.Login}`}>
               登入
             </Link>
           </p>
