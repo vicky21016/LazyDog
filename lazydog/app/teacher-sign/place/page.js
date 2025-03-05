@@ -11,7 +11,7 @@ export default function PlacePage() {
   return (
     <>
       <Header />
-      <div className="container mt-5">
+      <div className="container lumi-all-wrapper">
         <div className="row">
           <My />
           <TeacherPlace />

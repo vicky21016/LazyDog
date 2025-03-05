@@ -5,20 +5,33 @@ import styles from "./TaiwanMap.module.css";
 
 // 縣市對應的推薦旅館資訊
 const recommendedHotels = {
-  Taipei: { name: "台北毛孩樂園", image: "/home/img/TAIPEI.svg" },
-  Taichung: { name: "台中寵物休閒村", image: "/home/img/TAICHONG.svg" },
-  Kaohsiung: { name: "高雄狗狗天堂", image: "/home/img/KAOXUN.svg" },
-  Tainan: { name: "台南寵物樂園", image: "/home/img/TAINAN.svg" },
-  Hualien: { name: "花蓮寵物渡假村", image: "/home/img/HUALIAN.svg" },
-  Taitung: { name: "台東毛孩度假村", image: "/home/img/TAIDONG.svg" },
-  Yilan: { name: "宜蘭狗狗天堂", image: "/home/img/YILAN.svg" },
-  Nantou: { name: "南投寵物村", image: "/home/img/NANTOU.svg" },
+  Taipei: { name: "台北毛孩樂園", image: "/hotel/hotel-uploads/1-outside.png" },
+  Taichung: {
+    name: "台中寵物休閒村",
+    image: "/hotel/hotel-uploads/2-outside.png",
+  },
+  Kaohsiung: {
+    name: "高雄狗狗天堂",
+    image: "/hotel/hotel-uploads/3-outside.png",
+  },
+  Tainan: { name: "台南寵物樂園", image: "/hotel/hotel-uploads/5-outside.png" },
+  Hualien: {
+    name: "花蓮寵物渡假村",
+    image: "/hotel/hotel-uploads/6-outside.png",
+  },
+  Taitung: {
+    name: "台東毛孩度假村",
+    image: "/hotel/hotel-uploads/7-outside2.jpg",
+  },
+  Yilan: { name: "宜蘭狗狗天堂", image: "/hotel/hotel-uploads/8-outside.png" },
+  Nantou: { name: "南投寵物村", image: "/hotel/hotel-uploads/9-outside.png" },
 };
 
+// 手動調整每個縣市在地圖上的位置
 const regionPositions = {
-  Taipei: { top: "15%", left: "45%" },
+  Taipei: { top: "50%", left: "50%" },
   Taichung: { top: "45%", left: "50%" },
-  Kaohsiung: { top: "75%", left: "55%" },
+  Kaohsiung: { top: "78%", left: "55%" },
   Tainan: { top: "70%", left: "50%" },
   Hualien: { top: "40%", left: "80%" },
   Taitung: { top: "65%", left: "85%" },
@@ -31,20 +44,19 @@ export default function RegionMap() {
 
   return (
     <div className={styles.mapContainer}>
-      {/* 左側顯示推薦旅館 */}
-      <div className={styles.hotelInfo}>
-        {selectedRegion ? (
-          <>
-            <h3>{recommendedHotels[selectedRegion].name}</h3>
-            <img
-              src={recommendedHotels[selectedRegion].image}
-              alt={selectedRegion}
-            />
-          </>
-        ) : (
-          <p>請選擇地區</p>
-        )}
-      </div>
+      {/* 左上角顯示推薦旅館，僅在有選擇區域時顯示 */}
+      {selectedRegion && recommendedHotels[selectedRegion] && (
+        <div
+          className={styles.hotelInfo}
+          style={{ position: "absolute", top: "10px", left: "10px" }}
+        >
+          <h3>{recommendedHotels[selectedRegion].name}</h3>
+          <img
+            src={recommendedHotels[selectedRegion].image}
+            alt={selectedRegion}
+          />
+        </div>
+      )}
 
       {/* 背景地圖 */}
       <img
@@ -60,9 +72,12 @@ export default function RegionMap() {
           className={styles.region}
           src={`/home/img/${region.toUpperCase()}.svg`}
           alt={region}
-          style={{ top: regionPositions[region].top, left: regionPositions[region].left }}
+          style={{
+            top: regionPositions[region].top,
+            left: regionPositions[region].left,
+          }}
           onMouseEnter={() => setSelectedRegion(region)}
-          onClick={() => alert(`前往 ${recommendedHotels[region].name}`)}
+          onMouseLeave={() => setSelectedRegion(null)}
         />
       ))}
     </div>

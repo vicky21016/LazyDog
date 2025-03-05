@@ -181,14 +181,7 @@ export default function HomePage(props) {
               Book Now
             </Link>
           </div>
-          <div className={styles.hotelViews}>
-            <img
-              className={styles.dryfood}
-              src="/home/img/dryfood (5).jpeg"
-              alt=""
-            />
-            <h5 className={styles.h5}>汪汪星球</h5>
-          </div>
+          
         </div>
         <div className={styles.icons}>
           <img
