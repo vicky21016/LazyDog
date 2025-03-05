@@ -90,3 +90,25 @@
     background-position: left;
   }
 }
+
+.post{
+  border: none;
+  border: 1 solid #ff9538;
+  background-color: #ff9538;
+  border-radius: 5px
+}
+.post:hover{
+  border: 1 solid #ff9538;
+  background-color:white ;
+  border-radius: 5px
+}
+.postfont{
+  text-decoration: none;
+   color: white ;
+   font-weight:bold
+}
+.postfont:hover{
+  text-decoration: none;
+   color:#ff9538
+}
+
