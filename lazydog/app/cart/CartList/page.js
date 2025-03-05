@@ -10,6 +10,7 @@ import Header from "@/app/components/layout/header";
 import Breadcrumb from "../../components/teacher/breadcrumb";
 import Thead from "@/app/components/cart/thead";
 import Other from "../../components/teacher/otherTeacher";
+import OtherCourse from "@/app/components/cart/otherCourse";
 import Link from "next/link";
 export default function CartListPage(props) {
   const {
@@ -190,6 +191,10 @@ export default function CartListPage(props) {
                         </td>
                         <td>
                           {cartItem.name}
+                          {/* <br />
+                          hotel_id{cartItem.hotelId}
+                          <br />
+                          room_id{cartItem.id} */}
                           <br />
                           入住: {cartItem.checkInDate || "未填寫"}
                           <br />
@@ -304,8 +309,8 @@ export default function CartListPage(props) {
             </div>
             <hr className="mb-5" />
             <div>
-              <h4 className="mb-5">看看其他精選商品 </h4>
-              <Other cards={teacherData} />
+              <h4 className="mb-5">看看其他精選課程 </h4>
+              <OtherCourse />
             </div>
           </div>
         </div>

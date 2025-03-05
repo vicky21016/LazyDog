@@ -111,8 +111,8 @@ export default function Menu() {
   return (
     <>
       <Header />
-      <div className={`lumi-all-wrapper`}>
-        <Bread
+      <div className={`${style.allwrapper}`}>
+        {/* <Bread
           links={[
             { label: "首頁 ", href: "/" },
 
@@ -122,15 +122,15 @@ export default function Menu() {
               active: true,
             },
           ]}
-        />
+        /> */}
       </div>
       <div className="row">
         <div className={`${style.wrapper}`}>
           
             <MyMenu />
           
-          <div className="col-12 col-md-9">
-            <div className={`${styles["container"]}`}>
+          <div className={`col-12 col-md-9 ${style.righttop}`}>
+            <div className={`${styles.container}`}>
               <h4 className={`mb-4 ${styles["information"]}`}>基本資料</h4>
               <form
                 onSubmit={handleSubmit}

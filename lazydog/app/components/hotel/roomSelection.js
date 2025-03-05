@@ -124,15 +124,17 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
       });
       return;
     }
-
+  
     // 獲取選擇的數量
     const quantity = selectedQuantities[room.id] || 1;
     const storedParams = JSON.parse(sessionStorage.getItem("searchParams"));
     const checkIn = storedParams?.checkInDate || "未選擇";
-  const checkOut = storedParams?.checkOutDate || "未選擇";
+    const checkOut = storedParams?.checkOutDate || "未選擇";
+  
     // 構建要加入購物車的房間資料
     const hotelToAdd = {
-      id: room.id,
+      id: room.id, // 房型ID
+      hotelId: hotelId, // 旅館ID
       name: room.room_type_name,
       price: room.price,
       imageUrl: room.imageUrl,
@@ -143,11 +145,11 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
       checkOutDate: checkOut || "未設定",
     };
     console.log("🛒 加入購物車的資料:", hotelToAdd);
-
+  
     try {
       // 調用加入購物車的函數
       onAddHotel(hotelToAdd);
-
+  
       // 顯示成功訊息
       Swal.fire({
         icon: "success",

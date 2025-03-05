@@ -11,6 +11,8 @@ import {
   ById,
 } from "@/services/allFavoriteService";
 import { useAuth } from "@/hooks/use-auth";
+import Bread from "../components/teacher/breadcrumb";
+import styles from "../../styles/modules/operatorCamera.module.css"
 
 export default function UserFavoritePage() {
   const { user } = useAuth();
@@ -135,17 +137,28 @@ export default function UserFavoritePage() {
   return (
     <>
       <Header />
-      <div className="container mt-5">
-        <div className="row">
+      <div className={`container ${styles.wrapper}`}>
+      <Bread
+          links={[
+            { label: "首頁 ", href: "/" },
+
+            {
+              label: "個人資料",
+              href: "/pages",
+              active: true,
+            },
+          ]}
+        />
+        <div className="mt-4 row">
           {/* 左側選單 */}
-          <div className="d-none d-md-block col-md-3">
+          
             <MyMenu />
-          </div>
+          
 
           {/* 右側內容 */}
           <div className="col-md-9">
             <div className="d-flex justify-content-between my-2">
-              <h1 className="text-center">我的最愛</h1>
+              <h4 className="text-center mb-4">我的最愛</h4>
             </div>
 
             {loading ? (
@@ -154,7 +167,7 @@ export default function UserFavoritePage() {
               <>
                 {/* 商品收藏 */}
                 <div className="mb-5">
-                  <h2>商品收藏</h2>
+                  <h6>商品收藏</h6>
                   <div className="row">
                     {productFavorites.length > 0 ? (
                       productFavorites.map((item) => (
@@ -213,7 +226,7 @@ export default function UserFavoritePage() {
 
                 {/* 旅館收藏 */}
                 <div className="mb-5">
-                  <h2>旅館收藏</h2>
+                  <h6>旅館收藏</h6>
                   <div className="row">
                     {hotelFavorites.length > 0 ? (
                       hotelFavorites.map((item) => (

@@ -168,119 +168,44 @@ export const useUserCoupon = async (userId, couponId, orderId, orderTable) => {
     await connection.beginTransaction();
 
     console.log(
-      "收到請求 - userId:", 
-      userId,
-      "couponId:",
-      couponId,
-      "orderId:",
-      orderId || "未提供",
-      "orderTable:",
-      orderTable || "未提供"
-    ); // 確認一下之後可以刪掉
-
-    const validTables = ["hotel_order", "course_orders", "yi_orderlist"];
-    if (!validTables.includes(orderTable)) {
-      throw new Error(`無效的訂單類型: ${orderTable}`);
-    }
-
-    //  如果沒有 `orderId`，先標記優惠券為「reserved」，等付款時再綁定 
-    if (!orderId) {
-      const [updateResult] = await connection.query(
-        `UPDATE coupon_usage 
-         SET status = 'reserved', used_at = NOW(), updated_at = NOW() 
-         WHERE user_id = ? AND coupon_id = ? 
-           AND status IN ('claimed', 'reserved') 
-           AND is_deleted = 0`,
-        [userId, couponId]
-      );
-
-      console.log("更新優惠券狀態為 reserved，影響行數:", updateResult.affectedRows);
-      if (updateResult.affectedRows === 0) {
-        throw new Error("沒有更新任何優惠券，請檢查條件是否符合");
-      }
-      await connection.commit();
-      return {
-        success: true,
-        message: "優惠券已保留，請在付款時綁定訂單",
-      };
-    }
-
-    //  查詢訂單 
-    const [[order]] = await connection.query(
-      `SELECT id, total_price, coupon_id FROM ${orderTable} WHERE id = ? AND user_id = ?`,
-      [orderId, userId]
+      "收到請求 - userId:", userId,
+      "couponId:", couponId,
+      "orderId:", orderId || "未提供",
+      "orderTable:", orderTable || "未提供"
     );
 
-    if (!order) throw new Error("找不到對應的訂單");
-    if (order.coupon_id) {
-      throw new Error("此訂單已使用其他優惠券");
-    }
-
-    //  查詢優惠券 
-    const [[coupon]] = await connection.query(
-      `SELECT * FROM coupons WHERE id = ? AND is_deleted = 0`,
-      [couponId]
-    );
-
-    if (!coupon) throw new Error("優惠券不存在或已刪除");
-
-    //  檢查使用者是否已擁有此優惠券 
+    // 檢查 coupon_usage 記錄
     const [[couponUsage]] = await connection.query(
-      `SELECT * FROM coupon_usage WHERE user_id = ? AND coupon_id = ? AND status IN ('claimed', 'reserved') AND is_deleted = 0`,
+      `SELECT * FROM coupon_usage 
+       WHERE user_id = ? AND coupon_id = ? AND status IN ('claimed', 'reserved') AND is_deleted = 0`,
       [userId, couponId]
     );
 
-    if (!couponUsage) throw new Error("優惠券無法使用或已使用");
-
-    //  如果優惠券有限定訂單類型，檢查是否匹配 
-    if (!coupon.is_global && couponUsage.order_table !== orderTable) {
-      throw new Error(
-        `此優惠券僅適用於 ${couponUsage.order_table}，不可用於 ${orderTable}`
-      );
+    if (!couponUsage) {
+      throw new Error("優惠券無法使用或已使用");
     }
 
-    //  檢查最低消費門檻 
-    if (coupon.min_order_value && order.total_price < coupon.min_order_value) {
-      throw new Error(`此優惠券需消費滿 ${coupon.min_order_value} 元才可使用`);
-    }
-
-    //  計算折扣後的價格 
-    const orderTotalPrice = order.total_price || 0;
-    const discountAmount = Math.min(coupon.value, orderTotalPrice);
-    const finalAmount = orderTotalPrice - discountAmount; // 確保折扣不超過總價
-
-    //  更新優惠券狀態為「used」 
-    await connection.query(
+    // 更新 coupon_usage 狀態為 used
+    const [couponUpdateResult] = await connection.query(
       `UPDATE coupon_usage 
        SET status = 'used', used_at = NOW(), updated_at = NOW(), order_id = ?, order_table = ? 
        WHERE user_id = ? AND coupon_id = ? AND status IN ('claimed', 'reserved') AND is_deleted = 0`,
       [orderId, orderTable, userId, couponId]
     );
-    console.log("更新優惠券狀態為 used，影響行數:", couponUpdateResult.affectedRows);
+
     if (couponUpdateResult.affectedRows === 0) {
       throw new Error("優惠券狀態更新失敗，請檢查條件是否符合");
     }
-    // 更新 `orderTable` 內的 `discount_amount` 和 `final_amount` 
-    const [orderUpdateResult] = await connection.query(
-      `UPDATE ${orderTable} 
-       SET discount_amount = ?, final_amount = ?, coupon_id = ?  
-       WHERE id = ?`,
-      [discountAmount, finalAmount, couponId, orderId]
-    );
-    console.log("更新訂單折扣，影響行數:", orderUpdateResult.affectedRows);
-    if (orderUpdateResult.affectedRows === 0) {
-      throw new Error("訂單折扣更新失敗，請檢查條件是否符合");
-    }
+
     await connection.commit();
+
     return {
       success: true,
       message: "優惠券已成功使用",
-      discountAmount,
-      finalAmount,
     };
   } catch (error) {
     await connection.rollback();
-    console.error(" 優惠券應用失敗:", error.message); 
+    console.error(" 優惠券應用失敗:", error.message);
     throw new Error(error.message);
   } finally {
     connection.release();

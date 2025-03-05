@@ -50,7 +50,7 @@ export default function News() {
               playsInline
               className={styles.newVideoDogs}
             >
-              <source src="/course/img/dogplay.mp4" type="video/mp4" />
+              <source src="/course/video/dogplay.mp4" type="video/mp4" />
             </video>
           </SwiperSlide>
           <SwiperSlide className={styles.newCard}>
@@ -61,7 +61,7 @@ export default function News() {
               playsInline
               className={styles.newVideoPeople}
             >
-              <source src="/course/img/peopleWdog.mp4" type="video/mp4" />
+              <source src="/course/video/peopleWdog.mp4" type="video/mp4" />
             </video>
           </SwiperSlide>
         </Swiper>

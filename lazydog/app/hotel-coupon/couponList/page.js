@@ -200,13 +200,13 @@ export default function CouponListPage() {
                     </div>
                     <div className="modal-footer">
                       <button
-                        className="btn btn-secondary"
+                        className={`btn ${styles.btn2}`}
                         onClick={() => setSelectedCoupon(null)}
                       >
                         關閉
                       </button>
                       <button
-                        className="btn btn-warning"
+                        className={`btn ${styles.btn}`}
                         onClick={() => handleEditCoupon(selectedCoupon.id)}
                       >
                         編輯
@@ -218,7 +218,7 @@ export default function CouponListPage() {
             )}
             <div className="d-flex justify-content-end mt-3">
               <button
-                className="btn btn-sm btn-primary"
+                className={`btn btn-sm ${styles.btn3}`}
                 onClick={() => handlePageChange("createCoupon")}
               >
                 + 新增優惠券

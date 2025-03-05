@@ -11,40 +11,46 @@ import { useDetailFetch } from "@/hooks/product/use-fetch";
 export default function HomePage(props) {
   // const { hotSale } = useDetailFetch();
   // console.log(hotSale);
+
+  const goToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <>
       <Header />
+
       <div className={styles.section1}>
-        <div className={styles.words}>
-          <div className={styles.sales}>
-            <div className={styles.sale1}>
-              <h2 className={styles.sale1Word}>活動倒數3天！</h2>
-              <h2 className={styles.sale1Word}>熱門商品最高限時</h2>
-            </div>
-            <div className={styles.sale2}>
-              <h2 className={styles.discountNum}>88</h2>
-              <h2 className={styles.discountWord}>折</h2>
-            </div>
-            <div className={styles.sale3}>
-              <p className={styles.sale3Word}>錯過這次，再等一年!</p>
-              <Link href="/product/list" className={styles.sale3Btn}>
-                Shop Now
-              </Link>
-            </div>
-          </div>
-          <div className={styles.dog}>
-            <img className={styles.paw2} src="/home/img/paw2.png" alt="" />
-            <img
-              className={styles.dogBackground}
-              src="/home/img/dogBackground.png"
-              alt=""
-            />
-            <img className={styles.lines} src="/home//img/lines.png" alt="" />
-            <img className={styles.dogPic} src="/home//img/dog.png" alt="" />
-            <img className={styles.paw3} src="/home/img/paw3.png" alt="" />
-          </div>
-          <div className={styles.icons}>
+        <div className="container">
+          <div className={`row ${styles.words}`}>
             <img className={styles.paw1} src="/home/img/paw1.png" alt="" />
+
+            <div className={`col-6`}>
+              <h2 className={styles.sale11Word}>活動倒數3天!</h2>
+              <h2 className={styles.sale12Word}>熱門商品最高限時</h2>
+              <div className={styles.sale2}>
+                <h2 className={styles.discountNum}>88</h2>
+                <h2 className={styles.discountWord}>折</h2>
+              </div>
+              <p className={styles.sale3Word}>錯過這次，再等一年!</p>
+
+              <div className={styles.sale3}>
+                <Link className={styles.sale3Btn} href="/product/list">
+                  Shop &nbsp;Now
+                </Link>
+              </div>
+            </div>
+            <div className={`col-6 ${styles.dog}`}>
+              {/* <img className={styles.paw2} src="/home/img/paw2.png" alt="" /> */}
+              <img
+                className={styles.dogBackground}
+                src="/home/img/dogBackground.png"
+                alt=""
+              />
+              <img className={styles.lines} src="/home//img/lines.png" alt="" />
+              <img className={styles.dogPic} src="/home//img/dog.png" alt="" />
+              <img className={styles.paw3} src="/home/img/paw3.png" alt="" />
+            </div>
           </div>
         </div>
         <div className={styles.whiteWave}>
@@ -57,82 +63,84 @@ export default function HomePage(props) {
           <h2 className={styles.shopping}>立即逛逛，給毛孩最好的生活</h2>
           <h2 className={styles.today}>今日必買 | 人氣推薦</h2>
         </div>
-        <div className={styles.imgs}>
-          <img
-            className={styles.dogCookie}
-            src="/home/img/dogCookie.png"
-            alt=""
-          />
-          <img
-            className={styles.cookieBag}
-            src="/home/img/cookieBag.png"
-            alt=""
-          />
-        </div>
-        <div className={styles.productCards}>
-          <div className={styles.card}>
-            <div className={styles.pdPics}>
-              <img
-                className={styles.dryfood}
-                src="/home/img/dryfood (2).jpeg"
-                alt=""
-              />
+        <div className="container-fluid ">
+          {/* <div className={styles.imgs}>
+            <img
+              className={styles.dogCookie}
+              src="/home/img/dogCookie.png"
+              alt=""
+            />
+            <img
+              className={styles.cookieBag}
+              src="/home/img/cookieBag.png"
+              alt=""
+            />
+          </div> */}
+          <div className={`row ${styles.productCards}`}>
+            <div className={`col-2 ${styles.card}`}>
+              <div className={styles.pdPics}>
+                <img
+                  className={styles.dryfood}
+                  src="/home/img/dryfood (2).jpeg"
+                  alt=""
+                />
+              </div>
+              <div className={styles.pdWords}>
+                <p className={styles.p}>超能狗主食罐</p>
+                <p className={styles.p}>$185</p>
+              </div>
             </div>
-            <div className={styles.pdWords}>
-              <p className={styles.p}>超能狗主食罐</p>
-              <p className={styles.p}>$185</p>
+            <div className={`col-2 ${styles.card}`}>
+              <div className={styles.pdPics}>
+                <img
+                  className={styles.dryfood}
+                  src="/home/img/dryfood (2).jpeg"
+                  alt=""
+                />
+              </div>
+              <div className={styles.pdWords}>
+                <p className={styles.p}>超能狗主食罐</p>
+                <p className={styles.p}>$185</p>
+              </div>
             </div>
-          </div>
-          <div className={styles.card}>
-            <div className={styles.pdPics}>
-              <img
-                className={styles.dryfood}
-                src="/home/img/dryfood (2).jpeg"
-                alt=""
-              />
+            <div className={`col-2 ${styles.card}`}>
+              <div className={styles.pdPics}>
+                <img
+                  className={styles.dryfood}
+                  src="/home/img/dryfood (2).jpeg"
+                  alt=""
+                />
+              </div>
+              <div className={styles.pdWords}>
+                <p className={styles.p}>超能狗主食罐</p>
+                <p className={styles.p}>$185</p>
+              </div>
             </div>
-            <div className={styles.pdWords}>
-              <p className={styles.p}>超能狗主食罐</p>
-              <p className={styles.p}>$185</p>
+            <div className={`col-2 ${styles.card}`}>
+              <div className={styles.pdPics}>
+                <img
+                  className={styles.dryfood}
+                  src="/home/img/dryfood (2).jpeg"
+                  alt=""
+                />
+              </div>
+              <div className={styles.pdWords}>
+                <p className={styles.p}>超能狗主食罐</p>
+                <p className={styles.p}>$185</p>
+              </div>
             </div>
-          </div>
-          <div className={styles.card}>
-            <div className={styles.pdPics}>
-              <img
-                className={styles.dryfood}
-                src="/home/img/dryfood (2).jpeg"
-                alt=""
-              />
-            </div>
-            <div className={styles.pdWords}>
-              <p className={styles.p}>超能狗主食罐</p>
-              <p className={styles.p}>$185</p>
-            </div>
-          </div>
-          <div className={styles.card}>
-            <div className={styles.pdPics}>
-              <img
-                className={styles.dryfood}
-                src="/home/img/dryfood (2).jpeg"
-                alt=""
-              />
-            </div>
-            <div className={styles.pdWords}>
-              <p className={styles.p}>超能狗主食罐</p>
-              <p className={styles.p}>$185</p>
-            </div>
-          </div>
-          <div className={styles.card}>
-            <div className={styles.pdPics}>
-              <img
-                className={styles.dryfood}
-                src="/home/img/dryfood (2).jpeg"
-                alt=""
-              />
-            </div>
-            <div className={styles.pdWords}>
-              <p className={styles.p}>超能狗主食罐</p>
-              <p className={styles.p}>$185</p>
+            <div className={`col-2 ${styles.card}`}>
+              <div className={styles.pdPics}>
+                <img
+                  className={styles.dryfood}
+                  src="/home/img/dryfood (2).jpeg"
+                  alt=""
+                />
+              </div>
+              <div className={styles.pdWords}>
+                <p className={styles.p}>超能狗主食罐</p>
+                <p className={styles.p}>$185</p>
+              </div>
             </div>
           </div>
         </div>
@@ -142,8 +150,8 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      <div className={styles.section3}>
-        <div className={styles.discountPic}>
+      <div className={`container-fluid  ${styles.section3}`}>
+        <div className={`col-11 col-md-10 col-lg-8 ${styles.discountPic}`}>
           <img className={styles.girlDog} src="/home/img/girl&dog.png" alt="" />
           <img
             className={styles.discountPic3}
@@ -199,15 +207,15 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      <div className={styles.section4}>
+      <div className={` ${styles.section4}`}>
         <h2 className={styles.section4Title}>會員限定優惠</h2>
-        <div className={styles.userCards}>
-          <div className={`${styles.card} ${styles.card1}`}>
+        <div className={`row ${styles.userCards}`}>
+          <div className={`col-3 m-4 ${styles.card} ${styles.card1}`}>
             <p className={styles.p1}>首購會員</p>
             <p className={styles.p2}>現折50</p>
             <h5 className={styles.card1Word}>單筆消費滿 $ 500 即可使用</h5>
           </div>
-          <div className={`${styles.card} ${styles.card2}`}>
+          <div className={`col-3 m-4 ${styles.card} ${styles.card2}`}>
             <div className={styles.shipIcon}>
               <img
                 className={styles.shipIcon}
@@ -218,7 +226,7 @@ export default function HomePage(props) {
             <h5 className={styles.card2Word}>滿額免運</h5>
             <p className={styles.card2P}>超取 $ 1500 / 宅配 $ 2000</p>
           </div>
-          <div className={`${styles.card} ${styles.card3}`}>
+          <div className={`col-3 m-4 ${styles.card} ${styles.card3}`}>
             <div className={styles.icon}>
               <img
                 className={styles.moneyIcon}
@@ -231,7 +239,7 @@ export default function HomePage(props) {
               會員最高享<span className={styles.discount8}> 8% </span>消費回饋
             </p>
           </div>
-          <div className={`${styles.card} ${styles.card4}`}>
+          <div className={`col-3 m-4 ${styles.card} ${styles.card4}`}>
             <div>
               <img
                 className={styles.qrcode}
@@ -252,10 +260,10 @@ export default function HomePage(props) {
       </div>
 
       <div className={styles.btns}>
-        <Link href="/hotel-coupon" className={styles.ticketIcon}>
+        <Link href="#" className={styles.ticketIcon}>
           <img src="/home/img/ticketIcon.png" alt="" />
         </Link>
-        <button className={styles.topIcon}>
+        <button className={styles.topIcon} onClick={goToTop}>
           <img src="/home/img/topIcon.png" alt="" />
         </button>
       </div>
