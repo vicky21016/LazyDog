@@ -91,26 +91,23 @@ export default function MyMenu() {
   return (
     <>
       {/* 手機版選單按鈕 */}
+      <div className={`${styles.collapseAside} d-lg-none`}>
+      <div className={`${styles.collapseAsideContent}`}>
       <button className={styles.right}>
         <img
           src={`/product/font/right(orange).png`}
           onClick={() => setmobileMenu(!mobileMenu)}
         />
       </button>
-
+      </div>
+      </div>
       {/* <div className="col-md-3 col-12"> */}
       <div
         className={`${styles.mobileFilter} ${
           mobileMenu ? styles.showFilter : ""
         }`}
       >
-        <button
-          className={styles.closeButton}
-          onClick={() => setmobileMenu(false)}
-        >
-          關閉
-        </button>
-        <div className={`${styles.container}`}>
+        <div className={`text-center`}>
           {/*  顯示會員頭像與名稱 */}
           <div className="lumi-profile-section position-relative d-inline-block">
             <img
