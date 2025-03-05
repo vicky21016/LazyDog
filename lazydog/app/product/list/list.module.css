@@ -339,7 +339,7 @@
   }
 }
 /* -------------------------- */
-.breadcrumb {
+/* .breadcrumb {
   width: 340px;
   margin: 0;
   display: flex;
@@ -352,4 +352,4 @@
     color: var(--Black);
     font-weight: bold;
   }
-}
+} */

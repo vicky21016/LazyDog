@@ -26,6 +26,36 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  .InfoBtnGroup {
+    width: 100%;
+    display: flex;
+    /* justify-content: space-around; */
+    align-items: center;
+    gap: 15px;
+    button {
+      background: var(--orange);
+      border: 1px solid var(--orange);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 300px;
+      flex: 1 0 0;
+      padding: 25px 55px;
+      text-wrap: nowrap;
+    }
+    h5 {
+      font-weight: bold;
+      color: var(--White);
+      cursor: pointer;
+    }
+    .BtnBuynow {
+      background: var(--White);
+      h5 {
+        color: var(--orange);
+      }
+    }
+  }
 }
 .ProductInfoImgGroup {
   display: flex;
@@ -175,36 +205,7 @@
     }
   }
 }
-.InfoBtnGroup {
-  width: 100%;
-  display: flex;
-  /* justify-content: space-around; */
-  align-items: center;
-  gap: 15px;
-  button {
-    background: var(--orange);
-    border: 1px solid var(--orange);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 300px;
-    flex: 1 0 0;
-    padding: 25px 55px;
-    text-wrap: nowrap;
-  }
-  h5 {
-    font-weight: bold;
-    color: var(--White);
-    cursor: pointer;
-  }
-  .BtnBuynow {
-    background: var(--White);
-    h5 {
-      color: var(--orange);
-    }
-  }
-}
+
 /* --------------------------- */
 /* ------商品詳細(手風琴)------- */
 .StickyTop {

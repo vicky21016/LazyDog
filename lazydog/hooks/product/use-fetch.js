@@ -531,10 +531,21 @@ export function useReviewFetch({ productID = "", userID = "" }) {
     mutate: reviewMutate,
   } = useSWR(url, fetcher);
   const reviews = reviewData?.data?.find((v) => v.productID == productID);
-  console.log(reviews);
+  const userReviews = reviewData?.data;
+
+  const [pageNow, setPageNow] = useState(1);
+  let pages = "";
+  if (userReviews) pages = Math.ceil(userReviews.length / 10);
+  // console.log(userReviews);
+  const userReview = userReviews?.slice((pageNow - 1) * 10, pageNow * 10);
   return {
     width,
     reviews,
+    userReviews,
+    userReview,
+    pages,
+    pageNow,
+    setPageNow,
     reviewMutate,
     reviewLoading,
     reviewError,
