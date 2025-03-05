@@ -49,21 +49,26 @@ input:active {
 
     .tTitle {
       font-weight: bold;
+      /* font-size: 26px; */
     }
 
     .addCourseBtn {
-      width: 60px;
+      /* width: 60px; */
+      padding: 6px 12px;
       height: 38px;
       cursor: pointer;
       outline: none;
       border: 1px solid transparent;
       color: white;
       background-color: #66c5bd;
-      border-radius: 5px;
+      border-radius: 50px;
       &:hover {
         background-color: #fdf9f5;
         color: #66c5bd;
         border-color: #66c5bd;
+        .addCourse {
+          color: #66c5bd;
+        }
       }
     }
     .addCourse {
@@ -71,9 +76,6 @@ input:active {
       color: white;
       font-weight: bold;
       letter-spacing: 0.8px;
-      &:hover {
-        color: #66c5bd;
-      }
     }
   }
   .bottom {
@@ -165,11 +167,9 @@ input:active {
       text-align: center;
       color: var(--text-Bk, #3e3e3e);
       text-overflow: ellipsis;
-      font-family: "Noto Sans TC";
-      font-size: 15px;
-      font-style: normal;
-      font-weight: bolder;
-      letter-spacing: 0.8px;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 01px;
     }
     .cTd3 {
       /* background-color: lightpink; */
@@ -178,12 +178,9 @@ input:active {
       text-align: center;
       color: var(--text-Bk, #3e3e3e);
       text-overflow: ellipsis;
-      /* h4 */
-      font-family: "Noto Sans TC";
-      font-size: 14px;
-      font-style: normal;
+      font-size: 17px;
       font-weight: 500;
-      letter-spacing: -0.5px;
+      letter-spacing: 1px;
       line-height: 18px;
     }
     .cTd4 {
@@ -195,8 +192,7 @@ input:active {
       text-overflow: ellipsis;
       /* h4 */
       font-family: "Noto Sans TC";
-      font-size: 14px;
-      font-style: normal;
+      font-size: 16px;
       font-weight: 500;
     }
   }
