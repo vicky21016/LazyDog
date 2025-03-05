@@ -11,7 +11,7 @@ export default function TeacherInfoPage() {
   return (
     <>
       <Header />
-      <div className={`container mt-5 mb-5`}>
+      <div className={`container mb-5 lumi-all-wrapper`}>
         <div className={`row`}>
           <My />
           <TeacherInfo />

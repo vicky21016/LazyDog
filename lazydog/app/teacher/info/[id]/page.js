@@ -15,7 +15,7 @@ import OtherCourses from "../../../components/teacher/OtherCourses";
 // import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "../info.module.css";
 import OtherTeacher from "../../../components/teacher/otherTeacher";
-import style from "../../../pages/menu.module.css";
+import style from "../../../user/menu.module.css";
 import styles1 from "../../../../styles/modules/toggle.module.css";
 export default function App () {
   const [selectedTab, setSelectedTab] = useState("experience");
