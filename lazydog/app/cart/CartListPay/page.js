@@ -174,7 +174,8 @@ export default function CartListPayPage(props) {
       if (hotelItems.length > 0) {
         for (const hotelItem of hotelItems) {
           const newOrder = {
-            hotel_id: hotelItem.id,
+            hotel_id: hotelItem.hotelId, // 使用旅館ID
+            room_id: hotelItem.id, // 使用房型ID
             user_id: user.id,
             dog_count: hotelItem.count,
             check_in: hotelItem.checkInDate,
@@ -185,8 +186,11 @@ export default function CartListPayPage(props) {
             remark: "",
             orderTable,
           };
-          await createHotelOrder(newOrder, orderTable);
-          computedFinalAmount = newOrder.final_amount; 
+          const hotelOrderResponse = await createHotelOrder(newOrder, orderTable);
+          if (!hotelOrderResponse.success) {
+            throw new Error("旅館訂單建立失敗");
+          }
+          computedFinalAmount = newOrder.final_amount;
         }
       }
   
