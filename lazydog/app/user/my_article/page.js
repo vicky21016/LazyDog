@@ -36,16 +36,12 @@ export default function MyArticle() {
           <div className="d-flex justify-content-between my-2">
             <h4>我的文章</h4>
             <button
-              style={{
-                border: "none",
-                backgroundColor: "#FFBD00",
-                color: "white",
-                borderRadius: "5px",
-              }}
+              className={styles.post}
             >
               <Link
                 href="/article/add_article"
-                style={{ textDecoration: "none", color: "white" }}
+                className={styles.postfont}
+                style={{}}
               >
                 <i className="bi bi-check-circle"></i> 發布文章
               </Link>

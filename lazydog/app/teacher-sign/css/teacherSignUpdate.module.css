@@ -81,6 +81,7 @@ input:active {
   }
 
   .mainPic {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -90,19 +91,31 @@ input:active {
     border-radius: 8px;
     height: 250px;
     padding: 0;
+    &:hover {
+      border: 1.2px solid #fca85f;
+      transition: 0.6s;
+    }
   }
 
   .otherPic {
+    position: relative;
     text-align: center;
     display: flex;
     justify-content: start;
     align-items: start;
     text-align: center;
     overflow: hidden;
+    flex-wrap: wrap;
+    column-gap: 12px;
+    row-gap: 20px;
     border: 0.8px solid #f5f3f3;
     border-radius: 8px;
     height: 250px;
-    padding: 8px;
+    padding: 12px;
+    &:hover {
+      border: 1.2px solid #fca85f;
+      transition: 0.6s;
+    }
   }
 
   /* 美化圖片預覽區 */
@@ -110,16 +123,64 @@ input:active {
     position: relative;
     border-radius: 10px;
     overflow: hidden;
-    background: #f8f9fa;
+    /* background: #f8f9fa; */
     border: 0.1px solid #ddd;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     text-align: center;
+    width: 100%;
+    height: 100%;
+    .imgCr {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .pics {
+      width: 100px;
+      height: 100px;
+    }
+    .add {
+      width: 100%;
+      font-size: 12px;
+      margin-top: 5px;
+      padding: 3px;
+    }
+  }
+  .imageCardOther {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    /* background: #f8f9fa; */
+    border: 0.1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    /* width: 100%;
+    height: 100%; */
+    .imgCr {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .pics {
+      width: 100px;
+      height: 100px;
+    }
+    .add {
+      width: 100%;
+      font-size: 12px;
+      margin-top: 5px;
+      padding: 3px;
+    }
   }
 
-  .imageCard .imgCr {
+  /* .imageCard .imgCr {
     width: 100%;
     object-fit: cover;
     border-radius: 8px;
@@ -136,8 +197,10 @@ input:active {
     font-size: 12px;
     margin-top: 5px;
     padding: 3px;
-  }
+  } */
+
   .deleteBtn {
+    z-index: 5;
     position: absolute;
     top: 4px;
     right: 5px;
@@ -152,11 +215,15 @@ input:active {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    &:hover {
+      background: darkred;
+    }
   }
   .deleteBtn1 {
+    z-index: 5;
     position: absolute;
-    top: 85px;
-    right: 10px;
+    top: 8px;
+    right: 8px;
     background: red;
     color: white;
     border: none;
@@ -168,64 +235,78 @@ input:active {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    &:hover {
+      background: darkred;
+    }
   }
-  .deleteBtn:hover {
+  /* .deleteBtn:hover {
     background: darkred;
-  }
+  } */
 
   .addPicBtn {
-    width: 50px;
-    height: 25px;
-    background-color: #66c5bd;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f7a96d;
+    background-color: rgba(255, 255, 255, 0);
     border: none;
     font-weight: bold;
-    letter-spacing: 1px;
-    padding: 0;
-    margin-left: 15px;
+    font-size: 16px;
+    letter-spacing: 1.5px;
+    opacity: 0.6;
+    transition: opacity 0.3s;
     &:hover {
-      background: #20b9ad;
+      font-size: 16px;
+      opacity: 1;
+    }
+    &:active {
+      background-color: #ffffff00;
     }
   }
 
   /* 取消按鈕 */
   .cancleBtn {
-    background-color: #dee2e6;
-    .cancleBtnA {
-      color: #696464;
-      text-decoration: none;
-      font-weight: bold;
-    }
+    border: 1px solid #b1b4b8;
+    color: #b1b4b8;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 2px;
   }
   .cancleBtn:hover {
-    background-color: #cecfd1;
-    font-weight: bolder;
-    color: #696464;
+    background-color: #b1b4b8;
+    color: #fff;
   }
 
   /* 儲存按鈕 */
   .submitBtn {
-    background-color: #fdab69;
-    border: none;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
+    background: #fff;
+    border: 1px solid #f5842b;
+    color: #f5842b;
+    font-weight: 500;
+    letter-spacing: 2px;
   }
   .submitBtn:hover {
-    background-color: #e97720;
+    background-color: #e26404;
+    color: #fff;
   }
 
   /* 刪除按鈕 */
   .deletedBtn {
-    background-color: #fdc6ca;
-    border: none;
-    color: white;
+    background: #fff;
+    border: 1px solid #ec4c4c;
+    color: #ec4c4c;
     text-decoration: none;
-    font-weight: bold;
-    /* .submitBtnA{
-      
-    } */
+    font-weight: 500;
+    letter-spacing: 2px;
   }
   .deletedBtn:hover {
-    background-color: #fa2638;
+    background-color: #ec4c4c;
+    color: #fff;
   }
 }

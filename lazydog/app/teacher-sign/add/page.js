@@ -9,29 +9,36 @@ import My from "../_components/my";
 import TeacherAddC from "../_components/teacher-addC";
 
 export default function TeacherAddPage() {
- 
-
   return (
     <>
-        {/* 點擊圖片 Bs Modal (彈出視窗)  */}
-        <div className={`modal ${styles.fade}`} id="imageModal" tabIndex={-1} aria-hidden="true">
-          <div className={`modal-dialog modal-dialog-centered`}>
-            <div className={`modal-content`}>
-              <div className={`modal-body text-center`}>
-                <img id="modalImage" className={`img-fluid`} src="" alt="放大圖片" />
-              </div>
+      {/* 點擊圖片 Bs Modal (彈出視窗)  */}
+      <div
+        className={`modal ${styles.fade}`}
+        id="imageModal"
+        tabIndex={-1}
+        aria-hidden="true"
+      >
+        <div className={`modal-dialog modal-dialog-centered`}>
+          <div className={`modal-content`}>
+            <div className={`modal-body text-center`}>
+              <img
+                id="modalImage"
+                className={`img-fluid`}
+                src=""
+                alt="放大圖片"
+              />
             </div>
           </div>
         </div>
+      </div>
 
-        
-        <Header/>
-        <div className={`container mt-5 mb-5`}>
-          <div className={`row`}>
-            <My/>
-            <TeacherAddC />
-          </div>
+      <Header />
+      <div className={`container lumi-all-wrapper mb-5`}>
+        <div className={`row`}>
+          <My />
+          <TeacherAddC />
         </div>
+      </div>
     </>
   );
 }
