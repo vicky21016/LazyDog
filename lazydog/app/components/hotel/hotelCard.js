@@ -16,17 +16,17 @@ const HotelCard = ({ image, hotel }) => {
   return (
     <div className="">
       <div className={styles.suHotelCard} onClick={goToDetail}>
-        <div className="col-lg-4 col-3">
+        <div className=" col-3">
         <img
           src={hotel.main_image_url || "/hotel/loding.jpg"}
           alt={hotel.name}
          
         /></div>
-        <div className={`col-lg-5 col-6 ${styles.suHotelInfo}`}>
+        <div className={`col-6 ${styles.suHotelInfo}`}>
           <h5>{hotel.name}</h5>
           <p>{hotel.introduce}</p>
         </div>
-        <div className={`col-lg-3 col-3 ${styles.suPriceBox}`}>
+        <div className={` col-3 ${styles.suPriceBox}`}>
           <div className={`mb-3 ${styles.suReview}`}>
             <img
               src="/product/font/star-fill.png"

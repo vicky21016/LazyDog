@@ -190,6 +190,10 @@ export default function CartListPage(props) {
                         </td>
                         <td>
                           {cartItem.name}
+                          {/* <br />
+                          hotel_id{cartItem.hotelId}
+                          <br />
+                          room_id{cartItem.id} */}
                           <br />
                           入住: {cartItem.checkInDate || "未填寫"}
                           <br />

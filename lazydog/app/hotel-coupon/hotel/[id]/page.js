@@ -201,14 +201,14 @@ export default function HotelDetailPage() {
                 <div className="d-flex justify-content-end gap-2 mt-3">
                   <button
                     type="button"
-                    className="btn btn-success btn-sm px-4"
+                    className={`btn btn-sm px-4 ${styles.btn3}`}
                     onClick={() => changepage(`operatorDetail`)}
                   >
                     返回
                   </button>
                   <button
                     type="button"
-                    className="btn btn-warning btn-sm px-4"
+                    className={`btn btn-sm px-4 ${styles.btn2}`}
                     onClick={() => changepage(`hotelEdit/${id}`)}
                     disabled={isDeleted}
                   >
@@ -216,7 +216,7 @@ export default function HotelDetailPage() {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-danger btn-sm px-4"
+                    className={`btn btn-sm px-4 ${styles.btn}`}
                     onClick={handleSoftDelete}
                     disabled={isDeleted}
                   >
