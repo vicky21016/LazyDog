@@ -11,7 +11,7 @@ export default function favorite ({ userId, itemId, itemType }) {
   useEffect(() => {
     axios.get(`/favorites?user_id=${userId}`).then((res) => {
       const result = res.data.some(
-        (e) => e.item_id === itemId && e.type === itemType
+        (e) => e.item_id === itemId && e.type == itemType
       );
       setfavorite(result);
     });
