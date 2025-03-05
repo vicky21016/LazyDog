@@ -25,11 +25,9 @@ export default function UserFavoritePage() {
     try {
       setLoading(true);
       const response = await getHotelFavorites();
-      console.log("API 回應:", response);
 
       if (response.success) {
         setFavorites([...response.data.data]);
-        console.log("更新後的 favorites:", response.data.data);
       }
     } catch (error) {
       console.error("Failed to fetch favorites:", error);
@@ -77,7 +75,6 @@ export default function UserFavoritePage() {
               <div className="row">
                 {favorites.length > 0 ? (
                   favorites.map((item) => {
-                    console.log("渲染中的 item:", item);
                     return (
                       <div className="col-md-4" key={item.id}>
                         <div
