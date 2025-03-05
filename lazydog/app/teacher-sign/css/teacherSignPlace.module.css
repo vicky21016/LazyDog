@@ -10,6 +10,8 @@
 
 /* 右邊 */
 .right {
+  margin-top: 100px;
+
   .top {
     display: flex;
     justify-content: space-between;

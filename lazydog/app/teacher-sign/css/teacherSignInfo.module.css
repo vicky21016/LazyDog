@@ -42,6 +42,7 @@ input:active {
   height: auto;
   overflow-y: auto;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 100px;
 
   .tTitle {
     font-weight: bold;
@@ -130,7 +131,7 @@ input:active {
     font-weight: bold;
     letter-spacing: 1px;
     padding: 0;
-    margin-left: 15px;  
+    margin-left: 15px;
     cursor: pointer;
     outline: none;
     border: 1px solid transparent;
@@ -138,8 +139,8 @@ input:active {
     border-radius: 5px;
     &:hover {
       background-color: #fdf9f5;
-        color: #66C5BD;
-        border-color: #66C5BD;
+      color: #66c5bd;
+      border-color: #66c5bd;
     }
   }
 
