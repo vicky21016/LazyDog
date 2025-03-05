@@ -51,6 +51,13 @@ export default function ListPage(props) {
     document.addEventListener("click", clickOutside);
     return () => document.removeEventListener("click", clickOutside);
   }, [listOpen, dropDown, collapseBtn]);
+  if (error) {
+    return (
+      <div className="container">
+        <img style={{ width: "100%" }} src="/product/404.png" />
+      </div>
+    );
+  }
   return (
     <>
       <div className={`${styles.collapseAside} d-lg-none`}>

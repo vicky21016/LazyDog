@@ -35,10 +35,16 @@ export function FavoriteProvider({ children }) {
 
   useEffect(() => {
     const updateFavorite = async () => {
-      let methodType = "POST";
+      // let methodType = "POST";
+      // if (favoriteData?.data) {
+      //   if (favoriteData?.data.find((v) => v.user_id === user?.id))
+      //     methodType = "PATCH";
+      // }
+      let methodType = "PATCH";
       if (favoriteData?.data) {
-        if (favoriteData?.data.find((v) => v.user_id === user?.id))
-          methodType = "PATCH";
+        if (!favoriteData?.data.find((v) => v.user_id === user?.id)) {
+          methodType = "POST";
+        }
       }
       if (user?.id > 0) {
         const formData = new FormData();
@@ -98,10 +104,11 @@ export function DetailFavoriteProvider({ children }) {
 
   useEffect(() => {
     const updateFavorite = async () => {
-      let methodType = "POST";
+      let methodType = "PATCH";
       if (favoriteData?.data) {
-        if (favoriteData?.data.find((v) => v.user_id === user?.id))
-          methodType = "PATCH";
+        if (!favoriteData?.data.find((v) => v.user_id === user?.id)) {
+          methodType = "POST";
+        }
       }
       if (user?.id > 0) {
         const formData = new FormData();

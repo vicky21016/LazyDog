@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
 import { useDatePicker } from "@/hooks/useDatePicker";
-import { getFilteredHotelsS } from "@/services/hotelService";
 
 const HotelSearchBar = ({
   location,
@@ -19,68 +18,72 @@ const HotelSearchBar = ({
 }) => {
   const { dateRef, selectedDate, setSelectedDate, clearDate } = useDatePicker();
   const [isSearching, setIsSearching] = useState(true);
+
   const handleSearchBarSubmit = async () => {
     confirmLocation(); // 確保地區更新
-    
+
     const searchParams = {
       city: city || null,
       district: district || null,
       quantity: quantity || 1,
       checkInDate: null,
       checkOutDate: null,
-      minPrice: 0,  
-      maxPrice: 10000,  
-      rating: null,  
+      minPrice: 0,
+      maxPrice: 10000,
+      rating: null,
       roomType: null,
       tags: [],
     };
-  
+
+    // 解析日期
     if (selectedDate.includes(" 至 ")) {
       const [checkInDate, checkOutDate] = selectedDate.split(" 至 ");
       searchParams.checkInDate = checkInDate.trim() || null;
       searchParams.checkOutDate = checkOutDate.trim() || null;
+    } else {
+      console.warn("日期格式錯誤，請選擇完整的入住和退房日期");
+      searchParams.checkInDate = null;
+      searchParams.checkOutDate = null;
     }
-  
+
     console.log("🔍 SearchBar 送出篩選 API:", searchParams);
-  
+
     try {
       if (onSearch) {
-        onSearch(searchParams);
+        onSearch(searchParams); // 將搜尋參數傳遞到父組件
       }
       setIsSearching(false);
     } catch (error) {
-      console.error(" 搜尋 API 錯誤:", error);
+      console.error("搜尋 API 錯誤:", error);
     }
   };
-  
+
   const handleClearSearch = () => {
     console.log("🧹 清除搜尋條件");
-  
+
     clearLocation();
     clearDate();
     setQuantity(1);
-  
+
     const resetParams = {
       city: null,
       district: null,
       checkInDate: null,
       checkOutDate: null,
       quantity: 1,
-      minPrice: 0,  // 預設最小價格
-      maxPrice: 10000,  //  預設最大價格
-      rating: null,  //  預設評分
+      minPrice: 0,
+      maxPrice: 10000,
+      rating: null,
       roomType: null,
       tags: [],
     };
-  
+
     if (onSearch) {
-      onSearch(resetParams);
+      onSearch(resetParams); // 將重置參數傳遞到父組件
     }
-  
+
     setIsSearching(true);
   };
-  
-  
 
   return (
     <div className="container mt-4">
@@ -142,12 +145,7 @@ const HotelSearchBar = ({
         </button>
 
         {/* 地區選擇 Modal */}
-        <div
-          className="modal fade"
-          ref={locationModalRef}
-          tabIndex="-1"
-          aria-hidden="true"
-        >
+        <div className="modal fade" ref={locationModalRef} tabIndex="-1">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">

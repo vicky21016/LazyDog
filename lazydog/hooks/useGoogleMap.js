@@ -17,7 +17,6 @@ export function useGoogleMap(lat, lng, mapRef) {
       scriptRef.current.async = true;
       scriptRef.current.defer = true;
       scriptRef.current.onload = () => {
-        console.log(" Google Maps API 加載成功！");
         setIsLoaded(true);
       };
       document.head.appendChild(scriptRef.current);
@@ -27,7 +26,6 @@ export function useGoogleMap(lat, lng, mapRef) {
   useEffect(() => {
     if (!isLoaded || !lat || !lng || !mapRef.current) return;
     
-    console.log("📍 初始化 Google 地圖，位置:", { lat, lng });
 
     const map = new window.google.maps.Map(mapRef.current, {
       center: { lat, lng },
