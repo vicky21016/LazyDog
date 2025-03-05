@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
           router.push("/teacher-sign/list"); // 轉入 teacher
           break;
         case "user":
-          router.push("/pages");
+          router.push("/user");
           break;
         default:
           alert("出現錯誤，請通知管理員");
