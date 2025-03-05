@@ -1,27 +1,27 @@
 /* 滾軸樣式 */
-.scrollOrg {
+.scrollOrgTsai {
   --sb-track-color: #bcbcbc38;
   --sb-thumb-color: #f7a96d;
   --sb-size: 4px;
 }
 
-.scrollOrg::-webkit-scrollbar {
+.scrollOrgTsai::-webkit-scrollbar {
   width: var(--sb-size);
 }
 
-.scrollOrg::-webkit-scrollbar-track {
+.scrollOrgTsai::-webkit-scrollbar-track {
   background: var(--sb-track-color);
   border-radius: 4px;
 }
 
-.scrollOrg::-webkit-scrollbar-thumb {
+.scrollOrgTsai::-webkit-scrollbar-thumb {
   background: var(--sb-thumb-color);
   border-radius: 4px;
   /* border: 1px solid #232E33; */
 }
 
 @supports not selector(::-webkit-scrollbar) {
-  .scrollOrg {
+  .scrollOrgTsai {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
@@ -70,6 +70,7 @@ body {
 
   .home {
     color: #a1a1a1;
+    opacity: 0.8;
     font-size: 14px;
     font-weight: 450;
     &:hover {
@@ -77,10 +78,13 @@ body {
       text-underline-offset: 5px;
       text-decoration-color: #c0bfbf;
       text-decoration-thickness: 2px;
+      color: #a1a1a1;
+      opacity: 1;
     }
   }
   .courseList {
     color: #a1a1a1;
+    opacity: 0.8;
     font-size: 14px;
     font-weight: 450;
     &:hover {
@@ -88,14 +92,16 @@ body {
       text-underline-offset: 5px;
       text-decoration-color: #c0bfbf;
       text-decoration-thickness: 2px;
+      opacity: 1;
     }
   }
   .courseName {
-    color: #ff9538;
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
+    color: #ff9538da;
+    font-size: 16.5px;
+    font-weight: 550;
+    letter-spacing: 1px;
     text-decoration: none;
+    padding-left: 10px;
     cursor: default;
   }
 }
@@ -168,7 +174,7 @@ body {
     /* justify-content: center; */
     /* align-items: center; */
     /* width: 660px; */
-    color: var(--text-Bk, #3e3e3e);
+    color: #3e3e3e;
     font-family: "Noto Sans TC", sans-serif;
     font-style: normal;
     /* padding: 0 60px; */
@@ -199,9 +205,9 @@ body {
     }
     .heartIcon {
       cursor: pointer;
-      font-size: 1.15rem;
+      font-size: 23px;
       color: #ff9538;
-      padding-right: 5px;
+      padding-right: 25px;
     }
     .price {
       font-size: 32px;
@@ -305,6 +311,19 @@ body {
     border-radius: 50%;
     object-fit: cover;
   } */
+    .icons {
+      width: 30px;
+      height: 30px;
+      padding: 1px;
+      border-radius: 20px;
+      background: #ff9538;
+      color: #fff;
+      text-align: center;
+      i {
+        font-size: 14px;
+        font-weight: 200;
+      }
+    }
     .startDate {
       display: flex;
       align-items: center;
@@ -392,7 +411,17 @@ body {
     .selects {
       margin: 0 0 0;
       border-radius: 7px;
-      border: 1px solid var(--Color, #ff9538);
+      border: 1.5px solid var(--Color, #ff9538);
+      color: #a1a1a1;
+      letter-spacing: 1px;
+      option {
+        appearance: none; /* 隱藏預設樣式 */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        color: #3e3e3e;
+        font-size: 16px;
+        letter-spacing: 1px;
+      }
     }
 
     .cartBtn {
@@ -407,7 +436,7 @@ body {
       border: 1px solid var(--Color, #ff9538);
       background: var(--Color, #ff9538);
       color: var(--Color-4, #fdfaf5);
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
       font-size: 18px;
       font-weight: 500;
       letter-spacing: 2.5px;
@@ -436,10 +465,19 @@ body {
         margin-bottom: 60px;
       }
 
+      img {
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .notice[aria-expanded="true"] img {
+        transform: rotate(180deg);
+      }
+
       .notice {
         display: flex;
         justify-content: space-between;
         align-self: stretch;
+        height: auto;
         padding: 0 3px;
         margin-bottom: 10px;
         .noticeTitle {
@@ -492,10 +530,13 @@ body {
         }
       }
       .zoom {
-        margin: 5px 0;
+        margin-bottom: 1px;
         /* transition: 0.4s; */
       }
       .zoomWord {
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
         color: #ff9538;
         opacity: 0.5;
         &:hover {
@@ -528,7 +569,7 @@ body {
       margin: 18px 0;
     }
     .sbar {
-      background-color: #f5842b;
+      background-color: #ff9538;
       width: 50px;
       height: 4px;
       border-radius: 5px;
@@ -537,12 +578,38 @@ body {
       display: flex;
       gap: 23px;
     }
-    .arrowLeft {
-      cursor: pointer;
-    }
+    .arrowLeft,
     .arrowRight {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 45px;
+      height: 45px;
+      border: 1px solid #ff9538;
+      border-radius: 50%;
+      padding: 0;
       cursor: pointer;
+      .icon {
+        font-size: 21px;
+        font-weight: 700;
+        color: #ff9538;
+      }
+      &:hover {
+        background-color: #ff9538;
+        .icon {
+          color: #fff;
+        }
+      }
+      &:active {
+        background-color: #ff851b;
+        .icon {
+          color: #fff;
+        }
+      }
     }
+    /* .arrowRight {
+      cursor: pointer;
+    } */
     .sCards {
       display: flex;
       padding: 13px 3px;
