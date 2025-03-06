@@ -1,6 +1,11 @@
 .ProductCard {
   max-width: 225px;
   position: relative;
+  transition: all 0.4s;
+  &:hover {
+    translate: 0 -10px;
+    /* background-color: #fff6e8; */
+  }
 }
 .ProductCardHover {
   width: 100%;

@@ -33,6 +33,7 @@ function CardContent({ productID = "" }) {
   const { user } = useAuth();
   const { onAddProduct, productItems } = useCart();
   const [productCount, setProductCount] = useState(0);
+
   useEffect(() => {
     const newCount = productItems?.filter((v) => v.productID == productID);
     if (newCount && newCount[0]?.count !== undefined) {
@@ -51,6 +52,8 @@ function CardContent({ productID = "" }) {
     setCardHover,
     cartHover,
     setCartHover,
+    eyeHover,
+    setEyeHover,
     cartRate,
     setCartRate,
     cardPic,
@@ -70,14 +73,20 @@ function CardContent({ productID = "" }) {
     setHeartState,
   } = useCardFavorite();
 
-  const handleAddToCart = async (room) => {
+  const handleAddToCart = async (e) => {
+    e.stopPropagation();
     // 檢查用戶是否登入
     if (!user) {
       Swal.fire({
-        icon: "warning",
+        icon: "info",
         title: "請先登入",
         text: "您需要登入才能加入購物車！",
+        showConfirmButton: true,
         confirmButtonText: "前往登入",
+        confirmButtonColor: "#66c5bd", // 設定按鈕顏色
+        showCancelButton: true, // 顯示取消按鈕
+        cancelButtonText: "繼續逛街", // 設定取消按鈕文字
+        cancelButtonColor: "#bcbcbc", // 設定取消按鈕顏色
       }).then((result) => {
         if (result.isConfirmed) {
           router.push(loginRoute); // 跳轉到登入頁面
@@ -85,37 +94,90 @@ function CardContent({ productID = "" }) {
       });
       return;
     }
-    // if (!user) {
-    //   alert("請先登入");
-    //   router.push(loginRoute);
-    // } else {
-    setCartRate(cartRate + 1);
-    onAddProduct(products, 1);
-    // }
-
     try {
-      // 調用加入購物車的函數
-      // onAddHotel(hotelToAdd);
       setCartRate(cartRate + 1);
       onAddProduct(products, 1);
       // 顯示成功訊息
       Swal.fire({
         icon: "success",
         title: "加入購物車成功",
-        text: `${room.room_type_name} 已成功加入購物車！`,
+        text: `${productName} 已成功加入購物車！`,
         showConfirmButton: false,
-        timer: 1500, // 1.5 秒後自動關閉
+        timer: 1000, // 1.5 秒後自動關閉
       });
-      router.push("/cart/CartList");
     } catch (error) {
-      console.error("加入購物車失敗:", error);
       Swal.fire({
         icon: "error",
         title: "加入購物車失敗",
-        text: "請稍後再試！",
+        text: "請稍後重試！",
       });
     }
   };
+
+  const handleAddFavorite = async (e) => {
+    e.stopPropagation();
+    // 檢查用戶是否登入
+    if (!user) {
+      Swal.fire({
+        icon: "info",
+        title: "請先登入",
+        text: "您需要登入才能點擊收藏！",
+        showConfirmButton: true,
+        confirmButtonText: "前往登入",
+        confirmButtonColor: "#66c5bd", // 設定按鈕顏色
+        showCancelButton: true, // 顯示取消按鈕
+        cancelButtonText: "繼續逛街", // 設定取消按鈕文字
+        cancelButtonColor: "#bcbcbc", // 設定取消按鈕顏色
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push(loginRoute); // 跳轉到登入頁面
+        }
+      });
+      return;
+    }
+    try {
+      const newState = !heartState;
+      setHeartState(newState);
+      setFavorite((favorite) =>
+        newState
+          ? [...favorite, productID]
+          : favorite.filter((e) => e !== productID)
+      );
+      if (!heartState) {
+        Swal.fire({
+          icon: "success",
+          title: "加入收藏成功",
+          text: `${productName} 已成功加入收藏！`,
+          showConfirmButton: false,
+          timer: 1000, // 1.5 秒後自動關閉
+        });
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: "取消收藏成功",
+          text: `${productName} 已成功取消收藏！`,
+          showConfirmButton: false,
+          timer: 1000, // 1.5 秒後自動關閉
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "加入收藏失敗",
+        text: "請稍後重試！",
+      });
+    }
+  };
+  const [intervalId, setIntervalId] = useState(null);
+
+  useEffect(() => {
+    // 在組件卸載時清除 interval
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [intervalId]);
   return (
     <li
       className={`${styles.ProductCard} col`}
@@ -185,21 +247,8 @@ function CardContent({ productID = "" }) {
           className={`${styles.HoverIcon} `}
           onMouseEnter={() => setHeartHover(true)}
           onMouseLeave={() => setHeartHover(false)}
-          onClick={() => {
-            if (!user) {
-              alert("請先登入");
-              setTimeout(() => {
-                router.push(loginRoute);
-              }, 100);
-            } else {
-              const newState = !heartState;
-              setHeartState(newState);
-              setFavorite((favorite) =>
-                newState
-                  ? [...favorite, productID]
-                  : favorite.filter((e) => e !== productID)
-              );
-            }
+          onClick={(e) => {
+            handleAddFavorite(e);
           }}
         >
           <img
@@ -216,14 +265,8 @@ function CardContent({ productID = "" }) {
           }`}
           onMouseEnter={() => setCartHover(true)}
           onMouseLeave={() => setCartHover(false)}
-          onClick={() => {
-            if (!user) {
-              alert("請先登入");
-              router.push(loginRoute);
-            } else {
-              setCartRate(cartRate + 1);
-              onAddProduct(products, 1);
-            }
+          onClick={(e) => {
+            handleAddToCart(e);
           }}
         >
           <img
@@ -232,11 +275,34 @@ function CardContent({ productID = "" }) {
           />
         </button>
         <Link
+          onMouseEnter={() => {
+            const id = setInterval(() => {
+              setTimeout(() => {
+                setEyeHover((prev) => !prev);
+              }, 200);
+              setTimeout(() => {
+                setEyeHover((prev) => !prev);
+              }, 900);
+            }, 2500);
+            setIntervalId(id);
+          }}
+          onMouseLeave={() => {
+            if (intervalId) {
+              clearInterval(intervalId);
+              setIntervalId(null);
+            }
+          }}
           href={`/product/detail?productID=${productID}`}
           className={styles.HoverIcon}
           ref={cardRef}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
         >
-          <img src="/product/font/list.png" alt="" />
+          <img
+            src={`/product/font/${eyeHover ? "listOff2" : "list"}.png`}
+            alt=""
+          />
         </Link>
       </div>
     </li>
