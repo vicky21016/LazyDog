@@ -43,7 +43,7 @@ const GoogleMapComponent = ({ hotels }) => {
           map,
           title: hotel.name,
           icon: {
-            url: "/hotel/location.png", // 標記圖示
+            url: "/pet_hotel_logo_no_bg.png", // 標記圖示
             scaledSize: new google.maps.Size(40, 40),
           },
         });
@@ -52,7 +52,7 @@ const GoogleMapComponent = ({ hotels }) => {
         const imageUrl =
           hotel.main_image_url && hotel.main_image_url !== "null"
             ? hotel.main_image_url
-            : "/hotel/loading.jpg";
+            : "/hotel/hotel-uploads/4-s-room.webp";
 
         // 設置 InfoWindow 的 HTML 內容
         const contentString = `

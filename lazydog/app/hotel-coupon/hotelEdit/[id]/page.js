@@ -61,7 +61,7 @@ export default function HotelEditPage() {
           "未知房型",
         image_url:
           roomImages.find((img) => img.room_type_id === room.room_type_id)
-            ?.image_url || "/lazydog.png",
+            ?.image_url || "hotel/hotel-uploads/4-s-room.webp",
       }));
       setRooms([...updatedRooms]); // 確保房型名稱正確
       setRoomImagesState(roomImages); // 設定房型圖片
@@ -187,7 +187,7 @@ export default function HotelEditPage() {
         router.refresh();
       });
     } catch (error) {
-      console.error(" 更新失敗:", error);
+   
       Swal.fire("錯誤", error.message, "error");
     }
   };
@@ -225,7 +225,7 @@ export default function HotelEditPage() {
       );
 
       Swal.fire("成功", "主圖片已更新", "success").then(() => {});
-      router.refresh(); // 刷新頁面
+      router.push(`/hotel-coupon/hotel/${id}`);
     } catch (error) {
       Swal.fire("錯誤", error.message, "error");
     }
@@ -520,7 +520,7 @@ export default function HotelEditPage() {
           pet_capacity: newRoomPetCapacity,
           allowed_pet_size: newRoomAllowedSize,
           default_food_provided: newRoomFoodProvided,
-          image_url: data.image_url || "/lazydog.png",
+          image_url: data.image_url || "hotel/loding.jpg",
         },
       ]);
 

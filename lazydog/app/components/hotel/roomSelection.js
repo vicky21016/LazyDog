@@ -75,7 +75,7 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
               imageUrl:
                 room.image_url && room.image_url.startsWith("http")
                   ? room.image_url
-                  : "lazydog.png", // 預設圖片，避免 `next/image` 出錯
+                  : "hotel/loding.jpg", // 預設圖片，避免 `next/image` 出錯
               available: availableRooms, // 最終可用房數
             };
           })
