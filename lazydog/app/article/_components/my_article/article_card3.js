@@ -11,15 +11,15 @@ export default function MyCard3({ title, author_image, content, article_id }) {
         <>
             <Link
                 href={{ pathname: `/article/detail/${article_id}`, query: { list: "true" } }}
-                className="card mb-3"
+                className={`card mb-3 ${styles.commentCard}`}
                 style={{
-                    width: '100%',
-                    height: '155px',
+                   
                     // paddingTop:'10px'
                 }}>
                 <div 
-                className="row g-0"
-                style={{height:'100%'}}
+                // className="row g-0"
+                className={`row g-0 ${styles.author}`}
+                style={{}}
                 >
                     {/* <div className="col-md-4">
                         <img src='http://localhost:5000/api/articles/image4.jpg'

@@ -78,3 +78,19 @@
   background-color: #66c5bd;
   color: white;
 }
+.commentCard{ 
+  width: 100%;
+  height: 155px
+}
+.author{
+  height:100%
+}
+@media screen and (max-width: 390px) {
+  .commentCard{
+    
+    height: 100%;
+  }
+  .author{
+    height:150px
+  }
+}
