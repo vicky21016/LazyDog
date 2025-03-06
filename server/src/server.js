@@ -81,7 +81,6 @@ app.use("/api/coupon/usage", userCouponsRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/course", courseRoutes);
 app.use("/api/articles", articlesRoutes);
-app.use("/favorite", favoriteRouter);
 app.use("/teachers", teacherRoute);
 app.use("/api/comment", commentRoutes);
 app.use("/api/reviews", reviewsRoutes);
