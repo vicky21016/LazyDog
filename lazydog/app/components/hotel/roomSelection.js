@@ -188,7 +188,7 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
                   unoptimized
                 />
                 <div className="card-body">
-                  <h3>{room.room_type_name}</h3>
+                  <h3 className={`mb-4 ${hotelStyles.room}`}>{room.room_type_name}</h3>
                   <p className={hotelStyles.suRoomPrice}>
                     價格: {room.price} 元
                   </p>
@@ -197,12 +197,12 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
                     是否提供食物: {room.default_food_provided ? "是" : "否"}
                   </p>
                   <select
-                    className="my-4 form-select"
+                    className={`my-4 form-select ${hotelStyles.select}`}
                     onChange={(e) =>
                       handleQuantityChange(room.id, Number(e.target.value))
                     }
                   >
-                    <option value="">選擇數量</option>
+                    <option className={` ${hotelStyles.option}`} value="">選擇數量</option>
                     {[...Array(room.available).keys()].map((num) => (
                       <option key={num + 1} value={num + 1}>
                         {num + 1}

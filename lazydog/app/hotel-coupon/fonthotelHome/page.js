@@ -271,7 +271,7 @@ export default function HotelHomePage() {
               },
             ]}
           />
-          <div className="lumi-all-wrapper text-end">
+          <div className="text-end">
             <span className="lumi-all-title">排序：</span>
             <select
               className="form-select d-inline w-auto"

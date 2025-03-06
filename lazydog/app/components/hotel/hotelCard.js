@@ -23,14 +23,14 @@ const HotelCard = ({ image, hotel }) => {
          
         /></div>
         <div className={`col-6 ${styles.suHotelInfo}`}>
-          <h5>{hotel.name}</h5>
+          <h6 className="mt-3">{hotel.name}</h6>
           <p>{hotel.introduce}</p>
         </div>
         <div className={` col-3 ${styles.suPriceBox}`}>
           <div className={`mb-3 ${styles.suReview}`}>
             <img
               src="/product/font/star-fill.png"
-              style={{ width: "27px", height: "24px" }}
+              style={{ width: "20px", height: "20px" }}
             />{" "}
             {hotel.avg_rating}
           </div>
