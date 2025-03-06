@@ -171,25 +171,25 @@ export default function UserFavoritePage() {
   };
 
   // 移除旅館收藏
-const handleRemoveHotelFavorite = async (favoriteId) => {
-  try {
-    console.log(
-      `正在移除旅館收藏: 收藏ID = ${favoriteId}, 使用者ID = ${user.id}`
-    );
-
-    const response = await removeHotelFavorite(favoriteId, user.id);
-
-    console.log("移除回應:", response);
-
-    if (response.success) {
-      setHotelFavorites((prevFavorites) =>
-        prevFavorites.filter((item) => item.id !== favoriteId)
+  const handleRemoveHotelFavorite = async (favoriteId) => {
+    try {
+      console.log(
+        `正在移除旅館收藏: 收藏ID = ${favoriteId}, 使用者ID = ${user.id}`
       );
+
+      const response = await removeHotelFavorite(favoriteId, user.id);
+
+      console.log("移除回應:", response);
+
+      if (response.success) {
+        setHotelFavorites((prevFavorites) =>
+          prevFavorites.filter((item) => item.id !== favoriteId)
+        );
+      }
+    } catch (error) {
+      console.error("移除旅館收藏失敗:", error);
     }
-  } catch (error) {
-    console.error("移除旅館收藏失敗:", error);
-  }
-};
+  };
 
   useEffect(() => {
     console.log(" 更新後的課程收藏:", courseFavorites);
@@ -299,7 +299,7 @@ const handleRemoveHotelFavorite = async (favoriteId) => {
                           fontSize: "16px",
                         }}
                         onClick={() =>
-                          handleRemoveCourseFavorite(item.id, item.course_id)
+                          handleRemoveHotelFavorite(item.id, item.course_id)
                         } // 確保傳 course_id
                       >
                         ✖
@@ -356,7 +356,7 @@ const handleRemoveHotelFavorite = async (favoriteId) => {
                           borderRadius: "50%",
                           fontSize: "16px",
                         }}
-                        onClick={() => handleRemoveHotelFavorite(item.id)}
+                        onClick={() => handleRemoveCourseFavorite(item.id)}
                       >
                         ✖
                       </button>
