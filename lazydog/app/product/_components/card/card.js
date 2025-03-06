@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./card.module.css";
 import Link from "next/link";
+import Swal from "sweetalert2";
 
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
@@ -69,6 +70,52 @@ function CardContent({ productID = "" }) {
     setHeartState,
   } = useCardFavorite();
 
+  const handleAddToCart = async (room) => {
+    // 檢查用戶是否登入
+    if (!user) {
+      Swal.fire({
+        icon: "warning",
+        title: "請先登入",
+        text: "您需要登入才能加入購物車！",
+        confirmButtonText: "前往登入",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push(loginRoute); // 跳轉到登入頁面
+        }
+      });
+      return;
+    }
+    // if (!user) {
+    //   alert("請先登入");
+    //   router.push(loginRoute);
+    // } else {
+    setCartRate(cartRate + 1);
+    onAddProduct(products, 1);
+    // }
+
+    try {
+      // 調用加入購物車的函數
+      // onAddHotel(hotelToAdd);
+      setCartRate(cartRate + 1);
+      onAddProduct(products, 1);
+      // 顯示成功訊息
+      Swal.fire({
+        icon: "success",
+        title: "加入購物車成功",
+        text: `${room.room_type_name} 已成功加入購物車！`,
+        showConfirmButton: false,
+        timer: 1500, // 1.5 秒後自動關閉
+      });
+      router.push("/cart/CartList");
+    } catch (error) {
+      console.error("加入購物車失敗:", error);
+      Swal.fire({
+        icon: "error",
+        title: "加入購物車失敗",
+        text: "請稍後再試！",
+      });
+    }
+  };
   return (
     <li
       className={`${styles.ProductCard} col`}
@@ -180,9 +227,7 @@ function CardContent({ productID = "" }) {
           }}
         >
           <img
-            src={`/product/font/${
-              cartHover ? "cart-add" : cartRate ? "cart-fill" : "cart"
-            }.png`}
+            src={`/product/font/${cartHover ? "cart-add" : "cart"}.png`}
             alt=""
           />
         </button>
