@@ -95,7 +95,6 @@ export default async function MemberPage(props) {
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 }
