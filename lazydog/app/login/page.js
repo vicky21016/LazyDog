@@ -112,7 +112,7 @@ export default function AppPage({ logout }) {
             />
 
             <Link
-              href="/user/forgot-password"
+              href="/forgot-password"
               className={`${styles.fogotpass}`}
             >
               忘記密碼？
