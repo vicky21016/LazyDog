@@ -1,18 +1,25 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faUser } from "@fortawesome/free-regular-svg-icons";
+// import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "@/hooks/use-auth";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebase } from "../utils/firebase";
 import styles from "../../../styles/modules/header.module.css";
 
+import { useCart } from "@/hooks/use-cart";
+
 export default function Header(props) {
   const [usernow, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false); // 控制選單展開
   const { user, logout } = useAuth();
+  const { totalProductQty, totalCourseQty, totalHotelQty } = useCart();
+  let totalQty = totalProductQty + totalCourseQty + totalHotelQty;
+  useEffect(() => {
+    totalQty = totalProductQty + totalCourseQty + totalHotelQty;
+  }, [totalProductQty, totalCourseQty, totalHotelQty]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -185,7 +192,10 @@ export default function Header(props) {
               >
                 個人資料
               </Link>
-              <Link href="/favorite" className={styles["dropdown-link"]}>
+              <Link
+                href="/user/userFavorite"
+                className={styles["dropdown-link"]}
+              >
                 我的收藏
               </Link>
               <div
@@ -197,13 +207,12 @@ export default function Header(props) {
             </div>
           ) : null}
         </div>
-
-        <div className={styles["lumi-cart-icon"]}>
-          <Link href="/cart/CartList" className={styles["lumi-cart-icon"]}>
-            {/* <img src="/images/cart.png" alt="cart" /> */}
-            <i className="bi bi-cart2"></i>
-          </Link>
-        </div>
+        <Link href="/cart/CartList" className={styles["lumi-cart-icon"]}>
+          <i className="bi bi-cart2"></i>
+          {totalQty > 0 && (
+            <div className={styles["lumi-cart-count"]}>{totalQty}</div>
+          )}
+        </Link>
       </div>
       {/* 手機板 */}
       <div className={`${styles.mobileMenu}`}>

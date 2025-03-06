@@ -73,7 +73,8 @@ export const getCommentByAuthorS = async (author_id) => {
     const [comment] = await pool.query(
       `SELECT comment.*, 
       users.name AS author_name,
-      articles.title AS title
+      articles.title AS title,
+      users.user_img AS user_img
       FROM comment 
       LEFT JOIN users ON comment.user_id = users.id
       LEFT JOIN articles ON comment.article_id = articles.id
@@ -84,11 +85,12 @@ export const getCommentByAuthorS = async (author_id) => {
       [author_id]
     );
 
-    if (articles.length === 0) {
+    if (comment.length === 0) {
       return { message: "該作者沒有文章或文章已被刪除" };
     }
+    // console.log(comment)
 
-    return articles;
+    return comment;
   } catch (error) {
     throw new Error(`獲取作者 ${author_id} 文章時發生錯誤：${error.message}`);
   }

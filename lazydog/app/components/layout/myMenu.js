@@ -18,8 +18,9 @@ import {
   faCirclePlus,
   faRightFromBracket,
   faCamera,
+  faComment,
 } from "@fortawesome/free-solid-svg-icons";
-import styles from "../../../styles/modules/menu.module.css";
+import styles from "@/styles/modules/menu.module.css";
 
 export default function MyMenu() {
   const pathname = usePathname();
@@ -68,6 +69,7 @@ export default function MyMenu() {
     { name: "訂單紀錄", path: "/user/orders", icon: faCartShopping },
     { name: "我的優惠", path: "/user/profileCoupon", icon: faTicket },
     { name: "我的收藏", path: "/user/userFavorite", icon: faHeart },
+    { name: "我的評論", path: "/user/review", icon: faComment },
     { name: "我的文章", path: "/user/my_article", icon: faPen },
     { name: "修改密碼", path: "/forgot-password", icon: faCirclePlus },
   ];
@@ -91,7 +93,7 @@ export default function MyMenu() {
   return (
     <>
       {/* 手機版選單按鈕 */}
-      <div className={`${styles.collapseAside} d-lg-none`}>
+      <div className={`${styles.collapseAside} d-xl-none`}>
         <div className={`${styles.collapseAsideContent}`}>
           <button className={styles.right}>
             <img

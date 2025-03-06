@@ -60,8 +60,9 @@ export const deleteComment = async (req, res) => {
     }
 };
 
-export const getId = async (req, res) => {
+export const getCommentByAuthor = async (req, res) => {
     const { id } = req.params;
+    console.log(id)
     try {
         const results = await getCommentByAuthorS(id);
         // console.log(results);
@@ -76,6 +77,7 @@ export const getId = async (req, res) => {
             content: results.content,
             article_id: results.article_id,
             author_name: results.name,
+            author_img:results.author_img
         };
         res.json(comment);
     } catch (error) {

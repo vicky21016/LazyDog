@@ -516,6 +516,7 @@ function DetailContent() {
           </div>
         )}
         <div
+          id="productRate"
           className={`accordion-item ${styles.AccordionItem} ${styles.ProductDetailRate}`}
         >
           <div className="accordion-header" id="collapse-heading4">

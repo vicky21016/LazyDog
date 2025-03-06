@@ -4,6 +4,11 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+// import "./styles.css";
+import { Pagination, Navigation } from "swiper/modules";
 import styles from "../../styles/modules/home.module.css";
 import Header from "../components/layout/header2";
 import { useDetailFetch } from "@/hooks/product/use-fetch";
@@ -11,10 +16,6 @@ import TaiwanMap from "./_component/TaiwanMap";
 export default function HomePage(props) {
   // const { hotSale } = useDetailFetch();
   // console.log(hotSale);
-
-  const goToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   return (
     <>
@@ -76,7 +77,9 @@ export default function HomePage(props) {
               alt=""
             />
           </div> */}
-          <div className={`row ${styles.productCards}`}>
+
+          {/* 桌機板 */}
+          <div className={`row d-none d-md-flex  ${styles.productCards}`}>
             <div className={`col-2 ${styles.card}`}>
               <div className={styles.pdPics}>
                 <img
@@ -142,6 +145,86 @@ export default function HomePage(props) {
                 <p className={styles.p}>$185</p>
               </div>
             </div>
+          </div>
+          {/* 手機板 */}
+          <div className={`row d-block d-md-none ${styles.productCards}`}>
+            <Swiper
+              slidesPerView={1}
+              spaceBetween={23}
+              loop={true}
+              pagination={{
+                clickable: true,
+              }}
+              navigation={true}
+              modules={[Pagination, Navigation]}
+              className="mySwiper"
+            >
+              <SwiperSlide className={`col-2 ${styles.card}`}>
+                <div className={styles.pdPics}>
+                  <img
+                    className={styles.dryfood}
+                    src="/home/img/dryfood (2).jpeg"
+                    alt=""
+                  />
+                </div>
+                <div className={styles.pdWords}>
+                  <p className={styles.p}>超能狗主食罐</p>
+                  <p className={styles.p}>$185</p>
+                </div>
+              </SwiperSlide>
+              <SwiperSlide className={`col-2 ${styles.card}`}>
+                <div className={styles.pdPics}>
+                  <img
+                    className={styles.dryfood}
+                    src="/home/img/dryfood (2).jpeg"
+                    alt=""
+                  />
+                </div>
+                <div className={styles.pdWords}>
+                  <p className={styles.p}>超能狗主食罐</p>
+                  <p className={styles.p}>$185</p>
+                </div>
+              </SwiperSlide>
+              <SwiperSlide className={`col-2 ${styles.card}`}>
+                <div className={styles.pdPics}>
+                  <img
+                    className={styles.dryfood}
+                    src="/home/img/dryfood (2).jpeg"
+                    alt=""
+                  />
+                </div>
+                <div className={styles.pdWords}>
+                  <p className={styles.p}>超能狗主食罐</p>
+                  <p className={styles.p}>$185</p>
+                </div>
+              </SwiperSlide>
+              <SwiperSlide className={`col-2 ${styles.card}`}>
+                <div className={styles.pdPics}>
+                  <img
+                    className={styles.dryfood}
+                    src="/home/img/dryfood (2).jpeg"
+                    alt=""
+                  />
+                </div>
+                <div className={styles.pdWords}>
+                  <p className={styles.p}>超能狗主食罐</p>
+                  <p className={styles.p}>$185</p>
+                </div>
+              </SwiperSlide>
+              <SwiperSlide className={`col-2 ${styles.card}`}>
+                <div className={styles.pdPics}>
+                  <img
+                    className={styles.dryfood}
+                    src="/home/img/dryfood (2).jpeg"
+                    alt=""
+                  />
+                </div>
+                <div className={styles.pdWords}>
+                  <p className={styles.p}>超能狗主食罐</p>
+                  <p className={styles.p}>$185</p>
+                </div>
+              </SwiperSlide>
+            </Swiper>
           </div>
         </div>
 
@@ -168,11 +251,15 @@ export default function HomePage(props) {
             offer
           </div>
         </div>
-        <div className={styles.hotel}>
-          <div className={styles.map}>
+        <div className={`row ${styles.hotel}`}>
+          <div
+            className={`col-12 col-md-4 col-lg-4 order-md-1 order-2 ${styles.map}`}
+          >
             <TaiwanMap />
           </div>
-          <div className={styles.hotelWords}>
+          <div
+            className={`col-12 col-md-8 col-lg-8 order-md-2 order-1 ${styles.hotelWords}`}
+          >
             <h2 className={styles.h2}>毛孩的度假天堂</h2>
             <p className={styles.p}>
               立即下訂，為您的毛孩子預約一個愉快的假期！
@@ -181,7 +268,6 @@ export default function HomePage(props) {
               Book Now
             </Link>
           </div>
-          
         </div>
         <div className={styles.icons}>
           <img
@@ -203,12 +289,12 @@ export default function HomePage(props) {
       <div className={` ${styles.section4}`}>
         <h2 className={styles.section4Title}>會員限定優惠</h2>
         <div className={`row ${styles.userCards}`}>
-          <div className={`col-3 m-4 ${styles.card} ${styles.card1}`}>
+          <div className={`col-6 col-md-3  ${styles.card} ${styles.card1}`}>
             <p className={styles.p1}>首購會員</p>
-            <p className={styles.p2}>現折50</p>
+            <p className={styles.p2}>現折50元</p>
             <h5 className={styles.card1Word}>單筆消費滿 $ 500 即可使用</h5>
           </div>
-          <div className={`col-3 m-4 ${styles.card} ${styles.card2}`}>
+          <div className={`col-6 col-md-3  ${styles.card} ${styles.card2}`}>
             <div className={styles.shipIcon}>
               <img
                 className={styles.shipIcon}
@@ -219,20 +305,18 @@ export default function HomePage(props) {
             <h5 className={styles.card2Word}>滿額免運</h5>
             <p className={styles.card2P}>超取 $ 1500 / 宅配 $ 2000</p>
           </div>
-          <div className={`col-3 m-4 ${styles.card} ${styles.card3}`}>
-            <div className={styles.icon}>
-              <img
-                className={styles.moneyIcon}
-                src="/home/img/moneyIcon.png"
-                alt=""
-              />
-            </div>
+          <div className={`col-6 col-md-3  ${styles.card} ${styles.card3}`}>
+            <img
+              className={styles.moneyIcon}
+              src="/home/img/moneyIcon.png"
+              alt=""
+            />
             <h5 className={styles.card5Word}>購物金回饋</h5>
             <p className={styles.card5P}>
               會員最高享<span className={styles.discount8}> 8% </span>消費回饋
             </p>
           </div>
-          <div className={`col-3 m-4 ${styles.card} ${styles.card4}`}>
+          <div className={`col-6 col-md-3  ${styles.card} ${styles.card4}`}>
             <div>
               <img
                 className={styles.qrcode}
@@ -254,9 +338,10 @@ export default function HomePage(props) {
 
       <div className={styles.btns}>
         <Link href="#" className={styles.ticketIcon}>
+          {/* <i class="bi bi-ticket-perforated"></i> */}
           <img src="/home/img/ticketIcon.png" alt="" />
         </Link>
-        <button className={styles.topIcon} onClick={goToTop}>
+        <button className={styles.topIcon}>
           <img src="/home/img/topIcon.png" alt="" />
         </button>
       </div>

@@ -30,6 +30,7 @@ import order from "./routes/orderRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
 import reviewsRoutes from "./routes/reviewsRoutes.js";
 import ecpay from "./routes/ecpay-test-only.js";
+import courseFavoriteRoutes from "./routes/favoriteRoutes.js";
 
 dotenv.config();
 
@@ -71,6 +72,7 @@ app.use("/api/hotel_orders", hotelOrderRoutes);
 app.use("/api/order_dogs", orderDogsRoutes);
 app.use("/api/hotel_favorites", hotelFavoriteRoutes);
 app.use("/api/hotel_review", hotelReviewRoutes);
+app.use("/api/course_favorites", courseFavoriteRoutes);
 
 app.use("/api/coupon", couponRoutes);
 app.use("/api/coupon/restrictions", couponRestrictionRoutes);
@@ -79,7 +81,6 @@ app.use("/api/coupon/usage", userCouponsRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/course", courseRoutes);
 app.use("/api/articles", articlesRoutes);
-app.use("/favorite", favoriteRouter);
 app.use("/teachers", teacherRoute);
 app.use("/api/comment", commentRoutes);
 app.use("/api/reviews", reviewsRoutes);

@@ -41,7 +41,6 @@ export function useReviewsUpdate({
   });
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log("表單提交:", formData);
     updateReviews(formData);
     setRateUpdate(false);
   };

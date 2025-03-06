@@ -8,6 +8,9 @@ import Card from "../../_components/card/card";
 import { useCategoryFetch, useDetailFetch } from "@/hooks/product/use-fetch";
 import { useFavorite } from "@/hooks/product/use-favorite";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Carousel } from "bootstrap"; // 引入 Bootstrap 的 Carousel
+
 export default function CategoryPage() {
   const {
     width,
@@ -65,6 +68,20 @@ export default function CategoryPage() {
       </div>
     );
   }
+
+  useEffect(() => {
+    // 確保在組件加載後初始化 Carousel
+    const carouselElement = document.getElementById(
+      "carouselExampleIndicators"
+    );
+    const carousel = new Carousel(carouselElement, {
+      interval: 4000, // 每2秒自動切換
+      ride: "carousel", // 啟用自動輪播
+    });
+    return () => {
+      carousel.dispose(); // 清除 Carousel 實例，避免記憶體泄漏
+    };
+  }, []);
   return (
     <>
       <div className={`${styles.collapseAside} d-lg-none`}>
@@ -113,11 +130,114 @@ export default function CategoryPage() {
       </div>
       <div className={`${styles.Container} container`}>
         <section className={styles.DmArea}>
-          <a href="">
-            <figure>
-              <img src="/product/DM/DM_7.png" alt="" />
-            </figure>
-          </a>
+          <div
+            id="carouselExampleIndicators"
+            className="carousel slide"
+            data-bs-ride="carousel"
+          >
+            <div className="carousel-indicators">
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to={0}
+                className="active"
+                aria-current="true"
+                aria-label="Slide 1"
+              />
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to={1}
+                aria-label="Slide 2"
+              />
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to={2}
+                aria-label="Slide 3"
+              />
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to={3}
+                aria-label="Slide 4"
+              />
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to={4}
+                aria-label="Slide 5"
+              />
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to={5}
+                aria-label="Slide 6"
+              />
+            </div>
+            <div className="carousel-inner">
+              <div className={`${styles.carouselItem} carousel-item active`}>
+                <img
+                  src="/product/DM/DM_1.webp"
+                  className="d-block w-100"
+                  alt=""
+                />
+              </div>
+              <div className={`${styles.carouselItem} carousel-item`}>
+                <img
+                  src="/product/DM/DM_2.webp"
+                  className="d-block w-100"
+                  alt=""
+                />
+              </div>
+              <div className={`${styles.carouselItem} carousel-item`}>
+                <img
+                  src="/product/DM/DM_3.webp"
+                  className="d-block w-100"
+                  alt=""
+                />
+              </div>
+              <div className={`${styles.carouselItem} carousel-item`}>
+                <img
+                  src="/product/DM/DM_4.webp"
+                  className="d-block w-100"
+                  alt=""
+                />
+              </div>
+              <div className={`${styles.carouselItem} carousel-item`}>
+                <img
+                  src="/product/DM/DM_5.webp"
+                  className="d-block w-100"
+                  alt=""
+                />
+              </div>
+              <div className={`${styles.carouselItem} carousel-item`}>
+                <img
+                  src="/product/DM/DM_6.webp"
+                  className="d-block w-100"
+                  alt=""
+                />
+              </div>
+            </div>
+            <button
+              className="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="prev"
+            >
+              <span className="carousel-control-prev-icon" aria-hidden="true" />
+              <span className="visually-hidden">Previous</span>
+            </button>
+            <button
+              className="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="next"
+            >
+              <span className="carousel-control-next-icon" aria-hidden="true" />
+              <span className="visually-hidden">Next</span>
+            </button>
+          </div>
         </section>
         <section className={styles.BreadcrumbsTitle}>
           <div className={`${styles.Breadcrumbs} d-none d-lg-flex`}>

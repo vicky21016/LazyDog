@@ -51,7 +51,7 @@ export default function Ratecard({
                 type="button"
                 onClick={() => {
                   setTimeout(() => {
-                    router.push("/pages");
+                    router.push("/user");
                   }, 100);
                 }}
               >
@@ -106,7 +106,7 @@ export default function Ratecard({
                 type="button"
                 onClick={() => {
                   setTimeout(() => {
-                    router.push("/pages");
+                    router.push("/user");
                   }, 100);
                 }}
               >
@@ -162,7 +162,7 @@ export default function Ratecard({
                 type="button"
                 onClick={() => {
                   setTimeout(() => {
-                    router.push("/pages");
+                    router.push("/user");
                   }, 100);
                 }}
               >

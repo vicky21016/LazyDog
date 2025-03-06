@@ -5,7 +5,7 @@ body {
   position: relative;
   min-height: 990px;
   background-color: #f5842b;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   .paw1 {
     width: 15%;
     position: absolute;
@@ -209,6 +209,9 @@ body {
       letter-spacing: 2px;
       @media (max-width: 768px) {
         font-size: 38px;
+        font-weight: 600;
+        /* letter-spacing: 0; */
+        /* text-align: center; */
       }
     }
     .today {
@@ -253,6 +256,9 @@ body {
     padding: 20px 0px;
     justify-content: space-evenly;
     margin: 0 100px 350px;
+    @media (max-width: 992px) {
+      margin: 0 0px 350px;
+    }
 
     .card {
       justify-content: center;
@@ -260,12 +266,21 @@ body {
       padding: 0;
       width: 240px;
       cursor: pointer;
+      @media (max-width: 768px) {
+        margin-right: 0;
+        padding: 0 100px;
+      }
+
       .pdPics {
         overflow: hidden;
         border-radius: var(--card-radius, 25px);
         border: 2px solid #ff9538;
+        width: 230px;
         height: 230px;
         margin-bottom: 29px;
+        @media (max-width: 768px) {
+          margin: 0 auto;
+        }
         .dryfood {
           width: 100%;
           height: 100%;
@@ -283,7 +298,8 @@ body {
         font-weight: 400;
         line-height: normal;
         letter-spacing: 3.08px;
-        margin-bottom: 21px;
+
+        margin: 21px 0;
       }
     }
   }
@@ -303,7 +319,7 @@ body {
 }
 
 .section3 {
-  position: relative;
+  /* position: relative; */
   background-color: #fff6e8;
   padding: 50px 0;
 
@@ -320,6 +336,18 @@ body {
     z-index: 2;
     padding: 40px 20px;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    @media (max-width: 992px) {
+      flex-direction: column;
+      height: auto;
+      padding: 30px 15px;
+      translate: -50% -50%;
+    }
+
     .discountPic3 {
       position: absolute;
       top: 0;
@@ -331,6 +359,7 @@ body {
       top: 0;
       left: 0;
       z-index: 1;
+      /* width: ; */
     }
 
     .discountWord {
@@ -341,12 +370,20 @@ body {
       bottom: 0;
       color: #f5842b;
       text-align: center;
-      font-family: "Noto Sans TC";
       font-size: 64px;
-      font-style: normal;
       font-weight: 700;
       line-height: 85px; /* 132.813% */
       letter-spacing: 9.6px;
+      text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3); /* 加陰影提升可讀性 */
+      @media (max-width: 992px) {
+        font-size: 48px;
+        letter-spacing: 6px;
+      }
+
+      @media (max-width: 576px) {
+        font-size: 36px;
+        letter-spacing: 4px;
+      }
     }
     .readmoreBtn {
       display: flex;
@@ -371,7 +408,19 @@ body {
       font-weight: 800;
       letter-spacing: 2.5px;
       box-sizing: border-box;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
       cursor: pointer;
+      @media (max-width: 992px) {
+        width: 230px;
+        height: 50px;
+        font-size: 20px;
+      }
+
+      @media (max-width: 576px) {
+        width: 200px;
+        height: 45px;
+        font-size: 18px;
+      }
     }
     .circle {
       display: grid;
@@ -388,15 +437,29 @@ body {
       font-size: 36px;
       font-weight: 800;
       line-height: 39px;
+      @media (max-width: 992px) {
+        width: 100px;
+        height: 100px;
+        font-size: 24px;
+      }
+
+      @media (max-width: 576px) {
+        width: 80px;
+        height: 80px;
+        font-size: 20px;
+      }
     }
   }
 
   .hotel {
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 50px;
+    align-items: center; */
+    /* gap: 50px; */
     padding: 10px 150px 200px;
+    @media (max-width: 768px) {
+      padding: 10px 30px 100px;
+    }
 
     .map {
       display: flex;
@@ -420,6 +483,11 @@ body {
         letter-spacing: 10.24px;
         padding-bottom: 43px;
         margin: 0;
+        z-index: 5;
+
+        @media (max-width: 768px) {
+          letter-spacing: 5px;
+        }
       }
       .p {
         color: #545252;
@@ -428,19 +496,27 @@ body {
         font-size: 24px;
         font-style: normal;
         font-weight: 400;
-        line-height: normal;
         letter-spacing: 3.64px;
         padding-bottom: 68px;
+        z-index: 5;
+
+        @media (max-width: 768px) {
+          font-size: 19px;
+          letter-spacing: 3px;
+          line-height: 30px;
+          padding: 0 58px 18px;
+        }
       }
       .bookBtn {
-        width: 230px;
-        height: 70px;
+        /* width: 230px; */
+        /* height: 70px; */
         padding: 20px 40px;
         justify-content: center;
         align-items: center;
         background: var(--Color, #f5842b);
         color: var(--white, #fff);
         border: none;
+        border-radius: 3px;
         text-align: center;
         font-family: "Noto Sans TC", sans-serif;
         font-size: 24px;
@@ -448,6 +524,11 @@ body {
         font-weight: 700;
         line-height: normal;
         cursor: pointer;
+        z-index: 5;
+
+        @media (max-width: 768px) {
+          margin: 50px;
+        }
       }
       .bookBtn:hover {
         background-color: white;
@@ -487,15 +568,35 @@ body {
     }
   }
 
+  .firework1,
+  .firework2 {
+    position: absolute;
+    width: 100px; /* 確保有大小 */
+    height: 100px;
+    z-index: 10; /* 確保不會被其他元素擋住 */
+    filter: drop-shadow(0 0 10px rgba(255, 165, 0, 0.5));
+  }
+
   .firework1 {
     position: absolute;
     right: 9%;
     top: 25%;
+
+    @media (max-width: 992px) {
+      right: 6%;
+      top: 14%;
+    }
   }
   .firework2 {
     position: absolute;
     left: 37%;
     bottom: 20%;
+    z-index: 0;
+
+    @media (max-width: 992px) {
+      left: 6%;
+      bottom: 16%;
+    }
   }
 
   .whiteWave2 {
@@ -527,12 +628,17 @@ body {
     line-height: normal;
     letter-spacing: 8px;
     margin: 50px 0 120px;
+    @media (max-width: 992px) {
+      font-size: 40px;
+      letter-spacing: 5px;
+      margin: 85px 0 50px;
+    }
   }
   .userCards {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* gap: 18px; */
+    gap: 18px;
     margin: 0 0 120px;
 
     .card {
@@ -548,24 +654,40 @@ body {
       font-family: "Noto Sans TC";
       font-style: normal;
       box-sizing: border-box;
+      margin: 10px 20px;
+      @media (max-width: 992px) {
+        width: 200px;
+        margin: 10px;
+      }
     }
     .card1 {
       padding: 28px 0px;
-      /* gap: 20px; */
+      gap: 5px;
+      @media (max-width: 992px) {
+        gap: 0;
+      }
       .p1 {
-        color: var(--Color-3, #66c5bd);
+        color: #66c5bd;
         text-align: center;
         font-size: 36px;
         font-weight: 700;
         letter-spacing: 3.6px;
         margin: 0;
+        @media (max-width: 992px) {
+          font-size: 30px;
+        }
       }
       .p2 {
         color: #f5842b;
-        font-size: 64px;
+        font-size: 50px;
         font-weight: 700;
-        letter-spacing: 6.4px;
+        letter-spacing: 5px;
         margin: 0;
+        @media (max-width: 992px) {
+          padding: 10px 0;
+          font-size: 35px;
+          letter-spacing: 1px;
+        }
       }
       .card1Word {
         font-size: 14px;
@@ -573,6 +695,9 @@ body {
         line-height: 27px;
         color: #000000;
         margin: 5px 0 0 0;
+        @media (max-width: 992px) {
+          font-size: 13px;
+        }
       }
     }
     .card2 {
@@ -590,6 +715,9 @@ body {
         line-height: 52px; /* 144.444% */
         letter-spacing: 3.6px;
         margin: 0;
+        @media (max-width: 992px) {
+          font-size: 30px;
+        }
       }
       .card2P {
         color: #000;
@@ -598,19 +726,18 @@ body {
         font-weight: 700;
         line-height: 27px; /* 192.857% */
         margin: 0;
+        @media (max-width: 992px) {
+          font-size: 13px;
+        }
       }
     }
     .card3 {
       padding: 31px 11px;
       gap: 10px;
-      .icon {
+
+      .moneyIcon {
         width: 60px;
         height: 60px;
-        .moneyIcon {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-        }
       }
       .card5Word {
         color: #f5842b;
@@ -620,6 +747,9 @@ body {
         line-height: 52px; /* 144.444% */
         letter-spacing: 3.6px;
         margin: 0;
+        @media (max-width: 992px) {
+          font-size: 30px;
+        }
       }
       .card5P {
         color: #000;
@@ -628,6 +758,9 @@ body {
         font-weight: 700;
         line-height: 27px; /* 192.857% */
         margin: 0;
+        @media (max-width: 992px) {
+          font-size: 13px;
+        }
       }
       .discount8 {
         color: #f00;
@@ -636,8 +769,16 @@ body {
     .card4 {
       padding: 31px 11px;
       gap: 5px;
+      @media (max-width: 992px) {
+        padding: 0 11px;
+        gap: 3px;
+      }
+
       .qrcode {
         width: 100px;
+        @media (max-width: 992px) {
+          width: 75px;
+        }
       }
       .h4 {
         color: #f5842b;
@@ -647,6 +788,9 @@ body {
         line-height: 52px; /* 144.444% */
         letter-spacing: 3.6px;
         margin: 0;
+        @media (max-width: 992px) {
+          font-size: 30px;
+        }
       }
       .p {
         color: #000;
@@ -654,6 +798,9 @@ body {
         font-size: 14px;
         font-weight: 700;
         margin: 0;
+        @media (max-width: 992px) {
+          font-size: 13px;
+        }
       }
     }
   }
@@ -667,10 +814,16 @@ body {
     padding: 12px 48px;
     background: var(--green, #66c5bd);
     border: none;
+    border-radius: 2px;
     color: var(--white, #fff);
     font-size: 20px;
     font-weight: 700;
+    letter-spacing: 1.8px;
     cursor: pointer;
+    @media (max-width: 992px) {
+      width: 280px;
+      margin-bottom: 100px;
+    }
   }
   .yellowPaws {
     position: absolute;
@@ -695,6 +848,10 @@ body {
     border: none;
     border-radius: 50%;
     cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    animation: bounce 1.5s infinite ease-in-out;
+    will-change: transform;
   }
   .ticketIcon {
     display: block;
@@ -705,8 +862,24 @@ body {
     z-index: 99;
   }
   .topIcon {
+    padding-bottom: 6px;
     right: 28px;
     bottom: 285px;
     z-index: 99;
+  }
+  .ticketIcon:hover,
+  .topIcon:hover {
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1) translateY(-10px);
+  }
+
+  @keyframes bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
   }
 }

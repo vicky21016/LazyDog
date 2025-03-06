@@ -118,7 +118,7 @@ export default function Menu() {
 
             {
               label: "個人資料",
-              href: "/pages",
+              href: "/user",
               active: true,
             },
           ]}
@@ -126,9 +126,8 @@ export default function Menu() {
       </div>
       <div className="row">
         <div className={`${style.wrapper}`}>
-          
-            <MyMenu />
-          
+          <MyMenu />
+
           <div className={`col-12 col-md-9 ${style.righttop}`}>
             <div className={`${styles.container}`}>
               <h4 className={`mb-4 ${styles["information"]}`}>基本資料</h4>
