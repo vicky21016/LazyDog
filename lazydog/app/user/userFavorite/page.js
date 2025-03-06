@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import {
   getProductFavorites,
   deleteProductFavorite,
@@ -47,7 +48,6 @@ export default function UserFavoritePage() {
           const productData = e.data[0];
           let imgList = productData.img ? productData.img.split(",") : [];
           let firstImage = imgList.length > 0 ? imgList[0].trim() : "";
-
           let imageUrl = firstImage
             ? `${BASE_IMAGE_URL}${encodeURIComponent(
                 productData.name.trim()
@@ -55,7 +55,7 @@ export default function UserFavoritePage() {
             : "/lazydog.png";
 
           return {
-            id: productData.id,
+            id: productData.productID,
             name: productData.name,
             image_url: imageUrl,
             price: productData.price,
@@ -68,9 +68,12 @@ export default function UserFavoritePage() {
         console.error("資料要求失敗:", err);
         throw err;
       }
+    } else {
+      setProductFavorites([]);
     }
   };
 
+  console.log(productFavorites);
   useEffect(() => {
     fetchProductDetails(pdFavoriteList);
   }, [pdFavoriteList]);
@@ -155,16 +158,51 @@ export default function UserFavoritePage() {
   // 移除商品收藏
 
   const handleRemoveProductFavorite = async (favoriteId) => {
-    try {
-      const response = await deleteProductFavorite(favoriteId);
-      if (response.success) {
-        setProductFavorites((prevFavorites) =>
-          prevFavorites.filter((item) => item.id !== favoriteId)
-        );
+    // console.log(favoriteId);
+    Swal.fire({
+      icon: "warning",
+      title: "確認刪除收藏？",
+      showConfirmButton: true,
+      confirmButtonText: "我再想想",
+      confirmButtonColor: "#bcbcbc", // 設定按鈕顏色
+      showCancelButton: true, // 顯示取消按鈕
+      cancelButtonText: "忍痛刪除", // 設定取消按鈕文字
+      cancelButtonColor: "#dc3545", // 設定取消按鈕顏色
+    }).then(async (result) => {
+      if (result.isDismissed) {
+        console.log(pdFavoriteList);
+        const favorite = pdFavoriteList.filter((v) => v !== favoriteId);
+        console.log(favorite);
+        setPdFavoriteList(favorite);
+        const formData = new FormData();
+        formData.append("userID", user?.id);
+        formData.append("productIDlist", favorite.join(","));
+        let API = "http://localhost:5000/api/products/favorite";
+        try {
+          const res = await fetch(API, {
+            method: "PATCH",
+            body: formData,
+          });
+          const result = await res.json();
+          if (result.status != "success") throw new Error(result.message);
+        } catch (error) {
+          console.log(error);
+          alert(error.message);
+        }
+      } else {
+        return;
       }
-    } catch (error) {
-      console.error("Failed to remove product favorite:", error);
-    }
+    });
+    // try {
+    //   const response = await deleteProductFavorite(favoriteId);
+    //   if (response.success) {
+    //     setProductFavorites((prevFavorites) =>
+    //       prevFavorites.filter((item) => item.id !== favoriteId)
+    //     );
+    //   }
+    // } catch (error) {
+    //   console.error("Failed to remove product favorite:", error);
+    // }
   };
   // 移除旅館收藏
   const handleRemoveHotelFavorite = async (favoriteId) => {
@@ -212,51 +250,57 @@ export default function UserFavoritePage() {
             <h6>商品收藏</h6>
             <div className="row">
               {productFavorites.length > 0 ? (
-                productFavorites.map((item, index) => (
-                  <div className="col-md-4" key={index}>
-                    <div
-                      className="card position-relative mb-4 shadow-sm"
-                      style={{
-                        overflow: "hidden",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      {/* 移除按鈕 */}
-                      <button
-                        className="btn btn-danger position-absolute"
+                productFavorites.map((item, index) => {
+                  {
+                    /* console.log(item); */
+                  }
+                  return (
+                    <div className="col-md-4" key={index}>
+                      <div
+                        className="card position-relative mb-4 shadow-sm"
                         style={{
-                          right: "10px",
-                          top: "10px",
-                          zIndex: 10,
-                          width: "30px",
-                          height: "30px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          padding: 0,
-                          borderRadius: "50%",
-                          fontSize: "16px",
+                          overflow: "hidden",
+                          borderRadius: "10px",
                         }}
-                        onClick={() => handleRemoveProductFavorite(item.id)}
                       >
-                        ✖
-                      </button>
+                        {/* 移除按鈕 */}
+                        <button
+                          className="btn btn-danger position-absolute"
+                          style={{
+                            background: "red",
+                            right: "10px",
+                            top: "10px",
+                            zIndex: 10,
+                            width: "30px",
+                            height: "30px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            padding: 0,
+                            borderRadius: "50%",
+                            fontSize: "16px",
+                          }}
+                          onClick={() => handleRemoveProductFavorite(item.id)}
+                        >
+                          ✖
+                        </button>
 
-                      {/* 商品圖片（修正 URL 編碼） */}
-                      <img
-                        src={item.image_url}
-                        className="card-img-top"
-                        alt={item.name || "商品圖片"}
-                        onError={(e) => (e.target.src = "/lazydog.png")}
-                        style={{ height: "200px", objectFit: "cover" }}
-                      />
+                        {/* 商品圖片（修正 URL 編碼） */}
+                        <img
+                          src={item.image_url}
+                          className="card-img-top"
+                          alt={item.name || "商品圖片"}
+                          onError={(e) => (e.target.src = "/lazydog.png")}
+                          style={{ height: "200px", objectFit: "cover" }}
+                        />
 
-                      <div className="card-body text-center">
-                        <h5 className="card-title">{item.name}</h5>
+                        <div className="card-body text-center">
+                          <h5 className="card-title">{item.name}</h5>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <p className="text-center">目前沒有收藏的商品。</p>
               )}
@@ -281,6 +325,7 @@ export default function UserFavoritePage() {
                       <button
                         className="btn btn-danger position-absolute"
                         style={{
+                          background: "red",
                           right: "10px",
                           top: "10px",
                           zIndex: 10,
@@ -339,6 +384,7 @@ export default function UserFavoritePage() {
                       <button
                         className="btn btn-danger position-absolute"
                         style={{
+                          background: "red",
                           right: "10px",
                           top: "10px",
                           zIndex: 10,

@@ -101,7 +101,6 @@ function CardContent({ productID = "" }) {
       Swal.fire({
         icon: "success",
         title: "加入購物車成功",
-        text: `${productName} 已成功加入購物車！`,
         showConfirmButton: false,
         timer: 1000, // 1.5 秒後自動關閉
       });
