@@ -8,7 +8,7 @@ import style from "../../../styles/modules/teacher.module.css";
 function CourseSection() {
   return (
     <>
-      <div className={`p-5  text-center ${style.teacher}`} >
+      <div className={`p-5  text-center ${style.teacher}`}>
         <h6 className="mb-4 fw-medium">學習與毛孩共同成長的美好過程</h6>
         <h3 className="mb-5 lumi-m-title">課堂實影</h3>
         <div className="lumi-all-wrapper">
@@ -47,7 +47,7 @@ function CourseSection() {
         </div>
       </div>
       <div>
-        <img className="" src="/teacher-img/rice2.png" alt />
+        <img className="" src="/teacher-img/rice2.png" alt="" />
       </div>
     </>
   );

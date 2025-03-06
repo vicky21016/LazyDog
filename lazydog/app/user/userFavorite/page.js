@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import {
   getProductFavorites,
-  updateProductFavoriteStatus ,
+  deleteProductFavorite,
   getHotelFavorites,
   removeHotelFavorite,
   getCourseFavorites,
@@ -62,6 +62,7 @@ export default function UserFavoritePage() {
         };
       });
 
+      console.log("最終處理後的商品圖片:", productsWithDetails);
       setProductFavorites(productsWithDetails);
     } catch (err) {
       console.error("資料要求失敗:", err);
@@ -80,6 +81,7 @@ export default function UserFavoritePage() {
 
       // 取得旅館收藏
       const hotelResponse = await getHotelFavorites();
+      console.log("旅館收藏 API 回應:", hotelResponse);
       if (hotelResponse.success && Array.isArray(hotelResponse.data.data)) {
         setHotelFavorites([...hotelResponse.data.data]);
       } else {
@@ -88,42 +90,35 @@ export default function UserFavoritePage() {
 
       // 取得商品收藏
       const productResponse = await getProductFavorites();
+      console.log("商品收藏 API 回應:", productResponse);
       if (productResponse.success && Array.isArray(productResponse.data)) {
         const allProductIDs = productResponse.data
           .filter((v) => v.user_id == user?.id)
           .flatMap((v) => v.productID_list.split(","));
+        console.log("完整的商品收藏 ID 列表:", allProductIDs);
         setPdFavoriteList([...new Set(allProductIDs)]);
       } else {
         console.log("未獲取到商品收藏");
       }
 
-      // 取得課程收藏並處理圖片
-      const courseResponse = await getCourseFavorites(user.id);
-      if (courseResponse.success && Array.isArray(courseResponse.data)) {
-        const formattedData = courseResponse.data.map((item) => ({
-          ...item,
-          main_pic: getCourseImageUrl(item.main_pic),
-        }));
-        setCourseFavorites(formattedData);
-      } else {
-        console.log(" 未獲取到課程收藏");
-      }
+      // 取得課程收藏
+      await fetchCourseFavorites();
     } catch (error) {
-      console.error("fetch 課程favorites失敗喔:", error);
+      console.error("Failed to fetch favorites:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const BASE_IMAGE_URL = "http://localhost:3000/course/img/";
-
-  const getCourseImageUrl = (main_pic) => {
-    if (!main_pic) return "/lazydog.png"; // 預設圖片
-
-    return `${BASE_IMAGE_URL}${encodeURIComponent(main_pic.trim())}`;
-  };
   const fetchCourseFavorites = async () => {
     try {
+      const BASE_IMAGE_URL = "http://localhost:3000/course/img/";
+
+      const getCourseImageUrl = (main_pic) => {
+        if (!main_pic) return "/lazydog.png"; // 預設圖片
+
+        return `${BASE_IMAGE_URL}${encodeURIComponent(main_pic.trim())}`;
+      };
       const response = await getCourseFavorites(user.id);
 
       if (response.success && Array.isArray(response.data)) {
@@ -157,20 +152,17 @@ export default function UserFavoritePage() {
   };
 
   // 移除商品收藏
+
   const handleRemoveProductFavorite = async (favoriteId) => {
     try {
-      console.log(`正在軟刪除商品收藏: 收藏ID = ${favoriteId}, 使用者ID = ${user.id}`);
-  
-      const response = await updateProductFavoriteStatus(user.id, [favoriteId], true);
-      console.log(" 軟刪除 API 回應:", response);
-  
+      const response = await deleteProductFavorite(favoriteId);
       if (response.success) {
         setProductFavorites((prevFavorites) =>
-          prevFavorites.filter((item) => item.id !== favoriteId) 
+          prevFavorites.filter((item) => item.id !== favoriteId)
         );
       }
     } catch (error) {
-      console.error("移除收藏失敗:", error);
+      console.error("Failed to remove product favorite:", error);
     }
   };
   // 移除旅館收藏

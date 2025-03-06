@@ -33,48 +33,16 @@ export const getProductFavorites = async () => {
     if (!res.ok) throw new Error("獲取產品收藏失敗");
 
     const response = await res.json();
-    console.log("API 取得的商品收藏:", response);
-    return { success: true, data: response.data };
+    console.log("API 取得的商品收藏:", response); // 🟢 確保數據正確
+    return { success: true, data: response.data }; // 確保 data 直接傳遞
   } catch (error) {
     console.error("獲取產品收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
 
-// 更新收藏狀態 (軟刪除)
-export const updateProductFavoriteStatus = async (
-  userID,
-  productIDlist,
-  isDeleted
-) => {
-  if (!userID || productIDlist.length == 0)
-    return { success: false, error: "缺少必要參數" };
-
-  try {
-    const formData = new FormData();
-    formData.append("userID", userID);
-    formData.append("productIDlist", productIDlist.join(","));
-    formData.append("is_deleted", isDeleted ? 1 : 0);
-
-    const res = await fetch(PRODUCTS_FAVORITE_URL, {
-      method: "PATCH",
-      body: formData,
-      headers: {
-        Accept: "application/json",
-      },
-    });
-
-    const result = await res.json();
-
-    if (result.status !== "success") throw new Error(result.message);
-    return { success: true, message: "更新成功" };
-  } catch (error) {
-    console.error(" 更新收藏錯誤:", error);
-    return { success: false, error: error.message };
-  }
-};
-
 // 移除用戶產品收藏
+
 export const deleteProductFavorite = async () => {
   const token = getToken();
   if (!token) return { success: false, error: "請先登入" };
@@ -219,7 +187,7 @@ export const removeCourseFavorite = async (favoriteId, userId) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ user_id: userId }),
+      body: JSON.stringify({ user_id: userId }), 
     });
 
     if (!res.ok) throw new Error("移除課程收藏失敗");
@@ -228,3 +196,4 @@ export const removeCourseFavorite = async (favoriteId, userId) => {
     return { success: false, error: error.message };
   }
 };
+
