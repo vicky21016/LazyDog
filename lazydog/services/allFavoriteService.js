@@ -33,8 +33,8 @@ export const getProductFavorites = async () => {
     if (!res.ok) throw new Error("獲取產品收藏失敗");
 
     const response = await res.json();
-    console.log("API 取得的商品收藏:", response); // 🟢 確保數據正確
-    return { success: true, data: response.data }; // 確保 data 直接傳遞
+    console.log("API 取得的商品收藏:", response);
+    return { success: true, data: response.data };
   } catch (error) {
     console.error("獲取產品收藏失敗:", error);
     return { success: false, error: error.message };
@@ -127,12 +127,12 @@ export const removeHotelFavorite = async (id) => {
 };
 
 // 取得用戶收藏的課程
-export const getCourseFavorites = async () => {
+export const getCourseFavorites = async (id) => {
   const token = getToken();
   if (!token) return { success: false, error: "請先登入" };
 
   try {
-    const res = await fetch(COURSE_FAVORITE_URL, {
+    const res = await fetch(`${COURSE_FAVORITE_URL}/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -143,7 +143,7 @@ export const getCourseFavorites = async () => {
     if (!res.ok) throw new Error("獲取課程收藏失敗");
 
     const response = await res.json();
-    console.log("API 取得的課程收藏:", response); 
+    console.log("API 取得的課程收藏:", response);
     return { success: true, data: response.data };
   } catch (error) {
     console.error("獲取課程收藏失敗:", error);
@@ -175,23 +175,24 @@ export const addCourseFavorite = async (courseId) => {
 };
 
 // 移除課程收藏
-export const removeCourseFavorite = async (id) => {
+export const removeCourseFavorite = async (favoriteId, userId) => {
   const token = getToken();
   if (!token) return { success: false, error: "請先登入" };
 
   try {
-    const res = await fetch(`${COURSE_FAVORITE_URL}/${id}`, {
+    const res = await fetch(`${COURSE_FAVORITE_URL}/${favoriteId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+      body: JSON.stringify({ user_id: userId }), 
     });
 
     if (!res.ok) throw new Error("移除課程收藏失敗");
     return await res.json();
   } catch (error) {
-    console.error("移除課程收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
+

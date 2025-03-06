@@ -8,15 +8,15 @@ router.get("/:user_id", async (req, res) => {
   const { user_id } = req.params;
   const sql = `
       SELECT 
-      cf.id,
-      cf.user_id, 
-      cf.course_id, 
-      c.name, 
-      ci.url AS main_pic
-    FROM course_favorites cf 
-    JOIN course c ON cf.course_id = c.id 
-    LEFT JOIN course_img ci ON c.id = ci.course_id AND ci.main_pic = 1
-    WHERE cf.user_id = ?;
+    cf.id,
+    cf.user_id, 
+    cf.course_id, 
+    c.name, 
+    ci.url AS main_pic
+  FROM course_favorites cf 
+  JOIN course c ON cf.course_id = c.id 
+  LEFT JOIN course_img ci ON c.id = ci.course_id AND ci.main_pic = 1
+  WHERE cf.user_id = ?;
 ;
     `;
 
@@ -56,14 +56,14 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   const { user_id } = req.body;
 
+  console.log("🟡 收到刪除請求:", { id, user_id });
+
   if (!user_id) {
-    return res
-      .status(400)
-      .json({ status: "error", message: "需要提供 user_id" });
+    return res.status(400).json({ status: "error", message: "需要提供 user_id" });
   }
 
   try {
-    const checkSql = `SELECT user_id FROM course_favorites WHERE id = ?`;
+    const checkSql = `SELECT user_id FROM product_favorites WHERE id = ?`;
     const [existing] = await pool.execute(checkSql, [id]);
 
     if (existing.length === 0) {
@@ -71,17 +71,17 @@ router.delete("/:id", async (req, res) => {
     }
 
     if (existing[0].user_id !== user_id) {
-      return res
-        .status(403)
-        .json({ status: "error", message: "無權刪除此收藏" });
+      return res.status(403).json({ status: "error", message: "無權刪除此收藏" });
     }
 
-    const deleteSql = `DELETE FROM course_favorites WHERE id = ?`;
+    const deleteSql = `DELETE FROM product_favorites WHERE id = ?`;
     await pool.execute(deleteSql, [id]);
 
     res.json({ status: "success", message: "刪除成功" });
   } catch (err) {
+    console.error("🚨 刪除錯誤:", err);
     res.status(500).json({ status: "error", message: err.message });
   }
 });
+
 export default router;

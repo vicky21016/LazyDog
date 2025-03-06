@@ -157,6 +157,12 @@ export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
     } catch (error) {
       console.error(" 套用優惠券失敗:", error);
     }
+    
+    try {
+      await applyCoupon(selectedCoupon, orderId, orderTable, user.id);
+    } catch (error) {
+      console.error("applyCoupon 失敗，但不影響主要訂單:", error);
+    }
   };
 
   return {
