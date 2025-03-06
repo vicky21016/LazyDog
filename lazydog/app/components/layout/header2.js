@@ -38,7 +38,11 @@ export default function Header(props) {
   return (
     <header className={styles["lumi-header2"]}>
       <Link href="/" className={styles["lumi-logo2"]}>
-        <img className={styles.logo} src="/header/img/logo.png" alt="Logo" />
+        <img
+          className={styles.logo}
+          src="/footer/img/logo_pic(white).png"
+          alt="Logo"
+        />
         <div className={styles["lumi-logo1"]}>LAZYDOG</div>
       </Link>
       <nav className={styles["lumi-nav"]}>
@@ -49,13 +53,13 @@ export default function Header(props) {
             </li>
             <div className={styles["dropdown-content"]}>
               <Link
-                href="/pages/about/member"
+                href="/about/member"
                 className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
               >
                 會員條款條款與細則
               </Link>
               <Link
-                href="/pages/about/customer"
+                href="/about/customer"
                 className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
               >
                 客戶隱私權條款
@@ -151,16 +155,19 @@ export default function Header(props) {
 
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
-          <Link href="/pages" className={styles["lumi-user-icon2"]}>
+          <Link href="/user" className={styles["lumi-user-icon2"]}>
             {/* <FontAwesomeIcon icon={faUser} /> */}
             <i className="bi bi-person"></i>
           </Link>
           {user ? (
             <div className={styles["dropdown-content"]}>
-              <Link href="/pages" className={styles["dropdown-link"]}>
+              <Link href="/user" className={styles["dropdown-link"]}>
                 個人資料
               </Link>
-              <Link href="/favorite" className={styles["dropdown-link"]}>
+              <Link
+                href="/user/userFavorite"
+                className={styles["dropdown-link"]}
+              >
                 我的收藏
               </Link>
               <div onClick={logout} className={styles["dropdown-link"]}>
@@ -219,10 +226,10 @@ export default function Header(props) {
             </li>
             <div className={styles["dropdown"]}>
               <li>
-                <Link href="/pages">會員中心</Link>
+                <Link href="/user">會員中心</Link>
               </li>
               <div className={styles["dropdown-content"]}>
-                <Link href="/pages" className={styles["dropdown-link"]}>
+                <Link href="/user" className={styles["dropdown-link"]}>
                   個人資料
                 </Link>
                 <Link href="/favorite" className={styles["dropdown-link"]}>
@@ -384,7 +391,7 @@ export default function Header(props) {
                 }`}
               >
                 <Link
-                  href="/pages"
+                  href="/user"
                   className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
                 >
                   個人資料

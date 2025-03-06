@@ -41,7 +41,7 @@ export default function My() {
     },
     {
       name: "會員資料",
-      path: "/teacher-sign/pages",
+      path: "/teacher-sign/user",
       icon: <i className="bi bi-person-fill "></i>,
     },
   ];
@@ -51,11 +51,11 @@ export default function My() {
       <div className={`${styles.collapseAside} d-lg-none`}>
         <div className={`${styles.collapseAsideContent}`}>
           {/* 手機版選單按鈕 */}
-          <button className={styles.right}>
-            <img
-              src={`/product/font/right(orange).png`}
-              onClick={() => setmobileMenu(!mobileMenu)}
-            />
+          <button
+            className={styles.right}
+            onClick={() => setmobileMenu(!mobileMenu)}
+          >
+            <img src={`/product/font/right(orange).png`} />
           </button>
         </div>
       </div>
@@ -65,7 +65,6 @@ export default function My() {
           mobileMenu ? styles.showFilter : ""
         }`}
       >
-  
         <div className={` p-3 text-center`}>
           <div className="text-center">
             <div className="position-relative d-inline-block">

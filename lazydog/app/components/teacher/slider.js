@@ -5,44 +5,24 @@ import Link from "next/link";
 import styles from "../../../styles/modules/toggle.module.css";
 import style from "../../../styles/modules/teacher.module.css";
 function CourseSection() {
-  const [current, setCurrent] = useState(0);
-  const trackRef = useRef(null); // 參照 carousel track
-  const totalItems = 5; // 數量
-  const intervalTime = 3000;
-
-  // 控制切換到下一張圖片
-  const nextSlide = () => {
-    setCurrent((prevIndex) => (prevIndex + 1) % totalItems);
-  };
-
-  // 當 current 改變時，滾動 carousel
-  useEffect(() => {
-    if (trackRef.current) {
-      trackRef.current.style.transition = "none"; // 禁用過渡效果
-      trackRef.current.style.transform = `translateX(-${current * 100}%)`; // 滾動至對應的位置
-
-      // 等過渡結束後再啟用過渡效果
-      setTimeout(() => {
-        trackRef.current.style.transition = "transform 1s ease"; // 恢復過渡效果
-      }, 100);
-    }
-  }, [current]);
-
-  // 設定自動播放
-  useEffect(() => {
-    const intervalId = setInterval(nextSlide, intervalTime);
-    return () => clearInterval(intervalId); // 清除 interval
-  }, []);
 
   return (
     <section>
-      <div className="mt-5 lumi-all-wrapper">
-        <div className={` ${styles.carousel}`}>
-          <div className={` ${styles.carouselTrack}`} ref={trackRef}>
+      <div className={`mt-5 lumi-all-wrapper ${styles.courseContainer}`}>
+      <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+          {/* 指示器 */}
+          <div className={`carousel-indicators ${styles.carouselbtn}`}>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+          </div>
+          <div className={`carousel-inner ${styles.carouselTrack}`} >
             {/* 第一個課程 */}
-            <div className={`${styles.carouselItem}`}>
+            <div className={`carousel-item active ${styles.carouselItem}`}>
               <div className="row">
-                <div className="col-lg-6 col-12">
+                <div className={`col-lg-6 col-12 ${styles.mobile}`}>
                   <h6 className="my-3 lumi-s-title">提升毛孩健康的最佳選擇</h6>
                   <h3 className="mb-4 lumi-m-title">寵膳食育</h3>
 
@@ -75,7 +55,7 @@ function CourseSection() {
                 </Link>
               </div>
             </div>
-            <div className={`${styles.carouselItem}`}>
+            <div className={`carousel-item ${styles.carouselItem}`}>
               <div className="row">
                 <div className="col-lg-6 col-12">
                   <h6 className="my-3 lumi-s-title">
@@ -112,7 +92,7 @@ function CourseSection() {
                 </Link>
               </div>
             </div>
-            <div className={`${styles.carouselItem}`}>
+            <div className={`carousel-item ${styles.carouselItem}`}>
               <div className="row">
                 <div className="col-lg-6 col-12">
                   <h6 className="my-3 lumi-s-title">
@@ -149,7 +129,7 @@ function CourseSection() {
                 </Link>
               </div>
             </div>
-            <div className={`${styles.carouselItem}`}>
+            <div className={`carousel-item ${styles.carouselItem}`}>
               <div className="row">
                 <div className="col-lg-6 col-12">
                   <h6 className="my-3 lumi-s-title">
@@ -186,7 +166,7 @@ function CourseSection() {
                 </Link>
               </div>
             </div>
-            <div className={`${styles.carouselItem}`}>
+            <div className={`carousel-item ${styles.carouselItem}`}>
               <div className="row">
                 <div className="col-lg-6 col-12">
                   <h6 className="my-3 lumi-s-title">提升毛孩健康的最佳選擇</h6>
@@ -221,6 +201,14 @@ function CourseSection() {
                 </Link>
               </div>
             </div>
+            <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span className="visually-hidden">Previous</span>
+        </button>
+        <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span className="carousel-control-next-icon" aria-hidden="true"></span>
+          <span className="visually-hidden">Next</span>
+        </button>
           </div>
         </div>
       </div>

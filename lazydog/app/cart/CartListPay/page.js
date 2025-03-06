@@ -31,9 +31,7 @@ export default function CartListPayPage(props) {
     created_at: "",
     is_deleted: "",
   });
-  const [hotelOrder, setHotelOrder] = useState({
-    orderID: `HT${new Date().getTime()}`,
-  });
+  const [hotelOrder, setHotelOrder] = useState({});
 
   const [courseOrder, setCourseOrder] = useState({});
 
@@ -58,8 +56,9 @@ export default function CartListPayPage(props) {
   } = useCart();
   const totalAmount = totalProductAmount + totalCourseAmount + totalHotelAmount;
 
-  // 根據購物車類型選擇 `orderTable`//看要不要拔除
-  let orderTable = "hotel_order"; // 默認為 hotel_order
+  // 根據購物車類型選擇 `orderTable`//看要不要拔除 //看要不要拔除
+  let orderTable = "";
+  if (hotelItems.length > 0) orderTable = "hotel_order";
   if (productItems.length > 0) orderTable = "yi_orderlist";
   if (courseItems.length > 0) orderTable = "course_orders";
 
@@ -126,95 +125,108 @@ export default function CartListPayPage(props) {
       toast.error("請先登入後再進行結帳");
       return;
     }
-    if (selectedCoupon) {
-      await applyCoupon(selectedCoupon);
-    }
-    // 先連到node伺服器後端，取得LINE Pay付款網址
-    const res = await fetch(
-      `http://localhost:5000/ecpay-test-only?amount=${totalAmount}&items=${itemsValue}`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+
+    //  先產生訂單 ID
+    const orderId = `PD${new Date().getTime()}`;
+
+    let computedFinalAmount = totalAmount;
+
+    try {
+      //  先建立訂單
+      if (productItems.length > 0) {
+        const newOrder = {
+          user_id: user.id,
+          orderID: orderId,
+          coupon_id: selectedCoupon || "",
+          discount_amount: discountAmount,
+          productID_list: productItems.map((item) => item.productID),
+          price_list: productItems.map((item) => item.price),
+          amount_list: productItems.map((item) => item.count),
+          total_price: totalProductAmount,
+          final_amount: totalProductAmount - discountAmount,
+          created_at: new Date(),
+          is_deleted: 0,
+          payment_status: "Unpaid",
+          orderTable,
+        };
+        await createProductOrder(newOrder, orderTable);
+        computedFinalAmount = newOrder.final_amount;
       }
-    );
 
-    const resData = await res.json();
-
-    if (isDev) console.log(resData);
-
-    if (resData.status === "success") {
-      // 建立表單，回傳的是表單的物件參照
-      const payForm = createEcpayForm(resData.data.params, resData.data.action);
-
-      if (isDev) console.log(payForm);
-
-      if (window.confirm("確認要導向至ECPay(綠界金流)進行付款?")) {
-        if (productItems.length > 0) {
+      if (courseItems.length > 0) {
+        for (const courseItem of courseItems) {
           const newOrder = {
+            course_id: courseItem.id,
             user_id: user.id,
-            orderID: `PD${new Date().getTime()}`,
-            coupon_id: "",
-            discount_amount: 0,
-            productID_list: productItems.map((item) => item.productID),
-            price_list: productItems.map((item) => item.price),
-            amount_list: productItems.map((item) => item.count),
-            total_price: totalProductAmount,
-            final_amount: totalProductAmount,
-            created_at: new Date(),
-            is_deleted: 0,
+            quantity: courseItem.count,
+            total_price: courseItem.price * courseItem.count,
             payment_status: "Unpaid",
+            payment_method: courseItem.payment_method || "Not Specified",
+            cancellation_policy:
+              courseItem.cancellation_policy || "Standard Policy",
+            remark: courseItem.remark || "",
+            orderTable,
           };
-          await setProductOrder(newOrder);
-          await createProductOrder(newOrder);
+          await createCourseOrder(newOrder, orderTable);
         }
-        if (courseItems.length > 0) {
-          courseItems.forEach(async (courseItem) => {
-            const newOrder = {
-              course_id: courseItem.id,
-              user_id: user.id,
-              quantity: courseItem.count,
-              total_price: courseItem.price * courseItem.count, // 確保計算單筆課程總價
-              payment_status: "Unpaid",
-              payment_method: courseItem.payment_method || "Not Specified", // 預設值
-              cancellation_policy:
-                courseItem.cancellation_policy || "Standard Policy",
-              remark: courseItem.remark || "",
-            };
-
-            await setCourseOrder(newOrder);
-            await createCourseOrder(newOrder);
-          });
-        }
-
-        if (hotelItems.length > 0) {
-          hotelItems.forEach(async (hotelItem) => {
-            const newOrder = {
-              hotel_id: hotelItem.id, // 假設您hotel有hotel_id
-              user_id: user.id,
-              dog_count: hotelItem.count, // 假設您hotel有dog_count
-              check_in: "null", // 假設您hotel有check_in
-              check_out: "null", // 假設您hotel有check_out
-              total_price: totalHotelAmount,
-              payment_status: "Unpaid",
-              remark: "",
-            };
-            await sethotelOrder(newOrder);
-            await createHotelOrder(newOrder);
-          });
-        }
-
-        //送出表單
-        payForm.submit();
       }
-    } else {
-      toast.error("付款失敗");
+
+      if (hotelItems.length > 0) {
+        for (const hotelItem of hotelItems) {
+          const newOrder = {
+            room_id: hotelItem.id,
+            hotel_id: hotelItem.hotelId,
+            user_id: user.id,
+            dog_count: hotelItem.count,
+            check_in: hotelItem.checkInDate,
+            check_out: hotelItem.checkOutDate,
+            total_price: totalHotelAmount,
+            final_amount: totalHotelAmount - discountAmount,
+            payment_status: "Unpaid",
+            remark: "",
+            orderTable,
+            coupon_id: selectedCoupon || null,
+          };
+          await createHotelOrder(newOrder, orderTable);
+          computedFinalAmount = newOrder.final_amount;
+        }
+      }
+
+      //  訂單建立完成後，再使用優惠券
+      if (selectedCoupon) {
+        await applyCoupon(selectedCoupon, orderId, orderTable, user.id);
+      }
+
+      const res = await fetch(
+        `http://localhost:5000/ecpay-test-only?amount=${computedFinalAmount}&items=${itemsValue}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+
+      const resData = await res.json();
+      if (isDev) console.log(resData);
+
+      if (resData.status == "success") {
+        const payForm = createEcpayForm(
+          resData.data.params,
+          resData.data.action
+        );
+        if (window.confirm("確認要導向至ECPay(綠界金流)進行付款?")) {
+          payForm.submit();
+        }
+      } else {
+        toast.error("付款失敗");
+      }
+    } catch (error) {
+      toast.error("訂單建立或優惠券應用失敗，請稍後再試");
     }
   };
-
   return (
     <>
       <Header />
@@ -368,16 +380,14 @@ export default function CartListPayPage(props) {
                       value={selectedCoupon || ""}
                       onChange={(e) => {
                         const selectedId = e.target.value;
-                        console.log("Selected Coupon ID:", selectedId);
-
-                        setSelectedCoupon(selectedId); //測試
+                        setSelectedCoupon(selectedId); // 更新選中的優惠券 ID
                       }}
                     >
                       <option value="">選擇優惠券</option>
                       {availableCoupons.map((coupon) => (
                         <option key={coupon.id} value={coupon.id}>
                           {coupon.name} - {coupon.value}{" "}
-                          {coupon.discount_type === "percentage" ? "%" : "NT$"}
+                          {coupon.discount_type == "percentage" ? "%" : "NT$"}
                         </option>
                       ))}
                     </select>

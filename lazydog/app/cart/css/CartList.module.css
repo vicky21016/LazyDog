@@ -18,9 +18,14 @@
   height: auto;
   object-fit: contain;
 }
-
+.height{
+  margin: 90px auto 0;
+}
 /* 表格樣式 */
-.customTable {
+.customTable { 
+  display: flex;
+  flex-wrap: nowrap; 
+  justify-content: space-between;
   border-collapse: collapse;
   text-align: center;
   width: 100%;

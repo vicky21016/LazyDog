@@ -226,7 +226,7 @@ export default function TeacherAddC() {
     <>
       <div className={`col-lg-9 col-md-12 col-12`}>
         <div className={`p-5 ${styles.right}`}>
-          <h3 className={`mb-4 ${styles.tTitle}`}>新增課程</h3>
+          <h4 className={`mb-4 ${styles.tTitle}`}>新增課程</h4>
           <form onSubmit={handleSubmit}>
             <section className={`row g-4 mb-4 ${styles.section1}`}>
               <div className={`col-md-12`}>

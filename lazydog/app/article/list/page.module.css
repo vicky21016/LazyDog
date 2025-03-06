@@ -1,10 +1,10 @@
 .mainDog {
   width: 100%;
-  height: 700px;
-  background-image: url('http://localhost:5000/api/articles/image3.png');
+  height: 475px;
+  background-image: url('http://localhost:5000/api/articles/image4.jpg');
   background-size: cover;
   display: flex;
-  justify-content: center;
+  justify-content:center ;
   align-items: center;
   position: relative; /* 讓 ::before 定位 */
   overflow: hidden;
@@ -94,12 +94,12 @@
 
 /* middle */
 .post {
-  background-color: #ffbd00;
+  background-color: #f5842b;
   color: white;
   border-radius: 5px;
   border: none;
-  width: 120px;
-  height: 30px;
+  /* width: 120px; */
+  /* height: 30px; */
   font-size: 16px;
 }
 
@@ -209,6 +209,7 @@
 } 
 
 .ArticlePage {
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -310,7 +311,7 @@
     display: none;
   }
  .RWDfilter{
-display: block;
+  display: block;
 }
   .post-button {
     justify-content: center;

@@ -29,15 +29,17 @@ export default function MyCard2({ id, title, cover_image, created_at }) {
     return (
         <>
             <div
-                className="card mb-3" style={{ width: '100%', maxHeight: '955px' }}>
+                className="card mb-3" 
+                style={{ width: '100%'}}>
                 <div className="row g-0">
                     <div className="col-md-4">
-                        <img src={cover_image} className="img-fluid rounded-start" alt="..." />
+                        <img src={cover_image} 
+                        className="img-fluid rounded-start" 
+                        style={{ width:'100%',height:'200px',objectFit:'cover',overflow:'hidden' }} />
                     </div>
                     <div className="col-md-8" style={{ display: 'flex', alignItems: 'center' }}>
                         <div className="card-body">
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-
                                 <Link
                                     className={`${styles.link}`}
                                     href={{ pathname: `/article/my_detail/${id}`, query: { list: "true" } }}

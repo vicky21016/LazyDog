@@ -10,6 +10,8 @@
 
 /* 右邊 */
 .right {
+  /* margin-top: 100px; */
+
   .top {
     display: flex;
     justify-content: space-between;
@@ -34,31 +36,24 @@
 
   .cTbody {
     /* border: 1px solid lightblue; */
-    display: flex;
+    /* display: flex;
     justify-content: flex-start;
-    align-items: center;
-    gap: 60px;
+    align-items: center; */
+    /* gap: 60px; */
     height: auto;
     box-sizing: border-box;
     overflow: hidden;
-    padding: 35px 25px;
+    padding: 35px 0px;
     align-items: center;
     border-bottom: 0.8px solid var(--text-Gy, #d2d2d2);
   }
 
   .cTd1 {
-    /* background-color: lightpink; */
     min-width: 145px;
-    text-align: justify;
     text-wrap: none;
-    text-justify: inter-character;
-    text-align-last: justify;
     color: var(--text-Bk, #3e3e3e);
-    font-family: Roboto;
     font-size: 18px;
-    font-style: normal;
-    font-weight: bold;
-    line-height: normal;
+    font-weight: 450;
     padding: 0 30px;
     justify-content: center;
   }
@@ -73,6 +68,9 @@
     font-weight: bold;
     line-height: normal;
     cursor: pointer;
+    &:hover {
+      color: #ff9538;
+    }
   }
 
   /*  分頁 */

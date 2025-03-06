@@ -5,16 +5,16 @@ export const getAllCourse = async (req, res) => {
   try {
     // const { type, place, minPrice, maxPrice, keyword } = req.query;
     const { keyword = "", typeF = "", placeF = "" } = req.query;
-    console.log("📌 接收到的查詢參數:", req.query);
+    // console.log("📌 接收到的查詢參數:", req.query);
 
     const typeList = typeF ? typeF.split(",") : [];
     const placeList = placeF ? placeF.split(",") : [];
 
-    console.log("後端接收到的篩選條件 轉換：", {
-      keyword,
-      typeList,
-      placeList,
-    });
+    // console.log("後端接收到的篩選條件 轉換：", {
+    //   keyword,
+    //   typeList,
+    //   placeList,
+    // });
 
     const { courses, types, places, latest, newest } = await getCourses({
       keyword,

@@ -42,7 +42,7 @@ export default function TeacherDetailC() {
     <>
       <div className={`col-lg-9 col-md-12 col-12`}>            
             <div className={`p-5 ${styles.right}`}>
-              <h3 className={`mb-4 ${styles.tTitle}`}>課程資訊</h3>
+              <h4 className={`mb-4 ${styles.tTitle}`}>課程資訊</h4>
               <form>
                   <section className={`row g-4 mb-5 ${styles.section1}`}>
                       <div className={`col-md-12`}>

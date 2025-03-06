@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import useSWR from "swr";
 import useScreenSize from "./use-Screen";
+import { useAuth } from "@/hooks/use-auth";
 
 export function useListFetch() {
   const [newUrl, setNewUrl] = useState("http://localhost:5000/api/products");
@@ -222,6 +223,7 @@ export function useCategoryFetch() {
 
 export function useDetailFetch() {
   const { width, height } = useScreenSize();
+  const { user } = useAuth();
   const query = useSearchParams();
   const product = query.get("productID");
   const router = useRouter();
@@ -231,8 +233,11 @@ export function useDetailFetch() {
   const [amount, setAmount] = useState(1);
   const [cardPic, setCardPic] = useState("/product/img/default.webp");
 
-  const url = `http://localhost:5000/api/products/${product}`;
-  const url2 = "http://localhost:5000/api/products/order";
+  const url = product ? `http://localhost:5000/api/products/${product}` : null;
+  const url2 =
+    user?.id > 0
+      ? `http://localhost:5000/api/products/order?userID=${user.id}`
+      : `http://localhost:5000/api/products/order`;
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
@@ -250,6 +255,7 @@ export function useDetailFetch() {
     error: orderError,
     mutate: orderMutate,
   } = useSWR(url2, fetcher);
+
   const productData = data?.data[0];
   const productID = productData?.productID;
   const productName = productData?.name;
@@ -297,6 +303,13 @@ export function useDetailFetch() {
     if (!dec) dec = 0;
   }
   const orders = orderData?.data;
+  const userName = orderData?.userName;
+  const userImg = orderData?.userImg;
+  const [history, setHistory] = useState(false);
+  useEffect(() => {
+    if (orderData?.history.includes(productID)) setHistory(true);
+    orderMutate();
+  }, [orderData]);
   const hotSale = [];
   const sameBuy = [];
   const sameCategory = data?.data[0].productID.slice(0, 6);
@@ -319,6 +332,9 @@ export function useDetailFetch() {
   const CardInt = width >= 1200 ? 5 : width >= 992 ? 4 : width >= 768 ? 3 : 2;
 
   return {
+    userName,
+    userImg,
+    history,
     width,
     product,
     router,
@@ -374,6 +390,7 @@ export function useCardFetch({ productID = "" }) {
 
   const [cardHover, setCardHover] = useState(false);
   const [cartHover, setCartHover] = useState(false);
+  const [eyeHover, setEyeHover] = useState(false);
   const [cartRate, setCartRate] = useState(0);
 
   const [cardPic, setCardPic] = useState("/product/img/default.webp");
@@ -407,6 +424,8 @@ export function useCardFetch({ productID = "" }) {
     setCardHover,
     cartHover,
     setCartHover,
+    eyeHover,
+    setEyeHover,
     cartRate,
     setCartRate,
     cardPic,
@@ -514,12 +533,22 @@ export function useReviewFetch({ productID = "", userID = "" }) {
     error: reviewError,
     mutate: reviewMutate,
   } = useSWR(url, fetcher);
+  const reviews = reviewData?.data?.find((v) => v.productID == productID);
+  const userReviews = reviewData?.data;
 
-  const reviews = reviewData?.data.find((v) => v.productID == productID);
-
+  const [pageNow, setPageNow] = useState(1);
+  let pages = "";
+  if (userReviews) pages = Math.ceil(userReviews.length / 10);
+  // console.log(userReviews);
+  const userReview = userReviews?.slice((pageNow - 1) * 10, pageNow * 10);
   return {
     width,
     reviews,
+    userReviews,
+    userReview,
+    pages,
+    pageNow,
+    setPageNow,
     reviewMutate,
     reviewLoading,
     reviewError,

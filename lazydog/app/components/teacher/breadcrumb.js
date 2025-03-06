@@ -5,7 +5,7 @@ import styles from "../../product/list/list.module.css";
 
 const Breadcrumbs = ({ links }) => {
   return (
-    <div className={styles.Breadcrumbs}>
+    <div className={styles.breadcrumb}>
       {links.map((link, index) => (
         <span key={index}>
           <Link

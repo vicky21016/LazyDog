@@ -16,8 +16,7 @@ export function CartProvider({ children }) {
 
   // 商品增減邏輯
   const onAddProduct = (product, amount) => {
-    console.log(product);
-
+    // console.log(product);
     if (!amount) amount = 1;
     const foundIndex = productItems.findIndex(
       (v) => v.productID == product.productID
@@ -49,22 +48,30 @@ export function CartProvider({ children }) {
 
   // 增加旅館的邏輯
   const onAddHotel = (hotel, amount = 1, checkInDate, checkOutDate) => {
+    const storedParams = JSON.parse(sessionStorage.getItem("searchParams")) || {};
+    const checkIn = checkInDate || storedParams?.checkInDate || "未選擇";
+    const checkOut = checkOutDate || storedParams?.checkOutDate || "未選擇";
+  
     const foundIndex = hotelItems.findIndex((v) => v.id === hotel.id);
+  
     if (foundIndex !== -1) {
       const nextItems = hotelItems.map((v) =>
-        v.id === hotel.id ? { ...v, count: v.count + amount } : v
+        v.id === hotel.id
+          ? { ...v, count: v.count + amount, checkInDate: checkIn, checkOutDate: checkOut }
+          : v
       );
       setHotelItems(nextItems);
     } else {
       const newItem = {
         ...hotel,
         count: amount,
-        checkInDate,
-        checkOutDate,
+        checkInDate: checkIn,
+        checkOutDate: checkOut,
       };
       setHotelItems([newItem, ...hotelItems]);
     }
   };
+  
   // 計算商品、課程、旅館的總數量和總金額
   const totalProductQty = productItems.reduce((acc, v) => acc + v.count, 0);
   const totalProductAmount = productItems.reduce(

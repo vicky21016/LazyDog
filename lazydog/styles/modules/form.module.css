@@ -22,6 +22,9 @@
   padding: 0 8px 0;
 }
 .inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
   height: 54px;
   width: 100%;
   margin-bottom: 24px;
@@ -29,13 +32,24 @@
 .inputfiled {
   height: 100%;
   width: 100%;
-  padding: 0 8px 0;
   border: none;
   border-bottom: 1px solid #ccc;
+  padding: 10px 40px 10px 10px; /* 右邊預留空間給眼睛按鈕 */
 }
 .inputfiled:focus {
   outline: none;
   border-bottom: 2px solid #ffa726;
+}
+.eyeButton {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff9538;
 }
 .fogotpass {
   font-size: 12px;
@@ -44,11 +58,6 @@
   text-decoration: none;
 }
 
-.loginbtn:hover {
-  background-color: #fdf9f5;
-  color: #ff9538;
-  border-color: #ff9538;
-}
 .signup,
 .logintext {
   font-size: 14px;
@@ -89,12 +98,19 @@
   text-align: center;
 }
 .register,
-.terms,
-.lumiLogin {
+.Login,
+.terms{
   color: #ff9538;
   font-weight: bold;
   text-decoration: none;
+}
+
+.lumiLogin {
+
   .loginbtn {
+    color: #ff9538;
+    font-weight: bold;
+    text-decoration: none;
     width: 100%;
     height: 48px;
     cursor: pointer;
@@ -104,11 +120,16 @@
     font-weight: bold;
     font-size: 16px;
     background-color: #ff9538;
-    margin-top: 30px;
+    margin-top: 20px;
     border-radius: 5px;
   }
 }
 
+.loginbtn:hover {
+  background-color: #fdf9f5;
+  color: #ff9538;
+  border-color: #ff9538;
+}
 .otherAccounts {
   display: flex;
   justify-content: space-between;

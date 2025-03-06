@@ -33,7 +33,7 @@ export const removeFavorites = async (favorite_id, user_id) => {
       [favorite_id, user_id]
     );
 
-    if (existing.length == 0) {
+    if (existing.length === 0) {
       throw new Error("找不到收藏紀錄");
     }
 
@@ -47,17 +47,16 @@ export const removeFavorites = async (favorite_id, user_id) => {
     throw new Error("移除收藏錯誤：" + error.message);
   }
 };
+
 export const getUserFavorites = async (user_id) => {
   try {
-    //hf=hotel_favorite簡寫 h就是hotel
-    //找到使用者收藏的hotel,get h.name h.main_image_id 排序DESC
     const [favorites] = await pool.query(
-      `SELECT hf.id, h.id AS hotel_id, h.name, h.main_image_id, hi.url AS main_image_url
-           FROM hotel_favorites hf
-           JOIN hotel h ON hf.hotel_id = h.id
-           LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
-           WHERE hf.user_id = ? AND hf.is_deleted = 0
-           ORDER BY hf.created_at DESC`,
+      `SELECT hf.id, h.id AS hotel_id, h.name, hi.url AS main_image_url
+       FROM hotel_favorites hf
+       JOIN hotel h ON hf.hotel_id = h.id
+       LEFT JOIN hotel_images hi ON h.main_image_id = hi.id
+       WHERE hf.user_id = ? AND hf.is_deleted = 0
+       ORDER BY hf.created_at DESC`,
       [user_id]
     );
     return { success: true, message: "獲取收藏清單成功", data: favorites };
@@ -65,3 +64,4 @@ export const getUserFavorites = async (user_id) => {
     throw new Error("獲取收藏清單錯誤：" + error.message);
   }
 };
+

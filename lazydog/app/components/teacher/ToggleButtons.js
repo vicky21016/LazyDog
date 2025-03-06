@@ -6,7 +6,7 @@ import {useTeacherDetail } from "../../../hooks/useTeacherDetail";
 import axios from "axios";
 // import useTeacherDetail from "@/hooks/useTeacherDetail";
 import styles from "../../../styles/modules/toggle.module.css";
-import style from "../../pages/menu.module.css";
+import style from "../../user/menu.module.css";
 
 export default function ToggleButtons (){
   const { id } = useParams();

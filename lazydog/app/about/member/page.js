@@ -1,18 +1,19 @@
-import Header from "../../../components/layout/header"; 
-import Bread from "../../../components/teacher/breadcrumb"; 
+import Header from "../../components/layout/header"; 
+import Bread from "../../components/teacher/breadcrumb"; 
 export default async function MemberPage(props) {
-    return (
-      <>
-        <Header />
-        <div className="container-fluid lumi-all-wrapper my-3">
-          <Bread
-            links={[
-              { label: "首頁 ", href: "/" },
-              { label: " 關於我們", href: "/teacher" },
+  return (
+    <>
+      <Header />
+      <div className="container-fluid lumi-all-wrapper my-3">
+        <Bread
+          links={[
+            { label: "首頁 ", href: "/" },
+            { label: " 關於我們", href: "/teacher" },
+
 
               {
                 label: "會員條款條款與細則",
-                href: "/pages/about/member",
+                href: "/about/member",
                 active: true,
               },
             ]}
@@ -90,9 +91,10 @@ export default async function MemberPage(props) {
                   會員承諾絕不為任何非法目的或以任何非法方式使用本服務，並承諾遵守中華民國相關法規及一切使用網際網路之國際慣例。會員若係中華民國以外之使用者，並同意遵守所屬國家或地域之法令。
                 </p>
               </div>
+
             </div>
           </div>
         </div>
-      </>
-    );
-  }
+    </>
+  );
+}

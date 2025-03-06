@@ -224,7 +224,7 @@ export function useOrder() {
 
         if (!res.ok) {
           setIsLoading(false);
-          throw new Error("無法取得酒店訂單資料");
+          throw new Error("無法取得訂單資料");
         }
 
         const result = await res.json();

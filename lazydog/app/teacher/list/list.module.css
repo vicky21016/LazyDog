@@ -269,3 +269,17 @@
     height: 35px;
   }
 }
+
+.BreadcrumbsTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 30px 0px 30px 0px;
+}
+
+  .sbar {
+      background-color: #f5842b;
+      width: 50px;
+      height: 4px;
+      border-radius: 5px;
+    }

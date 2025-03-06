@@ -16,8 +16,8 @@ export default function EditCouponPage() {
   const [coupon, setCoupon] = useState({
     name: "",
     description: "",
-    discount_type: "fixed", // ✅ 預設為固定金額
-    discountValue: "", // ✅ 優惠金額或折扣百分比
+    discount_type: "fixed", 
+    discountValue: "", 
     minAmount: "",
     usageLimit: "",
     startDate: "",

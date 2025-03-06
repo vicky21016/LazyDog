@@ -68,7 +68,7 @@ export function useLocationSelector(hotelId) {
       const res = await fetch("http://localhost:5000/api/hotels");
       const data = await res.json();
     } catch (error) {
-      console.error(" 獲取所有飯店失敗:", error);
+      console.error(" 獲取所有失敗:", error);
     }
   };
 

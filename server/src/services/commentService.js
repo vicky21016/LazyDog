@@ -13,7 +13,7 @@ export const createCommentS = async (createComment) => {
   
       // 第一步：插入文章資料到 articles 資料表
       const [result] = await connection.query(
-        `INSERT INTO comment 
+        `INSERT INTO comments 
             (content, article_id, user_id, create_time) 
             VALUES (?, ?, ?,NOW())`,
         [content, article_id, user_id, create_time]
@@ -45,7 +45,7 @@ export const createCommentS = async (createComment) => {
 
         // 執行 SQL 刪除留言
         const [result] = await connection.query(
-            `DELETE FROM comment WHERE id = ?`, 
+            `UPDATE comments SET is_deleted = 1 WHERE id = ? AND is_deleted = 0`, 
             [commentId]
         );
 
@@ -66,3 +66,33 @@ export const createCommentS = async (createComment) => {
         connection.release();
     }
 };
+
+// 根據使用者id調取所有該作者沒有被ban的留言
+export const getCommentByAuthorS = async (author_id) => {
+  try {
+    const [comment] = await pool.query(
+      `SELECT comments.*, 
+      users.name AS author_name,
+      articles.title AS title,
+      users.user_img AS user_img
+      FROM comments
+      LEFT JOIN users ON comments.user_id = users.id
+      LEFT JOIN articles ON comments.article_id = articles.id
+      WHERE comments.is_deleted = 0 
+      AND users.is_deleted = 0 
+      AND articles.is_deleted = 0
+      AND comments.user_id = ?`,
+      [author_id]
+    );
+
+    if (comment.length === 0) {
+      return { message: "該作者沒有文章或文章已被刪除" };
+    }
+    // console.log(comment)
+
+    return comment;
+  } catch (error) {
+    throw new Error(`獲取作者 ${author_id} 文章時發生錯誤：${error.message}`);
+  }
+};
+

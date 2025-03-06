@@ -5,8 +5,10 @@ import styles from "./category.module.css";
 import Aside from "../../_components/aside/aside";
 import Link from "next/link";
 import Card from "../../_components/card/card";
-import { useCategoryFetch } from "@/hooks/product/use-fetch";
+import { useCategoryFetch, useDetailFetch } from "@/hooks/product/use-fetch";
 import { useFavorite } from "@/hooks/product/use-favorite";
+
+import { Carousel } from "react-bootstrap";
 
 export default function CategoryPage() {
   const {
@@ -34,6 +36,9 @@ export default function CategoryPage() {
     isLoading,
     error,
   } = useCategoryFetch();
+  const { CardInt, hotSale } = useDetailFetch();
+  const [hot, setHot] = useState(0);
+
   const { favorite, setFavorite } = useFavorite();
   const [dropDown, setDropDown] = useState(false);
   const [listOpen, setListOpen] = useState(false);
@@ -55,6 +60,14 @@ export default function CategoryPage() {
     document.addEventListener("click", clickOutside);
     return () => document.removeEventListener("click", clickOutside);
   }, [listOpen, dropDown, collapseBtn]);
+
+  if (error) {
+    return (
+      <div className="container">
+        <img style={{ width: "100%" }} src="/product/404.png" />
+      </div>
+    );
+  }
   return (
     <>
       <div className={`${styles.collapseAside} d-lg-none`}>
@@ -103,11 +116,31 @@ export default function CategoryPage() {
       </div>
       <div className={`${styles.Container} container`}>
         <section className={styles.DmArea}>
-          <a href="">
-            <figure>
-              <img src="/product/DM/DM_7.png" alt="" />
-            </figure>
-          </a>
+          <Carousel
+            interval={3000}
+            controls={true}
+            indicators={true}
+            pause="hover"
+          >
+            <Carousel.Item className={styles.carouselItem}>
+              <img className="d-block w-100" src="/product/DM/DM_1.webp" />
+            </Carousel.Item>
+            <Carousel.Item className={styles.carouselItem}>
+              <img className="d-block w-100" src="/product/DM/DM_2.webp" />
+            </Carousel.Item>
+            <Carousel.Item className={styles.carouselItem}>
+              <img className="d-block w-100" src="/product/DM/DM_3.webp" />
+            </Carousel.Item>
+            <Carousel.Item className={styles.carouselItem}>
+              <img className="d-block w-100" src="/product/DM/DM_4.webp" />
+            </Carousel.Item>
+            <Carousel.Item className={styles.carouselItem}>
+              <img className="d-block w-100" src="/product/DM/DM_5.webp" />
+            </Carousel.Item>
+            <Carousel.Item className={styles.carouselItem}>
+              <img className="d-block w-100" src="/product/DM/DM_6.webp" />
+            </Carousel.Item>
+          </Carousel>
         </section>
         <section className={styles.BreadcrumbsTitle}>
           <div className={`${styles.Breadcrumbs} d-none d-lg-flex`}>
@@ -125,7 +158,7 @@ export default function CategoryPage() {
           {products && (
             <div className={styles.Title}>
               <div className="d-none d-lg-flex">
-                <h5>目前共{products.length}項商品</h5>
+                {/* <h5>目前共{products.length}項商品</h5> */}
               </div>
               <div className={`${styles.Breadcrumbs} d-lg-none`}>
                 <Link href="/">首頁</Link>
@@ -256,7 +289,51 @@ export default function CategoryPage() {
               sortName={sortName}
             />
           </div>
-          {!products && <h2>{emptyMessage}</h2>}
+          {!products && (
+            <div className={styles.empty}>
+              <h2>{emptyMessage}</h2>
+              <section className={styles.OtherLike}>
+                <h4 className={styles.OtherLikeTitle}>要不要看看其他好物...</h4>
+                <div className={styles.OtherLikeContent}>
+                  <button
+                    type="button"
+                    className={styles.ProductInfoImgSmallBtn}
+                    onClick={() => {
+                      setHot(hot - 1 < 0 ? hot : hot - 1);
+                    }}
+                  >
+                    <img src="/product/font/left(orange).png" alt="" />
+                  </button>
+                  <ul className={`${styles.OtherLikeList} row`}>
+                    {hotSale.length > 0 &&
+                      hotSale?.map((v, i) => {
+                        if (i < CardInt + hot && i >= hot) {
+                          return (
+                            <Card
+                              key={`Card${i}`}
+                              productID={v}
+                              favorite={favorite}
+                              setFavorite={setFavorite}
+                            />
+                          );
+                        }
+                      })}
+                  </ul>
+                  <button
+                    type="button"
+                    className={styles.ProductInfoImgSmallBtn}
+                    onClick={() => {
+                      setHot(
+                        hot + 1 > hotSale.length - CardInt ? hot : hot + 1
+                      );
+                    }}
+                  >
+                    <img src="/product/font/right(orange).png" alt="" />
+                  </button>
+                </div>
+              </section>
+            </div>
+          )}
           {products && (
             <main className={styles.PdList}>
               {[...Array(productLine)].map((value, index) => {

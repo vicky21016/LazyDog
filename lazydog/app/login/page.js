@@ -8,8 +8,7 @@ import SocialLogin from "../components/auth/SocialLogin";
 import InputField from "../components/forms/InputField";
 import { useAuth } from "@/hooks/use-auth";
 // import styles from "../pages/menu.module.css";
-import styles from "../../styles/modules/form.module.css"
-
+import styles from "../../styles/modules/form.module.css";
 
 const appKey = "loginWithToken";
 export default function AppPage({ logout }) {
@@ -38,7 +37,7 @@ export default function AppPage({ logout }) {
   useEffect(() => {
     const existingToken = localStorage.getItem(appKey);
     console.log(existingToken);
-    
+
     if (existingToken) {
       const newUser = JSON.parse(localStorage.getItem("user"));
       setUser(newUser);
@@ -50,7 +49,7 @@ export default function AppPage({ logout }) {
           router.push("/teacher-sign/list"); // 轉入 teacher
           break;
         case "user":
-          router.push("/pages");
+          router.push("/user");
           break;
         default:
           alert("出現錯誤，請通知管理員");
@@ -84,13 +83,13 @@ export default function AppPage({ logout }) {
             <div className={`${styles.otherAccountsLink}`}>
               <Link
                 href="/login"
-                className={`text-decoration-none ${styles.teacher}`} 
+                className={`text-decoration-none ${styles.teacher}`}
               >
                 師資登入
               </Link>
               <Link
                 href="/login"
-                className={`text-decoration-none ${styles.hotel}`} 
+                className={`text-decoration-none ${styles.hotel}`}
               >
                 旅館業者登入
               </Link>
@@ -113,7 +112,7 @@ export default function AppPage({ logout }) {
             />
 
             <Link
-              href="/pages/forgot-password"
+              href="/forgot-password"
               className={`${styles.fogotpass}`}
             >
               忘記密碼？

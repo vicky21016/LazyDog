@@ -7,7 +7,7 @@
 /* ----------廣告區---------- */
 .DmArea {
   width: 100%;
-  img {
+  .carouselItem {
     width: 100%;
   }
 }
@@ -197,74 +197,81 @@
   gap: 30px;
 }
 /* --------------------------- */
-/* ---------card元件(備份)---------- */
-/* .ProductCard {
-  width: 100%;
-  position: relative;
-}
-.ProductCardHover {
-  background: rgb(241, 213, 182, 0.7);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  .HoverIcon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: var(--White);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-.ProductCardImg {
-  width: 100%;
-  img {
-    width: 100%;
-  }
-}
-.ProductCardHeart {
-  position: absolute;
-  right: 12px;
-  top: 10px;
-  width: 25px;
-  img {
-    width: 100%;
-  }
-}
-.ProductCardOnsale {
-  position: absolute;
-  background: url(/product/font/onsale-bg.png) no-repeat center/cover;
-  width: 50px;
-  height: 48px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--White);
-  user-select: none;
-  padding-bottom: 3px;
-}
-.ProductCardInfo {
-  padding: 0 20px 14px;
+/* ----------他愛區------------ */
+.empty {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 50px;
+}
+.AlsoBuy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 60px;
+  width: 100%;
+  overflow: hidden;
+}
+.AlsoBuyTitle {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.AlsoBuyContent {
+  display: flex;
   align-items: center;
-  gap: 10px;
-  .ProductCardName {
-    color: var(--Black);
+  gap: 15px;
+  .ProductInfoImgSmallBtn {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border: 1px solid var(--orange);
+    border-radius: 50%;
   }
-  .ProductCardPrice {
-    color: var(--Orange);
+}
+.AlsoBuyList {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.OtherLike {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 60px;
+  width: 100%;
+  overflow: hidden;
+}
+.OtherLikeTitle {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.OtherLikeContent {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  .ProductInfoImgSmallBtn {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border: 1px solid var(--orange);
+    border-radius: 50%;
   }
-} */
-/* -------------------------- */
+}
+.OtherLikeList {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+/* --------------------------- */
 /* ---------page元件---------- */
 .ProductListPagination {
   width: 100%;

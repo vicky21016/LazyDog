@@ -125,12 +125,12 @@ const ReviewList = () => {
                       <td>{review.content}</td>
                       <td>{review.replied ? "已回覆" : "未回覆"}</td>
                       <td>
-                        <span className={`badge ${review.status === "公開" ? "bg-success" : "bg-warning"}`}>
+                        <span className={`badge ${review.status === "公開" ?  [ styles.btn3] : [ styles.btn]}`}>
                           {review.status}
                         </span>
                       </td>
                       <td>
-                        <button className="btn btn-sm btn-primary" data-bs-toggle="modal"
+                        <button className={`btn btn-sm ${styles.btn}`} data-bs-toggle="modal"
                           data-bs-target="#reviewModal" onClick={() => loadReview(review)}>
                           檢視 / 回覆
                         </button>
@@ -163,8 +163,8 @@ const ReviewList = () => {
                   placeholder={modalData.reply || "請輸入回覆內容..."}></textarea>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                <button type="button" className="btn btn-primary" onClick={replyReview}>送出回覆</button>
+                <button type="button" className={`btn ${styles.btn2}`} data-bs-dismiss="modal">取消</button>
+                <button type="button" className={`btn ${styles.btn}`} onClick={replyReview}>送出回覆</button>
               </div>
             </div>
           </div>

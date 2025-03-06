@@ -36,13 +36,11 @@ export const getCouponss = async (req, res) => {
     const userId = req.user.id; // 從 Token 中獲取 userId
     const { status, type } = req.query;
 
-    console.log("🚀 getCouponss 中的 req.user:", req.user);
-    console.log("🚀 從 Token 獲取的 userId:", userId);
 
     const result = await getUserCoupons(userId, status, type);
     res.status(200).json(result);
   } catch (error) {
-    console.error("控制器錯誤:", error);
+    console.error("CC控制器錯誤:", error);
     res.status(500).json({ success: false, error: "資料庫查詢失敗" });
   }
 };

@@ -212,7 +212,7 @@ export default function TeacherUpdateC() {
           text: "課程資料已成功更新！",
           icon: "success",
           confirmButtonText: "確定",
-          timer: 200,
+          timer: 2000,
           willClose: () => {
             // 在 Swal 關閉後跳轉頁面
             router.push(`/teacher-sign/list`);
@@ -257,6 +257,7 @@ export default function TeacherUpdateC() {
           title: "刪除成功！",
           icon: "success",
           confirmButtonText: "確定",
+          timer: 2000,
           ...animationConfig,
         });
       })
@@ -278,7 +279,7 @@ export default function TeacherUpdateC() {
     <>
       <div className={`col-lg-9 col-md-12 col-12`}>
         <div className={`p-5 ${styles.right}`}>
-          <h3 className={`mb-4 ${styles.tTitle}`}>編輯該梯次</h3>
+          <h4 className={`mb-4 ${styles.tTitle}`}>編輯該梯次</h4>
           <form onSubmit={handleSubmit}>
             <section className={`row g-4 mb-5 ${styles.section1}`}>
               <div className={`col-md-12`}>
@@ -340,6 +341,7 @@ export default function TeacherUpdateC() {
                   type="text"
                   className={`form-control  ${styles.controls}`}
                   defaultValue={cs?.max_people}
+                  name="max_people"
                   onChange={handleChange}
                 />
               </div>
@@ -452,14 +454,14 @@ export default function TeacherUpdateC() {
                 />
               </div>
             </section>
-            <section className={`row g-1 mb-5 ${styles.section4}`}>
+            <section className={`row g-4 mb-5 ${styles.section4}`}>
               <div className={`col-md-12 col-12 mt-3`}>
                 <label className={`form-label`}>
                   課程圖片<span className={styles.must}>*</span>
                 </label>
               </div>
 
-              <div className={`col-md-5 col-12 mt-4 mb-5 ${styles.mainPic}`}>
+              <div className={`col-md-5 col-12 mt-0 mb-5 ${styles.mainPic}`}>
                 <div className={styles.imageCard}>
                   {mainpic ? (
                     <img
@@ -476,7 +478,7 @@ export default function TeacherUpdateC() {
                   {mainpic && (
                     <button
                       type="button"
-                      className={`${styles.deleteBtn1} ${styles.deletPic}`}
+                      className={`${styles.deleteBtn1} `}
                       onClick={() => setMainpic(null)}
                     >
                       ×
@@ -506,13 +508,10 @@ export default function TeacherUpdateC() {
                   </>
                 )}
               </div>
-              <div className={`col-md-7 col-12 mt-4 mb-5 ${styles.otherPic}`}>
-                <div
-                  id="imageContainer"
-                  className={`d-flex flex-wrap gap-3 mb-2`}
-                >
+              <div className={`col-md-7 col-12 mt-0 mb-5 p-0`}>
+                <div className={styles.otherPic}>
                   {otherpics?.map((other) => (
-                    <div key={other.id} className={styles.imageCard}>
+                    <div key={other.id} className={styles.imageCardOther}>
                       <img
                         className={`${styles.imgCr} ${styles.pics}`}
                         src={
@@ -522,7 +521,7 @@ export default function TeacherUpdateC() {
                       />
                       <button
                         type="button"
-                        className={`${styles.deleteBtn} ${styles.deletPic}`}
+                        className={`${styles.deleteBtn} `}
                         onClick={() => handleDelete(other.id)}
                       >
                         ×
@@ -538,7 +537,7 @@ export default function TeacherUpdateC() {
                           document.getElementById("otherpicsUpload").click()
                         }
                       >
-                        新增
+                        + 其他圖片
                       </button>
                       <input
                         id="otherpicsUpload"
@@ -552,42 +551,30 @@ export default function TeacherUpdateC() {
                     </>
                   )}
                 </div>
-                {/* <button
-                  type="button"
-                  className={`btn btn-primary btn-sm ${styles.addPicBtn}`}
-                >
-                  新增
-                </button>
-                <input
-                  type="file"
-                  className={`form-control d-none add`}
-                  accept="image/*"
-                  name="otherpics"
-                  multiple
-                  onChange={handleImageChange}
-                /> */}
               </div>
             </section>
 
             {/* 按鈕區 */}
-            <div className={`d-flex justify-content-end gap-3 border-top mt-5`}>
+            <div
+              className={`d-flex justify-content-center gap-3 border-top mt-5 pt-4`}
+            >
               <button
                 type="button"
-                className={`btn btn-sm px-4 mt-4 ${styles.cancleBtn}`}
-                onClick={() => changepage("list")}
-              >
-                取消
-              </button>
-              <button
-                type="button"
-                className={`btn btn-primary btn-sm px-4 mt-4 ${styles.deletedBtn}`}
+                className={`btn btn-primary btn-sm px-5 py-2  mb-1 ${styles.deletedBtn}`}
                 onClick={handleisDelete}
               >
                 刪除
               </button>
               <button
+                type="button"
+                className={`btn btn-sm px-5 py-2  mb-1 ${styles.cancleBtn}`}
+                onClick={() => changepage("list")}
+              >
+                取消
+              </button>
+              <button
                 type="submit"
-                className={`btn btn-primary btn-sm px-4 mt-4 ${styles.submitBtn}`}
+                className={`btn btn-primary btn-sm px-5 py-2  mb-1 ${styles.submitBtn}`}
               >
                 儲存
               </button>

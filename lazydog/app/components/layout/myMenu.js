@@ -18,8 +18,9 @@ import {
   faCirclePlus,
   faRightFromBracket,
   faCamera,
+  faComment,
 } from "@fortawesome/free-solid-svg-icons";
-import styles from "../../../styles/modules/menu.module.css";
+import styles from "@/styles/modules/menu.module.css";
 
 export default function MyMenu() {
   const pathname = usePathname();
@@ -64,12 +65,13 @@ export default function MyMenu() {
     usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
 
   const menuItems = [
-    { name: "會員資料", path: "/pages", icon: faUser },
-    { name: "訂單紀錄", path: "/orders", icon: faCartShopping },
-    { name: "我的優惠", path: "/hotel-coupon/profileCoupon", icon: faTicket },
-    { name: "我的收藏", path: "/my/favorite", icon: faHeart },
-    { name: "我的文章", path: "/article/my_article", icon: faPen },
-    { name: "修改密碼", path: "/pages/forgot-password", icon: faCirclePlus },
+    { name: "會員資料", path: "/user", icon: faUser },
+    { name: "訂單紀錄", path: "/user/orders", icon: faCartShopping },
+    { name: "我的優惠", path: "/user/profileCoupon", icon: faTicket },
+    { name: "我的收藏", path: "/user/userFavorite", icon: faHeart },
+    { name: "我的評論", path: "/user/review", icon: faComment },
+    { name: "我的文章", path: "/user/my_article", icon: faPen },
+    { name: "修改密碼", path: "/forgot-password", icon: faCirclePlus },
   ];
 
   // 點擊畫面其他地方時，自動關閉篩選選單
@@ -91,26 +93,23 @@ export default function MyMenu() {
   return (
     <>
       {/* 手機版選單按鈕 */}
-      <button className={styles.right}>
-        <img
-          src={`/product/font/right(orange).png`}
-          onClick={() => setmobileMenu(!mobileMenu)}
-        />
-      </button>
-
+      <div className={`${styles.collapseAside} d-xl-none`}>
+        <div className={`${styles.collapseAsideContent}`}>
+          <button className={styles.right}>
+            <img
+              src={`/product/font/right(orange).png`}
+              onClick={() => setmobileMenu(!mobileMenu)}
+            />
+          </button>
+        </div>
+      </div>
       {/* <div className="col-md-3 col-12"> */}
       <div
         className={`${styles.mobileFilter} ${
           mobileMenu ? styles.showFilter : ""
         }`}
       >
-        <button
-          className={styles.closeButton}
-          onClick={() => setmobileMenu(false)}
-        >
-          關閉
-        </button>
-        <div className={`${styles.container}`}>
+        <div className={`text-center`}>
           {/*  顯示會員頭像與名稱 */}
           <div className="lumi-profile-section position-relative d-inline-block">
             <img

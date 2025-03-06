@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, use } from "react";
 import styles from "./detail.module.css";
-import ProductCard from "../_components/card/card";
+import Card from "../_components/card/card";
 import RateCard from "../_components/rate/ratecard";
 import StarGroup from "../_components/rate/stargroup";
 import StarBar from "../_components/rate/starbar";
@@ -29,6 +29,9 @@ function DetailContent() {
   const userID = user?.id;
   const { onAddProduct, productItems } = useCart();
   const {
+    userName,
+    userImg,
+    history,
     width,
     product,
     router,
@@ -112,7 +115,14 @@ function DetailContent() {
     setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
   }, [width]);
 
-  console.log(reviews);
+  // console.log(reviews);
+  if (error) {
+    return (
+      <div className="container">
+        <img style={{ width: "100%" }} src="/product/404.png" />
+      </div>
+    );
+  }
   return (
     <div className={`${styles.Container} container`}>
       <section className={styles.Breadcrumbs}>
@@ -235,7 +245,7 @@ function DetailContent() {
               </button>
               <h6>{heartState ? "已加入收藏" : "加入收藏"}</h6>
             </div>
-            <h2 className={styles.InfoProductName}>{productData?.name}</h2>
+            <h3 className={styles.InfoProductName}>{productData?.name}</h3>
             <div className={styles.InfoRateGroup}>
               {int && (
                 <>
@@ -269,7 +279,7 @@ function DetailContent() {
             </div>
             <div className={styles.InfoPriceGroup}>
               <h5>{productDiscount > 0 ? `限時促銷價格：` : `價格：`}</h5>
-              <h2>NT$ {productData?.price}</h2>
+              <h4>NT$ {productData?.price}</h4>
               {productDiscount > 0 && <h4>NT$ {productData?.price}</h4>}
             </div>
             <div className={styles.InfoQtyGroup}>
@@ -292,7 +302,7 @@ function DetailContent() {
                 onChange={(e) => {
                   setAmount(() => {
                     const value = Number(e.target.value);
-                    if (value >= 999) return 999;
+                    if (value >= productData?.stock) return productData?.stock;
                     if (value <= 0) return 1;
                     return value;
                   });
@@ -302,7 +312,9 @@ function DetailContent() {
                 className={styles.QtyPlus}
                 onClick={() => {
                   setAmount((prevAmount) =>
-                    prevAmount + 1 >= 999 ? 999 : prevAmount + 1
+                    prevAmount + 1 >= productData?.stock
+                      ? productData?.stock
+                      : prevAmount + 1
                   );
                 }}
               >
@@ -504,6 +516,7 @@ function DetailContent() {
           </div>
         )}
         <div
+          id="productRate"
           className={`accordion-item ${styles.AccordionItem} ${styles.ProductDetailRate}`}
         >
           <div className="accordion-header" id="collapse-heading4">
@@ -545,12 +558,28 @@ function DetailContent() {
                   <div className={`${styles.SetReviews} col-12 col-lg-6`}>
                     <RateCard
                       rateNow={rateNow}
+                      id={reviews.user_id}
+                      productID={productID}
                       user={reviews.user}
                       img={reviews.userImg}
                       rate={reviews.rating}
                       comment={reviews.comment}
                       goodNum={reviews.good}
-                      date={reviews.updated_at}
+                      date={reviews.updated_at_taipei}
+                      mutate={mutate}
+                    />
+                  </div>
+                )}
+                {user?.id > 0 && history && !reviews && (
+                  <div className={`${styles.SetReviews} col-12 col-lg-6`}>
+                    <RateCard
+                      history={history}
+                      rateNow={rateNow}
+                      id={userID}
+                      productID={productID}
+                      user={userName}
+                      img={userImg}
+                      mutate={mutate}
                     />
                   </div>
                 )}
@@ -571,6 +600,7 @@ function DetailContent() {
                             comment={rateData.comment[i]}
                             goodNum={rateData.good[i]}
                             date={rateData.date[i]}
+                            mutate={mutate}
                           />
                         </div>
                       );
@@ -591,17 +621,19 @@ function DetailContent() {
                     顯示更多評價
                   </button>
                 )}
-              {rateData.rate && rateData.rate.length <= rate && (
-                <button
-                  type="button"
-                  className={styles.RateMore}
-                  onClick={() => {
-                    setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
-                  }}
-                >
-                  隱藏額外評價
-                </button>
-              )}
+              {rateData.rate &&
+                rateData.rate.length > 3 &&
+                rateData.rate.length < rate && (
+                  <button
+                    type="button"
+                    className={styles.RateMore}
+                    onClick={() => {
+                      setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
+                    }}
+                  >
+                    隱藏額外評價
+                  </button>
+                )}
             </div>
           </div>
         </div>
@@ -623,8 +655,8 @@ function DetailContent() {
               sameBuy?.map((v, i) => {
                 if (i < CardInt + also && i >= also) {
                   return (
-                    <ProductCard
-                      key={`ProductCard${i}`}
+                    <Card
+                      key={`Card${i}`}
                       productID={v}
                       favorite={favorite}
                       setFavorite={setFavorite}
@@ -646,7 +678,6 @@ function DetailContent() {
       </section>
       <section className={styles.OtherLike}>
         <h4 className={styles.OtherLikeTitle}>看看其他好物...</h4>
-
         <div className={styles.OtherLikeContent}>
           <button
             type="button"
@@ -662,8 +693,8 @@ function DetailContent() {
               hotSale?.map((v, i) => {
                 if (i < CardInt + hot && i >= hot) {
                   return (
-                    <ProductCard
-                      key={`ProductCard${i}`}
+                    <Card
+                      key={`Card${i}`}
                       productID={v}
                       favorite={favorite}
                       setFavorite={setFavorite}

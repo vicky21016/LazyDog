@@ -56,16 +56,18 @@ export default function TeacherPlace() {
 
   return (
     <>
-      <div className={`col-md-9`}>
+      <div className={`col-md-9 col-12`}>
         <div className={`border rounded p-5 ${styles.right}`}>
-          <h3 className={`mb-4 ${styles.tTitle}`}>開課地點</h3>
+          <h4 className={`mb-4 ${styles.tTitle}`}>開課地點</h4>
           <div className={`${styles.cTable} ${styles.bottom}`}>
             {/* 第一～第三筆資料 */}
             {places.slice(0, 3).map((p, index) => (
-              <div key={p.id} className={styles.cTbody}>
-                <div className={styles.cTd1}>{p.region}</div>
+              <div key={p.id} className={`row ${styles.cTbody}`}>
+                <div className={`col-5 col-md-1 ${styles.cTd1}`}>
+                  {p.region}
+                </div>
                 <div
-                  className={styles.cTd2}
+                  className={`col-7 col-md-9 ${styles.cTd2}`}
                   onClick={() => handlePlaceClick(p, index)}
                 >
                   <i class="bi bi-geo-alt-fill"></i> {p.address}
@@ -75,10 +77,12 @@ export default function TeacherPlace() {
 
             {/* 第四～第五筆資料 */}
             {places.slice(3, 5).map((p, index) => (
-              <div key={p.id} className={styles.cTbody}>
-                <div className={styles.cTd1}>{p.region}</div>
+              <div key={p.id} className={`row ${styles.cTbody}`}>
+                <div className={`col-5 col-md-1 ${styles.cTd1}`}>
+                  {p.region}
+                </div>
                 <div
-                  className={styles.cTd2}
+                  className={`col-7 col-md-9 ${styles.cTd2}`}
                   onClick={() => handlePlaceClick(p, index + 3)}
                 >
                   <i class="bi bi-info-circle-fill"></i> {p.address}

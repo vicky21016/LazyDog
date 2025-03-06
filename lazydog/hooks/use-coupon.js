@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { getCouponss, getCoupons,useCoupon } from "@/services/couponService";
+import { getCouponss, getCoupons, useCoupon } from "@/services/couponService";
 
 export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
   const [availableCoupons, setAvailableCoupons] = useState([]);
@@ -62,7 +62,7 @@ export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
 
   // 計算折扣金額
   const calculateDiscount = (couponId) => {
-    const coupon = availableCoupons.find((c) => c.id === Number(couponId));
+    const coupon = availableCoupons.find((c) => c.id == Number(couponId));
 
     if (!coupon) {
       console.error("優惠券不存在:", couponId);
@@ -70,7 +70,7 @@ export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
     }
 
     let discount = 0;
-    if (coupon.discount_type === "percentage") {
+    if (coupon.discount_type == "percentage") {
       discount = (cartTotal * coupon.value) / 100;
     } else {
       discount = Math.min(coupon.value, cartTotal);
@@ -93,41 +93,47 @@ export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
   // 使用優惠券
   const applyCoupon = async (couponId) => {
     console.log("Applying coupon with ID:", couponId);
-  
+
     if (!couponId) {
       console.error("未選擇優惠券");
       return;
     }
-  
-    const coupon = availableCoupons.find((c) => c.id === Number(couponId));
-  
+
+    const coupon = availableCoupons.find((c) => c.id == Number(couponId));
+
     if (!coupon) {
       console.error("優惠券不存在:", couponId);
       return;
     }
-  
+
     if (!orderId || !orderTable || !userId) {
       console.error(" 缺少必要參數: orderId, orderTable, userId");
-      console.log("orderId:", orderId, "orderTable:", orderTable, "userId:", userId);
+      console.log(
+        "orderId:",
+        orderId,
+        "orderTable:",
+        orderTable,
+        "userId:",
+        userId
+      );
       return;
     }
-  
+
     const validOrderTables = ["hotel_order", "course_orders", "yi_orderlist"];
     const cleanedOrderTable = orderTable.trim(); // 避免空格錯誤
-  
+
     if (!validOrderTables.includes(cleanedOrderTable)) {
       console.error(" 無效的訂單類型:", cleanedOrderTable);
       return;
     }
-  
+
     const requestBody = {
       userId: Number(userId),
-      orderId: Number(orderId),
-      orderTable: cleanedOrderTable, 
+      orderId: orderId,
+      orderTable: cleanedOrderTable,
       couponId: Number(coupon.id),
     };
-  
-  
+
     try {
       const response = await fetch(
         `http://localhost:5000/api/coupon/usage/use/${coupon.id}`,
@@ -140,20 +146,24 @@ export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
           body: JSON.stringify(requestBody),
         }
       );
-  
+
       const data = await response.json();
       if (!response.ok) {
         console.error(" 優惠券無法使用:", data.message);
         return;
       }
-  
+
       console.log(" 優惠券成功套用:", data);
     } catch (error) {
       console.error(" 套用優惠券失敗:", error);
     }
+    
+    try {
+      await applyCoupon(selectedCoupon, orderId, orderTable, user.id);
+    } catch (error) {
+      console.error("applyCoupon 失敗，但不影響主要訂單:", error);
+    }
   };
-  
-  
 
   return {
     availableCoupons,

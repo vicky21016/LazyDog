@@ -6,6 +6,9 @@
   border-radius: 10px;
   border: 1px solid var(--Orange);
   padding: 0;
+  form {
+    width: 100%;
+  }
 }
 .RateCardText {
   width: 100%;
@@ -25,6 +28,16 @@
   p {
     line-height: 1.5;
     font-size: 14px;
+  }
+  textarea {
+    width: 100%;
+    line-height: 1.5;
+    font-size: 14px;
+    border: 0.5px solid var(--skin);
+    &:focus {
+      border: none;
+      outline: 0.5px solid var(--tiffany);
+    }
   }
 }
 .RateCardUser {
@@ -72,7 +85,7 @@
   .UpdateRateBtn {
     color: var(--Orange);
     border-radius: 20px;
-    padding: 3px 10px;
+    padding: 5px 15px;
     &:hover {
       background: var(--Orange);
       color: var(--white);
