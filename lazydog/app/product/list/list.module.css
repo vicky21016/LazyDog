@@ -7,7 +7,7 @@
 /* ----------廣告區---------- */
 .DmArea {
   width: 100%;
-  img {
+  .carouselItem {
     width: 100%;
   }
 }

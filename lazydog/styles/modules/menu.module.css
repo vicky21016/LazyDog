@@ -22,8 +22,8 @@
   margin-right: 12px;
 }
 
-.righttop{
-  margin-top:100px;
+.righttop {
+  margin-top: 100px;
 }
 
 .wrapper {
@@ -135,12 +135,12 @@
   cursor: pointer;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .mobileFilter {
     display: none;
   }
 }
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .asideContainer {
     display: none;
   }

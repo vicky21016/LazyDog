@@ -62,7 +62,6 @@ export default function UserFavoritePage() {
         };
       });
 
-      console.log("最終處理後的商品圖片:", productsWithDetails);
       setProductFavorites(productsWithDetails);
     } catch (err) {
       console.error("資料要求失敗:", err);
@@ -81,7 +80,6 @@ export default function UserFavoritePage() {
 
       // 取得旅館收藏
       const hotelResponse = await getHotelFavorites();
-      console.log("旅館收藏 API 回應:", hotelResponse);
       if (hotelResponse.success && Array.isArray(hotelResponse.data.data)) {
         setHotelFavorites([...hotelResponse.data.data]);
       } else {
@@ -90,53 +88,71 @@ export default function UserFavoritePage() {
 
       // 取得商品收藏
       const productResponse = await getProductFavorites();
-      console.log("商品收藏 API 回應:", productResponse);
       if (productResponse.success && Array.isArray(productResponse.data)) {
         const allProductIDs = productResponse.data
           .filter((v) => v.user_id == user?.id)
           .flatMap((v) => v.productID_list.split(","));
-        console.log("完整的商品收藏 ID 列表:", allProductIDs);
         setPdFavoriteList([...new Set(allProductIDs)]);
       } else {
         console.log("未獲取到商品收藏");
       }
 
-      // 取得課程收藏
-      await fetchCourseFavorites();
+      // 取得課程收藏並處理圖片
+      const courseResponse = await getCourseFavorites(user.id);
+      if (courseResponse.success && Array.isArray(courseResponse.data)) {
+        const formattedData = courseResponse.data.map((item) => ({
+          ...item,
+          main_pic: getCourseImageUrl(item.main_pic),
+        }));
+        setCourseFavorites(formattedData);
+      } else {
+        console.log(" 未獲取到課程收藏");
+      }
     } catch (error) {
-      console.error("Failed to fetch favorites:", error);
+      console.error("fetch 課程favorites失敗喔:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  // 獲取課程收藏
+  const BASE_IMAGE_URL = "http://localhost:3000/course/img/";
+
+  const getCourseImageUrl = (main_pic) => {
+    if (!main_pic) return "/lazydog.png"; // 預設圖片
+
+    return `${BASE_IMAGE_URL}${encodeURIComponent(main_pic.trim())}`;
+  };
   const fetchCourseFavorites = async () => {
     try {
-      const response = await getCourseFavorites();
-      console.log("課程收藏 API 回應:", response);
+      const response = await getCourseFavorites(user.id);
 
       if (response.success && Array.isArray(response.data)) {
-        setCourseFavorites([...response.data]);
+        // 確保圖片 URL 正確
+        const formattedData = response.data.map((item) => ({
+          ...item,
+          main_pic: getCourseImageUrl(item.main_pic),
+        }));
+
+        setCourseFavorites(formattedData);
       } else {
-        console.log("未獲取到課程收藏");
+        console.log(" 未獲取到課程收藏資料");
       }
     } catch (error) {
-      console.error("Failed to fetch course favorites:", error);
+      console.error(" fetchCourseFavorites 發生錯誤:", error);
     }
   };
 
   // 移除課程收藏
   const handleRemoveCourseFavorite = async (favoriteId) => {
     try {
-      const response = await removeCourseFavorite(favoriteId);
+      const response = await removeCourseFavorite(favoriteId, user.id);
       if (response.success) {
         setCourseFavorites((prevFavorites) =>
           prevFavorites.filter((item) => item.id !== favoriteId)
         );
       }
     } catch (error) {
-      console.error("Failed to remove course favorite:", error);
+      console.error("移除失敗拉:", error);
     }
   };
 
@@ -150,31 +166,40 @@ export default function UserFavoritePage() {
         );
       }
     } catch (error) {
-      console.error("Failed to remove product favorite:", error);
+      console.error("移除失敗拉:", error);
     }
   };
 
   // 移除旅館收藏
   const handleRemoveHotelFavorite = async (favoriteId) => {
     try {
-      const response = await removeHotelFavorite(favoriteId);
+      console.log(
+        `正在移除旅館收藏: 收藏ID = ${favoriteId}, 使用者ID = ${user.id}`
+      );
+
+      const response = await removeHotelFavorite(favoriteId, user.id);
+
+      console.log("移除回應:", response);
+
       if (response.success) {
         setHotelFavorites((prevFavorites) =>
           prevFavorites.filter((item) => item.id !== favoriteId)
         );
       }
     } catch (error) {
-      console.error("Failed to remove hotel favorite:", error);
+      console.error("移除旅館收藏失敗:", error);
     }
   };
 
   useEffect(() => {
-    console.log("更新後的 productFavorites:", productFavorites);
-  }, [productFavorites]);
-
+    console.log(" 更新後的課程收藏:", courseFavorites);
+  }, [courseFavorites]);
   useEffect(() => {
-    console.log("更新後的 hotelFavorites:", hotelFavorites);
+    console.log(" 更新後的旅館收藏:", hotelFavorites);
   }, [hotelFavorites]);
+  useEffect(() => {
+    console.log(" 更新後的商品收藏:", productFavorites);
+  }, [productFavorites]);
 
   return (
     <div className="col-md-9">
@@ -273,7 +298,9 @@ export default function UserFavoritePage() {
                           borderRadius: "50%",
                           fontSize: "16px",
                         }}
-                        onClick={() => handleRemoveHotelFavorite(item.id)}
+                        onClick={() =>
+                          handleRemoveHotelFavorite(item.id, item.course_id)
+                        } // 確保傳 course_id
                       >
                         ✖
                       </button>
