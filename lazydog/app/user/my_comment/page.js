@@ -107,6 +107,7 @@ export default function MyArticle() {
               comments.map((comment) => (
                 <ScrollMotionItem
                   // element="div"
+                  className={styles.card}
                   key={comment.id}
                   type="up"
                 >

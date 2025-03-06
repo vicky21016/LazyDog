@@ -112,3 +112,9 @@
    color:#ff9538
 }
 
+@media screen and (max-width: 390px){
+  .card{
+    height: 300px;
+    margin-bottom: 15px;
+  }
+}
