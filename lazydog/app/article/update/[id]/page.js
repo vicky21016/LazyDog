@@ -166,7 +166,7 @@ export default function UpdateArticlePage({ params }) {
                   {isLoading ? '保存中...' : (
                     <>
                       <Link
-                        href="/article/my_article"
+                        href="http://localhost:3000/user/my_article"
                         style={{
                           backgroundColor: '#FFBD00',
                           color: 'white',

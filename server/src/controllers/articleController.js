@@ -29,6 +29,7 @@ export const getArticles = async (req, res) => {
 // 取得指定文章
 export const getId = async (req, res) => {
   const { id } = req.params;
+  // console.log("getId:" + id)
   try {
       const results = await getIdS(id);
       // console.log(results);
@@ -57,15 +58,16 @@ export const getId = async (req, res) => {
       const commentMap = new Map(); // 用 Map 避免重複
 
       results.forEach(row => {
-          if (row.comment_id && !commentMap.has(row.comment_id)) {
-              commentMap.set(row.comment_id, {
-                  id:row.comment_id,
-                  content: row.comment_content,
-                  author: row.commenter_name,
-                  author_img: row.commenter_img
-              });
-          }
-      });
+        if (row.comment_id && !commentMap.has(row.comment_id) && row.is_deleted !== 1) {
+            commentMap.set(row.comment_id, {
+                id: row.comment_id,
+                content: row.comment_content,
+                author: row.commenter_name,
+                author_img: row.commenter_img,
+                is_deleted: row.is_deleted
+            });
+        }
+    });
 
       article.comments = Array.from(commentMap.values());
       res.json(article);
@@ -79,7 +81,7 @@ export const getId = async (req, res) => {
 
 export const createArticle = async (req, res) => {
     const { title, content, author_id, category_id, article_img } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     try {
         // 呼叫服務層函數來創建文章
         const article = await createArticlesS({ title, content, author_id, category_id, article_img });
@@ -89,7 +91,7 @@ export const createArticle = async (req, res) => {
             message: "文章創建成功",
             article
         });
-        console.log(article);
+        // console.log(article);
     } catch (err) {
         // 如果有錯誤，返回錯誤響應
         console.log(err);

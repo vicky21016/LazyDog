@@ -31,7 +31,6 @@ const CommentSection = () => {
                 article_id: id,
                 user_id: user.id
             };
-
             await createComment(commentData);
             alert("新增成功");
             window.location.reload();
