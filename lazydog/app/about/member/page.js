@@ -1,5 +1,5 @@
-import Header from "../../../components/layout/header";
-import Bread from "../../../components/teacher/breadcrumb";
+import Header from "../../components/layout/header"; 
+import Bread from "../../components/teacher/breadcrumb"; 
 export default async function MemberPage(props) {
   return (
     <>
@@ -13,7 +13,7 @@ export default async function MemberPage(props) {
 
               {
                 label: "會員條款條款與細則",
-                href: "/user/about/member",
+                href: "/about/member",
                 active: true,
               },
             ]}

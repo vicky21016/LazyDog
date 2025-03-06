@@ -1,16 +1,24 @@
+html,
 body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
   overflow-x: hidden;
 }
 .section1 {
   position: relative;
-  min-height: 990px;
+  /* min-height: 990px; */
+  width: 100vw;
   background-color: #f5842b;
+  padding: 60px 0 0;
   /* overflow-x: hidden; */
   .paw1 {
     width: 15%;
     position: absolute;
     left: -1%;
     bottom: 25%;
+    height: auto;
+    padding: 0;
   }
 
   .words {
@@ -20,7 +28,7 @@ body {
       margin: 150px 0 150px;
     }
     @media (max-width: 992px) {
-      margin: 80px 0 150px;
+      margin: 60px 0 150px;
     }
   }
 
@@ -30,13 +38,18 @@ body {
     font-size: 3.5rem;
     font-weight: 700;
     letter-spacing: 15px;
-    /* text-wrap: nowrap; */
+    text-wrap: nowrap;
     margin-bottom: 35px;
+    z-index: 5;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+
     @media (max-width: 1200px) {
       font-size: 50px;
     }
     @media (max-width: 992px) {
-      font-size: 35px;
+      font-size: 32px;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
     }
   }
   .sale12Word {
@@ -47,35 +60,54 @@ body {
     letter-spacing: 12.5px;
     /* text-wrap: nowrap; */
     margin-bottom: 35px;
+    z-index: 5;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+
     @media (max-width: 1200px) {
       font-size: 55px;
-      letter-spacing: 15px;
+      letter-spacing: 0px;
     }
     @media (max-width: 992px) {
-      font-size: 35px;
+      font-size: 28px;
+      letter-spacing: 0px;
+      margin-bottom: 25px;
+      line-height: 45px;
     }
   }
 
   .sale2 {
     display: flex;
     justify-content: center;
-    align-items: end;
+    align-items: center;
     text-align: center;
+    z-index: 5;
 
     .discountNum {
       color: var(--real-wh, #fff);
-      font-family: "Noto Sans TC", sans-serif;
       font-size: 100px;
-      font-style: normal;
       font-weight: 900;
       letter-spacing: 13.2px;
+      text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+      z-index: 5;
+
+      @media (max-width: 992px) {
+        font-size: 58px;
+        letter-spacing: 0px;
+      }
     }
 
     .discountWord {
       color: var(--real-wh, #fff);
       font-size: 55px;
       font-weight: bolder;
-      padding-bottom: 23px;
+      /* padding-bottom: 23px; */
+      text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+      z-index: 5;
+
+      @media (max-width: 992px) {
+        font-size: 45px;
+        letter-spacing: 0px;
+      }
     }
   }
   .sale3Word {
@@ -84,13 +116,17 @@ body {
     color: var(--Color-6, #3b3330);
     text-align: center;
     text-overflow: ellipsis;
-    font-family: "Noto Sans TC", sans-serif;
     font-size: 24px;
-    font-style: normal;
     font-weight: 600;
     line-height: 180%; /* 43.2px */
     letter-spacing: 6.24px;
-    margin: 60px 0 60px;
+    margin: 60px 0;
+    @media (max-width: 992px) {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      margin: 20px 0;
+    }
   }
   .sale3 {
     display: flex;
@@ -109,6 +145,12 @@ body {
       text-decoration: none;
       transition: all 0.3s ease;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 5;
+      @media (max-width: 992px) {
+        font-size: 18px;
+        padding: 20px 45px;
+        letter-spacing: -0.5px;
+      }
     }
     .sale3Btn:hover {
       background-color: white;
@@ -124,6 +166,7 @@ body {
 }
 .dog {
   position: relative;
+  /* width: 100%; */
 
   .paw2 {
     position: absolute;
@@ -135,7 +178,7 @@ body {
     position: absolute;
     right: -34%;
     bottom: -19%;
-    z-index: 1;
+    z-index: 0;
   }
   .dogBackground {
     position: absolute;
@@ -144,13 +187,18 @@ body {
     transform: translateX(-50%);
     z-index: 1;
     width: 583px;
+    @media (max-width: 992px) {
+      width: 200px;
+      left: 47%;
+      top: -10%;
+    }
   }
 
   .lines {
     position: absolute;
     right: -35%;
     top: 18%;
-    z-index: 0;
+    z-index: 1;
   }
 
   .dogPic {
@@ -573,7 +621,7 @@ body {
     position: absolute;
     width: 100px; /* 確保有大小 */
     height: 100px;
-    z-index: 10; /* 確保不會被其他元素擋住 */
+    /* z-index: 10;  */
     filter: drop-shadow(0 0 10px rgba(255, 165, 0, 0.5));
   }
 
@@ -591,7 +639,7 @@ body {
     position: absolute;
     left: 37%;
     bottom: 20%;
-    z-index: 0;
+    z-index: 1;
 
     @media (max-width: 992px) {
       left: 6%;
@@ -640,6 +688,9 @@ body {
     align-items: center;
     gap: 18px;
     margin: 0 0 120px;
+    @media (max-width: 992px) {
+      gap: 5px;
+    }
 
     .card {
       display: flex;
@@ -651,13 +702,10 @@ body {
       border-radius: 10px;
       background: #fffaf0;
       box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.25);
-      font-family: "Noto Sans TC";
-      font-style: normal;
-      box-sizing: border-box;
       margin: 10px 20px;
       @media (max-width: 992px) {
         width: 200px;
-        margin: 10px;
+        /* margin: 5px; */
       }
     }
     .card1 {
@@ -852,6 +900,9 @@ body {
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     animation: bounce 1.5s infinite ease-in-out;
     will-change: transform;
+
+    @media (max-width: 992px) {
+    }
   }
   .ticketIcon {
     display: block;

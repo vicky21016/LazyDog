@@ -26,7 +26,7 @@ export default function HomePage(props) {
           <div className={`row ${styles.words}`}>
             <img className={styles.paw1} src="/home/img/paw1.png" alt="" />
 
-            <div className={`col-6`}>
+            <div className={`col-6 p-0`}>
               <h2 className={styles.sale11Word}>活動倒數3天!</h2>
               <h2 className={styles.sale12Word}>熱門商品最高限時</h2>
               <div className={styles.sale2}>
@@ -233,8 +233,10 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      <div className={`container-fluid  ${styles.section3}`}>
-        <div className={`col-11 col-md-10 col-lg-8 ${styles.discountPic}`}>
+      <div className={`container-fluid px-2 ${styles.section3}`}>
+        <div
+          className={`col-11 col-md-10 col-lg-8 d-none d-lg-block ${styles.discountPic}`}
+        >
           <img className={styles.girlDog} src="/home/img/girl&dog.png" alt="" />
           <img
             className={styles.discountPic3}
@@ -253,12 +255,12 @@ export default function HomePage(props) {
         </div>
         <div className={`row ${styles.hotel}`}>
           <div
-            className={`col-12 col-md-4 col-lg-4 order-md-1 order-2 ${styles.map}`}
+            className={`col-12 col-md-4 col-lg-6 order-md-1 order-2 ${styles.map}`}
           >
             <TaiwanMap />
           </div>
           <div
-            className={`col-12 col-md-8 col-lg-8 order-md-2 order-1 ${styles.hotelWords}`}
+            className={`col-12 col-md-8 col-lg-6 order-md-2 order-1 ${styles.hotelWords}`}
           >
             <h2 className={styles.h2}>毛孩的度假天堂</h2>
             <p className={styles.p}>
@@ -281,12 +283,12 @@ export default function HomePage(props) {
             alt=""
           />
         </div>
-        <div className={styles.whiteWave2}>
+        {/* <div className={styles.whiteWave2}>
           <img className={styles.wave} src="/home/img/whiteWave2.png" alt="" />
-        </div>
+        </div> */}
       </div>
 
-      <div className={` ${styles.section4}`}>
+      <div className={`container ${styles.section4}`}>
         <h2 className={styles.section4Title}>會員限定優惠</h2>
         <div className={`row ${styles.userCards}`}>
           <div className={`col-6 col-md-3  ${styles.card} ${styles.card1}`}>

@@ -78,11 +78,11 @@ try {
 
             <p className={`${styles.agree}`}>
               點擊註冊，即表示您已閱讀並同意
-              <Link href="pages/about/member" className={`${styles.terms}`}>
+              <Link href="/about/member" className={`${styles.terms}`}>
                 會員條款
               </Link>
               與
-              <Link href="pages/about/customer" className={`${styles.terms}`}>
+              <Link href="/about/customer" className={`${styles.terms}`}>
                 客戶隱私權條款
               </Link>
             </p>

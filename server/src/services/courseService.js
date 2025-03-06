@@ -10,11 +10,11 @@ export const getCourses = async ({
   // maxPrice,
 }) => {
   try {
-    console.log(" service接收到的篩選條件:", {
-      keyword,
-      typeList,
-      placeList,
-    });
+    // console.log(" service接收到的篩選條件:", {
+    //   keyword,
+    //   typeList,
+    //   placeList,
+    // });
     let sql = `
       SELECT 
         course.*, 
