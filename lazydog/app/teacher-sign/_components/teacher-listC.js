@@ -47,7 +47,7 @@ export default function TeacherListC() {
       <div className={`col-lg-9 col-md-12 col-12`}>
         <div className={`p-5 pb-3 ${styles.right}`}>
           <div className={styles.top}>
-            <h3 className={`mb-4 ${styles.tTitle}`}>我的課程</h3>
+            <h4 className={`mb-4 ${styles.tTitle}`}>我的課程</h4>
             <button
               type="button"
               className={`btn btn-primary btn-sm ${styles.addCourseBtn}`}

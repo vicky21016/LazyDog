@@ -98,7 +98,7 @@ export default function TeacherInfo() {
       <div className={`col-lg-9 col-md-12 col-12`}>
         <form onSubmit={handleSubmit}>
           <div className={`${styles.right} p-5`}>
-            <h3 className={`mb-4 ${styles.tTitle}`}>師資內容</h3>
+            <h4 className={`mb-4 ${styles.tTitle}`}>師資內容</h4>
             <div className={`mb-4`}>
               <div className={`row`}>
                 <div className={`col-md-6`}>
