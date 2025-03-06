@@ -135,7 +135,7 @@
   height: 80px;
   margin: 50px;
 }
-.carousel {
+/* .carousel {
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -151,11 +151,19 @@
   box-sizing: border-box;
   padding: 20px;
   display: block;
-}
+} */
 .textContainer{
    position: relative;
   z-index: 1;
   
+}
+
+.carouselbtn button {
+  background-color: #f7c090 !important; 
+}
+
+.carouselbtn .active {
+  background-color: #cc4400 !important;
 }
 
 /* 圖片容器 */
@@ -238,7 +246,7 @@ top: -100px;
   height: 300px;
   margin: 10px;
 }
- .container{
+ .container,.courseContainer{
   padding: 30px;
  }
  .server{
@@ -246,6 +254,9 @@ top: -100px;
     background-size: 100% auto;
     background-position: center;
     height: 140px;
+ }
+ .mobile{
+  margin-bottom: 50px;
  }
 }
 

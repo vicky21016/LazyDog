@@ -11,7 +11,7 @@ export default async function CustomerPage(props) {
             { label: " 關於我們", href: "/teacher" },
 
 
-                label: "客戶隱私權條款",
+               { label: "客戶隱私權條款",
                 href: "/about/customer",
                 active: true,
               },
@@ -21,7 +21,7 @@ export default async function CustomerPage(props) {
           <p className="mb-5">
             非常歡迎您光臨「LAZYDOG」（以下簡稱本網站），為了讓您能夠安心的使用本網站的各項服務與資訊，特此向您說明本網站的隱私權保護政策，以保障您的權益，請您詳閱下列內容：
           </p>
-        </div>
+      
         <div className="mb-5">
           <h5 className="mb-3">二、個人資料的蒐集、處理及利用方式</h5>
           <p>
