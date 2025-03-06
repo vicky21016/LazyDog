@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { createHotel, updateHotel } from "@/services/hotelService";
 
 export const usePhotoUpload = (
-  defaultAvatar = "/images/hotel/hotel-images/page-image/default-avatar.png"
+  defaultAvatar = "/hotel/hotel-images/page-image/Dog5.png"
 ) => {
   const fileInputRef = useRef(null);
   const avatarRef = useRef(null);

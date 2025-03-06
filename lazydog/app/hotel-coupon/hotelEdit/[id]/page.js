@@ -35,7 +35,7 @@ export default function HotelEditPage() {
   const [newRoomFoodProvided, setNewRoomFoodProvided] = useState("");
 
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+    usePhotoUpload("/hotel/hotel-images/page-image/Dog5.png");
   const [roomFormData, setRoomFormData] = useState({});
   const [formData, setFormData] = useState({
     name: "",

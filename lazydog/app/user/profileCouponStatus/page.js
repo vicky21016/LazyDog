@@ -20,7 +20,7 @@ export default function ProfileCouponPage(props) {
   const userId = user?.id;
 
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+    usePhotoUpload("/hotel/hotel-images/page-image/Dog5.png");
 
   // 分類標籤
   const categories = [ "全部", "已使用", "未使用", "逾期"];
