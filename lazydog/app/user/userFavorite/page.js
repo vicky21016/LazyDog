@@ -143,17 +143,64 @@ export default function UserFavoritePage() {
 
   // 移除課程收藏
   const handleRemoveCourseFavorite = async (favoriteId) => {
-    try {
-      const response = await removeCourseFavorite(favoriteId, user.id);
-      if (response.success) {
-        setCourseFavorites((prevFavorites) =>
-          prevFavorites.filter((item) => item.id !== favoriteId)
-        );
+    const result = await Swal.fire({
+      icon: "warning",
+      title: "確認刪除收藏？",
+      showCancelButton: true, // 顯示取消按鈕
+      cancelButtonText: "忍痛刪除", // 設定取消按鈕文字
+      cancelButtonColor: "#dc3545", // 設定取消按鈕顏色
+      showConfirmButton: true,
+      confirmButtonText: "我再想想",
+      confirmButtonColor: "#bcbcbc", // 設定按鈕顏色
+    });
+
+    if (result.isConfirmed) {
+      // 使用者選擇「我再想想」，不執行刪除
+      return;
+    }
+
+    if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
+      try {
+        const response = await removeCourseFavorite(favoriteId, user.id);
+
+        if (response.success) {
+          // 立即從 UI 移除
+          setCourseFavorites((prevFavorites) =>
+            prevFavorites.filter((item) => item.id !== favoriteId)
+          );
+
+          // 確保 UI 和後端同步
+          await fetchCourseFavorites();
+
+          Swal.fire({
+            icon: "success",
+            title: response.message || "成功移除收藏",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "刪除失敗",
+            text: response.error || "請稍後再試",
+          });
+        }
+      } catch (error) {
+        console.error("移除失敗:", error);
+        Swal.fire({
+          icon: "error",
+          title: "刪除失敗",
+          text: "請稍後再試或聯繫客服",
+        });
       }
-    } catch (error) {
-      console.error("移除失敗拉:", error);
     }
   };
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchCourseFavorites();
+    }
+  }, [user]); // 只有當 user 變更時，才重新拉取課程收藏
 
   // 移除商品收藏
 

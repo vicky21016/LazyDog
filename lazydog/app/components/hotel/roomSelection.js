@@ -75,7 +75,7 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
               imageUrl:
                 room.image_url && room.image_url.startsWith("http")
                   ? room.image_url
-                  : "hotel/loding.jpg", // 預設圖片，避免 `next/image` 出錯
+                  : "hotel/hotel-uploads/4-rooms.webp", // 預設圖片，避免 `next/image` 出錯
               available: availableRooms, // 最終可用房數
             };
           })
@@ -95,8 +95,8 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
   }, [hotelId, checkInDate, checkOutDate]);
   const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
     useEffect(() => {
-      console.log("🏨 房型選擇 - checkInDate:", checkInDate);
-      console.log("🏨 房型選擇 - checkOutDate:", checkOutDate);
+      console.log("房型選擇 - checkInDate:", checkInDate);
+      console.log(" 房型選擇 - checkOutDate:", checkOutDate);
     }, [checkInDate, checkOutDate]);
   };
 
@@ -144,7 +144,7 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
       checkInDate: checkIn || "未設定",
       checkOutDate: checkOut || "未設定",
     };
-    console.log("🛒 加入購物車的資料:", hotelToAdd);
+    console.log(" 加入購物車的資料:", hotelToAdd);
   
     try {
       // 調用加入購物車的函數

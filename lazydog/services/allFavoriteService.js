@@ -181,19 +181,26 @@ export const removeCourseFavorite = async (favoriteId, userId) => {
   if (!token) return { success: false, error: "請先登入" };
 
   try {
-    const res = await fetch(`${COURSE_FAVORITE_URL}/${favoriteId}`, {
+    const res = await fetch(`${COURSE_FAVORITE_URL}/${favoriteId}?user_id=${userId}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ user_id: userId }), 
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    if (!res.ok) throw new Error("移除課程收藏失敗");
-    return await res.json();
+    const result = await res.json();
+
+    if (res.ok) {
+      return { success: true, message: "刪除成功" };
+    }
+
+    // 如果後端返回 400，但已經刪除，仍然回傳 success: true
+    if (res.status === 400 && result.message.includes("已經刪除")) {
+      return { success: true, message: "該收藏已刪除" };
+    }
+
+    throw new Error(result.message || "移除課程收藏失敗");
   } catch (error) {
     return { success: false, error: error.message };
   }
 };
+
 
