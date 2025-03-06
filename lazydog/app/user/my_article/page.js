@@ -16,6 +16,7 @@ export default function MyArticle() {
   const userId = user?.id;
   const [checkingAuth, setCheckingAuth] = useState(true);
   const { articles } = useMyArticles(userId); // ✅ 只載入該用戶的文章
+  console.log(articles)
 
   useEffect(() => {
     if (!articles.length) return; // 如果 articles 為空，則不執行後續邏輯
@@ -47,6 +48,25 @@ export default function MyArticle() {
               </Link>
             </button>
           </div>
+         
+            <ul className="nav nav-tabs mt-4">
+              <li className="nav-item">
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  href="#"
+                  style={{ color: 'white', backgroundColor: '#f5842b' }}
+                >文章</Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  href="/user/my_comment"
+                  style={{ color: '#f5842b', backgroundColor: 'white' }}
+                >留言</Link>
+              </li>
+            </ul>
+          
           <ScrollMotionContainer
             // element="div"
             style={{
