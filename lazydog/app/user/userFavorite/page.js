@@ -26,47 +26,48 @@ export default function UserFavoritePage() {
     }
   }, [user]);
 
+  // console.log(pdFavoriteList);
   // 獲取商品詳情
   const fetchProductDetails = async (pdFavoriteList) => {
-    try {
-      const BASE_IMAGE_URL = "http://localhost:3000/product/img/";
+    if (pdFavoriteList[0]) {
+      try {
+        const BASE_IMAGE_URL = "http://localhost:3000/product/img/";
+        const promises = pdFavoriteList.map(async (productID) => {
+          if (productID) {
+            const res = await fetch(
+              `http://localhost:5000/api/products/${productID}`
+            );
+            if (!res.ok) throw new Error(`資料要求失敗: ${productID}`);
+            return await res.json();
+          }
+        });
 
-      const promises = pdFavoriteList.map(async (productID) => {
-        if (productID) {
-          const res = await fetch(
-            `http://localhost:5000/api/products/${productID}`
-          );
-          if (!res.ok) throw new Error(`資料要求失敗: ${productID}`);
-          return await res.json();
-        }
-      });
+        const results = await Promise.all(promises);
+        const productsWithDetails = results.map((e) => {
+          const productData = e.data[0];
+          let imgList = productData.img ? productData.img.split(",") : [];
+          let firstImage = imgList.length > 0 ? imgList[0].trim() : "";
 
-      const results = await Promise.all(promises);
+          let imageUrl = firstImage
+            ? `${BASE_IMAGE_URL}${encodeURIComponent(
+                productData.name.trim()
+              )}${encodeURIComponent(firstImage)}`
+            : "/lazydog.png";
 
-      const productsWithDetails = results.map((e) => {
-        const productData = e.data[0];
-        let imgList = productData.img ? productData.img.split(",") : [];
-        let firstImage = imgList.length > 0 ? imgList[0].trim() : "";
+          return {
+            id: productData.id,
+            name: productData.name,
+            image_url: imageUrl,
+            price: productData.price,
+          };
+        });
 
-        let imageUrl = firstImage
-          ? `${BASE_IMAGE_URL}${encodeURIComponent(
-              productData.name.trim()
-            )}${encodeURIComponent(firstImage)}`
-          : "/lazydog.png";
-
-        return {
-          id: productData.id,
-          name: productData.name,
-          image_url: imageUrl,
-          price: productData.price,
-        };
-      });
-
-      console.log("最終處理後的商品圖片:", productsWithDetails);
-      setProductFavorites(productsWithDetails);
-    } catch (err) {
-      console.error("資料要求失敗:", err);
-      throw err;
+        console.log("最終處理後的商品圖片:", productsWithDetails);
+        setProductFavorites(productsWithDetails);
+      } catch (err) {
+        console.error("資料要求失敗:", err);
+        throw err;
+      }
     }
   };
 
@@ -252,7 +253,6 @@ export default function UserFavoritePage() {
 
                       <div className="card-body text-center">
                         <h5 className="card-title">{item.name}</h5>
-                        <p className="card-text">${item.price}</p>
                       </div>
                     </div>
                   </div>

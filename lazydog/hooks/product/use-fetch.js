@@ -390,6 +390,7 @@ export function useCardFetch({ productID = "" }) {
 
   const [cardHover, setCardHover] = useState(false);
   const [cartHover, setCartHover] = useState(false);
+  const [eyeHover, setEyeHover] = useState(false);
   const [cartRate, setCartRate] = useState(0);
 
   const [cardPic, setCardPic] = useState("/product/img/default.webp");
@@ -423,6 +424,8 @@ export function useCardFetch({ productID = "" }) {
     setCardHover,
     cartHover,
     setCartHover,
+    eyeHover,
+    setEyeHover,
     cartRate,
     setCartRate,
     cardPic,
