@@ -38,7 +38,11 @@ export default function Header(props) {
   return (
     <header className={styles["lumi-header2"]}>
       <Link href="/" className={styles["lumi-logo2"]}>
-        <img className={styles.logo} src="/header/img/logo.png" alt="Logo" />
+        <img
+          className={styles.logo}
+          src="/footer/img/logo_pic(white).png"
+          alt="Logo"
+        />
         <div className={styles["lumi-logo1"]}>LAZYDOG</div>
       </Link>
       <nav className={styles["lumi-nav"]}>
@@ -160,7 +164,10 @@ export default function Header(props) {
               <Link href="/user" className={styles["dropdown-link"]}>
                 個人資料
               </Link>
-              <Link href="/user/userFavorite" className={styles["dropdown-link"]}>
+              <Link
+                href="/user/userFavorite"
+                className={styles["dropdown-link"]}
+              >
                 我的收藏
               </Link>
               <div onClick={logout} className={styles["dropdown-link"]}>
