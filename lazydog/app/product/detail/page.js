@@ -7,6 +7,7 @@ import RateCard from "../_components/rate/ratecard";
 import StarGroup from "../_components/rate/stargroup";
 import StarBar from "../_components/rate/starbar";
 import Link from "next/link";
+import Swal from "sweetalert2";
 
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
@@ -115,7 +116,44 @@ function DetailContent() {
     setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
   }, [width]);
 
-  // console.log(reviews);
+  const handleAddToCart = async () => {
+    // 檢查用戶是否登入
+    if (!user) {
+      Swal.fire({
+        icon: "info",
+        title: "請先登入",
+        text: "您需要登入才能加入購物車！",
+        showConfirmButton: true,
+        confirmButtonText: "前往登入",
+        confirmButtonColor: "#66c5bd", // 設定按鈕顏色
+        showCancelButton: true, // 顯示取消按鈕
+        cancelButtonText: "繼續逛街", // 設定取消按鈕文字
+        cancelButtonColor: "#bcbcbc", // 設定取消按鈕顏色
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push(loginRoute); // 跳轉到登入頁面
+        }
+      });
+      return;
+    }
+    try {
+      onAddProduct(productData, amount);
+      // 顯示成功訊息
+      Swal.fire({
+        icon: "success",
+        title: "加入購物車成功",
+        showConfirmButton: false,
+        timer: 1000, // 1.5 秒後自動關閉
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "加入購物車失敗",
+        text: "請稍後重試！",
+      });
+    }
+  };
+
   if (error) {
     return (
       <div className="container">
@@ -302,7 +340,7 @@ function DetailContent() {
                 onChange={(e) => {
                   setAmount(() => {
                     const value = Number(e.target.value);
-                    if (value >= productData?.stock) return productData?.stock;
+                    if (value >= 999) return 999;
                     if (value <= 0) return 1;
                     return value;
                   });
@@ -312,47 +350,27 @@ function DetailContent() {
                 className={styles.QtyPlus}
                 onClick={() => {
                   setAmount((prevAmount) =>
-                    prevAmount + 1 >= productData?.stock
-                      ? productData?.stock
-                      : prevAmount + 1
+                    prevAmount + 1 >= 999 ? 999 : prevAmount + 1
                   );
                 }}
               >
                 <img src="/product/font/plus.png" alt="" />
               </button>
             </div>
-            <p>庫存數量 : {productData?.stock}</p>
+            {/* <p>庫存數量 : {productData?.stock}</p> */}
             <div className={styles.InfoBtnGroup}>
               <button
                 className={styles.BtnBuynow}
                 onClick={() => {
-                  if (!user) {
-                    alert("請先登入");
-                    setTimeout(() => {
-                      router.push(loginRoute);
-                    }, 100);
-                  } else {
-                    onAddProduct(productData, amount);
-                    setTimeout(() => {
-                      router.push("/cart/CartList");
-                    }, 100);
-                  }
+                  handleAddToCart();
+                  setTimeout(() => {
+                    router.push("/cart/CartList");
+                  }, 100);
                 }}
               >
                 <h5>立即購買</h5>
               </button>
-              <button
-                onClick={() => {
-                  if (!user) {
-                    alert("請先登入");
-                    setTimeout(() => {
-                      router.push(loginRoute);
-                    }, 100);
-                  } else {
-                    onAddProduct(productData, amount);
-                  }
-                }}
-              >
+              <button onClick={handleAddToCart}>
                 <h5>加入購物車</h5>
               </button>
             </div>
@@ -560,7 +578,7 @@ function DetailContent() {
                       rateNow={rateNow}
                       id={reviews.user_id}
                       productID={productID}
-                      user={reviews.user}
+                      userName={reviews.user}
                       img={reviews.userImg}
                       rate={reviews.rating}
                       comment={reviews.comment}
@@ -577,7 +595,7 @@ function DetailContent() {
                       rateNow={rateNow}
                       id={userID}
                       productID={productID}
-                      user={userName}
+                      userName={userName}
                       img={userImg}
                       mutate={mutate}
                     />
@@ -594,7 +612,9 @@ function DetailContent() {
                           className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4"
                         >
                           <RateCard
-                            user={rateData.user[i]}
+                            id={rateData.userID[i]}
+                            productID={productID}
+                            userName={rateData.user[i]}
                             img={rateData.img[i]}
                             rate={v}
                             comment={rateData.comment[i]}

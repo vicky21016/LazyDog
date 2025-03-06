@@ -274,6 +274,7 @@ export function useDetailFetch() {
   const productDiscount = 0;
 
   const rateData = {
+    userID: [],
     user: [],
     img: [],
     rate: [],
@@ -284,6 +285,7 @@ export function useDetailFetch() {
   let rateAvg = 0;
   if (data?.data) {
     data?.data.map((v, i) => {
+      rateData["userID"].push(v.userID);
       rateData["user"].push(v.user);
       rateData["img"].push(v.userImg);
       rateData["rate"].push(v.rate);
