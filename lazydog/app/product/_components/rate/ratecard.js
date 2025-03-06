@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./rate.module.css";
 import StarGroup from "./stargroup";
+import Swal from "sweetalert2";
 
 import { useReviewsUpdate } from "@/hooks/product/use-reviews";
 
@@ -12,7 +13,7 @@ export default function Ratecard({
   history = false,
   id = "",
   productID = "",
-  user = "",
+  userName = "",
   img = "",
   rate = "",
   comment = "",
@@ -30,17 +31,81 @@ export default function Ratecard({
   const [rateUpdate, setRateUpdate] = useState(false);
   const [newRate, setNewRate] = useState(rateNum || 1);
   const [deleteRate, setDeleteRate] = useState(false);
-  const { formData, handleSubmit, reviewsChange } = useReviewsUpdate({
-    id,
-    productID,
-    newRate,
-    comment,
-    setRateUpdate,
-    deleteRate,
-    setDeleteRate,
-    mutate,
-  });
-  // console.log(date);
+  const { formData, handleSubmit, reviewsChange, reviewsMutate } =
+    useReviewsUpdate({
+      id,
+      productID,
+      newRate,
+      comment,
+      setRateUpdate,
+      deleteRate,
+      setDeleteRate,
+      mutate,
+    });
+  const handleAddFavorite = async () => {
+    // e.stopPropagation();
+    // 檢查用戶是否登入
+    if (!id) {
+      Swal.fire({
+        icon: "info",
+        title: "請先登入",
+        text: "您需要登入才能幫他人點讚！",
+        showConfirmButton: true,
+        confirmButtonText: "前往登入",
+        confirmButtonColor: "#66c5bd", // 設定按鈕顏色
+        showCancelButton: true, // 顯示取消按鈕
+        cancelButtonText: "繼續逛街", // 設定取消按鈕文字
+        cancelButtonColor: "#bcbcbc", // 設定取消按鈕顏色
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/user"); // 跳轉到登入頁面
+        }
+      });
+      return;
+    }
+    try {
+      const goodForm = {
+        userID: id,
+        productID: productID,
+        good: goodNum,
+      };
+      console.log(good);
+      if (!good) {
+        setGood(!good);
+        goodForm.good = goodNum + 1;
+      } else {
+        setGood(!good);
+        goodForm.good = goodNum - 1;
+      }
+      let API = "http://localhost:5000/api/products/reviews";
+      const formData = new FormData();
+      for (const key in goodForm) {
+        if (goodForm.hasOwnProperty(key)) {
+          formData.append(key, goodForm[key]);
+        }
+      }
+      try {
+        const res = await fetch(API, {
+          method: "PATCH",
+          body: formData,
+        });
+        const result = await res.json();
+        if (result.status != "success") throw new Error(result.message);
+      } catch (error) {
+        console.log(error);
+        alert(error.message);
+      }
+      reviewsMutate();
+      mutate();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "點讚更新失敗",
+        text: "請稍後重試！",
+      });
+    }
+  };
+
   return (
     <div className={`${styles.RateCard}`}>
       {!rateUpdate && !history && (
@@ -56,7 +121,7 @@ export default function Ratecard({
                 }}
               >
                 <img src={`http://localhost:5000/auth/${img}`} alt="" />
-                <h6>{user}</h6>
+                <h6>{userName}</h6>
                 <h6>{rateNow ? "(您)" : ""}</h6>
               </button>
               <div className={styles.StarGroup}>
@@ -72,7 +137,9 @@ export default function Ratecard({
                 type="button"
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
-                onClick={() => setGood(!good)}
+                onClick={() => {
+                  handleAddFavorite();
+                }}
               >
                 <img
                   src={`/product/font/${
@@ -111,7 +178,7 @@ export default function Ratecard({
                 }}
               >
                 <img src={`http://localhost:5000/auth/${img}`} alt="" />
-                <h6>{user}</h6>
+                <h6>{userName}</h6>
                 <h6>{rateNow ? "(您)" : ""}</h6>
               </button>
               <div className={styles.StarGroup}>
@@ -167,7 +234,7 @@ export default function Ratecard({
                 }}
               >
                 <img src={`http://localhost:5000/auth/${img}`} alt="" />
-                <h6>{user}</h6>
+                <h6>{userName}</h6>
                 <h6>{rateNow ? "(您已購買過此商品)" : ""}</h6>
               </button>
               <div className={styles.StarGroup}>

@@ -62,7 +62,7 @@ export default function MyMenu() {
   };
 
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+    usePhotoUpload("/hotel/hotel-images/page-image/Dog5.png");
 
   const menuItems = [
     { name: "會員資料", path: "/user", icon: faUser },
@@ -71,7 +71,7 @@ export default function MyMenu() {
     { name: "我的收藏", path: "/user/userFavorite", icon: faHeart },
     { name: "我的評論", path: "/user/review", icon: faComment },
     { name: "我的文章", path: "/user/my_article", icon: faPen },
-    { name: "修改密碼", path: "/user/forgot-password", icon: faCirclePlus },
+    { name: "修改密碼", path: "/forgot-password", icon: faCirclePlus },
   ];
 
   // 點擊畫面其他地方時，自動關閉篩選選單

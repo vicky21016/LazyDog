@@ -8,8 +8,7 @@ import Card from "../_components/card/card";
 import { useListFetch } from "@/hooks/product/use-fetch";
 import { useFavorite } from "@/hooks/product/use-favorite";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Carousel } from "bootstrap"; // 引入 Bootstrap 的 Carousel
+import { Carousel } from "react-bootstrap";
 
 export default function ListPage(props) {
   const {
@@ -39,6 +38,7 @@ export default function ListPage(props) {
   const [pageInput, setPageInput] = useState("選擇分頁");
   const [collapseBtn, setCollapseBtn] = useState(false);
   const collapseRef = useRef(null);
+
   useEffect(() => {
     const clickOutside = (event) => {
       if (listOpen && !event.target.closest(`.${styles.dropdown}`)) {
@@ -54,6 +54,7 @@ export default function ListPage(props) {
     document.addEventListener("click", clickOutside);
     return () => document.removeEventListener("click", clickOutside);
   }, [listOpen, dropDown, collapseBtn]);
+
   if (error) {
     return (
       <div className="container">
@@ -61,19 +62,6 @@ export default function ListPage(props) {
       </div>
     );
   }
-  useEffect(() => {
-    // 確保在組件加載後初始化 Carousel
-    const carouselElement = document.getElementById(
-      "carouselExampleIndicators"
-    );
-    const carousel = new Carousel(carouselElement, {
-      interval: 4000, // 每2秒自動切換
-      ride: "carousel", // 啟用自動輪播
-    });
-    return () => {
-      carousel.dispose(); // 清除 Carousel 實例，避免記憶體泄漏
-    };
-  }, []);
   return (
     <>
       <div className={`${styles.collapseAside} d-lg-none`}>
@@ -121,114 +109,31 @@ export default function ListPage(props) {
       </div>
       <div className={`${styles.Container} container`}>
         <section className={styles.DmArea}>
-          <div
-            id="carouselExampleIndicators"
-            className={`carousel slide`}
-            data-bs-ride="carousel"
+          <Carousel
+            interval={3000}
+            controls={true}
+            indicators={true}
+            pause="hover"
           >
-            <div className="carousel-indicators">
-              <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to={0}
-                className="active"
-                aria-current="true"
-                aria-label="Slide 1"
-              />
-              <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to={1}
-                aria-label="Slide 2"
-              />
-              <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to={2}
-                aria-label="Slide 3"
-              />
-              <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to={3}
-                aria-label="Slide 4"
-              />
-              <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to={4}
-                aria-label="Slide 5"
-              />
-              <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to={5}
-                aria-label="Slide 6"
-              />
-            </div>
-            <div className="carousel-inner">
-              <div className={`${styles.carouselItem} carousel-item active`}>
-                <img
-                  src="/product/DM/DM_1.webp"
-                  className="d-block w-100"
-                  alt=""
-                />
-              </div>
-              <div className={`${styles.carouselItem} carousel-item`}>
-                <img
-                  src="/product/DM/DM_2.webp"
-                  className="d-block w-100"
-                  alt=""
-                />
-              </div>
-              <div className={`${styles.carouselItem} carousel-item`}>
-                <img
-                  src="/product/DM/DM_3.webp"
-                  className="d-block w-100"
-                  alt=""
-                />
-              </div>
-              <div className={`${styles.carouselItem} carousel-item`}>
-                <img
-                  src="/product/DM/DM_4.webp"
-                  className="d-block w-100"
-                  alt=""
-                />
-              </div>
-              <div className={`${styles.carouselItem} carousel-item`}>
-                <img
-                  src="/product/DM/DM_5.webp"
-                  className="d-block w-100"
-                  alt=""
-                />
-              </div>
-              <div className={`${styles.carouselItem} carousel-item`}>
-                <img
-                  src="/product/DM/DM_6.webp"
-                  className="d-block w-100"
-                  alt=""
-                />
-              </div>
-            </div>
-            <button
-              className="carousel-control-prev"
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="prev"
-            >
-              <span className="carousel-control-prev-icon" aria-hidden="true" />
-              <span className="visually-hidden">Previous</span>
-            </button>
-            <button
-              className="carousel-control-next"
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="next"
-            >
-              <span className="carousel-control-next-icon" aria-hidden="true" />
-              <span className="visually-hidden">Next</span>
-            </button>
-          </div>
+            <Carousel.Item className={styles.carouselItem}>
+              <img className="d-block w-100" src="/product/DM/DM_1.webp" />
+            </Carousel.Item>
+            <Carousel.Item className={styles.carouselItem}>
+              <img className="d-block w-100" src="/product/DM/DM_2.webp" />
+            </Carousel.Item>
+            <Carousel.Item className={styles.carouselItem}>
+              <img className="d-block w-100" src="/product/DM/DM_3.webp" />
+            </Carousel.Item>
+            <Carousel.Item className={styles.carouselItem}>
+              <img className="d-block w-100" src="/product/DM/DM_4.webp" />
+            </Carousel.Item>
+            <Carousel.Item className={styles.carouselItem}>
+              <img className="d-block w-100" src="/product/DM/DM_5.webp" />
+            </Carousel.Item>
+            <Carousel.Item className={styles.carouselItem}>
+              <img className="d-block w-100" src="/product/DM/DM_6.webp" />
+            </Carousel.Item>
+          </Carousel>
         </section>
         <section className={styles.BreadcrumbsTitle}>
           <div className={`${styles.Breadcrumbs} d-none d-lg-flex`}>
@@ -241,7 +146,7 @@ export default function ListPage(props) {
           {products && (
             <div className={styles.Title}>
               <div className="d-none d-lg-flex">
-                <h5>目前共{products.length}項商品</h5>
+                {/* <h5>目前共{products.length}項商品</h5> */}
               </div>
               <div className={`${styles.Breadcrumbs} d-lg-none`}>
                 <Link href="/">首頁</Link>

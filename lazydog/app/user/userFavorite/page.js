@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import {
   getProductFavorites,
   deleteProductFavorite,
@@ -26,49 +27,53 @@ export default function UserFavoritePage() {
     }
   }, [user]);
 
+  // console.log(pdFavoriteList);
   // 獲取商品詳情
   const fetchProductDetails = async (pdFavoriteList) => {
-    try {
-      const BASE_IMAGE_URL = "http://localhost:3000/product/img/";
+    if (pdFavoriteList[0]) {
+      try {
+        const BASE_IMAGE_URL = "http://localhost:3000/product/img/";
+        const promises = pdFavoriteList.map(async (productID) => {
+          if (productID) {
+            const res = await fetch(
+              `http://localhost:5000/api/products/${productID}`
+            );
+            if (!res.ok) throw new Error(`資料要求失敗: ${productID}`);
+            return await res.json();
+          }
+        });
 
-      const promises = pdFavoriteList.map(async (productID) => {
-        if (productID) {
-          const res = await fetch(
-            `http://localhost:5000/api/products/${productID}`
-          );
-          if (!res.ok) throw new Error(`資料要求失敗: ${productID}`);
-          return await res.json();
-        }
-      });
+        const results = await Promise.all(promises);
+        const productsWithDetails = results.map((e) => {
+          const productData = e.data[0];
+          let imgList = productData.img ? productData.img.split(",") : [];
+          let firstImage = imgList.length > 0 ? imgList[0].trim() : "";
+          let imageUrl = firstImage
+            ? `${BASE_IMAGE_URL}${encodeURIComponent(
+                productData.name.trim()
+              )}${encodeURIComponent(firstImage)}`
+            : "/lazydog.png";
 
-      const results = await Promise.all(promises);
+          return {
+            id: productData.productID,
+            name: productData.name,
+            image_url: imageUrl,
+            price: productData.price,
+          };
+        });
 
-      const productsWithDetails = results.map((e) => {
-        const productData = e.data[0];
-        let imgList = productData.img ? productData.img.split(",") : [];
-        let firstImage = imgList.length > 0 ? imgList[0].trim() : "";
-
-        let imageUrl = firstImage
-          ? `${BASE_IMAGE_URL}${encodeURIComponent(
-              productData.name.trim()
-            )}${encodeURIComponent(firstImage)}`
-          : "/lazydog.png";
-
-        return {
-          id: productData.id,
-          name: productData.name,
-          image_url: imageUrl,
-          price: productData.price,
-        };
-      });
-
-      setProductFavorites(productsWithDetails);
-    } catch (err) {
-      console.error("資料要求失敗:", err);
-      throw err;
+        console.log("最終處理後的商品圖片:", productsWithDetails);
+        setProductFavorites(productsWithDetails);
+      } catch (err) {
+        console.error("資料要求失敗:", err);
+        throw err;
+      }
+    } else {
+      setProductFavorites([]);
     }
   };
 
+  console.log(productFavorites);
   useEffect(() => {
     fetchProductDetails(pdFavoriteList);
   }, [pdFavoriteList]);
@@ -80,6 +85,7 @@ export default function UserFavoritePage() {
 
       // 取得旅館收藏
       const hotelResponse = await getHotelFavorites();
+      console.log("旅館收藏 API 回應:", hotelResponse);
       if (hotelResponse.success && Array.isArray(hotelResponse.data.data)) {
         setHotelFavorites([...hotelResponse.data.data]);
       } else {
@@ -88,42 +94,35 @@ export default function UserFavoritePage() {
 
       // 取得商品收藏
       const productResponse = await getProductFavorites();
+      console.log("商品收藏 API 回應:", productResponse);
       if (productResponse.success && Array.isArray(productResponse.data)) {
         const allProductIDs = productResponse.data
           .filter((v) => v.user_id == user?.id)
           .flatMap((v) => v.productID_list.split(","));
+        console.log("完整的商品收藏 ID 列表:", allProductIDs);
         setPdFavoriteList([...new Set(allProductIDs)]);
       } else {
         console.log("未獲取到商品收藏");
       }
 
-      // 取得課程收藏並處理圖片
-      const courseResponse = await getCourseFavorites(user.id);
-      if (courseResponse.success && Array.isArray(courseResponse.data)) {
-        const formattedData = courseResponse.data.map((item) => ({
-          ...item,
-          main_pic: getCourseImageUrl(item.main_pic),
-        }));
-        setCourseFavorites(formattedData);
-      } else {
-        console.log(" 未獲取到課程收藏");
-      }
+      // 取得課程收藏
+      await fetchCourseFavorites();
     } catch (error) {
-      console.error("fetch 課程favorites失敗喔:", error);
+      console.error("Failed to fetch favorites:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const BASE_IMAGE_URL = "http://localhost:3000/course/img/";
-
-  const getCourseImageUrl = (main_pic) => {
-    if (!main_pic) return "/lazydog.png"; // 預設圖片
-
-    return `${BASE_IMAGE_URL}${encodeURIComponent(main_pic.trim())}`;
-  };
   const fetchCourseFavorites = async () => {
     try {
+      const BASE_IMAGE_URL = "http://localhost:3000/course/img/";
+
+      const getCourseImageUrl = (main_pic) => {
+        if (!main_pic) return "/lazydog.png"; // 預設圖片
+
+        return `${BASE_IMAGE_URL}${encodeURIComponent(main_pic.trim())}`;
+      };
       const response = await getCourseFavorites(user.id);
 
       if (response.success && Array.isArray(response.data)) {
@@ -144,50 +143,171 @@ export default function UserFavoritePage() {
 
   // 移除課程收藏
   const handleRemoveCourseFavorite = async (favoriteId) => {
-    try {
-      const response = await removeCourseFavorite(favoriteId, user.id);
-      if (response.success) {
-        setCourseFavorites((prevFavorites) =>
-          prevFavorites.filter((item) => item.id !== favoriteId)
-        );
+    const result = await Swal.fire({
+      icon: "warning",
+      title: "確認刪除收藏？",
+      showCancelButton: true, // 顯示取消按鈕
+      cancelButtonText: "忍痛刪除", // 設定取消按鈕文字
+      cancelButtonColor: "#dc3545", // 設定取消按鈕顏色
+      showConfirmButton: true,
+      confirmButtonText: "我再想想",
+      confirmButtonColor: "#bcbcbc", // 設定按鈕顏色
+    });
+
+    if (result.isConfirmed) {
+      // 使用者選擇「我再想想」，不執行刪除
+      return;
+    }
+
+    if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
+      try {
+        const response = await removeCourseFavorite(favoriteId, user.id);
+
+        if (response.success) {
+          // 立即從 UI 移除
+          setCourseFavorites((prevFavorites) =>
+            prevFavorites.filter((item) => item.id !== favoriteId)
+          );
+
+          // 確保 UI 和後端同步
+          await fetchCourseFavorites();
+
+          Swal.fire({
+            icon: "success",
+            title: response.message || "成功移除收藏",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "刪除失敗",
+            text: response.error || "請稍後再試",
+          });
+        }
+      } catch (error) {
+        console.error("移除失敗:", error);
+        Swal.fire({
+          icon: "error",
+          title: "刪除失敗",
+          text: "請稍後再試或聯繫客服",
+        });
       }
-    } catch (error) {
-      console.error("移除失敗拉:", error);
     }
   };
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchCourseFavorites();
+    }
+  }, [user]); // 只有當 user 變更時，才重新拉取課程收藏
 
   // 移除商品收藏
-  const handleRemoveProductFavorite = async (favoriteId) => {
-    try {
-      const response = await deleteProductFavorite(favoriteId);
-      if (response.success) {
-        setProductFavorites((prevFavorites) =>
-          prevFavorites.filter((item) => item.id !== favoriteId)
-        );
-      }
-    } catch (error) {
-      console.error("移除失敗拉:", error);
-    }
-  };
 
+  const handleRemoveProductFavorite = async (favoriteId) => {
+    // console.log(favoriteId);
+    Swal.fire({
+      icon: "warning",
+      title: "確認刪除收藏？",
+      showConfirmButton: true,
+      confirmButtonText: "我再想想",
+      confirmButtonColor: "#bcbcbc", // 設定按鈕顏色
+      showCancelButton: true, // 顯示取消按鈕
+      cancelButtonText: "忍痛刪除", // 設定取消按鈕文字
+      cancelButtonColor: "#dc3545", // 設定取消按鈕顏色
+    }).then(async (result) => {
+      if (result.isDismissed) {
+        console.log(pdFavoriteList);
+        const favorite = pdFavoriteList.filter((v) => v !== favoriteId);
+        console.log(favorite);
+        setPdFavoriteList(favorite);
+        const formData = new FormData();
+        formData.append("userID", user?.id);
+        formData.append("productIDlist", favorite.join(","));
+        let API = "http://localhost:5000/api/products/favorite";
+        try {
+          const res = await fetch(API, {
+            method: "PATCH",
+            body: formData,
+          });
+          const result = await res.json();
+          if (result.status != "success") throw new Error(result.message);
+        } catch (error) {
+          console.log(error);
+          alert(error.message);
+        }
+      } else {
+        return;
+      }
+    });
+    // try {
+    //   const response = await deleteProductFavorite(favoriteId);
+    //   if (response.success) {
+    //     setProductFavorites((prevFavorites) =>
+    //       prevFavorites.filter((item) => item.id !== favoriteId)
+    //     );
+    //   }
+    // } catch (error) {
+    //   console.error("Failed to remove product favorite:", error);
+    // }
+  };
   // 移除旅館收藏
   const handleRemoveHotelFavorite = async (favoriteId) => {
     try {
-      console.log(
-        `正在移除旅館收藏: 收藏ID = ${favoriteId}, 使用者ID = ${user.id}`
-      );
+      // 顯示確認對話框
+      const result = await Swal.fire({
+        icon: "warning",
+        title: "確認刪除收藏？",
+        showConfirmButton: true,
+        confirmButtonText: "我再想想",
+        confirmButtonColor: "#bcbcbc", // 設定按鈕顏色
+        showCancelButton: true, // 顯示取消按鈕
+        cancelButtonText: "忍痛刪除", // 設定取消按鈕文字
+        cancelButtonColor: "#dc3545", // 設定取消按鈕顏色
+      });
 
-      const response = await removeHotelFavorite(favoriteId, user.id);
-
-      console.log("移除回應:", response);
-
-      if (response.success) {
-        setHotelFavorites((prevFavorites) =>
-          prevFavorites.filter((item) => item.id !== favoriteId)
+      // 點擊 "忍痛刪除"
+      if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
+        console.log(
+          `正在移除旅館收藏: 收藏ID = ${favoriteId}, 使用者ID = ${user.id}`
         );
+
+        const response = await removeHotelFavorite(favoriteId, user.id);
+
+        console.log("移除回應:", response);
+
+        if (response.success) {
+          setHotelFavorites((prevFavorites) =>
+            prevFavorites.filter((item) => item.id !== favoriteId)
+          );
+
+          // 刪除成功後顯示成功訊息
+          Swal.fire({
+            icon: "success",
+            title: "刪除成功",
+            showConfirmButton: false,
+            timer: 1500, // 1.5秒後自動關閉
+          });
+        }
+      } else if (result.isConfirmed) {
+        // 點擊 "我再想想"
+        Swal.fire({
+          icon: "info",
+          title: "已取消刪除",
+          showConfirmButton: false,
+          timer: 1500, // 1.5秒後自動關閉
+        });
       }
     } catch (error) {
       console.error("移除旅館收藏失敗:", error);
+
+      // 刪除失敗後顯示錯誤訊息
+      Swal.fire({
+        icon: "error",
+        title: "刪除失敗",
+        text: "請稍後再試或聯繫客服",
+        showConfirmButton: true,
+      });
     }
   };
 
@@ -216,52 +336,57 @@ export default function UserFavoritePage() {
             <h6>商品收藏</h6>
             <div className="row">
               {productFavorites.length > 0 ? (
-                productFavorites.map((item, index) => (
-                  <div className="col-md-4" key={index}>
-                    <div
-                      className="card position-relative mb-4 shadow-sm"
-                      style={{
-                        overflow: "hidden",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      {/* 移除按鈕 */}
-                      <button
-                        className="btn btn-danger position-absolute"
+                productFavorites.map((item, index) => {
+                  {
+                    /* console.log(item); */
+                  }
+                  return (
+                    <div className="col-md-4" key={index}>
+                      <div
+                        className="card position-relative mb-4 shadow-sm"
                         style={{
-                          right: "10px",
-                          top: "10px",
-                          zIndex: 10,
-                          width: "30px",
-                          height: "30px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          padding: 0,
-                          borderRadius: "50%",
-                          fontSize: "16px",
+                          overflow: "hidden",
+                          borderRadius: "10px",
                         }}
-                        onClick={() => handleRemoveProductFavorite(item.id)}
                       >
-                        ✖
-                      </button>
+                        {/* 移除按鈕 */}
+                        <button
+                          className="btn btn-danger position-absolute"
+                          style={{
+                            background: "red",
+                            right: "10px",
+                            top: "10px",
+                            zIndex: 10,
+                            width: "30px",
+                            height: "30px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            padding: 0,
+                            borderRadius: "50%",
+                            fontSize: "16px",
+                          }}
+                          onClick={() => handleRemoveProductFavorite(item.id)}
+                        >
+                          ✖
+                        </button>
 
-                      {/* 商品圖片（修正 URL 編碼） */}
-                      <img
-                        src={item.image_url}
-                        className="card-img-top"
-                        alt={item.name || "商品圖片"}
-                        onError={(e) => (e.target.src = "/lazydog.png")}
-                        style={{ height: "200px", objectFit: "cover" }}
-                      />
+                        {/* 商品圖片（修正 URL 編碼） */}
+                        <img
+                          src={item.image_url}
+                          className="card-img-top"
+                          alt={item.name || "商品圖片"}
+                          onError={(e) => (e.target.src = "/lazydog.png")}
+                          style={{ height: "200px", objectFit: "cover" }}
+                        />
 
-                      <div className="card-body text-center">
-                        <h5 className="card-title">{item.name}</h5>
-                        <p className="card-text">${item.price}</p>
+                        <div className="card-body text-center">
+                          <h5 className="card-title">{item.name}</h5>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <p className="text-center">目前沒有收藏的商品。</p>
               )}
@@ -286,6 +411,7 @@ export default function UserFavoritePage() {
                       <button
                         className="btn btn-danger position-absolute"
                         style={{
+                          background: "red",
                           right: "10px",
                           top: "10px",
                           zIndex: 10,
@@ -344,6 +470,7 @@ export default function UserFavoritePage() {
                       <button
                         className="btn btn-danger position-absolute"
                         style={{
+                          background: "red",
                           right: "10px",
                           top: "10px",
                           zIndex: 10,

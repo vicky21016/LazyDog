@@ -11,7 +11,7 @@ export default function My() {
   const { user } = useAuth();
   const [mobileMenu, setmobileMenu] = useState(false);
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+    usePhotoUpload("/hotel/hotel-images/page-image/Dog5.png");
 
   const menuItems = [
     {

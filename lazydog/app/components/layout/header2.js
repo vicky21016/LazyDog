@@ -53,13 +53,13 @@ export default function Header(props) {
             </li>
             <div className={styles["dropdown-content"]}>
               <Link
-                href="/user/about/member"
+                href="/about/member"
                 className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
               >
                 會員條款條款與細則
               </Link>
               <Link
-                href="/user/about/customer"
+                href="/about/customer"
                 className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
               >
                 客戶隱私權條款

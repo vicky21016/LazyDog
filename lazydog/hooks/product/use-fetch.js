@@ -235,7 +235,7 @@ export function useDetailFetch() {
 
   const url = product ? `http://localhost:5000/api/products/${product}` : null;
   const url2 =
-    user.id > 0
+    user?.id > 0
       ? `http://localhost:5000/api/products/order?userID=${user.id}`
       : `http://localhost:5000/api/products/order`;
   const fetcher = async (url) => {
@@ -274,6 +274,7 @@ export function useDetailFetch() {
   const productDiscount = 0;
 
   const rateData = {
+    userID: [],
     user: [],
     img: [],
     rate: [],
@@ -284,6 +285,7 @@ export function useDetailFetch() {
   let rateAvg = 0;
   if (data?.data) {
     data?.data.map((v, i) => {
+      rateData["userID"].push(v.userID);
       rateData["user"].push(v.user);
       rateData["img"].push(v.userImg);
       rateData["rate"].push(v.rate);
@@ -390,6 +392,7 @@ export function useCardFetch({ productID = "" }) {
 
   const [cardHover, setCardHover] = useState(false);
   const [cartHover, setCartHover] = useState(false);
+  const [eyeHover, setEyeHover] = useState(false);
   const [cartRate, setCartRate] = useState(0);
 
   const [cardPic, setCardPic] = useState("/product/img/default.webp");
@@ -423,6 +426,8 @@ export function useCardFetch({ productID = "" }) {
     setCardHover,
     cartHover,
     setCartHover,
+    eyeHover,
+    setEyeHover,
     cartRate,
     setCartRate,
     cardPic,

@@ -33,8 +33,8 @@ export const getProductFavorites = async () => {
     if (!res.ok) throw new Error("獲取產品收藏失敗");
 
     const response = await res.json();
-    console.log("API 取得的商品收藏:", response);
-    return { success: true, data: response.data };
+    console.log("API 取得的商品收藏:", response); // 🟢 確保數據正確
+    return { success: true, data: response.data }; // 確保 data 直接傳遞
   } catch (error) {
     console.error("獲取產品收藏失敗:", error);
     return { success: false, error: error.message };
@@ -42,6 +42,7 @@ export const getProductFavorites = async () => {
 };
 
 // 移除用戶產品收藏
+
 export const deleteProductFavorite = async () => {
   const token = getToken();
   if (!token) return { success: false, error: "請先登入" };
@@ -180,19 +181,26 @@ export const removeCourseFavorite = async (favoriteId, userId) => {
   if (!token) return { success: false, error: "請先登入" };
 
   try {
-    const res = await fetch(`${COURSE_FAVORITE_URL}/${favoriteId}`, {
+    const res = await fetch(`${COURSE_FAVORITE_URL}/${favoriteId}?user_id=${userId}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ user_id: userId }), 
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    if (!res.ok) throw new Error("移除課程收藏失敗");
-    return await res.json();
+    const result = await res.json();
+
+    if (res.ok) {
+      return { success: true, message: "刪除成功" };
+    }
+
+    // 如果後端返回 400，但已經刪除，仍然回傳 success: true
+    if (res.status === 400 && result.message.includes("已經刪除")) {
+      return { success: true, message: "該收藏已刪除" };
+    }
+
+    throw new Error(result.message || "移除課程收藏失敗");
   } catch (error) {
     return { success: false, error: error.message };
   }
 };
+
 
