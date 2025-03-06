@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import {
   getProductFavorites,
-  deleteProductFavorite,
+  updateProductFavoriteStatus ,
   getHotelFavorites,
   removeHotelFavorite,
   getCourseFavorites,
@@ -159,17 +159,20 @@ export default function UserFavoritePage() {
   // 移除商品收藏
   const handleRemoveProductFavorite = async (favoriteId) => {
     try {
-      const response = await deleteProductFavorite(favoriteId);
+      console.log(`正在軟刪除商品收藏: 收藏ID = ${favoriteId}, 使用者ID = ${user.id}`);
+  
+      const response = await updateProductFavoriteStatus(user.id, [favoriteId], true);
+      console.log(" 軟刪除 API 回應:", response);
+  
       if (response.success) {
         setProductFavorites((prevFavorites) =>
-          prevFavorites.filter((item) => item.id !== favoriteId)
+          prevFavorites.filter((item) => item.id !== favoriteId) 
         );
       }
     } catch (error) {
-      console.error("移除失敗拉:", error);
+      console.error("移除收藏失敗:", error);
     }
   };
-
   // 移除旅館收藏
   const handleRemoveHotelFavorite = async (favoriteId) => {
     try {

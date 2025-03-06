@@ -56,7 +56,6 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   const { user_id } = req.body;
 
-  console.log("🟡 收到刪除請求:", { id, user_id });
 
   if (!user_id) {
     return res.status(400).json({ status: "error", message: "需要提供 user_id" });
