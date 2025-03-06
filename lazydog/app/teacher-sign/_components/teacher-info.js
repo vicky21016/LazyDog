@@ -1,11 +1,15 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import styles from "../css/teacherSignInfo.module.css";
+import Swal from "sweetalert2";
 
 export default function TeacherInfo() {
+  const router = useRouter();
   const [infos, setInfos] = useState([]);
   const [types, setTypes] = useState([]);
+  const [teacherPic, setTeacherPic] = useState([]);
 
   // 撈後台資料
   useEffect(() => {
@@ -18,36 +22,70 @@ export default function TeacherInfo() {
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
-        console.log(data?.data?.infos[0]);
-
+        setTeacherPic(data.data.infos[0].img);
         setInfos(data?.data?.infos[0]);
         setTypes(data.data.types);
       })
       .catch((err) => {
         console.error("Error fetching data:", err);
+        Swal.fire({
+          title: "更新失敗",
+          text: "老師資料更新發生錯誤，請稍後再試。",
+          icon: "error",
+          confirmButtonText: "確定",
+          ...animationConfig,
+        });
       });
   }, []);
 
   // 圖片
-  const fileInputRef = useRef(null); // 🔹 建立 useRef 來取得 input 元素
-  const [previewImage, setPreviewImage] = useState(""); // 🔹 存儲預覽圖片 URL
-  const handleUploadClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click(); // ✅ 透過 ref 觸發點擊
-    }
-  };
+  // const fileInputRef = useRef(null); // 🔹 建立 useRef 來取得 input 元素
+  // const [previewImage, setPreviewImage] = useState(""); // 🔹 存儲預覽圖片 URL
+  // const handleUploadClick = () => {
+  //   if (fileInputRef.current) {
+  //     fileInputRef.current.click(); // ✅ 透過 ref 觸發點擊
+  //   }
+  // };
 
   // 處理圖片變更
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0]; // 取得選擇的檔案
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setPreviewImage(reader.result); // 設定預覽圖片
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
+  // 跳出框效果
+  const animationConfig = {
+    showClass: {
+      popup: `
+      animate__animated
+      animate__fadeInUp
+      animate__faster
+    `,
+    },
+    hideClass: {
+      popup: `
+      animate__animated
+      animate__fadeOutDown
+      animate__faster
+    `,
+    },
+  };
+
   const handleImageChange = (e) => {
-    const file = e.target.files[0]; // 取得選擇的檔案
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result); // 設定預覽圖片
-      };
-      reader.readAsDataURL(file);
+    const { name, files } = e.target;
+
+    if (files && files.length > 0) {
+      if (name === "teacherPic") {
+        setTeacherPic(files[0]); // 更新主圖片
+      }
     }
+    e.target.value = "";
   };
 
   // 表單變更
@@ -63,20 +101,31 @@ export default function TeacherInfo() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const updateData = {
-    //   name: infos.name,
-    //   category_id: infos.category_id,
-    //   Introduce: infos.Introduce,
-    //   Experience: infos.Experience,
-    //   img: infos.img
-    // }
+    if (!teacherPic) {
+      Swal.fire({
+        title: "請選擇老師圖片",
+        icon: "warning",
+        confirmButtonText: "確定",
+        ...animationConfig,
+      });
+      return;
+    }
 
     const updateData = new FormData();
     updateData.append("name", infos.name);
     updateData.append("category_id", infos.category_id);
     updateData.append("Introduce", infos.Introduce);
     updateData.append("Experience", infos.Experience);
-    updateData.append("img", fileInputRef.current.files[0] || infos.img);
+    // updateData.append("img", fileInputRef.current.files[0] || infos.img);
+    updateData.append("teacherId", infos.teacherId);
+
+    if (teacherPic) {
+      updateData.append("teacherPic", teacherPic);
+    }
+
+    for (let pair of updateData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
 
     fetch(`http://localhost:5000/teacher/info`, {
       method: "PUT", // 或者使用 PUT
@@ -89,6 +138,17 @@ export default function TeacherInfo() {
       .then((data) => {
         alert("資料更新成功！");
         console.log("更新成功:", data);
+        Swal.fire({
+          title: "老師資料更新成功！",
+          icon: "success",
+          confirmButtonText: "確定",
+          timer: 2000,
+          willClose: () => {
+            // 在 Swal 關閉後跳轉頁面
+            // router.push(`/teacher-sign/list`);
+          },
+          ...animationConfig,
+        });
       })
       .catch((err) => console.error("Error updating data:", err));
   };
@@ -160,11 +220,11 @@ export default function TeacherInfo() {
                 </div>
               </div>
             </div>
-            <div className={`col-md-12 mt-3 pb-5 border-bottom`}>
+            <div className={`col-6 col-md-6 mt-3 pb-5 `}>
               <label className={`form-label ${styles.labels}`}>
                 師資照片
                 <span className={styles.must}>* </span>
-                <button
+                {/* <button
                   type="button"
                   className={`btn btn-primary btn-sm ${styles.addPicBtn}`}
                   onClick={handleUploadClick}
@@ -177,9 +237,9 @@ export default function TeacherInfo() {
                   className={`form-control d-none`}
                   accept="image/*"
                   onChange={handleImageChange}
-                />
+                /> */}
               </label>
-              <div
+              {/* <div
                 id="imagePreviewContainer"
                 className={`d-flex flex-wrap gap-3 my-2`}
               >
@@ -190,10 +250,59 @@ export default function TeacherInfo() {
                     alt={`${infos?.name}老師圖片`}
                   />
                 </div>
+              </div> */}
+
+              <div className={`col-12 col-md-5 mt-1 mb-4 ${styles.teacherPic}`}>
+                <div className={styles.imageCard}>
+                  {teacherPic ? (
+                    <img
+                      className={styles.imgCr}
+                      src={
+                        teacherPic instanceof File
+                          ? URL.createObjectURL(teacherPic)
+                          : `/teacher-img/${infos?.img}`
+                      }
+                      alt="主圖片"
+                    />
+                  ) : null}
+
+                  {teacherPic && (
+                    <button
+                      type="button"
+                      className={`${styles.deleteBtn1} `}
+                      onClick={() => setTeacherPic(null)}
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+
+                {!teacherPic && (
+                  <>
+                    <button
+                      type="button"
+                      className={`btn btn-primary btn-sm ${styles.addPicBtn}`}
+                      onClick={() =>
+                        document.getElementById("teacherPicUpload").click()
+                      }
+                    >
+                      + 封面圖
+                    </button>
+                    <input
+                      type="file"
+                      id="teacherPicUpload"
+                      className="d-none"
+                      accept="image/*"
+                      name="teacherPic"
+                      onChange={handleImageChange}
+                    />
+                  </>
+                )}
               </div>
             </div>
+            <div className="border-top my-1"></div>
             {/* 按鈕區 */}
-            <div className={`d-grid gap-2 col-3 mx-auto  mt-3`}>
+            <div className={`d-grid gap-2 col-3 mx-auto mt-3 `}>
               <button
                 type="submit"
                 className={`btn btn-primary btn-sm px-4 mt-4 ${styles.submitBtn}`}

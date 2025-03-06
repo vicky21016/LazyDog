@@ -28,13 +28,22 @@ export const getInfo = async (req, res) => {
 
 export const updateInfo = async (req, res) => {
   try {
-    const teacherId = req.user.id; // 從 token 中獲取教師的 ID
-    const { name, category_id, Introduce, Experience } = req.body; // 從請求的 body 取得要更新的資料
+    // console.log("📂 解析後的檔案:", req.file); // 🛠️ 查看 multer 是否成功處理圖片
+    // console.log("前端傳來的資料", req.body);
+
+    const { name, category_id, Introduce, Experience, teacherId } = req.body; // 從請求的 body 取得要更新的資料
     const img = req.file ? req.file.filename : null; // 如果有檔案，使用檔案名稱，否則為 null
-    const updateData = { name, category_id, Introduce, Experience, img };
+    const updateData = {
+      name,
+      category_id,
+      Introduce,
+      Experience,
+      img,
+      teacherId,
+    };
 
     // 呼叫更新函數，傳入 teacherId 和要更新的資料
-    const success = await updateTeacherInfo(teacherId, updateData);
+    const success = await updateTeacherInfo(updateData);
 
     // 如果更新成功
     if (success) {
