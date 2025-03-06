@@ -69,7 +69,7 @@ export default function MyMenu() {
     { name: "我的優惠", path: "/user/profileCoupon", icon: faTicket },
     { name: "我的收藏", path: "/user/userFavorite", icon: faHeart },
     { name: "我的文章", path: "/user/my_article", icon: faPen },
-    { name: "修改密碼", path: "/user/forgot-password", icon: faCirclePlus },
+    { name: "修改密碼", path: "/forgot-password", icon: faCirclePlus },
   ];
 
   // 點擊畫面其他地方時，自動關閉篩選選單

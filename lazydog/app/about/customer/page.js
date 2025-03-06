@@ -1,5 +1,5 @@
-import Header from "../../../components/layout/header"; 
-import Bread from "../../../components/teacher/breadcrumb"; 
+import Header from "../../components/layout/header"; 
+import Bread from "../../components/teacher/breadcrumb"; 
 export default async function CustomerPage(props) {
     return (
       <>
@@ -12,7 +12,7 @@ export default async function CustomerPage(props) {
 
               {
                 label: "客戶隱私權條款",
-                href: "/user/about/customer",
+                href: "/about/customer",
                 active: true,
               },
             ]}
