@@ -36,10 +36,19 @@
   font-size: 20px;
 }
 
-.suRoomCard {
-  font-size: 18px;
-  font-weight: bold;
+.room{
   color: #ff9538;
+  font-weight: bold;
+}
+
+.select{
+  .option:hover {
+    background-color: #ff9538 !important;
+  }
+}
+.select:focus{
+  border-color: #ff9538;
+  outline: none;
 }
 
 /* book按鈕 */
