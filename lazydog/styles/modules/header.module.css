@@ -34,6 +34,23 @@
 .lumi-cart-icon {
   font-size: 32px;
   color: #ff9538;
+  position: relative;
+  .lumi-cart-count {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    background-color: #ff9538;
+    border-radius: 50%;
+    /* border: 1px solid black; */
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 1;
+    top: 6px;
+    right: -5px;
+  }
 }
 .lumi-item {
   padding: 8px;
