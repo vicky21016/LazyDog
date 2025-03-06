@@ -138,6 +138,9 @@
 .dropdown:hover .dropdown-content {
   display: block;
 }
+.mobileMenuOut {
+  display: none;
+}
 
 .mobileMenu {
   display: none;
@@ -232,6 +235,21 @@
   }
   .lumiLogo1 {
     display: none;
+  }
+  .mobileMenuOut {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    .lumi-cart-icon {
+      font-size: 28px;
+    }
+    .lumi-cart-count {
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      top: 6px;
+      right: -5px;
+    }
   }
   .mobileMenu {
     display: block;
