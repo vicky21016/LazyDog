@@ -235,7 +235,7 @@ export function useDetailFetch() {
 
   const url = product ? `http://localhost:5000/api/products/${product}` : null;
   const url2 =
-    user.id > 0
+    user?.id > 0
       ? `http://localhost:5000/api/products/order?userID=${user.id}`
       : `http://localhost:5000/api/products/order`;
   const fetcher = async (url) => {
