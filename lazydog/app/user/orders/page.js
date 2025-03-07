@@ -44,7 +44,7 @@ export default function ProfileCouponPage(props) {
     setActiveTab(tabName);
   };
   return (
-    <div className=" col-12 col-md-9 coupon-section">
+    <div className={` col-12 col-md-9 coupon-section ${couponStyles.container}`}>
       <h5 className="mb-3">我的訂單</h5>
       <ul className={`nav ${couponStyles.suNavTabs}`}>
         <li className="nav-item">

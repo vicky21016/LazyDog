@@ -168,6 +168,9 @@
   border-radius: 50%;
   border: #F5842B;
 }
+.righttop{
+  padding: 30px;
+}
   }
 
   .collapseAside {
@@ -222,6 +225,3 @@
 .height{
   margin: 100px auto 0;
 }
-/* .righttop{
-  margin-top: 100px;
-} */

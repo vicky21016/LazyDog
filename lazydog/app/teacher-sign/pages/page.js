@@ -128,7 +128,7 @@ export default function Menu() {
         <div className={`${style.wrapper}`}>
           <MyMenu />
 
-          <div className={`col-12 col-md-9 ${style.righttop}`}>
+          <div className={`col-12 col-md-9 `}>
             <div className={`${styles.container}`}>
               <h4 className={`mb-4 ${styles["information"]}`}>基本資料</h4>
               <form

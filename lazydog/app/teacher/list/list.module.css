@@ -149,7 +149,13 @@
     background-color: #ff9538;
   color: white;
   }
-
+  .carouselbtn button {
+    background-color: #f7c090 !important; 
+  }
+  
+  .carouselbtn .active {
+    background-color: #cc4400 !important;
+  }
 
 
 /* 桌機版篩選選單 */
