@@ -21,13 +21,14 @@ const HotelSearchBar = ({
 
   const handleSearchBarSubmit = async () => {
     confirmLocation(); // 確保地區更新
-
+    let checkInDate = null;
+    let checkOutDate = null;
     const searchParams = {
-      city: city || null,
-      district: district || null,
-      quantity: quantity || 1,
-      checkInDate: null,
-      checkOutDate: null,
+      city: city ?? null,
+      district: district ?? null,
+      quantity: quantity ?? 1,
+      checkInDate: checkInDate ?? null,
+      checkOutDate: checkOutDate ?? null,
       minPrice: 0,
       maxPrice: 10000,
       rating: null,
@@ -79,7 +80,7 @@ const HotelSearchBar = ({
     };
 
     if (onSearch) {
-      onSearch(resetParams); // 將重置參數傳遞到父組件
+      onSearch({ ...resetParams }); // 將重置參數傳遞到父組件
     }
 
     setIsSearching(true);
@@ -130,7 +131,7 @@ const HotelSearchBar = ({
           <span className={styles.suQuantityNumber}>{quantity}</span>
           <button
             className={styles.suQuantityBtn}
-            onClick={() => setQuantity(quantity + 1)}
+            onClick={() => setQuantity(Math.min(10, quantity + 1))}
           >
             +
           </button>

@@ -1,35 +1,92 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "../courseId.module.css";
+import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
-export default function CourseIntro({ course, session, place }) {
+import {
+  addCourseFavorite,
+  removeCourseFavorite,
+} from "@/services/allFavoriteService";
+
+export default function CourseIntro({ course, session, place, params }) {
+  const router = useRouter();
+
   const c = course?.[0];
   const s = session?.[0];
+  const { courseId } = params;
 
+  const [selectDate, setSelectDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
+  const [filterSession, setFilterSession] = useState([]);
+  const { onAddCourse } = useCart();
   const [expanded, setExpanded] = useState(false);
-  const maxLength = 100; // 顯示的字數上限
+  const maxLength = 100;
   const displayText = expanded
     ? c?.description
     : c?.description?.length > maxLength
     ? c?.description.substring(0, maxLength) + "..."
     : c?.description;
-
+  const [isFavorite, setIsFavorite] = useState(false);
+  const uniqueDates = [...new Set(session.map((ss) => ss.class_dates))]; // 過濾出唯一的 class_dates 作為日期選單
   // const defaultTeachImg = "/course/img/user.jpg"
-  // console.log(s);
-  // console.log("CourseIntro - Course:", course);
 
-  const [selectDate, setSelectDate] = useState(""); // 選擇的日期
-  const [selectedTime, setSelectedTime] = useState("");
-  const [filterSession, setFilterSession] = useState([]); // 過濾後的時段
-  const { onAddCourse } = useCart();
+  // 處理收藏邏輯
+  const handleFavorite = async () => {
+    const storedToken =
+      localStorage.getItem("loginWithToken") ||
+      sessionStorage.getItem("loginWithToken") ||
+      JSON.parse(localStorage.getItem("user"))?.token ||
+      "";
 
-  // 過濾出唯一的 class_dates 作為日期選單
-  const uniqueDates = [...new Set(session.map((ss) => ss.class_dates))];
+    if (!storedToken || storedToken === "null" || storedToken === "undefined") {
+      Swal.fire({
+        icon: "warning",
+        title: "請先登入",
+        text: "您需要登入才能收藏課程！",
+      }).then(() => {
+        router.push("/login");
+      });
+      return;
+    }
+    console.log(courseId);
+
+    try {
+      if (isFavorite) {
+        await removeCourseFavorite(courseId, storedToken);
+        Swal.fire({
+          icon: "success",
+          title: "已移除收藏",
+          // text: "旅館已從您的收藏清單中移除！",
+        });
+        setIsFavorite(false);
+      } else {
+        const response = await addCourseFavorite(courseId, storedToken);
+        if (response.success) {
+          Swal.fire({
+            icon: "success",
+            title: response.message,
+            text: "課程已加入您的收藏清單！",
+          });
+          setIsFavorite(true);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "收藏失敗",
+            text: response.error || "請稍後再試",
+          });
+        }
+      }
+    } catch (error) {
+      console.error("收藏操作失敗:", error);
+      Swal.fire({ icon: "error", title: "操作失敗", text: "請稍後再試！" });
+    }
+  };
 
   // 當選擇日期時，過濾對應的時段
   const dateChange = (e) => {
@@ -52,6 +109,7 @@ export default function CourseIntro({ course, session, place }) {
     setSelectedTime(e.target.value);
   };
 
+  // 加入購物車
   const handleAddToCart = () => {
     if (!selectDate || !selectedTime) {
       Swal.fire({
@@ -104,6 +162,7 @@ export default function CourseIntro({ course, session, place }) {
     }
   };
 
+  // 其他 - GooglrMap連結
   const handlePlaceClick = (p, index) => {
     if (index < 3) {
       // 第一～第三筆資料連結到 Google Maps
@@ -125,7 +184,10 @@ export default function CourseIntro({ course, session, place }) {
 
         <div className={styles.courseName}>
           <h2 className={styles.name}>{c?.name}</h2>
-          <i className={`bi bi-heart ${styles.heartIcon}`}></i>
+          <i
+            className={`bi ${isFavorite ? "bi-heart-fill" : "bi-heart"}`}
+            onClick={handleFavorite}
+          ></i>
           {/* <FontAwesomeIcon icon={faHeart} className={styles.heartIcon} /> */}
           {/* <img
             className={styles.heartIcon}

@@ -13,7 +13,7 @@ export default function ProfileCouponPage(props) {
   const { orders, hotelOrders } = useOrder();
   const [activeTab, setActiveTab] = useState("全部");
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+    usePhotoUpload("/hotel/hotel-images/page-image/Dog5.png");
 
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
@@ -44,7 +44,7 @@ export default function ProfileCouponPage(props) {
     setActiveTab(tabName);
   };
   return (
-    <div className=" col-12 col-md-9 coupon-section">
+    <div className={` col-12 col-md-9 coupon-section ${couponStyles.container}`}>
       <h5 className="mb-3">我的訂單</h5>
       <ul className={`nav ${couponStyles.suNavTabs}`}>
         <li className="nav-item">

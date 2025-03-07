@@ -14,19 +14,27 @@ import {
   getHotelById,
   getHotelRoomById,
   getRoomInventory,
-  addHotelToFavorites,
-  removeHotelToFavorites,
 } from "@/services/hotelService";
-
+import {
+  addHotelFavorite,
+  removeHotelFavorite,
+  getHotelFavorites,
+} from "@/services/allFavoriteService";
 import Header from "../../../components/layout/header";
 import SearchBar from "../../../components/hotel/search";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
 import RoomSelection from "../../../components/hotel/roomSelection";
+import { useAuth } from "@/hooks/use-auth";
+import useSafeData from "@/hooks/useSafeData";
 
 export default function HotelDetailPage({ params }) {
   const { id } = params;
+  const [favoriteId, setFavoriteId] = useState(null); // 存收藏的 ID
+
+  console.log("Hotel ID from params:", id);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user, token } = useAuth();
 
   // 從 URL 中提取 checkIn 和 checkOut
   const initialCheckInDate = searchParams.get("checkInDate") || "";
@@ -83,6 +91,34 @@ export default function HotelDetailPage({ params }) {
     if (!id) return;
     fetchHotelData();
   }, [id]);
+  useEffect(() => {
+    if (id && user) {
+      fetchFavoriteId(); // 取得收藏狀態
+    }
+  }, [id, user]);
+
+  const fetchFavoriteId = async () => {
+    if (!id || !user) {
+      console.error("Hotel ID 或用戶未定義，無法獲取收藏");
+      return;
+    }
+  
+    try {
+      const result = await getHotelFavorites(id);
+      console.log("取得收藏資料:", result);
+  
+      if (result.success && result.data.length > 0) {
+        const favId = result.data[0].id; // 獲取收藏的 ID
+        setFavoriteId(favId);
+        setIsFavorite(true);
+      } else {
+        setFavoriteId(null);
+        setIsFavorite(false);
+      }
+    } catch (error) {
+      console.error("獲取收藏失敗:", error);
+    }
+  };
 
   // 獲取旅館資料的函數
   const fetchHotelData = async () => {
@@ -153,34 +189,53 @@ export default function HotelDetailPage({ params }) {
 
   // 處理收藏邏輯
   const handleFavorite = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
+    const storedToken =
+      localStorage.getItem("loginWithToken") ||
+      sessionStorage.getItem("loginWithToken") ||
+      JSON.parse(localStorage.getItem("user"))?.token ||
+      "";
+
+    if (!storedToken || storedToken === "null" || storedToken === "undefined") {
       Swal.fire({
         icon: "warning",
         title: "請先登入",
         text: "您需要登入才能收藏旅館！",
+      }).then(() => {
+        router.push("/login");
       });
-      router.push("/login"); // 跳轉到登入頁面
       return;
     }
 
     try {
-      if (isFavorite) {
-        await removeHotelToFavorites(id);
+      if (isFavorite && favoriteId) {
+        //  使用 favoriteId 取消收藏
+        await removeHotelFavorite(favoriteId, storedToken);
         Swal.fire({
           icon: "success",
           title: "已移除收藏",
           text: "旅館已從您的收藏清單中移除！",
         });
+
+        setIsFavorite(false);
+        setFavoriteId(null);
       } else {
-        await addHotelToFavorites(id);
-        Swal.fire({
-          icon: "success",
-          title: "已加入收藏",
-          text: "旅館已加入您的收藏清單！",
-        });
+        const response = await addHotelFavorite(id, storedToken);
+        if (response.success) {
+          Swal.fire({
+            icon: "success",
+            title: response.message,
+            text: "旅館已加入您的收藏清單！",
+          });
+
+          fetchFavoriteId(); // 重新獲取收藏狀態，確保 favoriteId 更新
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "收藏失敗",
+            text: response.error || "請稍後再試",
+          });
+        }
       }
-      setIsFavorite(!isFavorite);
     } catch (error) {
       console.error("收藏操作失敗:", error);
       Swal.fire({ icon: "error", title: "操作失敗", text: "請稍後再試！" });
@@ -211,7 +266,7 @@ export default function HotelDetailPage({ params }) {
         onCheckOutDateChange={setCheckOutDate}
       />
       {/* 簡介 */}
-      <div className="container mt-5">
+      <div className={`container mt-5 ${hotelStyles.container}`}>
         <Breadcrumb
           links={[
             { label: "首頁 ", href: "/" },
@@ -219,6 +274,7 @@ export default function HotelDetailPage({ params }) {
             {
               label: "旅館介紹",
               href: `/hotel-coupon/fonthotelDetail/${id}`,
+              active: true,
             },
           ]}
         />
@@ -242,9 +298,9 @@ export default function HotelDetailPage({ params }) {
                   <i
                     className={`bi ${
                       isFavorite ? "bi-heart-fill" : "bi-heart"
-                    }  `}
+                    }`}
                     style={{ color: "red", cursor: "pointer", float: "right" }}
-                    onClick={handleFavorite} // 綁定點擊事件
+                    onClick={handleFavorite}
                   ></i>
                 </h3>
                 {/* <p>入住時間: {checkInDate}</p>
@@ -270,7 +326,7 @@ export default function HotelDetailPage({ params }) {
       </div>
       {/* 我們的努力 */}
       <div className={hotelStyles.suEffortSection}>
-        <div className="container text-center">
+        <div className={`container text-center ${hotelStyles.container}`}>
           <h2 className={hotelStyles.suEffortTitle}>我們的努力，看的見</h2>
           <p className={hotelStyles.suEffortSubtitle}>
             每一次陪伴、每一小時的付出，都為毛孩創造更快樂、更健康的生活！
@@ -305,12 +361,6 @@ export default function HotelDetailPage({ params }) {
       </div>
       {/* Google 地圖 */}
       <div className={hotelStyles.suMapContainer}>
-        <h1 className="map-title text-center mt-5">
-          {hotel?.name || "載入中..."}
-        </h1>
-        <p className="map-title text-center mt-5">
-          地址: {hotel?.address || "無資料"}
-        </p>
         {lat && lng ? (
           <div ref={mapRef} style={{ height: "500px", width: "100%" }}></div>
         ) : (

@@ -152,6 +152,9 @@
     border-radius: 50%;
     border: #f5842b;
   }
+  .wrapper {
+    gap: 0px;
+  }
 }
 
 .collapseAside {

@@ -10,6 +10,8 @@ import useArticles from "@/hooks/useArticle";
 import useUploadCover from "@/hooks/uploadCover"; // 引入圖片上傳鉤子
 import { useAuth } from "@/hooks/use-auth";  // 引入 useAuth 鉤子
 import Header from "../../components/layout/header";
+import style from '../../../styles/modules/operatorCamera.module.css';
+import Breadcrumb from "../../components/teacher/breadcrumb";
 
 export default function AddArticlePage() {
   const { createArticle } = useArticles();
@@ -91,11 +93,19 @@ export default function AddArticlePage() {
   return (
     <>
       <Header />
-
-      <div className="container" style={{marginTop:'75px'}}>
+      <div className='lumi-all-wrapper'>
+      <Breadcrumb
+              links={[
+                { label: "首頁 ", href: "/" },
+                { label: " 毛孩文章", href: "/article/list" },
+                { label:` 新增文章`, href: "/article/list/detail", active: true },
+              ]}
+            />
+        </div>
+      <div className="container" style={{marginTop:'35px'}}>
         <div className="row">
           <div className="col-lg-3 col-sm-12">
-            <Link href="/article/list" className="btn btn-primary mb-3">
+            <Link href="/article/list" className={`btn mb-3 ${style.btn3}`}>
               回文章列表
             </Link>
           </div>
@@ -104,7 +114,7 @@ export default function AddArticlePage() {
               className="p-3 col"
               style={{
                 maxWidth: '750px',
-                backgroundColor: '#FFF6E8',
+                backgroundColor: '#FDFAF5',
                 boxShadow: "0px 10px 14px rgba(0, 0, 0, 0.25)"
               }}
             >
@@ -162,16 +172,10 @@ export default function AddArticlePage() {
               {/* ✅ 傳遞內容變更函數 */}
 
               {/* 發布按鈕 */}
-              <div className="d-flex justify-content-end">
+              <div className={`d-flex justify-content-end`}>
                 <button
                   type="button"
-                  className="mt-3"
-                  style={{
-                    border: 'none',
-                    backgroundColor: '#FFBD00',
-                    color: 'white',
-                    borderRadius: '5px',
-                  }}
+                  className={`mt-3  ${style.btn}`}
                   onClick={handleSubmit}
                   disabled={isLoading} // 上傳中禁用按鈕
                 >

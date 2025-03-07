@@ -176,12 +176,12 @@ export default function Header(props) {
             </div>
           ) : null}
         </div>
-        <div className={styles["lumi-cart-icon2"]}>
-          <Link href="/cart/CartList" className={styles["lumi-cart-icon2"]}>
-            {/* <img src="/images/cart.png" alt="cart" /> */}
-            <i className="bi bi-cart2"></i>
-          </Link>
-        </div>
+        {/* <div className={styles["lumi-cart-icon2"]}> */}
+        <Link href="/cart/CartList" className={styles["lumi-cart-icon2"]}>
+          {/* <img src="/images/cart.png" alt="cart" /> */}
+          <i className="bi bi-cart2"></i>
+        </Link>
+        {/* </div> */}
       </div>
       {/* 手機板 */}
       {/* <div

@@ -9,6 +9,8 @@ import useArticles from "@/hooks/useArticle";
 import useUploadCover from "@/hooks/uploadCover";
 import { useAuth } from "@/hooks/use-auth";
 import Header from "../../../components/layout/header";
+import Breadcrumb from "../../../components/teacher/breadcrumb";
+import style from '../../../../styles/modules/operatorCamera.module.css';
 
 // 將表單的不同部分拆分為子元件
 import TitleInput from '../../_components/update/TitleInput';
@@ -108,10 +110,18 @@ export default function UpdateArticlePage({ params }) {
   return (
     <>
       <Header />
-      <div className="container" style={{marginTop:'75px'}}>
+      <div className='lumi-all-wrapper'>
+      <Breadcrumb
+                    links={[
+                      { label: "首頁 ", href: "/" },
+                      { label: " 毛孩文章", href: "/article/list" },
+                      { label:` 編輯文章`, href: "/article/list/detail", active: true },
+                    ]}
+                  /></div>
+      <div className="container" style={{marginTop:'55px'}}>
         <div className="row">
           <div className="col-lg-3 col-sm-12">
-            <Link href="/article/my_article" className="btn btn-primary mb-3">
+            <Link href="/article/my_article" className={`btn mb-3 ${style.btn3}`}>
               回我的文章
             </Link>
           </div>
@@ -120,7 +130,7 @@ export default function UpdateArticlePage({ params }) {
               className="p-3 col"
               style={{
                 maxWidth: '750px',
-                backgroundColor: '#FFF6E8',
+                backgroundColor: '#FDFAF5',
                 boxShadow: "0px 10px 14px rgba(0, 0, 0, 0.25)"
               }}
             >
@@ -154,11 +164,11 @@ export default function UpdateArticlePage({ params }) {
               <div className="d-flex justify-content-end">
                 <button
                   type="button"
-                  className="mt-3"
+                  className={`mt-3 ${style.btn}`}
                   style={{
-                    border: 'none',
+            
                     borderRadius: '5px',
-                    backgroundColor: '#FFBD00',
+                   
                   }}
                   onClick={handleSubmit}
                   disabled={isLoading}
@@ -168,7 +178,7 @@ export default function UpdateArticlePage({ params }) {
                       <Link
                         href="http://localhost:3000/user/my_article"
                         style={{
-                          backgroundColor: '#FFBD00',
+                     
                           color: 'white',
                         }}
                       >

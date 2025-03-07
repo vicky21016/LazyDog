@@ -117,7 +117,9 @@ export function useReviewsUpdate({
 
   return {
     formData,
+    setFormData,
     handleSubmit,
     reviewsChange,
+    reviewsMutate,
   };
 }

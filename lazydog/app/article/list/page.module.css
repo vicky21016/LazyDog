@@ -94,13 +94,19 @@
 
 /* middle */
 .post {
-  background-color: #f5842b;
+  /* background-color: #f5842b; */
+  text-decoration: none;
   color: white;
   border-radius: 5px;
   border: none;
   /* width: 120px; */
   /* height: 30px; */
   font-size: 16px;
+}
+.post:hover {
+  background-color: #fdf9f5;
+  color: #ff9538 !important;
+  border-color: #ff9538;
 }
 
 .filter {

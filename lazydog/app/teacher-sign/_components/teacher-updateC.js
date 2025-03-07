@@ -30,6 +30,7 @@ export default function TeacherUpdateC() {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data.data);
         setCS(data.data.courses[0]);
         setMainpic(data.data.mainpic[0]);
         setOtherpics(data.data.otherpics);
@@ -206,7 +207,7 @@ export default function TeacherUpdateC() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("更新成功:", data);
+        console.log("前台送出資料:", data);
         Swal.fire({
           title: "資料更新成功！",
           text: "課程資料已成功更新！",

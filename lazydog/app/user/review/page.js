@@ -39,7 +39,7 @@ export default function ReviewList() {
     return () => document.removeEventListener("click", clickOutside);
   }, [listOpen]);
   return (
-    <div className={`col-12 col-xl-9 container`}>
+    <div className={`col-12 col-xl-9 container ${styles.container}`}>
       <h3 className="mb-4">評論列表</h3>
       <table className={`table table-striped table-hover ${styles.table}`}>
         <thead className="table-light">

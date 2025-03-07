@@ -4,7 +4,7 @@
   gap: 15px;
   background: #f5d1a8;
   border-radius: 15px;
-  padding: 12px;
+  padding: 8px;
   align-items: center;
   justify-content: space-between;
   max-width: 950px;
@@ -234,20 +234,17 @@
 }
 
 .suHotelInfo h5 {
-  color: #333;
   font-weight: bold;
 }
 
 .suHotelInfo p {
-  color: #b39898;
+  color: rgba(61, 56, 54, 0.505);
   font-size: 14px;
 }
 
 .suPriceBox {
   text-align: right;
-  font-size: 18px;
-  font-weight: bold;
-  color: #444;
+  font-weight: 600;
 }
 
 .suReview {
@@ -259,9 +256,7 @@
   background-color: #ff9538;
   color: white;
   padding: 10px 15px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
+  border-radius: 10px;
   border: 1px solid transparent;
   cursor: pointer;
 }
@@ -454,5 +449,48 @@
     border: 1px solid #f5842b;
     width: 35px;
     height: 35px;
+  }
+}
+/*  搜尋欄 RWD */
+@media (max-width: 768px) {
+  .suSearchBar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+    gap: 10px;
+    max-width: 100%;
+  }
+
+  .suSearchGroup {
+    max-width: 100%;
+    flex: none;
+    width: 100%;
+  }
+
+  .suSearchBtn {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+  }
+}
+/*  375px 以下（最小寬度） */
+@media (max-width: 375px) {
+  .suSearchBar {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .suSearchGroup {
+    padding: 6px 10px;
+  }
+
+  .suSearchBtn {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .suQuantityNumber {
+    width: 30px;
+    font-size: 14px;
   }
 }
