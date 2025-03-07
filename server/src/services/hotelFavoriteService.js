@@ -1,9 +1,12 @@
 import pool from "../config/mysql.js";
 
 export const addFavorites = async (user_id, hotel_id) => {
+  const connection = await pool.getConnection();
   try {
-    // 確保沒有重複收藏
-    const [existing] = await pool.query(
+    await connection.beginTransaction();
+
+    // 檢查是否已收藏
+    const [existing] = await connection.query(
       "SELECT id FROM hotel_favorites WHERE user_id = ? AND hotel_id = ? AND is_deleted = 0",
       [user_id, hotel_id]
     );
@@ -12,10 +15,13 @@ export const addFavorites = async (user_id, hotel_id) => {
       throw new Error("該飯店已收藏");
     }
 
-    const [result] = await pool.query(
+    // 插入新收藏
+    const [result] = await connection.query(
       "INSERT INTO hotel_favorites (user_id, hotel_id, created_at, updated_at) VALUES (?, ?, NOW(), NOW())",
       [user_id, hotel_id]
     );
+
+    await connection.commit();
 
     return {
       success: true,
@@ -23,7 +29,10 @@ export const addFavorites = async (user_id, hotel_id) => {
       data: { id: result.insertId, user_id, hotel_id },
     };
   } catch (error) {
+    await connection.rollback();
     throw new Error("新增收藏錯誤：" + error.message);
+  } finally {
+    connection.release();
   }
 };
 export const removeFavorites = async (favorite_id, user_id) => {
@@ -33,12 +42,13 @@ export const removeFavorites = async (favorite_id, user_id) => {
       [favorite_id, user_id]
     );
 
-    if (existing.length === 0) {
+    if (existing.length == 0) {
       throw new Error("找不到收藏紀錄");
     }
 
+    // 使用 DELETE 語句實現硬刪除
     await pool.query(
-      "UPDATE hotel_favorites SET is_deleted = 1, updated_at = NOW() WHERE id = ?",
+      "DELETE FROM hotel_favorites WHERE id = ?",
       [favorite_id]
     );
 
