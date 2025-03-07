@@ -104,8 +104,11 @@ export default function UserFavoritePage() {
           .filter((v) => v.user_id == user?.id)
           .flatMap((v) => v.productID_list.split(","));
         // console.log("完整的商品收藏 ID 列表:", allProductIDs);
-        setPdFavoriteList([...new Set(allProductIDs)]); // 只在成功時更新
-      } else {
+        setPdFavoriteList((prev) => {
+          const newFavorites = [...new Set(allProductIDs)];
+          return JSON.stringify(prev) !== JSON.stringify(newFavorites) ? newFavorites : prev;
+        });
+              } else {
         console.log("未獲取到商品收藏");
       }
   
@@ -264,53 +267,35 @@ export default function UserFavoritePage() {
   // 移除旅館收藏
   const handleRemoveHotelFavorite = async (favoriteId) => {
     try {
-      // 顯示確認對話框
       const result = await Swal.fire({
         icon: "warning",
         title: "確認刪除收藏？",
         showConfirmButton: true,
         confirmButtonText: "我再想想",
-        confirmButtonColor: "#bcbcbc", // 設定按鈕顏色
-        showCancelButton: true, // 顯示取消按鈕
-        cancelButtonText: "忍痛刪除", // 設定取消按鈕文字
-        cancelButtonColor: "#dc3545", // 設定取消按鈕顏色
+        confirmButtonColor: "#bcbcbc",
+        showCancelButton: true,
+        cancelButtonText: "忍痛刪除",
+        cancelButtonColor: "#dc3545",
       });
-
-      // 點擊 "忍痛刪除"
+  
       if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
-        // console.log(
-        //   `正在移除旅館收藏: 收藏ID = ${favoriteId}, 使用者ID = ${user.id}`
-        // );
-
         const response = await removeHotelFavorite(favoriteId, user.id);
-
-
+  
         if (response.success) {
-          setHotelFavorites((prevFavorites) =>
-            prevFavorites.filter((item) => item.id !== favoriteId)
+          setHotelFavorites((prev) =>
+            prev.filter((item) => item.id !== favoriteId)
           );
-
-          // 刪除成功後顯示成功訊息
+  
           Swal.fire({
             icon: "success",
             title: "刪除成功",
             showConfirmButton: false,
-            timer: 1500, // 1.5秒後自動關閉
+            timer: 1500,
           });
         }
-      } else if (result.isConfirmed) {
-        // 點擊 "我再想想"
-        Swal.fire({
-          icon: "info",
-          title: "已取消刪除",
-          showConfirmButton: false,
-          timer: 1500, // 1.5秒後自動關閉
-        });
       }
     } catch (error) {
       console.error("移除旅館收藏失敗:", error);
-
-      // 刪除失敗後顯示錯誤訊息
       Swal.fire({
         icon: "error",
         title: "刪除失敗",
@@ -319,6 +304,7 @@ export default function UserFavoritePage() {
       });
     }
   };
+  
 
  
 
