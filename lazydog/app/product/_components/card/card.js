@@ -202,11 +202,14 @@ function CardContent({ productID = "" }) {
           <motion.div
             layout
             style={{
-              position: isOn ? "absolute" : "",
+              position: isOn ? "fixed" : "",
+              display: isOn ? "flex" : "none",
               fontSize: isOn ? "50px" : "0px",
+              top: isOn ? "50%" : "",
+              zIndex: isOn ? "99" : "0",
             }}
           >
-            123
+            <h1>{productName}</h1>
           </motion.div>
           <li
             className={`${styles.ProductCard} col`}
