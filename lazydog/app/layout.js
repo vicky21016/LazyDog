@@ -26,7 +26,7 @@ const geistMono = localFont({
 // });
 
 export const metadata = {
-  title: "ＬＡＺＹＤＯＧ",
+  title: "LAZYDOG",
   description:
     "website for Lazy Dog, an online store offer high quality dog stuff and services",
   icons: {
@@ -49,21 +49,22 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body
-        style={{ marginTop: "120px" }}
-        className={`${geistSans.variable} ${geistMono.variable}`}
-      >
-        <AuthProvider>
-          <CartProvider>
+
+      <AuthProvider>
+        <CartProvider>
+          <body
+            // style={{ marginTop: "120px" }}
+            className={`${geistSans.variable} ${geistMono.variable}`}
+          >
             {children}
             <Footer />
-          </CartProvider>
-        </AuthProvider>
-        <Script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-          strategy="afterInteractive"
-        />
-      </body>
+            <Script
+              src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+              strategy="afterInteractive"
+            />
+          </body>
+        </CartProvider>
+      </AuthProvider>
     </html>
   );
 }
