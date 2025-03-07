@@ -96,15 +96,23 @@ export const addHotelFavorite = async (hotelId) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ hotelId }),
+      body: JSON.stringify({ hotel_id: hotelId }), // 確保 key 與後端一致
     });
-    if (!res.ok) throw new Error("新增hotel收藏失敗");
-    return await res.json();
+
+    const result = await res.json();
+
+    // **確保讀取到最內層的 success**
+    if (result.success && result.data?.success) {
+      return { success: true, message: result.data.message || "收藏成功" };
+    }
+
+    throw new Error(result.message || "新增 hotel 收藏失敗");
   } catch (error) {
-    console.error("新增hotel收藏失敗:", error);
+    console.error("新增 hotel 收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
+
 
 // 移除收藏
 export const removeHotelFavorite = async (id) => {

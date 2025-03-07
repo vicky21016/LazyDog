@@ -17,16 +17,20 @@ import {
   addHotelToFavorites,
   removeHotelToFavorites,
 } from "@/services/hotelService";
-
+import {addHotelFavorite} from "@/services/allFavoriteService"
 import Header from "../../../components/layout/header";
 import SearchBar from "../../../components/hotel/search";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
 import RoomSelection from "../../../components/hotel/roomSelection";
+import { useAuth } from "@/hooks/use-auth";
+
 
 export default function HotelDetailPage({ params }) {
   const { id } = params;
   const router = useRouter();
   const searchParams = useSearchParams();
+const { user ,token} = useAuth();
+console.log("User from useAuth:", user); // 測試是否正確獲取 user
 
   // 從 URL 中提取 checkIn 和 checkOut
   const initialCheckInDate = searchParams.get("checkInDate") || "";
@@ -150,20 +154,24 @@ export default function HotelDetailPage({ params }) {
 
     router.push(`/hotel-coupon/fonthotelHome?${paramsString}`);
   };
-
+  
   // 處理收藏邏輯
   const handleFavorite = async () => {
     const token = localStorage.getItem("token");
+    console.log("Token read:", token); // 檢查 token 是否存在
+  
     if (!token) {
       Swal.fire({
         icon: "warning",
         title: "請先登入",
         text: "您需要登入才能收藏旅館！",
+      }).then(() => {
+        console.log("Redirecting to login page..."); // 確認跳轉邏輯執行
+        router.push("/login");
       });
-      router.push("/login"); // 跳轉到登入頁面
       return;
     }
-
+  
     try {
       if (isFavorite) {
         await removeHotelToFavorites(id);
@@ -173,19 +181,31 @@ export default function HotelDetailPage({ params }) {
           text: "旅館已從您的收藏清單中移除！",
         });
       } else {
-        await addHotelToFavorites(id);
-        Swal.fire({
-          icon: "success",
-          title: "已加入收藏",
-          text: "旅館已加入您的收藏清單！",
-        });
+        const response = await addHotelFavorite(id);
+        if (response.success) {
+          Swal.fire({
+            icon: "success",
+            title: response.message,
+            text: "旅館已加入您的收藏清單！",
+          });
+  
+          // 確保 UI 立即更新
+          setIsFavorite(true);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "收藏失敗",
+            text: response.error || "請稍後再試",
+          });
+        }
       }
-      setIsFavorite(!isFavorite);
     } catch (error) {
       console.error("收藏操作失敗:", error);
       Swal.fire({ icon: "error", title: "操作失敗", text: "請稍後再試！" });
     }
   };
+  
+  
 
   const mapRef = useRef(null);
   useGoogleMap(lat, lng, mapRef);
