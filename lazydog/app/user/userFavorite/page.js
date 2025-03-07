@@ -22,7 +22,6 @@ export default function UserFavoritePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("User Data:", user);
     if (user?.id) {
       fetchFavorites();
     }
@@ -63,7 +62,6 @@ export default function UserFavoritePage() {
           };
         });
 
-        console.log("最終處理後的商品圖片:", productsWithDetails);
         setProductFavorites(productsWithDetails);
       } catch (err) {
         console.error("資料要求失敗:", err);
@@ -74,38 +72,43 @@ export default function UserFavoritePage() {
     }
   };
 
-  console.log(productFavorites);
   useEffect(() => {
     fetchProductDetails(pdFavoriteList);
   }, [pdFavoriteList]);
 
   // 獲取所有收藏資料
+  useEffect(() => {
+    if (user?.id) {
+      fetchFavorites();
+    }
+  }, [user]); // 只在 user 變化時觸發
+  
   const fetchFavorites = async () => {
     try {
       setLoading(true);
-
+  
       // 取得旅館收藏
       const hotelResponse = await getHotelFavorites();
-      console.log("旅館收藏 API 回應:", hotelResponse);
+      // console.log("旅館收藏 API 回應:", hotelResponse);
       if (hotelResponse.success && Array.isArray(hotelResponse.data.data)) {
-        setHotelFavorites([...hotelResponse.data.data]);
+        setHotelFavorites(hotelResponse.data.data); // 只在成功時更新
       } else {
         console.log("未獲取到旅館收藏");
       }
-
+  
       // 取得商品收藏
       const productResponse = await getProductFavorites();
-      console.log("商品收藏 API 回應:", productResponse);
+      // console.log("商品收藏 API 回應:", productResponse);
       if (productResponse.success && Array.isArray(productResponse.data)) {
         const allProductIDs = productResponse.data
           .filter((v) => v.user_id == user?.id)
           .flatMap((v) => v.productID_list.split(","));
-        console.log("完整的商品收藏 ID 列表:", allProductIDs);
-        setPdFavoriteList([...new Set(allProductIDs)]);
+        // console.log("完整的商品收藏 ID 列表:", allProductIDs);
+        setPdFavoriteList([...new Set(allProductIDs)]); // 只在成功時更新
       } else {
         console.log("未獲取到商品收藏");
       }
-
+  
       // 取得課程收藏
       await fetchCourseFavorites();
     } catch (error) {
@@ -114,6 +117,12 @@ export default function UserFavoritePage() {
       setLoading(false);
     }
   };
+  
+  useEffect(() => {
+    if (pdFavoriteList.length > 0) {
+      fetchProductDetails(pdFavoriteList);
+    }
+  }, [pdFavoriteList]); // 只在 pdFavoriteList 變化時觸發
 
   const fetchCourseFavorites = async () => {
     try {
@@ -218,9 +227,9 @@ export default function UserFavoritePage() {
       cancelButtonColor: "#dc3545", // 設定取消按鈕顏色
     }).then(async (result) => {
       if (result.isDismissed) {
-        console.log(pdFavoriteList);
+        // console.log(pdFavoriteList);
         const favorite = pdFavoriteList.filter((v) => v !== favoriteId);
-        console.log(favorite);
+        // console.log(favorite);
         setPdFavoriteList(favorite);
         const formData = new FormData();
         formData.append("userID", user?.id);
@@ -269,13 +278,12 @@ export default function UserFavoritePage() {
 
       // 點擊 "忍痛刪除"
       if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
-        console.log(
-          `正在移除旅館收藏: 收藏ID = ${favoriteId}, 使用者ID = ${user.id}`
-        );
+        // console.log(
+        //   `正在移除旅館收藏: 收藏ID = ${favoriteId}, 使用者ID = ${user.id}`
+        // );
 
         const response = await removeHotelFavorite(favoriteId, user.id);
 
-        console.log("移除回應:", response);
 
         if (response.success) {
           setHotelFavorites((prevFavorites) =>
@@ -312,15 +320,7 @@ export default function UserFavoritePage() {
     }
   };
 
-  useEffect(() => {
-    console.log(" 更新後的課程收藏:", courseFavorites);
-  }, [courseFavorites]);
-  useEffect(() => {
-    console.log(" 更新後的旅館收藏:", hotelFavorites);
-  }, [hotelFavorites]);
-  useEffect(() => {
-    console.log(" 更新後的商品收藏:", productFavorites);
-  }, [productFavorites]);
+ 
 
   return (
     <div className={`col-md-9 col-12 ${styles.container}`}>

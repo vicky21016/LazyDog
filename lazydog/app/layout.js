@@ -49,19 +49,21 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-
-      <AuthProvider>
-        <CartProvider>
-          <body  style={{ marginTop: "120px" }} className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        style={{ marginTop: "120px" }}
+        className={`${geistSans.variable} ${geistMono.variable}`}
+      >
+        <AuthProvider>
+          <CartProvider>
             {children}
             <Footer />
-            <Script
-              src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-              strategy="afterInteractive"
-            />
-          </body>
-        </CartProvider>
-      </AuthProvider>
+          </CartProvider>
+        </AuthProvider>
+        <Script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          strategy="afterInteractive"
+        />
+      </body>
     </html>
   );
 }

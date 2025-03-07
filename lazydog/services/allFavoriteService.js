@@ -12,7 +12,6 @@ export const getId = async (productId) => {
     if (!res.ok) throw new Error("獲取商品詳細資訊失敗");
     return await res.json();
   } catch (error) {
-    console.error("獲取商品資訊錯誤:", error);
     return null;
   }
 };
@@ -33,10 +32,8 @@ export const getProductFavorites = async () => {
     if (!res.ok) throw new Error("獲取產品收藏失敗");
 
     const response = await res.json();
-    console.log("API 取得的商品收藏:", response); // 🟢 確保數據正確
-    return { success: true, data: response.data }; // 確保 data 直接傳遞
+    return { success: true, data: response.data }; 
   } catch (error) {
-    console.error("獲取產品收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
@@ -58,7 +55,6 @@ export const deleteProductFavorite = async () => {
     if (!res.ok) throw new Error("移除產品收藏失敗");
     return await res.json();
   } catch (error) {
-    console.error("移除產品收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
@@ -79,7 +75,6 @@ export const getHotelFavorites = async () => {
     if (!res.ok) throw new Error("獲取hotel收藏失敗");
     return await res.json();
   } catch (error) {
-    console.error("獲取hotel收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
@@ -108,7 +103,6 @@ export const addHotelFavorite = async (hotelId) => {
 
     throw new Error(result.message || "新增 hotel 收藏失敗");
   } catch (error) {
-    console.error("新增 hotel 收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
@@ -140,7 +134,6 @@ export const removeHotelFavorite = async (id) => {
 
     return await res.json();
   } catch (error) {
-    console.error("移除hotel收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
@@ -163,10 +156,8 @@ export const getCourseFavorites = async (id) => {
     if (!res.ok) throw new Error("獲取課程收藏失敗");
 
     const response = await res.json();
-    console.log("API 取得的課程收藏:", response);
     return { success: true, data: response.data };
   } catch (error) {
-    console.error("獲取課程收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
@@ -189,7 +180,6 @@ export const addCourseFavorite = async (courseId) => {
     if (!res.ok) throw new Error("新增課程收藏失敗");
     return await res.json();
   } catch (error) {
-    console.error("新增課程收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
