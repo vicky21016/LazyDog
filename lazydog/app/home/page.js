@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -13,14 +13,59 @@ import styles from "../../styles/modules/home.module.css";
 import Header from "../components/layout/header2";
 import { useDetailFetch } from "@/hooks/product/use-fetch";
 import TaiwanMap from "./_component/TaiwanMap";
-export default function HomePage(props) {
-  // const { hotSale } = useDetailFetch();
-  // console.log(hotSale);
 
+export default function HomePage(props) {
+  const { hotSale } = useDetailFetch();
+  const [productDetails, setProductDetails] = useState({});
+  const fetchProductDetails = async (hotSaleItem) => {
+    try {
+      const BASE_IMAGE_URL = "http://localhost:3000/product/img/";
+      const promises = hotSaleItem.map(async (productID) => {
+        if (productID) {
+          const res = await fetch(
+            `http://localhost:5000/api/products/${productID}`
+          );
+          if (!res.ok) throw new Error(`資料要求失敗: ${productID}`);
+          return await res.json();
+        }
+      });
+      const results = await Promise.all(promises);
+
+      const newProductsWithDetails = results
+        .filter((e) => e !== undefined)
+        .map((e) => {
+          const productData = e.data[0];
+          let imgList = productData.img ? productData.img.split(",") : [];
+          let firstImage = imgList.length > 0 ? imgList[0].trim() : "";
+          let imageUrl = firstImage
+            ? `${BASE_IMAGE_URL}${encodeURIComponent(
+                productData.name.trim()
+              )}${encodeURIComponent(firstImage)}`
+            : "/lazydog.png";
+
+          return {
+            id: productData.productID,
+            name: productData.name,
+            image_url: imageUrl,
+            price: productData.price,
+          };
+        });
+      setProductDetails(newProductsWithDetails);
+    } catch (err) {
+      console.error("資料要求失敗:", err);
+      throw err;
+    }
+  };
+
+  useEffect(() => {
+    if (hotSale.length > 0) {
+      fetchProductDetails([...hotSale]);
+    }
+  }, [hotSale]);
+  console.log(productDetails);
   return (
     <>
       <Header />
-
       <div className={styles.section1}>
         <div className="container">
           <div className={`row ${styles.words}`}>
@@ -80,71 +125,25 @@ export default function HomePage(props) {
 
           {/* 桌機板 */}
           <div className={`row d-none d-md-flex  ${styles.productCards}`}>
-            <div className={`col-2 ${styles.card}`}>
-              <div className={styles.pdPics}>
-                <img
-                  className={styles.dryfood}
-                  src="/home/img/dryfood (2).jpeg"
-                  alt=""
-                />
-              </div>
-              <div className={styles.pdWords}>
-                <p className={styles.p}>超能狗主食罐</p>
-                <p className={styles.p}>$185</p>
-              </div>
-            </div>
-            <div className={`col-2 ${styles.card}`}>
-              <div className={styles.pdPics}>
-                <img
-                  className={styles.dryfood}
-                  src="/home/img/dryfood (2).jpeg"
-                  alt=""
-                />
-              </div>
-              <div className={styles.pdWords}>
-                <p className={styles.p}>超能狗主食罐</p>
-                <p className={styles.p}>$185</p>
-              </div>
-            </div>
-            <div className={`col-2 ${styles.card}`}>
-              <div className={styles.pdPics}>
-                <img
-                  className={styles.dryfood}
-                  src="/home/img/dryfood (2).jpeg"
-                  alt=""
-                />
-              </div>
-              <div className={styles.pdWords}>
-                <p className={styles.p}>超能狗主食罐</p>
-                <p className={styles.p}>$185</p>
-              </div>
-            </div>
-            <div className={`col-2 ${styles.card}`}>
-              <div className={styles.pdPics}>
-                <img
-                  className={styles.dryfood}
-                  src="/home/img/dryfood (2).jpeg"
-                  alt=""
-                />
-              </div>
-              <div className={styles.pdWords}>
-                <p className={styles.p}>超能狗主食罐</p>
-                <p className={styles.p}>$185</p>
-              </div>
-            </div>
-            <div className={`col-2 ${styles.card}`}>
-              <div className={styles.pdPics}>
-                <img
-                  className={styles.dryfood}
-                  src="/home/img/dryfood (2).jpeg"
-                  alt=""
-                />
-              </div>
-              <div className={styles.pdWords}>
-                <p className={styles.p}>超能狗主食罐</p>
-                <p className={styles.p}>$185</p>
-              </div>
-            </div>
+            {productDetails.length > 0 &&
+              productDetails.map((product, index) => {
+                if (index >= 5) return;
+                return (
+                  <div className={`col-2 ${styles.card}`}>
+                    <div className={styles.pdPics}>
+                      <img
+                        className={styles.dryfood}
+                        src={product.image_url}
+                        alt=""
+                      />
+                    </div>
+                    <div className={styles.pdWords}>
+                      <p className={styles.p}>{product.name}</p>
+                      <p className={styles.p}>${product.price}</p>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
           {/* 手機板 */}
           <div className={`row d-block d-md-none ${styles.productCards}`}>
@@ -159,71 +158,25 @@ export default function HomePage(props) {
               modules={[Pagination, Navigation]}
               className="mySwiper"
             >
-              <SwiperSlide className={`col-2 ${styles.card}`}>
-                <div className={styles.pdPics}>
-                  <img
-                    className={styles.dryfood}
-                    src="/home/img/dryfood (2).jpeg"
-                    alt=""
-                  />
-                </div>
-                <div className={styles.pdWords}>
-                  <p className={styles.p}>超能狗主食罐</p>
-                  <p className={styles.p}>$185</p>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className={`col-2 ${styles.card}`}>
-                <div className={styles.pdPics}>
-                  <img
-                    className={styles.dryfood}
-                    src="/home/img/dryfood (2).jpeg"
-                    alt=""
-                  />
-                </div>
-                <div className={styles.pdWords}>
-                  <p className={styles.p}>超能狗主食罐</p>
-                  <p className={styles.p}>$185</p>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className={`col-2 ${styles.card}`}>
-                <div className={styles.pdPics}>
-                  <img
-                    className={styles.dryfood}
-                    src="/home/img/dryfood (2).jpeg"
-                    alt=""
-                  />
-                </div>
-                <div className={styles.pdWords}>
-                  <p className={styles.p}>超能狗主食罐</p>
-                  <p className={styles.p}>$185</p>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className={`col-2 ${styles.card}`}>
-                <div className={styles.pdPics}>
-                  <img
-                    className={styles.dryfood}
-                    src="/home/img/dryfood (2).jpeg"
-                    alt=""
-                  />
-                </div>
-                <div className={styles.pdWords}>
-                  <p className={styles.p}>超能狗主食罐</p>
-                  <p className={styles.p}>$185</p>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className={`col-2 ${styles.card}`}>
-                <div className={styles.pdPics}>
-                  <img
-                    className={styles.dryfood}
-                    src="/home/img/dryfood (2).jpeg"
-                    alt=""
-                  />
-                </div>
-                <div className={styles.pdWords}>
-                  <p className={styles.p}>超能狗主食罐</p>
-                  <p className={styles.p}>$185</p>
-                </div>
-              </SwiperSlide>
+              {productDetails.length > 0 &&
+                productDetails.map((product, index) => {
+                  if (index >= 5) return;
+                  return (
+                    <SwiperSlide className={`col-2 ${styles.card}`}>
+                      <div className={styles.pdPics}>
+                        <img
+                          className={styles.dryfood}
+                          src={product.image_url}
+                          alt=""
+                        />
+                      </div>
+                      <div className={styles.pdWords}>
+                        <p className={styles.p}>{product.name}</p>
+                        <p className={styles.p}>${product.price}</p>
+                      </div>
+                    </SwiperSlide>
+                  );
+                })}
             </Swiper>
           </div>
         </div>
