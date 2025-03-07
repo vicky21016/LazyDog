@@ -21,13 +21,13 @@ import SearchBar from "../../../components/hotel/search";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
 import RoomSelection from "../../../components/hotel/roomSelection";
 import { useAuth } from "@/hooks/use-auth";
+import useSafeData from "@/hooks/useSafeData";
 
 export default function HotelDetailPage({ params }) {
   const { id } = params;
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, token } = useAuth();
-  console.log("User from useAuth:", user); // 測試是否正確獲取 user
 
   // 從 URL 中提取 checkIn 和 checkOut
   const initialCheckInDate = searchParams.get("checkInDate") || "";
