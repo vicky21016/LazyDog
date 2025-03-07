@@ -5,7 +5,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  padding: 10px 15px;
+  padding: 20px 30px;
   justify-content: space-between;
   align-items: center;
   background-color: #f5832b;
@@ -14,7 +14,7 @@
 }
 
 .lumi-nav {
-  width: 580px;
+  /* width: 580px; */
   .lumi-ul2 {
     width: 100%;
     list-style: none;
@@ -23,13 +23,14 @@
     align-items: center;
     padding: 0 20px;
     margin: 0;
-    font-size: 15px;
-    letter-spacing: 2px;
+    gap: 50px;
+    font-size: 16.5px;
+    letter-spacing: 2.2px;
     /* gap: 60px; */
     a {
       text-decoration: none;
       color: rgba(59, 51, 48, 1);
-      font-weight: bold;
+      font-weight: 500;
     }
     a:hover {
       text-decoration: none;
@@ -47,7 +48,8 @@
   color: white;
   .logo {
     width: 65px;
-    margin-right: 14px;
+    padding-top: 2px;
+    margin-right: 13px;
   }
 }
 .lumi-logo1 {
@@ -70,12 +72,12 @@
   font-weight: 800;
 }
 .lumi-user-icon2 {
-  font-size: 36px;
+  font-size: 31px;
   margin-right: 20px;
   color: white;
 }
 .lumi-cart-icon2 {
-  font-size: 32px;
+  font-size: 26px;
   color: white;
 }
 /* header2  結尾 */

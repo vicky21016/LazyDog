@@ -62,7 +62,7 @@ export default function MyMenu() {
   };
 
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
+    usePhotoUpload("/hotel/hotel-images/page-image/Dog5.png");
 
   const menuItems = [
     { name: "會員資料", path: "/user", icon: faUser },

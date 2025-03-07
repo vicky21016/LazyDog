@@ -58,7 +58,7 @@ export default function TeacherPlace() {
     <>
       <div className={`col-md-9 col-12`}>
         <div className={`border rounded p-5 ${styles.right}`}>
-          <h3 className={`mb-4 ${styles.tTitle}`}>開課地點</h3>
+          <h4 className={`mb-4 ${styles.tTitle}`}>開課地點</h4>
           <div className={`${styles.cTable} ${styles.bottom}`}>
             {/* 第一～第三筆資料 */}
             {places.slice(0, 3).map((p, index) => (

@@ -63,7 +63,7 @@ const ReviewList = () => {
 {/* <div className={`${styles.right}`}></div> */}
           {/* 右邊 */}
           <div className={`col-md-9 ${styles.righttop}`}>
-            <h3 className="mb-4">評論列表</h3>
+            <h4 className="mb-4">評論列表</h4>
             <div className="table-responsive">
               <table className="table suTable table-striped table-hover">
                 <thead className="table-light">

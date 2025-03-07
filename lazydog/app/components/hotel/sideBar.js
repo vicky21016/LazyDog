@@ -55,13 +55,13 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
       if (!response.ok) throw new Error("無法獲取飯店");
 
       const data = await response.json();
-      setHotels(data);
-
+      setHotels(Array.isArray(data) ? data : []);
       if (onSearch) {
-        onSearch(data); // 避免覆蓋篩選結果
+        onSearch(Array.isArray(data) ? data : []);
       }
     } catch (error) {
       console.error("獲取時發生錯誤:", error);
+      setHotels([]);
     }
   };
 
@@ -98,7 +98,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
   const fetchTags = async () => {
     try {
       const allTags = await getAllTags();
-      setTags(allTags);
+      setTags(Array.isArray(allTags) ? allTags : []);
     } catch (error) {
       console.error("獲取標籤失敗:", error);
       setTags([]);
@@ -116,9 +116,10 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
   const fetchRoomTypes = async () => {
     try {
       const types = await getAllRoomTypes();
-      setRoomTypes(types);
+      setRoomTypes(Array.isArray(types) ? types : []);
     } catch (error) {
       console.error("獲取失敗:", error);
+      setRoomTypes([]);
     }
   };
 
@@ -141,11 +142,11 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
       console.error("獲取價格範圍失敗:", error);
     }
   };
-  const handleFilterChange = (filter) => {
+  const handleFilterChange = (filter = {}) => {
     console.log(" 側邊篩選條件變更:", filter);
-    onSearch(filter); // 讓 `Sidebar` 影響 `searchParams`
+    onSearch(filter);
   };
-
+  
   const toggleFacilities = () => {
     setShowAllFacilities((prev) => !prev);
   };
@@ -163,19 +164,15 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
   };
   const handleApplyFilters = async () => {
     setIsFiltered(true);
-
+  
     const filterParams = {
-      minPrice: minPrice !== null && !isNaN(minPrice) ? Number(minPrice) : 0,
-      maxPrice:
-        maxPrice !== null && !isNaN(maxPrice) ? Number(maxPrice) : 10000,
-      rating:
-        selectedRating !== null && !isNaN(selectedRating)
-          ? Number(selectedRating)
-          : null,
-      roomType: selectedRoomType ? Number(selectedRoomType) : null,
+      minPrice: minPrice ?? 0,
+      maxPrice: maxPrice ?? 10000,
+      rating: selectedRating ?? null,
+      roomType: selectedRoomType ?? null,
       tags: selectedTags.length > 0 ? selectedTags.map(Number) : [],
     };
-
+  
     try {
       await onSearch(filterParams, true);
       setIsSearching(false);
@@ -183,6 +180,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
       console.error("Sidebar 篩選 API 錯誤:", error);
     }
   };
+  
 
   const handleClear = async () => {
     setIsFiltered(false);

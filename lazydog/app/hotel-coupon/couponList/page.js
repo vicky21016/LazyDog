@@ -81,7 +81,7 @@ export default function CouponListPage() {
           {/* 左邊 */}
           <My />          
           {/* 右邊 */}
-          <div className="col-12 col-md-9">
+          <div className={`col-12 col-md-9 ${styles.righttop}`}>
             <h5 className="mb-4">優惠券列表</h5>
             <div className="table-responsive">
               <table className="table table-striped table-hover">

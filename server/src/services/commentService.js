@@ -13,7 +13,7 @@ export const createCommentS = async (createComment) => {
   
       // 第一步：插入文章資料到 articles 資料表
       const [result] = await connection.query(
-        `INSERT INTO comment 
+        `INSERT INTO comments 
             (content, article_id, user_id, create_time) 
             VALUES (?, ?, ?,NOW())`,
         [content, article_id, user_id, create_time]
@@ -45,7 +45,7 @@ export const createCommentS = async (createComment) => {
 
         // 執行 SQL 刪除留言
         const [result] = await connection.query(
-            `UPDATE comment SET is_deleted = 1 WHERE id = ? AND is_deleted = 0`, 
+            `UPDATE comments SET is_deleted = 1 WHERE id = ? AND is_deleted = 0`, 
             [commentId]
         );
 
@@ -71,17 +71,17 @@ export const createCommentS = async (createComment) => {
 export const getCommentByAuthorS = async (author_id) => {
   try {
     const [comment] = await pool.query(
-      `SELECT comment.*, 
+      `SELECT comments.*, 
       users.name AS author_name,
       articles.title AS title,
       users.user_img AS user_img
-      FROM comment 
-      LEFT JOIN users ON comment.user_id = users.id
-      LEFT JOIN articles ON comment.article_id = articles.id
-      WHERE comment.is_deleted = 0 
+      FROM comments
+      LEFT JOIN users ON comments.user_id = users.id
+      LEFT JOIN articles ON comments.article_id = articles.id
+      WHERE comments.is_deleted = 0 
       AND users.is_deleted = 0 
       AND articles.is_deleted = 0
-      AND comment.user_id = ?`,
+      AND comments.user_id = ?`,
       [author_id]
     );
 

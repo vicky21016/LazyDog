@@ -118,7 +118,7 @@
 }
 .btn:hover {
   background-color: #fdf9f5;
-  color: #ff9538;
+  color: #ff9538 !important;
   border-color: #ff9538;
 }
 
@@ -167,6 +167,9 @@
   display: block;
   border-radius: 50%;
   border: #F5842B;
+}
+.righttop{
+  padding: 30px;
 }
   }
 
@@ -222,6 +225,3 @@
 .height{
   margin: 100px auto 0;
 }
-/* .righttop{
-  margin-top: 100px;
-} */

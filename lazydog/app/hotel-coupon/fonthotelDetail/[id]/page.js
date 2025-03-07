@@ -14,19 +14,20 @@ import {
   getHotelById,
   getHotelRoomById,
   getRoomInventory,
-  addHotelToFavorites,
-  removeHotelToFavorites,
 } from "@/services/hotelService";
-
+import { addHotelFavorite,removeHotelFavorite } from "@/services/allFavoriteService";
 import Header from "../../../components/layout/header";
 import SearchBar from "../../../components/hotel/search";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
 import RoomSelection from "../../../components/hotel/roomSelection";
+import { useAuth } from "@/hooks/use-auth";
+import useSafeData from "@/hooks/useSafeData";
 
 export default function HotelDetailPage({ params }) {
   const { id } = params;
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user, token } = useAuth();
 
   // 從 URL 中提取 checkIn 和 checkOut
   const initialCheckInDate = searchParams.get("checkInDate") || "";
@@ -153,34 +154,50 @@ export default function HotelDetailPage({ params }) {
 
   // 處理收藏邏輯
   const handleFavorite = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
+    const storedToken =
+      localStorage.getItem("loginWithToken") ||
+      sessionStorage.getItem("loginWithToken") ||
+      JSON.parse(localStorage.getItem("user"))?.token ||
+      "";
+
+
+    if (!storedToken || storedToken === "null" || storedToken === "undefined") {
       Swal.fire({
         icon: "warning",
         title: "請先登入",
         text: "您需要登入才能收藏旅館！",
+      }).then(() => {
+        router.push("/login");
       });
-      router.push("/login"); // 跳轉到登入頁面
       return;
     }
 
     try {
       if (isFavorite) {
-        await removeHotelToFavorites(id);
+        await removeHotelFavorite(id, storedToken);
         Swal.fire({
           icon: "success",
           title: "已移除收藏",
           text: "旅館已從您的收藏清單中移除！",
         });
+        setIsFavorite(false);
       } else {
-        await addHotelToFavorites(id);
-        Swal.fire({
-          icon: "success",
-          title: "已加入收藏",
-          text: "旅館已加入您的收藏清單！",
-        });
+        const response = await addHotelFavorite(id, storedToken);
+        if (response.success) {
+          Swal.fire({
+            icon: "success",
+            title: response.message,
+            text: "旅館已加入您的收藏清單！",
+          });
+          setIsFavorite(true);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "收藏失敗",
+            text: response.error || "請稍後再試",
+          });
+        }
       }
-      setIsFavorite(!isFavorite);
     } catch (error) {
       console.error("收藏操作失敗:", error);
       Swal.fire({ icon: "error", title: "操作失敗", text: "請稍後再試！" });
@@ -211,7 +228,7 @@ export default function HotelDetailPage({ params }) {
         onCheckOutDateChange={setCheckOutDate}
       />
       {/* 簡介 */}
-      <div className="container mt-5">
+      <div className={`container mt-5 ${hotelStyles.container}`}>
         <Breadcrumb
           links={[
             { label: "首頁 ", href: "/" },
@@ -219,6 +236,7 @@ export default function HotelDetailPage({ params }) {
             {
               label: "旅館介紹",
               href: `/hotel-coupon/fonthotelDetail/${id}`,
+              active: true,
             },
           ]}
         />
@@ -270,7 +288,7 @@ export default function HotelDetailPage({ params }) {
       </div>
       {/* 我們的努力 */}
       <div className={hotelStyles.suEffortSection}>
-        <div className="container text-center">
+        <div className={`container text-center ${hotelStyles.container}`}>
           <h2 className={hotelStyles.suEffortTitle}>我們的努力，看的見</h2>
           <p className={hotelStyles.suEffortSubtitle}>
             每一次陪伴、每一小時的付出，都為毛孩創造更快樂、更健康的生活！
@@ -305,12 +323,6 @@ export default function HotelDetailPage({ params }) {
       </div>
       {/* Google 地圖 */}
       <div className={hotelStyles.suMapContainer}>
-        <h1 className="map-title text-center mt-5">
-          {hotel?.name || "載入中..."}
-        </h1>
-        <p className="map-title text-center mt-5">
-          地址: {hotel?.address || "無資料"}
-        </p>
         {lat && lng ? (
           <div ref={mapRef} style={{ height: "500px", width: "100%" }}></div>
         ) : (

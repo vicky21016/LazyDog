@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import couponStyles from "./userCoupon.module.css";
 import { useRouter } from "next/navigation";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
@@ -11,69 +11,92 @@ import { useOrder } from "@/hooks/use-order";
 export default function ProfileCouponPage(props) {
   const router = useRouter();
   const { orders, hotelOrders } = useOrder();
-
+  const [activeTab, setActiveTab] = useState("全部");
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
-    usePhotoUpload("/images/hotel/hotel-images/page-image/default-avatar.png");
-  const changepage = (path) => {
-    if (path) {
-      router.push(`/hotel-coupon/${path}`);
-    }
-  };
+    usePhotoUpload("/hotel/hotel-images/page-image/Dog5.png");
+
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
   // console.log(hotelOrders);
 
+  // 根據選取的頁籤來決定要顯示的內容
+  const renderContent = () => {
+    switch (activeTab) {
+      case "商品":
+        return <Product orders={orders} />;
+      case "課程":
+        return <Course />;
+      case "旅館":
+        return <Hotel hotelOrders={hotelOrders} />;
+      default:
+        return (
+          <>
+            <Product orders={orders} />
+            <Course />
+            <Hotel hotelOrders={hotelOrders} />
+          </>
+        ); // 預設顯示全部
+    }
+  };
+  //點擊頁籤時的事件
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+  };
   return (
-    <div className=" col-12 col-md-9 coupon-section">
+    <div className={` col-12 col-md-9 coupon-section ${couponStyles.container}`}>
       <h5 className="mb-3">我的訂單</h5>
       <ul className={`nav ${couponStyles.suNavTabs}`}>
         <li className="nav-item">
-          <a className={`nav-link active ${couponStyles.suNavLink}`} href="#">
+          <a
+            className={`nav-link ${couponStyles.suNavLink} ${
+              activeTab === "全部" ? "active" : ""
+            }`}
+            href="#"
+            onClick={() => handleTabClick("全部")}
+          >
             全部
           </a>
         </li>
         <li className="nav-item">
-          <a className={`nav-link ${couponStyles.suNavLink}`} href="#">
+          <a
+            className={`nav-link ${couponStyles.suNavLink} ${
+              activeTab === "商品" ? "active" : ""
+            }`}
+            href="#"
+            onClick={() => handleTabClick("商品")}
+          >
             商品 ({orders.length})
           </a>
         </li>
         <li className="nav-item">
-          <a className={`nav-link ${couponStyles.suNavLink}`} href="#">
-            課程 ({hotelOrders.length})
+          <a
+            className={`nav-link ${couponStyles.suNavLink} ${
+              activeTab === "課程" ? "active" : ""
+            }`}
+            href="#"
+            onClick={() => handleTabClick("課程")}
+          >
+            課程 ({"XXX"})
           </a>
         </li>
         <li className="nav-item">
-          <a className={`nav-link ${couponStyles.suNavLink}`} href="#">
-            旅館 (10)
+          <a
+            className={`nav-link ${couponStyles.suNavLink} ${
+              activeTab === "旅館" ? "active" : ""
+            }`}
+            href="#"
+            onClick={() => handleTabClick("旅館")}
+          >
+            旅館 ({hotelOrders.length})
           </a>
         </li>
       </ul>
 
-      <Product orders={orders} />
-      {/* 商品 */}
-      <Course />
-
-      {/* 課程 */}
-      <Hotel hotelOrders={hotelOrders} />
-      {/* <div className={`mt-2 ${couponStyles.suCouponCard}`}>
-                            <Link href="">
-                                <img
-                                    src="http://localhost:5000/api/articles/2df54e20-d6c0-11ee-beff-f3978ced.jpg"
-                                    style={{maxHeight:'100px'}}
-                                />
-                            </Link>
-                            <div className={couponStyles.suDetails}>
-                                <Link 
-                                style={{color:'#f5842b'}}
-                                href="" 
-                                >小森林寵物美容旅館</Link>
-                                <p className="text-muted">入住時間: 2024/12/31~2025/12/31</p>
-                            </div>
-                            <span className={couponStyles.suPrice}>NT2000000000</span>
-                            
-                        </div> */}
-      {/* 旅館 */}
+      {/* 根據選取的頁籤來渲染內容 */}
+      {renderContent()}
     </div>
+
+
   );
 }

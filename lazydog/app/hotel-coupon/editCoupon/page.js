@@ -16,8 +16,8 @@ export default function EditCouponPage() {
   const [coupon, setCoupon] = useState({
     name: "",
     description: "",
-    discount_type: "fixed", // ✅ 預設為固定金額
-    discountValue: "", // ✅ 優惠金額或折扣百分比
+    discount_type: "fixed", 
+    discountValue: "", 
     minAmount: "",
     usageLimit: "",
     startDate: "",
@@ -105,28 +105,28 @@ export default function EditCouponPage() {
       content: coupon.description,
       value: isNaN(Number(coupon.discountValue))
         ? 0
-        : Number(coupon.discountValue), // 確保為數字
+        : Number(coupon.discountValue), 
       min_order_value: isNaN(Number(coupon.minAmount))
         ? 0
-        : Number(coupon.minAmount), // 確保為數字
+        : Number(coupon.minAmount),
       start_time: startTime,
       end_time: endTime,
-      status: coupon.status || "active", // 確保有值
+      status: coupon.status || "active", 
       max_usage: isNaN(Number(coupon.usageLimit))
         ? 1
-        : Number(coupon.usageLimit), // 確保為數字
+        : Number(coupon.usageLimit), 
       max_usage_per_user: isNaN(Number(coupon.remainingUses))
         ? 1
-        : Number(coupon.remainingUses), // 確保為數字
+        : Number(coupon.remainingUses), 
       code: coupon.code || "DEFAULTCODE",
-      discount_type: discountType, // 確保不為 undefined
+      discount_type: discountType, 
     };
 
-    console.log("🚀 送出的資料:", formattedCoupon);
+    console.log(" 送出的資料:", formattedCoupon);
 
     try {
       const result = await updateCoupon(couponId, formattedCoupon);
-      console.log("🔄 更新回應:", result);
+      console.log("更新回應:", result);
 
       if (result.success) {
         alert("優惠券更新成功！");

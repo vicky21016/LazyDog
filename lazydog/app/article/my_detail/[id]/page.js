@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,7 +11,7 @@ import Content from "../../_components/detail/Content";
 import styles from "./page.module.css";
 import useArticles from "@/hooks/useArticle";
 import Header from "../../../components/layout/header";
-
+import Breadcrumb from "../../../components/teacher/breadcrumb";
 
 export default function ArticleDetail() {
   const { id } = useParams(); // 取得網址中的文章 ID
@@ -36,28 +36,14 @@ export default function ArticleDetail() {
     <>
       <Header />
       <div className="container" style={{ marginTop: '70px' }}>
-        <nav
-          className={`my-4 ${styles.breadcrumb}`}
-          style={{ "--bs-breadcrumb-divider": ">" }}
-          aria-label="breadcrumb"
-        >
-          <ol className="breadcrumb ">
-            <li className="breadcrumb-item ">
-              <Link className={`${styles.link}`} href="/article/my_article">
-                我的文章
-              </Link>
-            </li>
-            {/* <li className="breadcrumb-item ">
-            <Link className={`${styles.link}`} href="#">
-              <i class="bi bi-chevron-right"></i>
-              {article?.category_name}
-            </Link>
-          </li> */}
-            <li className="breadcrumb-item active" aria-current="page">
-              <i class="bi bi-chevron-right"></i>  {article?.title || "標題尚未加載"}
-            </li>
-          </ol>
-        </nav>
+      <Breadcrumb
+              links={[
+                { label: "首頁 ", href: "/" },
+                { label: " 毛孩文章", href: "/article/list" },
+                { label:` ${article?.title || "標題尚未加載"}`, href: "/article/list/detail", active: true },
+              ]}
+            />
+        
         {/* 文章內容 */}
         <Content article={article} /> {/* 傳遞文章資料給 Content 組件 */}
 
