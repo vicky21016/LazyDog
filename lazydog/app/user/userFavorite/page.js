@@ -11,6 +11,7 @@ import {
   removeCourseFavorite,
 } from "@/services/allFavoriteService";
 import { useAuth } from "@/hooks/use-auth";
+import styles from "../orders/userCoupon.module.css"
 
 export default function UserFavoritePage() {
   const { user } = useAuth();
@@ -322,9 +323,9 @@ export default function UserFavoritePage() {
   }, [productFavorites]);
 
   return (
-    <div className="col-md-9">
+    <div className={`col-md-9 col-12 ${styles.container}`}>
       <div className="d-flex justify-content-between my-2">
-        <h4 className="text-center mb-4">我的最愛</h4>
+        <h5 className="text-center mb-4">我的最愛</h5>
       </div>
 
       {loading ? (

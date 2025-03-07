@@ -154,3 +154,9 @@
 .btnAction {
   min-width: 100px;
 }
+@media (max-width: 768px) {
+.container{
+  padding: 30px;
+}
+
+  }

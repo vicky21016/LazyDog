@@ -99,7 +99,7 @@ const ReviewList = () => {
       <div className={`container ${styles.wrapper}`}>
         <div className="row">
           <My />
-          <div className="col-md-9">
+          <div className={`col-md-9 ${styles.righttop}`}>
             <h5 className="mb-4">評論列表</h5>
             <div className="table-responsive">
               <table className="table suTable table-striped table-hover">
