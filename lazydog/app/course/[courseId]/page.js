@@ -48,7 +48,12 @@ export default function CourseIdPage() {
             <CoursePics imgs={imgs} />
           </div>
           <div className={`col-12 col-md-7 col-lg-6 order-md-2 order-1 px-5`}>
-            <CourseIntro course={course} session={session} place={place} />
+            <CourseIntro
+              course={course}
+              session={session}
+              place={place}
+              params={params}
+            />
           </div>
         </div>
         <div className={styles.section2}>

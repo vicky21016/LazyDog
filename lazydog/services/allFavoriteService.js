@@ -96,7 +96,7 @@ export const addHotelFavorite = async (hotelId) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ hotel_id: hotelId }), 
+      body: JSON.stringify({ hotel_id: hotelId }),
     });
 
     const result = await res.json();
@@ -112,7 +112,6 @@ export const addHotelFavorite = async (hotelId) => {
     return { success: false, error: error.message };
   }
 };
-
 
 // 移除收藏
 export const removeHotelFavorite = async (id) => {
@@ -189,10 +188,13 @@ export const removeCourseFavorite = async (favoriteId, userId) => {
   if (!token) return { success: false, error: "請先登入" };
 
   try {
-    const res = await fetch(`${COURSE_FAVORITE_URL}/${favoriteId}?user_id=${userId}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await fetch(
+      `${COURSE_FAVORITE_URL}/${favoriteId}?user_id=${userId}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     const result = await res.json();
 
@@ -210,5 +212,3 @@ export const removeCourseFavorite = async (favoriteId, userId) => {
     return { success: false, error: error.message };
   }
 };
-
-
