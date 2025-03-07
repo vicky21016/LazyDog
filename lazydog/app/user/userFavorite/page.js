@@ -334,7 +334,7 @@ export default function UserFavoritePage() {
         <>
           {/* 商品收藏 */}
           <div className="mb-5">
-            <h6>商品收藏</h6>
+            <h6 className="mb-4">商品收藏</h6>
             <div className="row">
               {productFavorites.length > 0 ? (
                 productFavorites.map((item, index) => {
@@ -342,7 +342,7 @@ export default function UserFavoritePage() {
                     /* console.log(item); */
                   }
                   return (
-                    <div className="col-md-4" key={index}>
+                    <div className="col-md-3 col-6" key={index}>
                       <div
                         className="card position-relative mb-4 shadow-sm"
                         style={{
@@ -382,7 +382,7 @@ export default function UserFavoritePage() {
                         />
 
                         <div className="card-body text-center">
-                          <h5 className="card-title">{item.name}</h5>
+                          <h6 className="card-title mt-2">{item.name}</h6>
                         </div>
                       </div>
                     </div>
@@ -396,11 +396,11 @@ export default function UserFavoritePage() {
 
           {/* 旅館收藏 */}
           <div className="mb-5">
-            <h6>旅館收藏</h6>
+            <h6 className="mb-4">旅館收藏</h6>
             <div className="row">
               {hotelFavorites.length > 0 ? (
                 hotelFavorites.map((item) => (
-                  <div className="col-md-4" key={item.id}>
+                  <div className="col-md-3 col-6" key={item.id}>
                     <div
                       className="card position-relative mb-4 shadow-sm"
                       style={{
@@ -442,7 +442,7 @@ export default function UserFavoritePage() {
                       />
 
                       <div className="card-body text-center">
-                        <h5 className="card-title">{item.name}</h5>
+                        <h6 className="card-title mt-2">{item.name}</h6>
                       </div>
                     </div>
                   </div>
@@ -455,11 +455,11 @@ export default function UserFavoritePage() {
 
           {/* 課程收藏 */}
           <div className="mb-5">
-            <h6>課程收藏</h6>
+            <h6 className="mb-4">課程收藏</h6>
             <div className="row">
               {courseFavorites.length > 0 ? (
                 courseFavorites.map((item) => (
-                  <div className="col-md-4" key={item.id}>
+                  <div className="col-md-3 col-6" key={item.id}>
                     <div
                       className="card position-relative mb-4 shadow-sm"
                       style={{
@@ -499,7 +499,7 @@ export default function UserFavoritePage() {
                       />
 
                       <div className="card-body text-center">
-                        <h5 className="card-title">{item.name}</h5>
+                        <h6 className="card-title mt-2">{item.name}</h6>
                       </div>
                     </div>
                   </div>
