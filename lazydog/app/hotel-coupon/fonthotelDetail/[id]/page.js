@@ -31,7 +31,6 @@ export default function HotelDetailPage({ params }) {
   const { id } = params;
   const [favoriteId, setFavoriteId] = useState(null); // 存收藏的 ID
 
-  console.log("Hotel ID from params:", id);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, token } = useAuth();
@@ -62,6 +61,7 @@ export default function HotelDetailPage({ params }) {
     setCheckOutDate(checkOutDateFromUrl);
     setQuantity(quantityFromUrl);
   }, [checkInDateFromUrl, checkOutDateFromUrl, quantityFromUrl]);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedParams = JSON.parse(sessionStorage.getItem("searchParams"));
@@ -91,32 +91,43 @@ export default function HotelDetailPage({ params }) {
     if (!id) return;
     fetchHotelData();
   }, [id]);
+
+  // 獲取收藏狀態
   useEffect(() => {
-    if (id && user) {
-      fetchFavoriteId(); // 取得收藏狀態
+    if (id && user?.id && token) {
+      console.log("用戶已登入，開始獲取收藏資料");
+      fetchFavoriteId();
     }
-  }, [id, user]);
+  }, [id, user, token]);
 
   const fetchFavoriteId = async () => {
-    if (!id || !user) {
-      console.error("Hotel ID 或用戶未定義，無法獲取收藏");
+    if (!id || !user || !token) {
+      console.error("Hotel ID、用戶或 token 未定義，無法獲取收藏");
       return;
     }
-  
+
     try {
-      const result = await getHotelFavorites(id);
-      console.log("取得收藏資料:", result);
-  
+      const result = await getHotelFavorites();
+
       if (result.success && result.data.length > 0) {
-        const favId = result.data[0].id; // 獲取收藏的 ID
-        setFavoriteId(favId);
-        setIsFavorite(true);
+        const favorite = result.data.find(
+          (item) => Number(item.hotel_id) === Number(id) // 確保比對時都是數字
+        );
+
+        if (favorite) {
+          setFavoriteId(favorite.id);
+          setIsFavorite(true);
+        } else {
+          setFavoriteId(null);
+          setIsFavorite(false);
+        }
       } else {
         setFavoriteId(null);
         setIsFavorite(false);
       }
     } catch (error) {
-      console.error("獲取收藏失敗:", error);
+      setFavoriteId(null);
+      setIsFavorite(false);
     }
   };
 
@@ -208,27 +219,26 @@ export default function HotelDetailPage({ params }) {
 
     try {
       if (isFavorite && favoriteId) {
-        //  使用 favoriteId 取消收藏
+        setIsFavorite(false); // UI 立即變更
         await removeHotelFavorite(favoriteId, storedToken);
+        setFavoriteId(null);
         Swal.fire({
           icon: "success",
           title: "已移除收藏",
           text: "旅館已從您的收藏清單中移除！",
         });
-
-        setIsFavorite(false);
-        setFavoriteId(null);
       } else {
+        setIsFavorite(true); // UI 立即變紅
         const response = await addHotelFavorite(id, storedToken);
         if (response.success) {
+          await fetchFavoriteId(); // 確保 favoriteId 也更新
           Swal.fire({
             icon: "success",
             title: response.message,
             text: "旅館已加入您的收藏清單！",
           });
-
-          fetchFavoriteId(); // 重新獲取收藏狀態，確保 favoriteId 更新
         } else {
+          setIsFavorite(false); // 如果失敗則還原 UI
           Swal.fire({
             icon: "error",
             title: "收藏失敗",
@@ -237,10 +247,19 @@ export default function HotelDetailPage({ params }) {
         }
       }
     } catch (error) {
+      setIsFavorite(false); // 發生錯誤則還原 UI
       console.error("收藏操作失敗:", error);
       Swal.fire({ icon: "error", title: "操作失敗", text: "請稍後再試！" });
     }
   };
+
+  useEffect(() => {
+    if (favoriteId) {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+    }
+  }, [favoriteId]);
 
   const mapRef = useRef(null);
   useGoogleMap(lat, lng, mapRef);
