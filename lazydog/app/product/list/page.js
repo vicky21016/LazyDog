@@ -9,6 +9,7 @@ import { useListFetch } from "@/hooks/product/use-fetch";
 import { useFavorite } from "@/hooks/product/use-favorite";
 
 import { Carousel } from "react-bootstrap";
+import { MoonLoader } from "react-spinners";
 
 export default function ListPage(props) {
   const {
@@ -274,8 +275,26 @@ export default function ListPage(props) {
               sortName={sortName}
             />
           </div>
-          {!products && <h2>{emptyMessage}</h2>}
-          {products && (
+          {isLoading ? (
+            <div
+              style={{
+                width: "100%",
+                height: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <MoonLoader
+                color="#f5842b"
+                loading
+                size={300}
+                speedMultiplier={1}
+              />
+            </div>
+          ) : !products ? (
+            <h2>{emptyMessage}</h2>
+          ) : (
             <main className={styles.PdList}>
               {[...Array(productLine)].map((value, index) => {
                 return (

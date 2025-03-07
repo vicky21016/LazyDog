@@ -3,7 +3,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "./card.module.css";
 import Link from "next/link";
+
 import Swal from "sweetalert2";
+import { MoonLoader } from "react-spinners";
+import * as motion from "motion/react-client";
 
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
@@ -177,133 +180,154 @@ function CardContent({ productID = "" }) {
       }
     };
   }, [intervalId]);
+
+  const [isOn, setIsOn] = useState(false);
+  const toggleSwitch = () => setIsOn(!isOn);
   return (
-    <li
-      className={`${styles.ProductCard} col`}
-      onMouseEnter={() => setCardHover(true)}
-      onMouseLeave={() => setCardHover(false)}
-    >
-      <div
-        className={
-          cardHover ? styles.ProductCardHeartOff : styles.ProductCardHeart
-        }
-      >
-        <img
-          src={`/product/font/${heartState ? "heart-fill" : "heart"}.png`}
-          alt=""
-        />
-      </div>
-      <div
-        className={
-          cardHover
-            ? styles.ProductCardCartOff
-            : (productCount ?? 0) > 0 || (cartRate ?? 0) > 0
-            ? styles.ProductCardCart
-            : styles.ProductCardCartOff
-        }
-      >
-        <img src={`/product/font/cart-fill-big.png`} alt="" />
-        <p>{productCount > 0 ? productCount : cartRate}</p>
-      </div>
-      <figure className={styles.ProductCardImg}>
-        {productName && (
-          <img
-            src={cardPic}
-            alt=""
-            onError={() => setCardPic("/product/img/default.webp")}
-          />
-        )}
-      </figure>
-      <div className={styles.ProductCardInfo}>
-        <p className={`${styles.ProductCardName} d-none d-xxl-flex`}>
-          {productName}
-        </p>
-        <p className={`${styles.ProductCardNameSm} d-xxl-none`}>
-          {productName}
-        </p>
-        <h5 className={`${styles.ProductCardPrice} d-none d-xl-block`}>
-          NT$ {products?.price}
-        </h5>
-        <h5 className={`${styles.ProductCardPriceSm} d-xl-none`}>
-          NT$ {products?.price}
-        </h5>
-      </div>
-      <div
-        className={`${
-          width > 1024
-            ? styles.ProductCardHover
-            : cardHover
-            ? styles.ProductCardClickOn
-            : styles.ProductCardClickOff
-        }`}
-        onClick={(e) => {
-          width > 1024 ? simulateClick(e) : setCardHover(!cardHover);
-        }}
-        data-clickable="true"
-      >
-        <button
-          type="button"
-          className={`${styles.HoverIcon} `}
-          onMouseEnter={() => setHeartHover(true)}
-          onMouseLeave={() => setHeartHover(false)}
-          onClick={(e) => {
-            handleAddFavorite(e);
+    <>
+      {isLoading ? (
+        <li
+          className={`${styles.ProductCard} col`}
+          style={{
+            height: "300px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <img
-            src={`/product/font/${
-              heartHover || heartState ? "heart-fill-big" : "heart-big"
-            }.png`}
-            alt=""
-          />
-        </button>
-        <button
-          type="button"
-          className={`${styles.HoverIcon} ${
-            cartRate > 0 ? styles.CartBtn : styles.CartBtnOff
-          }`}
-          onMouseEnter={() => setCartHover(true)}
-          onMouseLeave={() => setCartHover(false)}
-          onClick={(e) => {
-            handleAddToCart(e);
-          }}
+          <MoonLoader color="#f5842b" speedMultiplier={1} />
+        </li>
+      ) : (
+        <motion.li
+          layout
+          style={{ width: isOn ? "80vw" : 0 }}
+          className={`${styles.ProductCard} col`}
+          onMouseEnter={() => setCardHover(true)}
+          onMouseLeave={() => setCardHover(false)}
         >
-          <img
-            src={`/product/font/${cartHover ? "cart-add" : "cart"}.png`}
-            alt=""
-          />
-        </button>
-        <Link
-          onMouseEnter={() => {
-            const id = setInterval(() => {
-              setTimeout(() => {
-                setEyeHover((prev) => !prev);
-              }, 200);
-              setTimeout(() => {
-                setEyeHover((prev) => !prev);
-              }, 900);
-            }, 2000);
-            setIntervalId(id);
-          }}
-          onMouseLeave={() => {
-            if (intervalId) {
-              clearInterval(intervalId);
-              setIntervalId(null);
+          <div
+            className={
+              cardHover ? styles.ProductCardHeartOff : styles.ProductCardHeart
             }
-          }}
-          href={`/product/detail?productID=${productID}`}
-          className={styles.HoverIcon}
-          ref={cardRef}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <img
-            src={`/product/font/${eyeHover ? "listOff2" : "list"}.png`}
-            alt=""
-          />
-        </Link>
-      </div>
-    </li>
+          >
+            <img
+              src={`/product/font/${heartState ? "heart-fill" : "heart"}.png`}
+              alt=""
+            />
+          </div>
+          <div
+            className={
+              cardHover
+                ? styles.ProductCardCartOff
+                : (productCount ?? 0) > 0 || (cartRate ?? 0) > 0
+                ? styles.ProductCardCart
+                : styles.ProductCardCartOff
+            }
+          >
+            <img src={`/product/font/cart-fill-big.png`} alt="" />
+            <p>{productCount > 0 ? productCount : cartRate}</p>
+          </div>
+          <figure className={styles.ProductCardImg}>
+            {productName && (
+              <img
+                src={cardPic}
+                alt=""
+                onError={() => setCardPic("/product/img/default.webp")}
+              />
+            )}
+          </figure>
+          <div className={styles.ProductCardInfo}>
+            <p className={`${styles.ProductCardName} d-none d-xxl-flex`}>
+              {productName}
+            </p>
+            <p className={`${styles.ProductCardNameSm} d-xxl-none`}>
+              {productName}
+            </p>
+            <h5 className={`${styles.ProductCardPrice} d-none d-xl-block`}>
+              NT$ {products?.price}
+            </h5>
+            <h5 className={`${styles.ProductCardPriceSm} d-xl-none`}>
+              NT$ {products?.price}
+            </h5>
+          </div>
+          <div
+            className={`${
+              width > 1024
+                ? styles.ProductCardHover
+                : cardHover
+                ? styles.ProductCardClickOn
+                : styles.ProductCardClickOff
+            }`}
+            onClick={(e) => {
+              width > 1024 ? simulateClick(e) : setCardHover(!cardHover);
+            }}
+            data-clickable="true"
+          >
+            <button
+              type="button"
+              className={`${styles.HoverIcon} `}
+              onMouseEnter={() => setHeartHover(true)}
+              onMouseLeave={() => setHeartHover(false)}
+              onClick={(e) => {
+                handleAddFavorite(e);
+              }}
+            >
+              <img
+                src={`/product/font/${
+                  heartHover || heartState ? "heart-fill-big" : "heart-big"
+                }.png`}
+                alt=""
+              />
+            </button>
+            <button
+              type="button"
+              className={`${styles.HoverIcon} ${
+                cartRate > 0 ? styles.CartBtn : styles.CartBtnOff
+              }`}
+              onMouseEnter={() => setCartHover(true)}
+              onMouseLeave={() => setCartHover(false)}
+              onClick={(e) => {
+                handleAddToCart(e);
+              }}
+            >
+              <img
+                src={`/product/font/${cartHover ? "cart-add" : "cart"}.png`}
+                alt=""
+              />
+            </button>
+            <Link
+              onMouseEnter={() => {
+                const id = setInterval(() => {
+                  setTimeout(() => {
+                    setEyeHover((prev) => !prev);
+                  }, 200);
+                  setTimeout(() => {
+                    setEyeHover((prev) => !prev);
+                  }, 900);
+                }, 2000);
+                setIntervalId(id);
+              }}
+              onMouseLeave={() => {
+                if (intervalId) {
+                  clearInterval(intervalId);
+                  setIntervalId(null);
+                }
+              }}
+              href={`/product/detail?productID=${productID}`}
+              className={styles.HoverIcon}
+              ref={cardRef}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <img
+                src={`/product/font/${eyeHover ? "listOff2" : "list"}.png`}
+                alt=""
+              />
+            </Link>
+          </div>
+        </motion.li>
+      )}
+    </>
   );
 }

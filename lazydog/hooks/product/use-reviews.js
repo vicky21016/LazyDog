@@ -120,6 +120,7 @@ export function useReviewsUpdate({
     setFormData,
     handleSubmit,
     reviewsChange,
+    reviewsLoading,
     reviewsMutate,
   };
 }

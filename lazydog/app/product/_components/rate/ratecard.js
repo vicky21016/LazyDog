@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import styles from "./rate.module.css";
 import StarGroup from "./stargroup";
 import Swal from "sweetalert2";
+import { MoonLoader } from "react-spinners";
 
 import { useReviewsUpdate } from "@/hooks/product/use-reviews";
 
@@ -31,20 +32,23 @@ export default function Ratecard({
   const [rateUpdate, setRateUpdate] = useState(false);
   const [newRate, setNewRate] = useState(rateNum || 1);
   const [deleteRate, setDeleteRate] = useState(false);
-  const { formData, handleSubmit, reviewsChange, reviewsMutate } =
-    useReviewsUpdate({
-      id,
-      productID,
-      newRate,
-      comment,
-      setRateUpdate,
-      deleteRate,
-      setDeleteRate,
-      mutate,
-    });
+  const {
+    formData,
+    handleSubmit,
+    reviewsChange,
+    reviewsLoading,
+    reviewsMutate,
+  } = useReviewsUpdate({
+    id,
+    productID,
+    newRate,
+    comment,
+    setRateUpdate,
+    deleteRate,
+    setDeleteRate,
+    mutate,
+  });
   const handleAddFavorite = async () => {
-    // e.stopPropagation();
-    // 檢查用戶是否登入
     if (!id) {
       Swal.fire({
         icon: "info",
@@ -107,165 +111,181 @@ export default function Ratecard({
   };
 
   return (
-    <div className={`${styles.RateCard}`}>
-      {!rateUpdate && !history && (
-        <>
-          <div className={styles.RateCardText}>
-            <div className={styles.RateCardUser}>
-              <button
-                type="button"
-                onClick={() => {
-                  setTimeout(() => {
-                    router.push("/user");
-                  }, 100);
-                }}
-              >
-                <img src={`http://localhost:5000/auth/${img}`} alt="" />
-                <h6>{userName}</h6>
-                <h6>{rateNow ? "(您)" : ""}</h6>
-              </button>
-              <div className={styles.StarGroup}>
-                <StarGroup rate={rateNum} />
+    <>
+      {reviewsLoading ? (
+        <div
+          className={`${styles.RateCard}`}
+          style={{
+            height: "165px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <MoonLoader color="#f5842b" speedMultiplier={1} />
+        </div>
+      ) : (
+        <div className={`${styles.RateCard}`}>
+          {!rateUpdate && !history && (
+            <>
+              <div className={styles.RateCardText}>
+                <div className={styles.RateCardUser}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setTimeout(() => {
+                        router.push("/user");
+                      }, 100);
+                    }}
+                  >
+                    <img src={`http://localhost:5000/auth/${img}`} alt="" />
+                    <h6>{userName}</h6>
+                    <h6>{rateNow ? "(您)" : ""}</h6>
+                  </button>
+                  <div className={styles.StarGroup}>
+                    <StarGroup rate={rateNum} />
+                  </div>
+                </div>
+                <p>{comment}</p>
               </div>
-            </div>
-            <p>{comment}</p>
-          </div>
-          <div className={styles.RateCardBtnDate}>
-            <div className={styles.RateCardGood}>
-              <button
-                className={styles.RateCardBtn}
-                type="button"
-                onMouseEnter={() => setHover(true)}
-                onMouseLeave={() => setHover(false)}
-                onClick={() => {
-                  handleAddFavorite();
-                }}
-              >
-                <img
-                  src={`/product/font/${
-                    good || hover ? "good-fill" : "good"
-                  }.png`}
-                  alt=""
-                />
-              </button>
-              <p>{goodNum}</p>
-            </div>
-            {rateNow && (
-              <button
-                className={styles.UpdateRateBtn}
-                type="button"
-                onClick={() => setRateUpdate(true)}
-              >
-                編輯評論
-              </button>
-            )}
-            <p>
-              {years} {months} {days}
-            </p>
-          </div>
-        </>
-      )}
-      {rateUpdate && (
-        <form onSubmit={handleSubmit}>
-          <div className={styles.RateCardText}>
-            <div className={styles.RateCardUser}>
-              <button
-                type="button"
-                onClick={() => {
-                  setTimeout(() => {
-                    router.push("/user");
-                  }, 100);
-                }}
-              >
-                <img src={`http://localhost:5000/auth/${img}`} alt="" />
-                <h6>{userName}</h6>
-                <h6>{rateNow ? "(您)" : ""}</h6>
-              </button>
-              <div className={styles.StarGroup}>
-                <p>評分更新：</p>
-                <StarGroup
-                  rateUpdate={rateUpdate}
-                  rate={rateNum}
-                  newRate={newRate}
-                  setNewRate={setNewRate}
-                />
+              <div className={styles.RateCardBtnDate}>
+                <div className={styles.RateCardGood}>
+                  <button
+                    className={styles.RateCardBtn}
+                    type="button"
+                    onMouseEnter={() => setHover(true)}
+                    onMouseLeave={() => setHover(false)}
+                    onClick={() => {
+                      handleAddFavorite();
+                    }}
+                  >
+                    <img
+                      src={`/product/font/${
+                        good || hover ? "good-fill" : "good"
+                      }.png`}
+                      alt=""
+                    />
+                  </button>
+                  <p>{goodNum}</p>
+                </div>
+                {rateNow && (
+                  <button
+                    className={styles.UpdateRateBtn}
+                    type="button"
+                    onClick={() => setRateUpdate(true)}
+                  >
+                    編輯評論
+                  </button>
+                )}
+                <p>
+                  {years} {months} {days}
+                </p>
               </div>
-            </div>
-            <textarea
-              name="comment"
-              value={formData.comment}
-              onChange={reviewsChange}
-            />
-          </div>
-          <div className={styles.RateCardBtnDate}>
-            <div style={{ width: "47.13px" }}>
-              <button
-                style={{ "white-space": "nowrap" }}
-                type="button"
-                className={styles.UpdateRateBtn}
-                onClick={() => {
-                  setDeleteRate(true);
-                }}
-              >
-                刪除評論
-              </button>
-            </div>
-            {rateNow && (
-              <button type="submit" className={styles.UpdateRateBtn}>
-                更新評論
-              </button>
-            )}
-            <p>
-              {years} {months} {days}
-            </p>
-          </div>
-        </form>
-      )}
-      {history && (
-        <form onSubmit={handleSubmit}>
-          <div className={styles.RateCardText}>
-            <div className={styles.RateCardUser}>
-              <button
-                type="button"
-                onClick={() => {
-                  setTimeout(() => {
-                    router.push("/user");
-                  }, 100);
-                }}
-              >
-                <img src={`http://localhost:5000/auth/${img}`} alt="" />
-                <h6>{userName}</h6>
-                <h6>{rateNow ? "(您已購買過此商品)" : ""}</h6>
-              </button>
-              <div className={styles.StarGroup}>
-                <p>評分：</p>
-                <StarGroup
-                  rateUpdate={true}
-                  rate={"1"}
-                  newRate={newRate}
-                  setNewRate={setNewRate}
+            </>
+          )}
+          {rateUpdate && (
+            <form onSubmit={handleSubmit}>
+              <div className={styles.RateCardText}>
+                <div className={styles.RateCardUser}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setTimeout(() => {
+                        router.push("/user");
+                      }, 100);
+                    }}
+                  >
+                    <img src={`http://localhost:5000/auth/${img}`} alt="" />
+                    <h6>{userName}</h6>
+                    <h6>{rateNow ? "(您)" : ""}</h6>
+                  </button>
+                  <div className={styles.StarGroup}>
+                    <p>評分更新：</p>
+                    <StarGroup
+                      rateUpdate={rateUpdate}
+                      rate={rateNum}
+                      newRate={newRate}
+                      setNewRate={setNewRate}
+                    />
+                  </div>
+                </div>
+                <textarea
+                  name="comment"
+                  value={formData.comment}
+                  onChange={reviewsChange}
                 />
               </div>
-            </div>
-            <textarea
-              name="comment"
-              value={formData.comment}
-              onChange={reviewsChange}
-            />
-          </div>
-          <div className={styles.RateCardBtnDate}>
-            <div style={{ width: "47.13px" }}></div>
-            {rateNow && (
-              <button type="submit" className={styles.UpdateRateBtn}>
-                留下您寶貴的評論
-              </button>
-            )}
-            <p>
-              {years} {months} {days}
-            </p>
-          </div>
-        </form>
+              <div className={styles.RateCardBtnDate}>
+                <div style={{ width: "47.13px" }}>
+                  <button
+                    style={{ "white-space": "nowrap" }}
+                    type="button"
+                    className={styles.UpdateRateBtn}
+                    onClick={() => {
+                      setDeleteRate(true);
+                    }}
+                  >
+                    刪除評論
+                  </button>
+                </div>
+                {rateNow && (
+                  <button type="submit" className={styles.UpdateRateBtn}>
+                    更新評論
+                  </button>
+                )}
+                <p>
+                  {years} {months} {days}
+                </p>
+              </div>
+            </form>
+          )}
+          {history && (
+            <form onSubmit={handleSubmit}>
+              <div className={styles.RateCardText}>
+                <div className={styles.RateCardUser}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setTimeout(() => {
+                        router.push("/user");
+                      }, 100);
+                    }}
+                  >
+                    <img src={`http://localhost:5000/auth/${img}`} alt="" />
+                    <h6>{userName}</h6>
+                    <h6>{rateNow ? "(您已購買過此商品)" : ""}</h6>
+                  </button>
+                  <div className={styles.StarGroup}>
+                    <p>評分：</p>
+                    <StarGroup
+                      rateUpdate={true}
+                      rate={"1"}
+                      newRate={newRate}
+                      setNewRate={setNewRate}
+                    />
+                  </div>
+                </div>
+                <textarea
+                  name="comment"
+                  value={formData.comment}
+                  onChange={reviewsChange}
+                />
+              </div>
+              <div className={styles.RateCardBtnDate}>
+                <div style={{ width: "47.13px" }}></div>
+                {rateNow && (
+                  <button type="submit" className={styles.UpdateRateBtn}>
+                    留下您寶貴的評論
+                  </button>
+                )}
+                <p>
+                  {years} {months} {days}
+                </p>
+              </div>
+            </form>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 }
