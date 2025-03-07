@@ -116,9 +116,13 @@ export const addHotelFavorite = async (hotelId) => {
 // 移除收藏
 export const removeHotelFavorite = async (id) => {
   const token = getToken();
-  if (!token) return { success: false, error: "請先登入" };
+  if (!token) {
+    console.error("未登入，無法刪除收藏");
+    return { success: false, error: "請先登入" };
+  }
+
   console.log("Removing favorite for hotel ID:", id);
-  console.log("Token used for request:", storedToken);
+  console.log("Token used for request:", token);
 
   try {
     const res = await fetch(`${HOTEL_FAVORITE_URL}/${id}`, {
@@ -128,13 +132,19 @@ export const removeHotelFavorite = async (id) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (!res.ok) throw new Error("移除hotel收藏失敗");
+
+    if (!res.ok) {
+      const errorResponse = await res.json();
+      throw new Error(errorResponse.message || "移除收藏失敗");
+    }
+
     return await res.json();
   } catch (error) {
     console.error("移除hotel收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
+
 
 // 取得用戶收藏的課程
 export const getCourseFavorites = async (id) => {
