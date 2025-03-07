@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import useSWR from "swr";
 import useScreenSize from "./use-Screen";
@@ -308,18 +308,39 @@ export function useDetailFetch() {
   const userName = orderData?.userName;
   const userImg = orderData?.userImg;
   const [history, setHistory] = useState(false);
+
   useEffect(() => {
     if (orderData?.history.includes(productID)) setHistory(true);
-    orderMutate();
+    // orderMutate();
   }, [orderData]);
-  const hotSale = [];
-  const sameBuy = [];
-  const sameCategory = data?.data[0].productID.slice(0, 6);
-  orders?.map((v, i) => {
-    if (i < 10) hotSale.push(v.productID);
-    if (sameBuy.length < 10 && v.productID.includes(sameCategory))
-      sameBuy.push(v.productID);
-  });
+
+  // const hotSale = [];
+  // const sameBuy = [];
+  // const sameCategory = data?.data[0].productID.slice(0, 6);
+  // orders?.map((v, i) => {
+  //   if (i < 10) hotSale.push(v.productID);
+  //   if (sameBuy.length < 10 && v.productID.includes(sameCategory))
+  //     sameBuy.push(v.productID);
+  // });
+
+  const hotSale = useMemo(() => {
+    const result = [];
+    orders?.forEach((v, i) => {
+      if (i < 10) result.push(v.productID);
+    });
+    return result;
+  }, [orders]);
+
+  const sameBuy = useMemo(() => {
+    const result = [];
+    const sameCategory = data?.data[0]?.productID?.slice(0, 6);
+    orders?.forEach((v) => {
+      if (result.length < 10 && v.productID.includes(sameCategory)) {
+        result.push(v.productID);
+      }
+    });
+    return result;
+  }, [orders, data]);
 
   useEffect(() => {
     if (productName) {
