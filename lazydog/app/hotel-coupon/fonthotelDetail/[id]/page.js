@@ -14,10 +14,8 @@ import {
   getHotelById,
   getHotelRoomById,
   getRoomInventory,
-  addHotelToFavorites,
-  removeHotelToFavorites,
 } from "@/services/hotelService";
-import { addHotelFavorite } from "@/services/allFavoriteService";
+import { addHotelFavorite,removeHotelFavorite } from "@/services/allFavoriteService";
 import Header from "../../../components/layout/header";
 import SearchBar from "../../../components/hotel/search";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
@@ -176,7 +174,7 @@ export default function HotelDetailPage({ params }) {
 
     try {
       if (isFavorite) {
-        await removeHotelToFavorites(id, storedToken);
+        await removeHotelFavorite(id, storedToken);
         Swal.fire({
           icon: "success",
           title: "已移除收藏",

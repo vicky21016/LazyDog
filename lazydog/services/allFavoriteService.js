@@ -117,6 +117,8 @@ export const addHotelFavorite = async (hotelId) => {
 export const removeHotelFavorite = async (id) => {
   const token = getToken();
   if (!token) return { success: false, error: "請先登入" };
+  console.log("Removing favorite for hotel ID:", id);
+  console.log("Token used for request:", storedToken);
 
   try {
     const res = await fetch(`${HOTEL_FAVORITE_URL}/${id}`, {
@@ -203,7 +205,7 @@ export const removeCourseFavorite = async (favoriteId, userId) => {
     }
 
     // 如果後端返回 400，但已經刪除，仍然回傳 success: true
-    if (res.status === 400 && result.message.includes("已經刪除")) {
+    if (res.status == 400 && result.message.includes("已經刪除")) {
       return { success: true, message: "該收藏已刪除" };
     }
 
