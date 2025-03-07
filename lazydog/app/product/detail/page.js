@@ -7,8 +7,9 @@ import RateCard from "../_components/rate/ratecard";
 import StarGroup from "../_components/rate/stargroup";
 import StarBar from "../_components/rate/starbar";
 import Link from "next/link";
+
 import Swal from "sweetalert2";
-import { ClipLoader } from "react-spinners";
+import { ClipLoader, MoonLoader } from "react-spinners";
 
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
@@ -193,11 +194,29 @@ function DetailContent() {
           <section className={`${styles.ProductInfo} row`}>
             <div className={`${styles.ProductInfoImgGroup}`}>
               <figure className={styles.ProductInfoImg}>
-                <img
-                  src={cardPic}
-                  alt=""
-                  onError={() => setCardPic("/product/img/default.webp")}
-                />
+                {cardPic == "/product/img/default.webp" ? (
+                  <div
+                    style={{
+                      width: "400px",
+                      height: "400px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <MoonLoader
+                      width={300}
+                      color="#f5842b"
+                      speedMultiplier={2}
+                    />
+                  </div>
+                ) : (
+                  <img
+                    src={cardPic}
+                    alt=""
+                    onError={() => setCardPic("/product/img/default.webp")}
+                  />
+                )}
               </figure>
               <div className={styles.ProductInfoImgSmall}>
                 {img.sm.length > 0 && width >= 768 && (
