@@ -40,7 +40,6 @@ export default function MyCard2({ id, title, cover_image, created_at }) {
                     <div className="col-md-8" style={{ display: 'flex', alignItems: 'center' }}>
                         <div className="card-body">
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-
                                 <Link
                                     className={`${styles.link}`}
                                     href={{ pathname: `/article/my_detail/${id}`, query: { list: "true" } }}

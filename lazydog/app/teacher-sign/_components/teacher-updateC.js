@@ -30,6 +30,7 @@ export default function TeacherUpdateC() {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data.data);
         setCS(data.data.courses[0]);
         setMainpic(data.data.mainpic[0]);
         setOtherpics(data.data.otherpics);
@@ -206,7 +207,7 @@ export default function TeacherUpdateC() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("更新成功:", data);
+        console.log("前台送出資料:", data);
         Swal.fire({
           title: "資料更新成功！",
           text: "課程資料已成功更新！",
@@ -279,7 +280,7 @@ export default function TeacherUpdateC() {
     <>
       <div className={`col-lg-9 col-md-12 col-12`}>
         <div className={`p-5 ${styles.right}`}>
-          <h3 className={`mb-4 ${styles.tTitle}`}>編輯該梯次</h3>
+          <h4 className={`mb-4 ${styles.tTitle}`}>編輯該梯次</h4>
           <form onSubmit={handleSubmit}>
             <section className={`row g-4 mb-5 ${styles.section1}`}>
               <div className={`col-md-12`}>

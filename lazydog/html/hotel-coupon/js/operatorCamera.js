@@ -10,5 +10,5 @@ document.getElementById("uploadPhoto").addEventListener("change", function(event
 });
 
 document.getElementById("deletePhoto").addEventListener("click", function() {
-    document.querySelector(".avatar-img").src = "./hotel-images/page-image/default-avatar.png"; // 預設圖片
+    document.querySelector(".avatar-img").src = "/hotel/hotel-images/page-image/Dog5.png"; // 預設圖片
 });

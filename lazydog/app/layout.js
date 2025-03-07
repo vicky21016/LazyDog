@@ -52,7 +52,7 @@ export default function RootLayout({ children }) {
 
       <AuthProvider>
         <CartProvider>
-          <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <body  style={{ marginTop: "120px" }} className={`${geistSans.variable} ${geistMono.variable}`}>
             {children}
             <Footer />
             <Script

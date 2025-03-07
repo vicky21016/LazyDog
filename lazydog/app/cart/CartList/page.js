@@ -149,7 +149,7 @@ export default function CartListPage(props) {
                         </td>
                         <td>{cartItem.name}</td>
                         <td>{cartItem.price}</td>
-                        <td>
+                        <td className={`${styles.Btn}`}>
                           <button onClick={() => onIncrease(cartItem.id)}>
                             +
                           </button>
