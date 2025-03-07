@@ -22,7 +22,7 @@ export default function HomePage(props) {
       <Header />
 
       <div className={styles.section1}>
-        <div className="container">
+        <div className="container p-md-0">
           <div className={`row ${styles.words}`}>
             <img className={styles.paw1} src="/home/img/paw1.png" alt="" />
 
@@ -65,7 +65,7 @@ export default function HomePage(props) {
           <h2 className={styles.today}>今日必買 | 人氣推薦</h2>
         </div>
         <div className="container-fluid ">
-          {/* <div className={styles.imgs}>
+          <div className={styles.imgs}>
             <img
               className={styles.dogCookie}
               src="/home/img/dogCookie.png"
@@ -76,11 +76,13 @@ export default function HomePage(props) {
               src="/home/img/cookieBag.png"
               alt=""
             />
-          </div> */}
+          </div>
 
           {/* 桌機板 */}
-          <div className={`row d-none d-md-flex  ${styles.productCards}`}>
-            <div className={`col-2 ${styles.card}`}>
+          <div className={`row ${styles.productCards}`}>
+            <div
+              className={`col-6 col-md-4 col-lg-4  col-xxl-2 ${styles.card}`}
+            >
               <div className={styles.pdPics}>
                 <img
                   className={styles.dryfood}
@@ -93,7 +95,7 @@ export default function HomePage(props) {
                 <p className={styles.p}>$185</p>
               </div>
             </div>
-            <div className={`col-2 ${styles.card}`}>
+            <div className={`col-6 col-md-4 col-lg-4 col-xxl-2 ${styles.card}`}>
               <div className={styles.pdPics}>
                 <img
                   className={styles.dryfood}
@@ -106,7 +108,7 @@ export default function HomePage(props) {
                 <p className={styles.p}>$185</p>
               </div>
             </div>
-            <div className={`col-2 ${styles.card}`}>
+            <div className={`col-6 col-md-4 col-lg-4 col-xxl-2 ${styles.card}`}>
               <div className={styles.pdPics}>
                 <img
                   className={styles.dryfood}
@@ -119,7 +121,7 @@ export default function HomePage(props) {
                 <p className={styles.p}>$185</p>
               </div>
             </div>
-            <div className={`col-2 ${styles.card}`}>
+            <div className={`col-6 col-md-4 col-lg-4 col-xxl-2 ${styles.card}`}>
               <div className={styles.pdPics}>
                 <img
                   className={styles.dryfood}
@@ -132,7 +134,7 @@ export default function HomePage(props) {
                 <p className={styles.p}>$185</p>
               </div>
             </div>
-            <div className={`col-2 ${styles.card}`}>
+            <div className={`col-6 col-md-4 col-lg-4 col-xxl-2 ${styles.card}`}>
               <div className={styles.pdPics}>
                 <img
                   className={styles.dryfood}
@@ -146,8 +148,8 @@ export default function HomePage(props) {
               </div>
             </div>
           </div>
-          {/* 手機板 */}
-          <div className={`row d-block d-md-none ${styles.productCards}`}>
+          {/* 手機板  */}
+          {/* <div className={`row d-block d-md-none ${styles.productCards}`}>
             <Swiper
               slidesPerView={1}
               spaceBetween={23}
@@ -225,7 +227,7 @@ export default function HomePage(props) {
                 </div>
               </SwiperSlide>
             </Swiper>
-          </div>
+          </div> */}
         </div>
 
         <div className={styles.brownWave}>
@@ -233,9 +235,9 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      <div className={`container-fluid px-2 ${styles.section3}`}>
+      <div className={`container-fluid ${styles.section3}`}>
         <div
-          className={`col-11 col-md-10 col-lg-8 d-none d-lg-block ${styles.discountPic}`}
+          className={`col-11 col-md-10 col-lg-8 d-none d-xxl-block ${styles.discountPic}`}
         >
           <img className={styles.girlDog} src="/home/img/girl&dog.png" alt="" />
           <img
@@ -253,14 +255,12 @@ export default function HomePage(props) {
             offer
           </div>
         </div>
-        <div className={`row ${styles.hotel}`}>
-          <div
-            className={`col-12 col-md-4 col-lg-6 order-md-1 order-2 ${styles.map}`}
-          >
+        <div className={`row  justify-content-center ${styles.hotel}`}>
+          <div className={`col-12 col-md-6 order-md-1 order-2 ${styles.map}`}>
             <TaiwanMap />
           </div>
           <div
-            className={`col-12 col-md-8 col-lg-6 order-md-2 order-1 ${styles.hotelWords}`}
+            className={`col-12 col-md-6 order-md-2 order-1 ${styles.hotelWords}`}
           >
             <h2 className={styles.h2}>毛孩的度假天堂</h2>
             <p className={styles.p}>
@@ -288,15 +288,15 @@ export default function HomePage(props) {
         </div> */}
       </div>
 
-      <div className={`container ${styles.section4}`}>
+      <div className={`container-fluid ${styles.section4}`}>
         <h2 className={styles.section4Title}>會員限定優惠</h2>
         <div className={`row ${styles.userCards}`}>
-          <div className={`col-6 col-md-3  ${styles.card} ${styles.card1}`}>
+          <div className={`col-5 col-md-3  ${styles.card} ${styles.card1}`}>
             <p className={styles.p1}>首購會員</p>
             <p className={styles.p2}>現折50元</p>
             <h5 className={styles.card1Word}>單筆消費滿 $ 500 即可使用</h5>
           </div>
-          <div className={`col-6 col-md-3  ${styles.card} ${styles.card2}`}>
+          <div className={`col-5 col-md-3  ${styles.card} ${styles.card2}`}>
             <div className={styles.shipIcon}>
               <img
                 className={styles.shipIcon}
@@ -307,7 +307,7 @@ export default function HomePage(props) {
             <h5 className={styles.card2Word}>滿額免運</h5>
             <p className={styles.card2P}>超取 $ 1500 / 宅配 $ 2000</p>
           </div>
-          <div className={`col-6 col-md-3  ${styles.card} ${styles.card3}`}>
+          <div className={`col-5 col-md-3  ${styles.card} ${styles.card3}`}>
             <img
               className={styles.moneyIcon}
               src="/home/img/moneyIcon.png"
@@ -318,7 +318,7 @@ export default function HomePage(props) {
               會員最高享<span className={styles.discount8}> 8% </span>消費回饋
             </p>
           </div>
-          <div className={`col-6 col-md-3  ${styles.card} ${styles.card4}`}>
+          <div className={`col-5 col-md-3  ${styles.card} ${styles.card4}`}>
             <div>
               <img
                 className={styles.qrcode}
@@ -333,9 +333,11 @@ export default function HomePage(props) {
         <Link href="/register" className={styles.signupBtn}>
           立即加入會員
         </Link>
-        <div className={styles.yellowPaws}>
-          <img src="/home/img/yellowPaws.png" alt="" />
-        </div>
+        <img
+          className={styles.yellowPaws}
+          src="/home/img/yellowPaws.png"
+          alt=""
+        />
       </div>
 
       <div className={styles.btns}>

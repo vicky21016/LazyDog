@@ -17,7 +17,7 @@
 
 .scrollOrg::-webkit-scrollbar-thumb {
   background: var(--sb-thumb-color);
-  border-radius: 4px;
+  border-radius: 10px;
   /* border: 1px solid #232E33; */
 }
 
@@ -33,7 +33,7 @@ input:focus,
 input:active {
   outline: none !important;
   box-shadow: none !important;
-  border-color: #a1a1a1 !important;
+  border-color: #fca85f !important;
 }
 
 /* 右邊 */
@@ -75,7 +75,7 @@ input:active {
   }
 
   /* 美化圖片預覽區 */
-  .imageCard {
+  /* .imageCard {
     position: relative;
     width: 100px;
     height: 100px;
@@ -88,7 +88,6 @@ input:active {
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    /* padding: 8px; */
     cursor: pointer;
   }
 
@@ -103,8 +102,55 @@ input:active {
     font-size: 12px;
     margin-top: 5px;
     padding: 3px;
+  } */
+  .imageCard {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    /* border: 0.1px solid #ddd; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    .imgCr {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .pics {
+      width: 100px;
+      height: 100px;
+    }
+    .add {
+      width: 100%;
+      font-size: 12px;
+      margin-top: 5px;
+      padding: 3px;
+    }
   }
-  .deleteBtn {
+
+  .teacherPic {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    border: 0.8px solid #ecebeb;
+    border-radius: 8px;
+    height: 250px;
+    padding: 0;
+    &:hover {
+      border: 1.2px solid #fca85f;
+      transition: 0.6s;
+    }
+  }
+
+  .deleteBtn1 {
     position: absolute;
     top: 4px;
     right: 5px;
@@ -120,11 +166,11 @@ input:active {
     justify-content: center;
     cursor: pointer;
   }
-  .deleteBtn:hover {
+  .deleteBtn1:hover {
     background: darkred;
   }
 
-  .addPicBtn {
+  /* .addPicBtn {
     width: 50px;
     height: 25px;
     background-color: #66c5bd;
@@ -141,6 +187,32 @@ input:active {
       background-color: #fdf9f5;
       color: #66c5bd;
       border-color: #66c5bd;
+    }
+  } */
+  .addPicBtn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f7a96d;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 1.5px;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+    &:hover {
+      font-size: 16px;
+      opacity: 1;
+    }
+    &:active {
+      background-color: #ffffff00;
     }
   }
 

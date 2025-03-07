@@ -59,7 +59,7 @@ router.put(
   "/info",
   verifyToken,
   verifyRole(["teacher"]),
-  upload.single("img"),
+  upload.single("teacherPic"),
   updateInfo
 );
 

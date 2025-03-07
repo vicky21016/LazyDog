@@ -34,9 +34,10 @@ export const getTeacherInfo = async (teacherId) => {
 };
 
 // 編輯師資
-export const updateTeacherInfo = async (teacherId, updateData) => {
+export const updateTeacherInfo = async (updateData) => {
   try {
-    const { name, category_id, Introduce, Experience, img } = updateData;
+    const { name, category_id, Introduce, Experience, img, teacherId } =
+      updateData;
 
     const sql = `
       UPDATE teacher 
@@ -48,7 +49,7 @@ export const updateTeacherInfo = async (teacherId, updateData) => {
         teacher.Introduce = ?, 
         teacher.Experience = ?, 
         teacher.img = ?
-      WHERE users.id = ? 
+      WHERE teacher.id = ? 
       AND teacher.is_deleted = 0
     `;
 
