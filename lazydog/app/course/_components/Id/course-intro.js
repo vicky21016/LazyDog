@@ -12,6 +12,7 @@ import { useCart } from "@/hooks/use-cart";
 import {
   addCourseFavorite,
   removeCourseFavorite,
+  getCourseFavorites,
 } from "@/services/allFavoriteService";
 
 export default function CourseIntro({ course, session, place, params }) {
@@ -20,7 +21,7 @@ export default function CourseIntro({ course, session, place, params }) {
   const c = course?.[0];
   const s = session?.[0];
   const { courseId } = params;
-
+  const [favoriteId, setFavoriteId] = useState(null);
   const [selectDate, setSelectDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [filterSession, setFilterSession] = useState([]);
@@ -35,15 +36,73 @@ export default function CourseIntro({ course, session, place, params }) {
   const [isFavorite, setIsFavorite] = useState(false);
   const uniqueDates = [...new Set(session.map((ss) => ss.class_dates))]; // 過濾出唯一的 class_dates 作為日期選單
   // const defaultTeachImg = "/course/img/user.jpg"
+  const storedUser = localStorage.getItem("user");
+  // console.log(" localStorage user:", storedUser);
 
   // 處理收藏邏輯
+  useEffect(() => {
+    const fetchFavoriteStatus = async () => {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      if (!storedUser || !storedUser.id) {
+        console.warn(" 使用者未登入，跳過 API 請求");
+        return;
+      }
+
+      const userId = storedUser.id;
+      const storedToken =
+        localStorage.getItem("loginWithToken") ||
+        sessionStorage.getItem("loginWithToken") ||
+        storedUser?.token ||
+        "";
+
+
+      if (storedToken && userId) {
+        try {
+          const response = await fetch(
+            `http://localhost:5000/api/course_favorites/${userId}`,
+            {
+              headers: { Authorization: `Bearer ${storedToken}` },
+            }
+          );
+          const data = await response.json();
+
+          if (!data.data || !Array.isArray(data.data)) {
+            console.error(" API 回傳資料有誤:", data);
+            return;
+          }
+
+          // 找到該課程的收藏記錄
+          const favorite = data.data.find(
+            (fav) => fav.course_id === parseInt(courseId)
+          );
+
+          if (favorite) {
+            setIsFavorite(true);
+            setFavoriteId(favorite.id); // 設置 favoriteId
+          } else {
+            console.log(" 未找到該課程的收藏");
+            setIsFavorite(false);
+            setFavoriteId(null);
+          }
+        } catch (error) {
+          console.error("獲取收藏狀態失敗:", error);
+        }
+      }
+    };
+
+    fetchFavoriteStatus();
+  }, [courseId]);
+
   const handleFavorite = async () => {
     const storedToken =
       localStorage.getItem("loginWithToken") ||
       sessionStorage.getItem("loginWithToken") ||
       JSON.parse(localStorage.getItem("user"))?.token ||
       "";
-
+  
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const userId = storedUser?.id;
+  
     if (!storedToken || storedToken === "null" || storedToken === "undefined") {
       Swal.fire({
         icon: "warning",
@@ -54,26 +113,53 @@ export default function CourseIntro({ course, session, place, params }) {
       });
       return;
     }
-    console.log(courseId);
-
+  
+    if (!userId) {
+      Swal.fire({
+        icon: "error",
+        title: "無法獲取用戶 ID",
+        text: "請重新登入後再試！",
+      });
+      return;
+    }
+  
+  
     try {
       if (isFavorite) {
-        await removeCourseFavorite(courseId, storedToken);
-        Swal.fire({
-          icon: "success",
-          title: "已移除收藏",
-          // text: "旅館已從您的收藏清單中移除！",
-        });
-        setIsFavorite(false);
+        if (!favoriteId) {
+          Swal.fire({
+            icon: "error",
+            title: "移除收藏失敗",
+            text: "找不到對應的收藏記錄！",
+          });
+          return;
+        }
+  
+        const response = await removeCourseFavorite(favoriteId, storedToken);
+        if (response.success) {
+          Swal.fire({
+            icon: "success",
+            title: "已移除收藏",
+          });
+          setIsFavorite(false); // 更新狀態
+          setFavoriteId(null); // 清空 favoriteId
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "移除收藏失敗",
+            text: response.error || "請稍後再試",
+          });
+        }
       } else {
-        const response = await addCourseFavorite(courseId, storedToken);
+        const response = await addCourseFavorite(courseId, storedToken, userId);
         if (response.success) {
           Swal.fire({
             icon: "success",
             title: response.message,
             text: "課程已加入您的收藏清單！",
           });
-          setIsFavorite(true);
+          setIsFavorite(true); // 更新狀態
+          setFavoriteId(response.data.id); // 設置新的 favoriteId
         } else {
           Swal.fire({
             icon: "error",
@@ -84,10 +170,14 @@ export default function CourseIntro({ course, session, place, params }) {
       }
     } catch (error) {
       console.error("收藏操作失敗:", error);
-      Swal.fire({ icon: "error", title: "操作失敗", text: "請稍後再試！" });
+      Swal.fire({
+        icon: "error",
+        title: "操作失敗",
+        text: error.message || "請稍後再試！",
+      });
     }
   };
-
+  
   // 當選擇日期時，過濾對應的時段
   const dateChange = (e) => {
     const selected = e.target.value;

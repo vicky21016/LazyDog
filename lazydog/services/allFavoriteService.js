@@ -12,7 +12,6 @@ export const getId = async (productId) => {
     if (!res.ok) throw new Error("獲取商品詳細資訊失敗");
     return await res.json();
   } catch (error) {
-    console.error("獲取商品資訊錯誤:", error);
     return null;
   }
 };
@@ -33,10 +32,8 @@ export const getProductFavorites = async () => {
     if (!res.ok) throw new Error("獲取產品收藏失敗");
 
     const response = await res.json();
-    console.log("API 取得的商品收藏:", response); // 🟢 確保數據正確
-    return { success: true, data: response.data }; // 確保 data 直接傳遞
+    return { success: true, data: response.data };
   } catch (error) {
-    console.error("獲取產品收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
@@ -58,7 +55,6 @@ export const deleteProductFavorite = async () => {
     if (!res.ok) throw new Error("移除產品收藏失敗");
     return await res.json();
   } catch (error) {
-    console.error("移除產品收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
@@ -79,7 +75,6 @@ export const getHotelFavorites = async () => {
     if (!res.ok) throw new Error("獲取hotel收藏失敗");
     return await res.json();
   } catch (error) {
-    console.error("獲取hotel收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
@@ -108,7 +103,6 @@ export const addHotelFavorite = async (hotelId) => {
 
     throw new Error(result.message || "新增 hotel 收藏失敗");
   } catch (error) {
-    console.error("新增 hotel 收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
@@ -140,19 +134,17 @@ export const removeHotelFavorite = async (id) => {
 
     return await res.json();
   } catch (error) {
-    console.error("移除hotel收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
 
-
 // 取得用戶收藏的課程
-export const getCourseFavorites = async (id) => {
+export const getCourseFavorites = async (userId) => {
   const token = getToken();
   if (!token) return { success: false, error: "請先登入" };
 
   try {
-    const res = await fetch(`${COURSE_FAVORITE_URL}/${id}`, {
+    const res = await fetch(`${COURSE_FAVORITE_URL}/${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -163,10 +155,8 @@ export const getCourseFavorites = async (id) => {
     if (!res.ok) throw new Error("獲取課程收藏失敗");
 
     const response = await res.json();
-    console.log("API 取得的課程收藏:", response);
     return { success: true, data: response.data };
   } catch (error) {
-    console.error("獲取課程收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
@@ -175,31 +165,47 @@ export const getCourseFavorites = async (id) => {
 export const addCourseFavorite = async (courseId) => {
   const token = getToken();
   if (!token) return { success: false, error: "請先登入" };
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const userId = storedUser?.id;
 
   try {
+    console.log("新增收藏，課程 ID:", courseId);
+
     const res = await fetch(COURSE_FAVORITE_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ course_id: courseId }),
+      body: JSON.stringify({ user_id: userId, course_id: courseId }),
     });
 
-    if (!res.ok) throw new Error("新增課程收藏失敗");
-    return await res.json();
+    const result = await res.json();
+    console.log("API 返回:", result);
+
+    if (!res.ok) throw new Error(result.message || "新增課程收藏失敗");
+
+    return { success: true, message: "成功收藏課程", data: result };
   } catch (error) {
-    console.error("新增課程收藏失敗:", error);
+    console.error("收藏課程失敗:", error.message);
     return { success: false, error: error.message };
   }
 };
 
 // 移除課程收藏
-export const removeCourseFavorite = async (favoriteId, userId) => {
+export const removeCourseFavorite = async (favoriteId) => {
   const token = getToken();
   if (!token) return { success: false, error: "請先登入" };
 
+  if (!favoriteId) {
+    return { success: false, error: "找不到收藏 ID" };
+  }
+
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const userId = storedUser?.id;
+
   try {
+
     const res = await fetch(
       `${COURSE_FAVORITE_URL}/${favoriteId}?user_id=${userId}`,
       {
@@ -214,13 +220,9 @@ export const removeCourseFavorite = async (favoriteId, userId) => {
       return { success: true, message: "刪除成功" };
     }
 
-    // 如果後端返回 400，但已經刪除，仍然回傳 success: true
-    if (res.status == 400 && result.message.includes("已經刪除")) {
-      return { success: true, message: "該收藏已刪除" };
-    }
-
     throw new Error(result.message || "移除課程收藏失敗");
   } catch (error) {
+    console.error("移除收藏失敗:", error.message);
     return { success: false, error: error.message };
   }
 };
