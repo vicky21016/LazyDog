@@ -5,6 +5,7 @@ import useComment from "@/hooks/useComment";
 import styles from '../../_components/detail/page.module.css';
 import { useAuth } from "@/hooks/use-auth";
 import { useParams } from "next/navigation";
+import style from '../../../../styles/modules/operatorCamera.module.css';
 
 const CommentSection = () => {
     const [commentContent, setCommentContent] = useState("");
@@ -70,7 +71,7 @@ const CommentSection = () => {
                 <button
                     onClick={handleSubmit}
                     disabled={loading}
-                    className="btn btn-primary ms-1"
+                    className={`btn ms-1 ${style.btn}`}
                 >
                     <i className="bi bi-send-fill"></i>
                 </button>

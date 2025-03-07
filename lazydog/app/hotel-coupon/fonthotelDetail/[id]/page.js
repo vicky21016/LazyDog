@@ -230,7 +230,7 @@ export default function HotelDetailPage({ params }) {
         onCheckOutDateChange={setCheckOutDate}
       />
       {/* 簡介 */}
-      <div className="container mt-5">
+      <div className={`container mt-5 ${hotelStyles.container}`}>
         <Breadcrumb
           links={[
             { label: "首頁 ", href: "/" },
@@ -238,6 +238,7 @@ export default function HotelDetailPage({ params }) {
             {
               label: "旅館介紹",
               href: `/hotel-coupon/fonthotelDetail/${id}`,
+              active: true,
             },
           ]}
         />
@@ -289,7 +290,7 @@ export default function HotelDetailPage({ params }) {
       </div>
       {/* 我們的努力 */}
       <div className={hotelStyles.suEffortSection}>
-        <div className="container text-center">
+        <div className={`container text-center ${hotelStyles.container}`}>
           <h2 className={hotelStyles.suEffortTitle}>我們的努力，看的見</h2>
           <p className={hotelStyles.suEffortSubtitle}>
             每一次陪伴、每一小時的付出，都為毛孩創造更快樂、更健康的生活！

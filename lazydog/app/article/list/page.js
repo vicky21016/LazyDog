@@ -12,7 +12,7 @@ import AsideCard2 from '../_components/list/AsideCard2';
 import { useAuth } from "@/hooks/use-auth";
 import Header from "../../components/layout/header";
 import { ScrollMotionContainer, ScrollMotionItem } from '../ListMotion'
-
+import style from '../../../styles/modules/operatorCamera.module.css';
 
 const ArticlePage = () => {
   const { articles, loading, error } = useArticles();
@@ -94,10 +94,10 @@ const ArticlePage = () => {
       <div className={`container`}>
         {/* 發布文章按鈕 */}
         <div className={styles.postButton}>
-          <button className={styles.post}>
+          <button className={` ${style.btn}`}>
             <Link
               href="http://localhost:3000/article/add_article"
-              style={{ textDecoration: 'none', color: 'white' }}
+              className={`${styles.post} `}
               onClick={handleClick} // 點擊時檢查是否已登入
             >
               <i className="bi bi-check-circle"></i> 發布文章

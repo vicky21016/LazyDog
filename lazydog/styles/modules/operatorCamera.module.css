@@ -118,7 +118,7 @@
 }
 .btn:hover {
   background-color: #fdf9f5;
-  color: #ff9538;
+  color: #ff9538 !important;
   border-color: #ff9538;
 }
 

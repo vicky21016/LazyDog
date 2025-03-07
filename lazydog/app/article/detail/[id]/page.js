@@ -12,7 +12,7 @@ import MyComment from "../../_components/detail/MyComment"
 import styles from "./page.module.css";
 import useArticles from "@/hooks/useArticle";
 import Header from "../../../components/layout/header";
-
+import Breadcrumb from "../../../components/teacher/breadcrumb";
 
 export default function ArticleDetail() {
   const { id } = useParams(); // 取得網址中的文章 ID
@@ -38,33 +38,19 @@ export default function ArticleDetail() {
     <>
       <Header />
       <div className="container" style={{ marginTop: '100px' }}>
-        <nav
-          className={`my-4 ${styles.breadcrumb}`}
-          style={{ "--bs-breadcrumb-divider": ">" }}
-          aria-label="breadcrumb"
-        >
-          <ol className="breadcrumb ">
-            <li className="breadcrumb-item ">
-              <Link className={`${styles.link}`} href="http://localhost:3000/article/list">
-                毛孩文章
-              </Link>
-            </li>
-            <li className="breadcrumb-item ">
-              {/* <Link className={`${styles.link}`} href="#">
-              <i class="bi bi-chevron-right"></i>
-              {article?.category_name}
-            </Link> */}
-            </li>
-            <li className="breadcrumb-item active" aria-current="page">
-              <i class="bi bi-chevron-right"></i>  {article?.title || "標題尚未加載"}
-            </li>
-          </ol>
-        </nav>
+      <Breadcrumb
+              links={[
+                { label: "首頁 ", href: "/" },
+                { label: " 毛孩文章", href: "/article/list" },
+                { label:` ${article?.title || "標題尚未加載"}`, href: "/article/list/detail", active: true },
+              ]}
+            />
+        
         {/* 文章內容 */}
         <Content article={article} /> {/* 傳遞文章資料給 Content 組件 */}
 
         {/* 留言區 */}
-        <div className="chat" style={{ background: "#FFF6E8", padding: "15px", marginTop: "150px", borderRadius:'20px',border:'.1px solid grey '}}>
+        <div className="chat" style={{ background: "#FFF6E8", padding: "15px", marginTop: "150px", borderRadius:'20px',border:'none '}}>
           <h3 className="mt-3 ms-3">留言</h3>
           <ul className="list-unstyled">
             {comments.length === 0 ? (
