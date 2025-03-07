@@ -17,20 +17,19 @@ import {
   addHotelToFavorites,
   removeHotelToFavorites,
 } from "@/services/hotelService";
-import {addHotelFavorite} from "@/services/allFavoriteService"
+import { addHotelFavorite } from "@/services/allFavoriteService";
 import Header from "../../../components/layout/header";
 import SearchBar from "../../../components/hotel/search";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
 import RoomSelection from "../../../components/hotel/roomSelection";
 import { useAuth } from "@/hooks/use-auth";
 
-
 export default function HotelDetailPage({ params }) {
   const { id } = params;
   const router = useRouter();
   const searchParams = useSearchParams();
-const { user ,token} = useAuth();
-console.log("User from useAuth:", user); // 測試是否正確獲取 user
+  const { user, token } = useAuth();
+  console.log("User from useAuth:", user); // 測試是否正確獲取 user
 
   // 從 URL 中提取 checkIn 和 checkOut
   const initialCheckInDate = searchParams.get("checkInDate") || "";
@@ -154,42 +153,44 @@ console.log("User from useAuth:", user); // 測試是否正確獲取 user
 
     router.push(`/hotel-coupon/fonthotelHome?${paramsString}`);
   };
-  
+
   // 處理收藏邏輯
   const handleFavorite = async () => {
-    const token = localStorage.getItem("token");
-    console.log("Token read:", token); // 檢查 token 是否存在
-  
-    if (!token) {
+    const storedToken =
+      localStorage.getItem("loginWithToken") ||
+      sessionStorage.getItem("loginWithToken") ||
+      JSON.parse(localStorage.getItem("user"))?.token ||
+      "";
+
+
+    if (!storedToken || storedToken === "null" || storedToken === "undefined") {
       Swal.fire({
         icon: "warning",
         title: "請先登入",
         text: "您需要登入才能收藏旅館！",
       }).then(() => {
-        console.log("Redirecting to login page..."); // 確認跳轉邏輯執行
         router.push("/login");
       });
       return;
     }
-  
+
     try {
       if (isFavorite) {
-        await removeHotelToFavorites(id);
+        await removeHotelToFavorites(id, storedToken);
         Swal.fire({
           icon: "success",
           title: "已移除收藏",
           text: "旅館已從您的收藏清單中移除！",
         });
+        setIsFavorite(false);
       } else {
-        const response = await addHotelFavorite(id);
+        const response = await addHotelFavorite(id, storedToken);
         if (response.success) {
           Swal.fire({
             icon: "success",
             title: response.message,
             text: "旅館已加入您的收藏清單！",
           });
-  
-          // 確保 UI 立即更新
           setIsFavorite(true);
         } else {
           Swal.fire({
@@ -204,8 +205,6 @@ console.log("User from useAuth:", user); // 測試是否正確獲取 user
       Swal.fire({ icon: "error", title: "操作失敗", text: "請稍後再試！" });
     }
   };
-  
-  
 
   const mapRef = useRef(null);
   useGoogleMap(lat, lng, mapRef);
@@ -325,12 +324,6 @@ console.log("User from useAuth:", user); // 測試是否正確獲取 user
       </div>
       {/* Google 地圖 */}
       <div className={hotelStyles.suMapContainer}>
-        <h1 className="map-title text-center mt-5">
-          {hotel?.name || "載入中..."}
-        </h1>
-        <p className="map-title text-center mt-5">
-          地址: {hotel?.address || "無資料"}
-        </p>
         {lat && lng ? (
           <div ref={mapRef} style={{ height: "500px", width: "100%" }}></div>
         ) : (

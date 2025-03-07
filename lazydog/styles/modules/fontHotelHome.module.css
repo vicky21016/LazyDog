@@ -451,3 +451,46 @@
     height: 35px;
   }
 }
+/*  搜尋欄 RWD */
+@media (max-width: 768px) {
+  .suSearchBar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+    gap: 10px;
+    max-width: 100%;
+  }
+
+  .suSearchGroup {
+    max-width: 100%;
+    flex: none;
+    width: 100%;
+  }
+
+  .suSearchBtn {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+  }
+}
+/*  375px 以下（最小寬度） */
+@media (max-width: 375px) {
+  .suSearchBar {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .suSearchGroup {
+    padding: 6px 10px;
+  }
+
+  .suSearchBtn {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .suQuantityNumber {
+    width: 30px;
+    font-size: 14px;
+  }
+}

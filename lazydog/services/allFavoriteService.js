@@ -96,7 +96,7 @@ export const addHotelFavorite = async (hotelId) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ hotel_id: hotelId }), // 確保 key 與後端一致
+      body: JSON.stringify({ hotel_id: hotelId }), 
     });
 
     const result = await res.json();
