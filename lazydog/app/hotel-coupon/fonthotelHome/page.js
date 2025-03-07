@@ -96,11 +96,15 @@ export default function HotelHomePage() {
 
   // 當 isFiltered 為 false 時載入所有飯店
   useEffect(() => {
+    let isMounted = true; 
     if (!isFiltered) {
-      fetchAllHotels();
+      fetchAllHotels().then((hotels) => {
+        if (isMounted) setFilteredHotels(hotels || []);
+      });
     }
+    return () => { isMounted = false };
   }, [isFiltered]);
-
+  
   // 監聽 filteredHotels，更新分頁數
   useEffect(() => {
     setTotalPages(Math.max(1, Math.ceil(filteredHotels.length / 10)));
@@ -168,9 +172,16 @@ export default function HotelHomePage() {
     if (typeof window !== "undefined") {
       sessionStorage.setItem("searchParams", JSON.stringify(updatedParams));
     }
-
+  
     try {
       const data = await getFilteredHotelsS(updatedParams);
+      if (!Array.isArray(data)) {
+        console.error("API 回傳的資料格式錯誤:", data);
+        setFilteredHotels([]); 
+      } else {
+        setFilteredHotels(data);
+      }
+      
       setFilteredHotels(data);
       setCurrentPage(1);
     } catch (error) {
@@ -201,12 +212,10 @@ export default function HotelHomePage() {
   // 計算當前頁面顯示的飯店
   const indexOfLastHotel = currentPage * 10;
   const indexOfFirstHotel = indexOfLastHotel - 10;
-  const currentHotels = filteredHotels.slice(
-    indexOfFirstHotel,
-    indexOfLastHotel
-  );
+  const currentHotels = (filteredHotels || []).slice(indexOfFirstHotel, indexOfLastHotel);
+
   const handleHotelClick = (hotelId) => {
-    const storedParams = JSON.parse(sessionStorage.getItem("searchParams"));
+    const storedParams = JSON.parse(sessionStorage.getItem("searchParams")) || {};
 
     const checkIn = storedParams?.checkInDate || "";
     const checkOut = storedParams?.checkOutDate || "";

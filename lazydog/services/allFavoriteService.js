@@ -96,7 +96,7 @@ export const addHotelFavorite = async (hotelId) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ hotel_id: hotelId }), 
+      body: JSON.stringify({ hotel_id: hotelId }),
     });
 
     const result = await res.json();
@@ -113,11 +113,16 @@ export const addHotelFavorite = async (hotelId) => {
   }
 };
 
-
 // 移除收藏
 export const removeHotelFavorite = async (id) => {
   const token = getToken();
-  if (!token) return { success: false, error: "請先登入" };
+  if (!token) {
+    console.error("未登入，無法刪除收藏");
+    return { success: false, error: "請先登入" };
+  }
+
+  console.log("Removing favorite for hotel ID:", id);
+  console.log("Token used for request:", token);
 
   try {
     const res = await fetch(`${HOTEL_FAVORITE_URL}/${id}`, {
@@ -127,13 +132,19 @@ export const removeHotelFavorite = async (id) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (!res.ok) throw new Error("移除hotel收藏失敗");
+
+    if (!res.ok) {
+      const errorResponse = await res.json();
+      throw new Error(errorResponse.message || "移除收藏失敗");
+    }
+
     return await res.json();
   } catch (error) {
     console.error("移除hotel收藏失敗:", error);
     return { success: false, error: error.message };
   }
 };
+
 
 // 取得用戶收藏的課程
 export const getCourseFavorites = async (id) => {
@@ -189,10 +200,13 @@ export const removeCourseFavorite = async (favoriteId, userId) => {
   if (!token) return { success: false, error: "請先登入" };
 
   try {
-    const res = await fetch(`${COURSE_FAVORITE_URL}/${favoriteId}?user_id=${userId}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await fetch(
+      `${COURSE_FAVORITE_URL}/${favoriteId}?user_id=${userId}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     const result = await res.json();
 
@@ -201,7 +215,7 @@ export const removeCourseFavorite = async (favoriteId, userId) => {
     }
 
     // 如果後端返回 400，但已經刪除，仍然回傳 success: true
-    if (res.status === 400 && result.message.includes("已經刪除")) {
+    if (res.status == 400 && result.message.includes("已經刪除")) {
       return { success: true, message: "該收藏已刪除" };
     }
 
@@ -210,5 +224,3 @@ export const removeCourseFavorite = async (favoriteId, userId) => {
     return { success: false, error: error.message };
   }
 };
-
-

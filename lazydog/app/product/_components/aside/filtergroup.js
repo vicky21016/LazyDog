@@ -177,13 +177,6 @@ export default function FilterGroup({
       return newState;
     });
   };
-
-  // useEffect(() => {
-  //   if (isChecked == false) {
-  //     resetCheckboxes();
-  //   }
-  //   setIsChecked(true);
-  // }, [isChecked]);
   useEffect(() => {
     if (isChecked === false) {
       resetCheckboxes();

@@ -95,7 +95,9 @@ router.put("/restore/:id", async (req, res) => {
   const { user_id } = req.query;
 
   if (!user_id) {
-    return res.status(400).json({ status: "error", message: "需要提供 user_id" });
+    return res
+      .status(400)
+      .json({ status: "error", message: "需要提供 user_id" });
   }
 
   try {
@@ -103,11 +105,15 @@ router.put("/restore/:id", async (req, res) => {
     const [existing] = await pool.execute(checkSql, [id]);
 
     if (existing.length === 0) {
-      return res.status(404).json({ status: "error", message: "找不到可恢復的收藏" });
+      return res
+        .status(404)
+        .json({ status: "error", message: "找不到可恢復的收藏" });
     }
 
     if (existing[0].user_id != user_id) {
-      return res.status(403).json({ status: "error", message: "無權恢復此收藏" });
+      return res
+        .status(403)
+        .json({ status: "error", message: "無權恢復此收藏" });
     }
 
     const restoreSql = `UPDATE course_favorites SET is_deleted = 0, updated_at = NOW() WHERE id = ?`;

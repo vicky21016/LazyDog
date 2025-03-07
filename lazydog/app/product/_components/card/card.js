@@ -146,7 +146,7 @@ function CardContent({ productID = "" }) {
         Swal.fire({
           icon: "success",
           title: "加入收藏成功",
-          text: `${productName} 已成功加入收藏！`,
+          // text: `${productName} 已成功加入收藏！`,
           showConfirmButton: false,
           timer: 1000, // 1.5 秒後自動關閉
         });
@@ -154,7 +154,7 @@ function CardContent({ productID = "" }) {
         Swal.fire({
           icon: "success",
           title: "取消收藏成功",
-          text: `${productName} 已成功取消收藏！`,
+          // text: `${productName} 已成功取消收藏！`,
           showConfirmButton: false,
           timer: 1000, // 1.5 秒後自動關閉
         });
@@ -282,7 +282,7 @@ function CardContent({ productID = "" }) {
               setTimeout(() => {
                 setEyeHover((prev) => !prev);
               }, 900);
-            }, 2500);
+            }, 2000);
             setIntervalId(id);
           }}
           onMouseLeave={() => {

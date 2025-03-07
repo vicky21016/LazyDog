@@ -49,8 +49,16 @@
   height: 40px;
   display: flex;
   align-items: center;
+  /* &:hover {
+    color: var(--Orange);
+  } */
 }
 .FormCheck {
+  transition: all 0.2s;
+  &:hover {
+    translate: 0 -2px;
+    color: var(--Orange);
+  }
   width: 100%;
   height: 35px;
   display: flex;
