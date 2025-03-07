@@ -109,7 +109,7 @@ const HotelSearchBar = ({
             type="text"
             ref={dateRef}
             className={styles.suSearchDate}
-            placeholder="入住日期 → 退房日期"
+            placeholder="入住日期  →  退房日期"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
@@ -126,14 +126,14 @@ const HotelSearchBar = ({
             className={styles.suQuantityBtn}
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
           >
-            -
+            <i class="bi bi-dash"></i>
           </button>
           <span className={styles.suQuantityNumber}>{quantity}</span>
           <button
             className={styles.suQuantityBtn}
             onClick={() => setQuantity(Math.min(10, quantity + 1))}
           >
-            +
+            <i class="bi bi-plus"></i>
           </button>
         </div>
 
