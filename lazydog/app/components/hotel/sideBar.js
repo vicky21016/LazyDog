@@ -266,7 +266,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
 
           {/* 根據 showAllFacilities 來決定顯示數量 */}
           {tags.slice(0, showAllFacilities ? tags.length : 5).map((tag) => (
-            <div className="form-check" key={tag.id}>
+            <div className="form-check mb-3" key={tag.id}>
               <input
                 className="form-check-input"
                 type="checkbox"
