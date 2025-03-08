@@ -22,7 +22,7 @@ const PriceSlider = ({ minPrice, maxPrice, onUpdate }) => {
     }
   }, [minPrice, maxPrice, onUpdate]);
 
-  return <div id="priceRange" ref={priceSliderRef} className="mt-3"></div>;
+  return <div id="priceRange" ref={priceSliderRef} className="mt-5"></div>;
 };
 
 export default PriceSlider;
