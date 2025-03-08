@@ -63,8 +63,7 @@
   flex: 1 0 0;
   gap: 15px;
   .ProductInfoImg {
-    /* max-width: 540px; */
-    margin-left: 43px;
+    max-width: 611px;
     border-radius: 4px;
     overflow: hidden;
     img {

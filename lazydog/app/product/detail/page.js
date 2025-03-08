@@ -193,12 +193,15 @@ function DetailContent() {
           </section>
           <section className={`${styles.ProductInfo} row`}>
             <div className={`${styles.ProductInfoImgGroup}`}>
-              <figure className={styles.ProductInfoImg}>
+              <figure
+                style={{ marginLeft: width >= 768 ? "43px" : "" }}
+                className={styles.ProductInfoImg}
+              >
                 {detailPic == "/product/img/default.webp" ? (
                   <div
                     style={{
-                      width: "400px",
-                      height: "400px",
+                      maxWidth: "611px",
+                      height: width >= 768 ? "611px" : "400px",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
