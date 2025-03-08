@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import moment from "moment";
 import Swal from "sweetalert2"; // 導入 SweetAlert
@@ -52,26 +52,36 @@ export default function HotelDetailPage({ params }) {
   const [checkOutDate, setCheckOutDate] = useState(initialCheckOutDate);
   const didFetch = useRef(false);
 
-  
-  const checkInDateFromUrl = searchParams.get("checkInDate") || "";
-  const checkOutDateFromUrl = searchParams.get("checkOutDate") || "";
-  const quantityFromUrl = searchParams.get("quantity") || 1;
-
+  const checkInDateFromUrl = useMemo(
+    () => searchParams.get("checkInDate") || "",
+    [searchParams]
+  );
+  const checkOutDateFromUrl = useMemo(
+    () => searchParams.get("checkOutDate") || "",
+    [searchParams]
+  );
+  const quantityFromUrl = useMemo(
+    () => searchParams.get("quantity") || 1,
+    [searchParams]
+  );
   // 確保 state 也更新
   useEffect(() => {
-    setCheckInDate(checkInDateFromUrl);
-    setCheckOutDate(checkOutDateFromUrl);
-    setQuantity(quantityFromUrl);
+    if (checkInDate !== checkInDateFromUrl) setCheckInDate(checkInDateFromUrl);
+    if (checkOutDate !== checkOutDateFromUrl)
+      setCheckOutDate(checkOutDateFromUrl);
+    if (quantity !== quantityFromUrl) setQuantity(quantityFromUrl);
   }, [checkInDateFromUrl, checkOutDateFromUrl, quantityFromUrl]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedParams = JSON.parse(sessionStorage.getItem("searchParams"));
-
       if (storedParams) {
-        if (!checkInDate) setCheckInDate(storedParams.checkInDate || "");
-        if (!checkOutDate) setCheckOutDate(storedParams.checkOutDate || "");
-        if (!quantity) setQuantity(storedParams.quantity || 1);
+        if (!checkInDate && storedParams.checkInDate)
+          setCheckInDate(storedParams.checkInDate);
+        if (!checkOutDate && storedParams.checkOutDate)
+          setCheckOutDate(storedParams.checkOutDate);
+        if (!quantity && storedParams.quantity)
+          setQuantity(storedParams.quantity);
       }
     }
   }, []);
@@ -90,25 +100,26 @@ export default function HotelDetailPage({ params }) {
 
   // 獲取旅館資料
   useEffect(() => {
-    if (!id) return;
-    fetchHotelData();
+    if (id && !didFetch.current) {
+      didFetch.current = true;
+      fetchHotelData();
+    }
   }, [id]);
-
 
   const fetchFavoriteId = async () => {
     if (!id || !user || !token) {
       console.error(" Hotel ID、用戶或 token 未定義，無法獲取收藏");
       return;
     }
-  
+
     try {
       const result = await getHotelFavorites();
-  
+
       if (result.success && Array.isArray(result.data)) {
         const favorite = result.data.find(
           (item) => Number(item.hotel_id) === Number(id)
         );
-  
+
         if (favorite) {
           setFavoriteId(favorite.id);
           setIsFavorite(true);
@@ -125,10 +136,6 @@ export default function HotelDetailPage({ params }) {
       setIsFavorite(false);
     }
   };
-  
-  
-
-  
   // 獲取旅館資料的函數
   const fetchHotelData = async () => {
     setLoading(true);
@@ -197,66 +204,65 @@ export default function HotelDetailPage({ params }) {
   };
 
   // 處理收藏邏輯
-// 獲取收藏狀態
-useEffect(() => {
-  if (id && user?.id && token) {
-    console.log("用戶已登入，開始獲取收藏資料");
-    fetchFavoriteId();
-  }
-}, [id, user, token]);
+  // 獲取收藏狀態
+  useEffect(() => {
+    if (id && user?.id && token) {
+      console.log("用戶已登入，開始獲取收藏資料");
+      fetchFavoriteId();
+    }
+  }, [id, user, token]);
 
-// 處理收藏邏輯
-const handleFavorite = async () => {
-  if (!user || !user.id) {
-    Swal.fire({
-      icon: "warning",
-      title: "請先登入",
-      text: "您需要登入才能收藏旅館！",
-    }).then(() => {
-      router.push("/login");
-    });
-    return;
-  }
-
-  try {
-    if (isFavorite) {
-      Swal.fire({
-        icon: "success",
-        title: "收藏成功！",
-        text: response.message || "旅館已在您的收藏清單內！",
+  // 處理收藏邏輯
+  const handleFavorite = async () => {
+    if (!user || !user.id) {
+      await Swal.fire({
+        icon: "warning",
+        title: "請先登入",
+        text: "您需要登入才能收藏旅館！",
+      }).then(() => {
+        router.push("/login");
       });
       return;
     }
-    const response = await addHotelFavorite(id, user.id);
-  if (response.success) {
-      setIsFavorite(true);
-      setFavoriteId(response.data?.id || null);
 
-      await fetchFavoriteId();
+    try {
+      if (isFavorite) {
+        Swal.fire({
+          icon: "info",
+          title: "已收藏",
+          text: "旅館已在您的收藏清單內！",
+        });
+        return;
+      }
+      const response = await addHotelFavorite(id, user.id);
+      if (response?.success) {
+        setIsFavorite(true);
+        setFavoriteId(response.data?.id || null);
+        setFavoriteId((prev) => prev);
 
-      Swal.fire({
-        icon: "success",
-        title: "收藏成功！",
-        text: response.message || "旅館已加入您的收藏清單！",
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "收藏失敗",
-        text: response.message || "請稍後再試",
-      });
+        Swal.fire({
+          icon: "success",
+          title: "收藏成功！",
+          text: response.message || "旅館已加入您的收藏清單！",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "收藏失敗",
+          text: response?.message || "請稍後再試",
+        });
+      }
+    } catch (error) {
+      Swal.fire({ icon: "error", title: "操作失敗", text: "請稍後再試！" });
     }
-  } catch (error) {
-    Swal.fire({ icon: "error", title: "操作失敗", text: "請稍後再試！" });
-  }
-};
+  };
 
-
- 
   useEffect(() => {
-    const storedFavorite = localStorage.getItem(`favorite_${id}`);
-    if (storedFavorite) {
-      setIsFavorite(JSON.parse(storedFavorite));
+    if (id) {
+      const storedFavorite = localStorage.getItem(`favorite_${id}`);
+      if (storedFavorite) {
+        setIsFavorite(JSON.parse(storedFavorite));
+      }
     }
   }, [id]);
 
@@ -266,14 +272,12 @@ const handleFavorite = async () => {
       fetchFavoriteId();
     }
   }, [id, user, token]);
-  
+
   useEffect(() => {
     if (favoriteId !== null) {
       localStorage.setItem(`favorite_${id}`, JSON.stringify(isFavorite));
     }
   }, [isFavorite]);
-  
-  
 
   const mapRef = useRef(null);
   useGoogleMap(lat, lng, mapRef);
