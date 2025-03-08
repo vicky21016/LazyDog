@@ -12,7 +12,6 @@ import {
   getAllRoomTypes,
 } from "@/services/hotelService";
 import "nouislider/dist/nouislider.css";
-import noUiSlider from "nouislider";
 import PriceSlider from "@/app/components/hotel/PriceSlider";
 
 export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
@@ -72,7 +71,6 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
     }
   }, [isFiltered]);
 
-
   const fetchTags = async () => {
     try {
       const allTags = await getAllTags();
@@ -124,7 +122,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
     console.log(" 側邊篩選條件變更:", filter);
     onSearch(filter);
   };
-  
+
   const toggleFacilities = () => {
     setShowAllFacilities((prev) => !prev);
   };
@@ -142,7 +140,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
   };
   const handleApplyFilters = async () => {
     setIsFiltered(true);
-  
+
     const filterParams = {
       minPrice: minPrice ?? 0,
       maxPrice: maxPrice ?? 10000,
@@ -150,7 +148,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
       roomType: selectedRoomType ?? null,
       tags: selectedTags.length > 0 ? selectedTags.map(Number) : [],
     };
-  
+
     try {
       await onSearch(filterParams, true);
       setIsSearching(false);
@@ -158,7 +156,6 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
       console.error("Sidebar 篩選 API 錯誤:", error);
     }
   };
-  
 
   const handleClear = async () => {
     setIsFiltered(false);
@@ -316,10 +313,10 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
             </div>
 
             <PriceSlider
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            onUpdate={handlePriceUpdate}
-          />
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              onUpdate={handlePriceUpdate}
+            />
 
             {/* 搜尋 / 清除篩選 按鈕 */}
             <button
@@ -497,10 +494,10 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
               </div>
 
               <PriceSlider
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            onUpdate={handlePriceUpdate}
-          />
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                onUpdate={handlePriceUpdate}
+              />
               {/* 搜尋 / 清除篩選 按鈕 */}
               <button
                 className={`btn btn-sm mt-3 ${styles.suClearFilterBtn}`}
