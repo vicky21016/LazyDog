@@ -265,7 +265,7 @@
 
 /* 飯店 */
 .suCards {
-  padding: 0 18px;
+  padding: 0 20px;
 }
 .suHotelCard {
   display: flex;
@@ -278,22 +278,24 @@
   margin-bottom: 28px;
   box-shadow: rgba(60, 60, 60, 0.25) 0px 8px 20px;
   transition: transform 0.4s ease;
+
   &:hover {
     transform: scale(1.05); /* 放大 5% */
   }
 }
-.suHotelCard .hotelName {
+.hotelName {
+  color: #3b3330;
   font-size: 22.3px;
   font-weight: 600;
   letter-spacing: 0.6px;
-  margin-top: 6px;
-  margin-bottom: 28px;
+  margin-top: 9px;
+  margin-bottom: 22px;
 }
 .suHotelCard img {
   width: 170px;
-  height: 154px;
+  height: 156px;
   object-fit: cover;
-  border-radius: 18px;
+  border-radius: 15px;
 }
 .suHotelInfo {
   align-self: center;
@@ -313,15 +315,17 @@
   word-wrap: break-word;
   text-overflow: ellipsis;
   color: rgba(61, 56, 54, 0.505);
-  font-size: 12.6px;
-  letter-spacing: 0.7px;
-  line-height: 21px;
+  font-size: 12.8px;
+  letter-spacing: 1.2px;
+  line-height: 23px;
 }
 
 .suPriceBox {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: 3px;
+  height: 100%;
   text-align: right;
   font-weight: 600;
   padding: 15px;
@@ -332,7 +336,7 @@
   /* width: 18px; */
   height: 30px;
   letter-spacing: 0.8px;
-  margin-right: 7px;
+  margin-right: 12px;
 }
 
 .suReview .starIcon {
@@ -344,7 +348,7 @@
 .suReviewCount {
   font-size: 14.8px;
   letter-spacing: 1px;
-  margin-right: 5px;
+  margin-right: 11px;
 }
 
 .suBookBtn {
@@ -352,10 +356,12 @@
   color: white;
   font-size: 15.5px;
   letter-spacing: 1px;
-  padding: 10px 21px;
+  text-wrap: nowrap;
+  width: 150px;
+  padding: 11px 20px;
   border-radius: 10px;
   border: 1px solid transparent;
-  margin: 15px 0 0 60px;
+  margin: 35px 0 0 0px;
   cursor: pointer;
 }
 
@@ -472,6 +478,14 @@
   cursor: pointer;
 }
 
+@media (max-width: 1200px) {
+  /* .suHotelInfo {
+    flex: 0;
+  } */
+  .suPriceBox {
+    display: none;
+  }
+}
 @media (max-width: 768px) {
   .asideContainer {
     display: none;
@@ -488,9 +502,14 @@
     padding: 30px;
   }
   .suHotelCard img {
-    width: 100%;
+    width: 90%;
+    height: 92px;
     object-fit: cover;
     border-radius: 10px;
+  }
+  .hotelName {
+    font-size: 16.3px;
+    margin-top: 0;
   }
   .suPriceBox {
     display: none;
@@ -571,29 +590,65 @@
     padding: 10px;
   }
 }
-/*  375px 以下（最小寬度） */
-@media (max-width: 375px) {
+/*  390px 以下（最小寬度） */
+@media (max-width: 390px) {
+  .suSearchBg {
+    padding: 58px 0;
+  }
   .suSearchBar {
-    padding: 8px;
+    width: 280px;
+    padding: 26px 23px;
+    border-radius: 29px;
     gap: 8px;
   }
-
   .suSearchGroup {
-    padding: 6px 10px;
+    padding: 6px 12px;
   }
-
+  .suSearchInput {
+    font-size: 16.5px;
+  }
+  .suSearchDate {
+    font-size: 12px;
+    letter-spacing: 0px;
+    margin: 5px;
+  }
   .suSearchBtn {
     padding: 10px;
     font-size: 14px;
   }
-
   .suQuantityNumber {
     width: 30px;
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .regionModal {
+    width: 380px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .rwd {
+    padding: 0;
+  }
+  .suSidebar {
+    padding: 0;
+  }
+  .suHotelCard {
+    padding: 22px 20px;
+  }
+  .hotelName {
+    margin-bottom: 8px;
+  }
+  .suHotelInfo p {
+    -webkit-line-clamp: 4;
+    font-size: 11px;
+    letter-spacing: 1px;
+    line-height: 15px;
+    margin-bottom: 0;
   }
 }
 
-/* 手機 */
+/* 手機側邊攔 */
 .rightIcon {
   position: fixed;
   top: 73px;
