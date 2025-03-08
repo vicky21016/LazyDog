@@ -72,8 +72,9 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
   }, [isFiltered]);
 
   useEffect(() => {
+    console.log("priceSliderRef.current:", priceSliderRef.current); // 調試用
     if (!priceSliderRef.current) return;
-
+  
     if (!priceSliderRef.current.noUiSlider) {
       noUiSlider.create(priceSliderRef.current, {
         start: [minPrice, maxPrice],
@@ -81,16 +82,18 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
         range: { min: 0, max: 10000 },
         step: 100,
       });
-
+  
       priceSliderRef.current.noUiSlider.on("update", (values) => {
+        console.log("滑桿值更新:", values); // 調試用
         setMinPrice(parseFloat(values[0]));
         setMaxPrice(parseFloat(values[1]));
       });
     }
   }, []);
-
+  
   useEffect(() => {
     if (priceSliderRef.current && priceSliderRef.current.noUiSlider) {
+      console.log("更新滑桿值:", minPrice, maxPrice); // 調試用
       priceSliderRef.current.noUiSlider.set([minPrice, maxPrice]);
     }
   }, [minPrice, maxPrice]);
@@ -146,7 +149,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
     console.log(" 側邊篩選條件變更:", filter);
     onSearch(filter);
   };
-
+  
   const toggleFacilities = () => {
     setShowAllFacilities((prev) => !prev);
   };
@@ -164,7 +167,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
   };
   const handleApplyFilters = async () => {
     setIsFiltered(true);
-
+  
     const filterParams = {
       minPrice: minPrice ?? 0,
       maxPrice: maxPrice ?? 10000,
@@ -172,7 +175,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
       roomType: selectedRoomType ?? null,
       tags: selectedTags.length > 0 ? selectedTags.map(Number) : [],
     };
-
+  
     try {
       await onSearch(filterParams, true);
       setIsSearching(false);
@@ -180,6 +183,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
       console.error("Sidebar 篩選 API 錯誤:", error);
     }
   };
+  
 
   const handleClear = async () => {
     setIsFiltered(false);
@@ -205,7 +209,6 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
 
     await fetchHotels();
   };
-
   return (
     <>
       {/* 桌機 */}
@@ -364,7 +367,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
         aria-expanded="false"
         aria-controls="filterOffcanvas"
       >
-        <i class="bi bi-chevron-right"></i>
+        <i className="bi bi-chevron-right"></i>
       </button>
       <div
         className="offcanvas offcanvas-start"
@@ -466,12 +469,12 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
                   {showAllFacilities ? (
                     <>
                       {" "}
-                      顯示更少<i class="bi bi-caret-up-fill"></i>{" "}
+                      顯示更少<i className="bi bi-caret-up-fill"></i>{" "}
                     </>
                   ) : (
                     <>
                       {" "}
-                      更多<i class="bi bi-caret-down-fill"></i>{" "}
+                      更多<i className="bi bi-caret-down-fill"></i>{" "}
                     </>
                   )}
                 </span>
