@@ -8,6 +8,8 @@ import {
 } from "@/services/couponService";
 import Header from "../../components/layout/header";
 import My from "../../components/hotel/my";
+import Swal from "sweetalert2"; 
+
 
 export default function EditCouponPage() {
   const router = useRouter();
@@ -30,7 +32,7 @@ export default function EditCouponPage() {
 
   useEffect(() => {
     if (!couponId) {
-      alert("無效的優惠券 ID");
+      Swal.fire("錯誤", "無效的優惠券 ID", "error");
       router.push("/hotel-coupon/couponList");
       return;
     }
@@ -58,7 +60,7 @@ export default function EditCouponPage() {
         }
       } catch (error) {
         console.error("獲取優惠券失敗:", error);
-        alert("獲取優惠券失敗，請稍後再試");
+        Swal.fire("錯誤", "獲取優惠券失敗", "error");
       }
     };
 
@@ -86,7 +88,7 @@ export default function EditCouponPage() {
       !coupon.status ||
       !coupon.remainingUses
     ) {
-      alert("請填寫所有必填欄位");
+      Swal.fire("錯誤", "請填寫所有必填欄位", "error");
       return;
     }
 
@@ -129,14 +131,13 @@ export default function EditCouponPage() {
       console.log("更新回應:", result);
 
       if (result.success) {
-        alert("優惠券更新成功！");
+        Swal.fire("成功", "優惠券更新成功", "success");
         router.push("/hotel-coupon/couponList");
       } else {
-        alert(`更新失敗：${result.error}`);
+        Swal.fire("更新失敗", result.message, "error");
       }
     } catch (error) {
-      console.error("更新優惠券失敗:", error);
-      alert("發生錯誤，請稍後再試");
+      Swal.fire("更新失敗", "發生錯誤，無法更新優惠券", "error");
     }
   };
 
@@ -147,14 +148,14 @@ export default function EditCouponPage() {
     try {
       const result = await softDeleteCoupon(couponId);
       if (result.success) {
-        alert("優惠券已刪除！");
+        Swal.fire("已刪除", "優惠券已刪除", "success");
         router.push("/hotel-coupon/couponList");
       } else {
-        alert("刪除失敗：" + result.message);
+        Swal.fire("刪除失敗", result.message, "error");
       }
     } catch (error) {
-      console.error("刪除優惠券失敗:", error);
-      alert("發生錯誤，請稍後再試");
+      Swal.fire("刪除失敗", "發生錯誤，無法刪除優惠券", "error");
+     
     }
   };
 
