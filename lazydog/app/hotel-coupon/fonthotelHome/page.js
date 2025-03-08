@@ -316,7 +316,7 @@ export default function HotelHomePage() {
               </aside>
 
               {/* 飯店列表 */}
-              <section className="col-12 col-md-8 col-lg-9 ">
+              <section className="col-12 col-md-8 col-lg-9 mt-5">
                 <div className="row">
                   {currentHotels.length > 0 ? (
                     currentHotels.map((hotel) => (
