@@ -7,14 +7,10 @@ body {
 }
 .section1 {
   position: relative;
-  /* min-height: 990px; */
   width: 100vw;
   background-color: #f5842b;
   padding: 1px 0 1px;
-  /* z-index: 0; */
 
-  /* padding-bottom: 0; */
-  /* overflow-x: hidden; */
   .paw1 {
     width: 15%;
     position: absolute;

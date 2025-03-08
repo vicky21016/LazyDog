@@ -109,7 +109,7 @@ const HotelSearchBar = ({
             type="text"
             ref={dateRef}
             className={styles.suSearchDate}
-            placeholder="入住日期 → 退房日期"
+            placeholder="入住日期  →  退房日期"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
@@ -126,14 +126,14 @@ const HotelSearchBar = ({
             className={styles.suQuantityBtn}
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
           >
-            -
+            <i className="bi bi-dash"></i>
           </button>
           <span className={styles.suQuantityNumber}>{quantity}</span>
           <button
             className={styles.suQuantityBtn}
             onClick={() => setQuantity(Math.min(10, quantity + 1))}
           >
-            +
+            <i className="bi bi-plus"></i>
           </button>
         </div>
 
@@ -146,7 +146,11 @@ const HotelSearchBar = ({
         </button>
 
         {/* 地區選擇 Modal */}
-        <div className="modal fade" ref={locationModalRef} tabIndex="-1">
+        <div
+          className={`modal fade ${styles.regionModal}`}
+          ref={locationModalRef}
+          tabIndex="-1"
+        >
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">

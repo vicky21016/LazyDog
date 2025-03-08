@@ -5,7 +5,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  padding: 20px 30px;
+  padding: 10px 63px;
   justify-content: space-between;
   align-items: center;
   background-color: #f5832b;
@@ -24,8 +24,8 @@
     padding: 0 20px;
     margin: 0;
     gap: 50px;
-    font-size: 16.5px;
-    letter-spacing: 2.2px;
+    font-size: 15px;
+    letter-spacing: 2px;
     /* gap: 60px; */
     a {
       text-decoration: none;
@@ -57,7 +57,8 @@
   /* font-size: 32px; */
   font-weight: bold;
   /* font-family: "Noto Sans TC", sans-serif; */
-  letter-spacing: 2px;
+  letter-spacing: 2.3px;
+  padding-bottom: 1px;
 }
 .lumi-user-actions {
   display: flex;
@@ -73,12 +74,13 @@
 }
 .lumi-user-icon2 {
   font-size: 31px;
-  margin-right: 20px;
+  margin-right: 12px;
   color: white;
 }
 .lumi-cart-icon2 {
   font-size: 26px;
   color: white;
+  margin-top: 2px;
 }
 /* header2  結尾 */
 .dropdown {

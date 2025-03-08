@@ -37,7 +37,7 @@ export default function My() {
     {
       name: "訂單紀錄",
       path: "/teacher-sign/orderlist",
-      icon: <i class="bi bi-bag-check"></i>,
+      icon: <i className="bi bi-bag-check"></i>,
     },
     {
       name: "會員資料",

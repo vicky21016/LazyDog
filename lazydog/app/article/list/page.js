@@ -91,7 +91,7 @@ const ArticlePage = () => {
         <h1 style={{ fontWeight: 'bold' }}>毛孩文章</h1>
       </div>
 
-      <div className={`container`}>
+      <div className={`container ${style.container}`}>
         {/* 發布文章按鈕 */}
         <div className={styles.postButton}>
           <button className={` ${style.btn}`}>

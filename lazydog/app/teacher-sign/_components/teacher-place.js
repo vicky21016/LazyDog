@@ -70,7 +70,7 @@ export default function TeacherPlace() {
                   className={`col-7 col-md-9 ${styles.cTd2}`}
                   onClick={() => handlePlaceClick(p, index)}
                 >
-                  <i class="bi bi-geo-alt-fill"></i> {p.address}
+                  <i className="bi bi-geo-alt-fill"></i> {p.address}
                 </div>
               </div>
             ))}
@@ -85,7 +85,7 @@ export default function TeacherPlace() {
                   className={`col-7 col-md-9 ${styles.cTd2}`}
                   onClick={() => handlePlaceClick(p, index + 3)}
                 >
-                  <i class="bi bi-info-circle-fill"></i> {p.address}
+                  <i className="bi bi-info-circle-fill"></i> {p.address}
                 </div>
               </div>
             ))}

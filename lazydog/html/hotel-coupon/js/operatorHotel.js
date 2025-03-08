@@ -64,18 +64,18 @@ function initRoomManagement() {
     );
 
     newRoom.innerHTML = `
-      <div class="col-md-4">
-        <input type="text" class="form-control" placeholder="房型 (如大、中、小)" required />
+      <div className="col-md-4">
+        <input type="text" className="form-control" placeholder="房型 (如大、中、小)" required />
       </div>
-      <div class="col-md-2">
-        <input type="number" class="form-control" placeholder="數量" required />
+      <div className="col-md-2">
+        <input type="number" className="form-control" placeholder="數量" required />
       </div>
-      <div class="col-md-3">
-        <input type="text" class="form-control" placeholder="金額" required />
+      <div className="col-md-3">
+        <input type="text" className="form-control" placeholder="金額" required />
       </div>
-      <div class="col-md-3 d-flex">
-        <input type="text" class="form-control" placeholder="定金" required />
-        <button type="button" class="btn btn-danger btn-sm ms-2 remove-room">X</button>
+      <div className="col-md-3 d-flex">
+        <input type="text" className="form-control" placeholder="定金" required />
+        <button type="button" className="btn btn-danger btn-sm ms-2 remove-room">X</button>
       </div>
     `;
 
