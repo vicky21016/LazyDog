@@ -16,7 +16,7 @@ const Breadcrumbs = ({ links }) => {
           </Link>
           &nbsp;
           {index < links.length - 1 && (
-            <img src="/product/font/right.png" alt="" />
+            <img className="pb-1" src="/product/font/right.png" alt="" />
           )}
         </span>
       ))}
