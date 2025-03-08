@@ -1,55 +1,54 @@
-.wrapper{
+.wrapper {
   margin: 100px auto 0;
 }
 .suAvatarImg {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border: 3px solid #ddd;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 3px solid #ddd;
 }
 
 .suCameraIcon {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background: white;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .suCameraIconImg {
-    width: 36px;
-    height: 36px;
+  width: 36px;
+  height: 36px;
 }
 
 .suDropdownMenu {
-    min-width: 120px;
-    text-align: center;
+  min-width: 120px;
+  text-align: center;
 }
 
 .suDropdownItem {
-    cursor: pointer;
+  cursor: pointer;
 }
 .suBtnSecondary {
-  background-color: #66C5BD;
+  background-color: #66c5bd;
   border-radius: 5px;
   color: white;
   border: 1px solid transparent;
 }
 .suBtnSecondary:hover {
-   background-color: white;
+  background-color: white;
   color: #66c5bd;
   border: 2px solid;
   border-color: #66c5bd;
- 
 }
 .secondary {
-  background-color: #66C5BD;
+  background-color: #66c5bd;
   border-radius: 5px;
   color: white;
   border: 1px solid transparent;
@@ -95,12 +94,12 @@
   background: #bbb;
 }
 
-.right{
+.right {
   display: none;
   border-radius: 30%;
   width: 50px;
   height: 50px;
-  border: #F5842B;
+  border: #f5842b;
   color: white;
 }
 /* 手機篩選按鈕 (點擊後打開篩選) */
@@ -108,13 +107,13 @@
   cursor: pointer;
 }
 
-.btn{
+.btn {
   cursor: pointer;
-    outline: none;
-    border: 1px solid transparent;
-    color: white;
-    background-color: #ff9538;
-    border-radius: 5px;
+  outline: none;
+  border: 1px solid transparent;
+  color: white;
+  background-color: #ff9538;
+  border-radius: 5px;
 }
 .btn:hover {
   background-color: #fdf9f5;
@@ -122,7 +121,7 @@
   border-color: #ff9538;
 }
 
-.btn2{
+.btn2 {
   background-color: #fdf9f5;
   color: #ff9538;
   border: 1px solid transparent;
@@ -136,44 +135,151 @@
   border-color: #ff9538;
 }
 
-.btn3{
+.btn3 {
   cursor: pointer;
-    outline: none;
-    border: 1px solid transparent;
-    color: white;
-    background-color: #66C5BD;
-    border-radius: 5px;
+  outline: none;
+  border: 1px solid transparent;
+  color: white;
+  background-color: #66c5bd;
+  border-radius: 5px;
 }
 .btn3:hover {
   background-color: #fdf9f5;
-  color: #66C5BD;
-  border-color: #66C5BD;
+  color: #66c5bd;
+  border-color: #66c5bd;
+}
+.moreBtn {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0 5px;
+  text-decoration: none;
 }
 
+.moreBtn:hover {
+  color: #f5842b;
+  text-decoration: underline;
+}
+.suTable {
+  width: 100%;
+  table-layout: fixed;  
+}
+
+.suTable td {
+  padding: 10px;
+  white-space: normal; 
+  word-wrap: break-word;
+  overflow: hidden;
+  text-align: left;
+}
+.suTable th {
+  white-space: nowrap; 
+  text-align: center;
+  font-size: 14px;
+}
+
+.btn-sm {
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 5px; 
+}
 @media (min-width: 768px) {
   .mobileFilter {
     display: none;
   }
-
 }
 @media (max-width: 768px) {
   .asideContainer {
     display: none;
   }
-    .container{
+  .container {
     padding: 30px;
   }
-  .right{
-  display: block;
-  border-radius: 50%;
-  border: #F5842B;
-}
-.righttop{
-  padding: 30px;
-}
+  .right {
+    display: block;
+    border-radius: 50%;
+    border: #f5842b;
+  }
+  .righttop {
+    padding: 30px;
+  }
+  .suTable {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border: none;
   }
 
-  .collapseAside {
+  .suTable thead {
+    display: none; 
+  }
+
+  .suTable tbody,
+  .suTable tr {
+    display: block;
+    width: 100%;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    background: #fff;
+    padding: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
+  }
+
+
+  .suTable td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .suTable td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    flex: 1;
+    color: #555;
+    min-width: 90px; 
+  }
+
+
+  .btn-sm {
+    width: 100%; 
+    font-size: 13px;
+    padding: 6px 10px;
+    text-align: center;
+    margin-top: 8px;
+    display: block;
+    border-radius: 6px;
+  }
+
+  /* 「更多」按鈕縮小 */
+  .moreBtn {
+    font-size: 12px;
+    color: #ff6600;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    margin-left:  8px;
+  }
+
+  .moreBtn:hover {
+    color: #cc5500;
+    text-decoration: underline;
+  }
+
+ 
+  .modal-dialog {
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .modal-content {
+    height: 100vh;
+    border-radius: 0;
+  }
+}
+
+.collapseAside {
   position: sticky;
   width: 100%;
   top: 74px;
@@ -185,14 +291,14 @@
     display: flex;
     position: absolute;
     z-index: 1;
-   
+
     .collapseHorizontal {
       position: relative;
       margin-top: -10px;
       padding: 10px 35px 10px 25px;
       background: white;
-      border-right: 3px solid #F5842B;
-      
+      border-right: 3px solid #f5842b;
+
       transition: width 0.05s ease, height 0.05s ease;
       .collapseAsideBtn {
         margin-left: 0;
@@ -202,7 +308,6 @@
         right: 13px;
         top: 10px;
         border: none;
-        
       }
     }
   }
@@ -216,12 +321,32 @@
     justify-content: center;
     z-index: 2;
     background: white;
-    border: 1px solid #F5842B;
+    border: 1px solid #f5842b;
     width: 35px;
     height: 35px;
   }
 }
 
-.height{
+.height {
   margin: 100px auto 0;
+}
+@media (max-width: 375px) {
+  .suTable td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .btn-sm {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+
+  .moreBtn {
+    font-size: 10px; 
+  }
+
+  .modal-content {
+    height: 100vh;
+    padding: 15px; 
+  }
 }
