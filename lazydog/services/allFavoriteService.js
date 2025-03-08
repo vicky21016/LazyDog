@@ -84,7 +84,6 @@ export const getHotelFavorites = async () => {
   }
 };
 
-
 // 新增收藏
 export const addHotelFavorite = async (hotelId) => {
   const token = getToken();
