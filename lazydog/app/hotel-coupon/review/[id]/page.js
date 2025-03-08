@@ -123,28 +123,31 @@ const ReviewList = () => {
                 <tbody>
                   {reviews.map((review, index) => (
                     <tr key={index}>
-                      <td>{review.customer}</td>
-                      <td>{review.order}</td>
-                      <td>{review.date}</td>
-                      <td>{review.rating}</td>
-                      <td>
-                        {" "}
-                        {review.content.length > 30
-                          ? `${review.content.substring(0, 30)}...`
-                          : review.content}
-                        {review.content.length > 30 && (
-                          <button
-                            className={`btn btn-sm  px-1 ${styles.moreBtn}`}
-                            onClick={() => loadReview(review)}
-                            data-bs-toggle="modal"
-                            data-bs-target="#reviewModal"
-                          >
-                            更多
-                          </button>
+                      <td data-label="顧客名稱">{review.customer}</td>
+                      <td data-label="訂單編號">{review.order}</td>
+                      <td data-label="評論日期">{review.date}</td>
+                      <td data-label="評分">{review.rating}</td>
+                      <td data-label="評論內容">
+                        {review.content.length > 10 ? (
+                          <>
+                            {review.content.substring(0, 10)}...
+                            <button
+                              className={`btn btn-sm  px-2 ${styles.moreBtn}`}
+                              onClick={() => loadReview(review)}
+                              data-bs-toggle="modal"
+                              data-bs-target="#reviewModal"
+                            >
+                              更多
+                            </button>
+                          </>
+                        ) : (
+                          review.content
                         )}
                       </td>
-                      <td>{review.replied ? "已回覆" : "未回覆"}</td>
-                      <td>
+                      <td data-label="是否回覆">
+                        {review.replied ? "已回覆" : "未回覆"}
+                      </td>
+                      <td data-label="狀態">
                         <span
                           className={`badge ${
                             review.status === "公開"
@@ -155,9 +158,9 @@ const ReviewList = () => {
                           {review.status}
                         </span>
                       </td>
-                      <td>
+                      <td data-label="操作">
                         <button
-                          className={`btn btn-sm ${styles.btn}`}
+                          className={`btn btn-sm ${styles.btn} w-100`}
                           data-bs-toggle="modal"
                           data-bs-target="#reviewModal"
                           onClick={() => loadReview(review)}
@@ -179,7 +182,6 @@ const ReviewList = () => {
           id="reviewModal"
           tabIndex="-1"
           aria-labelledby="reviewModalLabel"
-
         >
           <div className="modal-dialog">
             <div className="modal-content">
