@@ -145,7 +145,7 @@ export default function OperatorDetailPage() {
                 >
                   編輯
                 </button>
-                <button type="button" Name={`btn ${styles.btn}`}>
+                <button type="button" className={`btn ${styles.btn}`}>
                   刪除
                 </button>
               </div>
