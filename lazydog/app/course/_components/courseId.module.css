@@ -26,28 +26,6 @@
   }
 }
 
-.labels:focus,
-.controls:focus,
-input:focus,
-input:active {
-  outline: none !important;
-  box-shadow: none !important;
-  border-color: #a1a1a1 !important;
-}
-
-.form-select {
-  border-color: rgba(126, 239, 104, 0.8);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset,
-    0 0 8px rgba(126, 239, 104, 0.6);
-  outline: 0 none;
-}
-.form-select:focus {
-  border-color: rgba(126, 239, 104, 0.8);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset,
-    0 0 8px rgba(126, 239, 104, 0.6);
-  outline: 0 none;
-}
-
 body {
   font-family: "Noto Sans TC", sans-serif;
   font-style: normal;
@@ -115,6 +93,9 @@ body {
     text-wrap: nowrap;
     /* padding-left: 10px; */
     cursor: default;
+    @media (max-width: 390px) {
+      font-size: 15px;
+    }
   }
 }
 
@@ -183,14 +164,9 @@ body {
   .courseIntro {
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
-    /* align-items: center; */
-    /* width: 660px; */
     color: #3e3e3e;
     font-family: "Noto Sans TC", sans-serif;
     font-style: normal;
-    /* padding: 0 60px; */
-    /* gap: 10px; */
 
     .mainPic {
       width: 50%;
@@ -200,6 +176,9 @@ body {
       @media (max-width: 768px) {
         width: 80%;
       }
+      @media (max-width: 390px) {
+        width: 100%;
+      }
     }
     .courseName {
       display: flex;
@@ -207,6 +186,12 @@ body {
       align-items: center;
       padding: 45px 0px 0px;
       align-self: stretch;
+      @media (max-width: 390px) {
+        padding: 15px 6px 0 0;
+      }
+      .heart {
+        color: #ff9538;
+      }
     }
     .name {
       font-size: 28px;
@@ -233,11 +218,12 @@ body {
       color: #ff9538;
       align-self: stretch;
       margin: 50px 0;
-      padding-left: 15px;
+      padding-left: 13px;
     }
     .number {
-      padding-left: 15px;
-      letter-spacing: 2.3px;
+      padding-left: 8px;
+      font-size: 34px;
+      letter-spacing: 2px;
     }
     .description {
       font-size: 14px;
@@ -246,8 +232,10 @@ body {
       letter-spacing: 0.5px;
       padding: 0 25px 10px 3px;
       height: auto; /* 限制 3 行的高度 */
-      /* overflow: hidden; */
       transition: max-height 0.3s ease-in-out;
+      @media (max-width: 390px) {
+        padding: 0 0 10px 3px;
+      }
     }
 
     .toggleBtn {
@@ -438,20 +426,28 @@ body {
         text-wrap: nowrap;
       }
     }
+
+    .selects:focus,
+    .selects:checked,
+    .selects:active {
+      box-shadow: none !important; /* 移除點擊後的藍色高亮 */
+    }
+
     .selects {
       margin: 5px 0;
       border-radius: 7px;
-      border: 1.5px solid var(--Color, #ff9538);
+      border: 1px solid var(--Color, #ff9538);
       color: #a1a1a1;
+      font-size: 15px;
       letter-spacing: 1px;
-      option {
-        appearance: none; /* 隱藏預設樣式 */
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        color: #3e3e3e;
-        font-size: 16px;
-        letter-spacing: 1px;
-      }
+    }
+    .options {
+      /* appearance: none; 隱藏預設樣式 */
+      /* -webkit-appearance: none; */
+      /* -moz-appearance: none; */
+      /* color: #3e3e3e; */
+      font-size: 14px;
+      letter-spacing: 2px;
     }
 
     .cartBtn {
@@ -695,6 +691,115 @@ body {
         margin: 0;
         @media (max-width: 992px) {
           font-weight: 550;
+        }
+      }
+    }
+  }
+  .similarCourse {
+    padding: 70px 0px;
+
+    @media (max-width: 390px) {
+      padding: 0;
+    }
+
+    .sTitle {
+      margin-bottom: 18px;
+      color: var(--text-Bk, #3e3e3e);
+      font-size: 32px;
+      font-weight: bold;
+      line-height: 39px;
+      letter-spacing: 3.2px;
+      @media (max-width: 992px) {
+        margin-left: 15px;
+      }
+      @media (max-width: 390px) {
+        font-size: 28px;
+      }
+    }
+    .sBars {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 18px 0 18px 0;
+      @media (max-width: 992px) {
+        margin: 18px 0 18px 15px;
+      }
+      @media (max-width: 390px) {
+        margin: 18px 19px;
+      }
+    }
+    .sbar {
+      background-color: #ff9538;
+      width: 50px;
+      height: 4px;
+      border-radius: 5px;
+    }
+    .btns {
+      display: flex;
+      gap: 23px;
+    }
+    .arrowLeft {
+      cursor: pointer;
+    }
+    .arrowRight {
+      cursor: pointer;
+    }
+    .sCards {
+      display: flex;
+      padding: 13px 3px;
+      align-items: flex-start;
+      /* gap: 88px; */
+      align-self: stretch;
+      overflow: hidden;
+      text-align: center;
+      @media (max-width: 390px) {
+        padding: 43px 14px;
+      }
+      .sCard {
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.4s;
+        padding: 24px;
+        @media (max-width: 390px) {
+          margin-top: 0;
+          padding: 18px;
+        }
+
+        &:hover {
+          translate: 0 -20px;
+        }
+      }
+      .cardImg {
+        /* width: 240px; */
+        /* height: 240px; */
+        width: 100%;
+        object-fit: cover;
+        margin-bottom: 27px;
+        /* border: 0.1px solid #f5f1f1; */
+        border-radius: 3px;
+        @media (max-width: 992px) {
+          margin-bottom: 15px;
+        }
+      }
+      .cardName {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        -webkit-line-clamp: 1;
+        word-wrap: break-word;
+        color: var(--Color, #3b3330);
+        text-overflow: ellipsis;
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: 1.2px;
+        padding: 2px 0;
+        margin: 0;
+        @media (max-width: 390px) {
+          overflow: hidden;
+          -webkit-line-clamp: 2;
+          word-wrap: break-word;
+          font-size: 15px;
+          padding: 2px 5px;
         }
       }
     }
