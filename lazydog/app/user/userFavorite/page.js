@@ -79,9 +79,9 @@ export default function UserFavoritePage() {
   // 獲取所有收藏資料
   useEffect(() => {
     if (user?.id) {
-      fetchFavorites();
+      fetchCourseFavorites();
     }
-  }, [user]); // 只在 user 變化時觸發
+  }, [user?.id]); 
   
   const fetchFavorites = async () => {
     try {
@@ -209,11 +209,7 @@ export default function UserFavoritePage() {
     }
   };
 
-  useEffect(() => {
-    if (user?.id) {
-      fetchCourseFavorites();
-    }
-  }, [user]); // 只有當 user 變更時，才重新拉取課程收藏
+
 
   // 移除商品收藏
 
