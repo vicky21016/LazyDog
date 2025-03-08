@@ -44,7 +44,7 @@ const GoogleMapComponent = ({ hotels }) => {
           title: hotel.name,
           icon: {
             url: "/pet_hotel_logo_no_bg.png", // 標記圖示
-            scaledSize: new google.maps.Size(40, 40),
+            scaledSize: new google.maps.Size(18, 27),
           },
         });
 

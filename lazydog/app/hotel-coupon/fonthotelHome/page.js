@@ -288,8 +288,8 @@ export default function HotelHomePage() {
               ]}
             />
           </div>
-          <div className="text-end">
-            <span className="lumi-all-title">排序：</span>
+          <div className="text-end me-5">
+            {/* <span className="lumi-all-title">排序：</span> */}
             <select
               className="form-select d-inline w-auto"
               value={sortOption}
@@ -316,7 +316,7 @@ export default function HotelHomePage() {
               </aside>
 
               {/* 飯店列表 */}
-              <section className="col-12 col-md-8 col-lg-9 mt-5">
+              <section className="col-12 col-md-8 col-lg-9 ">
                 <div className="row">
                   {currentHotels.length > 0 ? (
                     currentHotels.map((hotel) => (
