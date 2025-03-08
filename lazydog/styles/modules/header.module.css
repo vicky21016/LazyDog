@@ -27,14 +27,15 @@
   display: flex;
 }
 .lumi-user-icon {
-  font-size: 36px;
-  margin-right: 20px;
+  font-size: 34px;
+  margin-right: 14px;
   color: #ff9538;
 }
 .lumi-cart-icon {
-  font-size: 32px;
+  font-size: 30px;
   color: #ff9538;
   position: relative;
+  padding-top: -0.2px;
   .lumi-cart-count {
     position: absolute;
     display: flex;
