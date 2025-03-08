@@ -24,7 +24,7 @@
 /* 表格樣式 */
 .customTable { 
   display: flex;
-  flex-wrap: nowrap; 
+  /* flex-wrap: nowrap;  */
   justify-content: space-between;
   border-collapse: collapse;
   text-align: center;
@@ -147,7 +147,23 @@ color: #f5842b;
 border: 2px solid;
 border-color: #f5842b;
 }
-
+.btn1{
+  background-color: #ff9538;
+  color: white;
+  padding: 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  letter-spacing: 1px;
+  width: 100%;
+}
+.btn1:hover{
+  background-color: white;
+color: #f5842b;
+border: 2px solid;
+border-color: #f5842b;
+}
 
 /* sususususus */
 .form-select {
@@ -166,3 +182,15 @@ border-color: #f5842b;
 .subtext {
   font-weight: bold;
 }
+.main{
+  box-shadow: 0px 4px 3.3px 0px rgba(0, 0, 0, 0.25);
+  padding:20px 40px 40px 40px;
+}
+@media (max-width: 768px) {
+  .height, .container{
+    padding: 30px;
+  }
+  .list{
+    margin-top: 50px;
+  }
+  }

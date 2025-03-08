@@ -81,7 +81,7 @@ export default function CartListPage(props) {
             ]}
           />
           <div className={`${styles.customTable} row my-5 `}>
-            <table className="col-md-8 col-12 mb-5 ">
+            <table className="col-lg-8 col-12 mb-5 ">
               {productItems.length > 0 && (
                 <>
                   <Thead />
@@ -234,7 +234,7 @@ export default function CartListPage(props) {
             </table>
 
             {/* 顯示摘要區 */}
-            <aside className={`${styles.aside} col-md-3  mb-5`}>
+            <aside className={`${styles.aside} col-lg-3 col-12 mb-5`}>
               <div className={`${styles.summary} aside-card mb-5`}>
                 <h5 className="mb-4">訂單明細</h5>
                 <div
