@@ -291,12 +291,12 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
                 {showAllFacilities ? (
                   <>
                     {" "}
-                    顯示更少<i class="bi bi-caret-up-fill"></i>{" "}
+                    顯示更少<i className="bi bi-caret-up-fill"></i>{" "}
                   </>
                 ) : (
                   <>
                     {" "}
-                    更多<i class="bi bi-caret-down-fill"></i>{" "}
+                    更多<i className="bi bi-caret-down-fill"></i>{" "}
                   </>
                 )}
               </span>
