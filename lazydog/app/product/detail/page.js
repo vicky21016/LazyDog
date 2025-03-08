@@ -691,8 +691,9 @@ function DetailContent() {
                       </button>
                     )}
                   {rateData.rate &&
-                    rateData.rate.length > 3 &&
-                    rateData.rate.length < rate && (
+                    rateData.rate.length >
+                      (width >= 1200 ? 3 : width >= 768 ? 2 : 1) &&
+                    rateData.rate.length <= rate && (
                       <button
                         type="button"
                         className={styles.RateMore}

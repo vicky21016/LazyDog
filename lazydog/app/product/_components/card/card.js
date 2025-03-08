@@ -67,19 +67,8 @@ function CardContent({ productID = "" }) {
     isLoading,
     error,
   } = useCardFetch({ productID });
-  const {
-    detailPic,
-    setDetailPic,
-    img,
-    picNow,
-    setPicNow,
-    amount,
-    setAmount,
-    productData,
-    int,
-    dec,
-    productDiscount,
-  } = useDetailFetch(productID);
+  const { detailPic, setDetailPic, img, picNow, setPicNow } =
+    useDetailFetch(productID);
   const { setFavorite, heartHover, setHeartHover, heartState, setHeartState } =
     useCardFavorite();
 
