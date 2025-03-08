@@ -13,6 +13,7 @@ import {
 } from "@/services/hotelService";
 import "nouislider/dist/nouislider.css";
 import noUiSlider from "nouislider";
+import PriceSlider from "@/app/components/hotel/PriceSlider";
 
 export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
   const [showAllFacilities, setShowAllFacilities] = useState(true);
@@ -71,32 +72,6 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
     }
   }, [isFiltered]);
 
-  useEffect(() => {
-    console.log("priceSliderRef.current:", priceSliderRef.current); // 調試用
-    if (!priceSliderRef.current) return;
-  
-    if (!priceSliderRef.current.noUiSlider) {
-      noUiSlider.create(priceSliderRef.current, {
-        start: [minPrice, maxPrice],
-        connect: true,
-        range: { min: 0, max: 10000 },
-        step: 100,
-      });
-  
-      priceSliderRef.current.noUiSlider.on("update", (values) => {
-        console.log("滑桿值更新:", values); // 調試用
-        setMinPrice(parseFloat(values[0]));
-        setMaxPrice(parseFloat(values[1]));
-      });
-    }
-  }, []);
-  
-  useEffect(() => {
-    if (priceSliderRef.current && priceSliderRef.current.noUiSlider) {
-      console.log("更新滑桿值:", minPrice, maxPrice); // 調試用
-      priceSliderRef.current.noUiSlider.set([minPrice, maxPrice]);
-    }
-  }, [minPrice, maxPrice]);
 
   const fetchTags = async () => {
     try {
@@ -209,6 +184,11 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
 
     await fetchHotels();
   };
+  const handlePriceUpdate = (newMinPrice, newMaxPrice) => {
+    setMinPrice(newMinPrice);
+    setMaxPrice(newMaxPrice);
+  };
+
   return (
     <>
       {/* 桌機 */}
@@ -335,7 +315,11 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
               </div>
             </div>
 
-            <div id="priceRange" ref={priceSliderRef} className="mt-3"></div>
+            <PriceSlider
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            onUpdate={handlePriceUpdate}
+          />
 
             {/* 搜尋 / 清除篩選 按鈕 */}
             <button
@@ -512,8 +496,11 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
                 </div>
               </div>
 
-              <div id="priceRange" ref={priceSliderRef} className="mt-3"></div>
-
+              <PriceSlider
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            onUpdate={handlePriceUpdate}
+          />
               {/* 搜尋 / 清除篩選 按鈕 */}
               <button
                 className={`btn btn-sm mt-3 ${styles.suClearFilterBtn}`}
