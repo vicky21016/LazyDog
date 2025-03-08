@@ -146,7 +146,11 @@ const HotelSearchBar = ({
         </button>
 
         {/* 地區選擇 Modal */}
-        <div className="modal fade" ref={locationModalRef} tabIndex="-1">
+        <div
+          className={`modal fade ${styles.regionModal}`}
+          ref={locationModalRef}
+          tabIndex="-1"
+        >
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
