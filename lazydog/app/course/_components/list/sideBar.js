@@ -169,7 +169,7 @@ export default function SideBar({ types, places, filters, setFilters }) {
           aria-expanded="false"
           aria-controls="filterOffcanvas"
         >
-          <i className="bi bi-funnel-fill"></i>
+          <i class="bi bi-chevron-right"></i>
           {/* <span className={styles.filterIconWord}>{"Filter"}</span> */}
         </button>
         {/* Offcanvas 內容 */}
