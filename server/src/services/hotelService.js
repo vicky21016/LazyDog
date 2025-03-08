@@ -219,7 +219,7 @@ export const deleteHotelImages = async (imageIds) => {
   }
 };
 export const updateHotelById = async (updateData) => {
-  const { id, ...updateFields } = updateData;
+  const { id, businessHours, ...updateFields } = updateData;
 
   if (!id) {
     return { error: "缺少 id，無法更新旅館" };
@@ -228,6 +228,11 @@ export const updateHotelById = async (updateData) => {
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
+
+    // 確保 business_hours 是 JSON 字串格式
+    if (businessHours) {
+      updateFields.business_hours = JSON.stringify(businessHours);
+    }
 
     if (Object.keys(updateFields).length > 0) {
       const keys = Object.keys(updateFields);
@@ -285,7 +290,7 @@ export const updateMainImages = async (hotelId, imageId) => {
   }
 };
 
-//  將圖片插入 `hotel_images` 資料表
+//  將圖片插入 hotel_images資料表
 export const insertHotelImage = async (hotelId, imageUrl) => {
   const baseUrl = "http://localhost:5000";
   const fullImageUrl = imageUrl.startsWith("http")
@@ -299,7 +304,7 @@ export const insertHotelImage = async (hotelId, imageUrl) => {
   return result.insertId;
 };
 
-// 刪除 `hotel_images` 中的圖片
+// 刪除 hotel_images 中的圖片
 export const deleteImageById = async (imageId) => {
   const [result] = await pool.query("DELETE FROM hotel_images WHERE id = ?", [
     imageId,

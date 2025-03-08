@@ -1,5 +1,5 @@
 .wrapper {
-  margin: 100px auto 0;
+  margin: 100px auto 0 !important;
 }
 .suAvatarImg {
   width: 100px;

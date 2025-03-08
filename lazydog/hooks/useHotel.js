@@ -8,9 +8,12 @@ export function useHotel(operatorId = null) {
   const [error, setError] = useState(null);
   const [hotelImages, setHotelImages] = useState([]); // 旅館圖片
   const [roomImages, setRoomImages] = useState([]); // 房型圖片
+  const [token, setToken] = useState(
+    typeof window !== "undefined" && localStorage.getItem("loginWithToken")
+  );
+
   const [roomTypes, setRoomTypes] = useState([]); // 房型類型
   const [rooms, setRooms] = useState([]); // 房型資料
-
   useEffect(() => {
     // console.log("operatorId:", operatorId);
     // console.log("authLoading:", authLoading);
@@ -23,7 +26,6 @@ export function useHotel(operatorId = null) {
         const token = localStorage.getItem("loginWithToken");
         if (!token) throw new Error("未登入，請重新登入");
 
-        // 1️⃣ 取得旅館基本資訊
         const hotelRes = await fetch(
           `http://localhost:5000/api/hotels/operator/${operatorId}`,
           {
@@ -34,8 +36,12 @@ export function useHotel(operatorId = null) {
           }
         );
 
-        if (!hotelRes.ok)
-          throw new Error(`無法獲取旅館資訊，錯誤碼: ${hotelRes.status}`);
+        if (!hotelRes.ok) {
+          const errorData = await hotelRes.json();
+          throw new Error(
+            `無法獲取旅館資訊，錯誤碼: ${hotelRes.status}, 錯誤訊息: ${errorData.message}`
+          );
+        }
 
         const hotelResult = await hotelRes.json();
         const hotelData = Array.isArray(hotelResult)
@@ -64,7 +70,6 @@ export function useHotel(operatorId = null) {
           setRoomTypes(roomTypeData);
         }
 
-        // 4️⃣ 取得房型圖片
         const roomImageRes = await fetch(
           `http://localhost:5000/api/hotel_room_types/hotel/${hotelData.id}`,
           {
@@ -81,13 +86,13 @@ export function useHotel(operatorId = null) {
 
           if (roomImageResult && Array.isArray(roomImageResult.data)) {
             roomImageData = roomImageResult.data;
-            setRoomImages(roomImageData);
           } else {
             console.warn("房型圖片資料格式不正確:", roomImageResult);
+            roomImageData = []; // 確保 roomImageData 是陣列
           }
+          setRoomImages(roomImageData);
         }
 
-        // 5️⃣ 取得房型資料
         const roomRes = await fetch(
           `http://localhost:5000/api/hotel_room_types/operator/${operatorId}`,
           {
@@ -133,9 +138,8 @@ export function useHotel(operatorId = null) {
     };
 
     fetchHotelData();
-  }, [operatorId, user, authLoading]);
+  }, [operatorId, user, authLoading, token]);
 
-  // **修正 fetchHotelImages 讓它確保執行**
   const fetchHotelImages = async (hotelId, token) => {
     try {
       const hotelImageRes = await fetch(
@@ -148,7 +152,12 @@ export function useHotel(operatorId = null) {
         }
       );
 
-      if (!hotelImageRes.ok) throw new Error("無法獲取旅館圖片");
+      if (!hotelImageRes.ok) {
+        const errorData = await hotelImageRes.json();
+        throw new Error(
+          `無法獲取旅館圖片，錯誤碼: ${hotelImageRes.status}, 錯誤訊息: ${errorData.message}`
+        );
+      }
 
       const hotelImageResult = await hotelImageRes.json();
 
