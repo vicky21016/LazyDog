@@ -1,21 +1,21 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import { useHotelReview } from "@/hooks/useHotelReview"; 
-import { useAuth } from "@/hooks/use-auth"; 
+import { useHotelReview } from "@/hooks/useHotelReview";
+import { useAuth } from "@/hooks/use-auth";
 import { useRouter, useParams } from "next/navigation";
 import Header from "../../../components/layout/header";
 import My from "../../../components/hotel/my";
 import styles from "../../../../styles/modules/operatorCamera.module.css";
-
+import Swal from "sweetalert2";
 const ReviewList = () => {
-  const { user } = useAuth(); 
+  const { user } = useAuth();
   const [modalData, setModalData] = useState({});
   const replyInputRef = useRef(null);
   const router = useRouter();
   const [reviews, setReviews] = useState([]);
 
   const { id } = useParams();
-  const { review } = useHotelReview(); 
+  const { review } = useHotelReview();
 
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
@@ -26,7 +26,7 @@ const ReviewList = () => {
     const formattedReviews = review.map((item) => ({
       customer: item.user_name,
       order: item.id,
-      date: item.created_at,
+      date: formatDate(item.created_at),
       rating: item.rating,
       content: item.comment,
       replied: !!item.reply,
@@ -36,20 +36,23 @@ const ReviewList = () => {
 
     setReviews(formattedReviews);
   }, [review]);
-
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toISOString().split("T")[0];
+  };
   const loadReview = (review) => {
     setModalData(review);
   };
 
   const replyReview = async () => {
     if (!user) {
-      alert("請先登入再回覆評論");
+      Swal.fire("請先登入", "請先登入再回覆評論", "warning");
       return;
     }
 
     const replyContent = replyInputRef.current.value.trim();
     if (!replyContent) {
-      alert("請先填寫回覆內容");
+      Swal.fire("請輸入內容", "請先填寫回覆內容", "error");
       return;
     }
 
@@ -66,7 +69,7 @@ const ReviewList = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            operator_id: user.id, 
+            operator_id: user.id,
             reply: replyContent,
           }),
         }
@@ -81,14 +84,16 @@ const ReviewList = () => {
 
       setReviews((prevReviews) =>
         prevReviews.map((r) =>
-          r.order == modalData.order ? { ...r, reply: replyContent, replied: true } : r
+          r.order == modalData.order
+            ? { ...r, reply: replyContent, replied: true }
+            : r
         )
       );
 
       replyInputRef.current.value = "";
-      alert("回覆成功！");
+      Swal.fire("回覆成功", "您的回覆已成功送出！", "success");
     } catch (error) {
-      alert("回覆失敗，請稍後再試");
+      Swal.fire("回覆失敗", "請稍後再試", "error");
       console.error("回覆評論錯誤:", error);
     }
   };
@@ -105,14 +110,14 @@ const ReviewList = () => {
               <table className="table suTable table-striped table-hover">
                 <thead className="table-light">
                   <tr>
-                    <th>顧客名稱</th>
-                    <th>訂單編號</th>
-                    <th>評論日期</th>
-                    <th>評分</th>
-                    <th>評論內容</th>
-                    <th>是否回覆</th>
-                    <th>狀態</th>
-                    <th>操作</th>
+                    <th style={{ width: "12%" }}>顧客名稱</th>
+                    <th style={{ width: "10%" }}>訂單編號</th>
+                    <th style={{ width: "12%" }}>評論日期</th>
+                    <th style={{ width: "8%" }}>評分</th>
+                    <th style={{ width: "30%" }}>評論內容</th>
+                    <th style={{ width: "10%" }}>是否回覆</th>
+                    <th style={{ width: "8%" }}>狀態</th>
+                    <th style={{ width: "10%" }}>操作</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -122,16 +127,41 @@ const ReviewList = () => {
                       <td>{review.order}</td>
                       <td>{review.date}</td>
                       <td>{review.rating}</td>
-                      <td>{review.content}</td>
+                      <td>
+                        {" "}
+                        {review.content.length > 30
+                          ? `${review.content.substring(0, 30)}...`
+                          : review.content}
+                        {review.content.length > 30 && (
+                          <button
+                            className={`btn btn-sm  px-1 ${styles.moreBtn}`}
+                            onClick={() => loadReview(review)}
+                            data-bs-toggle="modal"
+                            data-bs-target="#reviewModal"
+                          >
+                            更多
+                          </button>
+                        )}
+                      </td>
                       <td>{review.replied ? "已回覆" : "未回覆"}</td>
                       <td>
-                        <span className={`badge ${review.status === "公開" ?  [ styles.btn3] : [ styles.btn]}`}>
+                        <span
+                          className={`badge ${
+                            review.status === "公開"
+                              ? [styles.btn3]
+                              : [styles.btn]
+                          }`}
+                        >
                           {review.status}
                         </span>
                       </td>
                       <td>
-                        <button className={`btn btn-sm ${styles.btn}`} data-bs-toggle="modal"
-                          data-bs-target="#reviewModal" onClick={() => loadReview(review)}>
+                        <button
+                          className={`btn btn-sm ${styles.btn}`}
+                          data-bs-toggle="modal"
+                          data-bs-target="#reviewModal"
+                          onClick={() => loadReview(review)}
+                        >
                           檢視 / 回覆
                         </button>
                       </td>
@@ -144,27 +174,66 @@ const ReviewList = () => {
         </div>
 
         {/* Modal */}
-        <div className="modal fade" id="reviewModal" tabIndex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+        <div
+          className="modal fade"
+          id="reviewModal"
+          tabIndex="-1"
+          aria-labelledby="reviewModalLabel"
+
+        >
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="reviewModalLabel">評論詳細資訊</h5>
-                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 className="modal-title" id="reviewModalLabel">
+                  評論詳細資訊
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
               </div>
               <div className="modal-body">
-                <p><strong>顧客名稱：</strong> {modalData.customer || "N/A"}</p>
-                <p><strong>訂單編號：</strong> {modalData.order || "N/A"}</p>
-                <p><strong>評論日期：</strong> {modalData.date || "N/A"}</p>
-                <p><strong>評分：</strong> {modalData.rating || "N/A"}</p>
-                <p><strong>評論內容：</strong></p>
+                <p>
+                  <strong>顧客名稱：</strong> {modalData.customer || "N/A"}
+                </p>
+                <p>
+                  <strong>訂單編號：</strong> {modalData.order || "N/A"}
+                </p>
+                <p>
+                  <strong>評論日期：</strong> {modalData.date || "N/A"}
+                </p>
+                <p>
+                  <strong>評分：</strong> {modalData.rating || "N/A"}
+                </p>
+                <p>
+                  <strong>評論內容：</strong>
+                </p>
                 <p className="border p-2">{modalData.content || "N/A"}</p>
                 <label className="form-label mt-3">回覆：</label>
-                <textarea ref={replyInputRef} className="form-control" rows="3"
-                  placeholder={modalData.reply || "請輸入回覆內容..."}></textarea>
+                <textarea
+                  ref={replyInputRef}
+                  className="form-control"
+                  rows="3"
+                  placeholder={modalData.reply || "請輸入回覆內容..."}
+                ></textarea>
               </div>
               <div className="modal-footer">
-                <button type="button" className={`btn ${styles.btn2}`} data-bs-dismiss="modal">取消</button>
-                <button type="button" className={`btn ${styles.btn}`} onClick={replyReview}>送出回覆</button>
+                <button
+                  type="button"
+                  className={`btn ${styles.btn2}`}
+                  data-bs-dismiss="modal"
+                >
+                  取消
+                </button>
+                <button
+                  type="button"
+                  className={`btn ${styles.btn}`}
+                  onClick={replyReview}
+                >
+                  送出回覆
+                </button>
               </div>
             </div>
           </div>
