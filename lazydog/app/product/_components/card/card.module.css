@@ -1,11 +1,9 @@
 .ProductCard {
   max-width: 225px;
-  height: 345px;
   position: relative;
+  padding-left: 0;
+  padding-right: 0;
   transition: all 0.4s;
-  &:hover {
-    translate: 0 -10px;
-  }
 }
 .ProductCardHover {
   width: 100%;
@@ -114,6 +112,33 @@
   img {
     width: 100%;
   }
+  .HoverIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    img {
+      width: 25px;
+    }
+  }
+  .CartBtnOff {
+    h6 {
+      display: none;
+    }
+  }
+  .CartBtn {
+    h6 {
+      position: absolute;
+      color: var(--Black);
+      text-shadow: 0 0 2px var(--White);
+      cursor: pointer;
+      top: 0;
+    }
+  }
 }
 .ProductCardInfo {
   padding: 0 20px 14px;
@@ -185,3 +210,192 @@
   user-select: none;
   padding-bottom: 3px;
 } */
+/* ----------商品資訊---------- */
+.ProductInfo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .InfoBtnGroup {
+    width: 100%;
+    display: flex;
+    /* justify-content: space-around; */
+    align-items: center;
+    gap: 15px;
+    button {
+      background: var(--orange);
+      border: 1px solid var(--orange);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 300px;
+      flex: 1 0 0;
+      padding: 15px 50px;
+      text-wrap: nowrap;
+    }
+    h5 {
+      font-weight: bold;
+      color: var(--White);
+      cursor: pointer;
+    }
+    .BtnBuynow {
+      background: var(--White);
+      h5 {
+        color: var(--orange);
+      }
+    }
+  }
+}
+.ProductInfoImgGroup {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  gap: 15px;
+  .ProductInfoImg {
+    /* max-width: 540px; */
+    margin-left: 43px;
+    border-radius: 4px;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
+}
+.ProductInfoImgSmall {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  .ProductInfoImgSmallActive {
+    border: 4px solid var(--Orange);
+  }
+  figure {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid var(--skin);
+    border-radius: 4px;
+    max-width: 67px;
+  }
+  .ProductInfoImgSmallBtn {
+    margin: auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 35px;
+    height: 35px;
+    border: 1px solid var(--orange);
+    border-radius: 50%;
+    img {
+      width: 50%;
+    }
+  }
+}
+.ProductInfoDetail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  /* gap: 30px; */
+  flex: 1 0 0;
+  padding-top: 30px;
+}
+.ProductInfoContent {
+  display: flex;
+  padding: 0px 10px 30px 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  .InfoProductName {
+    font-weight: bold;
+  }
+}
+.InfoFavoriteGroup {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  h6 {
+    font-weight: bold;
+    user-select: none;
+  }
+  button {
+    padding: 0;
+  }
+}
+.InfoOnsaleGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  .OnsaleTag {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--Orange);
+    border-radius: 30px;
+    h5 {
+      color: var(--White);
+    }
+  }
+  .OnsaleInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .OnsaleTime {
+    font-weight: bold;
+  }
+}
+.InfoRateGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.InfoPriceGroup {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  h3 {
+    font-weight: bold;
+  }
+  /* h4 {
+    text-decoration: line-through;
+    color: var(--gray);
+  } */
+  h5 {
+    color: var(--gray);
+  }
+}
+.InfoQtyGroup {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--White);
+    width: 30px;
+    height: 30px;
+    padding: 0 8px;
+    border: 1px solid var(--Orange);
+    border-radius: 50%;
+    img {
+      width: 100%;
+    }
+  }
+  input {
+    width: 40px;
+    font-size: 20px;
+    text-align: center;
+    background: none;
+    border: none;
+    outline: none;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}

@@ -221,17 +221,17 @@ export function useCategoryFetch() {
   };
 }
 
-export function useDetailFetch() {
+export function useDetailFetch(PID) {
   const { width, height } = useScreenSize();
   const { user } = useAuth();
   const query = useSearchParams();
-  const product = query.get("productID");
+  const product = PID ? PID : query.get("productID");
   const router = useRouter();
   const loginRoute = "/login";
   const [picNow, setPicNow] = useState(0);
   const [rate, setRate] = useState(3);
   const [amount, setAmount] = useState(1);
-  const [cardPic, setCardPic] = useState("/product/img/default.webp");
+  const [detailPic, setDetailPic] = useState("/product/img/default.webp");
 
   const url = product ? `http://localhost:5000/api/products/${product}` : null;
   const url2 =
@@ -347,8 +347,8 @@ export function useDetailFetch() {
       const newImage = new Image();
       const encodedImageName = encodeURIComponent(productName);
       newImage.src = `/product/img/${encodedImageName}${img.img[picNow]}`;
-      newImage.onload = () => setCardPic(newImage.src);
-      newImage.onerror = () => setCardPic("/product/img/default.webp");
+      newImage.onload = () => setDetailPic(newImage.src);
+      newImage.onerror = () => setDetailPic("/product/img/default.webp");
     }
   }, [productName]);
 
@@ -373,8 +373,8 @@ export function useDetailFetch() {
     setRate,
     amount,
     setAmount,
-    cardPic,
-    setCardPic,
+    detailPic,
+    setDetailPic,
     rateData,
     rateAvg,
     int,
@@ -429,7 +429,7 @@ export function useCardFetch({ productID = "" }) {
     if (productName) {
       const img = new Image();
       const encodedImageName = encodeURIComponent(productName);
-      img.src = `/product/img/${encodedImageName}_title.webp`;
+      img.src = `/product/img/${encodedImageName}_(1).webp`;
       img.onload = () => setCardPic(img.src);
       img.onerror = () =>
         setCardPic(`/product/img/${encodedImageName}_(1).webp`);

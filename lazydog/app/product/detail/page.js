@@ -50,8 +50,8 @@ function DetailContent() {
     setRate,
     amount,
     setAmount,
-    cardPic,
-    setCardPic,
+    detailPic,
+    setDetailPic,
     rateData,
     rateAvg,
     int,
@@ -194,7 +194,7 @@ function DetailContent() {
           <section className={`${styles.ProductInfo} row`}>
             <div className={`${styles.ProductInfoImgGroup}`}>
               <figure className={styles.ProductInfoImg}>
-                {cardPic == "/product/img/default.webp" ? (
+                {detailPic == "/product/img/default.webp" ? (
                   <div
                     style={{
                       width: "400px",
@@ -212,9 +212,9 @@ function DetailContent() {
                   </div>
                 ) : (
                   <img
-                    src={cardPic}
+                    src={detailPic}
                     alt=""
-                    onError={() => setCardPic("/product/img/default.webp")}
+                    onError={() => setDetailPic("/product/img/default.webp")}
                   />
                 )}
               </figure>
@@ -228,7 +228,7 @@ function DetailContent() {
                         const newIndex = e - 1 < 0 ? img.sm.length - 1 : e - 1;
                         const encodedImageName =
                           encodeURIComponent(productName);
-                        setCardPic(
+                        setDetailPic(
                           `/product/img/${encodedImageName}${img.img[newIndex]}`
                         );
                         return newIndex;
@@ -252,7 +252,7 @@ function DetailContent() {
                               const newIndex = i;
                               const encodedImageName =
                                 encodeURIComponent(productName);
-                              setCardPic(
+                              setDetailPic(
                                 `/product/img/${encodedImageName}${img.img[newIndex]}`
                               );
                               return newIndex;
@@ -273,7 +273,7 @@ function DetailContent() {
                         const newIndex = e + 1 > img.sm.length - 1 ? 0 : e + 1;
                         const encodedImageName =
                           encodeURIComponent(productName);
-                        setCardPic(
+                        setDetailPic(
                           `/product/img/${encodedImageName}${img.img[newIndex]}`
                         );
                         return newIndex;
