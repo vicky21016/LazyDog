@@ -3,9 +3,7 @@ import Link from "next/link";
 import couponStyles from "./userCoupon.module.css";
 
 const Hotel = ({ hotelOrders }) => {
-  if (!hotelOrders || hotelOrders.length === 0) {
-    return <p>目前沒有旅館訂單</p>;
-  }
+
 
 
   return (

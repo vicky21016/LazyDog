@@ -203,7 +203,7 @@ export default function HotelDetailPage({ params }) {
     router.push(`/hotel-coupon/fonthotelHome?${paramsString}`);
   };
 
-  // 處理收藏邏輯
+  
   // 獲取收藏狀態
   useEffect(() => {
     if (id && user?.id && token) {
@@ -285,6 +285,7 @@ export default function HotelDetailPage({ params }) {
   return (
     <>
       <Header />
+      <div style={{ marginTop: '80px' }}>
       <SearchBar
         location={location}
         city={city}
@@ -405,6 +406,7 @@ export default function HotelDetailPage({ params }) {
             無法載入地圖，請確認旅館是否有經緯度數據。
           </p>
         )}
+      </div>
       </div>
     </>
   );
