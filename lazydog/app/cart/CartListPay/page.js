@@ -130,9 +130,26 @@ export default function CartListPayPage(props) {
     const orderId = `PD${new Date().getTime()}`;
 
     let computedFinalAmount = totalAmount;
-
+    if (courseItems.length > 0) {
+      for (const courseItem of courseItems) {
+        const newOrder = {
+          course_id: courseItem.id,
+          user_id: user.id,
+          quanity: courseItem.count,
+          total_price: courseItem.price * courseItem.count,
+          payment_status: "Unpaid",
+          payment_method: courseItem.payment_method || "Not Specified",
+          cancellation_policy:
+            courseItem.cancellation_policy || "Standard Policy",
+          remark: courseItem.remark || "",
+          orderTable,
+        };
+        await createCourseOrder(newOrder, orderTable);
+      }
+    }
     try {
       //  先建立訂單
+      // 商品訂單
       if (productItems.length > 0) {
         const newOrder = {
           user_id: user.id,
@@ -152,25 +169,9 @@ export default function CartListPayPage(props) {
         await createProductOrder(newOrder, orderTable);
         computedFinalAmount = newOrder.final_amount;
       }
+      // 課程訂單
 
-      if (courseItems.length > 0) {
-        for (const courseItem of courseItems) {
-          const newOrder = {
-            course_id: courseItem.id,
-            user_id: user.id,
-            quantity: courseItem.count,
-            total_price: courseItem.price * courseItem.count,
-            payment_status: "Unpaid",
-            payment_method: courseItem.payment_method || "Not Specified",
-            cancellation_policy:
-              courseItem.cancellation_policy || "Standard Policy",
-            remark: courseItem.remark || "",
-            orderTable,
-          };
-          await createCourseOrder(newOrder, orderTable);
-        }
-      }
-
+      // 旅館訂單
       if (hotelItems.length > 0) {
         for (const hotelItem of hotelItems) {
           const newOrder = {
