@@ -58,19 +58,36 @@ export default function My() {
       <div className={`${styles.collapseAside} d-lg-none`}>
         <div className={`${styles.collapseAsideContent}`}>
           <button
-            className={styles.right}
+            className={`btn d-md-none ${styles.right}`}
             onClick={() => setmobileMenu(!mobileMenu)}
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#filterOffcanvas"
+            aria-expanded="false"
+            aria-controls="filterOffcanvas"
           >
-            <img src={`/product/font/right(orange).png`} />
+           <i className="bi bi-chevron-right"></i>
           </button>
         </div>
       </div>
       {/* <div className="col-md-3 col-12"> */}
       <div
-        className={`${styles.mobileFilter} ${
-          mobileMenu ? styles.showFilter : ""
-        }`}
-      >
+        className="offcanvas offcanvas-start"
+        tabIndex="-1"
+        id="filterOffcanvas"
+        aria-labelledby="filterOffcanvasLabel"
+      > 
+      <div className="offcanvas-header">
+      {/* <h5 className="offcanvas-title" id="filterOffcanvasLabel">
+          篩選
+        </h5> */}
+      <button
+        type="button"
+        className="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
         <div className={` p-3 text-center`}>
           <div className="text-center">
             <div className="position-relative d-inline-block">

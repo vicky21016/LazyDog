@@ -165,10 +165,12 @@ export const createHotel = async (req, res) => {
 };
 export const updateHotel = async (req, res) => {
   try {
-    const userId = req.user.id; // ✅ 從 JWT token 取得登入的 user_id
-    const { deleteImageIds, ...hotelData } = req.body;
+    console.log("收到 PATCH 請求，更新內容:", req.body);
 
-    // ✅ 透過 userId 取得該使用者管理的 hotel_id
+    const userId = req.user.id;
+    const { deleteImageIds, ...hotelData } = req.body; 
+
+    // 檢查該使用者是否有對應的旅館
     const [hotelRows] = await pool.query(
       "SELECT id FROM hotel WHERE operator_id = ? LIMIT 1",
       [userId]
@@ -178,20 +180,25 @@ export const updateHotel = async (req, res) => {
       return res.status(403).json({ error: "沒有權限更新此旅館" });
     }
 
-    const hotelId = hotelRows[0].id; // ✅ 取得旅館 ID
+    const hotelId = hotelRows[0].id;
+    console.log("更新的 hotelId:", hotelId);
 
-    // ✅ 更新旅館資訊
+    // 更新旅館資料
     const updatedHotel = await updateHotelById({ id: hotelId, ...hotelData });
 
-    if (!updatedHotel) {
-      return res.status(404).json({ error: `找不到 id=${hotelId} 或該旅館已刪除` });
+    console.log("更新結果:", updatedHotel);
+
+    if (!updatedHotel || updatedHotel.error) {
+      return res.status(400).json({ error: updatedHotel.error });
     }
 
     res.json({ message: `旅館 id=${hotelId} 更新成功` });
   } catch (error) {
-    handleError(res, error, "更新旅館失敗");
+    console.error("更新旅館失敗：", error);
+    return res.status(500).json({ error: "伺服器錯誤" });
   }
 };
+
 
 
 

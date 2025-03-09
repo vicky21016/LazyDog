@@ -110,6 +110,7 @@ export default function UpdateArticlePage({ params }) {
   return (
     <>
       <Header />
+       <div className={`${style.container}`}>
       <div className='lumi-all-wrapper'>
       <Breadcrumb
                     links={[
@@ -134,7 +135,7 @@ export default function UpdateArticlePage({ params }) {
                 boxShadow: "0px 10px 14px rgba(0, 0, 0, 0.25)"
               }}
             >
-              <h4>編輯文章</h4>
+              <h4 className='mt-3 mb-4'>編輯文章</h4>
 
               {/* 標題輸入 */}
               <TitleInput title={title} setTitle={setTitle} />
@@ -191,6 +192,7 @@ export default function UpdateArticlePage({ params }) {
             </form>
           </div>
         </div>
+      </div>
       </div>
     </>
   );

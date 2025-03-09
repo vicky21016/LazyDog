@@ -293,7 +293,7 @@ export default function HomePage(props) {
       </div>
 
       <div className={styles.btns}>
-        <Link href="#" className={styles.ticketIcon}>
+        <Link href="/fontcoupon" className={styles.ticketIcon}>
           {/* <i class="bi bi-ticket-perforated"></i> */}
           <img src="/home/img/ticketIcon.png" alt="" />
         </Link>

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import My from "../../components/hotel/my";
 import Header from "../../components/layout/header";
 import { getCoupons, softDeleteCoupon } from "@/services/couponService"; // 導入 API 函數
+import Swal from "sweetalert2"; 
 
 export default function CouponListPage() {
   const [coupons, setCoupons] = useState([]); // 存儲優惠券數據
@@ -54,13 +55,13 @@ export default function CouponListPage() {
         setCoupons((prevCoupons) =>
           prevCoupons.filter((coupon) => coupon.id !== couponId)
         );
-        alert("優惠券已刪除");
+        Swal.fire("已刪除", "優惠券已刪除", "success");
       } else {
-        alert("刪除失敗：" + result.message);
+        Swal.fire("刪除失敗", result.message, "error");
+       
       }
     } catch (error) {
-      console.error("刪除優惠券失敗：", error);
-      alert("刪除優惠券時發生錯誤");
+      Swal.fire("刪除失敗", "發生錯誤，無法刪除優惠券", "error");
     }
   };
 
@@ -100,21 +101,21 @@ export default function CouponListPage() {
                 <tbody>
                   {coupons.map((coupon) => (
                     <tr key={coupon.id} className="text-center">
-                      <td>{coupon.code}</td>
-                      <td>{coupon.name}</td>
-                      <td>{coupon.value || "無"}</td>
-                      <td>
+                      <td data-label="優惠代碼">{coupon.code}</td>
+                      <td data-label="優惠名稱">{coupon.name}</td>
+                      <td data-label="優惠內容">{coupon.value || "無"}</td>
+                      <td  data-label="開始日期">
                         {coupon.start_time
                           ? coupon.start_time.split("T")[0]
                           : "未設定"}
                       </td>
-                      <td>
+                      <td data-label="結束日期">
                         {coupon.end_time
                           ? coupon.end_time.split("T")[0]
                           : "未設定"}
                       </td>
-                      <td>{coupon.usage || 0}</td>
-                      <td>
+                      <td data-label="使用次數">{coupon.usage || 0}</td>
+                      <td data-label="狀態"> 
                         <span
                           className={`badge ${
                             coupon.status === "active"
@@ -127,7 +128,7 @@ export default function CouponListPage() {
                           {coupon.status}
                         </span>
                       </td>
-                      <td>
+                      <td  data-label="操作">
                         <button
                           className="btn btn-sm btn-primary me-2"
                           onClick={() => loadCoupon(coupon)}

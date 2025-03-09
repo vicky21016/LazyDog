@@ -42,7 +42,7 @@ export default function OtherCourseCard() {
         <div className={`row gy-5 ${styles.sCards}`}>
           {latest?.map((la) => (
             <Link
-              className={`col-6 col-lg-3 p-4 ${styles.sCard}`}
+              className={`col-6 col-lg-3 m-0 ${styles.sCard}`}
               key={la.courseId}
               href={`/course/${la.courseId}`}
             >

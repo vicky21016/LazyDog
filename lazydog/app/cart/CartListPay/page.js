@@ -375,6 +375,7 @@ export default function CartListPayPage(props) {
                   ))}
 
                   <div className="d-flex flex-column mt-4">
+                    {/* 優惠券選擇 */}
                     <label>使用優惠券</label>
                     <select
                       className="form-select"
@@ -388,12 +389,14 @@ export default function CartListPayPage(props) {
                       {availableCoupons.map((coupon) => (
                         <option key={coupon.id} value={coupon.id}>
                           {coupon.name} - {coupon.value}{" "}
-                          {coupon.discount_type == "percentage" ? "%" : "NT$"}
+                          {coupon.discount_type === "percentage" ? "%" : "NT$"}{" "}
+                          (低消 NT$ {coupon.min_order_value})
                         </option>
                       ))}
                     </select>
                   </div>
 
+                  {/* 折扣金額與最終金額 */}
                   <div className="d-flex justify-content-between mt-3">
                     <span className="subtext">折扣金額</span>
                     <span>- NT$ {discountAmount.toFixed(0)}</span>
@@ -402,6 +405,8 @@ export default function CartListPayPage(props) {
                     <span className="subtext">最終金額</span>
                     <span>NT$ {finalAmount.toFixed(0)}</span>
                   </div>
+
+                  {/* 付款按鈕 */}
                   <button
                     className={`mt-5 ${styles.btn1}`}
                     type="button"

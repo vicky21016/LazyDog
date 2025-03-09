@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Swal from "sweetalert2";
 import { useRouter, useParams } from "next/navigation";
+import styles from "../../../../styles/modules/operatorCamera.module.css";
 import { useHotel } from "@/hooks/useHotel";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 import hotelStyles from "../../../../styles/modules/operatorHotel.module.css";
@@ -92,6 +93,8 @@ export default function HotelEditPage() {
       },
     }));
   };
+
+
   // useEffect當 hotel 有資料時，設定 formData
   useEffect(() => {
     if (hotel) {
@@ -115,7 +118,7 @@ export default function HotelEditPage() {
         district: hotel.district || "",
         address: hotel.address || "",
         phone: hotel.phone || "",
-        businessHours: parsedBusinessHours || { open: "", close: "" }, //  統一為一組營業時間
+        businessHours: parsedBusinessHours || { open: "", close: "" }, 
         introduce: hotel.introduce || "",
       });
     }
@@ -146,51 +149,52 @@ export default function HotelEditPage() {
   // 儲存 //不展示
   const handleSave = async () => {
     try {
-      const token = localStorage.getItem("loginWithToken");
-      if (!token) throw new Error("未登入，請重新登入");
+        const token = localStorage.getItem("loginWithToken");
+        if (!token) throw new Error("未登入，請重新登入");
 
-      if (!hotel || !hotel.id) {
-        throw new Error("找不到對應的旅館 ID");
-      }
-
-      let formattedBusinessHours = formData.businessHours;
-      if (typeof formData.businessHours !== "string") {
-        formattedBusinessHours = JSON.stringify(formData.businessHours);
-      }
-
-      const updateData = {
-        ...formData,
-        businessHours: formattedBusinessHours,
-      };
-
-      console.log(" 發送 PATCH 請求:", updateData);
-
-      const response = await fetch(
-        `http://localhost:5000/api/hotels/${hotel.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(updateData),
+        if (!hotel || !hotel.id) {
+            throw new Error("找不到對應的旅館 ID");
         }
-      );
 
-      const data = await response.json();
-      console.log("API 回應:", data);
+        let formattedBusinessHours = formData.businessHours;
+        if (!formattedBusinessHours || !formattedBusinessHours.open || !formattedBusinessHours.close) {
+            formattedBusinessHours = { open: "", close: "" };
+        }
 
-      if (!response.ok) throw new Error(`更新失敗，錯誤碼: ${response.status}`);
+        const updateData = {
+            ...formData,
+           businessHours: formattedBusinessHours, 
+        };
 
-      Swal.fire("成功", "旅館資料已更新", "success").then(() => {
-        router.push(`/hotel-coupon/hotel/${id}`);
-        router.refresh();
-      });
+        console.log("送出 PATCH:", JSON.stringify(updateData, null, 2));
+
+        const response = await fetch(
+            `http://localhost:5000/api/hotels/${hotel.id}`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(updateData),
+            }
+        );
+
+        const data = await response.json();
+        console.log("🔹 API 回應:", response.status, data);
+
+        if (!response.ok) throw new Error(`更新失敗，錯誤碼: ${response.status}`);
+
+        Swal.fire("成功", "旅館資料已更新", "success").then(() => {
+            router.push(`/hotel-coupon/hotel/${id}`);
+        });
+
     } catch (error) {
-   
-      Swal.fire("錯誤", error.message, "error");
+        console.error(" handleSave 錯誤:", error);
+        Swal.fire("錯誤", error.message, "error");
     }
-  };
+};
+
 
   // 設為主圖片
   const handleSetMainImage = async (imageId) => {
@@ -337,60 +341,57 @@ export default function HotelEditPage() {
   // 更新房型
   const handleUpdateRoom = async (roomId) => {
     if (!roomId) {
-      await Swal.fire("錯誤", "找不到房型 ID", "error");
-      return;
+        await Swal.fire("錯誤", "找不到房型 ID", "error");
+        return;
     }
 
     const updatedData = roomFormData[roomId];
 
     try {
-      const token = localStorage.getItem("loginWithToken");
-      if (!token) throw new Error("未登入，請重新登入");
+        const token = localStorage.getItem("loginWithToken");
+        if (!token) throw new Error("未登入，請重新登入");
 
-      const formData = new FormData();
+        const formData = new FormData();
 
-      Object.keys(updatedData).forEach((key) => {
-        if (
-          updatedData[key] !== undefined &&
-          updatedData[key] !== null &&
-          key !== "image_url"
-        ) {
-          formData.append(key, updatedData[key]);
+        Object.keys(updatedData).forEach((key) => {
+            if (updatedData[key] !== undefined && updatedData[key] !== null && key !== "image_url") {
+                formData.append(key, updatedData[key]);
+            }
+        });
+
+        if (updatedData.imageFile) {
+            formData.append("image", updatedData.imageFile);
         }
-      });
 
-      if (updatedData.imageFile) {
-        formData.append("image", updatedData.imageFile);
-      }
+        const response = await fetch(
+            `http://localhost:5000/api/hotel_room_types/${roomId}`,
+            {
+                method: "PATCH",
+                headers: { Authorization: `Bearer ${token}` },
+                body: formData,
+            }
+        );
 
-      const response = await fetch(
-        `http://localhost:5000/api/hotel_room_types/${roomId}`,
-        {
-          method: "PATCH",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "更新失敗");
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "更新失敗");
+        setRooms((prevRooms) =>
+            prevRooms.map((room) =>
+                room.id === roomId
+                    ? {
+                          ...room,
+                          ...updatedData,
+                          image_url: data.image_url || room.image_url,
+                      }
+                    : room
+            )
+        );
 
-      setRooms((prevRooms) =>
-        prevRooms.map((room) =>
-          room.id === roomId
-            ? {
-                ...room,
-                ...updatedData,
-                image_url: data.image_url || room.image_url,
-              }
-            : room
-        )
-      );
-
-      await Swal.fire("成功", "房型已更新", "success");
+        await Swal.fire("成功", "房型已更新", "success");
     } catch (error) {
-      await Swal.fire("錯誤", error.message, "error");
+        await Swal.fire("錯誤", error.message, "error");
     }
-  };
+};
 
   // 刪除房型
   const handleDeleteRoom = async (roomId) => {
@@ -432,7 +433,6 @@ export default function HotelEditPage() {
 
       await Swal.fire("成功", "房型已刪除", "success");
 
-      router.refresh();
     } catch (error) {
       await Swal.fire("錯誤", error.message, "error");
     }
@@ -454,7 +454,10 @@ export default function HotelEditPage() {
       Swal.fire("錯誤", "請輸入有效的房間數量", "error");
       return;
     }
-
+    if (!newRoomImage) {
+      Swal.fire("錯誤", "請上傳房型圖片", "error");
+      return;
+    }
     const formData = new FormData();
     formData.append("hotel_id", hotel?.id); // 必填
     formData.append("room_type_id", selectedRoomType); // 必填
@@ -543,17 +546,50 @@ export default function HotelEditPage() {
       Swal.fire("錯誤", error.message, "error");
     }
   };
+  const handleUpdateHotel = async (hotelId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/hotel/${hotelId}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        Swal.fire("成功", "旅館資料已更新", "success");
+      } else {
+        Swal.fire("錯誤", result.error, "error");
+      }
+    } catch (error) {
+      console.error("更新錯誤:", error);
+      Swal.fire("錯誤", "更新失敗，請稍後再試", "error");
+    }
+  };
+ 
 
   return (
     <>
       <Header />
-      <div className="container my-5">
+      <div className={`container my-5 ${styles.wrapper} `}>
         <div className="row">
           <My />
 
           <div className="col-12 col-md-9 mx-auto">
             <h3 className="mb-3">編輯旅館資訊</h3>
-            <form id="editForm">
+            <form
+              id="editForm"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleUpdateHotel();
+              }}
+            >
               <div className={`section ${hotelStyles.suSection}`}>
                 <h5>基本資訊</h5>
                 <div className="mb-3">

@@ -114,7 +114,7 @@ export const getUserCoupons = async (userId, status, type) => {
     let query = `
       SELECT 
         uc.id, 
-        uc.status AS usage_status,  -- 來自 coupon_usage
+        uc.status AS usage_status,  
         uc.claimed_at, 
         c.name, 
         c.type, 

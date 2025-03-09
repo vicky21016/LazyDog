@@ -33,7 +33,7 @@ router.get("/search", getSearch); // 搜尋飯店
 router.get("/:id", getByIds); // 取得特定飯店
 
 // ------------------------------
-// **新增：價格範圍 API**
+// 新增：價格範圍 API
 // ------------------------------
 router.get("/price-range/all", async (req, res) => {
   try {

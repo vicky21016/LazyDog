@@ -320,7 +320,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
 
             {/* 搜尋 / 清除篩選 按鈕 */}
             <button
-              className={`btn btn-sm mt-3 ${styles.suClearFilterBtn}`}
+              className={`btn btn-sm mt-5 ${styles.suClearFilterBtn}`}
               onClick={isSearching ? handleApplyFilters : handleClear}
             >
               {isSearching ? "搜尋" : "清除篩選"}
@@ -500,7 +500,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
               />
               {/* 搜尋 / 清除篩選 按鈕 */}
               <button
-                className={`btn btn-sm mt-3 ${styles.suClearFilterBtn}`}
+                className={`btn btn-sm mt-5 ${styles.suClearFilterBtn}`}
                 onClick={isSearching ? handleApplyFilters : handleClear}
               >
                 {isSearching ? "搜尋" : "清除篩選"}
