@@ -3,6 +3,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "./aside.module.css";
 
+import { AnimatePresence } from "motion/react";
+import * as motion from "motion/react-client";
+
 export default function FilterGroup({
   category = {},
   name = {},
@@ -184,6 +187,7 @@ export default function FilterGroup({
       console.log(1);
     }
   }, [isChecked, setIsChecked]);
+
   return (
     <>
       <div className={styles.FilterGroup}>
@@ -211,14 +215,18 @@ export default function FilterGroup({
             );
           }
         })}
-        {showMore && (
-          <>
-            {categoryName[name].map((v, i) => {
+        <AnimatePresence initial={false}>
+          {showMore &&
+            categoryName[name].map((v, i) => {
               if (i >= 3) {
                 return (
-                  <div
+                  <motion.div
                     key={`Filter${i}`}
                     className={`form-check ${styles.FormCheck}`}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0 }}
+                    transition={{ duration: 0.1 }}
                   >
                     <input
                       className={`form-check-input ${styles.FormCheckInput}`}
@@ -232,19 +240,20 @@ export default function FilterGroup({
                     <label className="form-check-label" htmlFor={v}>
                       {v}
                     </label>
-                  </div>
+                  </motion.div>
                 );
               }
             })}
-          </>
-        )}
+        </AnimatePresence>
         {categoryName[name].length > 3 && (
-          <span
+          <motion.span
+            layout
+            transition={{ all: 0.2, ease: "easeInOut" }}
             className={styles.ShowMore}
             onClick={() => setShowMore(!showMore)}
           >
             {showMore ? "收起 ▲" : "顯示全部 ▼"}
-          </span>
+          </motion.span>
         )}
       </div>
     </>

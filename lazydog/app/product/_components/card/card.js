@@ -180,15 +180,6 @@ function CardContent({ productID = "" }) {
   const [isOn, setIsOn] = useState(false);
   const toggleSwitch = () => setIsOn(!isOn);
 
-  // useEffect(() => {
-  //   const clickOutside = (event) => {
-  //     if (isOn && !event.target.closest(`.${styles.ProductCardMotion}`)) {
-  //       setIsOn(false);
-  //     }
-  //   };
-  //   document.addEventListener("click", clickOutside);
-  //   return () => document.removeEventListener("click", clickOutside);
-  // }, [isOn]);
   return (
     <>
       {isLoading ? (
@@ -205,252 +196,6 @@ function CardContent({ productID = "" }) {
         </li>
       ) : (
         <>
-          {/* 
-            <div
-              style={{ background: "#ffffff", maxWidth: "900px" }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <section className={`${styles.ProductInfo} row`}>
-                <div className={`${styles.ProductInfoImgGroup} col`}>
-                  <figure className={styles.ProductInfoImg}>
-                    {detailPic == "/product/img/default.webp" ? (
-                      <div
-                        style={{
-                          width: "400px",
-                          height: "400px",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <MoonLoader
-                          width={300}
-                          color="#f5842b"
-                          speedMultiplier={2}
-                        />
-                      </div>
-                    ) : (
-                      <img
-                        src={detailPic}
-                        alt=""
-                        onError={() =>
-                          setDetailPic("/product/img/default.webp")
-                        }
-                      />
-                    )}
-                  </figure>
-                  <div className={styles.ProductInfoImgSmall}>
-                    {img.sm.length > 0 && width >= 768 && (
-                      <button
-                        type="button"
-                        className={styles.ProductInfoImgSmallBtn}
-                        onClick={() => {
-                          setPicNow((e) => {
-                            const newIndex =
-                              e - 1 < 0 ? img.sm.length - 1 : e - 1;
-                            const encodedImageName =
-                              encodeURIComponent(productName);
-                            setDetailPic(
-                              `/product/img/${encodedImageName}${img.img[newIndex]}`
-                            );
-                            return newIndex;
-                          });
-                        }}
-                      >
-                        <img src="/product/font/left(orange).png" alt="" />
-                      </button>
-                    )}
-                    {img.sm &&
-                      img.sm.map((v, i) => {
-                        if (i < (width < 768 ? 4 : 5)) {
-                          return (
-                            <figure
-                              key={`smPic${i}`}
-                              className={`${styles.ProductInfoImgSmall}  ${
-                                i == picNow
-                                  ? styles.ProductInfoImgSmallActive
-                                  : ""
-                              }`}
-                              onClick={() => {
-                                setPicNow(() => {
-                                  const newIndex = i;
-                                  const encodedImageName =
-                                    encodeURIComponent(productName);
-                                  setDetailPic(
-                                    `/product/img/${encodedImageName}${img.img[newIndex]}`
-                                  );
-                                  return newIndex;
-                                });
-                              }}
-                            >
-                              <img
-                                src={`/product/img/${productName}${v}`}
-                                alt=""
-                              />
-                            </figure>
-                          );
-                        }
-                      })}
-                    {img.sm.length > 0 && width >= 768 && (
-                      <button
-                        type="button"
-                        className={styles.ProductInfoImgSmallBtn}
-                        onClick={() => {
-                          setPicNow((e) => {
-                            const newIndex =
-                              e + 1 > img.sm.length - 1 ? 0 : e + 1;
-                            const encodedImageName =
-                              encodeURIComponent(productName);
-                            setDetailPic(
-                              `/product/img/${encodedImageName}${img.img[newIndex]}`
-                            );
-                            return newIndex;
-                          });
-                        }}
-                      >
-                        <img src="/product/font/right(orange).png" alt="" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-                <div className={`${styles.ProductInfoDetail} col`}>
-                  <div className={styles.ProductInfoContent}>
-                    <div className={styles.InfoFavoriteGroup}>
-                      <button
-                        type="button"
-                        className={styles.FavoriteBtn}
-                        onMouseEnter={() => setHeartHover(true)}
-                        onMouseLeave={() => setHeartHover(false)}
-                        onClick={() => {
-                          if (!user) {
-                            alert("請先登入");
-                            setTimeout(() => {
-                              router.push(loginRoute);
-                            }, 100);
-                          } else {
-                            const newState = !heartState;
-                            setHeartState(newState);
-                            setFavorite((favorite) =>
-                              newState
-                                ? [...favorite, product]
-                                : favorite.filter((e) => e !== product)
-                            );
-                          }
-                        }}
-                      >
-                        <img
-                          src={`/product/font/${
-                            heartHover || heartState
-                              ? "heart-fill-big"
-                              : "heart-big"
-                          }.png`}
-                          alt=""
-                        />
-                      </button>
-                      <h6>{heartState ? "已加入收藏" : "加入收藏"}</h6>
-                    </div>
-                    <h3 className={styles.InfoProductName}>
-                      {productData?.name}
-                    </h3>
-                    <div className={styles.InfoRateGroup}>
-                      {int && (
-                        <>
-                          {int > 0 &&
-                            int <= 5 &&
-                            [...Array(Number(int))].map((v, i) => (
-                              <img
-                                key={`starFill${i}`}
-                                src="/product/font/star-fill.png"
-                                alt=""
-                              />
-                            ))}
-                          {int < 5 && (
-                            <img
-                              src={`/product/font/${
-                                dec > 7
-                                  ? "star-fill"
-                                  : dec > 2
-                                  ? "star-half"
-                                  : "star"
-                              }.png`}
-                              alt=""
-                            />
-                          )}
-                          {int < 4 &&
-                            [...Array(4 - Number(int))].map((v, i) => (
-                              <img
-                                key={`star${i}`}
-                                src="/product/font/star.png"
-                                alt=""
-                              />
-                            ))}
-                        </>
-                      )}
-                    </div>
-                    <div className={styles.InfoPriceGroup}>
-                      <h5>
-                        {productDiscount > 0 ? `限時促銷價格：` : `價格：`}
-                      </h5>
-                      <h4>NT$ {productData?.price}</h4>
-                      {productDiscount > 0 && <h4>NT$ {productData?.price}</h4>}
-                    </div>
-                    <div className={styles.InfoQtyGroup}>
-                      <h5>購買數量</h5>
-                      <button
-                        className={styles.QtyMinus}
-                        onClick={() => {
-                          setAmount((prevAmount) =>
-                            prevAmount - 1 <= 0 ? 1 : prevAmount - 1
-                          );
-                        }}
-                      >
-                        <img src="/product/font/minus.png" alt="" />
-                      </button>
-                      <input
-                        type="number"
-                        value={amount}
-                        min={1}
-                        max={999}
-                        onChange={(e) => {
-                          setAmount(() => {
-                            const value = Number(e.target.value);
-                            if (value >= 999) return 999;
-                            if (value <= 0) return 1;
-                            return value;
-                          });
-                        }}
-                      />
-                      <button
-                        className={styles.QtyPlus}
-                        onClick={() => {
-                          setAmount((prevAmount) =>
-                            prevAmount + 1 >= 999 ? 999 : prevAmount + 1
-                          );
-                        }}
-                      >
-                        <img src="/product/font/plus.png" alt="" />
-                      </button>
-                    </div>
-                    <div className={styles.InfoBtnGroup}>
-                      <button
-                        className={styles.BtnBuynow}
-                        onClick={() => {
-                          handleAddToCart();
-                          setTimeout(() => {
-                            router.push("/cart/CartList");
-                          }, 100);
-                        }}
-                      >
-                        <h5>立即購買</h5>
-                      </button>
-                      <button onClick={handleAddToCart}>
-                        <h5>加入購物車</h5>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            </div> */}
           <li layout style={{}} className={`${styles.ProductCard} col`}>
             <motion.div
               layout
@@ -518,7 +263,7 @@ function CardContent({ productID = "" }) {
                 <motion.figure
                   layout
                   style={{
-                    width: isOn && width >= 768 ? "300px" : isOn ? "250px" : "",
+                    width: isOn && width >= 768 ? "400px" : isOn ? "250px" : "",
                     position: isOn ? "relative" : "",
                   }}
                   className={styles.ProductCardImg}
@@ -542,8 +287,8 @@ function CardContent({ productID = "" }) {
                         {detailPic == "/product/img/default.webp" ? (
                           <div
                             style={{
-                              width: "300px",
-                              height: "300px",
+                              width: width >= 768 ? "400px" : "250px",
+                              height: width >= 768 ? "400px" : "250px",
                               display: "flex",
                               justifyContent: "center",
                               alignItems: "center",
@@ -565,13 +310,19 @@ function CardContent({ productID = "" }) {
                           />
                         )}
                       </motion.figure>
-                      <div className={styles.ProductInfoImgSmall}>
+                      <div
+                        className={styles.ProductInfoImgSmall}
+                        style={{ gap: width >= 768 ? "2px" : "1px" }}
+                      >
                         {img.sm &&
                           img.sm.map((v, i) => {
                             if (i < (width < 768 ? 4 : 5)) {
                               return (
                                 <figure
                                   key={`smPic${i}`}
+                                  style={{
+                                    maxWidth: width >= 768 ? "100px" : "67px",
+                                  }}
                                   className={`${styles.ProductInfoImgSmall}  ${
                                     i == picNow
                                       ? styles.ProductInfoImgSmallActive
@@ -622,7 +373,9 @@ function CardContent({ productID = "" }) {
                           handleAddFavorite(e);
                         }}
                       >
-                        <img
+                        <motion.img
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.8 }}
                           src={`/product/font/${
                             heartHover || heartState
                               ? "heart-fill-big"
@@ -641,8 +394,11 @@ function CardContent({ productID = "" }) {
                         onClick={(e) => {
                           handleAddToCart(e);
                         }}
+                        style={{ paddingRight: isOn ? "9px" : "" }}
                       >
-                        <img
+                        <motion.img
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.8 }}
                           src={`/product/font/${
                             cartHover ? "cart-add" : "cart"
                           }.png`}
@@ -674,7 +430,9 @@ function CardContent({ productID = "" }) {
                           e.stopPropagation();
                         }}
                       >
-                        <img
+                        <motion.img
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.8 }}
                           src={`/product/font/${
                             eyeHover ? "listOff2" : "list"
                           }.png`}
@@ -695,9 +453,10 @@ function CardContent({ productID = "" }) {
                   <motion.p
                     layout
                     style={{
-                      maxWidth: isOn ? "260px" : "",
+                      maxWidth: isOn ? "360px" : "",
                       height: isOn ? "auto" : "",
                       color: isOn ? "white" : "",
+                      fontSize: isOn ? "20px" : "",
                     }}
                     className={`${styles.ProductCardName} d-none d-xxl-flex`}
                   >
@@ -707,7 +466,7 @@ function CardContent({ productID = "" }) {
                     layout
                     style={{
                       maxWidth:
-                        isOn && width >= 768 ? "260px" : isOn ? "210px" : "",
+                        isOn && width >= 768 ? "360px" : isOn ? "210px" : "",
                       height: isOn ? "auto" : "",
                       color: isOn ? "white" : "",
                     }}
@@ -752,7 +511,9 @@ function CardContent({ productID = "" }) {
                       handleAddFavorite(e);
                     }}
                   >
-                    <img
+                    <motion.img
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.8 }}
                       src={`/product/font/${
                         heartHover || heartState
                           ? "heart-fill-big"
@@ -762,6 +523,8 @@ function CardContent({ productID = "" }) {
                     />
                   </button>
                   <button
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.8 }}
                     type="button"
                     className={`${styles.HoverIcon} ${
                       cartRate > 0 ? styles.CartBtn : styles.CartBtnOff
@@ -771,8 +534,11 @@ function CardContent({ productID = "" }) {
                     onClick={(e) => {
                       handleAddToCart(e);
                     }}
+                    style={{ paddingRight: "9px" }}
                   >
-                    <img
+                    <motion.img
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.8 }}
                       src={`/product/font/${
                         cartHover ? "cart-add" : "cart"
                       }.png`}
@@ -804,7 +570,9 @@ function CardContent({ productID = "" }) {
                       e.stopPropagation();
                     }}
                   >
-                    <img
+                    <motion.img
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.8 }}
                       src={`/product/font/${
                         eyeHover ? "listOff2" : "list"
                       }.png`}

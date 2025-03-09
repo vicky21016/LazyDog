@@ -23,10 +23,10 @@ export default function Ratecard({
   mutate = () => {},
 }) {
   const router = useRouter();
-  const rateNum = rate.toString();
-  const years = date.slice(0, 4);
-  const months = date.slice(5, 7);
-  const days = date.slice(8, 10);
+  const rateNum = rate ? rate.toString() : "";
+  const years = date ? date.slice(0, 4) : "";
+  const months = date ? date.slice(5, 7) : "";
+  const days = date ? date.slice(8, 10) : "";
   const [hover, setHover] = useState(false);
   const [good, setGood] = useState(false);
   const [rateUpdate, setRateUpdate] = useState(false);

@@ -108,6 +108,7 @@ export default function Aside({
   const [clearSearch, setClearSearch] = useState("");
   const [isChecked, setIsChecked] = useState(true);
   // console.log(isChecked);
+
   return (
     <>
       {isLoading ? (

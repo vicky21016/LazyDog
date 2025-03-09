@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./rate.module.css";
 
+import * as motion from "motion/react-client";
+
 export default function RatecardStarbar({
   rate = "",
   rateUpdate = false,
@@ -46,7 +48,9 @@ export default function RatecardStarbar({
       {rate && rateUpdate && (
         <div className={styles.StarGroup}>
           {[...Array(5)].map((v, i) => (
-            <img
+            <motion.img
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.8 }}
               onMouseEnter={() => setHover(i + 1)}
               onMouseLeave={() => setHover(newRate)}
               onClick={() => setNewRate(i + 1)}

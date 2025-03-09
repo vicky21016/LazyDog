@@ -13,14 +13,14 @@ export function useListFetch() {
   const [sortName, setSortName] = useState("條件排序");
   const [pageNow, setPageNow] = useState(1);
   const { width, height } = useScreenSize();
-
+  // 改變網址函式
   const changeUrl = (newUrl) => {
     setNewUrl(newUrl);
     if (pageNow !== 1) {
       setPageNow(1);
     }
   };
-
+  // 依條件觸發改變網址
   useEffect(() => {
     changeUrl(
       `http://localhost:5000/api/products?&min=${minPrice}&max=${maxPrice}${
@@ -39,6 +39,7 @@ export function useListFetch() {
     );
   }, [minPrice, maxPrice]);
 
+  // 宣告SWR fetch方式
   const fetcher = async (newUrl) => {
     try {
       const res = await fetch(newUrl);
@@ -49,10 +50,12 @@ export function useListFetch() {
       throw err;
     }
   };
+  // 使用SWR獲得資料
   const { data, isLoading, error, mutate } = useSWR(newUrl, fetcher);
   const products = data?.data;
   const emptyMessage = data?.message;
 
+  // 設定分頁
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
@@ -113,14 +116,14 @@ export function useCategoryFetch() {
   const [maxPrice, setMaxPrice] = useState(5000);
   const [pageNow, setPageNow] = useState(1);
   const { width, height } = useScreenSize();
-
+  // 改變網址函式
   const changeUrl = (newUrl) => {
     setNewUrl(newUrl);
     if (pageNow !== 1) {
       setPageNow(1);
     }
   };
-
+  // 依條件觸發改變網址
   useEffect(() => {
     if (
       keyword?.主分類.length == 0 &&
@@ -174,7 +177,7 @@ export function useCategoryFetch() {
       );
     }
   }, [keyword, minPrice, maxPrice]);
-
+  // 宣告SWR fetch方式
   const fetcher = async (newUrl) => {
     try {
       const res = await fetch(newUrl);
@@ -185,10 +188,11 @@ export function useCategoryFetch() {
       throw err;
     }
   };
+  // 使用SWR獲得資料
   const { data, isLoading, error, mutate } = useSWR(newUrl, fetcher);
   const products = data?.data;
   const emptyMessage = data?.message;
-
+  // 設定分頁
   let pages = "";
   if (products) pages = Math.ceil(products.length / 24);
   const product = products?.slice((pageNow - 1) * 24, pageNow * 24);
@@ -232,12 +236,13 @@ export function useDetailFetch(PID) {
   const [rate, setRate] = useState(3);
   const [amount, setAmount] = useState(1);
   const [detailPic, setDetailPic] = useState("/product/img/default.webp");
-
+  // 宣告SWR url來源
   const url = product ? `http://localhost:5000/api/products/${product}` : null;
   const url2 =
     user?.id > 0
       ? `http://localhost:5000/api/products/order?userID=${user.id}`
       : `http://localhost:5000/api/products/order`;
+  // 宣告SWR fetch方式
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
@@ -248,6 +253,7 @@ export function useDetailFetch(PID) {
       throw err;
     }
   };
+  // 使用SWR獲得商品資料
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
   const {
     data: orderData,
@@ -255,10 +261,10 @@ export function useDetailFetch(PID) {
     error: orderError,
     mutate: orderMutate,
   } = useSWR(url2, fetcher);
-
   const productData = data?.data[0];
   const productID = productData?.productID;
   const productName = productData?.name;
+  // 撈出圖片資料
   const img = {
     list: [],
     img: [],
@@ -272,7 +278,7 @@ export function useDetailFetch(PID) {
     if (productData?.infoImg) img["info"] = (productData?.infoImg).split(",");
   }
   const productDiscount = 0;
-
+  // 撈出評論資料
   const rateData = {
     userID: [],
     user: [],
@@ -304,25 +310,15 @@ export function useDetailFetch(PID) {
     [int, dec] = rateAvg.toString().split(".");
     if (!dec) dec = 0;
   }
+  // 使用SWR獲得歷史訂單資料
   const orders = orderData?.data;
   const userName = orderData?.userName;
   const userImg = orderData?.userImg;
   const [history, setHistory] = useState(false);
-
   useEffect(() => {
     if (orderData?.history.includes(productID)) setHistory(true);
-    // orderMutate();
   }, [orderData]);
-
-  // const hotSale = [];
-  // const sameBuy = [];
-  // const sameCategory = data?.data[0].productID.slice(0, 6);
-  // orders?.map((v, i) => {
-  //   if (i < 10) hotSale.push(v.productID);
-  //   if (sameBuy.length < 10 && v.productID.includes(sameCategory))
-  //     sameBuy.push(v.productID);
-  // });
-
+  // 撈出熱銷商品資料
   const hotSale = useMemo(() => {
     const result = [];
     orders?.forEach((v, i) => {
@@ -330,7 +326,7 @@ export function useDetailFetch(PID) {
     });
     return result;
   }, [orders]);
-
+  // 撈出同類商品熱銷資料
   const sameBuy = useMemo(() => {
     const result = [];
     const sameCategory = data?.data[0]?.productID?.slice(0, 6);
@@ -341,7 +337,9 @@ export function useDetailFetch(PID) {
     });
     return result;
   }, [orders, data]);
-
+  // 設定卡片數量
+  const CardInt = width >= 1200 ? 5 : width >= 992 ? 4 : width >= 768 ? 3 : 2;
+  // 設定預設圖片與圖片錯誤處理
   useEffect(() => {
     if (productName) {
       const newImage = new Image();
@@ -351,9 +349,6 @@ export function useDetailFetch(PID) {
       newImage.onerror = () => setDetailPic("/product/img/default.webp");
     }
   }, [productName]);
-
-  const CardInt = width >= 1200 ? 5 : width >= 992 ? 4 : width >= 768 ? 3 : 2;
-
   return {
     userName,
     userImg,
@@ -392,10 +387,11 @@ export function useCardFetch({ productID = "" }) {
   const router = useRouter();
   const loginRoute = "/login";
   const { width, height } = useScreenSize();
-
+  // 宣告SWR url來源
   const url = productID
     ? `http://localhost:5000/api/products/${productID}`
     : null;
+  // 宣告SWR fetch方式
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
@@ -406,8 +402,8 @@ export function useCardFetch({ productID = "" }) {
       throw err;
     }
   };
+  // 使用SWR獲得商品資料
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
-
   const products = data?.data[0];
   const productName = products?.name;
 
@@ -416,15 +412,8 @@ export function useCardFetch({ productID = "" }) {
   const [eyeHover, setEyeHover] = useState(false);
   const [cartRate, setCartRate] = useState(0);
 
+  // 設定卡片預設圖片與圖片錯誤處理
   const [cardPic, setCardPic] = useState("/product/img/default.webp");
-  const cardRef = useRef(null);
-  const simulateClick = (e) => {
-    if (e.target.dataset.clickable) {
-      if (cardRef.current) {
-        cardRef.current.click();
-      }
-    }
-  };
   useEffect(() => {
     if (productName) {
       const img = new Image();
@@ -435,6 +424,15 @@ export function useCardFetch({ productID = "" }) {
         setCardPic(`/product/img/${encodedImageName}_(1).webp`);
     }
   }, [productName]);
+  // 模擬點擊
+  const cardRef = useRef(null);
+  const simulateClick = (e) => {
+    if (e.target.dataset.clickable) {
+      if (cardRef.current) {
+        cardRef.current.click();
+      }
+    }
+  };
 
   return {
     width,
@@ -473,7 +471,9 @@ export function useAsideFetch({
 }) {
   const pathname = usePathname();
   const query = useSearchParams();
+  // 宣告SWR url來源
   const url = "http://localhost:5000/api/products/categoryName";
+  // 宣告SWR fetch方式
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
@@ -484,6 +484,7 @@ export function useAsideFetch({
       throw err;
     }
   };
+  // 使用SWR獲得分類資料
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
   const categorys = data?.data;
   const categoryName = [];
@@ -536,10 +537,11 @@ export function useReviewFetch({ productID = "", userID = "" }) {
   const router = useRouter();
   const loginRoute = "/login";
   const { width, height } = useScreenSize();
-
+  // 宣告SWR url來源
   const url = userID
     ? `http://localhost:5000/api/products/reviews?userID=${userID}`
     : null;
+  // 宣告SWR fetch方式
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
@@ -550,6 +552,7 @@ export function useReviewFetch({ productID = "", userID = "" }) {
       throw err;
     }
   };
+  // 使用SWR獲得評論資料
   const {
     data: reviewData,
     isLoading: reviewLoading,
@@ -559,10 +562,10 @@ export function useReviewFetch({ productID = "", userID = "" }) {
   const reviews = reviewData?.data?.find((v) => v.productID == productID);
   const userReviews = reviewData?.data;
 
+  // 設定分頁
   const [pageNow, setPageNow] = useState(1);
   let pages = "";
   if (userReviews) pages = Math.ceil(userReviews.length / 10);
-  // console.log(userReviews);
   const userReview = userReviews?.slice((pageNow - 1) * 10, pageNow * 10);
   return {
     width,

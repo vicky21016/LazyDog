@@ -10,6 +10,8 @@ import Link from "next/link";
 
 import Swal from "sweetalert2";
 import { ClipLoader, MoonLoader } from "react-spinners";
+import { AnimatePresence } from "motion/react";
+import * as motion from "motion/react-client";
 
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
@@ -155,6 +157,59 @@ function DetailContent() {
       });
     }
   };
+  const handleAddFavorite = async () => {
+    // 檢查用戶是否登入
+    if (!user) {
+      Swal.fire({
+        icon: "info",
+        title: "請先登入",
+        text: "您需要登入才能點擊收藏！",
+        showConfirmButton: true,
+        confirmButtonText: "前往登入",
+        confirmButtonColor: "#66c5bd", // 設定按鈕顏色
+        showCancelButton: true, // 顯示取消按鈕
+        cancelButtonText: "繼續逛街", // 設定取消按鈕文字
+        cancelButtonColor: "#bcbcbc", // 設定取消按鈕顏色
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push(loginRoute); // 跳轉到登入頁面
+        }
+      });
+      return;
+    }
+    try {
+      const newState = !heartState;
+      setHeartState(newState);
+      setFavorite((favorite) =>
+        newState
+          ? [...favorite, productID]
+          : favorite.filter((e) => e !== productID)
+      );
+      if (!heartState) {
+        Swal.fire({
+          icon: "success",
+          title: "加入收藏成功",
+          showConfirmButton: false,
+          timer: 1000, // 1.5 秒後自動關閉
+        });
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: "取消收藏成功",
+          showConfirmButton: false,
+          timer: 1000, // 1.5 秒後自動關閉
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "加入收藏失敗",
+        text: "請稍後重試！",
+      });
+    }
+  };
+
+  const [isVisible, setIsVisible] = useState(false);
 
   if (error) {
     return (
@@ -163,6 +218,7 @@ function DetailContent() {
       </div>
     );
   }
+
   return (
     <div className={`${styles.Container} container`}>
       {isLoading ? (
@@ -214,7 +270,12 @@ function DetailContent() {
                     />
                   </div>
                 ) : (
-                  <img
+                  <motion.img
+                    layout
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0 }}
+                    transition={{ all: 0.1 }}
                     src={detailPic}
                     alt=""
                     onError={() => setDetailPic("/product/img/default.webp")}
@@ -291,26 +352,15 @@ function DetailContent() {
             <div className={`${styles.ProductInfoDetail}`}>
               <div className={styles.ProductInfoContent}>
                 <div className={styles.InfoFavoriteGroup}>
-                  <button
+                  <motion.button
                     type="button"
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.8 }}
                     className={styles.FavoriteBtn}
                     onMouseEnter={() => setHeartHover(true)}
                     onMouseLeave={() => setHeartHover(false)}
                     onClick={() => {
-                      if (!user) {
-                        alert("請先登入");
-                        setTimeout(() => {
-                          router.push(loginRoute);
-                        }, 100);
-                      } else {
-                        const newState = !heartState;
-                        setHeartState(newState);
-                        setFavorite((favorite) =>
-                          newState
-                            ? [...favorite, product]
-                            : favorite.filter((e) => e !== product)
-                        );
-                      }
+                      handleAddFavorite();
                     }}
                   >
                     <img
@@ -321,12 +371,12 @@ function DetailContent() {
                       }.png`}
                       alt=""
                     />
-                  </button>
+                  </motion.button>
                   <h6>{heartState ? "已加入收藏" : "加入收藏"}</h6>
                 </div>
                 <h3 className={styles.InfoProductName}>{productData?.name}</h3>
                 <div className={styles.InfoRateGroup}>
-                  {int && (
+                  {int !== "0" && dec !== "0" ? (
                     <>
                       {int > 0 &&
                         int <= 5 &&
@@ -358,6 +408,8 @@ function DetailContent() {
                           />
                         ))}
                     </>
+                  ) : (
+                    <h5 style={{ color: "#f1d5b6" }}>商品目前尚無評價</h5>
                   )}
                 </div>
                 <div className={styles.InfoPriceGroup}>
@@ -402,7 +454,6 @@ function DetailContent() {
                     <img src="/product/font/plus.png" alt="" />
                   </button>
                 </div>
-                {/* <p>庫存數量 : {productData?.stock}</p> */}
                 <div className={styles.InfoBtnGroup}>
                   <button
                     className={styles.BtnBuynow}
@@ -605,22 +656,27 @@ function DetailContent() {
               >
                 <div className={`accordion-body ${styles.AccordionBody}`}>
                   <div className={`${styles.ScoreBarAndSetReviews} row g-3`}>
-                    <div className={`${styles.ScoreBar} col-12 col-lg-6`}>
-                      <div className={styles.Score}>
-                        <h5>商品評價</h5>
-                        <h2>{rateAvg}</h2>
-                        <StarGroup rate={rateAvg} />
+                    {rateData.date[0] !== null ? (
+                      <div className={`${styles.ScoreBar} col-12 col-lg-6`}>
+                        <div className={styles.Score}>
+                          <h5>商品評價</h5>
+                          <h2>{rateAvg}</h2>
+                          <StarGroup rate={rateAvg} />
+                        </div>
+                        <div className={styles.StarBarGroup}>
+                          {[...Array(5)].map((v, i) => (
+                            <StarBar
+                              key={`starBar${i}`}
+                              index={5 - i}
+                              rate={rateData["rate"]}
+                            />
+                          ))}
+                        </div>
                       </div>
-                      <div className={styles.StarBarGroup}>
-                        {[...Array(5)].map((v, i) => (
-                          <StarBar
-                            key={`starBar${i}`}
-                            index={5 - i}
-                            rate={rateData["rate"]}
-                          />
-                        ))}
-                      </div>
-                    </div>
+                    ) : (
+                      <h6 style={{ textAlign: "start" }}>商品目前尚無評價</h6>
+                    )}
+
                     {user?.id > 0 && reviews && (
                       <div className={`${styles.SetReviews} col-12 col-lg-6`}>
                         <RateCard
@@ -651,59 +707,75 @@ function DetailContent() {
                       </div>
                     )}
                   </div>
-                  <div className={`${styles.RateCardGroup} row g-3`}>
-                    {rateData.rate &&
-                      rateData.rate.map((v, i) => {
-                        if (i < rate && rateData.user[i] !== reviews?.user) {
-                          return (
-                            <div
-                              key={`rateCard${i}`}
-                              className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4"
-                            >
-                              <RateCard
-                                id={rateData.userID[i]}
-                                productID={productID}
-                                userName={rateData.user[i]}
-                                img={rateData.img[i]}
-                                rate={v}
-                                comment={rateData.comment[i]}
-                                goodNum={rateData.good[i]}
-                                date={rateData.date[i]}
-                                mutate={mutate}
-                              />
-                            </div>
-                          );
-                        }
-                      })}
-                  </div>
-                  {rateData.rate &&
-                    rateData.rate.length - (reviews ? 1 : 0) > rate && (
-                      <button
-                        type="button"
-                        className={styles.RateMore}
-                        onClick={() => {
-                          setRate(
-                            rate + (width >= 1200 ? 3 : width >= 768 ? 2 : 1)
-                          );
-                        }}
-                      >
-                        顯示更多評價
-                      </button>
-                    )}
-                  {rateData.rate &&
-                    rateData.rate.length >
-                      (width >= 1200 ? 3 : width >= 768 ? 2 : 1) &&
-                    rateData.rate.length <= rate && (
-                      <button
-                        type="button"
-                        className={styles.RateMore}
-                        onClick={() => {
-                          setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
-                        }}
-                      >
-                        隱藏額外評價
-                      </button>
-                    )}
+                  {rateData.date[0] !== null && (
+                    <>
+                      <div className={`${styles.RateCardGroup} row g-3`}>
+                        <AnimatePresence initial={false}>
+                          {rateData.rate &&
+                            rateData.rate.map((v, i) => {
+                              if (
+                                i < rate &&
+                                rateData.user[i] !== reviews?.user
+                              ) {
+                                return (
+                                  <motion.div
+                                    key={`rateCard${i}`}
+                                    className="col-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4"
+                                    initial={{ opacity: 0, scale: 0 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0 }}
+                                  >
+                                    <RateCard
+                                      id={rateData.userID[i]}
+                                      productID={productID}
+                                      userName={rateData.user[i]}
+                                      img={rateData.img[i]}
+                                      rate={v}
+                                      comment={rateData.comment[i]}
+                                      goodNum={rateData.good[i]}
+                                      date={rateData.date[i]}
+                                      mutate={mutate}
+                                    />
+                                  </motion.div>
+                                );
+                              }
+                            })}
+                        </AnimatePresence>
+                      </div>
+                      {rateData.rate &&
+                        rateData.rate.length - (reviews ? 1 : 0) > rate && (
+                          <motion.button
+                            type="button"
+                            className={styles.RateMore}
+                            onClick={() => {
+                              setRate(
+                                rate +
+                                  (width >= 1200 ? 3 : width >= 768 ? 2 : 1)
+                              );
+                              setIsVisible(true);
+                            }}
+                            whileTap={{ y: 1 }}
+                          >
+                            顯示更多評價
+                          </motion.button>
+                        )}
+                      {rateData.rate &&
+                        rateData.rate.length >
+                          (width >= 1200 ? 3 : width >= 768 ? 2 : 1) &&
+                        rateData.rate.length <= rate && (
+                          <button
+                            type="button"
+                            className={styles.RateMore}
+                            onClick={() => {
+                              setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
+                              setIsVisible(false);
+                            }}
+                          >
+                            隱藏額外評價
+                          </button>
+                        )}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -725,12 +797,21 @@ function DetailContent() {
                   sameBuy?.map((v, i) => {
                     if (i < CardInt + also && i >= also) {
                       return (
-                        <Card
+                        <motion.div
                           key={`Card${i}`}
-                          productID={v}
-                          favorite={favorite}
-                          setFavorite={setFavorite}
-                        />
+                          className="col"
+                          layout
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0 }}
+                          transition={{ all: 0.1 }}
+                        >
+                          <Card
+                            productID={v}
+                            favorite={favorite}
+                            setFavorite={setFavorite}
+                          />
+                        </motion.div>
                       );
                     }
                   })}
@@ -765,12 +846,21 @@ function DetailContent() {
                   hotSale?.map((v, i) => {
                     if (i < CardInt + hot && i >= hot) {
                       return (
-                        <Card
+                        <motion.div
                           key={`Card${i}`}
-                          productID={v}
-                          favorite={favorite}
-                          setFavorite={setFavorite}
-                        />
+                          className="col"
+                          layout
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0 }}
+                          transition={{ all: 0.1 }}
+                        >
+                          <Card
+                            productID={v}
+                            favorite={favorite}
+                            setFavorite={setFavorite}
+                          />
+                        </motion.div>
                       );
                     }
                   })}

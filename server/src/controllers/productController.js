@@ -711,7 +711,6 @@ export const updateReviews = async (req, res) => {
         }
       }
     }
-    // console.log(updateFields, value);
     const product = await updateReviewsInfo(updateFields, value);
     if (product.affectedRows == 0) {
       res.status(200).json({
