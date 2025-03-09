@@ -245,7 +245,7 @@ export default function Header(props) {
                     setTeacherOpen(false);
                   }}
                 >
-                  <Link href="" className={styles["dropbtn"]}>
+                  <Link href="/product/list" className={styles["dropbtn"]}>
                     寵物用品
                   </Link>
                 </div>
@@ -359,7 +359,7 @@ export default function Header(props) {
                     setTeacherOpen(false);
                   }}
                 >
-                  <Link href="">會員中心</Link>
+                  <Link href="/user">會員中心</Link>
                 </div>
                 <div
                   className={`${
@@ -374,7 +374,7 @@ export default function Header(props) {
                   >
                     個人資料
                   </Link>
-                  <Link href="/favorite" className={styles["dropdown-link"]}>
+                  <Link href="/user/userFavorite" className={styles["dropdown-link"]}>
                     我的收藏
                   </Link>
                   <div

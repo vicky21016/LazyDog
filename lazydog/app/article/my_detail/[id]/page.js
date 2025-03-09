@@ -12,6 +12,7 @@ import styles from "./page.module.css";
 import useArticles from "@/hooks/useArticle";
 import Header from "../../../components/layout/header";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
+import style from '../../../../styles/modules/operatorCamera.module.css';
 
 export default function ArticleDetail() {
   const { id } = useParams(); // 取得網址中的文章 ID
@@ -35,6 +36,7 @@ export default function ArticleDetail() {
   return (
     <>
       <Header />
+       <div className={`${style.container}`}>
       <div className="container" style={{ marginTop: '70px' }}>
       <Breadcrumb
               links={[
@@ -89,6 +91,7 @@ export default function ArticleDetail() {
               ))}
           </div>
         </div> */}
+      </div>
       </div>
     </>
   );

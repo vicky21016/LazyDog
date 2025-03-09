@@ -13,6 +13,7 @@ import styles from "./page.module.css";
 import useArticles from "@/hooks/useArticle";
 import Header from "../../../components/layout/header";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
+import style from '../../../../styles/modules/operatorCamera.module.css';
 
 export default function ArticleDetail() {
   const { id } = useParams(); // 取得網址中的文章 ID
@@ -37,6 +38,7 @@ export default function ArticleDetail() {
   return (
     <>
       <Header />
+       <div className={`${style.container}`}>
       <div className="container" style={{ marginTop: '100px' }}>
       <Breadcrumb
               links={[
@@ -50,7 +52,7 @@ export default function ArticleDetail() {
         <Content article={article} /> {/* 傳遞文章資料給 Content 組件 */}
 
         {/* 留言區 */}
-        <div className="chat" style={{ background: "#FFF6E8", padding: "15px", marginTop: "150px", borderRadius:'20px',border:'none '}}>
+        <div className="chat" style={{ background: "#FDFAF5", padding: "15px", marginTop: "80px",marginBottom: "80px", borderRadius:'20px',border:'none ', boxShadow: "0px 10px 14px rgba(0, 0, 0, 0.25)"}}>
           <h3 className="mt-3 ms-3">留言</h3>
           <ul className="list-unstyled">
             {comments.length === 0 ? (
@@ -99,7 +101,7 @@ export default function ArticleDetail() {
           </div>
         </div>
       </div>
-
+      </div>
     </>
   );
 }
