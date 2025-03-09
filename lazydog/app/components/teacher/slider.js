@@ -70,7 +70,7 @@ function CourseSection() {
                     <div className="row mt-5">
                       <img
                         className={`col-3  ${styles["person"]}`}
-                        src="/teacher-img/DSC_9689.jpg"
+                        src="/teacher-img/c4.jpg"
                         alt=""
                       />
                       <p className="col-9 my-4">
@@ -107,7 +107,7 @@ function CourseSection() {
                     <div className="row mt-5">
                       <img
                         className={`col-3  ${styles["person"]}`}
-                        src="/teacher-img/train.png"
+                        src="/teacher-img/Pty-Insta-a-Img-4-1.png"
                         alt=""
                       />
                       <p className="col-9 my-4">
@@ -144,7 +144,7 @@ function CourseSection() {
                     <div className="row mt-5">
                       <img
                         className={`col-3  ${styles["person"]}`}
-                        src="/teacher-img/care.png"
+                        src="/teacher-img/c1.jpg"
                         alt=""
                       />
                       <p className="col-9 my-4">
@@ -179,7 +179,7 @@ function CourseSection() {
                     <div className="row mt-5">
                       <img
                         className={`col-3  ${styles["person"]}`}
-                        src="/teacher-img/busin.png"
+                        src="/teacher-img/c2.jpg"
                         alt=""
                       />
                       <p className="col-9 my-4">

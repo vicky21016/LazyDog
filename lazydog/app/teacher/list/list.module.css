@@ -29,13 +29,13 @@
     } */
   /* -------------------------- */
   /* -------麵包屑與標題-------- */
-  .breadcrumbsTitle {
+  /* .BreadcrumbsTitle {
     width: 100%;
     display: flex;
     align-items: center;
     padding: 30px 0px 30px 0px;
     gap: 60px;
-  }
+  } */
 
   /* -------------------------- */
   /* ----------麵包屑---------- */
@@ -193,14 +193,66 @@
   border: none;
   cursor: pointer;
 } */
+.BreadcrumbsTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 30px 0px 30px 0px;
+}
 
+  .sbar {
+      background-color: #f5842b;
+      width: 50px;
+      height: 4px;
+      border-radius: 5px;
+    }
+    
 .imgFluid{
   padding: 30px;
 }
 .right{
-  display: none;
+  /* display: none;
   border-radius: 50%;
-  border: #F5842B;
+  border: #F5842B; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ff9538;
+  background: #fff;
+  width: 35px;
+  height: 35px;
+  border: 1.3px solid #ff9538;
+  border-radius: 11px;
+  transition: 0.4s;
+  padding: 0;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  transition: width 0.4s ease, background-color 0.4s ease; /* 動畫過渡效果 */
+
+  &:active {
+    background-color: #fc861f;
+    color: #fff;
+  }
+  &:hover {
+    /* width: 120px; */
+    /* translate: 0 -5px; */
+    background-color: #ff9538;
+    color: #fff;
+    border: none;
+  }
+  /* 使用 ::after 顯示文字 */
+  &:hover::after {
+    content: "Filter"; /* 顯示的文字 */
+    position: absolute;
+    right: 50px; /* 讓文字顯示在按鈕右側 */
+    top: 50%;
+    transform: translateY(-50%); /* 使文字垂直置中 */
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: #fff;
+    background-color: #ff9538; /* 文字背景色與按鈕一致 */
+    padding: 8px 16px;
+    border-radius: 25px; /* 使文字背景有圓角 */
+  }
 }
 /* 手機篩選按鈕 (點擊後打開篩選) */
 .filterButton {
@@ -225,6 +277,10 @@
   border-radius: 50%;
   border: #F5842B;
 }
+  .BreadcrumbsTitle{
+    display: inline-block ;
+    gap: 0;
+  }
   }
 
   .collapseAside {
@@ -276,16 +332,3 @@
   }
 }
 
-.BreadcrumbsTitle {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  padding: 30px 0px 30px 0px;
-}
-
-  .sbar {
-      background-color: #f5842b;
-      width: 50px;
-      height: 4px;
-      border-radius: 5px;
-    }

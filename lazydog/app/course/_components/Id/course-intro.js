@@ -31,8 +31,8 @@ export default function CourseIntro({ course, session, place, params }) {
   const displayText = expanded
     ? c?.description
     : c?.description?.length > maxLength
-    ? c?.description.substring(0, maxLength) + "..."
-    : c?.description;
+      ? c?.description.substring(0, maxLength) + "..."
+      : c?.description;
   const [isFavorite, setIsFavorite] = useState(false);
   const uniqueDates = [...new Set(session.map((ss) => ss.class_dates))]; // 過濾出唯一的 class_dates 作為日期選單
   // const defaultTeachImg = "/course/img/user.jpg"
@@ -121,6 +121,7 @@ export default function CourseIntro({ course, session, place, params }) {
       });
       return;
     }
+
 
     try {
       if (isFavorite) {
@@ -221,8 +222,8 @@ export default function CourseIntro({ course, session, place, params }) {
         showConfirmButton: false,
       });
     } else {
-      console.log("加入購物車的數據:", { s });
-      onAddCourse(s);
+      console.log("加入購物車的數據:", { s, c });
+      onAddCourse(c,s);
       Swal.fire({
         icon: "success",
         title: "已加入購物車",
@@ -511,7 +512,7 @@ export default function CourseIntro({ course, session, place, params }) {
                       <div className="col-12 col-md-3">{p.region}</div>
                       <div
                         className="col-12 col-md-9 pb-4 "
-                        // onClick={() => handlePlaceClick(p, index + 3)}
+                      // onClick={() => handlePlaceClick(p, index + 3)}
                       >
                         {p.address}
                         <p className={`pt-2 ${styles.zoom}`}>

@@ -41,8 +41,7 @@ export default function MyArticle() {
             >
               <Link
                 href="/article/add_article"
-                className={styles.postfont}
-                style={{}}
+                className={styles.postLink}
               >
                 <i className="bi bi-check-circle"></i> 發布文章
               </Link>

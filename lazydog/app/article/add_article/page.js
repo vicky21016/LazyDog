@@ -93,6 +93,7 @@ export default function AddArticlePage() {
   return (
     <>
       <Header />
+      <div className={`${style.container}`}>
       <div className='lumi-all-wrapper'>
       <Breadcrumb
               links={[
@@ -118,7 +119,7 @@ export default function AddArticlePage() {
                 boxShadow: "0px 10px 14px rgba(0, 0, 0, 0.25)"
               }}
             >
-              <h4>新增文章</h4>
+              <h4 className='mt-2 mb-4'>新增文章</h4>
 
               {/* 下拉選單 - 類別選擇 */}
               <select
@@ -189,6 +190,7 @@ export default function AddArticlePage() {
             </form>
           </div>
         </div>
+      </div>
       </div>
     </>
   );

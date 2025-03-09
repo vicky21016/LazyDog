@@ -41,7 +41,7 @@ export default function MyCard2({ id, title, cover_image, created_at }) {
                         <div className="card-body">
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Link
-                                    className={`${styles.link}`}
+                                    className={`${styles.link2}`}
                                     href={{ pathname: `/article/my_detail/${id}`, query: { list: "true" } }}
                                     style={{ marginRight: '3px' }}
                                 >
@@ -54,13 +54,13 @@ export default function MyCard2({ id, title, cover_image, created_at }) {
                                     <Dropdown.Menu className={`${styles.customDropdownMenu}`} style={{ width: '25px',backgroundColor:'#FFF6E8' }}>
                                         <Dropdown.Item className={`${styles.item}`} href="#">
                                             <Link
-                                                className={`${styles.link2}`}
+                                                className={`${styles.link3}`}
                                                 href={{ pathname: `/article/my_detail/${id}`, query: { list: "true" } }}
                                             >檢視
                                             </Link>
                                         </Dropdown.Item>
                                         <Dropdown.Item className={`${styles.item}`} href="#"><Link
-                                            className={`${styles.link2}`}
+                                            className={`${styles.link3}`}
                                             href={{ pathname: `/article/update/${id}`, query: { list: "true" } }}
                                         >編輯
                                         </Link>
