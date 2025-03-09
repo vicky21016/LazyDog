@@ -11,7 +11,7 @@ const ImageUpload = memo(({ imageUrl, imagePreview, handleImageChange, error }) 
       />
       {imageUrl && !imagePreview && (
         <div>
-          <h4>當前圖片:</h4>
+          <h5 className='my-4'>當前圖片:</h5>
           <img
             src={imageUrl}
             alt="當前封面圖"

@@ -70,11 +70,17 @@ export default function App() {
       <div className="lumi-all-wrapper">
         <div className={`${styles.collapseAside} d-lg-none`}>
           <div className={`${styles.collapseAsideContent}`}>
-          <img
-              src={`/product/font/right(orange).png`}
-              onClick={() => setFilterOpen(!filterOpen)}
-              className={`${styles.collapseAsideBtn} btn`}
-            />
+          <button
+            className={`btn d-md-none ${styles.right}`}
+            onClick={() => setFilterOpen(!filterOpen)}
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#filterOffcanvas"
+            aria-expanded="false"
+            aria-controls="filterOffcanvas"
+          >
+           <i className="bi bi-chevron-right"></i>
+          </button>
           </div>
         </div>
         <div className={styles.container}>
@@ -150,19 +156,22 @@ export default function App() {
 
               {/* 手機版篩選選單 (滑入效果) */}
               <div
-                className={`${styles.mobileFilter} ${
-                  filterOpen ? styles.showFilter : ""
-                }`}
-              >
-                {/* <button
-                  className={styles.closeButton}
-                  onClick={() => setFilterOpen(false)}
-                >
-                  <img
-                    src={`/product/font/right(orange).png`}
-                    onClick={() => setFilterOpen(!filterOpen)}
-                  />
-                </button> */}
+        className="offcanvas offcanvas-start"
+        tabIndex="-1"
+        id="filterOffcanvas"
+        aria-labelledby="filterOffcanvasLabel"
+      > 
+               <div className="offcanvas-header">
+      {/* <h5 className="offcanvas-title" id="filterOffcanvasLabel">
+          篩選
+        </h5> */}
+      <button
+        type="button"
+        className="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
                 <Filter filterChange={filter} />
               </div>
 
