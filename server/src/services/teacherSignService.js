@@ -73,7 +73,7 @@ export const getCoursesByTeacher = async (teacherId) => {
   try {
     const sql = `
       SELECT 
-        cs.id AS session_id, cs.course_id, cs.area_id, cs.teacher_id, cs.class_dates, 
+        cs.id AS session_id, cs.course_id, cs.area_id, cs.teacher_id, cs.class_dates, cs.created_at,cs.update_at, cs.start_date,
         c.name AS course_name, c.description AS course_description, 
         course_area.region AS region, 
         users.name AS teacher_name,
