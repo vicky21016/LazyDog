@@ -203,7 +203,7 @@ export default function HotelDetailPage({ params }) {
     router.push(`/hotel-coupon/fonthotelHome?${paramsString}`);
   };
 
-  // 處理收藏邏輯
+  
   // 獲取收藏狀態
   useEffect(() => {
     if (id && user?.id && token) {
