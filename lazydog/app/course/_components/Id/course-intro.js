@@ -31,8 +31,8 @@ export default function CourseIntro({ course, session, place, params }) {
   const displayText = expanded
     ? c?.description
     : c?.description?.length > maxLength
-    ? c?.description.substring(0, maxLength) + "..."
-    : c?.description;
+      ? c?.description.substring(0, maxLength) + "..."
+      : c?.description;
   const [isFavorite, setIsFavorite] = useState(false);
   const uniqueDates = [...new Set(session.map((ss) => ss.class_dates))]; // 過濾出唯一的 class_dates 作為日期選單
   // const defaultTeachImg = "/course/img/user.jpg"
@@ -99,10 +99,10 @@ export default function CourseIntro({ course, session, place, params }) {
       sessionStorage.getItem("loginWithToken") ||
       JSON.parse(localStorage.getItem("user"))?.token ||
       "";
-  
+
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const userId = storedUser?.id;
-  
+
     if (!storedToken || storedToken === "null" || storedToken === "undefined") {
       Swal.fire({
         icon: "warning",
@@ -113,7 +113,7 @@ export default function CourseIntro({ course, session, place, params }) {
       });
       return;
     }
-  
+
     if (!userId) {
       Swal.fire({
         icon: "error",
@@ -122,8 +122,8 @@ export default function CourseIntro({ course, session, place, params }) {
       });
       return;
     }
-  
-  
+
+
     try {
       if (isFavorite) {
         if (!favoriteId) {
@@ -134,7 +134,7 @@ export default function CourseIntro({ course, session, place, params }) {
           });
           return;
         }
-  
+
         const response = await removeCourseFavorite(favoriteId, storedToken);
         if (response.success) {
           Swal.fire({
@@ -177,7 +177,7 @@ export default function CourseIntro({ course, session, place, params }) {
       });
     }
   };
-  
+
   // 當選擇日期時，過濾對應的時段
   const dateChange = (e) => {
     const selected = e.target.value;
@@ -223,8 +223,8 @@ export default function CourseIntro({ course, session, place, params }) {
         showConfirmButton: false,
       });
     } else {
-      console.log("加入購物車的數據:", { s });
-      onAddCourse(s);
+      console.log("加入購物車的數據:", { s, c });
+      onAddCourse(c,s);
       Swal.fire({
         icon: "success",
         title: "已加入購物車",
@@ -511,7 +511,7 @@ export default function CourseIntro({ course, session, place, params }) {
                       <div className="col-12 col-md-3">{p.region}</div>
                       <div
                         className="col-12 col-md-9 pb-4 "
-                        // onClick={() => handlePlaceClick(p, index + 3)}
+                      // onClick={() => handlePlaceClick(p, index + 3)}
                       >
                         {p.address}
                         <p className={`pt-2 ${styles.zoom}`}>
