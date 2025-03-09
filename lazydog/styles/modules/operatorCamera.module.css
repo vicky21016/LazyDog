@@ -1,5 +1,5 @@
 .wrapper {
-  margin: 100px auto 0;
+  margin: 100px auto 0 !important;
 }
 .suAvatarImg {
   width: 100px;
@@ -182,6 +182,11 @@
   padding: 4px 8px;
   border-radius: 5px; 
 }
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
 @media (min-width: 768px) {
   .mobileFilter {
     display: none;
@@ -240,7 +245,12 @@
     color: #555;
     min-width: 90px; 
   }
-
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 5px;
+  }
 
   .btn-sm {
     width: 100%; 
@@ -251,7 +261,12 @@
     display: block;
     border-radius: 6px;
   }
-
+  .add-coupon-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+  }
   /* 「更多」按鈕縮小 */
   .moreBtn {
     font-size: 12px;
@@ -335,12 +350,23 @@
     font-size: 12px;
     padding: 6px;
   }
-
+  .btn-group {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
   .btn-sm {
     font-size: 12px;
     padding: 5px 8px;
   }
-
+  .badge {
+    font-size: 10px;
+    padding: 4px 6px;
+  }
+  .add-coupon-btn {
+    font-size: 14px;
+    padding: 8px;
+  }
   .moreBtn {
     font-size: 10px; 
   }
