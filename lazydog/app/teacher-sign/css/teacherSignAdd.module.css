@@ -28,15 +28,6 @@
   }
 }
 
-.labels:focus,
-.controls:focus,
-input:focus,
-input:active {
-  outline: none !important;
-  box-shadow: none !important;
-  border-color: #fca85f !important;
-}
-
 /* 右邊 */
 .right {
   background: #fff;
@@ -54,14 +45,23 @@ input:active {
   }
 
   .labels {
+    color: #524e4e;
     font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.85px;
+    padding-top: 10px;
+    padding-left: 8px;
   }
 
   .controls {
-    border-radius: 8px;
     background-color: #fff;
-    /* border: none; */
-    border: 0.8px solid #ecebeb;
+    border: 0.8px solid #e2e1e1;
+    border-radius: 18px;
+
+    &:active {
+      outline: 2px solid #fca85f;
+      border-color: transparent;
+    }
   }
 
   .controls::placeholder {
@@ -70,6 +70,27 @@ input:active {
     padding-left: 2px;
     letter-spacing: 1px;
   }
+
+  input:focus,
+  textarea:focus,
+  .selects:focus,
+  .selects:checked,
+  .selects:active {
+    outline: 2px solid #fca85f;
+    box-shadow: none !important; /* 移除點擊後的藍色高亮 */
+    border-color: transparent;
+  }
+
+  .selects {
+    border: 0.8px solid #e2e1e1;
+    border-radius: 18px;
+  }
+
+  .textarea {
+    border-radius: 15px;
+    padding: 8px 10px 0 13px;
+  }
+
   /* 目前改不了顏色 */
   .pleaseChoose {
     color: #a1a1a1;
@@ -80,7 +101,7 @@ input:active {
     position: relative;
     overflow: hidden;
     border: 0.8px solid #ecebeb;
-    border-radius: 8px;
+    border-radius: 15px;
     height: 250px;
     /* margin: 0 12px; */
     &:hover {
@@ -117,7 +138,7 @@ input:active {
     align-items: start;
     overflow: hidden;
     border: 0.8px solid #ecebeb;
-    border-radius: 8px;
+    border-radius: 15px;
     height: 250px;
     padding: 15px 20px;
     &:hover {
@@ -163,7 +184,7 @@ input:active {
     position: absolute;
     top: 4px;
     right: 5px;
-    background: red;
+    background: #ff9538;
     color: white;
     border: none;
     border-radius: 50%;
@@ -174,9 +195,15 @@ input:active {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-  }
-  .deleteBtn:hover {
-    background: darkred;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+      transform: translateY(-5px);
+    }
+    &:active {
+      transform: translateY(3px);
+    }
   }
   .addPicBtn {
     position: absolute;
