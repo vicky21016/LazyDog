@@ -91,24 +91,25 @@
   }
 }
 
-.post{
+.post {
+  background-color: #f5842b;
+  /* color: white; */
+  border-radius: 7px;
   border: none;
-  border: 1 solid #ff9538;
-  background-color: #ff9538;
-  border-radius: 5px
+  font-size: 16px;
+  border:1.5 solid #f5842b;
+  .postLink{
+    color: white;
+  }
 }
-.post:hover{
-  border: 1 solid #ff9538;
-  background-color:white ;
-  border-radius: 5px
+
+.post:hover {
+  background-color: white;
+  color: #f5842b;
+  border:1.5 solid #f5842b;
+  .postLink{
+    color: #f5842b;
+  }
 }
-.postfont{
-  text-decoration: none;
-   color: white ;
-   font-weight:bold
-}
-.postfont:hover{
-  text-decoration: none;
-   color:#ff9538
-}
+
 

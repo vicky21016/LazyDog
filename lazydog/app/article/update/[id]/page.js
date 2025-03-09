@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/use-auth";
 import Header from "../../../components/layout/header";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
 import style from '../../../../styles/modules/operatorCamera.module.css';
+import styles from './page.module.css';
 
 // 將表單的不同部分拆分為子元件
 import TitleInput from '../../_components/update/TitleInput';
@@ -28,8 +29,8 @@ export default function UpdateArticlePage({ params }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
-
   const articleId = params.id;
+  console.log("我在編輯頁這")
 
   // 類別選項
   const categoryOptions = useMemo(() => [
@@ -112,14 +113,14 @@ export default function UpdateArticlePage({ params }) {
       <Header />
        <div className={`${style.container}`}>
       <div className='lumi-all-wrapper'>
-      <Breadcrumb
-                    links={[
-                      { label: "首頁 ", href: "/" },
-                      { label: " 毛孩文章", href: "/article/list" },
-                      { label:` 編輯文章`, href: "/article/list/detail", active: true },
-                    ]}
-                  /></div>
-      <div className="container" style={{marginTop:'55px'}}>
+        <Breadcrumb
+          links={[
+            { label: "首頁 ", href: "/" },
+            { label: " 毛孩文章", href: "/article/list" },
+            { label: ` 編輯文章`, href: "/article/list/detail", active: true },
+          ]}
+        /></div>
+      <div className="container" style={{ marginTop: '55px' }}>
         <div className="row">
           <div className="col-lg-3 col-sm-12">
             <Link href="/article/my_article" className={`btn mb-3 ${style.btn3}`}>
@@ -165,12 +166,7 @@ export default function UpdateArticlePage({ params }) {
               <div className="d-flex justify-content-end">
                 <button
                   type="button"
-                  className={`mt-3 ${style.btn}`}
-                  style={{
-            
-                    borderRadius: '5px',
-                   
-                  }}
+                  className={`mt-3 ${styles.post}`}
                   onClick={handleSubmit}
                   disabled={isLoading}
                 >
@@ -178,10 +174,7 @@ export default function UpdateArticlePage({ params }) {
                     <>
                       <Link
                         href="http://localhost:3000/user/my_article"
-                        style={{
-                     
-                          color: 'white',
-                        }}
+                        className={styles.postLink}
                       >
                         <i className="bi bi-check-circle"></i> 保存文章
                       </Link>
@@ -189,6 +182,7 @@ export default function UpdateArticlePage({ params }) {
                   )}
                 </button>
               </div>
+              
             </form>
           </div>
         </div>

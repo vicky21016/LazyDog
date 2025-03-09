@@ -45,10 +45,10 @@
   color: black;
   font-size: 18px;
 }
-.link:hover {
+/* .link:hover {
   text-decoration: none;
   color: #f5842b;
-}
+} */
 /* -------button---------- */
 .customToggle::after {
   display: none; /* 隱藏倒三角形 */
@@ -91,25 +91,25 @@
   }
 }
 
-.post{
+.post {
+  background-color: #f5842b;
+  /* color: white; */
+  border-radius: 7px;
   border: none;
-  border: 1 solid #ff9538;
-  background-color: #ff9538;
-  border-radius: 5px
+  font-size: 16px;
+  border:1.5 solid #f5842b;
+  .postLink{
+    color: white;
+  }
 }
-.post:hover{
-  border: 1 solid #ff9538;
-  background-color:white ;
-  border-radius: 5px
-}
-.postfont{
-  text-decoration: none;
-   color: white ;
-   font-weight:bold
-}
-.postfont:hover{
-  text-decoration: none;
-   color:#ff9538
+
+.post:hover {
+  background-color: white;
+  color: #f5842b;
+  border:1.5 solid #f5842b;
+  .postLink{
+    color: #f5842b;
+  }
 }
 
 @media screen and (max-width: 390px){

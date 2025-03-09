@@ -5,7 +5,7 @@ import { useState } from "react";
 import styles from "../my_article/page.module.css";
 import Link from "next/link";
 
-export default function MyCard3({ title, author_image, content, article_id }) {
+export default function MyCard3({ title, author_image, content, article_id, author }) {
     console.log(author_image)
     return (
         <>
@@ -40,7 +40,7 @@ export default function MyCard3({ title, author_image, content, article_id }) {
                                 <img className="object-fit-cover" src={author_image} />
                             </div>
                             <div className="d-flex justify-content-center">
-                                <div>傑哥</div>
+                                <div>{author}</div>
                             </div>
                         </div>
 
