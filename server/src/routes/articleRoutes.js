@@ -72,7 +72,7 @@ router.get("/author/:author_id", async (req, res) => {
 
     const formattedArticles = articles.map(article => ({
       ...article,
-      cover_image: article.cover_image || "http://localhost:5000/api/articles/image2.jpg" // 設定預設圖片
+      cover_image: article.cover_image || "http://localhost:5000/api/articles/image4.jpg" // 設定預設圖片
   }));
     res.json(formattedArticles);
   } catch (error) {

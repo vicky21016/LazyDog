@@ -50,19 +50,28 @@
   max-height: 80px;
   overflow: hidden;
 }
-.link:hover {
-  text-decoration: none;
-  color: #f5842b;
+.commentCard:hover{
+  .link{
+    color: #f5842b;
+  }
 }
 .link2 {
   text-decoration: none;
   color: black;
   font-size: 18px;
+  max-height: 80px;
+  overflow: hidden;
 }
 .link2:hover {
   text-decoration: none;
-  color: white;
+  color: #f5842b;
 }
+.link3 {
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+}
+
 /* -------button---------- */
 .customToggle{
   background-color: #ffffff00;
@@ -77,6 +86,11 @@
 .item:hover {
   background-color: #66c5bd;
   color: white;
+  .link3 {
+    text-decoration: none;
+    color: white;
+  }
+
 }
 .commentCard{ 
   width: 100%;

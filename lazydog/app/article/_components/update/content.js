@@ -19,6 +19,7 @@ if (typeof window !== 'undefined') {
 export default function FroalaEditorWrapper({ onContentChange, initialContent }) {
   const editorRef = useRef(null);
   const editorInstanceRef = useRef(null);
+  console.log("我在froala這")
 
   // 使用 debounce 減少 onContentChange 的觸發頻率
   const debouncedContentChange = useCallback(

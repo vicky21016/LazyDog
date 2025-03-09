@@ -34,6 +34,7 @@
 .content {
   display: flex;
   justify-content: space-between;
+  gap:100px
   /* position: relative;  */
 }
 
@@ -94,19 +95,24 @@
 
 /* middle */
 .post {
-  /* background-color: #f5842b; */
-  text-decoration: none;
-  color: white;
-  border-radius: 5px;
+  background-color: #f5842b;
+  /* color: white; */
+  border-radius: 7px;
   border: none;
-  /* width: 120px; */
-  /* height: 30px; */
   font-size: 16px;
+  border:1.5 solid #f5842b;
+  .postLink{
+    color: white;
+  }
 }
+
 .post:hover {
-  background-color: #fdf9f5;
-  color: #ff9538 !important;
-  border-color: #ff9538;
+  background-color: white;
+  color: #f5842b;
+  border:1.5 solid #f5842b;
+  .postLink{
+    color: #f5842b;
+  }
 }
 
 .filter {
@@ -231,6 +237,7 @@
   justify-content: center;
   align-items: center;
   border: 1px solid orange;
+  color: #f5842b;
   border-radius: 50%;
   &:hover {
     background: #f5842b;
@@ -264,36 +271,38 @@
   margin-bottom: 15px;
 }
 
-.asideCategory p{
+.asideCategoryP{
     color: #f5842b;
     font-size: 20px;
     border-radius: 5px;
     padding-left: 5px;
 }
-.asideCategory p:hover{
- background-color: #f5842b;
+.asideCategoryP:hover{
+ background-color: #66c5bd;
  color: aliceblue;
 }
-.asideCategory p:active{
+.asideCategoryP:active{
   background-color: #66c5bd;
   color: aliceblue;
  }
- .RWDH4{
-  display: none;
-}
-.RWDfilter p{
-  color: #f5842b;
+ .asideCategoryPA{
+  background-color: #f5842b;
+  color: white;
   font-size: 20px;
   border-radius: 5px;
   padding-left: 5px;
+}
+ .RWDH4{
+  display: none;
 }
 .RWDfilter{
   display: none;
   }
   .activePage {
-    background-color: #f5842b; /* 背景色为粉色 */
-    color: white; /* 文字颜色为白色 */
-    border-radius: 50%;
+    /* background-color: #f5842b; 背景色为粉色 */
+    color: #66c5bd; /* 文字颜色为白色 */
+    font-weight: bolder;
+    /* border-radius: 50%; */
 }
 /* @media screen */
 @media screen and (max-width: 390px) {
@@ -304,6 +313,12 @@
     display: flex;
     justify-content: center;
     position: relative;
+  }
+  .content {
+    display: flex;
+    justify-content: center;
+    gap:100px
+    /* position: relative;  */
   }
   .RWDH4{
     display: block;
