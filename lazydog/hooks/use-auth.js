@@ -165,11 +165,11 @@ export function AuthProvider({ children }) {
     email,
     gender,
     birthday,
-    avatar,
+    phone,
     county,
     district,
     address,
-    phone
+    avatar
   ) => {
     let token = localStorage.getItem(appKey);
     let API = `http://localhost:5000/auth/${user.id}`;

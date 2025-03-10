@@ -28,17 +28,33 @@ export default function Menu() {
     number: "",
     floor: "",
     county: "",
-    district: "",
     address: "",
   });
 
   // 監聽郵遞區號選擇變更
-  const handlePostcodeChange = (selectedCounty, selectedDistrict, postcode) => {
-    setFormData((prev) => ({
-      ...prev,
-      county: selectedCounty,
-      district: selectedDistrict,
-    }));
+  // const handlePostcodeChange = (selectedCounty, selectedDistrict) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     county: selectedCounty,
+  //     district: selectedDistrict,
+  //   }));
+  //   console.log(selectedCounty, selectedDistrict);
+  // };
+
+  const handlePostcodeChange = (selectedCounty, selectedDistrict) => {
+    setFormData((prev) => {
+      if (
+        prev.county === selectedCounty &&
+        prev.district === selectedDistrict
+      ) {
+        return prev; // 若無變化，避免更新 state
+      }
+      return {
+        ...prev,
+        county: selectedCounty,
+        district: selectedDistrict,
+      };
+    });
     console.log(selectedCounty, selectedDistrict);
   };
 
@@ -66,7 +82,6 @@ export default function Menu() {
         number: user.number || "",
         floor: user.floor || "",
         county: user.county || "",
-        district: user.district || "",
         address: user.address || "",
       });
     }
@@ -92,7 +107,7 @@ export default function Menu() {
       Swal.fire({
         icon: "success",
         title: "更新成功",
-        text: `您的資料已更新${formData.county} ${formData.district}`,
+        text: `您的資料已更新`,
       });
     } catch (error) {
       Swal.fire({
@@ -132,8 +147,7 @@ export default function Menu() {
         address: user.address || "",
       });
     }
-    console.log(user.county);
-  }, [user?.id]);
+  }, [user]);
 
   if (checkingAuth) {
     return (
