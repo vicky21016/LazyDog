@@ -7,15 +7,11 @@ import Input from "../components/forms/Input";
 import styles from "./menu.module.css";
 import TWZipCode from "../components/tw-zipcode";
 import Swal from "sweetalert2";
-// import { useLocationSelector } from "@/hooks/useLocationSelector";
-// import { auth, signOut, onAuth } from "./firebase";
 
 export default function Menu() {
   const router = useRouter(); // Initialize useRouter
-  // const { city, district, closeModal, openModal } = useLocationSelector();
   const [checkingAuth, setCheckingAuth] = useState(true);
   const { user, save } = useAuth();
-
   const [formData, setFormData] = useState({
     name: "",
     gender: "",
@@ -31,35 +27,69 @@ export default function Menu() {
     lane: "",
     number: "",
     floor: "",
+    county: "",
+    address: "",
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  // 監聽郵遞區號選擇變更
+  // const handlePostcodeChange = (selectedCounty, selectedDistrict) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     county: selectedCounty,
+  //     district: selectedDistrict,
+  //   }));
+  //   console.log(selectedCounty, selectedDistrict);
+  // };
 
-  const handleCancel = (e) => {
-    setFormData({
-      name: user?.name || "",
-      gender: user?.gender || "",
-      nickname: user?.nickname || "",
-      birthday: user?.birthday || "",
-      phone: user?.phone || "",
-      email: user?.email || "",
-      location: user?.location || "",
-      city: user?.city || "",
-      district: user?.district || "",
-      road: user?.road || "",
-      section: user?.section || "",
-      lane: user?.lane || "",
-      number: user?.number || "",
-      floor: user?.floor || "",
+  const handlePostcodeChange = (selectedCounty, selectedDistrict) => {
+    setFormData((prev) => {
+      if (
+        prev.county === selectedCounty &&
+        prev.district === selectedDistrict
+      ) {
+        return prev; // 若無變化，避免更新 state
+      }
+      return {
+        ...prev,
+        county: selectedCounty,
+        district: selectedDistrict,
+      };
     });
-    router.push("/user"); // Now router is defined
+    console.log(selectedCounty, selectedDistrict);
   };
 
-  const handleSubmit = async (e) => {
-    console.log(user.id);
+  // 監聽輸入變更
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
+  // 取消按鈕
+  const handleCancel = () => {
+    if (user) {
+      setFormData({
+        name: user.name || "",
+        gender: user.gender || "",
+        nickname: user.nickname || "",
+        birthday: user.birthday || "",
+        phone: user.phone || "",
+        email: user.email || "",
+        location: user.location || "",
+        city: user.city || "",
+        district: user.district || "",
+        road: user.road || "",
+        section: user.section || "",
+        lane: user.lane || "",
+        number: user.number || "",
+        floor: user.floor || "",
+        county: user.county || "",
+        address: user.address || "",
+      });
+    }
+    router.push("/user"); // 返回用戶頁面
+  };
+
+  // 表單提交
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -68,16 +98,34 @@ export default function Menu() {
         formData.email,
         formData.gender,
         formData.birthday,
-        formData.phone
+        formData.phone,
+        formData.county,
+        formData.district,
+        formData.address
       );
+
+      Swal.fire({
+        icon: "success",
+        title: "更新成功",
+        text: `您的資料已更新`,
+      });
     } catch (error) {
-      alert("更新失敗");
-      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "更新失敗",
+        text: error.message || "請稍後再試",
+      });
     }
   };
 
+  // 預先載入 /user 頁面
   useEffect(() => {
-    if (user) {
+    router.prefetch("/user");
+  }, [router]);
+
+  // 初始化用戶資料
+  useEffect(() => {
+    if (user?.id) {
       setCheckingAuth(false);
       setFormData({
         name: user.name || "",
@@ -94,6 +142,9 @@ export default function Menu() {
         lane: user.lane || "",
         number: user.number || "",
         floor: user.floor || "",
+        county: user.county || "",
+        district: user.district || "",
+        address: user.address || "",
       });
     }
   }, [user]);
@@ -105,6 +156,7 @@ export default function Menu() {
       </div>
     );
   }
+
   const formattedDate = formData.birthday
     ? new Date(formData.birthday).toISOString().split("T")[0]
     : "";
@@ -171,16 +223,7 @@ export default function Menu() {
             <h6>
               聯絡信箱<span className={`${styles["important"]}`}></span>
             </h6>
-            {/* <Input
-              type="email"
-              name="email"
-              placeholder="聯絡信箱"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              isReadOnly
-            /> */}
-            {formData.email}
+            <p>{formData.email || "尚未設定 Email"}</p>
           </div>
 
           <div className={styles.formGroup}>
@@ -189,25 +232,20 @@ export default function Menu() {
             </h6>
 
             <div className={styles.addressRow}>
-              <TWZipCode />
+              <TWZipCode
+                initCounty={user.county} // 傳入 initCounty
+                initDistrict={formData.district} // 傳入 initDistrict
+                onPostcodeChange={handlePostcodeChange}
+              />
               <Input
-                name="road"
-                placeholder="路"
-                value={formData.road}
+                name="address"
+                placeholder="請輸入地址"
+                value={formData.address}
                 onChange={handleChange}
+                required
               />
             </div>
-
-            <div className={styles.addressRow}>
-              {/* <Input
-                      name="section"
-                      placeholder="段"
-                      value={formData.section}
-                      onChange={handleChange}
-                    /> */}
-            </div>
           </div>
-
           <button
             type="button"
             className={`mt-3 ${styles.exStore}`}

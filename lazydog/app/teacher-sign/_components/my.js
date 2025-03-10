@@ -17,27 +17,22 @@ export default function My() {
     {
       name: "我的師資",
       path: "/teacher-sign/info",
-      icon: <i className="bi bi-book-fill"></i>,
+      icon: <i class="bi bi-bookmark-fill"></i>,
     },
     {
       name: "我的課程",
       path: "/teacher-sign/list",
-      icon: <i className="bi bi-calendar-week"></i>,
+      icon: <i class="bi bi-pen"></i>,
     },
     {
       name: "課程評論",
       path: `/course/review/${user.teacher_id}`,
-      icon: <i className="bi bi-chat-left-heart "></i>,
+      icon: <i class="bi bi-chat-heart-fill"></i>,
     },
     {
       name: "開課地點",
       path: "/teacher-sign/place",
-      icon: <i className="bi bi-building-fill "></i>,
-    },
-    {
-      name: "訂單紀錄",
-      path: "/teacher-sign/orderlist",
-      icon: <i className="bi bi-bag-check"></i>,
+      icon: <i class="bi bi-geo"></i>,
     },
     {
       name: "會員資料",
@@ -60,7 +55,7 @@ export default function My() {
             aria-expanded="false"
             aria-controls="filterOffcanvas"
           >
-           <i className="bi bi-chevron-right"></i>
+            <i className="bi bi-chevron-right"></i>
           </button>
         </div>
       </div>
@@ -70,18 +65,18 @@ export default function My() {
         tabIndex="-1"
         id="filterOffcanvas"
         aria-labelledby="filterOffcanvasLabel"
-      > 
-      <div className="offcanvas-header">
-      {/* <h5 className="offcanvas-title" id="filterOffcanvasLabel">
+      >
+        <div className="offcanvas-header">
+          {/* <h5 className="offcanvas-title" id="filterOffcanvasLabel">
           篩選
         </h5> */}
-      <button
-        type="button"
-        className="btn-close text-reset"
-        data-bs-dismiss="offcanvas"
-        aria-label="Close"
-      ></button>
-    </div>
+          <button
+            type="button"
+            className="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
         <div className={` p-3 text-center`}>
           <div className="text-center">
             <div className="position-relative d-inline-block">

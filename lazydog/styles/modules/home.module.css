@@ -1136,8 +1136,8 @@ body {
   .ticketIcon,
   .topIcon {
     position: fixed;
-    width: 55px;
-    height: 55px;
+    width: 43px;
+    height: 43px;
     background: #66c5bd;
     border: none;
     border-radius: 50%;
@@ -1154,14 +1154,15 @@ body {
     display: block;
     text-align: center;
     align-content: center;
-    right: 28px;
-    bottom: 365px;
+    right: 10px;
+    bottom: 100px;
     z-index: 99;
+    padding-bottom: 3px;
   }
   .topIcon {
     padding-bottom: 6px;
-    right: 28px;
-    bottom: 285px;
+    right: 10px;
+    bottom: 40px;
     z-index: 99;
   }
   .ticketIcon:hover,
@@ -1173,10 +1174,10 @@ body {
   @keyframes bounce {
     0%,
     100% {
-      transform: translateY(0);
+      transform: translate3d(0, 0, 0);
     }
     50% {
-      transform: translateY(-20px);
+      transform: translate3d(0, -20px, 0);
     }
   }
 }

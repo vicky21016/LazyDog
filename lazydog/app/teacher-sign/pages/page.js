@@ -9,6 +9,7 @@ import Bread from "../../components/teacher/breadcrumb";
 import Input from "../../components/forms/Input";
 import styles from "../../user/menu.module.css";
 import style from "../../../styles/modules/menu.module.css";
+import TWZipCode from "../../components/tw-zipcode";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
 // import { auth, signOut, onAuth } from "./firebase";
 
@@ -56,6 +57,16 @@ export default function Menu() {
     });
     router.push("/user");
   };
+  // 監聽郵遞區號選擇變更
+  const handlePostcodeChange = (selectedCounty, selectedDistrict, postcode) => {
+    setFormData((prev) => ({
+      ...prev,
+      county: selectedCounty,
+      district: selectedDistrict,
+    }));
+    console.log(selectedCounty, selectedDistrict);
+  };
+
   const handleSubmit = async (e) => {
     console.log(user.id);
 
@@ -190,16 +201,9 @@ export default function Menu() {
                   />
 
                   <h6>
-                    聯絡信箱<span className={`${styles["important"]}`}> *</span>
+                    聯絡信箱<span className={`${styles["important"]}`}></span>
                   </h6>
-                  <Input
-                    type="email"
-                    name="email"
-                    placeholder="聯絡信箱"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
+                  <p>{formData.email || "尚未設定 Email"}</p>
                 </div>
 
                 <div className={styles.formGroup}>
@@ -208,27 +212,14 @@ export default function Menu() {
                   </h6>
 
                   <div className={styles.addressRow}>
-                    <select
-                      name="city"
-                      className={`mb-3 me-2 ${styles["select"]}`}
-                      onChange={handleChange}
-                      value={formData.city}
-                    >
-                      <option>縣/市</option>
-                      <option>台北市</option>
-                      <option>新北市</option>
-                    </select>
-                    <select
-                      name="district"
-                      className={`${styles["select"]}`}
-                      onChange={handleChange}
-                      value={formData.district}
-                    >
-                      <option>街/區</option>
-                    </select>
+                    <TWZipCode
+                      initCounty={user.county} // 傳入 initCounty
+                      initDistrict={formData.district} // 傳入 initDistrict
+                      onPostcodeChange={handlePostcodeChange}
+                    />
                     <Input
                       name="road"
-                      placeholder="路"
+                      placeholder="請輸入地址"
                       value={formData.road}
                       onChange={handleChange}
                     />
