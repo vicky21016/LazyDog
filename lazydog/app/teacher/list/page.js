@@ -26,10 +26,10 @@ export default function App() {
   // 分頁
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 9;
-  const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
+  const totalPages = filtered.length > 0 ? Math.ceil(filtered.length / perPage) : 1;
 
   const startIndex = (currentPage - 1) * perPage;
-  const currentTeacher = filtered.slice(startIndex, startIndex + perPage);
+  const currentTeacher = (filtered || []).slice(startIndex, startIndex + perPage);
 
   // 處理篩選條件
   const filter = (searchText, selectCategories, selectGenders) => {
@@ -55,7 +55,12 @@ export default function App() {
     document.addEventListener("click", clickOutside);
     return () => document.removeEventListener("click", clickOutside);
   }, [filterOpen]);
-
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [totalPages]);
+  
   if (loading) return
   <>
       <div className={style.container2}>
@@ -193,11 +198,12 @@ export default function App() {
                     <p className="text-center">沒有符合條件的老師</p>
                   )}
                 </div>
-                <Page
-                  totalPages={totalPages}
-                  currPage={currentPage}
-                  onPageChange ={setCurrentPage}
-                />
+                <Page 
+  totalPages={totalPages} 
+  currentPage={currentPage} 
+  onPageChange={setCurrentPage} 
+/>
+
               </div>
             </div>
           </section>
