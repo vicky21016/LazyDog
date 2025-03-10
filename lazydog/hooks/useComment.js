@@ -74,9 +74,15 @@ const useComment = () => {
         throw new Error(response.statusText || "獲取留言失敗");
       }
       const result = await response.json(); // 將響應數據轉換為 JSON
-      result.forEach((comment) => {
-        comment.user_img = `http://localhost:5000/auth/${comment.user_img}`;
-      });
+      
+      // result.forEach((comment) => {
+      //   comment.user_img = `http://localhost:5000/auth/${comment.user_img}`;
+      // });
+    //   data.comments.forEach((comment) => {
+    //     if (comment.author_img && comment.author_img.startsWith("images/")) {
+    //         comment.author_img = `http://localhost:5000/auth/${comment.author_img}`;
+    //     }
+    // })
       setComments(result); // 保存留言資料
       console.log(result)
       return result; // 返回資料供組件使用
