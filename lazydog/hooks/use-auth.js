@@ -65,7 +65,7 @@ export function AuthProvider({ children }) {
       setUser(googleUser);
 
       const response = await fetch(
-        "http://localhost:5000/api/google/google-login",
+        "http://localhost:5000/api/auth/google/google-login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
