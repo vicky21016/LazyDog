@@ -141,14 +141,14 @@ export default function MyMenu() {
               icon={faCamera}
               onClick={handleClick}
               style={{ cursor: "pointer" }}
-            />
+            /> */}
             <input
               id="avatarInput"
               type="file"
               style={{ display: "none" }}
               onChange={handleFileChange}
               accept="image/*"
-            /> */}
+            />
 
             {/* <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5> */}
             <div className={styles.dropdownItem}>
@@ -237,14 +237,14 @@ export default function MyMenu() {
               icon={faCamera}
               onClick={handleClick}
               style={{ cursor: "pointer" }}
-            />
+            /> */}
             <input
               id="avatarInput"
               type="file"
               style={{ display: "none" }}
               onChange={handleFileChange}
               accept="image/*"
-            /> */}
+            />
 
             {/* <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5> */}
             <div className={styles.dropdownItem}>
