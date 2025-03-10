@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 // import styles from "../../../styles/modules/operatorCamera.module.css";
-import {useReview } from "@/hooks/useCourseReview";
+import { useReview } from "@/hooks/useCourseReview";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import Header from "../../../components/layout/header";
-import My from "../../../teacher-sign/_components/my"
-import styles from "../../../../styles/modules/operatorCamera.module.css"
+import My from "../../../teacher-sign/_components/my";
+import styles from "@/styles/modules/courseReview.module.css";
 // ReviewList
 // reviews.js 裡get+post+delete+put做API連結後台，
 //下面都是假資料參考用就好
@@ -14,11 +14,11 @@ const ReviewList = () => {
   const [modalData, setModalData] = useState({});
   const replyInputRef = useRef(null);
   const router = useRouter();
-  
+
   const { id } = useParams();
   const { review } = useReview(id);
   console.log(review);
-  
+
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
@@ -29,16 +29,14 @@ const ReviewList = () => {
   };
 
   const reviews = review.map((item) => ({
-   
-      customer: `${item.user_name}`,
-      order: `${item.id}`,
-      date: `${item.created_at}`,
-      rating: `${item.rating}`,
-      content: `${item.comment}`
-      ,
-      replied: true,
-      status: "公開",
-    }));
+    customer: `${item.user_name}`,
+    order: `${item.id}`,
+    date: `${item.created_at}`,
+    rating: `${item.rating}`,
+    content: `${item.comment}`,
+    replied: true,
+    status: "公開",
+  }));
   const loadReview = (review) => {
     setModalData(review);
   };
@@ -60,7 +58,7 @@ const ReviewList = () => {
         <div className="row">
           {/* 左邊*/}
           <My />
-{/* <div className={`${styles.right}`}></div> */}
+          {/* <div className={`${styles.right}`}></div> */}
           {/* 右邊 */}
           <div className={`col-md-9 ${styles.righttop}`}>
             <h4 className="mb-4">評論列表</h4>
@@ -92,7 +90,7 @@ const ReviewList = () => {
                           className={`badge ${
                             review.status === "公開"
                               ? [styles.btn3]
-                              :[styles.btn]
+                              : [styles.btn]
                           }`}
                         >
                           {review.status}

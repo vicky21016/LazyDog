@@ -108,8 +108,8 @@ export default function CourseIntro({ course, session, place, params }) {
         title: "請先登入",
         text: "需要先登入才能收藏！",
         showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
+        timer: 950,
+        // timerProgressBar: true,
         customClass: {
           popup: styles.tsaiSwal,
         },
@@ -125,8 +125,8 @@ export default function CourseIntro({ course, session, place, params }) {
         title: "無法獲取用戶 ID",
         text: "請重新登入後再試！",
         showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
+        timer: 950,
+        // timerProgressBar: true,
         customClass: {
           popup: styles.tsaiSwal,
         },
@@ -142,8 +142,8 @@ export default function CourseIntro({ course, session, place, params }) {
             title: "移除收藏失敗",
             // text: "找不到對應的收藏記錄！",
             showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
+            timer: 950,
+            // timerProgressBar: true,
             customClass: {
               popup: styles.tsaiSwal,
             },
@@ -157,8 +157,8 @@ export default function CourseIntro({ course, session, place, params }) {
             icon: "success",
             title: "已移除收藏",
             showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
+            timer: 950,
+            // timerProgressBar: true,
             customClass: {
               popup: styles.tsaiSwal,
             },
@@ -186,8 +186,8 @@ export default function CourseIntro({ course, session, place, params }) {
             title: response.message,
             // text: "課程已加入您的收藏清單！",
             showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
+            timer: 950,
+            // timerProgressBar: true,
             customClass: {
               popup: styles.tsaiSwal,
             },
@@ -265,8 +265,12 @@ export default function CourseIntro({ course, session, place, params }) {
             animate__faster
           `,
         },
-        timer: 900,
         showConfirmButton: false,
+        timer: 950,
+        // timerProgressBar: true,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
     } else {
       console.log("加入購物車的數據:", { s, c });
@@ -288,8 +292,12 @@ export default function CourseIntro({ course, session, place, params }) {
             animate__faster
           `,
         },
-        timer: 700,
         showConfirmButton: false,
+        timer: 950,
+        // timerProgressBar: true,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
 
       setSelectDate("");
