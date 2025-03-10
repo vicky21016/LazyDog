@@ -3,6 +3,7 @@
 import DOMPurify from 'dompurify'
 import Image from 'next/image'
 import styles from "./page.module.css"
+import style from "../../../../styles/modules/operatorCamera.module.css";
 
 export default function Content({ article }) {
   // 消毒處理
@@ -31,10 +32,10 @@ export default function Content({ article }) {
 
   return (
     <div className={`${styles.content} mt-4`}>
-      <h4 className='my-2'>{article?.title}</h4>
+      <h4 className='mb-4'>{article?.title}</h4>
       <div >
-        <div className={`${styles.floor}`}>作者</div>
-        <div className={`${styles.auther}`} style={{ display: 'inline-block' }}>
+        <div className={`${styles.floor} ${style.btn3}`}>作者</div>
+        <div className={`ms-2 ${styles.auther}`} style={{ display: 'inline-block' }}>
           {article?.author_name}
         </div>
       </div>

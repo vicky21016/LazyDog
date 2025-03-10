@@ -80,7 +80,7 @@ export default function CouponListPage() {
       <div className={`container  ${styles.wrapper}`}>
         <div className="row">
           {/* 左邊 */}
-          <My />          
+          <My />
           {/* 右邊 */}
           <div className={`col-12 col-md-9 ${styles.righttop}`}>
             <h5 className="mb-4">優惠券列表</h5>
@@ -104,7 +104,7 @@ export default function CouponListPage() {
                       <td data-label="優惠代碼">{coupon.code}</td>
                       <td data-label="優惠名稱">{coupon.name}</td>
                       <td data-label="優惠內容">{coupon.value || "無"}</td>
-                      <td  data-label="開始日期">
+                      <td data-label="開始日期">
                         {coupon.start_time
                           ? coupon.start_time.split("T")[0]
                           : "未設定"}
@@ -115,34 +115,34 @@ export default function CouponListPage() {
                           : "未設定"}
                       </td>
                       <td data-label="使用次數">{coupon.usage || 0}</td>
-                      <td data-label="狀態"> 
+                      <td data-label="狀態">
                         <span
                           className={`badge ${
                             coupon.status === "active"
-                              ? "bg-success"
+                              ?` ${styles.btn3}`
                               : coupon.status === "expired"
-                              ? "bg-warning"
-                              : "bg-secondary"
+                              ? `${styles.btn}`
+                              :` ${styles.btn2}`
                           }`}
                         >
                           {coupon.status}
                         </span>
                       </td>
-                      <td  data-label="操作">
+                      <td data-label="操作">
                         <button
-                          className="btn btn-sm btn-primary me-2"
+                          className={`btn btn-sm me-2 ${styles.btn}`}
                           onClick={() => loadCoupon(coupon)}
                         >
                           檢視
                         </button>
                         <button
-                          className="btn btn-sm btn-warning me-2"
+                          className={`btn btn-sm me-2 ${styles.btn2}`}
                           onClick={() => handleEditCoupon(coupon.id)}
                         >
                           編輯
                         </button>
                         <button
-                          className="btn btn-sm btn-danger"
+                          className={`btn btn-sm ${styles.btn3}`}
                           onClick={() => handleDeleteCoupon(coupon.id)}
                         >
                           刪除
