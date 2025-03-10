@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "../css/orderlist.module.css";
-import Pagination from "@/app/course/_components/list/page";
+// import Pagination from "@/app/course/_components/list/page";
 
 export default function Orderlist() {
   const [activeTab, setActiveTab] = useState("course"); // 預設顯示課程訂單
