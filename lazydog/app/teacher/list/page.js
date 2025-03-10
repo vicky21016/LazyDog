@@ -7,7 +7,7 @@ import Breadcrumb from "../../components/teacher/breadcrumb";
 import Filter from "../../components/teacher/Filter";
 import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "./list.module.css";
-import Page from "../../course/_components/list/pagination";
+import Page from "../../components/hotel/page";
 import style1 from "../../product/list/list.module.css";
 import style from "../../user/menu.module.css";
 
