@@ -11,7 +11,7 @@ export default function AsideCard({ id, title, cover_image, created_at }) {
            <Link
                 href={{ pathname: `/article/detail/${id}`, query: { list: "true" } }}
                 // className={styles.asideRead}
-                className={`${styles.asideRead} row mt-2`}
+                className={`${styles.asideRead2} row mt-2`}
             >
                 <div className="col-3">
                     <div

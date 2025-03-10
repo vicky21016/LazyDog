@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -8,20 +8,20 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Card from "../../_components/detail/MoreCard";
 import Comment from "../../_components/detail/Comment";
 import Content from "../../_components/detail/Content";
-import MyComment from "../../_components/detail/MyComment"
+import MyComment from "../../_components/detail/MyComment";
 import styles from "./page.module.css";
 import useArticles from "@/hooks/useArticle";
 import Header from "../../../components/layout/header";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
 import style from "../../../../styles/modules/operatorCamera.module.css";
+
 export default function ArticleDetail() {
   const { id } = useParams(); // 取得網址中的文章 ID
-  const { articles, article, comments, getArticle, loading, error } = useArticles()
-  console.log(comments)
+  const { articles, article, comments, getArticle, loading, error } = useArticles();
 
+  const [visibleComments, setVisibleComments] = useState(3); // 控制顯示留言數量
+  const [expanded, setExpanded] = useState(false); // 記錄展開狀態
 
-
-  // **當 ID 變更時，載入對應的文章**
   useEffect(() => {
     if (id) {
       getArticle(id);
@@ -32,7 +32,14 @@ export default function ArticleDetail() {
   if (error) return <p>錯誤: {error}</p>;
   if (!article) return <p>文章不存在</p>;
 
-
+  const toggleComments = () => {
+    if (expanded) {
+      setVisibleComments(3);
+    } else {
+      setVisibleComments(comments.length);
+    }
+    setExpanded(!expanded);
+  };
 
   return (
     <>
@@ -45,7 +52,7 @@ export default function ArticleDetail() {
               <Breadcrumb
                 links={[
                   { label: "首頁 ", href: "/" },
-                  { label: " 毛孩文章", href: "/article/list" },
+                  { label: "毛孩文章", href: "/article/list" },
                   {
                     label: ` ${article?.title || "標題尚未加載"}`,
                     href: "/article/list/detail",
@@ -63,7 +70,7 @@ export default function ArticleDetail() {
                 background: "#FDFAF5",
                 padding: "15px",
                 marginTop: "80px",
-                marginBottom:"80px",
+                marginBottom: "80px",
                 borderRadius: "20px",
                 border: "none ",
                 boxShadow: "0px 10px 14px rgba(0, 0, 0, 0.25)",
@@ -74,7 +81,7 @@ export default function ArticleDetail() {
                 {comments.length === 0 ? (
                   <p className="mt-3 ms-3">暫無評論，快來發表你的看法吧！</p>
                 ) : (
-                  comments.map((comment, index) => (
+                  comments.slice(0, visibleComments).map((comment, index) => (
                     <Comment
                       key={index}
                       content={comment.content}
@@ -86,6 +93,18 @@ export default function ArticleDetail() {
                 )}
                 <MyComment />
               </ul>
+
+              {/* 如果留言數大於 3，顯示展開/收起按鈕 */}
+              <div className="w-100 d-flex justify-content-end">
+                {comments.length > 3 && (
+                  <button
+                    onClick={toggleComments}
+                    className="btn btn-outline-primary mt-3"
+                  >
+                    {expanded ? "收起留言" : "顯示更多"}
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* 延伸閱讀 */}
@@ -94,7 +113,7 @@ export default function ArticleDetail() {
               <div className="row">
                 {articles
                   .sort(() => Math.random() - 0.5) // 亂數排序
-                  .slice(0, 4) // 取前五篇
+                  .slice(0, 4) // 取前四篇
                   .map((article) => (
                     <Card key={article.id} {...article} />
                   ))}
@@ -106,6 +125,3 @@ export default function ArticleDetail() {
     </>
   );
 }
-
-
-/**/

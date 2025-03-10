@@ -19,7 +19,8 @@ const Course = ({ courseOrders }) => {
             <Link href="">
               <img
                 src={`/course/img/${order.main_pic}`}
-                style={{ maxHeight: "100px", objectFit: "cover" }}
+                // src="	http://localhost:5000/api/articles/image4.jpg"
+                style={{ width:'176.989px',maxHeight: "100px", objectFit: "cover" }}
                 alt={`課程訂單 ${order.id}`}
               />
             </Link>
