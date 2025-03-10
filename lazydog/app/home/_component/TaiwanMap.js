@@ -60,7 +60,7 @@ const recommendedHotels = {
 const regionPositions = {
   台北: { top: "10%", left: "75%" },
   桃園: { top: "11%", left: "50%" },
-  新竹: { top: "25%", left: "50%" },
+  新竹: { top: "23%", left: "50%" },
   台中: { top: "35%", left: "30%" },
   高雄: { top: "70%", left: "30%" },
   台南: { top: "67%", left: "15%" },
@@ -113,7 +113,14 @@ export default function RegionMap() {
         <>
           {/* 電腦版：顯示地圖和點點 */}
           {selectedRegion && recommendedHotels[selectedRegion] && (
-            <div className={styles.hotelInfo}>
+            <div
+              className={styles.hotelInfo}
+              style={{
+                top: `calc(${regionPositions[selectedRegion].top} + 10%)`,
+                left: `calc(${regionPositions[selectedRegion].left} + 25%)`,
+                transform: "translate(-50%, -100%)",
+              }}
+            >
               <h3>{recommendedHotels[selectedRegion].name}</h3>
               <img
                 src={recommendedHotels[selectedRegion].image}
@@ -121,7 +128,6 @@ export default function RegionMap() {
               />
             </div>
           )}
-
           {/* 台灣地圖背景 */}
           <img
             className={styles.mapImage}
