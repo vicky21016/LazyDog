@@ -194,7 +194,7 @@
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 50px;
 }
 /* --------------------------- */
 /* ---------card元件(備份)---------- */
@@ -353,6 +353,155 @@
     font-weight: bold;
   }
 }
+
+/* ------------------------- */
+.dogApp {
+  position: fixed;
+  bottom: 0;
+}
+/* .dogWoof {
+  width: 60px; 
+  height: 38px; 
+  background: url("../template/woof.png") 0 0; 
+  animation: four 1s steps(4) infinite; 
+}
+.dogWalk {
+  width: 60px; 
+  height: 38px; 
+  background: url("../template/walk.png") 0 0; 
+  animation: six 1s steps(6) infinite; 
+}
+.dogRun {
+  width: 60px; 
+  height: 38px;
+  background: url("../template/run.png") 0 0; 
+  animation: five 0.4s steps(5) infinite; 
+}
+.dogWalkToSit {
+  width: 60px; 
+  height: 38px; 
+  background: url("../template/walktosit.png") 0 0; 
+  animation: three 0.2s steps(2) forwards;
+}
+.dogSit {
+  width: 60px;
+  height: 38px;
+  background: url("../template/sit.png") 0 0; 
+  animation: four 0.6s steps(4) infinite; 
+}
+.dogStop {
+  width: 60px; 
+  height: 38px; 
+  background: url("../template/stop.png") 0 0; 
+  animation: four 0.6s steps(4) infinite; 
+}
+
+@keyframes six {
+  0% {
+    background-position: 0px 0px; 
+  }
+  100% {
+    background-position: -360px 0px; 
+  }
+}
+@keyframes five {
+  0% {
+    background-position: 0px 0px; 
+  }
+  100% {
+    background-position: -300px 0; 
+  }
+}
+@keyframes four {
+  0% {
+    background-position: 0px 0px; 
+  }
+  100% {
+    background-position: -240px 0; 
+  }
+}
+@keyframes three {
+  0% {
+    background-position: 0px 0px; 
+  }
+  100% {
+    background-position: -120px 0; 
+  }
+} */
+
+/* .toRight {
+  animation-name: moveRight;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: infinite;
+}
+
+@keyframes moveRight {
+  0% {
+    transform: translateX(0px); 
+  }
+  100% {
+    transform: translateX(calc(100vw - 60px)); 
+  }
+} */
+
+.dog {
+  width: 60px;
+  height: 38px;
+}
+
+.dogWoof {
+  background: url("../template/woof.png") 0 0;
+  animation: four 1s steps(4) infinite;
+}
+
+.dogWalk {
+  background: url("../template/walk.png") 0 0;
+  animation: six 1s steps(6) infinite;
+}
+
+.dogRun {
+  background: url("../template/run.png") 0 0;
+  animation: five 0.4s steps(5) infinite;
+}
+
+.dogSit {
+  background: url("../template/sit.png") 0 0;
+  animation: four 0.6s steps(4) infinite;
+}
+
+.flip {
+  transform: scaleX(-1);
+}
+
+@keyframes six {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -360px 0px;
+  }
+}
+
+@keyframes five {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -300px 0;
+  }
+}
+
+@keyframes four {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -240px 0;
+  }
+}
+
 @media (max-width: 768px) {
   .breadcrumb 
     {margin: 0;}

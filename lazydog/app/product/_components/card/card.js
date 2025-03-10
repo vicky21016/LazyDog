@@ -3,11 +3,14 @@
 import React, { useState, useEffect } from "react";
 import styles from "./card.module.css";
 import Link from "next/link";
+
 import Swal from "sweetalert2";
+import { MoonLoader } from "react-spinners";
+import * as motion from "motion/react-client";
 
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
-import { useCardFetch } from "@/hooks/product/use-fetch";
+import { useCardFetch, useDetailFetch } from "@/hooks/product/use-fetch";
 import {
   CardFavoriteProvider,
   useCardFavorite,
@@ -64,14 +67,10 @@ function CardContent({ productID = "" }) {
     isLoading,
     error,
   } = useCardFetch({ productID });
-  const {
-    favorite,
-    setFavorite,
-    heartHover,
-    setHeartHover,
-    heartState,
-    setHeartState,
-  } = useCardFavorite();
+  const { detailPic, setDetailPic, img, picNow, setPicNow } =
+    useDetailFetch(productID);
+  const { setFavorite, heartHover, setHeartHover, heartState, setHeartState } =
+    useCardFavorite();
 
   const handleAddToCart = async (e) => {
     e.stopPropagation();
@@ -177,133 +176,428 @@ function CardContent({ productID = "" }) {
       }
     };
   }, [intervalId]);
+
+  const [isOn, setIsOn] = useState(false);
+  const toggleSwitch = () => setIsOn(!isOn);
+
   return (
-    <li
-      className={`${styles.ProductCard} col`}
-      onMouseEnter={() => setCardHover(true)}
-      onMouseLeave={() => setCardHover(false)}
-    >
-      <div
-        className={
-          cardHover ? styles.ProductCardHeartOff : styles.ProductCardHeart
-        }
-      >
-        <img
-          src={`/product/font/${heartState ? "heart-fill" : "heart"}.png`}
-          alt=""
-        />
-      </div>
-      <div
-        className={
-          cardHover
-            ? styles.ProductCardCartOff
-            : (productCount ?? 0) > 0 || (cartRate ?? 0) > 0
-            ? styles.ProductCardCart
-            : styles.ProductCardCartOff
-        }
-      >
-        <img src={`/product/font/cart-fill-big.png`} alt="" />
-        <p>{productCount > 0 ? productCount : cartRate}</p>
-      </div>
-      <figure className={styles.ProductCardImg}>
-        {productName && (
-          <img
-            src={cardPic}
-            alt=""
-            onError={() => setCardPic("/product/img/default.webp")}
-          />
-        )}
-      </figure>
-      <div className={styles.ProductCardInfo}>
-        <p className={`${styles.ProductCardName} d-none d-xxl-flex`}>
-          {productName}
-        </p>
-        <p className={`${styles.ProductCardNameSm} d-xxl-none`}>
-          {productName}
-        </p>
-        <h5 className={`${styles.ProductCardPrice} d-none d-xl-block`}>
-          NT$ {products?.price}
-        </h5>
-        <h5 className={`${styles.ProductCardPriceSm} d-xl-none`}>
-          NT$ {products?.price}
-        </h5>
-      </div>
-      <div
-        className={`${
-          width > 1024
-            ? styles.ProductCardHover
-            : cardHover
-            ? styles.ProductCardClickOn
-            : styles.ProductCardClickOff
-        }`}
-        onClick={(e) => {
-          width > 1024 ? simulateClick(e) : setCardHover(!cardHover);
-        }}
-        data-clickable="true"
-      >
-        <button
-          type="button"
-          className={`${styles.HoverIcon} `}
-          onMouseEnter={() => setHeartHover(true)}
-          onMouseLeave={() => setHeartHover(false)}
-          onClick={(e) => {
-            handleAddFavorite(e);
+    <>
+      {isLoading ? (
+        <li
+          className={`${styles.ProductCard} col`}
+          style={{
+            height: "300px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <img
-            src={`/product/font/${
-              heartHover || heartState ? "heart-fill-big" : "heart-big"
-            }.png`}
-            alt=""
-          />
-        </button>
-        <button
-          type="button"
-          className={`${styles.HoverIcon} ${
-            cartRate > 0 ? styles.CartBtn : styles.CartBtnOff
-          }`}
-          onMouseEnter={() => setCartHover(true)}
-          onMouseLeave={() => setCartHover(false)}
-          onClick={(e) => {
-            handleAddToCart(e);
-          }}
-        >
-          <img
-            src={`/product/font/${cartHover ? "cart-add" : "cart"}.png`}
-            alt=""
-          />
-        </button>
-        <Link
-          onMouseEnter={() => {
-            const id = setInterval(() => {
-              setTimeout(() => {
-                setEyeHover((prev) => !prev);
-              }, 200);
-              setTimeout(() => {
-                setEyeHover((prev) => !prev);
-              }, 900);
-            }, 2000);
-            setIntervalId(id);
-          }}
-          onMouseLeave={() => {
-            if (intervalId) {
-              clearInterval(intervalId);
-              setIntervalId(null);
-            }
-          }}
-          href={`/product/detail?productID=${productID}`}
-          className={styles.HoverIcon}
-          ref={cardRef}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <img
-            src={`/product/font/${eyeHover ? "listOff2" : "list"}.png`}
-            alt=""
-          />
-        </Link>
-      </div>
-    </li>
+          <MoonLoader color="#f5842b" speedMultiplier={1} />
+        </li>
+      ) : (
+        <>
+          <li layout style={{}} className={`${styles.ProductCard} col`}>
+            <motion.div
+              layout
+              style={{
+                translate: isOn ? "" : !isOn && cardHover ? "0 -10px" : "",
+                width: isOn ? width : "",
+                height: isOn ? "100vh" : "",
+                position: isOn ? "fixed" : "",
+                display: isOn ? "flex" : "",
+                justifyContent: isOn ? "center" : "",
+                alignItems: isOn ? "center" : "",
+                top: isOn ? "0%" : "",
+                left: isOn ? "0%" : "",
+                zIndex: isOn ? "999" : "",
+              }}
+              onClick={toggleSwitch}
+            >
+              <motion.div
+                layout
+                style={{
+                  display: isOn ? "flex" : "",
+                  justifyContent: isOn ? "center" : "",
+                  flexDirection: isOn ? "column" : "",
+                  background: isOn ? "#ffffff" : "",
+                  boxShadow: isOn ? "0px 0px 10px rgba(0, 0, 0, 0.2)" : "",
+                  borderRadius: isOn ? "15px" : "",
+                  overflow: isOn ? "hidden" : "",
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <motion.div
+                  layout
+                  style={{
+                    display: isOn ? "none" : "",
+                  }}
+                  className={
+                    cardHover
+                      ? styles.ProductCardHeartOff
+                      : styles.ProductCardHeart
+                  }
+                >
+                  <img
+                    src={`/product/font/${
+                      heartState ? "heart-fill" : "heart"
+                    }.png`}
+                    alt=""
+                  />
+                </motion.div>
+                <motion.div
+                  layout
+                  style={{
+                    display: isOn ? "none" : "",
+                  }}
+                  className={
+                    cardHover
+                      ? styles.ProductCardCartOff
+                      : (productCount ?? 0) > 0 || (cartRate ?? 0) > 0
+                      ? styles.ProductCardCart
+                      : styles.ProductCardCartOff
+                  }
+                >
+                  <img src={`/product/font/cart-fill-big.png`} alt="" />
+                  <p>{productCount > 0 ? productCount : cartRate}</p>
+                </motion.div>
+                <motion.figure
+                  layout
+                  style={{
+                    width: isOn && width >= 768 ? "400px" : isOn ? "250px" : "",
+                    position: isOn ? "relative" : "",
+                  }}
+                  className={styles.ProductCardImg}
+                >
+                  {!isOn && productName && (
+                    <img
+                      src={cardPic}
+                      alt=""
+                      onError={() => setCardPic("/product/img/default.webp")}
+                    />
+                  )}
+                  {isOn && (
+                    <div className={`${styles.ProductInfoImgGroup} col`}>
+                      <motion.figure
+                        layout
+                        style={{
+                          marginLeft: isOn ? "0px" : "",
+                        }}
+                        className={styles.ProductInfoImg}
+                      >
+                        {detailPic == "/product/img/default.webp" ? (
+                          <div
+                            style={{
+                              width: width >= 768 ? "400px" : "250px",
+                              height: width >= 768 ? "400px" : "250px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <MoonLoader
+                              width={300}
+                              color="#f5842b"
+                              speedMultiplier={2}
+                            />
+                          </div>
+                        ) : (
+                          <img
+                            src={detailPic}
+                            alt=""
+                            onError={() =>
+                              setDetailPic("/product/img/default.webp")
+                            }
+                          />
+                        )}
+                      </motion.figure>
+                      <div
+                        className={styles.ProductInfoImgSmall}
+                        style={{ gap: width >= 768 ? "2px" : "1px" }}
+                      >
+                        {img.sm &&
+                          img.sm.map((v, i) => {
+                            if (i < (width < 768 ? 4 : 5)) {
+                              return (
+                                <figure
+                                  key={`smPic${i}`}
+                                  style={{
+                                    maxWidth: width >= 768 ? "100px" : "67px",
+                                  }}
+                                  className={`${styles.ProductInfoImgSmall}  ${
+                                    i == picNow
+                                      ? styles.ProductInfoImgSmallActive
+                                      : ""
+                                  }`}
+                                  onClick={() => {
+                                    setPicNow(() => {
+                                      const newIndex = i;
+                                      const encodedImageName =
+                                        encodeURIComponent(productName);
+                                      setDetailPic(
+                                        `/product/img/${encodedImageName}${img.img[newIndex]}`
+                                      );
+                                      return newIndex;
+                                    });
+                                  }}
+                                >
+                                  <img
+                                    src={`/product/img/${productName}${v}`}
+                                    alt=""
+                                  />
+                                </figure>
+                              );
+                            }
+                          })}
+                      </div>
+                    </div>
+                  )}
+                  {isOn && (
+                    <motion.div
+                      layout
+                      style={{
+                        display: isOn ? "flex" : "none",
+                        flexDirection: isOn ? "column" : "",
+                        position: isOn ? "absolute" : "",
+                        top: isOn ? "0" : "",
+                        right: isOn ? "0" : "",
+                        padding: isOn ? "10px 5px" : "",
+                        gap: isOn ? "7px" : "",
+                      }}
+                    >
+                      <button
+                        type="button"
+                        className={`${styles.HoverIcon} `}
+                        onMouseEnter={() => setHeartHover(true)}
+                        onMouseLeave={() => setHeartHover(false)}
+                        onClick={(e) => {
+                          handleAddFavorite(e);
+                        }}
+                      >
+                        <motion.img
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.8 }}
+                          src={`/product/font/${
+                            heartHover || heartState
+                              ? "heart-fill-big"
+                              : "heart-big"
+                          }.png`}
+                          alt=""
+                        />
+                      </button>
+                      <button
+                        type="button"
+                        className={`${styles.HoverIcon} ${
+                          cartRate > 0 ? styles.CartBtn : styles.CartBtnOff
+                        }`}
+                        onMouseEnter={() => setCartHover(true)}
+                        onMouseLeave={() => setCartHover(false)}
+                        onClick={(e) => {
+                          handleAddToCart(e);
+                        }}
+                        style={{ paddingRight: isOn ? "9px" : "" }}
+                      >
+                        <motion.img
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.8 }}
+                          src={`/product/font/${
+                            cartHover ? "cart-add" : "cart"
+                          }.png`}
+                          alt=""
+                        />
+                      </button>
+                      <Link
+                        onMouseEnter={() => {
+                          const id = setInterval(() => {
+                            setTimeout(() => {
+                              setEyeHover((prev) => !prev);
+                            }, 200);
+                            setTimeout(() => {
+                              setEyeHover((prev) => !prev);
+                            }, 900);
+                          }, 2000);
+                          setIntervalId(id);
+                        }}
+                        onMouseLeave={() => {
+                          if (intervalId) {
+                            clearInterval(intervalId);
+                            setIntervalId(null);
+                          }
+                        }}
+                        href={`/product/detail?productID=${productID}`}
+                        className={styles.HoverIcon}
+                        ref={cardRef}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        <motion.img
+                          whileHover={{ scale: 1.2 }}
+                          whileTap={{ scale: 0.8 }}
+                          src={`/product/font/${
+                            eyeHover ? "listOff2" : "list"
+                          }.png`}
+                          alt=""
+                        />
+                      </Link>
+                    </motion.div>
+                  )}
+                </motion.figure>
+                <motion.div
+                  layout
+                  style={{
+                    background: isOn ? "black" : "",
+                    paddingTop: isOn ? "14px" : "",
+                  }}
+                  className={styles.ProductCardInfo}
+                >
+                  <motion.p
+                    layout
+                    style={{
+                      maxWidth: isOn ? "360px" : "",
+                      height: isOn ? "auto" : "",
+                      color: isOn ? "white" : "",
+                      fontSize: isOn ? "20px" : "",
+                    }}
+                    className={`${styles.ProductCardName} d-none d-xxl-flex`}
+                  >
+                    {productName}
+                  </motion.p>
+                  <motion.p
+                    layout
+                    style={{
+                      maxWidth:
+                        isOn && width >= 768 ? "360px" : isOn ? "210px" : "",
+                      height: isOn ? "auto" : "",
+                      color: isOn ? "white" : "",
+                    }}
+                    className={`${styles.ProductCardNameSm} d-xxl-none`}
+                  >
+                    {productName}
+                  </motion.p>
+                  <motion.h5
+                    className={`${styles.ProductCardPrice} d-none d-xl-block`}
+                  >
+                    NT$ {products?.price}
+                  </motion.h5>
+                  <motion.h5
+                    className={`${styles.ProductCardPriceSm} d-xl-none`}
+                  >
+                    NT$ {products?.price}
+                  </motion.h5>
+                </motion.div>
+                <motion.div
+                  layout
+                  style={{
+                    display: isOn ? "none" : "",
+                  }}
+                  className={`${
+                    width > 1024
+                      ? styles.ProductCardHover
+                      : cardHover
+                      ? styles.ProductCardClickOn
+                      : styles.ProductCardClickOff
+                  }`}
+                  onClick={toggleSwitch}
+                  onMouseEnter={() => setCardHover(true)}
+                  onMouseLeave={() => setCardHover(false)}
+                  data-clickable="true"
+                >
+                  <button
+                    type="button"
+                    className={`${styles.HoverIcon} `}
+                    onMouseEnter={() => setHeartHover(true)}
+                    onMouseLeave={() => setHeartHover(false)}
+                    onClick={(e) => {
+                      handleAddFavorite(e);
+                    }}
+                  >
+                    <motion.img
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.8 }}
+                      src={`/product/font/${
+                        heartHover || heartState
+                          ? "heart-fill-big"
+                          : "heart-big"
+                      }.png`}
+                      alt=""
+                    />
+                  </button>
+                  <button
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.8 }}
+                    type="button"
+                    className={`${styles.HoverIcon} ${
+                      cartRate > 0 ? styles.CartBtn : styles.CartBtnOff
+                    }`}
+                    onMouseEnter={() => setCartHover(true)}
+                    onMouseLeave={() => setCartHover(false)}
+                    onClick={(e) => {
+                      handleAddToCart(e);
+                    }}
+                    style={{ paddingRight: "9px" }}
+                  >
+                    <motion.img
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.8 }}
+                      src={`/product/font/${
+                        cartHover ? "cart-add" : "cart"
+                      }.png`}
+                      alt=""
+                    />
+                  </button>
+                  <Link
+                    onMouseEnter={() => {
+                      const id = setInterval(() => {
+                        setTimeout(() => {
+                          setEyeHover((prev) => !prev);
+                        }, 200);
+                        setTimeout(() => {
+                          setEyeHover((prev) => !prev);
+                        }, 900);
+                      }, 2000);
+                      setIntervalId(id);
+                    }}
+                    onMouseLeave={() => {
+                      if (intervalId) {
+                        clearInterval(intervalId);
+                        setIntervalId(null);
+                      }
+                    }}
+                    href={`/product/detail?productID=${productID}`}
+                    className={styles.HoverIcon}
+                    ref={cardRef}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <motion.img
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.8 }}
+                      src={`/product/font/${
+                        eyeHover ? "listOff2" : "list"
+                      }.png`}
+                      alt=""
+                    />
+                  </Link>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+            <motion.div
+              layout
+              style={{
+                width: isOn ? width : "",
+                height: isOn ? "100vh" : "",
+                position: isOn ? "fixed" : "",
+                top: isOn ? "0%" : "",
+                left: isOn ? "0%" : "",
+                zIndex: isOn ? "998" : "",
+                background: isOn ? "rgba(0, 0, 0, 0.8)" : "",
+                transition: "all 0.4s",
+              }}
+            ></motion.div>
+          </li>
+        </>
+      )}
+    </>
   );
 }

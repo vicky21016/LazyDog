@@ -208,7 +208,7 @@ export const getAllProductId = async (productID) => {
 export const getProductId = async (productID) => {
   try {
     const [products] = await pool.execute(
-      "SELECT yi_product.*,users.id As userID,users.name As user,users.email As email,users.user_img As userImg,yi_category.name As category,yi_img.list_img As listImg,yi_img.info_img As infoImg,yi_img.lg_img As img,yi_img.sm_img As smImg,yi_reviews.rating As rate,yi_reviews.comment As comment,yi_reviews.good As good,yi_reviews.updated_at As commentTime FROM yi_product JOIN yi_category ON yi_product.category_id = yi_category.id JOIN yi_img ON yi_product.productID = yi_img.productID JOIN yi_reviews ON yi_product.productID = yi_reviews.productID JOIN users ON yi_reviews.user_id = users.id WHERE yi_product.productID = ? AND yi_product.is_deleted = 0 AND yi_reviews.is_deleted = 0",
+      "SELECT yi_product.*,users.id As userID,users.name As user,users.email As email,users.user_img As userImg,yi_category.name As category,yi_img.list_img As listImg,yi_img.info_img As infoImg,yi_img.lg_img As img,yi_img.sm_img As smImg,yi_reviews.rating As rate,yi_reviews.comment As comment,yi_reviews.good As good,yi_reviews.updated_at As commentTime FROM yi_product JOIN yi_category ON yi_product.category_id = yi_category.id JOIN yi_img ON yi_product.productID = yi_img.productID LEFT JOIN yi_reviews ON yi_product.productID = yi_reviews.productID AND yi_reviews.is_deleted = 0 LEFT JOIN users ON yi_reviews.user_id = users.id WHERE yi_product.productID = ? AND yi_product.is_deleted = 0",
       [productID]
     );
     return products;
@@ -362,7 +362,24 @@ export const createNewReviews = async (userID, productID, rating, comment) => {
 
 export const updateReviewsInfo = async (updateFields, value) => {
   try {
-    if (updateFields.includes("is_deleted = ?")) {
+    // if (updateFields.includes("is_deleted = ?")) {
+    //   const [products] = await pool.execute(
+    //     `UPDATE yi_reviews SET ${updateFields.join(
+    //       ","
+    //     )} WHERE (user_id = ? AND productID = ?)`,
+    //     value
+    //   );
+    //   return products;
+    // } else {
+    //   const [products] = await pool.execute(
+    //     `UPDATE yi_reviews SET ${updateFields.join(
+    //       ","
+    //     )} WHERE (user_id = ? AND productID = ? AND is_deleted = 0)`,
+    //     value
+    //   );
+    //   return products;
+    // }
+    if (value[updateFields.indexOf("is_deleted = ?")] == 1) {
       const [products] = await pool.execute(
         `UPDATE yi_reviews SET ${updateFields.join(
           ","
