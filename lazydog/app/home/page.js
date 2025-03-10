@@ -62,7 +62,6 @@ export default function HomePage(props) {
       fetchProductDetails([...hotSale]);
     }
   }, [hotSale]);
-  console.log(productDetails);
   return (
     <>
       <Header />
@@ -130,7 +129,7 @@ export default function HomePage(props) {
               productDetails.map((product, index) => {
                 if (index >= 5) return;
                 return (
-                  <div className={`col-2 ${styles.card}`}>
+                  <div key={index} className={`col-2 ${styles.card}`}>
                     <div className={styles.pdPics}>
                       <img
                         className={styles.dryfood}

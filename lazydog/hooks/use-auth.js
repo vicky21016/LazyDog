@@ -349,23 +349,13 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   console.log({ user, pathname });
-  //   if (user == -1) return; // 等待 user 讀取完成
-  //   if (!user && protectedRoutes.includes(pathname)) {
-  //     alert("請先登入");
-  //     router.replace(loginRoute);
-  //   }
-  // }, [pathname, user]);
-
   useEffect(() => {
-    // console.log({ user, pathname });
     if (user == -1) return; // 等待 user 讀取完成
-    if (!user) {
+    if (!user && protectedRoutes.includes(pathname)) {
       alert("請先登入");
       router.replace(loginRoute);
     }
-  }, [user]);
+  }, [pathname, user]);
 
   return (
     <AuthContext.Provider
