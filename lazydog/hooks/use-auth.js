@@ -160,9 +160,31 @@ export function AuthProvider({ children }) {
   };
 
   // 儲存
-  const save = async (name, email, gender, birthday, phone, avatar) => {
+  const save = async (
+    name,
+    email,
+    gender,
+    birthday,
+    avatar,
+    county,
+    district,
+    address,
+    phone
+  ) => {
     let token = localStorage.getItem(appKey);
     let API = `http://localhost:5000/auth/${user.id}`;
+    console.log(
+      name,
+      email,
+      gender,
+      birthday,
+      phone,
+      avatar,
+      county,
+      district,
+      address
+    );
+
     try {
       const res = await fetch(API, {
         method: "PUT",
@@ -170,7 +192,17 @@ export function AuthProvider({ children }) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, gender, birthday, phone, avatar }),
+        body: JSON.stringify({
+          name,
+          email,
+          gender,
+          birthday,
+          phone,
+          avatar,
+          county,
+          district,
+          address,
+        }),
       });
       console.log("🚀 取得的 token:", token);
       console.log("🆔 取得的 user.id:", user?.id);
