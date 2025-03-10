@@ -13,7 +13,7 @@ export default function Comment({ content, author, author_img, id }) {
     const [showModal, setShowModal] = useState(false);
     const { user } = useAuth();
     const { deleteComment, loading } = useComment(); // 從 useComment 鉤子中獲取 deleteComment
-    console.log(id);
+    // console.log(id);
 
     // 控制 Modal 的顯示與隱藏
     const handleClose = () => setShowModal(false);
@@ -23,7 +23,7 @@ export default function Comment({ content, author, author_img, id }) {
     const handleDelete = async () => {
         try {
             await deleteComment(id); // 調用刪除 API
-            console.log(id)
+            // console.log(id)
             handleClose(); // 關閉 Modal
             window.location.reload(); // 重新加載頁面
         } catch (error) {
