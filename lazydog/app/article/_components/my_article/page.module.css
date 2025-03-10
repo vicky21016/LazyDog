@@ -51,6 +51,7 @@
   overflow: hidden;
 }
 .commentCard:hover{
+  
   .link{
     color: #f5842b;
   }
