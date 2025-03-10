@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"; // Import useRouter
 import { useAuth } from "@/hooks/use-auth";
 import Input from "../components/forms/Input";
 import styles from "./menu.module.css";
-import { useLocationSelector } from "@/hooks/useLocationSelector";
+// import { useLocationSelector } from "@/hooks/useLocationSelector";
 // import { auth, signOut, onAuth } from "./firebase";
 
 export default function Menu() {
+  const router = useRouter(); // Initialize useRouter
   // const { city, district, closeModal, openModal } = useLocationSelector();
   const [checkingAuth, setCheckingAuth] = useState(true);
   const { user, save } = useAuth();
@@ -33,6 +34,7 @@ export default function Menu() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleCancel = (e) => {
     setFormData({
       name: user?.name || "",
@@ -50,8 +52,9 @@ export default function Menu() {
       number: user?.number || "",
       floor: user?.floor || "",
     });
-    router.push("/user");
+    router.push("/user"); // Now router is defined
   };
+
   const handleSubmit = async (e) => {
     console.log(user.id);
 
@@ -164,16 +167,18 @@ export default function Menu() {
             />
 
             <h6>
-              聯絡信箱<span className={`${styles["important"]}`}> *</span>
+              聯絡信箱<span className={`${styles["important"]}`}></span>
             </h6>
-            <Input
+            {/* <Input
               type="email"
               name="email"
               placeholder="聯絡信箱"
               value={formData.email}
               onChange={handleChange}
               required
-            />
+              isReadOnly
+            /> */}
+            {formData.email}
           </div>
 
           <div className={styles.formGroup}>
