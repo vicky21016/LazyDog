@@ -198,9 +198,30 @@ export default function Header(props) {
         <div className={styles["dropdown"]}>
           <ToastContainer />
           {user ? (
-            <Link href="/user" className={styles["lumi-user-icon"]}>
-              <i className="bi bi-person" />
-            </Link>
+            (() => {
+              switch (user) {
+                case "operator":
+                  return (
+                    <Link href="/hotel-coupon/operatorDetail" className={styles["lumi-user-icon"]}>
+                      <i className="bi bi-person" />
+                    </Link>
+                  );
+                case "teacher":
+                  return (
+                    <Link href="/teacher-sign/list" className={styles["lumi-user-icon"]}>
+                      <i className="bi bi-person" />
+                    </Link>
+                  );
+                case "user":
+                  return (
+                    <Link href="/user" className={styles["lumi-user-icon"]}>
+                      <i className="bi bi-person" />
+                    </Link>
+                  );
+                default:
+                  return null;
+              }
+            })()
           ) : (
             <>
               <Link
@@ -223,14 +244,43 @@ export default function Header(props) {
               <ToastContainer />
             </>
           )}
+
           {user ? (
             <div className={styles["dropdown-content"]}>
-              <Link
-                href="/user"
-                className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
-              >
-                個人資料
-              </Link>
+              {(() => {
+                switch (user) {
+                  case "operator":
+                    return (
+                      <Link
+                        href="/hotel-coupon/operatorDetail"
+                        className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                      >
+                        個人資料
+                      </Link>
+                    );
+                  case "teacher":
+                    return (
+                      <Link
+                        href="/teacher-sign/list"
+                        className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                      >
+                        個人資料
+                      </Link>
+                    );
+                  case "user":
+                    return (
+                      <Link
+                        href="/user"
+                        className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                      >
+                        個人資料
+                      </Link>
+                    );
+                  default:
+                    return null; // 避免 user 沒定義時出錯
+                }
+              })()}
+
               <Link
                 href="/user/userFavorite"
                 className={styles["dropdown-link"]}
@@ -299,9 +349,8 @@ export default function Header(props) {
           <i
             ref={menuRef}
             onClick={() => setMenuOpen(!menuOpen)}
-            className={`${styles.menu} ${
-              menuOpen ? "bi bi-x-lg" : "bi bi-list"
-            }`}
+            className={`${styles.menu} ${menuOpen ? "bi bi-x-lg" : "bi bi-list"
+              }`}
           ></i>
           <nav className={styles["mobileMenubar"]}>
             <ul
@@ -323,11 +372,10 @@ export default function Header(props) {
                   </Link>
                 </div>
                 <div
-                  className={`${
-                    PDOpen
-                      ? styles["dropdown-contentOn"]
-                      : styles["dropdown-contentOff"]
-                  }`}
+                  className={`${PDOpen
+                    ? styles["dropdown-contentOn"]
+                    : styles["dropdown-contentOff"]
+                    }`}
                 >
                   <a
                     href={`/product/list/category?category=乾糧`}
@@ -401,11 +449,10 @@ export default function Header(props) {
                   </Link>
                 </div>
                 <div
-                  className={`${
-                    teacherOpen
-                      ? styles["dropdown-contentOn"]
-                      : styles["dropdown-contentOff"]
-                  }`}
+                  className={`${teacherOpen
+                    ? styles["dropdown-contentOn"]
+                    : styles["dropdown-contentOff"]
+                    }`}
                 >
                   <Link
                     href="/course/list"
@@ -435,18 +482,64 @@ export default function Header(props) {
                   <Link href="/user">會員中心</Link>
                 </div>
                 <div
-                  className={`${
-                    userOpen
-                      ? styles["dropdown-contentOn"]
-                      : styles["dropdown-contentOff"]
-                  }`}
+                  className={`${userOpen
+                    ? styles["dropdown-contentOn"]
+                    : styles["dropdown-contentOff"]
+                    }`}
                 >
-                  <Link
-                    href="/user"
-                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
-                  >
-                    個人資料
-                  </Link>
+                  {(() => {
+                    switch (user) {
+                      case "operator":
+                        return (
+                          <Link
+                            href="/hotel-coupon/operatorDetail"
+                            className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                          >
+                            個人資料
+                          </Link>
+                        );
+                      case "teacher":
+                        return (
+                          <Link
+                            href="/teacher-sign/list"
+                            className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                          >
+                            個人資料
+                          </Link>
+                        );
+                      case "user":
+                        return (
+                          <Link
+                            href="/user"
+                            className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                          >
+                            個人資料
+                          </Link>
+                        );
+                      default:
+                        return (
+                          <Link
+                            href="/login"
+                            className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                            onClick={() =>
+                              toast.warning("請先登入!", {
+                                position: "top-center",
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "light",
+                              })
+                            }
+                          >
+                            個人資料
+                          </Link>
+                        );
+                    }
+                  })()}
+                  <ToastContainer />
+
                   <Link
                     href="/user/userFavorite"
                     className={styles["dropdown-link"]}
