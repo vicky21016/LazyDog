@@ -67,14 +67,19 @@
 .customToggle::after {
   display: none; /* 隱藏倒三角形 */
 }
+.customToggle:hover{
+  background-color: #f5842b;
+}
 .customDropdownMenu {
   min-width: 80px; /* 設置下拉式選單的最小寬度 */
   padding: 10px 0; /* 設置內邊距 */
- 
+ width: "25px";
+ background-color: #f5842b;
+ color: white;
 }
-.item:hover {
-  background-color: #66c5bd;
-  color: rgb(0, 0, 0);
+.customDropdownMenu:hover{
+  background-color: white;
+  color: #f5842b;
 }
 /* #FFF6E8 */
 /*#66c5bd*/

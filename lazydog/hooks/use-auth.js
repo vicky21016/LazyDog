@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { auth, provider } from "@/app/components/utils/firebase"; // 確保路徑正確
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
   const pathname = usePathname();
   const protectedRoutes = ["/user"];
   const loginRoute = "/login";
-
+  const isMounted = useRef(false);
   // 登入
   const login = async (email, password) => {
     let API = "http://localhost:5000/auth/login";
@@ -248,10 +248,61 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // useEffect(() => {
+  //   // console.count("useEffect00 次數");
+  //   // 監聽 Firebase 登入狀態*
+  //   let token = localStorage.getItem(appKey);
+  //   if (!token) {
+  //     setUser(null); // 確保未登入時使用是 null
+  //     return;
+  //   }
+
+  //   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+  //     if (currentUser) {
+  //       setUser(currentUser);
+  //       localStorage.setItem(
+  //         "user",
+  //         JSON.stringify({
+  //           uid: currentUser.uid,
+  //           email: currentUser.email,
+  //           name: currentUser.displayName,
+  //           avatar: currentUser.photoURL,
+  //         })
+  //       );
+  //     }
+  //   });
+  //   if (token) {
+  //     const fetchData = async () => {
+  //       let API = "http://localhost:5000/auth/status";
+  //       try {
+  //         const res = await fetch(API, {
+  //           method: "POST",
+  //           headers: { Authorization: `Bearer ${token}` },
+  //         });
+  //         const result = await res.json();
+  //         if (result.status !== "success") throw new Error(result.message);
+
+  //         // 更新 token
+  //         token = result.data.token;
+  //         localStorage.setItem(appKey, token);
+
+  //         // 解析 token 並更新 user
+  //         const newUser = jwt.decode(token);
+  //         setUser(newUser);
+  //       } catch (err) {
+  //         console.log(err);
+  //         localStorage.removeItem(appKey);
+  //       }
+  //     };
+  //     unsubscribe();
+  //     fetchData();
+  //   }
+  // }, []);
+
   useEffect(() => {
-    // console.count("useEffect00 次數");
-    // 監聽 Firebase 登入狀態*
+    // 監聽 Firebase 登入狀態
     let token = localStorage.getItem(appKey);
+
     if (!token) {
       setUser(null); // 確保未登入時使用是 null
       return;
@@ -259,7 +310,6 @@ export function AuthProvider({ children }) {
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        setUser(currentUser);
         localStorage.setItem(
           "user",
           JSON.stringify({
@@ -299,14 +349,23 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  // useEffect(() => {
+  //   console.log({ user, pathname });
+  //   if (user == -1) return; // 等待 user 讀取完成
+  //   if (!user && protectedRoutes.includes(pathname)) {
+  //     alert("請先登入");
+  //     router.replace(loginRoute);
+  //   }
+  // }, [pathname, user]);
+
   useEffect(() => {
-    console.log({ user, pathname });
+    // console.log({ user, pathname });
     if (user == -1) return; // 等待 user 讀取完成
-    if (!user && protectedRoutes.includes(pathname)) {
+    if (!user) {
       alert("請先登入");
       router.replace(loginRoute);
     }
-  }, [pathname, user]);
+  }, [user]);
 
   return (
     <AuthContext.Provider
