@@ -19,7 +19,7 @@ const Product = ({ orders }) => {
               src={`/product/img/${order.imageResult[0].name}${
                 order.imageResult[0].lg_img.split(",")[0]
               }`}
-              style={{ maxHeight: "100px" }}
+              style={{ width:'176.989px',maxHeight: "100px", objectFit: "cover" }}
               alt={order.orderID}
             />
           </Link>
