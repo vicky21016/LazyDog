@@ -111,7 +111,7 @@ export default function Menu() {
   return (
     <>
       <Header />
-      <div className={`${style.allwrapper}`}>
+      <div className={`lumi-all-wrapper ${style.allwrapper}`}>
         {/* <Bread
           links={[
             { label: "首頁 ", href: "/" },
