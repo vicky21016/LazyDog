@@ -1136,14 +1136,15 @@ body {
   .ticketIcon,
   .topIcon {
     position: fixed;
-    width: 43px;
-    height: 43px;
+    width: 48px;
+    height: 48px;
     background: #66c5bd;
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.15),
+      0px 0px 25px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.4s ease;
     animation: bounce 1.5s infinite ease-in-out;
     will-change: transform;
 
@@ -1154,30 +1155,27 @@ body {
     display: block;
     text-align: center;
     align-content: center;
-    right: 10px;
+    right: 15px;
     bottom: 100px;
     z-index: 99;
     padding-bottom: 3px;
   }
   .topIcon {
+    opacity: 0;
     padding-bottom: 6px;
-    right: 10px;
+    right: 15px;
     bottom: 40px;
     z-index: 99;
+    transform: translateY(20px);
   }
   .ticketIcon:hover,
   .topIcon:hover {
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
     transform: scale(1.1) translateY(-10px);
   }
-
-  @keyframes bounce {
-    0%,
-    100% {
-      transform: translate3d(0, 0, 0);
-    }
-    50% {
-      transform: translate3d(0, -20px, 0);
-    }
+  .topIcon.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 }
