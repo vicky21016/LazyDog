@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, use } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./list.module.css";
 import Aside from "../_components/aside/aside";
 import Link from "next/link";
@@ -57,16 +57,13 @@ export default function ListPage(props) {
     return () => document.removeEventListener("click", clickOutside);
   }, [listOpen, dropDown, collapseBtn]);
 
-  // const [isOn, setIsOn] = useState(false);
-  // const toggleSwitch = () => setIsOn(!isOn);
-
   // 小狗動畫-------------------------------------------------
   const dogRef = useRef(null);
   const containerRef = useRef(null);
+  const constraintsRef = useRef(null);
   const animations = [
     { class: styles.dogWalk, duration: 1000 },
     { class: styles.dogRun, duration: 400 },
-    { class: styles.dogWoof, duration: 1000 },
   ];
   const woof = [{ class: styles.dogWoof, duration: 1000 }];
   const transitions = [
@@ -76,21 +73,21 @@ export default function ListPage(props) {
   const stop = [
     { class: styles.dogSit, duration: 600 },
     { class: styles.dogStop, duration: 600 },
+    { class: styles.dogWoof, duration: 1000 },
   ];
 
   const getRandomPosition = () => {
+    // 始終限制在螢幕寬度範圍內
     return Math.floor(Math.random() * (window.innerWidth - 60));
   };
-
   const getRandomAnimation = () => {
     return animations[Math.floor(Math.random() * animations.length)];
   };
-
   const getRandomStopAnimation = () => {
     return stop[Math.floor(Math.random() * stop.length)];
   };
-
   const [stopOn, setStopOn] = useState(true);
+  const [TimeoutId, setTimeoutId] = useState(null);
   const stopDog = (e, now) => {
     setStopOn(!stopOn);
     if (TimeoutId) {
@@ -112,14 +109,17 @@ export default function ListPage(props) {
       const newAnimation = getRandomStopAnimation();
       dogRef.current.classList.add(newAnimation.class);
 
+      const boundedPosition = Math.max(
+        0,
+        Math.min(dogPosition, window.innerWidth - 60)
+      );
       containerRef.current.style.transition = `left 100ms linear`;
-      containerRef.current.style.left = `${dogPosition}px`;
+      containerRef.current.style.left = `${boundedPosition}px`;
+      containerRef.current.style.bottom = "0px";
     } else {
       moveDog();
     }
   };
-  const [TimeoutId, setTimeoutId] = useState(null);
-
   const moveDog = () => {
     if (!dogRef.current || !containerRef.current) return;
     if (TimeoutId) {
@@ -147,6 +147,7 @@ export default function ListPage(props) {
     // 設置新位置
     containerRef.current.style.transition = `left ${moveDuration}ms linear`;
     containerRef.current.style.left = `${newPosition}px`;
+    containerRef.current.style.bottom = "0px";
 
     // 在動畫完成後繼續下一次移動
     const id = setTimeout(
@@ -155,7 +156,6 @@ export default function ListPage(props) {
     );
     setTimeoutId(id);
   };
-
   useEffect(() => {
     stopDog();
     return () => {
@@ -557,26 +557,51 @@ export default function ListPage(props) {
           )}
         </section>
       </div>
-      <div className={styles.dogApp} ref={containerRef}>
-        {/* <motion.div
-          layout
-          style={{}}
-          className={`${styles.dogWalk} ${
-            isOn ? styles.toLeft : styles.toRight
-          }`}
-          onAnimationEnd={(e) => {
-            const style = window.getComputedStyle(e.target);
-            const bgPosition = style.getPropertyValue("background-position");
-            console.log(bgPosition);
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          position: "relative",
+          overflow: "hidden",
+        }}
+        ref={constraintsRef}
+      >
+        <motion.div
+          className={styles.dogApp}
+          ref={containerRef}
+          drag
+          dragConstraints={{
+            top: -window.innerHeight + 60,
+            bottom: 0,
+            left: 0,
+            right: window.innerWidth - 60,
           }}
-        ></motion.div> */}
-        <div
-          ref={dogRef}
-          className={`${styles.dog} ${styles.flip}`}
-          onClick={(e) => {
-            stopDog(e, stopOn);
+          dragElastic={0.2}
+          onDragStart={() => setStopOn(true)} // 開始拖曳時停止自動移動
+          onDragEnd={(e, info) => {
+            containerRef.current.style.transition =
+              "left 100ms linear, bottom 100ms linear";
+            // 限制 left 在螢幕範圍內
+            const newLeft = Math.max(
+              0,
+              Math.min(
+                containerRef.current.getBoundingClientRect().left,
+                window.innerWidth - 60
+              )
+            );
+            containerRef.current.style.left = `${newLeft}px`;
+            containerRef.current.style.bottom = "0px"; // 回到底部
+            if (!stopOn) moveDog();
           }}
-        ></div>
+        >
+          <div
+            ref={dogRef}
+            className={`${styles.dog} ${styles.flip}`}
+            onClick={(e) => {
+              stopDog(e, false);
+            }}
+          ></div>
+        </motion.div>
       </div>
     </>
   );
