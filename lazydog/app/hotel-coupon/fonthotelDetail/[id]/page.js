@@ -15,6 +15,7 @@ import {
   getHotelRoomById,
   getRoomInventory,
 } from "@/services/hotelService";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import {
   addHotelFavorite,
   removeHotelFavorite,
@@ -26,7 +27,7 @@ import Breadcrumb from "../../../components/teacher/breadcrumb";
 import RoomSelection from "../../../components/hotel/roomSelection";
 import { useAuth } from "@/hooks/use-auth";
 import useSafeData from "@/hooks/useSafeData";
-
+import styles from "../../../course/_components/courseId.module.css";
 export default function HotelDetailPage({ params }) {
   const { id } = params;
   const [favoriteId, setFavoriteId] = useState(null); // 存收藏的 ID
@@ -242,18 +243,40 @@ export default function HotelDetailPage({ params }) {
 
         Swal.fire({
           icon: "success",
-          title: "收藏成功！",
+          // title: "收藏成功！",
           text: response.message || "旅館已加入您的收藏清單！",
+          showConfirmButton: false,
+            timer: 950,
+            customClass: {
+                          popup: styles.tsaiSwal,
+                        },
         });
       } else {
         Swal.fire({
           icon: "error",
           title: "收藏失敗",
-          text: response?.message || "請稍後再試",
+          // text: response?.message || "請稍後再試",
+          showConfirmButton: false,
+                      timer: 2000,
+                      timerProgressBar: true,
+                      customClass: {
+                        popup: styles.tsaiSwal,
+                      },
         });
       }
     } catch (error) {
-      Swal.fire({ icon: "error", title: "操作失敗", text: "請稍後再試！" });
+      console.error("收藏操作失敗:", error);
+      Swal.fire({
+        icon: "error",
+        title: "操作失敗",
+        // text: error.message || "請稍後再試！",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
+      });
     }
   };
 
@@ -333,13 +356,17 @@ export default function HotelDetailPage({ params }) {
               >
                 <h3 className="mb-5 text-center">
                   {hotel.name}
-                  <i
-                    className={`bi ${
-                      isFavorite ? "bi-heart-fill" : "bi-heart"
-                    }`}
-                    style={{ color: "red", cursor: "pointer", float: "right" }}
-                    onClick={handleFavorite}
-                  ></i>
+                  <div
+            onClick={handleFavorite}
+            className={`me-5 `}
+            style={{ cursor: "pointer", float: "right", color:"#ff9538"}}
+          >
+            {isFavorite ? (
+              <FaHeart className="fs-4" />
+            ) : (
+              <FaRegHeart className="fs-4" />
+            )}
+          </div>
                 </h3>
                 {/* <p>入住時間: {checkInDate}</p>
                 <p>退房時間: {checkOutDate}</p>

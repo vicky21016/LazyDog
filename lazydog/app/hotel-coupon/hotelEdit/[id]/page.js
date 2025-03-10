@@ -689,7 +689,7 @@ export default function HotelEditPage() {
                           {hotel.main_image_id !== img.id && (
                             <button
                               type="button"
-                              className={`btn btn-outline-primary btn-sm ${hotelStyles.suMainImageBtn}`}
+                              className={`btn btn-sm ${hotelStyles.suMainImageBtn} ${styles.btn3}`}
                               onClick={() => handleSetMainImage(img.id)}
                             >
                               設為主圖片
@@ -720,7 +720,7 @@ export default function HotelEditPage() {
                   />
                   <button
                     type="button"
-                    className={`btn btn-primary btn-sm ${hotelStyles.suUploadBtn}`}
+                    className={`btn btn-sm ${hotelStyles.suUploadBtn} ${styles.btn}`}
                     onClick={() => imageUploadRef.current.click()} // 觸發文件選擇
                   >
                     + 上傳旅館圖片
@@ -797,14 +797,14 @@ export default function HotelEditPage() {
                         />
                         <div className="mt-2">
                           <button
-                            className="btn btn-sm btn-success me-2"
+                            className={`btn btn-sm me-2 ${styles.btn}`}
                             onClick={() => handleUpdateRoom(room.id)}
                           >
                             更新房型
                           </button>
                           <button
                             type="button"
-                            className="btn btn-sm btn-danger"
+                            className={`btn btn-sm ${styles.btn2}`}
                             onClick={async () =>
                               await handleDeleteRoom(room.id)
                             }
