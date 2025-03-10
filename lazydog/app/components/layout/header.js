@@ -66,7 +66,7 @@ export default function Header(props) {
         <img src="/images/logo.png" alt="Logo" />
         <div className={styles.lumiLogo1}>LAZYDOG</div>
       </Link>
-      <ToastContainer />
+
       <nav className={styles["lumi-nav"]}>
         <ul className={styles["lumi-ul"]}>
           <div className={styles["dropdown"]}>
@@ -196,6 +196,8 @@ export default function Header(props) {
       {/* 右上角的會員與購物車 */}
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
+          <ToastContainer />
+
           <Link href="/user" className={styles["lumi-user-icon"]}>
             <i className="bi bi-person" />
           </Link>
