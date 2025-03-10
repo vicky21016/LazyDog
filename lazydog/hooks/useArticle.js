@@ -52,7 +52,7 @@ function useArticles() {
             //     }
             // });
             data.comments.forEach((comment) => {
-                comment.author_img = `http://localhost:5000/auth/images/${comment.author_img}`;
+                comment.author_img = `http://localhost:5000/auth/${comment.author_img}`;
             });
             
             // http://localhost:5000/auth/images/1.jpg //
