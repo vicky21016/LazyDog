@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../css/teacherSignList.module.css";
 import Link from "next/link";
-import Pagination from "@/app/course/_components/list/page";
+import Page from "@/app/components/hotel/page";
 
 export default function TeacherListC() {
   const [mycourse, setMycourse] = useState([]);
@@ -111,7 +111,7 @@ export default function TeacherListC() {
               })}
             </div>
           </div>
-          <Pagination
+          <Page
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
