@@ -12,7 +12,7 @@ import Header from "../../../components/layout/header";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
 import style from '../../../../styles/modules/operatorCamera.module.css';
 import styles from './page.module.css';
-
+import Swal from 'sweetalert2';
 // 將表單的不同部分拆分為子元件
 import TitleInput from '../../_components/update/TitleInput';
 import CategorySelect from '../../_components/update/CategorySelect';
@@ -71,12 +71,12 @@ export default function UpdateArticlePage({ params }) {
   // 提交文章
   const handleSubmit = useCallback(async () => {
     if (!title.trim() || !selectedCategory) {
-      alert("請填寫標題並選擇分類");
+      Swal.fire("請填寫標題並選擇分類");
       return;
     }
 
     if (!user) {
-      alert("請先登入");
+      Swal.fire("請先登入");
       return;
     }
 
@@ -86,7 +86,7 @@ export default function UpdateArticlePage({ params }) {
         uploadedImageUrl = await uploadCover(selectedImage);
       } catch (err) {
         console.error("圖片上傳失敗:", err);
-        alert("圖片上傳失敗，請重試");
+        Swal.fire("圖片上傳失敗，請重試");
         return;
       }
     }
@@ -101,10 +101,10 @@ export default function UpdateArticlePage({ params }) {
 
     try {
       await updateArticle(articleId, updatedArticle);
-      alert("文章更新成功！");
+      Swal.fire("文章更新成功！");
     } catch (error) {
       console.error("提交文章失敗:", error);
-      alert("提交文章失敗，請檢查網路連線");
+      Swal.fire("文章更新失敗，請檢查網路連線");
     }
   }, [title, selectedCategory, user, imageUrl, selectedImage, uploadCover, updateArticle, articleId]);
 

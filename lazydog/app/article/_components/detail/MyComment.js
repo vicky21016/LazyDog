@@ -6,6 +6,7 @@ import styles from '../../_components/detail/page.module.css';
 import { useAuth } from "@/hooks/use-auth";
 import { useParams } from "next/navigation";
 import style from '../../../../styles/modules/operatorCamera.module.css';
+import Swal from "sweetalert2";
 
 const CommentSection = () => {
     const [commentContent, setCommentContent] = useState("");
@@ -22,7 +23,7 @@ const CommentSection = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!commentContent.trim()) {
-            alert("請輸入留言內容");
+            Swal.fire("請輸入留言內容");
             return;
         }
 
@@ -33,12 +34,12 @@ const CommentSection = () => {
                 user_id: user.id
             };
             await createComment(commentData);
-            alert("新增成功");
+            Swal.fire("留言成功");
             window.location.reload();
             setCommentContent("");
         } catch (err) {
             console.error("留言創建失敗:", err);
-            alert("留言創建失敗，請稍後重試");
+            Swal.fire("留言創建失敗");
         }
     };
 
