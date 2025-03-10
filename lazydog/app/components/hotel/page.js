@@ -32,9 +32,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <li
               key={page}
-              className={`page-item ${currentPage == page ? "active" : ""} ${
-                styles.pageItem
-              }`}
+              className={`page-item ${
+                currentPage === page ? styles.pageItemActive : ""
+              } ${styles.pageItem}`}
             >
               <button
                 className={`page-link ${styles.pageLink}`}

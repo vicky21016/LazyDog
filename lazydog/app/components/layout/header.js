@@ -10,7 +10,8 @@ import { auth, firebase } from "../utils/firebase";
 import styles from "../../../styles/modules/header.module.css";
 
 import { useCart } from "@/hooks/use-cart";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function Header(props) {
   const [usernow, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false); // 控制選單展開
@@ -42,15 +43,30 @@ export default function Header(props) {
     return () => document.removeEventListener("click", clickOutside);
   }, [menuOpen]);
 
+  const handleCartClick = async () => {
+    if (!user) {
+      await toast.warning("請先登入才能使用購物車!", {
+        position: "top-center",
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
   const [PDOpen, setPDOpen] = useState(false);
   const [teacherOpen, setTeacherOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
+
   return (
     <header className={styles["lumi-header"]}>
       <Link href="/" className={styles["lumi-logo"]}>
         <img src="/images/logo.png" alt="Logo" />
         <div className={styles.lumiLogo1}>LAZYDOG</div>
       </Link>
+
       <nav className={styles["lumi-nav"]}>
         <ul className={styles["lumi-ul"]}>
           <div className={styles["dropdown"]}>
@@ -176,11 +192,12 @@ export default function Header(props) {
           </li>
         </ul>
       </nav>
-      {/* {!user ? (
-        <> */}
+
       {/* 右上角的會員與購物車 */}
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
+          <ToastContainer />
+
           <Link href="/user" className={styles["lumi-user-icon"]}>
             <i className="bi bi-person" />
           </Link>
@@ -207,21 +224,55 @@ export default function Header(props) {
             </div>
           ) : null}
         </div>
-        <Link href="/cart/CartList" className={styles["lumi-cart-icon"]}>
-          <i className="bi bi-cart2"></i>
-          {totalQty > 0 && (
-            <div className={styles["lumi-cart-count"]}>{totalQty}</div>
-          )}
-        </Link>
+        {user ? (
+          <Link
+            onClick={handleCartClick}
+            href="/cart/CartList"
+            className={styles["lumi-cart-icon"]}
+          >
+            <i className="bi bi-cart2"></i>
+            {totalQty > 0 && (
+              <div className={styles["lumi-cart-count"]}>{totalQty}</div>
+            )}
+          </Link>
+        ) : (
+          <Link
+            onClick={handleCartClick}
+            href="/login"
+            className={styles["lumi-cart-icon"]}
+          >
+            <i className="bi bi-cart2"></i>
+            {totalQty > 0 && (
+              <div className={styles["lumi-cart-count"]}>{totalQty}</div>
+            )}
+          </Link>
+        )}
       </div>
       {/* 手機板 */}
       <div className={styles.mobileMenuOut}>
-        <Link href="/cart/CartList" className={styles["lumi-cart-icon"]}>
-          <i className="bi bi-cart2"></i>
-          {totalQty > 0 && (
-            <div className={styles["lumi-cart-count"]}>{totalQty}</div>
-          )}
-        </Link>
+        {user ? (
+          <Link
+            onClick={handleCartClick}
+            href="/cart/CartList"
+            className={styles["lumi-cart-icon"]}
+          >
+            <i className="bi bi-cart2"></i>
+            {totalQty > 0 && (
+              <div className={styles["lumi-cart-count"]}>{totalQty}</div>
+            )}
+          </Link>
+        ) : (
+          <Link
+            onClick={handleCartClick}
+            href="/login"
+            className={styles["lumi-cart-icon"]}
+          >
+            <i className="bi bi-cart2"></i>
+            {totalQty > 0 && (
+              <div className={styles["lumi-cart-count"]}>{totalQty}</div>
+            )}
+          </Link>
+        )}
         <div className={`${styles.mobileMenu}`}>
           <i
             ref={menuRef}
@@ -245,7 +296,7 @@ export default function Header(props) {
                     setTeacherOpen(false);
                   }}
                 >
-                  <Link href="" className={styles["dropbtn"]}>
+                  <Link href="/product/list" className={styles["dropbtn"]}>
                     寵物用品
                   </Link>
                 </div>
@@ -359,7 +410,7 @@ export default function Header(props) {
                     setTeacherOpen(false);
                   }}
                 >
-                  <Link href="">會員中心</Link>
+                  <Link href="/user">會員中心</Link>
                 </div>
                 <div
                   className={`${
@@ -374,7 +425,10 @@ export default function Header(props) {
                   >
                     個人資料
                   </Link>
-                  <Link href="/favorite" className={styles["dropdown-link"]}>
+                  <Link
+                    href="/user/userFavorite"
+                    className={styles["dropdown-link"]}
+                  >
                     我的收藏
                   </Link>
                   <div
@@ -389,19 +443,6 @@ export default function Header(props) {
           </nav>
         </div>
       </div>
-
-      {/* </>
-      ) : (
-        <div>
-          <Link href="/register" className={styles["lumi-signin"]}>
-            註冊
-          </Link>
-          <span className={styles["lumi-connect"]}>/</span>
-          <Link href="/login" className={styles["lumi-signin"]}>
-            登入
-          </Link>
-        </div>
-      )} */}
     </header>
   );
 }

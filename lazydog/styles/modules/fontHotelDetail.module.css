@@ -29,7 +29,7 @@
   height: 250px;
   object-fit: cover;
   border-radius: 10px;
-  background-color: #fff;
+  background-color: #fff !important;
 }
 
 .suRoomCard h3 {
@@ -37,7 +37,7 @@
 }
 
 .room{
-  color: #ff9538;
+  color: #ff9538 !important;
   font-weight: bold;
 }
 
@@ -47,14 +47,14 @@
   }
 }
 .select:focus{
-  border-color: #ff9538;
+  border-color: #ff9538 !important;
   outline: none;
 }
 
 /* book按鈕 */
 .suRoomBookBtn {
-  background-color: #ff9538;
-  color: white;
+  background-color: #ff9538 !important;
+  color: white !important;
   padding: 10px 15px;
   border: 1px solid transparent;
   border-radius: 4px;
@@ -64,9 +64,9 @@
 }
 
 .suRoomBookBtn:hover {
-  background-color: #fdf9f5;
-  color: #ff9538;
-  border-color: #ff9538;
+  background-color: #fdf9f5 !important;
+  color: #ff9538 !important;
+  border-color: #ff9538 !important;
 }
 
 /* =================== 廣告區 (努力區塊) =================== */
@@ -138,26 +138,26 @@
 }
 
 .suEffortButtons .suBtnPrimary {
-  background-color: #ff9538;
-  color: white;
+  background-color: #ff9538 !important;
+  color: white !important;
   border: 1px solid transparent;
 }
 
 .suEffortButtons .suBtnPrimary:hover {
-  background-color: #fdf9f5;
-  color: #ff9538;
-  border-color: #ff9538;
+  background-color: #fdf9f5 !important;
+  color: #ff9538 !important;
+  border-color: #ff9538 !important;
 }
 
 .suEffortButtons .suBtnOutlineLight {
-  color: #ff9538;
-  border: 2px solid #ff9538;
+  color: #ff9538 !important;
+  border: 2px solid #ff9538    !important;
   background: transparent;
 }
 
 .suEffortButtons .suBtnOutlineLight:hover {
-  background-color: #ff9538;
-  color: white;
+  background-color: #ff9538  !important;
+  color: white !important;
 }
 
 

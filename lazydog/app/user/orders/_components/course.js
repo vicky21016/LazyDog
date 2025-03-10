@@ -1,34 +1,42 @@
-import React from 'react';
-import Link from 'next/link'; // 如果你使用的是 Next.js 的 Link 元件
-import couponStyles from './userCoupon.module.css'; // 假設你有一個 CSS 模組
+import React from "react";
+import Link from "next/link";
+import couponStyles from "./userCoupon.module.css";
 
-const CouponCard = () => {
-  // 靜態資料
-  const staticData = {
-    imageUrl: "http://localhost:5000/api/articles/2df54e20-d6c0-11ee-beff-f3978ced.jpg",
-    productName: "一對一寵物美容教學實作",
-    courseDate: "2024/12/31~2025/12/31",
-    price: "NT2000000000",
-  };
+const Course = ({ courseOrders }) => {
+  console.log(courseOrders);
 
   return (
-    <div className={`mt-2 ${couponStyles.suCouponCard}`}>
-      <Link href="">
-        <img
-          src={staticData.imageUrl}
-          style={{ maxHeight: '100px' }}
-          alt={staticData.productName}
-        />
-      </Link>
-      <div className={couponStyles.suDetails}>
-        <Link href="" style={{ color: '#f5842b' }}>
-          {staticData.productName}
-        </Link>
-        <p className="text-muted">上課時間: {staticData.courseDate}</p>
-      </div>
-      <span className={couponStyles.suPrice}>{staticData.price}</span>
-    </div>
+    <>
+      {courseOrders.map((order) => {
+        // const imageUrl = order.main_pic
+        // ? order.main_pic.startsWith("http")
+        //   ? order.main_pic
+        //   : `http://localhost:5000${order.main_pic}`
+        // : "/course/course_default.jpg"; // 預設圖片路徑
+
+        return (
+          <div key={order.id} className={`mt-2 ${couponStyles.suCouponCard}`}>
+            <Link href="">
+              <img
+                src={`/course/img/${order.main_pic}`}
+                style={{ maxHeight: "100px", objectFit: "cover" }}
+                alt={`課程訂單 ${order.id}`}
+              />
+            </Link>
+            <div className={couponStyles.suDetails}>
+              <Link href="" style={{ color: "#f5842b" }}>
+                {order.name}
+              </Link>
+              <p className="text-muted">
+                建立時間: {order.order_date.split("T")[0]}
+              </p>
+            </div>
+            <span className={couponStyles.suPrice}>NT {order.total_price}</span>
+          </div>
+        );
+      })}
+    </>
   );
 };
 
-export default CouponCard;
+export default Course;

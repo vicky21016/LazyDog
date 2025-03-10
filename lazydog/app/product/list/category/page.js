@@ -9,6 +9,7 @@ import { useCategoryFetch, useDetailFetch } from "@/hooks/product/use-fetch";
 import { useFavorite } from "@/hooks/product/use-favorite";
 
 import { Carousel } from "react-bootstrap";
+import { MoonLoader } from "react-spinners";
 
 export default function CategoryPage() {
   const {
@@ -289,7 +290,24 @@ export default function CategoryPage() {
               sortName={sortName}
             />
           </div>
-          {!products && (
+          {isLoading ? (
+            <div
+              style={{
+                width: "100%",
+                height: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <MoonLoader
+                color="#f5842b"
+                loading
+                size={300}
+                speedMultiplier={1}
+              />
+            </div>
+          ) : !products ? (
             <div className={styles.empty}>
               <h2>{emptyMessage}</h2>
               <section className={styles.OtherLike}>
@@ -333,8 +351,7 @@ export default function CategoryPage() {
                 </div>
               </section>
             </div>
-          )}
-          {products && (
+          ) : (
             <main className={styles.PdList}>
               {[...Array(productLine)].map((value, index) => {
                 return (

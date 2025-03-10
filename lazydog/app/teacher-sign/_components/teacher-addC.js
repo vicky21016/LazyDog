@@ -132,7 +132,7 @@ export default function TeacherAddC() {
     }
     if (!mainpic) {
       Swal.fire({
-        title: "請選擇主圖片",
+        title: "請選擇封面圖片",
         icon: "warning",
         confirmButtonText: "確定",
         ...animationConfig,
@@ -228,8 +228,8 @@ export default function TeacherAddC() {
         <div className={`p-5 ${styles.right}`}>
           <h4 className={`mb-4 ${styles.tTitle}`}>新增課程</h4>
           <form onSubmit={handleSubmit}>
-            <section className={`row g-4 mb-4 ${styles.section1}`}>
-              <div className={`col-md-12`}>
+            <section className={`row g-4 mb-3  px-2 ${styles.section1}`}>
+              <div className={`col-md-6 mt-3`}>
                 <label className={`form-label ${styles.labels}`}>
                   課程名稱<span className={styles.must}>*</span>
                 </label>
@@ -241,12 +241,12 @@ export default function TeacherAddC() {
                   onChange={handleChange}
                 />
               </div>
-              <div className={`col-md-6 mt-3`}>
+              <div className={`col-md-6 mt-3 `}>
                 <label className={`form-label ${styles.labels}`}>
                   課程類別<span className={styles.must}>*</span>
                 </label>
                 <select
-                  className={`form-select  ${styles.controls}`}
+                  className={`form-select ${styles.selects}`}
                   value={cs.type_id}
                   name="type_id"
                   onChange={handleChange}
@@ -261,7 +261,7 @@ export default function TeacherAddC() {
                   ))}
                 </select>
               </div>
-              <div className={`col-md-6 mt-3`}>
+              <div className={`col-md-6  mt-3`}>
                 <label className={`form-label ${styles.labels}`}>
                   課程金額<span className={styles.must}>*</span>
                 </label>
@@ -273,7 +273,7 @@ export default function TeacherAddC() {
                   onChange={handleChange}
                 />
               </div>
-              <div className={`col-md-6 mt-3`}>
+              <div className={`col-md-6  mt-3`}>
                 <label className={`form-label ${styles.labels}`}>
                   總時數<span className={styles.must}>*</span>
                 </label>
@@ -285,89 +285,8 @@ export default function TeacherAddC() {
                   onChange={handleChange}
                 />
               </div>
-              <div className={`col-md-6 mt-3`}>
-                <label className={`form-label ${styles.labels}`}>
-                  報名人數限制<span className={styles.must}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className={`form-control  ${styles.controls}`}
-                  value={ss.max_people}
-                  name="max_people"
-                  onChange={handleChange}
-                />
-              </div>
             </section>
-            <section className={`row g-4 mb-5 ${styles.section2}`}>
-              <div className={`col-md-12`}>
-                <label className={`form-label ${styles.labels}`}>
-                  該梯每堂課日期<span className={styles.must}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className={`form-control  ${styles.controls}`}
-                  placeholder={`範例 :    2025 【台北】 08/17、08/24、08/31、09/07、09/14 、09/21、09/28`}
-                  value={ss.class_dates}
-                  name="class_dates"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className={`col-md-6 mt-3`}>
-                <label className={`form-label ${styles.labels}`}>
-                  開課日期<span className={styles.must}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className={`form-control  ${styles.controls}`}
-                  value={ss.start_date}
-                  name="start_date"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className={`col-md-6 mt-3`}>
-                <label className={`form-label ${styles.labels}`}>
-                  開課地點<span className={styles.must}>*</span>
-                </label>
-                <select
-                  className={`form-select  ${styles.controls}`}
-                  value={ss.area_id}
-                  name="area_id"
-                  onChange={handleChange}
-                >
-                  <option className={styles.optionDisabled} value="" disabled>
-                    請選擇
-                  </option>
-                  {places.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.region}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className={`col-md-12 mt-3`}>
-                <label className={`form-label ${styles.labels}`}>
-                  上課時間<span className={styles.must}>*</span>
-                </label>
-                <div className={`d-flex`}>
-                  <input
-                    type="text"
-                    className={`form-control  ${styles.controls}`}
-                    value={ss.start_time}
-                    name="start_time"
-                    onChange={handleChange}
-                  />
-                  <span className={`align-self-center p-2`}>~</span>
-                  <input
-                    type="text"
-                    className={`form-control  ${styles.controls}`}
-                    value={ss.end_time}
-                    name="end_time"
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-            </section>
-            <section className={`row g-4 mb-5  ${styles.section3}`}>
+            <section className={`row g-4 mb-3  px-2 ${styles.section3}`}>
               <div className={`col-md-12 mt-3`}>
                 <label className={`form-label ${styles.labels}`}>
                   課程介紹<span className={styles.must}>*</span>
@@ -409,12 +328,101 @@ export default function TeacherAddC() {
                 />
               </div>
             </section>
-            <section className={`row g-4 ${styles.section4}`}>
+            <section className={`row g-4 mb-3  px-2 ${styles.section2}`}>
+              <div className={`col-md-12`}>
+                <label className={`form-label ${styles.labels}`}>
+                  該梯每堂課日期<span className={styles.must}>*</span>
+                </label>
+                <input
+                  type="text"
+                  className={`form-control  ${styles.controls}`}
+                  placeholder={`範例 :    2025 【台北】 08/17、08/24、08/31、09/07、09/14 、09/21、09/28`}
+                  value={ss.class_dates}
+                  name="class_dates"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className={`col-md-6 mt-3`}>
+                <label className={`form-label ${styles.labels}`}>
+                  開課日期<span className={styles.must}>*</span>
+                </label>
+                <input
+                  type="text"
+                  className={`form-control  ${styles.controls}`}
+                  value={ss.start_date}
+                  name="start_date"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className={`col-md-6 mt-3`}>
+                <label className={`form-label ${styles.labels}`}>
+                  開課地點<span className={styles.must}>*</span>
+                </label>
+                <select
+                  className={`form-select  ${styles.selects}`}
+                  value={ss.area_id}
+                  name="area_id"
+                  onChange={handleChange}
+                >
+                  <option className={styles.optionDisabled} value="" disabled>
+                    請選擇
+                  </option>
+                  {places.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.region}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={`col-md-6 mt-3`}>
+                <label className={`form-label ${styles.labels}`}>
+                  上課時間<span className={styles.must}>*</span>
+                </label>
+                <div className={`row px-2`}>
+                  <div className="col">
+                    <input
+                      type="text"
+                      className={`form-control  ${styles.controls}`}
+                      value={ss.start_time}
+                      name="start_time"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="col-auto  d-flex align-items-center justify-content-center">
+                    <span className={`fs-4`}>~</span>
+                  </div>
+                  <div className="col">
+                    <input
+                      type="text"
+                      className={`form-control ${styles.controls}`}
+                      value={ss.end_time}
+                      name="end_time"
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className={`col-md-6 mt-3`}>
+                <label className={`form-label ${styles.labels}`}>
+                  報名人數限制<span className={styles.must}>*</span>
+                </label>
+                <input
+                  type="text"
+                  className={`form-control ${styles.controls}`}
+                  value={ss.max_people}
+                  name="max_people"
+                  onChange={handleChange}
+                />
+              </div>
+            </section>
+
+            <section className={`row g-4 px-3 ${styles.section4}`}>
               <label className={`form-label`}>
                 課程圖片
                 <span className={styles.must}>* </span>
               </label>
-              <div className={`col-md-5 col-12 mt-0 mb-5 `}>
+              <div className={`col-md-5 col-12 mt-0 mb-5 px-2 `}>
                 <div className={styles.mainPic}>
                   {/* <div className={styles.imageCard}> */}
                   {mainpic ? (
@@ -448,7 +456,7 @@ export default function TeacherAddC() {
                           document.getElementById("mainpicUpload").click()
                         }
                       >
-                        +封面圖
+                        + 封面圖
                       </button>
                       <input
                         type="file"

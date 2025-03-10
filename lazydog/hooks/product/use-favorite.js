@@ -13,7 +13,9 @@ const CardFavoriteContext = createContext(null);
 CardFavoriteContext.displayName = "CardFavoriteContext";
 
 export function FavoriteProvider({ children }) {
+  // 辨識身份
   const { user } = useAuth();
+  // 宣告SWR fetch方式
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
@@ -24,7 +26,9 @@ export function FavoriteProvider({ children }) {
       throw err;
     }
   };
+  // 宣告SWR url來源
   const favoriteAPI = "http://localhost:5000/api/products/favorite";
+  // 使用SWR獲得收藏資料
   const {
     data: favoriteData,
     isLoading: favoriteLoading,
@@ -35,22 +39,22 @@ export function FavoriteProvider({ children }) {
 
   useEffect(() => {
     const updateFavorite = async () => {
-      // let methodType = "POST";
-      // if (favoriteData?.data) {
-      //   if (favoriteData?.data.find((v) => v.user_id === user?.id))
-      //     methodType = "PATCH";
-      // }
+      // 預設寫入資料庫方式為PATCH
       let methodType = "PATCH";
       if (favoriteData?.data) {
+        // 如果沒有該使用者的收藏資料則變更為POST
         if (!favoriteData?.data.find((v) => v.user_id === user?.id)) {
           methodType = "POST";
         }
       }
+      // 如果使用者已登入
       if (user?.id > 0) {
+        // 建立寫入資料庫用表單
         const formData = new FormData();
         formData.append("userID", user?.id);
         formData.append("productIDlist", favorite.join(","));
         let API = "http://localhost:5000/api/products/favorite";
+        // 發送寫入資料庫請求
         try {
           const res = await fetch(API, {
             method: methodType,
@@ -63,6 +67,7 @@ export function FavoriteProvider({ children }) {
           alert(error.message);
         }
       }
+      // 更新收藏資料
       favoriteMutate();
     };
     updateFavorite();
@@ -82,7 +87,9 @@ export function FavoriteProvider({ children }) {
 export function DetailFavoriteProvider({ children }) {
   const query = useSearchParams();
   const product = query.get("productID");
+  // 辨識身份
   const { user } = useAuth();
+  // 宣告SWR fetch方式
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
@@ -93,7 +100,9 @@ export function DetailFavoriteProvider({ children }) {
       throw err;
     }
   };
+  // 宣告SWR url來源
   const favoriteAPI = "http://localhost:5000/api/products/favorite";
+  // 使用SWR獲得收藏資料
   const {
     data: favoriteData,
     isLoading: favoriteLoading,
@@ -104,17 +113,22 @@ export function DetailFavoriteProvider({ children }) {
 
   useEffect(() => {
     const updateFavorite = async () => {
+      // 預設寫入資料庫方式為PATCH
       let methodType = "PATCH";
       if (favoriteData?.data) {
+        // 如果沒有該使用者的收藏資料則變更為POST
         if (!favoriteData?.data.find((v) => v.user_id === user?.id)) {
           methodType = "POST";
         }
       }
+      // 如果使用者已登入
       if (user?.id > 0) {
+        // 建立寫入資料庫用表單
         const formData = new FormData();
         formData.append("userID", user?.id);
         formData.append("productIDlist", favorite.join(","));
         let API = "http://localhost:5000/api/products/favorite";
+        // 發送寫入資料庫請求
         try {
           const res = await fetch(API, {
             method: methodType,
@@ -127,6 +141,7 @@ export function DetailFavoriteProvider({ children }) {
           alert(error.message);
         }
       }
+      // 更新收藏資料
       favoriteMutate();
     };
     updateFavorite();
@@ -135,9 +150,12 @@ export function DetailFavoriteProvider({ children }) {
   const [heartHover, setHeartHover] = useState(false);
   const [heartState, setHeartState] = useState(false);
   useEffect(() => {
+    // 判斷是否為收藏
     if (favorite?.includes(product)) {
+      // 如果是收藏點亮愛心
       setHeartState(true);
     } else {
+      // 如果不是收藏隱藏愛心
       setHeartState(false);
     }
   }, [favorite]);
@@ -163,7 +181,9 @@ export function CardFavoriteProvider({
   favorite = [],
   setFavorite = () => {},
 }) {
+  // 辨識身份
   const { user } = useAuth();
+  // 宣告SWR fetch方式
   const fetcher = async (url) => {
     try {
       const res = await fetch(url);
@@ -174,13 +194,16 @@ export function CardFavoriteProvider({
       throw err;
     }
   };
+  // 宣告SWR url來源
   const favoriteAPI = "http://localhost:5000/api/products/favorite";
+  // 使用SWR獲得收藏資料
   const {
     data: favoriteData,
     isLoading: favoriteLoading,
     error: favoriteError,
     mutate: favoriteMutate,
   } = useSWR(favoriteAPI, fetcher);
+  // 依據收藏資料更動後更新收藏資料確保收藏為最新資料
   useEffect(() => {
     favoriteMutate();
     if (favoriteData?.data) {
@@ -195,15 +218,16 @@ export function CardFavoriteProvider({
 
   const [heartHover, setHeartHover] = useState(false);
   const [heartState, setHeartState] = useState(false);
-
+  // 判斷是否為收藏
   useEffect(() => {
     if (favorite?.includes(productID)) {
+      // 如果是收藏點亮愛心
       setHeartState(true);
     } else {
+      // 如果不是收藏隱藏愛心
       setHeartState(false);
     }
   }, [favorite]);
-  // console.log(favorite);
   return (
     <CardFavoriteContext.Provider
       value={{

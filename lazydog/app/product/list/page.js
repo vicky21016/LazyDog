@@ -9,6 +9,8 @@ import { useListFetch } from "@/hooks/product/use-fetch";
 import { useFavorite } from "@/hooks/product/use-favorite";
 
 import { Carousel } from "react-bootstrap";
+import { MoonLoader } from "react-spinners";
+import * as motion from "motion/react-client";
 
 export default function ListPage(props) {
   const {
@@ -54,6 +56,66 @@ export default function ListPage(props) {
     document.addEventListener("click", clickOutside);
     return () => document.removeEventListener("click", clickOutside);
   }, [listOpen, dropDown, collapseBtn]);
+
+  const [isOn, setIsOn] = useState(false);
+  const toggleSwitch = () => setIsOn(!isOn);
+
+  const dogRef = useRef(null);
+  const containerRef = useRef(null);
+
+  const animations = [
+    { class: styles.dogWalk, duration: 1000 },
+    { class: styles.dogRun, duration: 400 },
+    { class: styles.dogSit, duration: 600 },
+    { class: styles.dogWoof, duration: 1000 },
+  ];
+
+  const getRandomPosition = () => {
+    return Math.floor(Math.random() * (window.innerWidth - 60));
+  };
+
+  const getRandomAnimation = () => {
+    return animations[Math.floor(Math.random() * animations.length)];
+  };
+
+  const moveDog = () => {
+    if (!dogRef.current || !containerRef.current) return;
+
+    // 移除所有動畫類別
+    dogRef.current.className = styles.dog;
+
+    // 隨機選擇新動畫
+    const newAnimation = getRandomAnimation();
+    dogRef.current.classList.add(newAnimation.class);
+
+    // 隨機新位置
+    const newPosition = getRandomPosition();
+    const currentPosition = parseInt(containerRef.current.style.left) || 0;
+
+    // 根據移動方向翻轉圖片
+    if (newPosition < currentPosition) {
+      dogRef.current.classList.add(styles.flip);
+    } else {
+      dogRef.current.classList.remove(styles.flip);
+    }
+
+    // 計算移動時間
+    const distance = Math.abs(newPosition - currentPosition);
+    const moveDuration = distance * 5;
+
+    // 設置新位置
+    containerRef.current.style.transition = `left ${moveDuration}ms linear`;
+    containerRef.current.style.left = `${newPosition}px`;
+
+    // 在動畫完成後繼續下一次移動
+    setTimeout(moveDog, Math.max(moveDuration, newAnimation.duration));
+  };
+
+  useEffect(() => {
+    moveDog();
+    // 清理函數
+    return () => {};
+  }, []);
 
   if (error) {
     return (
@@ -274,8 +336,26 @@ export default function ListPage(props) {
               sortName={sortName}
             />
           </div>
-          {!products && <h2>{emptyMessage}</h2>}
-          {products && (
+          {isLoading ? (
+            <div
+              style={{
+                width: "100%",
+                height: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <MoonLoader
+                color="#f5842b"
+                loading
+                size={300}
+                speedMultiplier={1}
+              />
+            </div>
+          ) : !products ? (
+            <h2>{emptyMessage}</h2>
+          ) : (
             <main className={styles.PdList}>
               {[...Array(productLine)].map((value, index) => {
                 return (
@@ -430,6 +510,21 @@ export default function ListPage(props) {
             </main>
           )}
         </section>
+      </div>
+      <div className={styles.dogApp} onClick={toggleSwitch} ref={containerRef}>
+        {/* <motion.div
+          layout
+          style={{}}
+          className={`${styles.dogWalk} ${
+            isOn ? styles.toLeft : styles.toRight
+          }`}
+          onAnimationEnd={(e) => {
+            const style = window.getComputedStyle(e.target);
+            const bgPosition = style.getPropertyValue("background-position");
+            console.log(bgPosition);
+          }}
+        ></motion.div> */}
+        <div ref={dogRef} className={styles.dog}></div>
       </div>
     </>
   );

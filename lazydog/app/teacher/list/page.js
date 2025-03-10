@@ -7,7 +7,7 @@ import Breadcrumb from "../../components/teacher/breadcrumb";
 import Filter from "../../components/teacher/Filter";
 import TeacherCard from "../../components/teacher/teacherCard";
 import styles from "./list.module.css";
-import Page from "../../course/_components/list/pagination";
+import Page from "../../components/hotel/page";
 import style1 from "../../product/list/list.module.css";
 import style from "../../user/menu.module.css";
 
@@ -24,11 +24,11 @@ export default function App() {
   }, [teachers]);
 
   // 分頁
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const perPage = 9;
   const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
 
-  const startIndex = (page - 1) * perPage;
+  const startIndex = (currentPage - 1) * perPage;
   const currentTeacher = filtered.slice(startIndex, startIndex + perPage);
 
   // 處理篩選條件
@@ -41,7 +41,7 @@ export default function App() {
     );
 
     setFiltered(filterData);
-    setPage(1); // 篩選後重置分頁到第 1 頁
+    setCurrentPage(1); // 篩選後重置分頁到第 1 頁
   };
 
   // 點擊畫面其他地方時，自動關閉篩選選單
@@ -70,11 +70,17 @@ export default function App() {
       <div className="lumi-all-wrapper">
         <div className={`${styles.collapseAside} d-lg-none`}>
           <div className={`${styles.collapseAsideContent}`}>
-          <img
-              src={`/product/font/right(orange).png`}
-              onClick={() => setFilterOpen(!filterOpen)}
-              className={`${styles.collapseAsideBtn} btn`}
-            />
+          <button
+            className={`btn d-md-none ${styles.right}`}
+            onClick={() => setFilterOpen(!filterOpen)}
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#filterOffcanvas"
+            aria-expanded="false"
+            aria-controls="filterOffcanvas"
+          >
+           <i className="bi bi-chevron-right"></i>
+          </button>
           </div>
         </div>
         <div className={styles.container}>
@@ -150,19 +156,22 @@ export default function App() {
 
               {/* 手機版篩選選單 (滑入效果) */}
               <div
-                className={`${styles.mobileFilter} ${
-                  filterOpen ? styles.showFilter : ""
-                }`}
-              >
-                {/* <button
-                  className={styles.closeButton}
-                  onClick={() => setFilterOpen(false)}
-                >
-                  <img
-                    src={`/product/font/right(orange).png`}
-                    onClick={() => setFilterOpen(!filterOpen)}
-                  />
-                </button> */}
+        className="offcanvas offcanvas-start"
+        tabIndex="-1"
+        id="filterOffcanvas"
+        aria-labelledby="filterOffcanvasLabel"
+      > 
+               <div className="offcanvas-header">
+      {/* <h5 className="offcanvas-title" id="filterOffcanvasLabel">
+          篩選
+        </h5> */}
+      <button
+        type="button"
+        className="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
                 <Filter filterChange={filter} />
               </div>
 
@@ -186,8 +195,8 @@ export default function App() {
                 </div>
                 <Page
                   totalPages={totalPages}
-                  currPage={page}
-                  setCurrPage={setPage}
+                  currPage={currentPage}
+                  onPageChange ={setCurrentPage}
                 />
               </div>
             </div>

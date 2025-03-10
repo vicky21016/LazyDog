@@ -283,24 +283,24 @@ export default function TeacherUpdateC() {
           <h4 className={`mb-4 ${styles.tTitle}`}>編輯該梯次</h4>
           <form onSubmit={handleSubmit}>
             <section className={`row g-4 mb-5 ${styles.section1}`}>
-              <div className={`col-md-12`}>
+              <div className={`col-md-6`}>
                 <label className={`form-label ${styles.labels}`}>
                   課程名稱
                 </label>
                 <input
                   type="text"
-                  className={`form-control`}
+                  className={`form-control ${styles.uncontrols}`}
                   defaultValue={cs?.name}
                   disabled
                   readOnly
                 />
               </div>
-              <div className={`col-md-6 mt-3`}>
+              <div className={`col-md-6`}>
                 <label className={`form-label ${styles.labels}`}>
                   課程類別
                 </label>
                 <select
-                  className={`form-select`}
+                  className={`form-select ${styles.uncontrols}`}
                   defaultValue={cs?.type_id}
                   disabled
                   readOnly
@@ -318,7 +318,7 @@ export default function TeacherUpdateC() {
                 </label>
                 <input
                   type="text"
-                  className={`form-control`}
+                  className={`form-control ${styles.uncontrols}`}
                   defaultValue={cs?.price}
                   disabled
                   readOnly
@@ -328,26 +328,56 @@ export default function TeacherUpdateC() {
                 <label className={`form-label ${styles.labels}`}>總時數</label>
                 <input
                   type="text"
-                  className={`form-control`}
+                  className={`form-control ${styles.uncontrols}`}
                   defaultValue={cs?.duration}
                   disabled
                   readOnly
                 />
               </div>
-              <div className={`col-md-6 mt-3`}>
+            </section>
+            <section className={`row g-4 mb-4  ${styles.section3}`}>
+              <div className={`col-md-12 mt-0`}>
                 <label className={`form-label ${styles.labels}`}>
-                  報名人數限制<span className={styles.must}>*</span>
+                  課程介紹
                 </label>
-                <input
-                  type="text"
-                  className={`form-control  ${styles.controls}`}
-                  defaultValue={cs?.max_people}
-                  name="max_people"
-                  onChange={handleChange}
+                <textarea
+                  className={`form-control  ${styles.scrollOrg}  ${styles.textarea}`}
+                  style={{ resize: "none" }}
+                  id="exampleFormControlTextarea1"
+                  rows={6}
+                  defaultValue={cs?.description}
+                  disabled
+                  readOnly
+                />
+              </div>
+              <div className={`col-md-12 mt-3`}>
+                <label className={`form-label ${styles.labels}`}>
+                  注意事項
+                </label>
+                <textarea
+                  className={`form-control ${styles.scrollOrg} ${styles.textarea}`}
+                  style={{ resize: "none" }}
+                  id="exampleFormControlTextarea1"
+                  rows={6}
+                  defaultValue={cs?.notice}
+                  disabled
+                  readOnly
+                />
+              </div>
+              <div className={`col-md-12 mt-3`}>
+                <label className={`form-label ${styles.labels}`}>Q&amp;A</label>
+                <textarea
+                  className={`form-control ${styles.scrollOrg} ${styles.textarea}`}
+                  style={{ resize: "none" }}
+                  id="exampleFormControlTextarea1"
+                  rows={6}
+                  defaultValue={cs?.qa}
+                  disabled
+                  readOnly
                 />
               </div>
             </section>
-            <section className={`row g-4 mb-5 ${styles.section2}`}>
+            <section className={`row g-4 mb-0 ${styles.section2}`}>
               <div className={`col-md-12`}>
                 <label className={`form-label ${styles.labels}`}>
                   該梯每堂課日期<span className={styles.must}>*</span>
@@ -390,73 +420,50 @@ export default function TeacherUpdateC() {
                   ))}
                 </select>
               </div>
-              <div className={`col-md-12 mt-3`}>
+              <div className={`col-md-6 mt-3`}>
                 <label className={`form-label ${styles.labels}`}>
                   上課時間<span className={styles.must}>*</span>
                 </label>
-                <div className={`d-flex`}>
-                  <input
-                    type="text"
-                    className={`form-control  ${styles.controls}`}
-                    defaultValue={cs?.start_time}
-                    name="start_time"
-                    onChange={handleChange}
-                  />
-                  <span className={`align-self-center p-2`}>~</span>
-                  <input
-                    type="text"
-                    className={`form-control  ${styles.controls}`}
-                    defaultValue={cs?.end_time}
-                    name="end_time"
-                    onChange={handleChange}
-                  />
+                <div className={`row px-1`}>
+                  <div className="col">
+                    <input
+                      type="text"
+                      className={`form-control  ${styles.controls}`}
+                      defaultValue={cs?.start_time}
+                      name="start_time"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="col-auto d-flex align-items-center justify-content-center">
+                    <span className={`fs-4`}>~</span>
+                  </div>
+                  <div className="col">
+                    <input
+                      type="text"
+                      className={`form-control  ${styles.controls}`}
+                      defaultValue={cs?.end_time}
+                      name="end_time"
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
               </div>
-            </section>
-            <section className={`row g-4 mb-5  ${styles.section3}`}>
-              <div className={`col-md-12 mt-3`}>
+              <div className={`col-md-6 mt-3`}>
                 <label className={`form-label ${styles.labels}`}>
-                  課程介紹
+                  報名人數限制<span className={styles.must}>*</span>
                 </label>
-                <textarea
-                  className={`form-control  ${styles.scrollOrg}`}
-                  style={{ resize: "none" }}
-                  id="exampleFormControlTextarea1"
-                  rows={8}
-                  defaultValue={cs?.description}
-                  disabled
-                  readOnly
-                />
-              </div>
-              <div className={`col-md-12 mt-3`}>
-                <label className={`form-label ${styles.labels}`}>
-                  注意事項
-                </label>
-                <textarea
-                  className={`form-control ${styles.scrollOrg}`}
-                  style={{ resize: "none" }}
-                  id="exampleFormControlTextarea1"
-                  rows={8}
-                  defaultValue={cs?.notice}
-                  disabled
-                  readOnly
-                />
-              </div>
-              <div className={`col-md-12 mt-3`}>
-                <label className={`form-label ${styles.labels}`}>Q&amp;A</label>
-                <textarea
-                  className={`form-control ${styles.scrollOrg}`}
-                  style={{ resize: "none" }}
-                  id="exampleFormControlTextarea1"
-                  rows={8}
-                  defaultValue={cs?.qa}
-                  disabled
-                  readOnly
+                <input
+                  type="text"
+                  className={`form-control  ${styles.controls}`}
+                  defaultValue={cs?.max_people}
+                  name="max_people"
+                  onChange={handleChange}
                 />
               </div>
             </section>
-            <section className={`row g-4 mb-5 ${styles.section4}`}>
-              <div className={`col-md-12 col-12 mt-3`}>
+
+            <section className={`row mt-4 mb-5 px-3 ${styles.section4}`}>
+              <div className={`col-md-12 col-12 mt-0`}>
                 <label className={`form-label`}>
                   課程圖片<span className={styles.must}>*</span>
                 </label>
@@ -496,7 +503,7 @@ export default function TeacherUpdateC() {
                         document.getElementById("mainpicUpload").click()
                       }
                     >
-                      + 封面圖
+                      <i class="bi bi-plus fs-5"></i> 封面圖
                     </button>
                     <input
                       type="file"
@@ -538,7 +545,7 @@ export default function TeacherUpdateC() {
                           document.getElementById("otherpicsUpload").click()
                         }
                       >
-                        + 其他圖片
+                        <i class="bi bi-plus fs-5"></i> 其他圖片
                       </button>
                       <input
                         id="otherpicsUpload"
@@ -561,21 +568,21 @@ export default function TeacherUpdateC() {
             >
               <button
                 type="button"
-                className={`btn btn-primary btn-sm px-5 py-2  mb-1 ${styles.deletedBtn}`}
+                className={`btn btn-primary btn-sm px-5 py-2 mt-1 mb-1 ${styles.deletedBtn}`}
                 onClick={handleisDelete}
               >
                 刪除
               </button>
               <button
                 type="button"
-                className={`btn btn-sm px-5 py-2  mb-1 ${styles.cancleBtn}`}
+                className={`btn btn-sm px-5 py-2 mt-1  mb-1 ${styles.cancleBtn}`}
                 onClick={() => changepage("list")}
               >
                 取消
               </button>
               <button
                 type="submit"
-                className={`btn btn-primary btn-sm px-5 py-2  mb-1 ${styles.submitBtn}`}
+                className={`btn btn-primary btn-sm px-5 py-2 mt-1  mb-1 ${styles.submitBtn}`}
               >
                 儲存
               </button>

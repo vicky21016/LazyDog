@@ -104,9 +104,15 @@ export default function CourseIntro({ course, session, place, params }) {
 
     if (!storedToken || storedToken === "null" || storedToken === "undefined") {
       Swal.fire({
-        icon: "warning",
+        // icon: "warning",
         title: "請先登入",
-        text: "您需要登入才能收藏課程！",
+        text: "需要先登入才能收藏！",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       }).then(() => {
         router.push("/login");
       });
@@ -118,6 +124,9 @@ export default function CourseIntro({ course, session, place, params }) {
         icon: "error",
         title: "無法獲取用戶 ID",
         text: "請重新登入後再試！",
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
       return;
     }
@@ -129,6 +138,9 @@ export default function CourseIntro({ course, session, place, params }) {
             icon: "error",
             title: "移除收藏失敗",
             text: "找不到對應的收藏記錄！",
+            customClass: {
+              popup: styles.tsaiSwal,
+            },
           });
           return;
         }
@@ -138,6 +150,9 @@ export default function CourseIntro({ course, session, place, params }) {
           Swal.fire({
             icon: "success",
             title: "已移除收藏",
+            customClass: {
+              popup: styles.tsaiSwal,
+            },
           });
           setIsFavorite(false); // 更新狀態
           setFavoriteId(null); // 清空 favoriteId
@@ -146,6 +161,9 @@ export default function CourseIntro({ course, session, place, params }) {
             icon: "error",
             title: "移除收藏失敗",
             text: response.error || "請稍後再試",
+            customClass: {
+              popup: styles.tsaiSwal,
+            },
           });
         }
       } else {
@@ -155,6 +173,9 @@ export default function CourseIntro({ course, session, place, params }) {
             icon: "success",
             title: response.message,
             text: "課程已加入您的收藏清單！",
+            customClass: {
+              popup: ".tsaiSwal",
+            },
           });
           setIsFavorite(true); // 更新狀態
           setFavoriteId(response.data.id); // 設置新的 favoriteId
@@ -163,6 +184,9 @@ export default function CourseIntro({ course, session, place, params }) {
             icon: "error",
             title: "收藏失敗",
             text: response.error || "請稍後再試",
+            customClass: {
+              popup: styles.tsaiSwal,
+            },
           });
         }
       }
@@ -172,6 +196,9 @@ export default function CourseIntro({ course, session, place, params }) {
         icon: "error",
         title: "操作失敗",
         text: error.message || "請稍後再試！",
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
     }
   };
@@ -221,8 +248,8 @@ export default function CourseIntro({ course, session, place, params }) {
         showConfirmButton: false,
       });
     } else {
-      console.log("加入購物車的數據:", { s });
-      onAddCourse(s);
+      console.log("加入購物車的數據:", { s, c });
+      onAddCourse(c, s);
       Swal.fire({
         icon: "success",
         title: "已加入購物車",

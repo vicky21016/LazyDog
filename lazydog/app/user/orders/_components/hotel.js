@@ -3,11 +3,6 @@ import Link from "next/link";
 import couponStyles from "./userCoupon.module.css";
 
 const Hotel = ({ hotelOrders }) => {
-  if (!hotelOrders || hotelOrders.length === 0) {
-    return <p>目前沒有旅館訂單</p>;
-  }
-
-
   return (
     <>
       {hotelOrders.map((order) => {
@@ -38,7 +33,9 @@ const Hotel = ({ hotelOrders }) => {
                 入住時間: {order.check_in}~{order.check_out}
               </p>
             </div>
-            <span className={couponStyles.suPrice}>NT{order.final_amount}</span>
+            <span className={couponStyles.suPrice}>
+              NT {order.final_amount.split(".")}
+            </span>
           </div>
         );
       })}

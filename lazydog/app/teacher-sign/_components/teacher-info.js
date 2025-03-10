@@ -224,33 +224,7 @@ export default function TeacherInfo() {
               <label className={`form-label ${styles.labels}`}>
                 師資照片
                 <span className={styles.must}>* </span>
-                {/* <button
-                  type="button"
-                  className={`btn btn-primary btn-sm ${styles.addPicBtn}`}
-                  onClick={handleUploadClick}
-                >
-                  更換
-                </button>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  className={`form-control d-none`}
-                  accept="image/*"
-                  onChange={handleImageChange}
-                /> */}
               </label>
-              {/* <div
-                id="imagePreviewContainer"
-                className={`d-flex flex-wrap gap-3 my-2`}
-              >
-                <div className={styles.imageCard}>
-                  <img
-                    className={styles.imgCr}
-                    src={previewImage || `/teacher-img/${infos?.img}`}
-                    alt={`${infos?.name}老師圖片`}
-                  />
-                </div>
-              </div> */}
 
               <div className={`col-12 col-md-5 mt-1 mb-4 ${styles.teacherPic}`}>
                 <div className={styles.imageCard}>

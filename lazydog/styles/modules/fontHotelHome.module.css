@@ -409,7 +409,7 @@
 }
 
 .pageItemActive .pageLink {
-  background-color: #f5842b;
+  background-color: #ff9538;
   color: white;
   border-radius: 50%;
 }
@@ -421,7 +421,7 @@
 }
 
 .pageLink:hover {
-  background-color: #ff9900;
+  background-color: #ff9538;
   color: white;
 }
 

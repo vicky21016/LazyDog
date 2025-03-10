@@ -9,7 +9,7 @@ export function useOrder() {
   const [isLoading, setIsLoading] = useState(false); // 是否正在載入資料
   const [error, setError] = useState(null); // 錯誤訊息
   const [hotelOrders, setHotelOrders] = useState([]);
-
+  const [courseOrders, setCourseOrders] = useState([]);
   // 創建商品訂單的函數
   const createProductOrder = async (orderData) => {
     setIsLoading(true); // 開始載入資料
@@ -83,6 +83,8 @@ export function useOrder() {
       setIsLoading(false);
     }
   };
+
+  // 創建課程訂單的函數
   const createCourseOrder = async (orderData) => {
     setIsLoading(true);
     setError(null);
@@ -118,6 +120,9 @@ export function useOrder() {
       setIsLoading(false);
     }
   };
+
+
+  // 
   useEffect(() => {
     const fetchOrders = async () => {
       setIsLoading(true); // 開始載入資料
@@ -241,7 +246,44 @@ export function useOrder() {
         setIsLoading(false); // 結束載入 (失敗)
       }
     };
-
+    const fetchCourseOrders = async () => {
+      setIsLoading(true);
+      setError(null);
+  
+      const token = localStorage.getItem("loginWithToken");
+  
+      if (!token) {
+        console.log("使用者未登入，無法獲取課程訂單資料。");
+        setIsLoading(false);
+        return;
+      }
+      try {
+        const res = await fetch("http://localhost:5000/order/courseOrders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        if (!res.ok) {
+          setIsLoading(false);
+          throw new Error("無法取得課程訂單資料");
+        }
+  
+        const result = await res.json();
+        if (result.status === "error") {
+          setIsLoading(false);
+          throw new Error(result.message);
+        }
+        setCourseOrders(result.orders);
+      } catch (err) {
+        setError(err.message);
+      }finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCourseOrders();
     fetchHotelOrders();
     fetchOrders();
   }, []); // dependency array 為空，確保只執行一次
@@ -249,6 +291,7 @@ export function useOrder() {
   return {
     orders,
     hotelOrders,
+    courseOrders,
     isLoading,
     error,
     createProductOrder,
