@@ -44,6 +44,8 @@
 .customLink {
   text-underline-offset: 12px;
   color: black;
+  height: 50px;
+  overflow: hidden;
 }
 
 .moreLink{
