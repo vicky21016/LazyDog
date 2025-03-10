@@ -43,36 +43,30 @@ export default function Header(props) {
     return () => document.removeEventListener("click", clickOutside);
   }, [menuOpen]);
 
-
   const handleCartClick = async () => {
     if (!user) {
-      await
-        toast.warning("請先登入才能使用購物車!", {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+      await toast.warning("請先登入才能使用購物車!", {
+        position: "top-center",
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
   const [PDOpen, setPDOpen] = useState(false);
   const [teacherOpen, setTeacherOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
 
-
-
-
   return (
     <header className={styles["lumi-header"]}>
-      <ToastContainer />
       <Link href="/" className={styles["lumi-logo"]}>
         <img src="/images/logo.png" alt="Logo" />
         <div className={styles.lumiLogo1}>LAZYDOG</div>
       </Link>
+
       <nav className={styles["lumi-nav"]}>
         <ul className={styles["lumi-ul"]}>
           <div className={styles["dropdown"]}>
@@ -200,8 +194,10 @@ export default function Header(props) {
       </nav>
 
       {/* 右上角的會員與購物車 */}
-      <div className={styles["lumi-user-actions"]} >
-        <div className={styles["dropdown"]} >
+      <div className={styles["lumi-user-actions"]}>
+        <div className={styles["dropdown"]}>
+          <ToastContainer />
+
           <Link href="/user" className={styles["lumi-user-icon"]}>
             <i className="bi bi-person" />
           </Link>
@@ -229,14 +225,22 @@ export default function Header(props) {
           ) : null}
         </div>
         {user ? (
-          <Link onClick={handleCartClick} href="/cart/CartList" className={styles["lumi-cart-icon"]}>
+          <Link
+            onClick={handleCartClick}
+            href="/cart/CartList"
+            className={styles["lumi-cart-icon"]}
+          >
             <i className="bi bi-cart2"></i>
             {totalQty > 0 && (
               <div className={styles["lumi-cart-count"]}>{totalQty}</div>
             )}
           </Link>
         ) : (
-          <Link onClick={handleCartClick} href="/login" className={styles["lumi-cart-icon"]}>
+          <Link
+            onClick={handleCartClick}
+            href="/login"
+            className={styles["lumi-cart-icon"]}
+          >
             <i className="bi bi-cart2"></i>
             {totalQty > 0 && (
               <div className={styles["lumi-cart-count"]}>{totalQty}</div>
@@ -247,14 +251,22 @@ export default function Header(props) {
       {/* 手機板 */}
       <div className={styles.mobileMenuOut}>
         {user ? (
-          <Link onClick={handleCartClick} href="/cart/CartList" className={styles["lumi-cart-icon"]}>
+          <Link
+            onClick={handleCartClick}
+            href="/cart/CartList"
+            className={styles["lumi-cart-icon"]}
+          >
             <i className="bi bi-cart2"></i>
             {totalQty > 0 && (
               <div className={styles["lumi-cart-count"]}>{totalQty}</div>
             )}
           </Link>
         ) : (
-          <Link onClick={handleCartClick} href="/login" className={styles["lumi-cart-icon"]}>
+          <Link
+            onClick={handleCartClick}
+            href="/login"
+            className={styles["lumi-cart-icon"]}
+          >
             <i className="bi bi-cart2"></i>
             {totalQty > 0 && (
               <div className={styles["lumi-cart-count"]}>{totalQty}</div>
@@ -265,8 +277,9 @@ export default function Header(props) {
           <i
             ref={menuRef}
             onClick={() => setMenuOpen(!menuOpen)}
-            className={`${styles.menu} ${menuOpen ? "bi bi-x-lg" : "bi bi-list"
-              }`}
+            className={`${styles.menu} ${
+              menuOpen ? "bi bi-x-lg" : "bi bi-list"
+            }`}
           ></i>
           <nav className={styles["mobileMenubar"]}>
             <ul
@@ -288,10 +301,11 @@ export default function Header(props) {
                   </Link>
                 </div>
                 <div
-                  className={`${PDOpen
-                    ? styles["dropdown-contentOn"]
-                    : styles["dropdown-contentOff"]
-                    }`}
+                  className={`${
+                    PDOpen
+                      ? styles["dropdown-contentOn"]
+                      : styles["dropdown-contentOff"]
+                  }`}
                 >
                   <a
                     href={`/product/list/category?category=乾糧`}
@@ -365,10 +379,11 @@ export default function Header(props) {
                   </Link>
                 </div>
                 <div
-                  className={`${teacherOpen
-                    ? styles["dropdown-contentOn"]
-                    : styles["dropdown-contentOff"]
-                    }`}
+                  className={`${
+                    teacherOpen
+                      ? styles["dropdown-contentOn"]
+                      : styles["dropdown-contentOff"]
+                  }`}
                 >
                   <Link
                     href="/course/list"
@@ -398,10 +413,11 @@ export default function Header(props) {
                   <Link href="/user">會員中心</Link>
                 </div>
                 <div
-                  className={`${userOpen
-                    ? styles["dropdown-contentOn"]
-                    : styles["dropdown-contentOff"]
-                    }`}
+                  className={`${
+                    userOpen
+                      ? styles["dropdown-contentOn"]
+                      : styles["dropdown-contentOff"]
+                  }`}
                 >
                   <Link
                     href="/user"
@@ -409,7 +425,10 @@ export default function Header(props) {
                   >
                     個人資料
                   </Link>
-                  <Link href="/user/userFavorite" className={styles["dropdown-link"]}>
+                  <Link
+                    href="/user/userFavorite"
+                    className={styles["dropdown-link"]}
+                  >
                     我的收藏
                   </Link>
                   <div
@@ -424,7 +443,6 @@ export default function Header(props) {
           </nav>
         </div>
       </div>
-
     </header>
   );
 }

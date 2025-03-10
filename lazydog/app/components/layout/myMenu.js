@@ -39,6 +39,7 @@ export default function MyMenu() {
 
   const handleClick = () => {
     // 觸發檔案選擇框
+
     document.getElementById("avatarInput").click();
   };
 
@@ -95,7 +96,7 @@ export default function MyMenu() {
       {/* 手機版選單按鈕 */}
       <div className={`${styles.collapseAside} d-xl-none`}>
         <div className={`${styles.collapseAsideContent}`}>
-        <button
+          <button
             className={`btn d-md-none ${styles.right}`}
             onClick={() => setmobileMenu(!mobileMenu)}
             type="button"
@@ -104,7 +105,7 @@ export default function MyMenu() {
             aria-expanded="false"
             aria-controls="filterOffcanvas"
           >
-           <i className="bi bi-chevron-right"></i>
+            <i className="bi bi-chevron-right"></i>
           </button>
         </div>
       </div>
@@ -114,18 +115,18 @@ export default function MyMenu() {
         tabIndex="-1"
         id="filterOffcanvas"
         aria-labelledby="filterOffcanvasLabel"
-      > 
-      <div className="offcanvas-header">
-      {/* <h5 className="offcanvas-title" id="filterOffcanvasLabel">
+      >
+        <div className="offcanvas-header">
+          {/* <h5 className="offcanvas-title" id="filterOffcanvasLabel">
           篩選
         </h5> */}
-      <button
-        type="button"
-        className="btn-close text-reset"
-        data-bs-dismiss="offcanvas"
-        aria-label="Close"
-      ></button>
-    </div>
+          <button
+            type="button"
+            className="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
         <div className={`text-center`}>
           {/*  顯示會員頭像與名稱 */}
           <div className="lumi-profile-section position-relative d-inline-block">
@@ -136,11 +137,11 @@ export default function MyMenu() {
               className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
               width="50"
             />
-            <FontAwesomeIcon
+            {/* <FontAwesomeIcon
               icon={faCamera}
               onClick={handleClick}
               style={{ cursor: "pointer" }}
-            />
+            /> */}
             <input
               id="avatarInput"
               type="file"
@@ -174,7 +175,7 @@ export default function MyMenu() {
                 </li>
                 <li>
                   <label
-                    onClick={uploadPhoto}
+                    onClick={handleClick}
                     className={`dropdown-item ${styles.dropdownItem}`}
                   >
                     上傳照片
@@ -232,11 +233,11 @@ export default function MyMenu() {
               className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
               width="50"
             />
-            <FontAwesomeIcon
+            {/* <FontAwesomeIcon
               icon={faCamera}
               onClick={handleClick}
               style={{ cursor: "pointer" }}
-            />
+            /> */}
             <input
               id="avatarInput"
               type="file"
@@ -270,7 +271,7 @@ export default function MyMenu() {
                 </li>
                 <li>
                   <label
-                    onClick={uploadPhoto}
+                    onClick={handleClick}
                     className={`dropdown-item ${styles.dropdownItem}`}
                   >
                     上傳照片

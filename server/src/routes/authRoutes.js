@@ -4,9 +4,10 @@ import pool from "../config/mysql.js";
 import bcrypt from "bcrypt";
 import multer from "multer";
 import { resolve, dirname, extname } from "path";
-import { rename } from "node:fs/promises";
+import { rename, access, constants } from "node:fs/promises";
 import { fileURLToPath } from "url";
-
+import fs from "fs";
+import path from "path";
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
@@ -358,10 +359,30 @@ function checkToken(req, res, next) {
 }
 
 async function getAvatar(img) {
+  const basePath = path.resolve("public/user/img");
+  console.log(basePath);
+
+  const defaultAvatar = "http://localhost:5000/auth/Dog5.png";
+
   if (!img) {
-    return "http://localhost:5000/auth/Dog5.png";
+    return defaultAvatar;
   }
-  return `http://localhost:5000/auth/${img}`;
+
+  const imgPath = path.join(basePath, img);
+
+  try {
+    await fs.promises.access(imgPath, fs.constants.F_OK);
+    return `http://localhost:5000/auth/${img}`;
+  } catch (err) {
+    return defaultAvatar;
+  }
 }
+
+// async function getAvatar(img) {
+//   if (!img) {
+//     return "http://localhost:5000/auth/Dog5.png";
+//   }
+//   return `http://localhost:5000/auth/${img}`;
+// }
 
 export default router;

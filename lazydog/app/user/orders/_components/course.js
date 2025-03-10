@@ -3,8 +3,7 @@ import Link from "next/link";
 import couponStyles from "./userCoupon.module.css";
 
 const Course = ({ courseOrders }) => {
-
-console.log(courseOrders);
+  console.log(courseOrders);
 
   return (
     <>
@@ -22,7 +21,6 @@ console.log(courseOrders);
                 src={`/course/img/${order.main_pic}`}
                 style={{ maxHeight: "100px", objectFit: "cover" }}
                 alt={`課程訂單 ${order.id}`}
-             
               />
             </Link>
             <div className={couponStyles.suDetails}>
@@ -33,7 +31,7 @@ console.log(courseOrders);
                 建立時間: {order.order_date.split("T")[0]}
               </p>
             </div>
-            <span className={couponStyles.suPrice}>NT{order.total_price}</span>
+            <span className={couponStyles.suPrice}>NT {order.total_price}</span>
           </div>
         );
       })}

@@ -64,7 +64,6 @@ export default function Header(props) {
 
   return (
     <header className={styles["lumi-header2"]}>
-      <ToastContainer />
       <Link href="/" className={styles["lumi-logo2"]}>
         <img
           className={styles.logo}
@@ -183,6 +182,7 @@ export default function Header(props) {
 
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
+          <ToastContainer />
           <Link href="/user" className={styles["lumi-user-icon2"]}>
             {/* <FontAwesomeIcon icon={faUser} /> */}
             <i className="bi bi-person"></i>
@@ -211,7 +211,6 @@ export default function Header(props) {
             className={styles["lumi-cart-icon2"]}
           >
             <i className="bi bi-cart2"></i>
-      
           </Link>
         ) : (
           <Link
@@ -220,10 +219,8 @@ export default function Header(props) {
             className={styles["lumi-cart-icon2"]}
           >
             <i className="bi bi-cart2"></i>
-         
           </Link>
         )}
-
       </div>
       {/* 手機板 */}
 
@@ -251,10 +248,11 @@ export default function Header(props) {
                 </Link>
               </div>
               <div
-                className={`${PDOpen
+                className={`${
+                  PDOpen
                     ? styles["dropdown-contentOn"]
                     : styles["dropdown-contentOff"]
-                  }`}
+                }`}
               >
                 <a
                   href={`/product/list/category?category=乾糧`}
@@ -328,10 +326,11 @@ export default function Header(props) {
                 </Link>
               </div>
               <div
-                className={`${teacherOpen
+                className={`${
+                  teacherOpen
                     ? styles["dropdown-contentOn"]
                     : styles["dropdown-contentOff"]
-                  }`}
+                }`}
               >
                 <Link
                   href="/course/list"
@@ -361,10 +360,11 @@ export default function Header(props) {
                 <Link href="/user">會員中心</Link>
               </div>
               <div
-                className={`${userOpen
+                className={`${
+                  userOpen
                     ? styles["dropdown-contentOn"]
                     : styles["dropdown-contentOff"]
-                  }`}
+                }`}
               >
                 <Link
                   href="/user"
@@ -372,7 +372,10 @@ export default function Header(props) {
                 >
                   個人資料
                 </Link>
-                <Link href="/user/userFavorite" className={styles["dropdown-link"]}>
+                <Link
+                  href="/user/userFavorite"
+                  className={styles["dropdown-link"]}
+                >
                   我的收藏
                 </Link>
                 <div
@@ -385,26 +388,20 @@ export default function Header(props) {
             </li>
             {user ? (
               <li>
-                <Link
-                  onClick={handleCartClick}
-                  href="/cart/CartList"
-                >
+                <Link onClick={handleCartClick} href="/cart/CartList">
                   <i className="bi bi-cart2"></i>購物車
-             
                 </Link>
               </li>
             ) : (
               <li>
                 <Link onClick={handleCartClick} href="/login">
                   <i className="bi bi-cart2"></i>購物車
-              
                 </Link>
               </li>
             )}
           </ul>
         </nav>
       </div>
-
     </header>
   );
 }
