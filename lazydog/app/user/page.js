@@ -32,15 +32,6 @@ export default function Menu() {
   });
 
   // 監聽郵遞區號選擇變更
-  // const handlePostcodeChange = (selectedCounty, selectedDistrict) => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     county: selectedCounty,
-  //     district: selectedDistrict,
-  //   }));
-  //   console.log(selectedCounty, selectedDistrict);
-  // };
-
   const handlePostcodeChange = (selectedCounty, selectedDistrict) => {
     setFormData((prev) => {
       if (
@@ -143,7 +134,6 @@ export default function Menu() {
         number: user.number || "",
         floor: user.floor || "",
         county: user.county || "",
-        district: user.district || "",
         address: user.address || "",
       });
     }
@@ -233,7 +223,7 @@ export default function Menu() {
 
             <div className={styles.addressRow}>
               <TWZipCode
-                initCounty={user.county} // 傳入 initCounty
+                initCounty={formData.county} // 傳入 initCounty
                 initDistrict={formData.district} // 傳入 initDistrict
                 onPostcodeChange={handlePostcodeChange}
               />

@@ -200,13 +200,15 @@ export default function Header(props) {
           {user ? (
             <Link
               href={
-                user.role === "operator"
-                  ? "/hotel-coupon/operatorDetail"
-                  : user.role === "teacher"
-                    ? "/teacher-sign/list"
-                    : user.role === "user"
-                      ? "/user"
-                      : "#"
+                user
+                  ? user.role === "operator"
+                    ? "/hotel-coupon/operatorDetail"
+                    : user.role === "teacher"
+                      ? "/teacher-sign/list"
+                      : user.role === "user"
+                        ? "/user"
+                        : "#"
+                  : "/login" // Or some default route if user is not logged in
               }
               className={styles["lumi-user-icon"]}
             >
@@ -239,13 +241,15 @@ export default function Header(props) {
             <div className={styles["dropdown-content"]}>
               <Link
                 href={
-                  user.role === "operator"
-                    ? "/hotel-coupon/operatorDetail"
-                    : user.role === "teacher"
-                      ? "/teacher-sign/list"
-                      : user.role === "user"
-                        ? "/user"
-                        : "#"
+                  user
+                    ? user.role === "operator"
+                      ? "/hotel-coupon/operatorDetail"
+                      : user.role === "teacher"
+                        ? "/teacher-sign/list"
+                        : user.role === "user"
+                          ? "/user"
+                          : "#"
+                    : "/login" // Or some default route if user is not logged in
                 }
                 className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
               >
@@ -459,13 +463,15 @@ export default function Header(props) {
                 >
                   <Link
                     href={
-                      user.role === "operator"
-                        ? "/hotel-coupon/operatorDetail"
-                        : user.role === "teacher"
-                          ? "/teacher-sign/list"
-                          : user.role === "user"
-                            ? "/user"
-                            : "#"
+                      user
+                        ? user.role === "operator"
+                          ? "/hotel-coupon/operatorDetail"
+                          : user.role === "teacher"
+                            ? "/teacher-sign/list"
+                            : user.role === "user"
+                              ? "/user"
+                              : "#"
+                        : "/login" // Or some default route if user is not logged in
                     }
                     className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
                   >
