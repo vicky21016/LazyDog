@@ -14,11 +14,11 @@ const CommentSection = () => {
     const { user, loading: authLoading, } = useAuth();
 
     // 設置默認頭像
-    const defaultAvatar = '/path/to/default-avatar.jpg';
-    // const modifiedAvatar = user?.avatar ? user.avatar.replace('/images/', '/') : defaultAvatar;
-    const modifiedAvatar = user.avatar 
+    // const defaultAvatar = '/path/to/default-avatar.jpg';
+    const modifiedAvatar = user?.avatar ? user.avatar.replace('/images/', '/') : defaultAvatar;
+    // const modifiedAvatar = user.avatar 
     // console.log(defaultAvatar)
-    // console.log(modifiedAvatar)
+    console.log(modifiedAvatar)
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!commentContent.trim()) {

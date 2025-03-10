@@ -75,7 +75,7 @@ const useComment = () => {
       }
       const result = await response.json(); // 將響應數據轉換為 JSON
       result.forEach((comment) => {
-        comment.user_img = `http://localhost:5000/auth/images/${comment.user_img}`;
+        comment.user_img = `http://localhost:5000/auth/${comment.user_img}`;
       });
       setComments(result); // 保存留言資料
       console.log(result)
