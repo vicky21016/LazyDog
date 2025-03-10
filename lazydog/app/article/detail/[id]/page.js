@@ -40,7 +40,7 @@ export default function ArticleDetail() {
       <div className={`container ${style.container}`} style={{ marginTop: "100px" }}>
         {/* 文章內容 */}
         <div className="w-100 d-flex justify-content-center">
-          <div style={{ width: "750px" }}>
+          <div style={{ width: "1024px" }}>
             <div className="mb-5">
               <Breadcrumb
                 links={[
