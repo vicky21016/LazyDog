@@ -87,11 +87,17 @@
 
 .card {
   width: 818.69px;
-  height: 684px;
+  height: 625px;
   border: none;
- 
-  /* display: flex; */
-  gap: 16px;
+  display: flex;
+  flex-direction:column;
+  gap: 5px;
+
+}
+.card:hover {
+  .customLink{
+    color:#f5842b
+  }
 
 }
 
@@ -107,9 +113,12 @@
   margin-bottom: 5px;
 }
 
-.card p {
+.title {
   font-size: 24px;
+  color: black;
 }
+
+
 
 .customLink {
   text-decoration: underline;
@@ -123,11 +132,15 @@
   color: #f5842b;
 }
 
-/* bottom */
+
+/* .title2 {
+  font-size: 16px;
+  color: black;
+} */
 .asideRead {
   border-radius: 5px;
   padding-top: 14px;
-  .title{
+  .title2{
     color:black;
     height: 50px;
     overflow: hidden;
@@ -136,7 +149,7 @@
 
 .asideRead:hover {
   background-color: #fff6e8;
-  .title{
+  .title2{
     color: #f5842b;
    
   }

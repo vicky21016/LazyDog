@@ -8,7 +8,7 @@
   align-items: center;
   position: relative; /* 讓 ::before 定位 */
   overflow: hidden;
-  margin-top:100px; ;
+  margin-top:71px; ;
 }
 
 .mainDog::before {
