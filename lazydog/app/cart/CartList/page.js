@@ -67,46 +67,8 @@ export default function CartListPage(props) {
     },
   ];
 
-  const {
-    userName,
-    userImg,
-    history,
-    width,
-    product,
-    router,
-    loginRoute,
-    productData,
-    productID,
-    productName,
-    productDiscount,
-    img,
-    picNow,
-    setPicNow,
-    rate,
-    setRate,
-    amount,
-    setAmount,
-    detailPic,
-    setDetailPic,
-    rateData,
-    rateAvg,
-    int,
-    dec,
-    CardInt,
-    hotSale,
-    sameBuy,
-    mutate,
-    isLoading,
-    error,
-  } = useDetailFetch();
-  const {
-    favorite,
-    setFavorite,
-    heartHover,
-    setHeartHover,
-    heartState,
-    setHeartState,
-  } = useDetailFavorite();
+  const { CardInt, hotSale } = useDetailFetch();
+  const { favorite, setFavorite } = useDetailFavorite();
   const [hot, setHot] = useState(0);
 
   return (

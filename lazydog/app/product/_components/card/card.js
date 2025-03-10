@@ -475,11 +475,19 @@ function CardContent({ productID = "" }) {
                     {productName}
                   </motion.p>
                   <motion.h5
+                    layout
+                    style={{
+                      color: isOn ? "#f6ce5b" : "",
+                    }}
                     className={`${styles.ProductCardPrice} d-none d-xl-block`}
                   >
                     NT$ {products?.price}
                   </motion.h5>
                   <motion.h5
+                    layout
+                    style={{
+                      color: isOn ? "#f6ce5b" : "",
+                    }}
                     className={`${styles.ProductCardPriceSm} d-xl-none`}
                   >
                     NT$ {products?.price}

@@ -229,6 +229,7 @@
     justify-content: center;
     width: 35px;
     height: 35px;
+    background: transparent;
     border: 1px solid var(--orange);
     border-radius: 50%;
   }
