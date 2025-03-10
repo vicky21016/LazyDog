@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "../../../styles/modules/fontHotelHome.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   return (
@@ -24,8 +23,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             >
               <span aria-hidden="true">
                 {/* &laquo; */}
-                {/* <img src="/course/img/pageArrowleft;png.png" alt="上一頁" /> */}
-                <i class={`bi bi-chevron-left ${styles.bi}`}></i>
+                <img src="/course/img/pageArrowleft;png.png" alt="上一頁" />
               </span>
             </button>
           </li>
@@ -61,8 +59,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             >
               <span aria-hidden="true">
                 {/* &raquo; */}
-                {/* <img src="/course/img/pageArrowright.png" alt="下一頁" /> */}
-                <i class={`bi bi-chevron-right ${styles.biBold}`}></i>
+                <img src="/course/img/pageArrowright.png" alt="下一頁" />
               </span>
             </button>
           </li>
