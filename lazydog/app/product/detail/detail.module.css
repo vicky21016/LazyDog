@@ -45,27 +45,13 @@
       text-wrap: nowrap;
       color: white;
     }
-    button:hover {
-      background-color: #fdf9f5;
-      color: #ff9538 !important;
-      border-color: #ff9538;
-    }
     h5 {
       font-weight: bold;
-      /* color: var(--White); */
       cursor: pointer;
     }
     .BtnBuynow {
-      background: var(--White);   
-      color: #ff9538;   
-      h5 {
-        /* color: var(--orange); */
-      }
-    }
-    .BtnBuynow:hover {
-      background-color: #ff9538;
-      color: white !important;
-      border-color: #ff9538;
+      background: var(--White);
+      color: #ff9538;
     }
   }
 }

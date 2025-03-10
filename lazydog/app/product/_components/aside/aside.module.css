@@ -138,6 +138,21 @@
   flex-direction: column;
   justify-content: center;
   gap: 15px;
+  .ClearFilterBtn {
+    background: none;
+    border: 2px solid var(--Orange);
+    color: var(--Orange);
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .ClearFilterBtn:hover {
+    background: var(--Orange);
+    color: var(--White);
+  }
 }
 .PriceInput {
   display: flex;
@@ -159,19 +174,4 @@
     -webkit-appearance: none;
     margin: 0;
   }
-}
-.ClearFilterBtn {
-  background: none;
-  border: 2px solid var(--Orange);
-  color: var(--Orange);
-  padding: 8px 20px;
-  border-radius: 30px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-}
-.ClearFilterBtn:hover {
-  background: var(--Orange);
-  color: var(--White);
 }
