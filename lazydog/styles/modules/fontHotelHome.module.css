@@ -390,6 +390,11 @@
   min-width: 45px;
   min-height: 45px;
   border-radius: 50%;
+  margin: 0 5px;
+}
+
+.pageItem:focus {
+  box-shadow: none !important;
 }
 
 .pageLink {
@@ -398,13 +403,13 @@
   justify-content: center;
   /* width: 48px;
   height: 48px; */
-  width: 35px;
-  height: 35px;
+  width: 36px;
+  height: 36px;
   border-radius: 50% !important; /* 確保是圓形 */
   color: #333333;
   border: none;
   padding: 0;
-  font-size: 16px;
+  font-size: 16.5px;
   transition: background 0.3s, color 0.3s;
 }
 
@@ -423,6 +428,10 @@
 .pageLink:hover {
   background-color: #ff9538;
   color: white;
+}
+
+.biBold {
+  transform: scale(1.2);
 }
 
 /* 桌機版篩選選單 */
