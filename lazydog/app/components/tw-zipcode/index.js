@@ -72,7 +72,7 @@ export default function TWZipCode({
         ))}
       </select>
       <select
-        style={{ marginLeft: "10px" }}
+        style={{ marginLeft: "10px", marginBottom: "50px" }}
         value={townshipIndex}
         onChange={(e) => {
           // 將字串轉成數字
