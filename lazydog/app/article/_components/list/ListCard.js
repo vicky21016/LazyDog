@@ -8,7 +8,9 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 export default function ListCard({ id, title, name, category_name, created_at, cover_image }) {
   return (
     <>
-      <div className={styles.card}>
+      <Link
+        href={{ pathname: `/article/detail/${id}`, query: { list: "true" } }}
+        className={styles.card}>
         <img
           className='mb-2'
           src={cover_image}
@@ -64,9 +66,14 @@ export default function ListCard({ id, title, name, category_name, created_at, c
           </div>
         </div>
 
-        <p>{title}</p>
-        <Link href={{ pathname: `/article/detail/${id}`, query: { list: "true" } }} className={styles.customLink}>Read more</Link>
-      </div>
+        <div
+        className={styles.title}
+        >{title}</div>
+        <div
+          // href={{ pathname: `/article/detail/${id}`, query: { list: "true" } }}
+          className={styles.customLink}
+        >Read more</div>
+      </Link>
     </>
   )
 }

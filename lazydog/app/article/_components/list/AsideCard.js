@@ -26,7 +26,7 @@ export default function AsideCard({ id, title, cover_image, created_at }) {
                 </div>
                 <div
                     className="col-9">
-                    <div className={styles.title}>{title}</div>
+                    <div className={styles.title2}>{title}</div>
                     <p style={{ color: '#9F9F9F' }}>{created_at}</p>
                 </div>
             </Link>

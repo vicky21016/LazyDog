@@ -194,7 +194,10 @@ const ArticlePage = () => {
           </aside>
 
           {/* 主要內容 */}
-          <main >
+          <main
+          // style={{display:'flex',flexDirection:'column',gap:'25px'}}       
+          >
+           
             <div className={styles.RWDfilter}>
               <div className="input-group my-3" style={{ border: '.2px solid grey', borderRadius: '5px' }}>
                 <input
@@ -293,7 +296,10 @@ const ArticlePage = () => {
             <button className={styles.filter} onClick={handleSortToggle}>
               <i className="bi bi-filter"></i> 依時間排序 {sortOrder === 'asc' ? '↑' : '↓'}
             </button>
-            {currentArticles.length > 0 ? (
+            <div
+              style={{ display: 'flex', flexDirection: 'column', gap: '25px',paddingBottom:'100px' }}
+            >
+               {currentArticles.length > 0 ? (
               currentArticles.map((article) => (
 
                 // element="div"
@@ -304,6 +310,8 @@ const ArticlePage = () => {
             ) : (
               <p>沒有符合條件的文章</p>
             )}
+            </div>
+           
 
             <div >
               <h4 className={styles.RWDH4}>延伸閱讀</h4>
