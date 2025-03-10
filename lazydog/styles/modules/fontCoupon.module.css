@@ -31,7 +31,6 @@
   overflow: hidden;
   top: 20px;
   margin-bottom: 30px;
-
 }
 
 .suCoupon img {
@@ -165,7 +164,7 @@
   /* font-size: 18px; */
   font-weight: bold;
   margin-bottom: 8px;
-  color: #66C5BD;
+  color: #66c5bd;
   letter-spacing: 3px;
 }
 .suEventTitle1 {
@@ -210,8 +209,8 @@
     max-width: 350px;
     margin: 0 auto;
   }
-  .img{
-     max-width:300px
+  .img {
+    max-width: 300px;
   }
 }
 .suModalContent {
@@ -223,7 +222,7 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 4px solid #66C5BD;
+  border: 4px solid #66c5bd;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -235,10 +234,19 @@
 .suCheckmark {
   width: 50px;
   height: 25px;
-  border: solid #66C5BD;
+  border: solid #66c5bd;
   border-width: 0 0 4px 4px;
   transform: rotate(-45deg);
   position: absolute;
   animation: draw 0.5s ease-in-out forwards;
   animation-delay: 0.2s;
+}
+@media (max-width: 768px) {
+  .suCouponContent {
+    position: relative;
+    font-size: 10px;
+    width: 40%;
+    left: 170px;
+    top: 60px;
+  }
 }

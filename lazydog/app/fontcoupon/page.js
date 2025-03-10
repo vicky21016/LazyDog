@@ -5,6 +5,7 @@ import styles from "../../styles/modules/fontCoupon.module.css";
 import Image from "next/image";
 import Header from "../components/layout/header";
 import { claimCoupon } from "@/services/couponService";
+import Swal from "sweetalert2";
 
 export default function CouponPage() {
   // 儲存 API 回傳的優惠券資訊
@@ -55,7 +56,11 @@ export default function CouponPage() {
       }
     } catch (error) {
       console.error("領取優惠券失敗", error);
-      alert(error.message || "發生錯誤，請稍後再試");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.message || "發生錯誤，請稍後再試",
+      });
     }
   };
 
