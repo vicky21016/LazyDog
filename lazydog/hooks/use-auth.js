@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { auth, provider } from "@/app/components/utils/firebase"; // 確保路徑正確
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import jwt from "jsonwebtoken";
-
+import Swal from "sweetalert2";
 const appKey = "loginWithToken";
 
 const AuthContext = createContext(null);
@@ -181,7 +181,13 @@ export function AuthProvider({ children }) {
       console.log("儲存 API 回應:", result);
 
       if (result.status == "success") {
-        alert("儲存成功");
+        Swal.fire({
+          icon: "success",
+          title: "儲存成功",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        // alert("儲存成功");
         const token = result.data.token;
         const newUser = jwt.decode(token);
         console.log(newUser);
