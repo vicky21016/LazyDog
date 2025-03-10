@@ -471,6 +471,21 @@
   animation: four 0.6s steps(4) infinite;
 }
 
+.dogWalkToSit {
+  background: url("../template/walktosit.png") 0 0;
+  animation: three 0.2s steps(2) forwards;
+}
+
+.dogSitToWalk {
+  background: url("../template/walktosit.png") 0 0;
+  animation: backthree 0.2s steps(2) forwards;
+}
+
+.dogStop {
+  background: url("../template/stop.png") 0 0;
+  animation: four 0.6s steps(4) infinite;
+}
+
 .flip {
   transform: scaleX(-1);
 }
@@ -502,7 +517,26 @@
   }
 }
 
-@media (max-width: 768px) {
-  .breadcrumb 
-    {margin: 0;}
+@keyframes three {
+  0% {
+    background-position: 0px 0px;
   }
+  100% {
+    background-position: -120px 0;
+  }
+}
+
+@keyframes backthree {
+  0% {
+    background-position: -120px 0;
+  }
+  100% {
+    background-position: 0px 0px;
+  }
+}
+
+@media (max-width: 768px) {
+  .breadcrumb {
+    margin: 0;
+  }
+}

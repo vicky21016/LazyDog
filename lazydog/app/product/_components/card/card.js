@@ -196,7 +196,7 @@ function CardContent({ productID = "" }) {
         </li>
       ) : (
         <>
-          <li layout style={{}} className={`${styles.ProductCard} col`}>
+          <li className={`${styles.ProductCard} col`}>
             <motion.div
               layout
               style={{
@@ -522,7 +522,7 @@ function CardContent({ productID = "" }) {
                       alt=""
                     />
                   </button>
-                  <button
+                  <motion.button
                     whileHover={{ scale: 1.2 }}
                     whileTap={{ scale: 0.8 }}
                     type="button"
@@ -544,7 +544,7 @@ function CardContent({ productID = "" }) {
                       }.png`}
                       alt=""
                     />
-                  </button>
+                  </motion.button>
                   <Link
                     onMouseEnter={() => {
                       const id = setInterval(() => {

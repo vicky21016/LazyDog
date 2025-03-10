@@ -7,6 +7,7 @@ import StarGroup from "./stargroup";
 import Swal from "sweetalert2";
 import { MoonLoader } from "react-spinners";
 
+import { useAuth } from "@/hooks/use-auth";
 import { useReviewsUpdate } from "@/hooks/product/use-reviews";
 
 export default function Ratecard({
@@ -23,6 +24,7 @@ export default function Ratecard({
   mutate = () => {},
 }) {
   const router = useRouter();
+  const { user } = useAuth();
   const rateNum = rate ? rate.toString() : "";
   const years = date ? date.slice(0, 4) : "";
   const months = date ? date.slice(5, 7) : "";
@@ -49,7 +51,7 @@ export default function Ratecard({
     mutate,
   });
   const handleAddFavorite = async () => {
-    if (!id) {
+    if (!user?.id > 0) {
       Swal.fire({
         icon: "info",
         title: "請先登入",
@@ -73,7 +75,6 @@ export default function Ratecard({
         productID: productID,
         good: goodNum,
       };
-      console.log(good);
       if (!good) {
         setGood(!good);
         goodForm.good = goodNum + 1;
