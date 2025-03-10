@@ -227,12 +227,12 @@ export default function Menu() {
 
           <button
             type="button"
-            className={styles.exStore}
+            className={`mt-3 ${styles.exStore}`}
             onClick={handleCancel}
           >
             取消
           </button>
-          <button type="submit" className={styles.store}>
+          <button type="submit" className={`mt-3 ${styles.store}`}>
             儲存
           </button>
         </form>

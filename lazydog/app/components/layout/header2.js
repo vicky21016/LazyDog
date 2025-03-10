@@ -49,7 +49,7 @@ export default function Header(props) {
 
   const handleCartClick = async () => {
     if (!user) {
-      await toast.warning("請先登入才能使用購物車!", {
+      await toast.warning("請先登入!", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,
@@ -183,10 +183,19 @@ export default function Header(props) {
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
           <ToastContainer />
-          <Link href="/user" className={styles["lumi-user-icon2"]}>
-            {/* <FontAwesomeIcon icon={faUser} /> */}
-            <i className="bi bi-person"></i>
-          </Link>
+          {user ? (
+            <Link href="/user" className={styles["lumi-user-icon2"]}>
+              <i className="bi bi-person" />
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" className={styles["lumi-user-icon2"]}>
+                <i className="bi bi-person" />
+              </Link>
+              <ToastContainer />
+            </>
+          )}
+
           {user ? (
             <div className={styles["dropdown-content"]}>
               <Link href="/user" className={styles["dropdown-link"]}>
@@ -213,13 +222,19 @@ export default function Header(props) {
             <i className="bi bi-cart2"></i>
           </Link>
         ) : (
-          <Link
-            onClick={handleCartClick}
-            href="/login"
-            className={styles["lumi-cart-icon2"]}
-          >
-            <i className="bi bi-cart2"></i>
-          </Link>
+          <>
+            <Link
+              onClick={() => {
+                handleCartClick();
+                toast.info("Please log in to view your cart");
+              }}
+              href="/login"
+              className={styles["lumi-cart-icon2"]}
+            >
+              <i className="bi bi-cart2"></i>
+            </Link>
+            <ToastContainer />
+          </>
         )}
       </div>
       {/* 手機板 */}

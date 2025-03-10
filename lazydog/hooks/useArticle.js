@@ -46,18 +46,24 @@ function useArticles() {
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
             const data = await response.json();
+            // data.comments.forEach((comment) => {
+            //     if (comment.author_img && comment.author_img.startsWith("images/")) {
+            //         comment.author_img = `http://localhost:5000/auth/${comment.author_img}`;
+            //     }
+            // });
             data.comments.forEach((comment) => {
-                if (comment.author_img && comment.author_img.startsWith("images/")) {
-                    comment.author_img = `http://localhost:5000/auth/${comment.author_img}`;
-                }
+                comment.author_img = `http://localhost:5000/auth/images/${comment.author_img}`;
             });
-
+            
+            // http://localhost:5000/auth/images/1.jpg //
+            console.log(data.comments)
+            // 目前前台顯示comment.author_img=10.jpg
             if (isCurrentRequestValid) {
                 setArticle(data);
                 setComments(data.comments || []);
                 return data; // ✅ 返回文章資料
             }
-            console.log(data)
+            
 
         } catch (err) {
             if (isCurrentRequestValid) {

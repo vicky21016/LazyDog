@@ -210,6 +210,7 @@ function DetailContent() {
   };
 
   const [isVisible, setIsVisible] = useState(false);
+  const [btnHover, setBtnHover] = useState(false);
 
   if (error) {
     return (
@@ -456,17 +457,22 @@ function DetailContent() {
                 </div>
                 <div className={styles.InfoBtnGroup}>
                   <button
-                    className={styles.BtnBuynow}
+                    className={btnHover ? "" : styles.BtnBuynow}
                     onClick={() => {
                       handleAddToCart();
                       setTimeout(() => {
                         router.push("/cart/CartList");
                       }, 100);
                     }}
+                    onMouseEnter={() => setBtnHover(true)}
+                    onMouseLeave={() => setBtnHover(false)}
                   >
                     <h5>立即購買</h5>
                   </button>
-                  <button onClick={handleAddToCart}>
+                  <button
+                    className={btnHover ? styles.BtnBuynow : ""}
+                    onClick={handleAddToCart}
+                  >
                     <h5>加入購物車</h5>
                   </button>
                 </div>

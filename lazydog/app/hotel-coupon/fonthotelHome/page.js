@@ -83,13 +83,14 @@ export default function HotelHomePage() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedParams = JSON.parse(sessionStorage.getItem("searchParams"));
-      if (storedParams) {
+      if (storedParams && !isFiltered) {
         handleSearch(storedParams);
-      } else {
+      } else if (!isFiltered) {
         fetchAllHotels();
       }
     }
-  }, []);
+  }, [isFiltered]);
+  
 
   // 避免 useEffect 觸發多次篩選
   const isFirstRender = useRef(true);
@@ -97,7 +98,7 @@ export default function HotelHomePage() {
   // 當 isFiltered 為 false 時載入所有飯店
   useEffect(() => {
     let isMounted = true;
-    if (!isFiltered) {
+    if (!isFiltered && hotels.length === 0) {
       fetchAllHotels().then((hotels) => {
         if (isMounted) setFilteredHotels(hotels || []);
       });
@@ -106,14 +107,21 @@ export default function HotelHomePage() {
       isMounted = false;
     };
   }, [isFiltered]);
-
+  
   // 監聽 filteredHotels，更新分頁數
   useEffect(() => {
-    setTotalPages(Math.max(1, Math.ceil(filteredHotels.length / 10)));
+    const newTotalPages = Math.max(1, Math.ceil(filteredHotels.length / 10));
+    if (newTotalPages !== totalPages) {
+      setTotalPages(newTotalPages);
+    }
+  }, [filteredHotels]);
+  
+  useEffect(() => {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
-  }, [filteredHotels]);
+  }, [totalPages]);
+  
 
   // 確保當前頁數不超過最大頁數
   useEffect(() => {

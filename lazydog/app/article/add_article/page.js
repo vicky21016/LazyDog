@@ -12,6 +12,7 @@ import { useAuth } from "@/hooks/use-auth";  // 引入 useAuth 鉤子
 import Header from "../../components/layout/header";
 import style from '../../../styles/modules/operatorCamera.module.css';
 import Breadcrumb from "../../components/teacher/breadcrumb";
+import Swal from 'sweetalert2';
 
 export default function AddArticlePage() {
   const { createArticle } = useArticles();
@@ -49,12 +50,12 @@ export default function AddArticlePage() {
   // 提交文章
   const handleSubmit = async () => {
     if (!title.trim() || !selectedCategory) {
-      alert("請填寫標題並選擇分類");
+      Swal.fire("請填寫標題並選擇分類");
       return;
     }
 
     if (!user) {
-      alert("請先登入");
+      Swal.fire("請先登入");
       return;
     }
 
@@ -66,7 +67,7 @@ export default function AddArticlePage() {
         console.log("後端返回的圖片 URL:", uploadedImageUrl);
       } catch (err) {
         console.error("圖片上傳失敗:", err);
-        alert("圖片上傳失敗，請重試");
+        Swal.fire("圖片上傳失敗，請重試");
         return;
       }
     }
@@ -82,11 +83,11 @@ export default function AddArticlePage() {
 
     try {
       await createArticle(newArticle);  // 傳遞帶有 author_id 的文章資料到後端
-      alert("文章新增成功！");
+      Swal.fire("文章新增成功！");
       router.push('/article/list'); // 跳轉到文章列表頁
     } catch (error) {
       console.error("提交文章失敗:", error);
-      alert("提交文章失敗，請檢查網路連線");
+      Swal.fire("提交文章失敗，請檢查網路連線");
     }
   };
 
