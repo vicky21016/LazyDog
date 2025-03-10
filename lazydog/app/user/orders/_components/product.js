@@ -31,7 +31,7 @@ const Product = ({ orders }) => {
               訂購時間:{order.created_at.split("T")[0]}
             </p>
           </div>
-          <span className={couponStyles.suPrice}>NT{order.final_amount}</span>
+          <span className={couponStyles.suPrice}>NT {order.final_amount}</span>
         </div>
       ))}
     </>
