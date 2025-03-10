@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import styles from "./list.module.css";
 import Aside from "../_components/aside/aside";
 import Link from "next/link";
@@ -57,17 +57,24 @@ export default function ListPage(props) {
     return () => document.removeEventListener("click", clickOutside);
   }, [listOpen, dropDown, collapseBtn]);
 
-  const [isOn, setIsOn] = useState(false);
-  const toggleSwitch = () => setIsOn(!isOn);
+  // const [isOn, setIsOn] = useState(false);
+  // const toggleSwitch = () => setIsOn(!isOn);
 
+  // 小狗動畫-------------------------------------------------
   const dogRef = useRef(null);
   const containerRef = useRef(null);
-
   const animations = [
     { class: styles.dogWalk, duration: 1000 },
     { class: styles.dogRun, duration: 400 },
+  ];
+  const woof = [{ class: styles.dogWoof, duration: 1000 }];
+  const transitions = [
+    { class: styles.dogWalkToSit, duration: 200 },
+    { class: styles.dogSitToWalk, duration: 200 },
+  ];
+  const stop = [
     { class: styles.dogSit, duration: 600 },
-    { class: styles.dogWoof, duration: 1000 },
+    { class: styles.dogStop, duration: 600 },
   ];
 
   const getRandomPosition = () => {
@@ -78,6 +85,35 @@ export default function ListPage(props) {
     return animations[Math.floor(Math.random() * animations.length)];
   };
 
+  const getRandomStopAnimation = () => {
+    return stop[Math.floor(Math.random() * stop.length)];
+  };
+
+  const [stopOn, setStopOn] = useState(true);
+  const stopDog = (e, now) => {
+    const dogPosition = e ? e.currentTarget.getBoundingClientRect().left : 0;
+    if (now || stopOn == true) {
+      if (!dogRef.current || !containerRef.current) return;
+      dogRef.current.className = styles.dog + " " + styles.flip;
+      // 移除所有動畫類別
+      if (dogRef.current.className.includes(styles.flip)) {
+        dogRef.current.className = styles.dog + " " + styles.flip;
+      } else {
+        dogRef.current.className = styles.dog;
+      }
+
+      // 隨機選擇新動畫
+      const newAnimation = getRandomStopAnimation();
+      dogRef.current.classList.add(newAnimation.class);
+
+      containerRef.current.style.transition = `left 100ms linear`;
+      containerRef.current.style.left = `${dogPosition}px`;
+    } else {
+      moveDog();
+    }
+  };
+
+  const [intervalId, setIntervalId] = useState(null);
   const moveDog = () => {
     if (!dogRef.current || !containerRef.current) return;
 
@@ -94,27 +130,39 @@ export default function ListPage(props) {
 
     // 根據移動方向翻轉圖片
     if (newPosition < currentPosition) {
-      dogRef.current.classList.add(styles.flip);
-    } else {
       dogRef.current.classList.remove(styles.flip);
+    } else {
+      dogRef.current.classList.add(styles.flip);
     }
 
     // 計算移動時間
     const distance = Math.abs(newPosition - currentPosition);
-    const moveDuration = distance * 5;
+    const moveDuration =
+      distance * (newAnimation.class == styles.dogWalk ? 15 : 5);
 
     // 設置新位置
     containerRef.current.style.transition = `left ${moveDuration}ms linear`;
     containerRef.current.style.left = `${newPosition}px`;
 
     // 在動畫完成後繼續下一次移動
-    setTimeout(moveDog, Math.max(moveDuration, newAnimation.duration));
+    const id = setTimeout(
+      moveDog,
+      Math.max(moveDuration, newAnimation.duration)
+    );
+    setIntervalId(id);
   };
+  useEffect(() => {
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(null);
+    }
+  }, [stopOn]);
 
   useEffect(() => {
-    moveDog();
-    // 清理函數
-    return () => {};
+    stopDog();
+    return () => {
+      if (intervalId) clearTimeout(intervalId);
+    };
   }, []);
 
   if (error) {
@@ -511,7 +559,7 @@ export default function ListPage(props) {
           )}
         </section>
       </div>
-      <div className={styles.dogApp} onClick={toggleSwitch} ref={containerRef}>
+      <div className={styles.dogApp} ref={containerRef}>
         {/* <motion.div
           layout
           style={{}}
@@ -524,7 +572,14 @@ export default function ListPage(props) {
             console.log(bgPosition);
           }}
         ></motion.div> */}
-        <div ref={dogRef} className={styles.dog}></div>
+        <div
+          ref={dogRef}
+          className={styles.dog}
+          onClick={(e) => {
+            stopDog(e, stopOn);
+            setStopOn(!stopOn);
+          }}
+        ></div>
       </div>
     </>
   );
