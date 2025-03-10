@@ -40,7 +40,7 @@ export default function ArticleDetail() {
         <div className="w-100 d-flex justify-content-center">
 
           <div
-            style={{ width: '750px' }}
+            style={{ width: '1024px' }}
           >
             <div className="mb-5">
               <Breadcrumb

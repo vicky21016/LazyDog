@@ -32,7 +32,7 @@ export default function Content({ article }) {
 
   return (
     <div className={`${styles.content} mt-4`}>
-      <h4 className='mb-4'>{article?.title}</h4>
+      <h3 className='mb-4'>{article?.title}</h3>
       <div >
         <div className={`${styles.floor} ${style.btn3}`}>作者</div>
         <div className={`ms-2 ${styles.auther}`} style={{ display: 'inline-block' }}>

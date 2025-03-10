@@ -231,9 +231,18 @@ export default function CartListPayPage(props) {
   return (
     <>
       <Header />
-      <div>
+      <div style={{ marginTop: "100px" }}>
         <div className="cart-img">
-          <img src="/cart/Frame 35909.png" alt="Cart Image" />
+          <img
+            src="/cart/Frame 35909.png"
+            alt="Cart Image"
+            style={{
+              display: "block" /* 使圖片成為區塊級元素 */,
+              margin: "0 auto" /* 水平置中 */,
+              maxWidth: "100%" /* 限制最大寬度 */,
+              height: "auto" /* 保持比例 */,
+            }}
+          />
         </div>
         <div className={`container lumi-all-wrapper ${styles.container}`}>
           <h4 className="mb-5">購買資訊</h4>
