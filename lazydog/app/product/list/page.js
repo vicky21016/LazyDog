@@ -66,6 +66,7 @@ export default function ListPage(props) {
   const animations = [
     { class: styles.dogWalk, duration: 1000 },
     { class: styles.dogRun, duration: 400 },
+    { class: styles.dogWoof, duration: 1000 },
   ];
   const woof = [{ class: styles.dogWoof, duration: 1000 }];
   const transitions = [
@@ -91,13 +92,18 @@ export default function ListPage(props) {
 
   const [stopOn, setStopOn] = useState(true);
   const stopDog = (e, now) => {
+    setStopOn(!stopOn);
+    if (TimeoutId) {
+      clearTimeout(TimeoutId);
+      setTimeoutId(null);
+    }
     const dogPosition = e ? e.currentTarget.getBoundingClientRect().left : 0;
     if (now || stopOn == true) {
       if (!dogRef.current || !containerRef.current) return;
-      dogRef.current.className = styles.dog + " " + styles.flip;
       // 移除所有動畫類別
       if (dogRef.current.className.includes(styles.flip)) {
-        dogRef.current.className = styles.dog + " " + styles.flip;
+        dogRef.current.className = styles.dog;
+        dogRef.current.classList.add(styles.flip);
       } else {
         dogRef.current.className = styles.dog;
       }
@@ -112,34 +118,32 @@ export default function ListPage(props) {
       moveDog();
     }
   };
+  const [TimeoutId, setTimeoutId] = useState(null);
 
-  const [intervalId, setIntervalId] = useState(null);
   const moveDog = () => {
     if (!dogRef.current || !containerRef.current) return;
-
+    if (TimeoutId) {
+      clearTimeout(TimeoutId);
+      setTimeoutId(null);
+    }
     // 移除所有動畫類別
     dogRef.current.className = styles.dog;
-
     // 隨機選擇新動畫
     const newAnimation = getRandomAnimation();
     dogRef.current.classList.add(newAnimation.class);
-
     // 隨機新位置
     const newPosition = getRandomPosition();
     const currentPosition = parseInt(containerRef.current.style.left) || 0;
-
     // 根據移動方向翻轉圖片
     if (newPosition < currentPosition) {
       dogRef.current.classList.remove(styles.flip);
     } else {
       dogRef.current.classList.add(styles.flip);
     }
-
     // 計算移動時間
     const distance = Math.abs(newPosition - currentPosition);
     const moveDuration =
       distance * (newAnimation.class == styles.dogWalk ? 15 : 5);
-
     // 設置新位置
     containerRef.current.style.transition = `left ${moveDuration}ms linear`;
     containerRef.current.style.left = `${newPosition}px`;
@@ -149,19 +153,13 @@ export default function ListPage(props) {
       moveDog,
       Math.max(moveDuration, newAnimation.duration)
     );
-    setIntervalId(id);
+    setTimeoutId(id);
   };
-  useEffect(() => {
-    if (intervalId) {
-      clearInterval(intervalId);
-      setIntervalId(null);
-    }
-  }, [stopOn]);
 
   useEffect(() => {
     stopDog();
     return () => {
-      if (intervalId) clearTimeout(intervalId);
+      if (TimeoutId) clearTimeout(TimeoutId);
     };
   }, []);
 
@@ -574,10 +572,9 @@ export default function ListPage(props) {
         ></motion.div> */}
         <div
           ref={dogRef}
-          className={styles.dog}
+          className={`${styles.dog} ${styles.flip}`}
           onClick={(e) => {
             stopDog(e, stopOn);
-            setStopOn(!stopOn);
           }}
         ></div>
       </div>
