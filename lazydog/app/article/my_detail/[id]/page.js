@@ -46,7 +46,7 @@ export default function ArticleDetail() {
               <Breadcrumb
                 links={[
                   { label: "首頁 ", href: "/" },
-                  { label: " 毛孩文章", href: "/article/list" },
+                  { label: " 我的文章", href: "/user/my_article" },
                   { label: ` ${article?.title || "標題尚未加載"}`, href: "/article/list/detail", active: true },
                 ]}
               />

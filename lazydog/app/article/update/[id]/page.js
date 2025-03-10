@@ -116,14 +116,14 @@ export default function UpdateArticlePage({ params }) {
         <Breadcrumb
           links={[
             { label: "首頁 ", href: "/" },
-            { label: " 毛孩文章", href: "/article/list" },
+            { label: " 我的文章", href: "/user/my_article" },
             { label: ` 編輯文章`, href: "/article/list/detail", active: true },
           ]}
         /></div>
       <div className="container" style={{ marginTop: '55px' }}>
         <div className="row">
           <div className="col-lg-3 col-sm-12">
-            <Link href="/article/my_article" className={`btn mb-3 ${style.btn3}`}>
+            <Link href="/user/my_article" className={`btn mb-3 ${style.btn3}`}>
               回我的文章
             </Link>
           </div>
