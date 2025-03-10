@@ -253,11 +253,19 @@ top: -100px;
   font-size: 24px;
     background-size: 100% auto;
     background-position: center;
-    height: 140px;
+    height: 110px;
  }
  .mobile{
   margin-bottom: 50px;
  }
+ .person{
+ height: 80px;
+ margin-top: 42px;
+ }
+ .imagesContainer{
+  .leftImage,.rightImage
+  {display: none;}
+}
 }
 
 .cardImg{

@@ -51,7 +51,8 @@
   border-radius: 5px;
 }
 .moreLink:hover{
-  background-color: #e9e7e7;
+  background-color: #fff6e8;
+  translate: 0 -10px;
   .customLink{
     color: #f5842b;
   }
@@ -91,4 +92,9 @@
     /* textarea{
         height: 27px;
     } */
+}
+@media (max-width: 768px) {
+.moreLink{
+  margin-bottom: 20px;
+}
 }

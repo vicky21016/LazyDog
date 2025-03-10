@@ -16,7 +16,7 @@ export default function MoreCard({ id, title, cover_image }) {
                     />
                 </div>
 
-                <div className={styles.customLink}>{title}</div>
+                <div className={`mt-3 ${styles.customLink}`}>{title}</div>
             </Link>
 
         </>
