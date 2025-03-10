@@ -354,12 +354,14 @@
   }
 }
 
-/* ------------------------- */
-.dogApp {
-  position: fixed;
-  bottom: 0;
-  z-index: 9999;
+@media (max-width: 768px) {
+  .breadcrumb {
+    margin: 0;
+  }
 }
+
+/* ------------------------- */
+
 /* .dogWoof {
   width: 60px; 
   height: 38px; 
@@ -446,7 +448,11 @@
     transform: translateX(calc(100vw - 60px)); 
   }
 } */
-
+.dogApp {
+  position: fixed;
+  bottom: 0;
+  z-index: 9999;
+}
 .dog {
   width: 60px;
   height: 38px;
@@ -533,11 +539,5 @@
   }
   100% {
     background-position: 0px 0px;
-  }
-}
-
-@media (max-width: 768px) {
-  .breadcrumb {
-    margin: 0;
   }
 }
