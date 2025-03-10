@@ -368,6 +368,8 @@ export default function CouponPage() {
                   style={{ width: "100%", maxWidth: "550px", height: "auto" }}
                   autoPlay
                   loop
+                  muted
+                  playsInline
                   onEnded={(e) => e.target.play()}
                 ></video>
               </div>
