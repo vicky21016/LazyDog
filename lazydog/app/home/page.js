@@ -4,11 +4,10 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-// import "./styles.css";
-import { Pagination, Navigation } from "swiper/modules";
+import { FaAngleUp, FaTicketAlt } from "react-icons/fa";
+
 import styles from "../../styles/modules/home.module.css";
 import Header from "../components/layout/header2";
 import { useDetailFetch } from "@/hooks/product/use-fetch";
@@ -292,13 +291,14 @@ export default function HomePage(props) {
       </div>
 
       <div className={styles.btns}>
-        <Link href="/fontcoupon" className={styles.ticketIcon}>
-          {/* <i class="bi bi-ticket-perforated"></i> */}
-          <img src="/home/img/ticketIcon.png" alt="" />
-        </Link>
         <button className={styles.topIcon}>
-          <img src="/home/img/topIcon.png" alt="" />
+          {/* <img src="/home/img/topIcon.png" alt="" /> */}
+          <FaAngleUp className="fs-4 text-white" />
         </button>
+        <Link href="/fontcoupon" className={styles.ticketIcon}>
+          {/* <img src="/home/img/ticketIcon.png" alt="" /> */}
+          <FaTicketAlt className="fs-5 text-white" />
+        </Link>
       </div>
     </>
   );
