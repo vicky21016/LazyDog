@@ -13,50 +13,52 @@ router.post("/google-login", async (req, res) => {
   }
 
   try {
-    // 檢查是否已經存在
-    const [rows] = await pool.query("SELECT * FROM users WHERE google_id = ?", [
-      google_id,
-    ]);
+    const [rows] = await pool.query(
+      "SELECT * FROM users WHERE google_id = ? OR email = ?",
+      [google_id, email]
+    );
 
     let user = null;
 
     if (rows.length > 0) {
       console.log(" 用戶已存在:", rows[0]);
-      user = rows[0]; // 直接使用已存在的用戶
+      user = rows[0];
     } else {
       const [result] = await pool.query(
-        "INSERT INTO users (google_id, email, name, avatar_url) VALUES (?, ?, ?, ?)",
-        [google_id, email, name, avatar_url]
+        "INSERT INTO users (google_id, email, name, avatar_url, role) VALUES (?, ?, ?, ?, ?)",
+        [google_id, email, name, avatar_url, "user"] // 預設 Google 用戶 role 為 "user"
       );
 
       if (result.affectedRows == 0) {
         throw new Error("用戶新增失敗");
       }
 
-      user = {
-        id: result.insertId,
-        google_id,
-        email,
-        name,
-        avatar_url,
-        role: "user", //預設GOOGLE用戶為user
-      };
+      // 取得新用戶完整資料
+      const [newUserRows] = await pool.query(
+        "SELECT * FROM users WHERE id = ?",
+        [result.insertId]
+      );
+
+      user = newUserRows[0];
 
       console.log("新用戶成功儲存:", user);
     }
 
-    // **產生 JWT Token**
-    const avatar = user.user_img ? await getAvatar(user.user_img) : user.avatar_url;
+    // 確保 `avatar` 存在
+    const avatar = user.user_img
+      ? `http://localhost:5000/user/img/${user.user_img}`
+      : user.avatar_url;
 
+    // **產生 JWT Token**
     const token = jwt.sign(
       {
         id: user.id,
         email: user.email,
-        role: user.role,
+        role: user.role || "user", 
         name: user.name,
-        birthday: user.birthday || "", // Google 用戶沒有生日，填空值
-        gender: user.gender || "", // Google 用戶沒有性別，填空值
-        phone: user.phone || "", // Google 用戶沒有電話，填空值
+        birthday: user.birthday || "", 
+        gender: user.gender || "",
+        phone: user.phone || "", 
         avatar, // Google 大頭貼
         teacher_id: user.teacher_id || "",
         company_name: user.company_name || "",
@@ -66,7 +68,7 @@ router.post("/google-login", async (req, res) => {
         address: user.address || "",
       },
       secretKey,
-      { expiresIn: "8h" } // 和普通登入一樣
+      { expiresIn: "8h" } //  和普通登入一樣
     );
 
     return res.status(200).json({
