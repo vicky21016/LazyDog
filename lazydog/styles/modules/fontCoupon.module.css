@@ -162,15 +162,25 @@
 }
 
 .suEventTitle {
-  font-size: 18px;
+  /* font-size: 18px; */
   font-weight: bold;
   margin-bottom: 8px;
+  color: #66C5BD;
+  letter-spacing: 3px;
+}
+.suEventTitle1 {
+  font-size: 38px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #ff9538;
+  letter-spacing: 3px;
 }
 
 .suEventDiscount {
-  font-size: 32px;
+  font-size: 42px;
   font-weight: bold;
   color: #ff9538;
+  letter-spacing: 3px;
 }
 
 .suEventDesc {
@@ -199,6 +209,9 @@
     width: 100%;
     max-width: 350px;
     margin: 0 auto;
+  }
+  .img{
+     max-width:330px
   }
 }
 .suModalContent {
