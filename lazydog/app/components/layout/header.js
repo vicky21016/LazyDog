@@ -197,10 +197,32 @@ export default function Header(props) {
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
           <ToastContainer />
-
-          <Link href="/user" className={styles["lumi-user-icon"]}>
-            <i className="bi bi-person" />
-          </Link>
+          {user ? (
+            <Link href="/user" className={styles["lumi-user-icon"]}>
+              <i className="bi bi-person" />
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className={styles["lumi-user-icon"]}
+                onClick={() =>
+                  toast.warning("請先登入!", {
+                    position: "top-center",
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  })
+                }
+              >
+                <i className="bi bi-person" />
+              </Link>
+              <ToastContainer />
+            </>
+          )}
           {user ? (
             <div className={styles["dropdown-content"]}>
               <Link
