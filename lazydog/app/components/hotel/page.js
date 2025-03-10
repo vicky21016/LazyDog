@@ -24,14 +24,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
               disabled={currentPage == 1}
               onClick={() => onPageChange(currentPage - 1)}
             >
-              <span aria-hidden="true">
                 {/* &laquo; */}
 
                 {/* <img src="/course/img/pageArrowleft;png.png" alt="上一頁" /> */}
                 {/* <i class={`bi bi-chevron-left ${styles.bi}`}></i> */}
                 <FaAngleLeft />
 
-              </span>
             </button>
           </li>
 
@@ -64,14 +62,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
               disabled={currentPage == totalPages}
               onClick={() => onPageChange(currentPage + 1)}
             >
-              <span aria-hidden="true">
                 {/* &raquo; */}
 
                 {/* <img src="/course/img/pageArrowright.png" alt="下一頁" /> */}
                 {/* <i class={`bi bi-chevron-right ${styles.biBold}`}></i> */}
                 <FaAngleRight />
 
-              </span>
             </button>
           </li>
         </ul>
