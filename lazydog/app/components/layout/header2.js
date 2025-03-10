@@ -72,7 +72,6 @@ export default function Header(props) {
         />
         <div className={styles["lumi-logo1"]}>LAZYDOG</div>
       </Link>
-      <ToastContainer />
       <nav className={styles["lumi-nav"]}>
         <ul className={styles["lumi-ul2"]}>
           <div className={styles["dropdown"]}>
@@ -183,6 +182,7 @@ export default function Header(props) {
 
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
+          <ToastContainer />
           <Link href="/user" className={styles["lumi-user-icon2"]}>
             {/* <FontAwesomeIcon icon={faUser} /> */}
             <i className="bi bi-person"></i>
