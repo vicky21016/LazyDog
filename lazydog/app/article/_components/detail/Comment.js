@@ -59,7 +59,7 @@ export default function Comment({ content, author, author_img, id }) {
                             </Dropdown.Toggle>
                             <Dropdown.Menu
                                 className={`${styles.customDropdownMenu}`}
-                                style={{ width: "25px", backgroundColor: "orange" }}
+                            
                             >
                                 <Dropdown.Item
                                     className={`${styles.item}`}
