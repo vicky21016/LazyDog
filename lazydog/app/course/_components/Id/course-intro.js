@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { useCart } from "@/hooks/use-cart";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+
 import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "../courseId.module.css";
-import { useAuth } from "@/hooks/use-auth";
-import { useCart } from "@/hooks/use-cart";
+
 import {
   addCourseFavorite,
   removeCourseFavorite,
@@ -104,7 +104,7 @@ export default function CourseIntro({ course, session, place, params }) {
 
     if (!storedToken || storedToken === "null" || storedToken === "undefined") {
       Swal.fire({
-        // icon: "warning",
+        icon: "warning",
         title: "請先登入",
         text: "需要先登入才能收藏！",
         showConfirmButton: false,
@@ -124,6 +124,9 @@ export default function CourseIntro({ course, session, place, params }) {
         icon: "error",
         title: "無法獲取用戶 ID",
         text: "請重新登入後再試！",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
         customClass: {
           popup: styles.tsaiSwal,
         },
@@ -137,7 +140,10 @@ export default function CourseIntro({ course, session, place, params }) {
           Swal.fire({
             icon: "error",
             title: "移除收藏失敗",
-            text: "找不到對應的收藏記錄！",
+            // text: "找不到對應的收藏記錄！",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
             customClass: {
               popup: styles.tsaiSwal,
             },
@@ -150,6 +156,9 @@ export default function CourseIntro({ course, session, place, params }) {
           Swal.fire({
             icon: "success",
             title: "已移除收藏",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
             customClass: {
               popup: styles.tsaiSwal,
             },
@@ -160,7 +169,10 @@ export default function CourseIntro({ course, session, place, params }) {
           Swal.fire({
             icon: "error",
             title: "移除收藏失敗",
-            text: response.error || "請稍後再試",
+            // text: response.error || "請稍後再試",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
             customClass: {
               popup: styles.tsaiSwal,
             },
@@ -172,9 +184,12 @@ export default function CourseIntro({ course, session, place, params }) {
           Swal.fire({
             icon: "success",
             title: response.message,
-            text: "課程已加入您的收藏清單！",
+            // text: "課程已加入您的收藏清單！",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
             customClass: {
-              popup: ".tsaiSwal",
+              popup: styles.tsaiSwal,
             },
           });
           setIsFavorite(true); // 更新狀態
@@ -183,7 +198,10 @@ export default function CourseIntro({ course, session, place, params }) {
           Swal.fire({
             icon: "error",
             title: "收藏失敗",
-            text: response.error || "請稍後再試",
+            // text: response.error || "請稍後再試",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
             customClass: {
               popup: styles.tsaiSwal,
             },
@@ -195,7 +213,10 @@ export default function CourseIntro({ course, session, place, params }) {
       Swal.fire({
         icon: "error",
         title: "操作失敗",
-        text: error.message || "請稍後再試！",
+        // text: error.message || "請稍後再試！",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
         customClass: {
           popup: styles.tsaiSwal,
         },
@@ -299,13 +320,23 @@ export default function CourseIntro({ course, session, place, params }) {
 
         <div className={styles.courseName}>
           <h2 className={styles.name}>{c?.name}</h2>
-          <i
+          <div
+            onClick={handleFavorite}
+            className={`me-5 ${styles.heart}`}
+            style={{ cursor: "pointer" }}
+          >
+            {isFavorite ? (
+              <FaHeart className="fs-4" />
+            ) : (
+              <FaRegHeart className="fs-4" />
+            )}
+          </div>
+          {/* <i
             className={`bi me-5 ${
               isFavorite ? "bi-heart-fill fs-4" : "bi-heart fs-4"
             } ${styles.heart}`}
             onClick={handleFavorite}
-          ></i>
-          {/* <FontAwesomeIcon icon={faHeart} className={styles.heartIcon} /> */}
+          ></i> */}
           {/* <img
             className={styles.heartIcon}
             src="/course/img/heartIcon.svg"

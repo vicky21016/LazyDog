@@ -195,7 +195,7 @@ export const addCourseFavorite = async (courseId) => {
 
     if (!res.ok) throw new Error(result.message || "新增課程收藏失敗");
 
-    return { success: true, message: "成功收藏課程", data: result };
+    return { success: true, message: "收藏成功", data: result };
   } catch (error) {
     console.error("收藏課程失敗:", error.message);
     return { success: false, error: error.message };
@@ -215,7 +215,6 @@ export const removeCourseFavorite = async (favoriteId) => {
   const userId = storedUser?.id;
 
   try {
-
     const res = await fetch(
       `${COURSE_FAVORITE_URL}/${favoriteId}?user_id=${userId}`,
       {
