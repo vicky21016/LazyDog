@@ -73,6 +73,22 @@
   background-color: #66c5bd;
   color: white;
 }
+.moreComments{
+  background-color: #f5842b;
+  color:aliceblue;
+  border-radius: 5px;
+  border: 2 solid #f5842b;
+  padding: 7px;
+  position: absolute;
+  top:-35px
+}
+.moreComments:hover{
+  background-color: #d9d9d900;
+  color:#f5842b;
+  border-radius: 5px;
+  border: 2 solid #f5842b;
+  padding: 7px;
+}
 
 @media screen and (min-width: 390px) {
     .chat{
