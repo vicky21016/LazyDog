@@ -52,6 +52,9 @@ router.post("/login", upload.none(), async (req, res) => {
         teacher_id: user.teacher_id, // Add teacher_id here
         company_name: user.company_name,
         business_license_number: user.business_license_number,
+        county: user.county,
+        district: user.district,
+        address: user.address,
       },
       secretKey,
       {
@@ -125,10 +128,13 @@ router.post("/register", upload.none(), async (req, res) => {
         birthday: user.birthday,
         gender: user.gender,
         phone: user.phone,
-        avatar: user.avatar,
-        teacher_id: user.teacher_id, // Add teacher_id here
+        avatar: await getAvatar(user.user_img),
+        teacher_id: user.teacher_id,
         company_name: user.company_name,
         business_license_number: user.business_license_number,
+        county: user.county,
+        district: user.district,
+        address: user.address,
       },
       secretKey,
       {
@@ -148,6 +154,7 @@ router.post("/register", upload.none(), async (req, res) => {
 router.post("/logout", checkToken, (req, res) => {
   const token = jwt.sign(
     {
+      id: "",
       email: "",
       role: "",
       name: "",
@@ -155,13 +162,17 @@ router.post("/logout", checkToken, (req, res) => {
       gender: "",
       phone: "",
       avatar: "",
-      teacher_id: "", // Add teacher_id here
+      teacher_id: "",
       company_name: "",
       business_license_number: "",
+      county: "",
+      district: "",
+      address: "",
     },
     secretKey,
     { expiresIn: "-10s" }
   );
+
   res.json({
     status: "success",
     data: { token },
@@ -171,7 +182,8 @@ router.post("/logout", checkToken, (req, res) => {
 
 router.put("/:id", checkToken, upload.none(), async (req, res) => {
   const { id } = req.params;
-  const { email, name, gender, birthday, phone } = req.body;
+  const { email, name, gender, birthday, phone, county, district, address } =
+    req.body;
 
   try {
     if (id != req.decoded.id) throw new Error("沒有修改權限");
@@ -201,6 +213,21 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
       updateFields.push("`phone` = ?");
       value.push(phone);
     }
+    if (county) {
+      // 如果有 county，加入更新
+      updateFields.push("`county` = ?");
+      value.push(county);
+    }
+    if (district) {
+      // 如果有 district，加入更新
+      updateFields.push("`district` = ?");
+      value.push(district);
+    }
+    if (address) {
+      // 如果有 address，加入更新
+      updateFields.push("`address` = ?");
+      value.push(address);
+    }
 
     value.push(id);
     const sql = `UPDATE users SET ${updateFields.join(", ")} WHERE id = ?;`;
@@ -227,9 +254,12 @@ router.put("/:id", checkToken, upload.none(), async (req, res) => {
         gender: user.gender,
         phone: user.phone,
         avatar: await getAvatar(user.user_img),
-        teacher_id: user.teacher_id, // Add teacher_id here
+        teacher_id: user.teacher_id,
         company_name: user.company_name,
         business_license_number: user.business_license_number,
+        county: user.county,
+        district: user.district,
+        address: user.address,
       },
       secretKey,
       { expiresIn: "8h" }
@@ -285,9 +315,12 @@ router.post(
           gender: req.decoded.gender,
           phone: req.decoded.phone,
           avatar: newFileName,
-          teacher_id: req.decoded.teacher_id, // Add teacher_id here
+          teacher_id: req.decoded.teacher_id,
           company_name: req.decoded.company_name,
           business_license_number: req.decoded.business_license_number,
+          county: req.decoded.county,
+          district: req.decoded.district,
+          address: req.decoded.address,
         },
         secretKey,
         { expiresIn: "8h" }
@@ -316,13 +349,17 @@ router.post("/status", checkToken, (req, res) => {
       gender: decoded.gender,
       phone: decoded.phone,
       avatar: decoded.avatar,
-      teacher_id: decoded.teacher_id, // Add teacher_id here
+      teacher_id: decoded.teacher_id,
       company_name: decoded.company_name,
       business_license_number: decoded.business_license_number,
+      county: decoded.county,
+      district: decoded.district,
+      address: decoded.address,
     },
     secretKey,
     { expiresIn: "8h" }
   );
+
   res.json({ status: "success", data: { token }, message: "登入中" });
 });
 

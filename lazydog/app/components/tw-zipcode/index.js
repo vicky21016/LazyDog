@@ -3,6 +3,8 @@ import { countries, townships, postcodes } from "./data-townships";
 
 export default function TWZipCode({
   initPostcode = "",
+  initCounty = "", // 新增 initCounty
+  initDistrict = "", // 新增 initDistrict
   onPostcodeChange = (country, township, postcode) => {},
 }) {
   //console.log(countries, townships, postcodes)
@@ -16,20 +18,20 @@ export default function TWZipCode({
 
   // 利用傳入時的initPostcode初始化用
   useEffect(() => {
-    if (initPostcode) {
-      setPostcode(initPostcode);
-      // 使用initPostcode尋找對應的countryIndex, townshipIndex
-      for (let i = 0; i < postcodes.length; i++) {
-        for (let j = 0; j < postcodes[i].length; j++) {
-          if (postcodes[i][j] === initPostcode) {
-            setCountryIndex(i);
-            setTownshipIndex(j);
-            return; // 跳出巢狀for迴圈
-          }
+    // console.log(initCounty);
+
+    if (initCounty || initDistrict) {
+      const countyIndex = countries.indexOf(initCounty);
+      if (countyIndex !== -1) {
+        setCountryIndex(countyIndex);
+        const districtIndex = townships[countyIndex].indexOf(initDistrict);
+        if (districtIndex !== -1) {
+          setTownshipIndex(districtIndex);
+          setPostcode(postcodes[countyIndex][districtIndex]);
         }
       }
     }
-  }, [initPostcode]);
+  }, [initCounty, initDistrict]);
 
   // 當countryIndex, townshipIndex均有值時，設定postcode值
   useEffect(() => {
