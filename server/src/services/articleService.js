@@ -14,6 +14,7 @@ export const getAllarticle = async () => {
        LEFT JOIN article_type ON articles.category_id = article_type.id
        WHERE articles.is_deleted = 0 AND users.is_deleted = 0`
     );
+    console.log(articles)
     return articles;
   } catch (error) {
     throw new Error(" 無法取得所有文章：" + error.message);

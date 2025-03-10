@@ -17,7 +17,7 @@ export const getArticles = async (req, res) => {
           updated_at: new Date(article.updated_at).toISOString().split('T')[0],  // 只取日期
           cover_image: article.cover_image || "http://localhost:5000/api/articles/image4.jpg" // 設定預設圖片
       }));
-
+      // console.log(formattedArticles)
       res.json(formattedArticles);
   } catch (error) {
       res.status(500).json({ error: error.message });
