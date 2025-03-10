@@ -79,7 +79,7 @@ export default function Filter({ filterChange }) {
           <tr>
             <td className={`${styles.tdTable} ${styles.menuTable}`}>
               <h5 className="my-3">課程類別</h5>
-              <img src="./img/font/down.png" alt="" />
+              {/* <img src="./img/font/down.png" alt="" /> */}
             </td>
           </tr>
           {/* <tr>
@@ -138,7 +138,7 @@ export default function Filter({ filterChange }) {
           <tr>
             <td className={`${styles.tdTable} ${styles.menuTable}`}>
               <h5 className="my-3">老師性別</h5>
-              <img src="./img/font/down.png" alt="" />
+              {/* <img src="./img/font/down.png" alt="" /> */}
             </td>
           </tr>
           {/* <tr>
