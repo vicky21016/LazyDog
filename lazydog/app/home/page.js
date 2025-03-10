@@ -16,6 +16,8 @@ import TaiwanMap from "./_component/TaiwanMap";
 export default function HomePage(props) {
   const { hotSale } = useDetailFetch();
   const [productDetails, setProductDetails] = useState({});
+  const [showButton, setShowButton] = useState(false);
+
   const fetchProductDetails = async (hotSaleItem) => {
     try {
       const BASE_IMAGE_URL = "http://localhost:3000/product/img/";
@@ -61,6 +63,21 @@ export default function HomePage(props) {
       fetchProductDetails([...hotSale]);
     }
   }, [hotSale]);
+
+  // totop按鈕
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setShowButton(scrollTop > 1080);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <>
       <Header />
@@ -291,12 +308,14 @@ export default function HomePage(props) {
       </div>
 
       <div className={styles.btns}>
-        <button className={styles.topIcon}>
-          {/* <img src="/home/img/topIcon.png" alt="" /> */}
+        <button
+          className={`${styles.topIcon} ${showButton ? styles.show : ""}`}
+          onClick={scrollToTop}
+        >
           <FaAngleUp className="fs-4 text-white" />
         </button>
+
         <Link href="/fontcoupon" className={styles.ticketIcon}>
-          {/* <img src="/home/img/ticketIcon.png" alt="" /> */}
           <FaTicketAlt className="fs-5 text-white" />
         </Link>
       </div>
