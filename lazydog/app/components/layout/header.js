@@ -198,30 +198,20 @@ export default function Header(props) {
         <div className={styles["dropdown"]}>
           <ToastContainer />
           {user ? (
-            (() => {
-              switch (user) {
-                case "operator":
-                  return (
-                    <Link href="/hotel-coupon/operatorDetail" className={styles["lumi-user-icon"]}>
-                      <i className="bi bi-person" />
-                    </Link>
-                  );
-                case "teacher":
-                  return (
-                    <Link href="/teacher-sign/list" className={styles["lumi-user-icon"]}>
-                      <i className="bi bi-person" />
-                    </Link>
-                  );
-                case "user":
-                  return (
-                    <Link href="/user" className={styles["lumi-user-icon"]}>
-                      <i className="bi bi-person" />
-                    </Link>
-                  );
-                default:
-                  return null;
+            <Link
+              href={
+                user.role === "operator"
+                  ? "/hotel-coupon/operatorDetail"
+                  : user.role === "teacher"
+                    ? "/teacher-sign/list"
+                    : user.role === "user"
+                      ? "/user"
+                      : "#"
               }
-            })()
+              className={styles["lumi-user-icon"]}
+            >
+              <i className="bi bi-person" />
+            </Link>
           ) : (
             <>
               <Link
@@ -247,40 +237,20 @@ export default function Header(props) {
 
           {user ? (
             <div className={styles["dropdown-content"]}>
-              {(() => {
-                switch (user) {
-                  case "operator":
-                    return (
-                      <Link
-                        href="/hotel-coupon/operatorDetail"
-                        className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
-                      >
-                        個人資料
-                      </Link>
-                    );
-                  case "teacher":
-                    return (
-                      <Link
-                        href="/teacher-sign/list"
-                        className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
-                      >
-                        個人資料
-                      </Link>
-                    );
-                  case "user":
-                    return (
-                      <Link
-                        href="/user"
-                        className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
-                      >
-                        個人資料
-                      </Link>
-                    );
-                  default:
-                    return null; // 避免 user 沒定義時出錯
+              <Link
+                href={
+                  user.role === "operator"
+                    ? "/hotel-coupon/operatorDetail"
+                    : user.role === "teacher"
+                      ? "/teacher-sign/list"
+                      : user.role === "user"
+                        ? "/user"
+                        : "#"
                 }
-              })()}
-
+                className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+              >
+                個人資料
+              </Link>
               <Link
                 href="/user/userFavorite"
                 className={styles["dropdown-link"]}
@@ -487,58 +457,20 @@ export default function Header(props) {
                     : styles["dropdown-contentOff"]
                     }`}
                 >
-                  {(() => {
-                    switch (user) {
-                      case "operator":
-                        return (
-                          <Link
-                            href="/hotel-coupon/operatorDetail"
-                            className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
-                          >
-                            個人資料
-                          </Link>
-                        );
-                      case "teacher":
-                        return (
-                          <Link
-                            href="/teacher-sign/list"
-                            className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
-                          >
-                            個人資料
-                          </Link>
-                        );
-                      case "user":
-                        return (
-                          <Link
-                            href="/user"
-                            className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
-                          >
-                            個人資料
-                          </Link>
-                        );
-                      default:
-                        return (
-                          <Link
-                            href="/login"
-                            className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
-                            onClick={() =>
-                              toast.warning("請先登入!", {
-                                position: "top-center",
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "light",
-                              })
-                            }
-                          >
-                            個人資料
-                          </Link>
-                        );
+                  <Link
+                    href={
+                      user.role === "operator"
+                        ? "/hotel-coupon/operatorDetail"
+                        : user.role === "teacher"
+                          ? "/teacher-sign/list"
+                          : user.role === "user"
+                            ? "/user"
+                            : "#"
                     }
-                  })()}
-                  <ToastContainer />
+                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                  >
+                    個人資料
+                  </Link>
 
                   <Link
                     href="/user/userFavorite"
