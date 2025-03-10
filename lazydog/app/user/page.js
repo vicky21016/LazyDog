@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"; // Import useRouter
 import { useAuth } from "@/hooks/use-auth";
 import Input from "../components/forms/Input";
 import styles from "./menu.module.css";
-
+import TWZipCode from "../components/tw-zipcode";
 import Swal from "sweetalert2";
 // import { useLocationSelector } from "@/hooks/useLocationSelector";
 // import { auth, signOut, onAuth } from "./firebase";
@@ -189,24 +189,7 @@ export default function Menu() {
             </h6>
 
             <div className={styles.addressRow}>
-              <select
-                name="city"
-                className={`mb-3 me-2 ${styles["select"]}`}
-                onChange={handleChange}
-                value={formData.city}
-              >
-                <option>縣/市</option>
-                <option>台北市</option>
-                <option>新北市</option>
-              </select>
-              <select
-                name="district"
-                className={`${styles["select"]}`}
-                onChange={handleChange}
-                value={formData.district}
-              >
-                <option>街/區</option>
-              </select>
+              <TWZipCode />
               <Input
                 name="road"
                 placeholder="路"

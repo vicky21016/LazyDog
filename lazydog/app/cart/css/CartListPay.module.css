@@ -69,11 +69,10 @@ form {
   background-color: white;
   padding: 0 5px;
 }
-.aside1{
+.aside1 {
   margin-bottom: 50px;
-  
 }
-.btn{
+.btn {
   background-color: #ff9538;
   color: white;
   padding: 5px;
@@ -82,9 +81,9 @@ form {
   cursor: pointer;
   text-align: center;
 }
-.btn:hover{
+.btn:hover {
   background-color: white;
-color: #f5842b;
-border: 2px solid;
-border-color: #f5842b;
+  color: #f5842b;
+  border: 2px solid;
+  border-color: #f5842b;
 }
