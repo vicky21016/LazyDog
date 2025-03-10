@@ -12,6 +12,7 @@ import styles from "./page.module.css";
 import useArticles from "@/hooks/useArticle";
 import Header from "../../../components/layout/header";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
+import style from "../../../../styles/modules/operatorCamera.module.css";
 
 export default function ArticleDetail() {
   const { id } = useParams(); // 取得網址中的文章 ID
@@ -35,7 +36,7 @@ export default function ArticleDetail() {
   return (
     <>
       <Header />
-      <div className="container" style={{ marginTop: '70px' }}>
+      <div className={`container ${style.container}`} style={{ marginTop: '90px' }}>
         <div className="w-100 d-flex justify-content-center">
 
           <div

@@ -331,11 +331,11 @@ export default function CartListPayPage(props) {
                   />
                 </div>
               </main>
-              <aside className={`col-lg-5 col-10 ${styles.list}`}>
+              <aside className={`col-lg-6 col-12 ${styles.list}`}>
                 <div className={`aside1 ${styles.main}`}>
                   <div className={`d-flex justify-content-between mb-4 `}>
-                    <span className={styles.text}>產品</span>
-                    <span>Subtotal</span>
+                    <span className={styles.text}>商品明細</span>
+                    {/* <span>Subtotal</span> */}
                   </div>
 
                   {productItems.map((item) => (
@@ -376,7 +376,7 @@ export default function CartListPayPage(props) {
 
                   <div className="d-flex flex-column mt-4">
                     {/* 優惠券選擇 */}
-                    <label>使用優惠券</label>
+                    <label className="mb-3">使用優惠券</label>
                     <select
                       className="form-select"
                       value={selectedCoupon || ""}
@@ -397,7 +397,7 @@ export default function CartListPayPage(props) {
                   </div>
 
                   {/* 折扣金額與最終金額 */}
-                  <div className="d-flex justify-content-between mt-3">
+                  <div className="d-flex justify-content-between mt-4">
                     <span className="subtext">折扣金額</span>
                     <span>- NT$ {discountAmount.toFixed(0)}</span>
                   </div>
