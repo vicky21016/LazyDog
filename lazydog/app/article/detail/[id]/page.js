@@ -95,11 +95,18 @@ export default function ArticleDetail() {
               </ul>
 
               {/* 如果留言數大於 3，顯示展開/收起按鈕 */}
-              <div className="w-100 d-flex justify-content-end">
+              <div
+                
+              className="w-100 d-flex justify-content-end"
+              style={{position:'relative',padding:'25px 0'}}
+              >
                 {comments.length > 3 && (
                   <button
                     onClick={toggleComments}
-                    className={`btn mt-3 ${style.btn3}`}
+ 
+                    className={styles.moreComments}
+                    // className="btn btn-outline-primary mt-3"
+
                   >
                     {expanded ? "收起留言" : "顯示更多"}
                   </button>
