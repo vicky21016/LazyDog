@@ -169,7 +169,7 @@ export default function SideBar({ types, places, filters, setFilters }) {
           aria-expanded="false"
           aria-controls="filterOffcanvas"
         >
-          <i className="bi bi-funnel-fill"></i>
+          <i class="bi bi-chevron-right"></i>
           {/* <span className={styles.filterIconWord}>{"Filter"}</span> */}
         </button>
         {/* Offcanvas 內容 */}
@@ -179,17 +179,17 @@ export default function SideBar({ types, places, filters, setFilters }) {
           id="filterOffcanvas"
           aria-labelledby="filterOffcanvasLabel"
         >
-          {/* <div className="offcanvas-header">
-            <h5 className="offcanvas-title" id="filterOffcanvasLabel">
+          <div className="offcanvas-header">
+            {/* <h5 className="offcanvas-title" id="filterOffcanvasLabel">
               篩選
-            </h5>
+            </h5> */}
             <button
               type="button"
               className="btn-close text-reset"
               data-bs-dismiss="offcanvas"
               aria-label="Close"
             ></button>
-          </div> */}
+          </div>
           <div
             className={`offcanvas-body ${styles.offcanvasBody} ${styles.scrollOrg}`}
           >

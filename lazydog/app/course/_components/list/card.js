@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function Card({ course }) {
   return (
     <>
-      <div className="col-6 col-lg-4">
+      <div className="col-6 col-lg-4 p-0">
         <Link className={styles.courseCard} href={`/course/${course.id}`}>
           <img
             className={styles.img}

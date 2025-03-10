@@ -341,7 +341,7 @@
 /* -------------------------- */
 .breadcrumb {
   /* width: 340px; */
-  margin: 0 100px 0 0;
+  margin: 0 95px 0 0;
   display: flex;
   align-items: center;
   gap: 15px;
@@ -353,6 +353,7 @@
     font-weight: bold;
   }
 }
+
 /* ------------------------- */
 .dogApp {
   position: fixed;
@@ -500,3 +501,8 @@
     background-position: -240px 0;
   }
 }
+
+@media (max-width: 768px) {
+  .breadcrumb 
+    {margin: 0;}
+  }

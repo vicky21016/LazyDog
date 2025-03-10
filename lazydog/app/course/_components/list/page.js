@@ -22,7 +22,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
               onClick={() => onPageChange(currentPage - 1)}
             >
               <span aria-hidden="true">
-                <img src="/course/img/pageArrowleft;png.png" alt="上一頁" />
+                {/* <img src="/course/img/pageArrowleft;png.png" alt="上一頁" /> */}
+                <i class="bi bi-chevron-left"></i>
               </span>
             </button>
           </li>
@@ -57,7 +58,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
               onClick={() => onPageChange(currentPage + 1)}
             >
               <span aria-hidden="true">
-                <img src="/course/img/pageArrowright.png" alt="下一頁" />
+                {/* <img src="/course/img/pageArrowright.png" alt="下一頁" /> */}
+                <i class="bi bi-chevron-right"></i>
               </span>
             </button>
           </li>

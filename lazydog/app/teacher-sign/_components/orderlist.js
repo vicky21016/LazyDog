@@ -78,12 +78,12 @@ function CourseOrderList() {
             優惠使用 : <span>66大順好康優惠券</span>
           </div>
           {/* 收合 bootstrap - Accordion */}
-          <div class="accordion accordion-flush p-0" id="accordionFlushExample">
+          <div className="accordion accordion-flush p-0" id="accordionFlushExample">
             {/* 訂單詳情 */}
-            <div class="accordion-item border border-0">
-              <h2 class="accordion-header">
+            <div className="accordion-item border border-0">
+              <h2 className="accordion-header">
                 <button
-                  class="accordion-button collapsed px-5 py-3 "
+                  className="accordion-button collapsed px-5 py-3 "
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseOne"
@@ -95,10 +95,10 @@ function CourseOrderList() {
               </h2>
               <div
                 id="flush-collapseOne"
-                class="accordion-collapse collapse"
+                className="accordion-collapse collapse"
                 data-bs-parent="#accordionFlushExample"
               >
-                <div class="accordion-body mb-3">
+                <div className="accordion-body mb-3">
                   {/* 欄位 */}
                   <div className={`row border-bottom border-warning pb-1`}>
                     <div className="col-3  text-center"></div>
@@ -148,10 +148,10 @@ function CourseOrderList() {
               </div>
             </div>
             {/* 評價 */}
-            <div class="accordion-item ">
-              <h2 class="accordion-header">
+            <div className="accordion-item ">
+              <h2 className="accordion-header">
                 <button
-                  class="accordion-button collapsed px-5 py-3 "
+                  className="accordion-button collapsed px-5 py-3 "
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseTwo"
@@ -163,21 +163,21 @@ function CourseOrderList() {
               </h2>
               <div
                 id="flush-collapseTwo"
-                class="accordion-collapse collapse"
+                className="accordion-collapse collapse"
                 data-bs-parent="#accordionFlushExample"
               >
-                <div class="accordion-body p-5">
+                <div className="accordion-body p-5">
                   <textarea
-                    class="form-control"
+                    className="form-control"
                     placeholder="Leave a comment here"
                     id="floatingTextarea2"
                     rows={6}
                     // style="height: 100px"
                   ></textarea>
-                  <div class="d-grid gap-2 col-2 mx-auto mt-4">
+                  <div className="d-grid gap-2 col-2 mx-auto mt-4">
                     <button
                       type="button"
-                      class="btn btn-outline-secondary btn-sm"
+                      className="btn btn-outline-secondary btn-sm"
                     >
                       送出
                     </button>

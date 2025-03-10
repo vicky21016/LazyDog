@@ -11,13 +11,13 @@ import AsideCard from '../_components/list/AsideCard';
 import AsideCard2 from '../_components/list/AsideCard2';
 import { useAuth } from "@/hooks/use-auth";
 import Header from "../../components/layout/header";
-import { ScrollMotionContainer, ScrollMotionItem } from '../ListMotion'
 import style from '../../../styles/modules/operatorCamera.module.css';
 
 const ArticlePage = () => {
   const { articles, loading, error } = useArticles();
   const [page, setPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
   const [sortOrder, setSortOrder] = useState('desc');
   const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 5;
@@ -66,6 +66,7 @@ const ArticlePage = () => {
   // 分類選擇
   const handleCategorySelect = (categoryId) => {
     setSelectedCategory(categoryId);
+    setActiveCategory(categoryId);
     setPage(1);
   };
 
@@ -91,13 +92,13 @@ const ArticlePage = () => {
         <h1 style={{ fontWeight: 'bold' }}>毛孩文章</h1>
       </div>
 
-      <div className={`container`}>
+      <div className={`container ${style.container}`}>
         {/* 發布文章按鈕 */}
         <div className={styles.postButton}>
-          <button className={` ${style.btn}`}>
+          <button className={` ${styles.post}`}>
             <Link
               href="http://localhost:3000/article/add_article"
-              className={`${styles.post} `}
+              className={styles.postLink}
               onClick={handleClick} // 點擊時檢查是否已登入
             >
               <i className="bi bi-check-circle"></i> 發布文章
@@ -123,21 +124,62 @@ const ArticlePage = () => {
             </div>
             <div className={styles.asideCategory}>
               <h4 className='mb-3'>類別</h4>
-              <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(null); }}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleCategorySelect(null); // 選擇「全部」
+                }}
               >
-                <p>全部</p>
+                <p
+                  className={activeCategory === null ? styles.asideCategoryPA : styles.asideCategoryP}
+                >
+                  全部
+                </p>
               </a>
-              <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(1); }}>
-                <p>保健與營養</p>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleCategorySelect(1); // 選擇「保健與營養」
+                }}
+              >
+                <p className={activeCategory === 1 ? styles.asideCategoryPA : styles.asideCategoryP}>
+                  保健與營養
+                </p>
               </a>
-              <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(5); }}>
-                <p>開箱</p>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleCategorySelect(5); // 選擇「開箱」
+                }}
+              >
+                <p className={activeCategory === 5 ? styles.asideCategoryPA : styles.asideCategoryP}>
+                  開箱
+                </p>
               </a>
-              <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(2); }}>
-                <p>食譜</p>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleCategorySelect(2); // 選擇「食譜」
+                }}
+              >
+                <p className={activeCategory === 2 ? styles.asideCategoryPA : styles.asideCategoryP}>
+                  食譜
+                </p>
               </a>
-              <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(3); }}>
-                <p>善終</p>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleCategorySelect(3); // 選擇「善終」
+                }}
+              >
+                <p className={activeCategory === 3 ? styles.asideCategoryPA : styles.asideCategoryP}>
+                  善終
+                </p>
               </a>
             </div>
             <div >
@@ -186,20 +228,62 @@ const ArticlePage = () => {
                     aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
                     <div className="accordion-body">
-                      <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(null); }}>
-                        <p>全部</p>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleCategorySelect(null); // 選擇「全部」
+                        }}
+                      >
+                        <p
+                          className={activeCategory === null ? styles.asideCategoryPA : styles.asideCategoryP}
+                        >
+                          全部
+                        </p>
                       </a>
-                      <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(1); }}>
-                        <p>保健與營養</p>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleCategorySelect(1); // 選擇「保健與營養」
+                        }}
+                      >
+                        <p className={activeCategory === 1 ? styles.asideCategoryPA : styles.asideCategoryP}>
+                          保健與營養
+                        </p>
                       </a>
-                      <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(5); }}>
-                        <p>開箱</p>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleCategorySelect(5); // 選擇「開箱」
+                        }}
+                      >
+                        <p className={activeCategory === 5 ? styles.asideCategoryPA : styles.asideCategoryP}>
+                          開箱
+                        </p>
                       </a>
-                      <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(2); }}>
-                        <p>食譜</p>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleCategorySelect(2); // 選擇「食譜」
+                        }}
+                      >
+                        <p className={activeCategory === 2 ? styles.asideCategoryPA : styles.asideCategoryP}>
+                          食譜
+                        </p>
                       </a>
-                      <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelect(3); }}>
-                        <p>善終</p>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleCategorySelect(3); // 選擇「善終」
+                        }}
+                      >
+                        <p className={activeCategory === 3 ? styles.asideCategoryPA : styles.asideCategoryP}>
+                          善終
+                        </p>
                       </a>
                     </div>
                   </div>
@@ -209,18 +293,18 @@ const ArticlePage = () => {
             <button className={styles.filter} onClick={handleSortToggle}>
               <i className="bi bi-filter"></i> 依時間排序 {sortOrder === 'asc' ? '↑' : '↓'}
             </button>
-              {currentArticles.length > 0 ? (
-                currentArticles.map((article) => (
-                 
-                    // element="div"
-                   
-                    <MainCard key={article.id} {...article} />
-                  
-                ))
-              ) : (
-                <p>沒有符合條件的文章</p>
-              )}
-            
+            {currentArticles.length > 0 ? (
+              currentArticles.map((article) => (
+
+                // element="div"
+
+                <MainCard key={article.id} {...article} />
+
+              ))
+            ) : (
+              <p>沒有符合條件的文章</p>
+            )}
+
             <div >
               <h4 className={styles.RWDH4}>延伸閱讀</h4>
               {articles

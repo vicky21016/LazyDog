@@ -130,9 +130,26 @@ export default function CartListPayPage(props) {
     const orderId = `PD${new Date().getTime()}`;
 
     let computedFinalAmount = totalAmount;
-
+    if (courseItems.length > 0) {
+      for (const courseItem of courseItems) {
+        const newOrder = {
+          course_id: courseItem.id,
+          user_id: user.id,
+          quanity: courseItem.count,
+          total_price: courseItem.price * courseItem.count,
+          payment_status: "Unpaid",
+          payment_method: courseItem.payment_method || "Not Specified",
+          cancellation_policy:
+            courseItem.cancellation_policy || "Standard Policy",
+          remark: courseItem.remark || "",
+          orderTable,
+        };
+        await createCourseOrder(newOrder, orderTable);
+      }
+    }
     try {
       //  先建立訂單
+      // 商品訂單
       if (productItems.length > 0) {
         const newOrder = {
           user_id: user.id,
@@ -152,25 +169,9 @@ export default function CartListPayPage(props) {
         await createProductOrder(newOrder, orderTable);
         computedFinalAmount = newOrder.final_amount;
       }
+      // 課程訂單
 
-      if (courseItems.length > 0) {
-        for (const courseItem of courseItems) {
-          const newOrder = {
-            course_id: courseItem.id,
-            user_id: user.id,
-            quantity: courseItem.count,
-            total_price: courseItem.price * courseItem.count,
-            payment_status: "Unpaid",
-            payment_method: courseItem.payment_method || "Not Specified",
-            cancellation_policy:
-              courseItem.cancellation_policy || "Standard Policy",
-            remark: courseItem.remark || "",
-            orderTable,
-          };
-          await createCourseOrder(newOrder, orderTable);
-        }
-      }
-
+      // 旅館訂單
       if (hotelItems.length > 0) {
         for (const hotelItem of hotelItems) {
           const newOrder = {
@@ -234,11 +235,11 @@ export default function CartListPayPage(props) {
         <div className="cart-img">
           <img src="/cart/Frame 35909.png" alt="Cart Image" />
         </div>
-        <div className="container lumi-all-wrapper">
+        <div className={`container lumi-all-wrapper ${styles.container}`}>
           <h4 className="mb-5">購買資訊</h4>
           <form action="">
             <div className="row">
-              <main className="col-lg-5 col-md-auto col-auto me-5">
+              <main className={`col-lg-5 col-md-auto col-auto me-5`}>
                 <div className="mb-3 row">
                   <div className="col-md-6">
                     <label htmlFor="first-name" className="form-label">
@@ -330,9 +331,9 @@ export default function CartListPayPage(props) {
                   />
                 </div>
               </main>
-              <aside className={`col-lg-5 col-md-7 col-10 ${styles.list}`}>
-                <div className="aside1">
-                  <div className="d-flex justify-content-between mb-4">
+              <aside className={`col-lg-5 col-10 ${styles.list}`}>
+                <div className={`aside1 ${styles.main}`}>
+                  <div className={`d-flex justify-content-between mb-4 `}>
                     <span className={styles.text}>產品</span>
                     <span>Subtotal</span>
                   </div>
@@ -374,6 +375,7 @@ export default function CartListPayPage(props) {
                   ))}
 
                   <div className="d-flex flex-column mt-4">
+                    {/* 優惠券選擇 */}
                     <label>使用優惠券</label>
                     <select
                       className="form-select"
@@ -387,12 +389,14 @@ export default function CartListPayPage(props) {
                       {availableCoupons.map((coupon) => (
                         <option key={coupon.id} value={coupon.id}>
                           {coupon.name} - {coupon.value}{" "}
-                          {coupon.discount_type == "percentage" ? "%" : "NT$"}
+                          {coupon.discount_type === "percentage" ? "%" : "NT$"}{" "}
+                          (低消 NT$ {coupon.min_order_value})
                         </option>
                       ))}
                     </select>
                   </div>
 
+                  {/* 折扣金額與最終金額 */}
                   <div className="d-flex justify-content-between mt-3">
                     <span className="subtext">折扣金額</span>
                     <span>- NT$ {discountAmount.toFixed(0)}</span>
@@ -401,16 +405,19 @@ export default function CartListPayPage(props) {
                     <span className="subtext">最終金額</span>
                     <span>NT$ {finalAmount.toFixed(0)}</span>
                   </div>
+
+                  {/* 付款按鈕 */}
+                  <button
+                    className={`mt-5 ${styles.btn1}`}
+                    type="button"
+                    onClick={handleEcpay}
+                  >
+                    付款
+                  </button>
                 </div>
 
-                <hr className="mb-5" />
-                <button
-                  className={styles.btn}
-                  type="button"
-                  onClick={handleEcpay}
-                >
-                  付款
-                </button>
+                {/* <hr className="mb-5" /> */}
+
                 {/* <div className="aside2">
                   <h1>付款</h1>
                   <label>

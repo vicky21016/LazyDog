@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import pool from "../config/mysql.js";
-import {useUserCoupon} from "../services/couponUsageService.js";
+import { useUserCoupon } from "../services/couponUsageService.js";
 import { resolve, dirname, extname } from "path";
 import { fileURLToPath } from "url";
 import jwt from "jsonwebtoken";
@@ -200,7 +200,7 @@ router.post("/course", async (req, res) => {
   const final_amount = total_price;
   try {
     const [result] = await pool.query(
-      `INSERT INTO course_orders (user_id, course_id, quanity,total_price,final_amount,payment_status,payment_method,cancellation_policy,remark,created_at,updated_at,is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)`,
+      `INSERT INTO course_orders (user_id, course_id, quanity,total_price,final_amount,payment_status,payment_method,cancellation_policy,remark,order_date,created_at,updated_at,is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,NOW(), NOW(), NOW(), 0)`,
       [
         user_id,
         course_id,
@@ -215,6 +215,47 @@ router.post("/course", async (req, res) => {
     );
 
     res.json({ status: "success", id: result.insertId });
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
+// 檢視使用者課程訂單
+router.post("/courseOrders", async (req, res) => {
+  // 驗證 JWT Token
+  let token = req.get("Authorization");
+  token = token ? token.slice(7) : null;
+  if (!token) {
+    return res
+      .status(401)
+      .json({ status: "error", message: "缺少 Token，請登入後再試" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const user_id = decoded.id;
+
+    // 查詢該使用者的所有課程訂單
+    const sql = `
+        SELECT co.*, c.name, ci.url AS main_pic 
+        FROM course_orders co
+        JOIN course c ON co.course_id = c.id
+        LEFT JOIN course_img ci ON c.id = ci.course_id AND ci.main_pic = 1
+        WHERE co.user_id = ? AND co.is_deleted = 0
+        ORDER BY co.order_date DESC;
+      `;
+
+    const [courseOrders] = await pool.execute(sql, [user_id]);
+
+    if (courseOrders.length === 0) {
+      return res.json({
+        status: "success",
+        message: "沒有找到相關訂單",
+        courseOrders: [],
+      });
+    }
+
+    res.json({ status: "success", orders: courseOrders });
   } catch (err) {
     res.status(500).json({ status: "error", message: err.message });
   }
@@ -345,8 +386,8 @@ router.post("/hotelOrders", async (req, res) => {
         roomType.length > 0 && roomType[0].image_url
           ? [{ url: roomType[0].image_url }]
           : hotelImage.length > 0 && hotelImage[0].url
-          ? [{ url: hotelImage[0].url }]
-          : [{ url: "/hotel/hotel-uploads/1-l-room.webp" }]; // 預設圖片
+            ? [{ url: hotelImage[0].url }]
+            : [{ url: "/hotel/hotel-uploads/1-l-room.webp" }]; // 預設圖片
     }
 
 

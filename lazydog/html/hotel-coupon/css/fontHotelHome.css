@@ -86,8 +86,8 @@
 
 /* 搜尋按鈕 */
 .suSearch-btn {
-  background-color: #f5842b;
-  color: white;
+  background-color: #f5842b !important;
+  color: white !important;
   padding: 12px 20px;
   border-radius: 8px;
   font-weight: bold;
@@ -95,7 +95,7 @@
   cursor: pointer;
 }
 .suSearch-btn:hover {
-  background-color: #e65c00;
+  background-color: #e65c00 !important;
 }
 
 /* 地圖 */
@@ -113,7 +113,7 @@
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 123, 255, 0.9);
+  background: rgba(0, 123, 255, 0.9) !important;
   color: white;
   border: none;
   padding: 6px 12px;
@@ -239,8 +239,8 @@
 /* 清除搜尋按鈕 */
 .suClear-btn {
   background: white;
-  border: 2px solid #ff9900;
-  color: #ff9900;
+  border: 2px solid #ff9900 !important;
+  color: #ff9900 !important;
   border-radius: 20px;
   padding: 8px 20px;
   font-size: 16px;

@@ -71,7 +71,7 @@ export default function MyArticle() {
             >
               <Link
                 href="/article/add_article"
-                className={styles.postfont}
+                className={styles.postLink}
               >
                 <i className="bi bi-check-circle"></i> 發布文章
               </Link>
@@ -114,6 +114,7 @@ export default function MyArticle() {
                   <MyCard3
                     key={comment.id}
                     article_id={comment.article_id}
+                    author={user.name}
                     title={comment.title}
                     content={comment.content}
                     author_image={

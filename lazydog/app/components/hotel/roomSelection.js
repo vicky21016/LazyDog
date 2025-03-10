@@ -29,7 +29,6 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
     const fetchRooms = async () => {
       try {
         const response = await getHotelRoomById(hotelId);
-        console.log("API 回傳的房型資料:", response);
 
         if (
           !response ||
@@ -42,7 +41,6 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
         }
 
         const roomTypes = response.data;
-        console.log("API 回傳的房型陣列:", roomTypes);
 
         if (!Array.isArray(roomTypes) || roomTypes.length === 0) {
           console.warn("API 回傳空的房型資料");
@@ -62,7 +60,7 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
                 checkInDate,
                 checkOutDate
               );
-              console.log(`${room.room_type_name} 的庫存:`, inventory);
+              // console.log(`${room.room_type_name} 的庫存:`, inventory);
 
               if (Array.isArray(inventory) && inventory.length > 0) {
                 availableRooms = inventory[0].available_quantity;

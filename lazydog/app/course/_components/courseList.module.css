@@ -227,10 +227,28 @@
     transform: scale(1.5);
     margin-top: 6px;
   }
+
   .checkbox:focus,
-  .checkboxt:active {
+  .checkbox:checked,
+  .checkbox:active {
     box-shadow: none !important; /* 移除點擊後的藍色高亮 */
+    background-color: #ff9538;
+    border-color: #ff9538;
+    color: #fff;
   }
+  .checkbox:not(:checked) {
+    background: #fff;
+    border-color: #d4d3d3;
+  }
+  .checkbox:active {
+    transform: scale(0.95); /* 讓按下時有輕微縮小的效果（可選） */
+  }
+
+  /* :checked → 代表 checkbox 被選取時的樣式
+  :not(:checked) → 代表 checkbox 未被選取（取消選取後的狀態）
+  :focus → 代表 checkbox 被點擊後的聚焦狀態
+  :active → 代表 checkbox 正在被按下的瞬間（點擊時 */
+
   .labels {
     font-size: 1rem;
     font-weight: 400;
@@ -469,6 +487,9 @@
     @media (max-width: 992px) {
       margin: 45px 15px 50px;
     }
+    @media (max-width: 390px) {
+      margin: 85px 15px 30px;
+    }
   }
   .sTitle {
     margin-bottom: 28px;
@@ -477,6 +498,10 @@
     font-weight: bolder;
     line-height: 39px; /* 121.875% */
     letter-spacing: 3.2px;
+    @media (max-width: 390px) {
+      margin-top: 75px;
+      font-size: 28px;
+    }
   }
   .sbar {
     background-color: #ff9538;
@@ -489,6 +514,9 @@
     justify-content: space-between;
     margin: 25px 0;
     padding: 0 3px 0 2px;
+    @media (max-width: 390px) {
+      display: none;
+    }
   }
 
   .count {
@@ -518,14 +546,16 @@
   .courseGroup {
     /* display: flex; */
     height: auto;
+    padding: 0 10px;
     /* max-width: 1060px; */
     /* align-items: flex-start; */
     /* align-content: flex-start; */
     gap: 50px 0px;
     flex-wrap: wrap;
 
-    @media (max-width: 992px) {
-      /* gap: 0; */
+    @media (max-width: 390px) {
+      gap: 20px 0;
+      padding: 0 13px;
     }
   }
 
@@ -547,6 +577,9 @@
     @media (max-width: 992px) {
       width: 100%;
     }
+    @media (max-width: 390px) {
+      padding: 18px 15px;
+    }
   }
 
   .img {
@@ -564,7 +597,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
     height: 26px;
     padding: 5px 8px;
     border-radius: 5px;
@@ -576,6 +608,10 @@
     letter-spacing: 1.5px;
     margin: 8px 0 14px;
     box-sizing: border-box;
+    @media (max-width: 390px) {
+      font-size: 12px;
+      padding: 5px 8px;
+    }
   }
   .name {
     display: -webkit-box;
@@ -594,6 +630,10 @@
     @media (max-width: 992px) {
       font-size: 16px;
       letter-spacing: 0px;
+    }
+    @media (max-width: 390px) {
+      font-size: 16px;
+      -webkit-line-clamp: 2;
     }
   }
   .intro {
@@ -618,6 +658,13 @@
     @media (max-width: 992px) {
       font-size: 12px;
       letter-spacing: 0px;
+    }
+    @media (max-width: 390px) {
+      font-size: 12px;
+      -webkit-line-clamp: 3;
+      letter-spacing: 1.5px;
+
+      line-height: 15px;
     }
   }
 }
@@ -661,6 +708,11 @@
   margin-top: 100px;
   .similarCourse {
     padding: 70px 0px;
+
+    @media (max-width: 390px) {
+      padding: 0;
+    }
+
     .sTitle {
       margin-bottom: 18px;
       color: var(--text-Bk, #3e3e3e);
@@ -671,14 +723,20 @@
       @media (max-width: 992px) {
         margin-left: 15px;
       }
+      @media (max-width: 390px) {
+        font-size: 28px;
+      }
     }
     .sBars {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 18px 0;
+      margin: 18px 0 18px 0;
       @media (max-width: 992px) {
-        margin-left: 15px;
+        margin: 18px 0 18px 15px;
+      }
+      @media (max-width: 390px) {
+        margin: 18px 19px;
       }
     }
     .sbar {
@@ -705,10 +763,21 @@
       align-self: stretch;
       overflow: hidden;
       text-align: center;
+
+      @media (max-width: 390px) {
+        padding: 43px 14px;
+      }
       .sCard {
         border-radius: 5px;
         cursor: pointer;
         transition: 0.4s;
+        padding: 24px;
+        margin-top: 48px;
+        @media (max-width: 390px) {
+          margin-top: 0;
+          padding: 18px;
+          margin-top: 0;
+        }
 
         &:hover {
           translate: 0 -20px;
@@ -735,10 +804,17 @@
         color: var(--Color, #3b3330);
         text-overflow: ellipsis;
         font-size: 17px;
-        font-weight: 550;
+        font-weight: 600;
         letter-spacing: 1.2px;
         padding: 2px 0;
         margin: 0;
+        @media (max-width: 390px) {
+          overflow: hidden;
+          -webkit-line-clamp: 2;
+          word-wrap: break-word;
+          font-size: 15px;
+          padding: 2px 5px;
+        }
       }
     }
   }
@@ -747,22 +823,23 @@
 /* 手機 */
 .filterIcon {
   position: fixed;
-  top: 100px;
-  right: 5px;
+  top: 73px;
+  left: 10.5px;
   z-index: 5;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #ff9538;
   background: #fff;
-  width: 41px;
-  height: 41px;
-  border: 0.8px solid #ff9538;
-  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  border: 1px solid #ff9538;
+  border-radius: 11px;
   transition: 0.4s;
   padding: 0;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   transition: width 0.4s ease, background-color 0.4s ease; /* 動畫過渡效果 */
+  z-index: 10;
 
   &:active {
     background-color: #fc861f;
@@ -790,12 +867,7 @@
     border-radius: 25px; /* 使文字背景有圓角 */
   }
 }
-/* .filterIconWord {
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  padding-left: 8px;
-} */
+
 .offcanvasBody {
   padding: 16px 16px 0px 40px;
   overflow-x: hidden;

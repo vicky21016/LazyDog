@@ -64,14 +64,19 @@ export const getHotelFavorites = async () => {
   const token = getToken();
   if (!token) return { success: false, error: "請先登入" };
 
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const userId = storedUser?.id;
+  if (!userId) return { success: false, error: "無法獲取用戶 ID" };
+
   try {
-    const res = await fetch(HOTEL_FAVORITE_URL, {
+    const res = await fetch(`${HOTEL_FAVORITE_URL}?user_id=${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
+
     if (!res.ok) throw new Error("獲取hotel收藏失敗");
     return await res.json();
   } catch (error) {
@@ -109,6 +114,11 @@ export const addHotelFavorite = async (hotelId) => {
 
 // 移除收藏
 export const removeHotelFavorite = async (id) => {
+  if (!id) {
+    console.error("無效的收藏 ID");
+    return { success: false, error: "無效的收藏 ID" };
+  }
+
   const token = getToken();
   if (!token) {
     console.error("未登入，無法刪除收藏");

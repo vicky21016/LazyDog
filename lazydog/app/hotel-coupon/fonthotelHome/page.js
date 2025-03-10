@@ -96,15 +96,17 @@ export default function HotelHomePage() {
 
   // 當 isFiltered 為 false 時載入所有飯店
   useEffect(() => {
-    let isMounted = true; 
+    let isMounted = true;
     if (!isFiltered) {
       fetchAllHotels().then((hotels) => {
         if (isMounted) setFilteredHotels(hotels || []);
       });
     }
-    return () => { isMounted = false };
+    return () => {
+      isMounted = false;
+    };
   }, [isFiltered]);
-  
+
   // 監聽 filteredHotels，更新分頁數
   useEffect(() => {
     setTotalPages(Math.max(1, Math.ceil(filteredHotels.length / 10)));
@@ -172,16 +174,16 @@ export default function HotelHomePage() {
     if (typeof window !== "undefined") {
       sessionStorage.setItem("searchParams", JSON.stringify(updatedParams));
     }
-  
+
     try {
       const data = await getFilteredHotelsS(updatedParams);
       if (!Array.isArray(data)) {
         console.error("API 回傳的資料格式錯誤:", data);
-        setFilteredHotels([]); 
+        setFilteredHotels([]);
       } else {
         setFilteredHotels(data);
       }
-      
+
       setFilteredHotels(data);
       setCurrentPage(1);
     } catch (error) {
@@ -212,10 +214,14 @@ export default function HotelHomePage() {
   // 計算當前頁面顯示的飯店
   const indexOfLastHotel = currentPage * 10;
   const indexOfFirstHotel = indexOfLastHotel - 10;
-  const currentHotels = (filteredHotels || []).slice(indexOfFirstHotel, indexOfLastHotel);
+  const currentHotels = (filteredHotels || []).slice(
+    indexOfFirstHotel,
+    indexOfLastHotel
+  );
 
   const handleHotelClick = (hotelId) => {
-    const storedParams = JSON.parse(sessionStorage.getItem("searchParams")) || {};
+    const storedParams =
+      JSON.parse(sessionStorage.getItem("searchParams")) || {};
 
     const checkIn = storedParams?.checkInDate || "";
     const checkOut = storedParams?.checkOutDate || "";
@@ -244,9 +250,9 @@ export default function HotelHomePage() {
         {/* 搜尋欄背景 */}
         <div
           className={styles.suSearchBg}
-          style={{
-            backgroundImage: `url("/hotel/hotel-images/services-banner-dog-boarding.2203041608391.jpg")`,
-          }}
+          // style={{
+          //   backgroundImage: `url("/hotel/hotel-images/services-banner-dog-boarding.2203041608391.jpg")`,
+          // }}
         >
           <SearchBar
             location={location}
@@ -269,19 +275,21 @@ export default function HotelHomePage() {
         </div>
 
         {/* 麵包屑導航 */}
-        <div className="lumi-all-wrapper mt-5">
-          <Breadcrumb
-            links={[
-              { label: "首頁", href: "/" },
-              {
-                label: "旅館列表",
-                href: "/hotel-coupon/fonthotelHome",
-                active: true,
-              },
-            ]}
-          />
-          <div className="text-end">
-            <span className="lumi-all-title">排序：</span>
+        <div className={`lumi-all-wrapper mt-5`}>
+          <div className={styles.breadSpace}>
+            <Breadcrumb
+              links={[
+                { label: "首頁", href: "/" },
+                {
+                  label: "旅館列表",
+                  href: "/hotel-coupon/fonthotelHome",
+                  active: true,
+                },
+              ]}
+            />
+          </div>
+          <div className="text-end me-5">
+            {/* <span className="lumi-all-title">排序：</span> */}
             <select
               className="form-select d-inline w-auto"
               value={sortOption}
@@ -296,41 +304,43 @@ export default function HotelHomePage() {
 
         {/* 主要內容 */}
         <div className={` ${styles.rwd}`}>
-        <div className="container mt-4">
-          <div className="row">
-            {/* 側邊篩選欄 */}
-            <aside className={`col-lg-3 ${styles.suSidebar}`}>
-              <Aside
-                searchParams={searchParams}
-                onSearch={handleSearch}
-                onClear={handleClearFilters}
-              />
-            </aside>
+          <div className="container mt-4">
+            <div className="row">
+              {/* 側邊篩選欄 */}
+              <aside className={`col-12 col-md-4 col-lg-3 ${styles.suSidebar}`}>
+                <Aside
+                  searchParams={searchParams}
+                  onSearch={handleSearch}
+                  onClear={handleClearFilters}
+                />
+              </aside>
 
-            {/* 飯店列表 */}
-            <section className="col-lg-9 col-12">
-              <div className="row">
-              {currentHotels.length > 0 ? (
-                currentHotels.map((hotel) => (
-                  <HotelCard
-                    key={hotel.id}
-                    hotel={hotel}
-                    onClick={() => handleHotelClick(hotel.id)}
-                  />
-                ))
-              ) : (
-                <p className="text-center">沒有符合條件的飯店</p>
-              )}</div>
-            </section>
+              {/* 飯店列表 */}
+              <section className="col-12 col-md-8 col-lg-9 ">
+                <div className="row">
+                  {currentHotels.length > 0 ? (
+                    currentHotels.map((hotel) => (
+                      <HotelCard
+                        key={hotel.id}
+                        hotel={hotel}
+                        onClick={() => handleHotelClick(hotel.id)}
+                      />
+                    ))
+                  ) : (
+                    <p className="text-center">沒有符合條件的飯店</p>
+                  )}
+                </div>
+              </section>
+            </div>
           </div>
-        </div>
 
-        {/* 分頁功能 */}
-        <Page
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        /></div>
+          {/* 分頁功能 */}
+          <Page
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
       </div>
     </>
   );

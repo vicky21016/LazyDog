@@ -46,9 +46,15 @@
   color: black;
 }
 
-.customLink:hover {
-  text-underline-offset: 12px;
-  color: #f5842b;
+.moreLink{
+  padding: 10px;
+  border-radius: 5px;
+}
+.moreLink:hover{
+  background-color: #e9e7e7;
+  .customLink{
+    color: #f5842b;
+  }
 }
 
 /* :global(img) {

@@ -5,17 +5,34 @@ export const addFavorites = async (user_id, hotel_id) => {
   try {
     await connection.beginTransaction();
 
-    // 檢查是否已收藏
+    // 檢查是否已收藏 (包含已刪除的紀錄)
     const [existing] = await connection.query(
-      "SELECT id FROM hotel_favorites WHERE user_id = ? AND hotel_id = ? AND is_deleted = 0",
+      "SELECT id, is_deleted FROM hotel_favorites WHERE user_id = ? AND hotel_id = ?",
       [user_id, hotel_id]
     );
 
     if (existing.length > 0) {
-      throw new Error("該飯店已收藏");
+      const favorite = existing[0];
+
+      if (favorite.is_deleted === 0) {
+        throw new Error("該飯店已收藏");
+      }
+
+      // **如果是軟刪除，改為更新 `is_deleted = 0`**
+      await connection.query(
+        "UPDATE hotel_favorites SET is_deleted = 0, updated_at = NOW() WHERE id = ?",
+        [favorite.id]
+      );
+
+      await connection.commit();
+      return {
+        success: true,
+        message: "重新收藏成功",
+        data: { id: favorite.id, user_id, hotel_id },
+      };
     }
 
-    // 插入新收藏
+    // **如果沒有收藏過，則執行 `INSERT`**
     const [result] = await connection.query(
       "INSERT INTO hotel_favorites (user_id, hotel_id, created_at, updated_at) VALUES (?, ?, NOW(), NOW())",
       [user_id, hotel_id]
@@ -30,11 +47,13 @@ export const addFavorites = async (user_id, hotel_id) => {
     };
   } catch (error) {
     await connection.rollback();
-    throw new Error("新增收藏錯誤：" + error.message);
+    throw new Error("收藏失敗：" + error.message);
   } finally {
     connection.release();
   }
 };
+
+
 export const removeFavorites = async (favorite_id, user_id) => {
   try {
     const [existing] = await pool.query(

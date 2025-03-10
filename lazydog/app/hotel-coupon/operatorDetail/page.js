@@ -8,12 +8,13 @@ import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import Header from "../../components/layout/header";
 import My from "../../components/hotel/my";
-
+import { read } from "@popperjs/core";
+import Swal from "sweetalert2"; 
 export default function OperatorDetailPage() {
   const modalRef = useRef(null);
   const router = useRouter();
-  const { user } = useAuth(); 
-  
+  const { user } = useAuth();
+
   const [operatorInfo, setOperatorInfo] = useState({
     name: "",
     license: "",
@@ -22,7 +23,6 @@ export default function OperatorDetailPage() {
     company: "",
   });
 
-  
   useEffect(() => {
     if (user) {
       setOperatorInfo({
@@ -33,7 +33,7 @@ export default function OperatorDetailPage() {
         company: user?.company_name || "未提供",
       });
     }
-  }, [user]); 
+  }, [user]);
   // 保 Bootstrap 初始化
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -161,7 +161,6 @@ export default function OperatorDetailPage() {
         className="modal fade"
         id="editModal"
         tabIndex="-1"
-        aria-hidden="true"
       >
         <div className="modal-dialog">
           <div className="modal-content">
@@ -192,6 +191,7 @@ export default function OperatorDetailPage() {
                 name="license"
                 value={operatorInfo.license}
                 onChange={handleInputChange}
+                readOnly
               />
 
               <label className="mt-2">電話：</label>
@@ -210,6 +210,7 @@ export default function OperatorDetailPage() {
                 name="email"
                 value={operatorInfo.email}
                 onChange={handleInputChange}
+                readOnly
               />
 
               <label className="mt-2">公司名稱：</label>
