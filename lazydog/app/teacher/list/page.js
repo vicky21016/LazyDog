@@ -24,11 +24,11 @@ export default function App() {
   }, [teachers]);
 
   // 分頁
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const perPage = 9;
   const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
 
-  const startIndex = (page - 1) * perPage;
+  const startIndex = (currentPage - 1) * perPage;
   const currentTeacher = filtered.slice(startIndex, startIndex + perPage);
 
   // 處理篩選條件
@@ -41,7 +41,7 @@ export default function App() {
     );
 
     setFiltered(filterData);
-    setPage(1); // 篩選後重置分頁到第 1 頁
+    setCurrentPage(1); // 篩選後重置分頁到第 1 頁
   };
 
   // 點擊畫面其他地方時，自動關閉篩選選單
@@ -195,8 +195,8 @@ export default function App() {
                 </div>
                 <Page
                   totalPages={totalPages}
-                  currPage={page}
-                  setCurrPage={setPage}
+                  currPage={currentPage}
+                  onPageChange ={setCurrentPage}
                 />
               </div>
             </div>
