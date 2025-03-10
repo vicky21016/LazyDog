@@ -19,7 +19,7 @@ export default function CartListPayFinshPage(props) {
           localStorage.removeItem("productCart");
           localStorage.removeItem("courseCart");
           localStorage.removeItem("hotelCart");
-  
+
           if (typeof window !== "undefined") {
             window.location.href = "http://localhost:3000/product/list";
           }
@@ -27,10 +27,9 @@ export default function CartListPayFinshPage(props) {
         return prev - 1;
       });
     }, 1000);
-  
+
     return () => clearInterval(timer);
   }, []);
-  
 
   if (isDev) console.log("RtnCode", searchParams?.get("RtnCode"));
   useEffect(() => {
@@ -38,14 +37,22 @@ export default function CartListPayFinshPage(props) {
       require("bootstrap/dist/js/bootstrap.bundle.min.js");
     }
   }, []);
-  
 
   return (
     <>
       <Header />
-      <div>
+      <div style={{ marginTop: "100px" }}>
         <div className="cart-img pb-5">
-          <img src="/cart/Group6.png" alt="Cart Image" />
+          <img
+            src="/cart/Group6.png"
+            alt="Cart Image"
+            style={{
+              display: "block" /* 使圖片成為區塊級元素 */,
+              margin: "0 auto" /* 水平置中 */,
+              maxWidth: "100%" /* 限制最大寬度 */,
+              height: "auto" /* 保持比例 */,
+            }}
+          />
         </div>
         <div className="container">
           <p className="gobacktext pt-5 text-center">
