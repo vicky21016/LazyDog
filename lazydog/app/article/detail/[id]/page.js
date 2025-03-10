@@ -99,7 +99,7 @@ export default function ArticleDetail() {
                 {comments.length > 3 && (
                   <button
                     onClick={toggleComments}
-                    className="btn btn-outline-primary mt-3"
+                    className={`btn mt-3 ${style.btn3}`}
                   >
                     {expanded ? "收起留言" : "顯示更多"}
                   </button>

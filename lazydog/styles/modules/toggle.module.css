@@ -89,7 +89,7 @@
 
 .card6Description {
   font-size: 14px;
-  padding: 0 20px;
+  padding: 0 20px !important;
   color: #ff9538;
 }
 
