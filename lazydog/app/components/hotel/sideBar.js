@@ -190,7 +190,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
     <>
       {/* 桌機 */}
       <div className="d-none d-md-block">
-        {/* //固定 */}
+        {/* 固定 */}
         <aside className={`container ${styles.suSidebar}`}>
           {/* 地圖區塊 */}
           <div className={styles.suMapCard}>
@@ -226,14 +226,14 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
           <div className={styles.suFilterGroup}>
             <h6 className={styles.suFilterTitle}>飯店評分</h6>
             <select
-              className="form-select"
+              className={`form-select ${styles.selects}`}
               value={selectedRating}
               onChange={(e) => setSelectedRating(e.target.value)}
             >
               <option value="">全部</option>
               {[5, 4, 3, 2, 1].map((rating) => (
                 <option key={rating} value={rating}>
-                  {rating} ⭐ 以上
+                  {rating} &#9733; 以上
                 </option>
               ))}
             </select>
@@ -286,7 +286,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
           <div className={styles.suFilterGroup}>
             <h6 className={styles.suFilterTitle}>房型篩選</h6>
             <select
-              className="form-select"
+              className={`form-select ${styles.selects}`}
               value={selectedRoomType}
               onChange={(e) => setSelectedRoomType(e.target.value)}
             >
@@ -406,7 +406,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
               <h6 className={styles.suFilterTitle}>飯店評分</h6>
               <div className="col-12">
                 <select
-                  className="form-select"
+                  className={`form-select ${styles.selects}`}
                   value={selectedRating}
                   onChange={(e) => setSelectedRating(e.target.value)}
                 >
@@ -428,7 +428,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
               {tags.slice(0, showAllFacilities ? tags.length : 5).map((tag) => (
                 <div className="col-6 form-check mb-3" key={tag.id}>
                   <input
-                    className="form-check-input"
+                    className={`form-check-input ${styles.suCheckbox}`}
                     type="checkbox"
                     id={`tag-${tag.id}`}
                     checked={selectedTags.includes(tag.id)}
@@ -466,7 +466,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
               <h6 className={styles.suFilterTitle}>房型篩選</h6>
               <div className="col-12">
                 <select
-                  className=" form-select"
+                  className={`form-select ${styles.selects}`}
                   value={selectedRoomType}
                   onChange={(e) => setSelectedRoomType(e.target.value)}
                 >

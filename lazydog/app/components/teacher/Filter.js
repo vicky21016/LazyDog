@@ -49,12 +49,13 @@ export default function Filter({ filterChange }) {
     filterChange("", [], []);
   };
 
+
    // 一進入頁面就顯示所有老師
    useEffect(() => {
     filterChange([], []);
   }, []); // 只執行一次
 
-  // 當篩選條件改變時，通知父元件
+  // 當篩選條件改變時，通知父元件 
   useEffect(() => {
     filterChange(searchText, selectCategories, selectGenders);
   }, [searchText, selectCategories, selectGenders]);
