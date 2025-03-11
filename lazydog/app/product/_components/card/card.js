@@ -490,7 +490,7 @@ function CardContent({ productID = "" }) {
                     }}
                     className={`${styles.ProductCardPriceSm} d-xl-none`}
                   >
-                    NT$ {products?.price}
+                    NT$ {Number(products?.price).toLocaleString()}
                   </motion.h5>
                 </motion.div>
                 <motion.div

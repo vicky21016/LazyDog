@@ -116,6 +116,9 @@
     gap: 3px;
     img {
       width: 12px;
+      @media (max-width: 500px) {
+        width: 11px;
+      }
     }
   }
 }
@@ -123,6 +126,9 @@
   width: 110px;
   height: 5px;
   background: var(--skin);
+  @media (max-width: 500px) {
+    width: 60px;
+  }
 }
 .Bar {
   height: 100%;

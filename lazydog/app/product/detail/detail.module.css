@@ -45,6 +45,11 @@
       text-wrap: nowrap;
       color: white;
     }
+    @media (max-width: 499px) {
+      button {
+        padding: 15px 40px;
+      }
+    }
     h5 {
       font-weight: bold;
       cursor: pointer;
@@ -294,6 +299,9 @@
   display: flex;
   align-items: center;
   gap: 40px;
+  @media (max-width: 499px) {
+    gap: 15px;
+  }
 }
 .Score {
   display: flex;
@@ -450,12 +458,22 @@
     height: 35px;
     border: 1px solid var(--orange);
     border-radius: 50%;
+    @media (max-width: 499px) {
+      width: 25px;
+      height: 25px;
+      img {
+        width: 9px;
+      }
+    }
   }
 }
 .AlsoBuyList {
   display: flex;
   align-items: center;
   gap: 30px;
+  @media (max-width: 499px) {
+    gap: 15px;
+  }
 }
 
 /* --------------------------- */
@@ -487,12 +505,22 @@
     height: 35px;
     border: 1px solid var(--orange);
     border-radius: 50%;
+    @media (max-width: 499px) {
+      width: 25px;
+      height: 25px;
+      img {
+        width: 9px;
+      }
+    }
   }
 }
 .OtherLikeList {
   display: flex;
   align-items: center;
   gap: 30px;
+  @media (max-width: 499px) {
+    gap: 15px;
+  }
 }
 /* --------------------------- */
 /* ---------card元件(備份css)----------- */
@@ -572,3 +600,161 @@
   }
 } */
 /* --------------------------- */
+/* ----小狗動畫衍生--------------- */
+.dogApp {
+  position: absolute;
+  bottom: 0;
+  z-index: 9999;
+}
+.dog {
+  width: 60px;
+  height: 38px;
+  cursor: pointer;
+}
+.dogWoof {
+  background: url("@/app/product/template/woof.png") 0 0;
+  animation: four 0.8s steps(4) infinite;
+}
+.dogWalk {
+  background: url("@/app/product/template/walk.png") 0 0;
+  animation: six 0.9s steps(6) infinite;
+}
+.dogRun {
+  background: url("@/app/product/template/run.png") 0 0;
+  animation: five 0.4s steps(5) infinite;
+}
+.dogSit {
+  background: url("@/app/product/template/sit.png") 0 0;
+  animation: four 0.6s steps(4) infinite;
+}
+.dogWalkToSit {
+  background: url("@/app/product/template/walktosit.png") 0 0;
+  animation: three 0.2s steps(2) forwards;
+}
+.dogSitToWalk {
+  background: url("@/app/product/template/walktosit.png") 0 0;
+  animation: backthree 0.2s steps(2) forwards;
+}
+.dogStop {
+  background: url("@/app/product/template/stop.png") 0 0;
+  animation: four 0.6s steps(4) infinite;
+}
+.flip {
+  transform: scaleX(-1);
+}
+@keyframes six {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -360px 0px;
+  }
+}
+@keyframes five {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -300px 0;
+  }
+}
+@keyframes four {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -240px 0;
+  }
+}
+@keyframes three {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -120px 0;
+  }
+}
+@keyframes backthree {
+  0% {
+    background-position: -120px 0;
+  }
+  100% {
+    background-position: 0px 0px;
+  }
+}
+.lumi-cart-icon {
+  display: block;
+  font-size: 40px;
+  color: var(--Black);
+  position: absolute;
+  bottom: -8px;
+  width: 0px;
+  left: 90px;
+  transform: scaleX(-1);
+  i {
+    position: relative;
+    z-index: 100;
+  }
+  .lumi-cart-count {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    width: 20px;
+    height: 30px;
+    background-color: var(--Orange);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
+    top: 6px;
+    left: 11px;
+    z-index: 80;
+    border: 0.3px dashed #000000;
+    border-radius: 2px;
+  }
+}
+.customTable {
+  background: #ffffff;
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
+  max-height: 500px;
+  overflow-y: scroll;
+  .tableName {
+    width: 180px;
+  }
+}
+.customTable th,
+.customTable td {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.customTable thead tr {
+  background-color: #fff6e8;
+  font-weight: bold;
+}
+.customTable td img {
+  width: 110px;
+  height: auto;
+  max-width: 100%;
+}
+.customTable td {
+  text-align: center;
+}
+.table {
+  img {
+    width: 32px;
+    height: 29px;
+  }
+}
+.Btn {
+  width: 150px;
+}
+.Btn button {
+  background-color: #fdf9f5;
+  color: #bcbcbc;
+  border-radius: 5px;
+  border-color: #bcbcbc;
+  margin: 10px;
+}

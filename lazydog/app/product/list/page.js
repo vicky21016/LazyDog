@@ -5,12 +5,12 @@ import styles from "./list.module.css";
 import Aside from "../_components/aside/aside";
 import Link from "next/link";
 import Card from "../_components/card/card";
-import { useListFetch } from "@/hooks/product/use-fetch";
+import { useListFetch, useDetailFetch } from "@/hooks/product/use-fetch";
 import { useFavorite } from "@/hooks/product/use-favorite";
 
 import { useAuth } from "@/hooks/use-auth";
-import { useDogBottom, useDogRandom } from "@/hooks/product/use-dog";
 import { useCart } from "@/hooks/use-cart";
+import { useDogBottom } from "@/hooks/product/use-dog";
 import * as motion from "motion/react-client";
 import { AnimatePresence } from "motion/react";
 import Thead from "@/app/components/cart/thead";
@@ -42,10 +42,20 @@ export default function ListPage(props) {
     isLoading,
     error,
   } = useListFetch();
+  const { CardInt, hotSale } = useDetailFetch();
+  const [hot, setHot] = useState(0);
 
   const { user } = useAuth();
-  const { containerRef, dogRef, stopDog, TimeoutId, Flip, stopOn, setStopOn } =
-    useDogBottom();
+  const {
+    containerRef,
+    dogRef,
+    stopDog,
+    TimeoutId,
+    Flip,
+    stopOn,
+    setStopOn,
+    moveDog,
+  } = useDogBottom();
   const {
     productItems = [],
     courseItems = [],
@@ -63,6 +73,17 @@ export default function ListPage(props) {
   }, [totalProductQty, totalCourseQty, totalHotelQty]);
   const [isOn, setIsOn] = useState(false);
   const toggleSwitch = () => setIsOn(!isOn);
+  useEffect(() => {
+    stopDog();
+    return () => {
+      if (TimeoutId) clearTimeout(TimeoutId);
+    };
+  }, [dogRef.current]);
+  useEffect(() => {
+    if (totalQty == 0) {
+      setIsOn(false);
+    }
+  }, [totalQty]);
 
   const { favorite, setFavorite } = useFavorite();
   const [dropDown, setDropDown] = useState(false);
@@ -86,13 +107,6 @@ export default function ListPage(props) {
     document.addEventListener("click", clickOutside);
     return () => document.removeEventListener("click", clickOutside);
   }, [listOpen, dropDown, collapseBtn]);
-
-  useEffect(() => {
-    stopDog();
-    return () => {
-      if (TimeoutId) clearTimeout(TimeoutId);
-    };
-  }, []);
 
   // const { randomRef, randomDogRef, randomDog, constraintsRef, RandomId } =
   // useDogRandom();
@@ -342,7 +356,62 @@ export default function ListPage(props) {
               />
             </div>
           ) : !products ? (
-            <h2>{emptyMessage}</h2>
+            <div className={styles.empty}>
+              <h2>{emptyMessage}</h2>
+              <section className={styles.OtherLike}>
+                <h4 className={styles.OtherLikeTitle}>要不要看看其他好物...</h4>
+                <div className={styles.OtherLikeContent}>
+                  <button
+                    type="button"
+                    className={styles.ProductInfoImgSmallBtn}
+                    onClick={() => {
+                      setHot(hot - 1 < 0 ? hot : hot - 1);
+                    }}
+                  >
+                    <img src="/product/font/left(orange).png" alt="" />
+                  </button>
+                  <ul
+                    style={{ padding: 0 }}
+                    className={`${styles.OtherLikeList} row`}
+                  >
+                    {hotSale.length > 0 &&
+                      hotSale?.map((v, i) => {
+                        if (i < CardInt + hot && i >= hot) {
+                          return (
+                            <motion.div
+                              key={`Card${i}`}
+                              className="col"
+                              style={{ padding: 0 }}
+                              layout
+                              initial={{ opacity: 0, scale: 0 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0, scale: 0 }}
+                              transition={{ all: 0.1 }}
+                            >
+                              <Card
+                                productID={v}
+                                favorite={favorite}
+                                setFavorite={setFavorite}
+                              />
+                            </motion.div>
+                          );
+                        }
+                      })}
+                  </ul>
+                  <button
+                    type="button"
+                    className={styles.ProductInfoImgSmallBtn}
+                    onClick={() => {
+                      setHot(
+                        hot + 1 > hotSale.length - CardInt ? hot : hot + 1
+                      );
+                    }}
+                  >
+                    <img src="/product/font/right(orange).png" alt="" />
+                  </button>
+                </div>
+              </section>
+            </div>
           ) : (
             <main className={styles.PdList}>
               {[...Array(productLine)].map((value, index) => {
@@ -499,94 +568,161 @@ export default function ListPage(props) {
           )}
         </section>
       </div>
-      <div
-        style={{
-          width: "100vw",
-          height: "38px",
-          position: "fixed",
-          bottom: 0,
-          overflow: "hidden",
-          zIndex: 99999,
-        }}
-      >
-        <div className={styles.dogApp} ref={containerRef}>
-          <div
-            ref={dogRef}
-            className={`${styles.dog} ${styles.flip}`}
-            onClick={(e) => {
-              stopDog(e);
-              setStopOn(!stopOn);
-            }}
-          >
-            {user?.id && (
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleSwitch();
-                }}
-                className={styles["lumi-cart-icon"]}
-              >
-                <i className="bi bi-cart2"></i>
-                {totalQty > 0 && (
-                  <div
-                    className={styles["lumi-cart-count"]}
-                    style={{ transform: Flip ? "" : "scaleX(-1)" }}
-                  >
-                    {totalQty}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-          <AnimatePresence initial={false}>
-            <motion.div
-              layout
-              style={{
-                display: isOn ? "flex" : "none",
-                alignItems: isOn ? "center" : "",
-                justifyContent: isOn ? "center" : "",
-                width: isOn ? width : "",
-                height: isOn ? "100vh" : "",
-                position: isOn ? "fixed" : "",
-                top: isOn ? "0" : "",
-                left: isOn ? "0" : "",
-                zIndex: isOn ? "9999" : "",
-                background: isOn ? "rgba(0, 0, 0, 0.8)" : "",
-                transition: "all 0.4s",
+      {width > 991 && (
+        <div
+          style={{
+            width: "100vw",
+            height: "38px",
+            position: "fixed",
+            bottom: 0,
+            zIndex: 99999,
+          }}
+        >
+          <div className={styles.dogApp} ref={containerRef}>
+            <div
+              ref={dogRef}
+              className={`${styles.dog} ${styles.flip}`}
+              onClick={(e) => {
+                stopDog(e);
+                setStopOn(!stopOn);
               }}
-              onClick={toggleSwitch}
+              onMouseEnter={(e) => {
+                stopDog(e, true);
+              }}
+              // onMouseLeave={(e) => {
+              //   stopDog(e);
+              //   setStopOn(!stopOn);
+              // }}
             >
+              {user?.id && (
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleSwitch();
+                  }}
+                  className={styles["lumi-cart-icon"]}
+                >
+                  <i className="bi bi-cart2"></i>
+                  {totalQty > 0 && (
+                    <div
+                      className={styles["lumi-cart-count"]}
+                      style={{ transform: Flip ? "" : "scaleX(-1)" }}
+                    >
+                      {totalQty}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            <AnimatePresence initial={false}>
               <motion.div
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0 }}
-                onClick={(e) => e.stopPropagation()}
+                layout
+                style={{
+                  display: isOn ? "flex" : "none",
+                  alignItems: isOn ? "center" : "",
+                  justifyContent: isOn ? "center" : "",
+                  width: isOn ? width : "",
+                  height: isOn ? "100vh" : "",
+                  position: isOn ? "fixed" : "",
+                  top: isOn ? "0" : "",
+                  left: isOn ? "0" : "",
+                  zIndex: isOn ? "9999" : "",
+                  background: isOn ? "rgba(0, 0, 0, 0.8)" : "",
+                  transition: "all 0.4s",
+                }}
+                onClick={toggleSwitch}
               >
-                <motion.div className={`${styles.customTable}`}>
-                  <table className="">
-                    {productItems.length > 0 && (
-                      <>
-                        <Thead />
-                        <tbody>
-                          {/* 顯示商品 */}
-                          {productItems.map((cartItem) => {
-                            const imgName = cartItem?.img
-                              ? cartItem.img.split(",")
-                              : [""];
-                            return (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <motion.div className={`${styles.customTable}`}>
+                    <table className="">
+                      {productItems.length > 0 && (
+                        <>
+                          <Thead />
+                          <tbody>
+                            {/* 顯示商品 */}
+                            {productItems.map((cartItem) => {
+                              const imgName = cartItem?.img
+                                ? cartItem.img.split(",")
+                                : [""];
+                              return (
+                                <tr key={cartItem.id}>
+                                  <td className={styles.table}>
+                                    <img
+                                      src={`/product/img/${encodeURIComponent(
+                                        cartItem.name
+                                      )}${imgName[0]}`}
+                                      alt={cartItem.name}
+                                    />
+                                  </td>
+                                  <td className={styles.tableName}>
+                                    {cartItem.name}
+                                  </td>
+                                  <td>
+                                    {Number(cartItem.price).toLocaleString()}
+                                  </td>
+                                  <td className={`${styles.Btn}`}>
+                                    <button
+                                      onClick={() => onIncrease(cartItem.id)}
+                                    >
+                                      +
+                                    </button>
+                                    {cartItem.count}
+                                    <button
+                                      onClick={() => onDecrease(cartItem.id)}
+                                    >
+                                      -
+                                    </button>
+                                  </td>
+                                  <td>
+                                    {Number(
+                                      cartItem.count * cartItem.price
+                                    ).toLocaleString()}
+                                  </td>
+                                  <td>
+                                    <button
+                                      style={{
+                                        border: "transparent",
+                                        backgroundColor: "white",
+                                      }}
+                                      onClick={() => onRemove(cartItem.id)}
+                                    >
+                                      <FontAwesomeIcon
+                                        icon={faTrashAlt}
+                                        style={{ color: "#f2662b" }}
+                                      />
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </>
+                      )}
+
+                      {courseItems.length > 0 && (
+                        <>
+                          <Thead />
+                          <tbody>
+                            {/* 顯示課程 */}
+                            {courseItems.map((cartItem) => (
                               <tr key={cartItem.id}>
                                 <td className={styles.table}>
                                   <img
-                                    src={`/product/img/${encodeURIComponent(
-                                      cartItem.name
-                                    )}${imgName[0]}`}
+                                    src={`/course/img/${cartItem.img_url}`}
                                     alt={cartItem.name}
                                   />
                                 </td>
                                 <td className={styles.tableName}>
                                   {cartItem.name}
                                 </td>
-                                <td>{cartItem.price}</td>
+                                <td>
+                                  {Number(cartItem.price).toLocaleString()}
+                                </td>
                                 <td className={`${styles.Btn}`}>
                                   <button
                                     onClick={() => onIncrease(cartItem.id)}
@@ -600,7 +736,11 @@ export default function ListPage(props) {
                                     -
                                   </button>
                                 </td>
-                                <td>{cartItem.count * cartItem.price}</td>
+                                <td>
+                                  {Number(
+                                    cartItem.count * cartItem.price
+                                  ).toLocaleString()}
+                                </td>
                                 <td>
                                   <button
                                     style={{
@@ -616,121 +756,84 @@ export default function ListPage(props) {
                                   </button>
                                 </td>
                               </tr>
-                            );
-                          })}
-                        </tbody>
-                      </>
-                    )}
+                            ))}
+                          </tbody>
+                        </>
+                      )}
 
-                    {courseItems.length > 0 && (
-                      <>
-                        <Thead />
-                        <tbody>
-                          {/* 顯示課程 */}
-                          {courseItems.map((cartItem) => (
-                            <tr key={cartItem.id}>
-                              <td className={styles.table}>
-                                <img
-                                  src={`/course/img/${cartItem.img_url}`}
-                                  alt={cartItem.name}
-                                />
-                              </td>
-                              <td className={styles.tableName}>
-                                {cartItem.name}
-                              </td>
-                              <td>{cartItem.price}</td>
-                              <td className={`${styles.Btn}`}>
-                                <button onClick={() => onIncrease(cartItem.id)}>
-                                  +
-                                </button>
-                                {cartItem.count}
-                                <button onClick={() => onDecrease(cartItem.id)}>
-                                  -
-                                </button>
-                              </td>
-                              <td>{cartItem.count * cartItem.price}</td>
-                              <td>
-                                <button
-                                  style={{
-                                    border: "transparent",
-                                    backgroundColor: "white",
-                                  }}
-                                  onClick={() => onRemove(cartItem.id)}
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faTrashAlt}
-                                    style={{ color: "#f2662b" }}
+                      {hotelItems.length > 0 && (
+                        <>
+                          <Thead />
+                          <tbody>
+                            {/* 顯示旅館 */}
+                            {hotelItems.map((cartItem) => (
+                              <tr key={cartItem.id}>
+                                <td className={styles.table}>
+                                  <img
+                                    src={cartItem.imageUrl}
+                                    alt={cartItem.name}
                                   />
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </>
-                    )}
-
-                    {hotelItems.length > 0 && (
-                      <>
-                        <Thead />
-                        <tbody>
-                          {/* 顯示旅館 */}
-                          {hotelItems.map((cartItem) => (
-                            <tr key={cartItem.id}>
-                              <td className={styles.table}>
-                                <img
-                                  src={cartItem.imageUrl}
-                                  alt={cartItem.name}
-                                />
-                              </td>
-                              <td className={styles.tableName}>
-                                {cartItem.name}
-                                {/* <br />
+                                </td>
+                                <td className={styles.tableName}>
+                                  {cartItem.name}
+                                  {/* <br />
                           hotel_id{cartItem.hotelId}
                           <br />
                           room_id{cartItem.id} */}
-                                <br />
-                                入住: {cartItem.checkInDate || "未填寫"}
-                                <br />
-                                退房: {cartItem.checkOutDate || "未填寫"}
-                              </td>
-                              <td>{cartItem.price}</td>
-                              <td className={`${styles.Btn}`}>
-                                <button onClick={() => onIncrease(cartItem.id)}>
-                                  +
-                                </button>
-                                {cartItem.count}
-                                <button onClick={() => onDecrease(cartItem.id)}>
-                                  -
-                                </button>
-                              </td>
-                              <td>{cartItem.count * cartItem.price}</td>
-                              {/* 新增日期顯示 */}
-                              <td>
-                                <button
-                                  style={{
-                                    border: "transparent",
-                                    backgroundColor: "white",
-                                  }}
-                                  onClick={() => onRemove(cartItem.id)}
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faTrashAlt}
-                                    style={{ color: "#f2662b" }}
-                                  />
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </>
-                    )}
-                  </table>
+                                  <br />
+                                  入住: {cartItem.checkInDate || "未填寫"}
+                                  <br />
+                                  退房: {cartItem.checkOutDate || "未填寫"}
+                                </td>
+                                <td>
+                                  {Number(cartItem.price).toLocaleString()}
+                                </td>
+                                <td className={`${styles.Btn}`}>
+                                  <button
+                                    onClick={() => onIncrease(cartItem.id)}
+                                  >
+                                    +
+                                  </button>
+                                  {cartItem.count}
+                                  <button
+                                    onClick={() => onDecrease(cartItem.id)}
+                                  >
+                                    -
+                                  </button>
+                                </td>
+                                <td>
+                                  {Number(
+                                    cartItem.count * cartItem.price
+                                  ).toLocaleString()}
+                                </td>
+                                {/* 新增日期顯示 */}
+                                <td>
+                                  <button
+                                    style={{
+                                      border: "transparent",
+                                      backgroundColor: "white",
+                                    }}
+                                    onClick={() => onRemove(cartItem.id)}
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faTrashAlt}
+                                      style={{ color: "#f2662b" }}
+                                    />
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </>
+                      )}
+                    </table>
+                  </motion.div>
                 </motion.div>
               </motion.div>
-            </motion.div>
-          </AnimatePresence>
+            </AnimatePresence>
+          </div>
         </div>
-      </div>
+      )}
       {/* <motion.div
         style={{
           width: "100vw",
