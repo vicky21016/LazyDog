@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import styles from "../css/CartList.module.css";
@@ -12,6 +12,12 @@ import Thead from "@/app/components/cart/thead";
 import Other from "../../components/teacher/otherTeacher";
 import OtherCourse from "@/app/components/cart/otherCourse";
 import Link from "next/link";
+
+import Card from "@/app/product/_components/card/card";
+import * as motion from "motion/react-client";
+import { useDetailFetch } from "@/hooks/product/use-fetch";
+import { useDetailFavorite } from "@/hooks/product/use-favorite";
+
 export default function CartListPage(props) {
   const {
     productItems = [],
@@ -60,6 +66,10 @@ export default function CartListPage(props) {
       link: "/teacher/info",
     },
   ];
+
+  const { CardInt, hotSale } = useDetailFetch();
+  const { favorite, setFavorite } = useDetailFavorite();
+  const [hot, setHot] = useState(0);
 
   return (
     <>
@@ -304,8 +314,51 @@ export default function CartListPage(props) {
           {/* 推薦商品區 */}
           <div className="main2">
             <div>
-              <h4 className="mb-5">加購其他優惠商品</h4>
-              <Other cards={teacherData} />
+              <h4 className="mb-5">加購其他熱銷商品</h4>
+              <div className={styles.OtherLikeContent}>
+                <button
+                  type="button"
+                  className={styles.ProductInfoImgSmallBtn}
+                  onClick={() => {
+                    setHot(hot - 1 < 0 ? hot : hot - 1);
+                  }}
+                >
+                  <img src="/product/font/left(orange).png" alt="" />
+                </button>
+                <ul className={`${styles.OtherLikeList} row`}>
+                  {hotSale.length > 0 &&
+                    hotSale?.map((v, i) => {
+                      if (i < CardInt + hot && i >= hot) {
+                        return (
+                          <motion.div
+                            key={`Card${i}`}
+                            className="col"
+                            layout
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0 }}
+                            transition={{ all: 0.1 }}
+                          >
+                            <Card
+                              productID={v}
+                              favorite={favorite}
+                              setFavorite={setFavorite}
+                            />
+                          </motion.div>
+                        );
+                      }
+                    })}
+                </ul>
+                <button
+                  type="button"
+                  className={styles.ProductInfoImgSmallBtn}
+                  onClick={() => {
+                    setHot(hot + 1 > hotSale.length - CardInt ? hot : hot + 1);
+                  }}
+                >
+                  <img src="/product/font/right(orange).png" alt="" />
+                </button>
+              </div>
             </div>
             <hr className="mb-5" />
             <div>

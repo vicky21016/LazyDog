@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, use } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./list.module.css";
 import Aside from "../_components/aside/aside";
 import Link from "next/link";
@@ -8,9 +8,17 @@ import Card from "../_components/card/card";
 import { useListFetch } from "@/hooks/product/use-fetch";
 import { useFavorite } from "@/hooks/product/use-favorite";
 
+import { useAuth } from "@/hooks/use-auth";
+import { useDogBottom, useDogRandom } from "@/hooks/product/use-dog";
+import { useCart } from "@/hooks/use-cart";
+import * as motion from "motion/react-client";
+import { AnimatePresence } from "motion/react";
+import Thead from "@/app/components/cart/thead";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+
 import { Carousel } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
-import * as motion from "motion/react-client";
 
 export default function ListPage(props) {
   const {
@@ -34,6 +42,28 @@ export default function ListPage(props) {
     isLoading,
     error,
   } = useListFetch();
+
+  const { user } = useAuth();
+  const { containerRef, dogRef, stopDog, TimeoutId, Flip, stopOn, setStopOn } =
+    useDogBottom();
+  const {
+    productItems = [],
+    courseItems = [],
+    hotelItems = [],
+    totalProductQty,
+    totalCourseQty,
+    totalHotelQty,
+    onIncrease,
+    onDecrease,
+    onRemove,
+  } = useCart();
+  let totalQty = totalProductQty + totalCourseQty + totalHotelQty;
+  useEffect(() => {
+    totalQty = totalProductQty + totalCourseQty + totalHotelQty;
+  }, [totalProductQty, totalCourseQty, totalHotelQty]);
+  const [isOn, setIsOn] = useState(false);
+  const toggleSwitch = () => setIsOn(!isOn);
+
   const { favorite, setFavorite } = useFavorite();
   const [dropDown, setDropDown] = useState(false);
   const [listOpen, setListOpen] = useState(false);
@@ -57,111 +87,22 @@ export default function ListPage(props) {
     return () => document.removeEventListener("click", clickOutside);
   }, [listOpen, dropDown, collapseBtn]);
 
-  // const [isOn, setIsOn] = useState(false);
-  // const toggleSwitch = () => setIsOn(!isOn);
-
-  // 小狗動畫-------------------------------------------------
-  const dogRef = useRef(null);
-  const containerRef = useRef(null);
-  const animations = [
-    { class: styles.dogWalk, duration: 1000 },
-    { class: styles.dogRun, duration: 400 },
-    { class: styles.dogWoof, duration: 1000 },
-  ];
-  const woof = [{ class: styles.dogWoof, duration: 1000 }];
-  const transitions = [
-    { class: styles.dogWalkToSit, duration: 200 },
-    { class: styles.dogSitToWalk, duration: 200 },
-  ];
-  const stop = [
-    { class: styles.dogSit, duration: 600 },
-    { class: styles.dogStop, duration: 600 },
-  ];
-
-  const getRandomPosition = () => {
-    return Math.floor(Math.random() * (window.innerWidth - 60));
-  };
-
-  const getRandomAnimation = () => {
-    return animations[Math.floor(Math.random() * animations.length)];
-  };
-
-  const getRandomStopAnimation = () => {
-    return stop[Math.floor(Math.random() * stop.length)];
-  };
-
-  const [stopOn, setStopOn] = useState(true);
-  const stopDog = (e, now) => {
-    setStopOn(!stopOn);
-    if (TimeoutId) {
-      clearTimeout(TimeoutId);
-      setTimeoutId(null);
-    }
-    const dogPosition = e ? e.currentTarget.getBoundingClientRect().left : 0;
-    if (now || stopOn == true) {
-      if (!dogRef.current || !containerRef.current) return;
-      // 移除所有動畫類別
-      if (dogRef.current.className.includes(styles.flip)) {
-        dogRef.current.className = styles.dog;
-        dogRef.current.classList.add(styles.flip);
-      } else {
-        dogRef.current.className = styles.dog;
-      }
-
-      // 隨機選擇新動畫
-      const newAnimation = getRandomStopAnimation();
-      dogRef.current.classList.add(newAnimation.class);
-
-      containerRef.current.style.transition = `left 100ms linear`;
-      containerRef.current.style.left = `${dogPosition}px`;
-    } else {
-      moveDog();
-    }
-  };
-  const [TimeoutId, setTimeoutId] = useState(null);
-
-  const moveDog = () => {
-    if (!dogRef.current || !containerRef.current) return;
-    if (TimeoutId) {
-      clearTimeout(TimeoutId);
-      setTimeoutId(null);
-    }
-    // 移除所有動畫類別
-    dogRef.current.className = styles.dog;
-    // 隨機選擇新動畫
-    const newAnimation = getRandomAnimation();
-    dogRef.current.classList.add(newAnimation.class);
-    // 隨機新位置
-    const newPosition = getRandomPosition();
-    const currentPosition = parseInt(containerRef.current.style.left) || 0;
-    // 根據移動方向翻轉圖片
-    if (newPosition < currentPosition) {
-      dogRef.current.classList.remove(styles.flip);
-    } else {
-      dogRef.current.classList.add(styles.flip);
-    }
-    // 計算移動時間
-    const distance = Math.abs(newPosition - currentPosition);
-    const moveDuration =
-      distance * (newAnimation.class == styles.dogWalk ? 15 : 5);
-    // 設置新位置
-    containerRef.current.style.transition = `left ${moveDuration}ms linear`;
-    containerRef.current.style.left = `${newPosition}px`;
-
-    // 在動畫完成後繼續下一次移動
-    const id = setTimeout(
-      moveDog,
-      Math.max(moveDuration, newAnimation.duration)
-    );
-    setTimeoutId(id);
-  };
-
   useEffect(() => {
     stopDog();
     return () => {
       if (TimeoutId) clearTimeout(TimeoutId);
     };
   }, []);
+
+  // const { randomRef, randomDogRef, randomDog, constraintsRef, RandomId } =
+  // useDogRandom();
+  // const [Flip, setFlip] = useState(false);
+  // useEffect(() => {
+  //   randomDog();
+  //   return () => {
+  //     if (RandomId) clearTimeout(RandomId);
+  //   };
+  // }, []);
 
   if (error) {
     return (
@@ -170,6 +111,7 @@ export default function ListPage(props) {
       </div>
     );
   }
+
   return (
     <>
       <div className={`${styles.collapseAside} d-lg-none`}>
@@ -557,27 +499,263 @@ export default function ListPage(props) {
           )}
         </section>
       </div>
-      <div className={styles.dogApp} ref={containerRef}>
-        {/* <motion.div
-          layout
-          style={{}}
-          className={`${styles.dogWalk} ${
-            isOn ? styles.toLeft : styles.toRight
-          }`}
-          onAnimationEnd={(e) => {
-            const style = window.getComputedStyle(e.target);
-            const bgPosition = style.getPropertyValue("background-position");
-            console.log(bgPosition);
-          }}
-        ></motion.div> */}
-        <div
-          ref={dogRef}
-          className={`${styles.dog} ${styles.flip}`}
-          onClick={(e) => {
-            stopDog(e, stopOn);
-          }}
-        ></div>
+      <div
+        style={{
+          width: "100vw",
+          height: "38px",
+          position: "fixed",
+          bottom: 0,
+          overflow: "hidden",
+        }}
+      >
+        <div className={styles.dogApp} ref={containerRef}>
+          <div
+            ref={dogRef}
+            className={`${styles.dog} ${styles.flip}`}
+            onClick={(e) => {
+              stopDog(e);
+              setStopOn(!stopOn);
+            }}
+          >
+            {user?.id && (
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleSwitch();
+                }}
+                className={styles["lumi-cart-icon"]}
+              >
+                <i className="bi bi-cart2"></i>
+                {totalQty > 0 && (
+                  <div
+                    className={styles["lumi-cart-count"]}
+                    style={{ transform: Flip ? "" : "scaleX(-1)" }}
+                  >
+                    {totalQty}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          <AnimatePresence initial={false}>
+            <motion.div
+              layout
+              style={{
+                display: isOn ? "flex" : "none",
+                alignItems: isOn ? "center" : "",
+                justifyContent: isOn ? "center" : "",
+                width: isOn ? width : "",
+                height: isOn ? "100vh" : "",
+                position: isOn ? "fixed" : "",
+                top: isOn ? "0" : "",
+                left: isOn ? "0" : "",
+                zIndex: isOn ? "9999" : "",
+                background: isOn ? "rgba(0, 0, 0, 0.8)" : "",
+                transition: "all 0.4s",
+              }}
+              onClick={toggleSwitch}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <motion.div className={`${styles.customTable}`}>
+                  <table className="">
+                    {productItems.length > 0 && (
+                      <>
+                        <Thead />
+                        <tbody>
+                          {/* 顯示商品 */}
+                          {productItems.map((cartItem) => {
+                            const imgName = cartItem?.img
+                              ? cartItem.img.split(",")
+                              : [""];
+                            return (
+                              <tr key={cartItem.id}>
+                                <td className={styles.table}>
+                                  <img
+                                    src={`/product/img/${encodeURIComponent(
+                                      cartItem.name
+                                    )}${imgName[0]}`}
+                                    alt={cartItem.name}
+                                  />
+                                </td>
+                                <td className={styles.tableName}>
+                                  {cartItem.name}
+                                </td>
+                                <td>{cartItem.price}</td>
+                                <td className={`${styles.Btn}`}>
+                                  <button
+                                    onClick={() => onIncrease(cartItem.id)}
+                                  >
+                                    +
+                                  </button>
+                                  {cartItem.count}
+                                  <button
+                                    onClick={() => onDecrease(cartItem.id)}
+                                  >
+                                    -
+                                  </button>
+                                </td>
+                                <td>{cartItem.count * cartItem.price}</td>
+                                <td>
+                                  <button
+                                    style={{
+                                      border: "transparent",
+                                      backgroundColor: "white",
+                                    }}
+                                    onClick={() => onRemove(cartItem.id)}
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faTrashAlt}
+                                      style={{ color: "#f2662b" }}
+                                    />
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </>
+                    )}
+
+                    {courseItems.length > 0 && (
+                      <>
+                        <Thead />
+                        <tbody>
+                          {/* 顯示課程 */}
+                          {courseItems.map((cartItem) => (
+                            <tr key={cartItem.id}>
+                              <td className={styles.table}>
+                                <img
+                                  src={`/course/img/${cartItem.img_url}`}
+                                  alt={cartItem.name}
+                                />
+                              </td>
+                              <td className={styles.tableName}>
+                                {cartItem.name}
+                              </td>
+                              <td>{cartItem.price}</td>
+                              <td className={`${styles.Btn}`}>
+                                <button onClick={() => onIncrease(cartItem.id)}>
+                                  +
+                                </button>
+                                {cartItem.count}
+                                <button onClick={() => onDecrease(cartItem.id)}>
+                                  -
+                                </button>
+                              </td>
+                              <td>{cartItem.count * cartItem.price}</td>
+                              <td>
+                                <button
+                                  style={{
+                                    border: "transparent",
+                                    backgroundColor: "white",
+                                  }}
+                                  onClick={() => onRemove(cartItem.id)}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faTrashAlt}
+                                    style={{ color: "#f2662b" }}
+                                  />
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </>
+                    )}
+
+                    {hotelItems.length > 0 && (
+                      <>
+                        <Thead />
+                        <tbody>
+                          {/* 顯示旅館 */}
+                          {hotelItems.map((cartItem) => (
+                            <tr key={cartItem.id}>
+                              <td className={styles.table}>
+                                <img
+                                  src={cartItem.imageUrl}
+                                  alt={cartItem.name}
+                                />
+                              </td>
+                              <td className={styles.tableName}>
+                                {cartItem.name}
+                                {/* <br />
+                          hotel_id{cartItem.hotelId}
+                          <br />
+                          room_id{cartItem.id} */}
+                                <br />
+                                入住: {cartItem.checkInDate || "未填寫"}
+                                <br />
+                                退房: {cartItem.checkOutDate || "未填寫"}
+                              </td>
+                              <td>{cartItem.price}</td>
+                              <td className={`${styles.Btn}`}>
+                                <button onClick={() => onIncrease(cartItem.id)}>
+                                  +
+                                </button>
+                                {cartItem.count}
+                                <button onClick={() => onDecrease(cartItem.id)}>
+                                  -
+                                </button>
+                              </td>
+                              <td>{cartItem.count * cartItem.price}</td>
+                              {/* 新增日期顯示 */}
+                              <td>
+                                <button
+                                  style={{
+                                    border: "transparent",
+                                    backgroundColor: "white",
+                                  }}
+                                  onClick={() => onRemove(cartItem.id)}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faTrashAlt}
+                                    style={{ color: "#f2662b" }}
+                                  />
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </>
+                    )}
+                  </table>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
+      {/* <motion.div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          position: "fixed",
+          bottom: 0,
+          overflow: "hidden",
+        }}
+        ref={constraintsRef}
+      >
+        <motion.div
+          className={styles.dogApp}
+          ref={randomRef}
+          drag
+          dragConstraints={constraintsRef}
+          dragElastic={0.2}
+        >
+          <div
+            ref={randomDogRef}
+            className={`${styles.dog} ${Flip ? "" : styles.flip}`}
+            onClick={() => {
+              setFlip(!Flip);
+            }}
+          ></div>
+        </motion.div>
+      </motion.div> */}
     </>
   );
 }
