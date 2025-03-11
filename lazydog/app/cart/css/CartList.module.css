@@ -18,11 +18,11 @@
   height: auto;
   object-fit: contain;
 }
-.height{
+.height {
   margin: 90px auto 0;
 }
 /* 表格樣式 */
-.customTable { 
+.customTable {
   display: flex;
   /* flex-wrap: nowrap;  */
   justify-content: space-between;
@@ -36,7 +36,10 @@
   padding-left: 10px;
   padding-right: 10px;
 }
-
+.customTable th{
+  padding: 10px;
+  letter-spacing: 1px;
+}
 .customTable thead tr {
   background-color: #fff6e8;
   font-weight: bold;
@@ -62,8 +65,7 @@
 }
 
 /* 結算區塊 */
-.summary{
-
+.summary {
 }
 .summaryItem {
   color: var(--text-Bk, #3e3e3e);
@@ -106,31 +108,31 @@
   right: 0;
   width: 180px;
 }
-.Btn{
+.Btn {
   width: 150px;
 }
-.Btn button{
+.Btn button {
   background-color: #fdf9f5;
-  color: #BCBCBC;
+  color: #bcbcbc;
   border-radius: 5px;
-  border-color: #BCBCBC;
+  border-color: #bcbcbc;
   margin: 10px;
 }
-.list{
+.list {
   padding: 0 0 0 80px;
 }
-.text{
+.text {
   font-size: 24px;
   font-weight: 600;
   letter-spacing: 1px;
 }
-.subtext{
+.subtext {
   font-size: 18px;
   font-weight: 600;
   color: rgb(255, 53, 53);
   letter-spacing: 1px;
 }
-.btn{
+.btn {
   background-color: #ff9538;
   color: white;
   padding: 5px;
@@ -141,13 +143,13 @@
   letter-spacing: 1px;
   width: 470px;
 }
-.btn:hover{
+.btn:hover {
   background-color: white;
-color: #f5842b;
-border: 2px solid;
-border-color: #f5842b;
+  color: #f5842b;
+  border: 2px solid;
+  border-color: #f5842b;
 }
-.btn1{
+.btn1 {
   background-color: #ff9538;
   color: white;
   padding: 5px;
@@ -158,11 +160,11 @@ border-color: #f5842b;
   letter-spacing: 1px;
   width: 100%;
 }
-.btn1:hover{
+.btn1:hover {
   background-color: white;
-color: #f5842b;
-border: 2px solid;
-border-color: #f5842b;
+  color: #f5842b;
+  border: 2px solid;
+  border-color: #f5842b;
 }
 
 /* sususususus */
@@ -182,16 +184,61 @@ border-color: #f5842b;
 .subtext {
   font-weight: bold;
 }
-.main{
+.main {
   box-shadow: 0px 4px 3.3px 0px rgba(0, 0, 0, 0.25);
-  padding:20px 40px 40px 40px;
+  padding: 20px 40px 40px 40px;
 }
 @media (max-width: 768px) {
-  .height, .container{
+  .height,
+  .container {
     padding: 30px;
   }
-  .list{
+  .list {
     margin-top: 50px;
     padding: 30px;
   }
+}
+
+.OtherLikeContent {
+  --Orange: #f5842b;
+  --orange: #f5842b;
+  --Skin: #f1d5b6;
+  --skin: #f1d5b6;
+  --Tiffany: #66c5bd;
+  --tiffany: #66c5bd;
+  --White: #fdfaf5;
+  --white: #fdfaf5;
+  --Yellow: #f6ce5b;
+  --yellow: #f6ce5b;
+  --Black: #3b3330;
+  --black: #3b3330;
+  --Rice: #fff6e8;
+  --rice: #fff6e8;
+  --Gray: #bcbcbc;
+  --gray: #bcbcbc;
+  li {
+    list-style: none;
   }
+  button {
+    border: none;
+  }
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  .ProductInfoImgSmallBtn {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    background: transparent;
+    border: 1px solid var(--orange);
+    border-radius: 50%;
+  }
+}
+.OtherLikeList {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}

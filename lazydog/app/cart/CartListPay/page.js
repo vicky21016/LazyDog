@@ -289,31 +289,6 @@ export default function CartListPayPage(props) {
                     required
                   />
                 </div>
-                {/* 城市 */}
-                <div className="mb-3">
-                  <label htmlFor="city" className="form-label">
-                    城市
-                  </label>
-                  <Input
-                    type="text"
-                    id="city"
-                    name="city"
-                    className="form-control"
-                    required
-                  />
-                </div>
-                {/* 公司名稱 */}
-                <div className="mb-3">
-                  <label htmlFor="company-name" className="form-label">
-                    公司名稱
-                  </label>
-                  <Input
-                    type="text"
-                    id="company-name"
-                    name="company-name"
-                    className="form-control"
-                  />
-                </div>
                 {/* Email */}
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
@@ -356,7 +331,9 @@ export default function CartListPayPage(props) {
                       <span>
                         {item.name} x {item.count}
                       </span>
-                      <span>NT$ {item.price * item.count}</span>
+                      <span>
+                        NT$ {Number(item.price * item.count).toLocaleString()}
+                      </span>
                     </div>
                   ))}
 
@@ -368,7 +345,7 @@ export default function CartListPayPage(props) {
                       <span>
                         {item.name} x {item.count}
                       </span>
-                      <span>NT$ {item.price * item.count}</span>
+                      <span>NT$ { Number(item.price * item.count).toLocaleString() }</span>
                     </div>
                   ))}
 
@@ -380,7 +357,9 @@ export default function CartListPayPage(props) {
                       <span>
                         {item.name} x {item.count}
                       </span>
-                      <span>NT$ {item.price * item.count}</span>
+                      <span>
+                        NT$ {Number(item.price * item.count).toLocaleString()}
+                      </span>
                     </div>
                   ))}
 
@@ -412,11 +391,11 @@ export default function CartListPayPage(props) {
                   {/* 折扣金額與最終金額 */}
                   <div className="d-flex justify-content-between mt-4">
                     <span className="subtext">折扣金額</span>
-                    <span>- NT$ {discountAmount.toFixed(0)}</span>
+                    <span>- NT$ {Number(discountAmount).toLocaleString()}</span>
                   </div>
                   <div className="d-flex justify-content-between mt-3">
                     <span className="subtext">最終金額</span>
-                    <span>NT$ {finalAmount.toFixed(0)}</span>
+                    <span>NT$ {Number(finalAmount).toLocaleString()}</span>
                   </div>
 
                   {/* 付款按鈕 */}

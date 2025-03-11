@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import styles from "../css/CartList.module.css";
@@ -12,6 +12,12 @@ import Thead from "@/app/components/cart/thead";
 import Other from "../../components/teacher/otherTeacher";
 import OtherCourse from "@/app/components/cart/otherCourse";
 import Link from "next/link";
+
+import Card from "@/app/product/_components/card/card";
+import * as motion from "motion/react-client";
+import { useDetailFetch } from "@/hooks/product/use-fetch";
+import { useDetailFavorite } from "@/hooks/product/use-favorite";
+
 export default function CartListPage(props) {
   const {
     productItems = [],
@@ -61,6 +67,10 @@ export default function CartListPage(props) {
     },
   ];
 
+  const { CardInt, hotSale } = useDetailFetch();
+  const { favorite, setFavorite } = useDetailFavorite();
+  const [hot, setHot] = useState(0);
+
   return (
     <>
       <Header />
@@ -102,7 +112,7 @@ export default function CartListPage(props) {
                             />
                           </td>
                           <td>{cartItem.name}</td>
-                          <td>{cartItem.price}</td>
+                          <td>{Number(cartItem.price).toLocaleString()}</td>
                           <td className={`${styles.Btn}`}>
                             <button onClick={() => onIncrease(cartItem.id)}>
                               +
@@ -112,7 +122,11 @@ export default function CartListPage(props) {
                               -
                             </button>
                           </td>
-                          <td>{cartItem.count * cartItem.price}</td>
+                          <td>
+                            {Number(
+                              cartItem.count * cartItem.price
+                            ).toLocaleString()}
+                          </td>
                           <td>
                             <button
                               style={{
@@ -148,7 +162,7 @@ export default function CartListPage(props) {
                           />
                         </td>
                         <td>{cartItem.name}</td>
-                        <td>{cartItem.price}</td>
+                        <td>{Number(cartItem.price).toLocaleString()}</td>
                         <td className={`${styles.Btn}`}>
                           <button onClick={() => onIncrease(cartItem.id)}>
                             +
@@ -158,7 +172,7 @@ export default function CartListPage(props) {
                             -
                           </button>
                         </td>
-                        <td>{cartItem.count * cartItem.price}</td>
+                        <td>{Number(cartItem.count * cartItem.price).toLocaleString()}</td>
                         <td>
                           <button
                             style={{
@@ -200,7 +214,7 @@ export default function CartListPage(props) {
                           <br />
                           退房: {cartItem.checkOutDate || "未填寫"}
                         </td>
-                        <td>{cartItem.price}</td>
+                        <td>{Number(cartItem.price).toLocaleString()}</td>
                         <td className={`${styles.Btn}`}>
                           <button onClick={() => onIncrease(cartItem.id)}>
                             +
@@ -210,7 +224,11 @@ export default function CartListPage(props) {
                             -
                           </button>
                         </td>
-                        <td>{cartItem.count * cartItem.price}</td>
+                        <td>
+                          {Number(
+                            cartItem.count * cartItem.price
+                          ).toLocaleString()}
+                        </td>
                         {/* 新增日期顯示 */}
                         <td>
                           <button
@@ -241,19 +259,25 @@ export default function CartListPage(props) {
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>商品小計</span>
-                  <span>{`NT$ ${totalProductAmount}`}</span>
+                  <span>{`NT$ ${Number(
+                    totalProductAmount
+                  ).toLocaleString()}`}</span>
                 </div>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>課程小計</span>
-                  <span>{`NT$ ${totalCourseAmount}`}</span>
+                  <span>{`NT$ ${Number(
+                    totalCourseAmount
+                  ).toLocaleString()}`}</span>
                 </div>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>旅館小計</span>
-                  <span>{`NT$ ${totalHotelAmount}`}</span>
+                  <span>{`NT$ ${Number(
+                    totalHotelAmount
+                  ).toLocaleString()}`}</span>
                 </div>
               </div>
 
@@ -268,9 +292,9 @@ export default function CartListPage(props) {
                 className={`${styles.summaryItem} ${styles.summaryItem2} d-flex justify-content-between`}
               >
                 <span>總金額:</span>
-                <span
-                  className={styles.totalmoney}
-                >{`NT$ ${totalAmount}`}</span>
+                <span className={styles.totalmoney}>{`NT$ ${Number(
+                  totalAmount
+                ).toLocaleString()}`}</span>
               </div>
 
               {/* 結帳按鈕 */}
@@ -303,8 +327,51 @@ export default function CartListPage(props) {
           {/* 推薦商品區 */}
           <div className="main2">
             <div>
-              <h4 className="mb-5">加購其他優惠商品</h4>
-              <Other cards={teacherData} />
+              <h4 className="mb-5">加購其他熱銷商品</h4>
+              <div className={styles.OtherLikeContent}>
+                <button
+                  type="button"
+                  className={styles.ProductInfoImgSmallBtn}
+                  onClick={() => {
+                    setHot(hot - 1 < 0 ? hot : hot - 1);
+                  }}
+                >
+                  <img src="/product/font/left(orange).png" alt="" />
+                </button>
+                <ul className={`${styles.OtherLikeList} row`}>
+                  {hotSale.length > 0 &&
+                    hotSale?.map((v, i) => {
+                      if (i < CardInt + hot && i >= hot) {
+                        return (
+                          <motion.div
+                            key={`Card${i}`}
+                            className="col"
+                            layout
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0 }}
+                            transition={{ all: 0.1 }}
+                          >
+                            <Card
+                              productID={v}
+                              favorite={favorite}
+                              setFavorite={setFavorite}
+                            />
+                          </motion.div>
+                        );
+                      }
+                    })}
+                </ul>
+                <button
+                  type="button"
+                  className={styles.ProductInfoImgSmallBtn}
+                  onClick={() => {
+                    setHot(hot + 1 > hotSale.length - CardInt ? hot : hot + 1);
+                  }}
+                >
+                  <img src="/product/font/right(orange).png" alt="" />
+                </button>
+              </div>
             </div>
             <hr className="mb-5" />
             <div>

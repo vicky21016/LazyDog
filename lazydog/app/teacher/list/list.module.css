@@ -160,7 +160,7 @@
 
 /* 桌機版篩選選單 */
 .asideContainer {
-  display: block;
+  display: flex;
 }
 
 /* 手機版篩選選單 (預設隱藏) */
@@ -331,4 +331,5 @@
     height: 35px;
   }
 }
+
 

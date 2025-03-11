@@ -8,7 +8,7 @@ import styles from "../../../styles/modules/footer.module.css";
 export default function Footer(props) {
   return (
     <>
-      <div className={styles.wavesContainer}>
+      <div className={`mt-5 ${styles.wavesContainer}`}>
         <svg
           className={styles.waves}
           xmlns="http://www.w3.org/2000/svg"
