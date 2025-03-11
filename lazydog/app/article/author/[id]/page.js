@@ -23,9 +23,9 @@ const ArticlePage = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const itemsPerPage = 5;
     const { user } = useAuth()
-
-    console.log(articles)
-
+    const authorNames = articles?.[0]?.author_name || "";
+    console.log(authorNames);
+    
 
 
     // 判斷有無使用者登入
@@ -100,7 +100,7 @@ const ArticlePage = () => {
                             { label: "首頁 ", href: "/" },
                             { label: "毛孩文章", href: "/article/list" },
                             {
-                                label: ` ${articles?.author_name
+                                label: ` ${authorNames
                                     || "標題尚未加載"}`,
                                 href: "/article/list/detail",
                                 active: true,

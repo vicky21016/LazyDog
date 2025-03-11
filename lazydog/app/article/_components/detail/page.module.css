@@ -30,6 +30,11 @@
 }
 .auther{
   width: 55px;
+  color: #ffbc51;
+  font-weight: bold;
+}
+.auther:hover{
+  color: #f5842b;
 }
 
 .articleContent{

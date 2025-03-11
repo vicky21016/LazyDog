@@ -33,7 +33,7 @@ const fileUpload = multer({
     },
   }),
   limits: {
-    fileSize: 100 * 1024 * 1024, 
+    fileSize: 100 * 1024 * 1024,
   },
 });
 
@@ -72,8 +72,10 @@ router.get("/author/:author_id", async (req, res) => {
 
     const formattedArticles = articles.map(article => ({
       ...article,
+      created_at: new Date(article.created_at).toISOString().split('T')[0], // 只取日期
+      updated_at: new Date(article.updated_at).toISOString().split('T')[0],  // 只取日期
       cover_image: article.cover_image || "http://localhost:5000/api/articles/image4.jpg" // 設定預設圖片
-  }));
+    }));
     res.json(formattedArticles);
   } catch (error) {
     res.status(500).json({ error: error.message });
