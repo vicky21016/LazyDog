@@ -1,23 +1,17 @@
 import { useState, useEffect, useMemo } from "react";
 import { getCouponss, getCoupons, useCoupon } from "@/services/couponService";
+import Swal from "sweetalert2";
 
 export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
   const [availableCoupons, setAvailableCoupons] = useState([]);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
   const [discountAmount, setDiscountAmount] = useState(0);
   const [error, setError] = useState(null);
+  const [couponError, setCouponError] = useState(null);
 
   // 計算最終金額
   const finalAmount = useMemo(() => {
-    console.log(
-      "Final Amount Calculation:",
-      cartTotal,
-      "-",
-      discountAmount,
-      "=",
-      cartTotal - discountAmount
-    );
-    return cartTotal - discountAmount;
+    return Math.max(cartTotal - discountAmount, 0); // 確保不會變成負數
   }, [cartTotal, discountAmount]);
 
   // 取得可用的優惠券 (從 coupon_usage 查找擁有的優惠券，再從 coupons 查詳細資料)
@@ -27,7 +21,7 @@ export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
         const usageResponse = await getCouponss("claimed", "all");
 
         if (!usageResponse.success || !usageResponse.data) {
-          console.error("無法獲取 coupon_usage:", usageResponse);
+          Swal.fire("獲取優惠券失敗", "無法獲取優惠券", "error");
           return;
         }
 
@@ -43,30 +37,52 @@ export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
           const coupons = couponsResponse.data.map((c) => ({
             id: c.id,
             name: c.name,
-            value: c.value,
+            value: Math.floor(c.value), // 確保去除小數點
             discount_type: c.type,
-            min_order_value: c.min_order_value,
+            min_order_value: Math.floor(c.min_order_value),
           }));
 
           setAvailableCoupons(coupons);
         } else {
-          console.error("無法獲取 coupons:", couponsResponse);
+          Swal.fire("獲取優惠券失敗", "無法獲取優惠券", "error");
         }
       } catch (error) {
-        console.error("獲取優惠券失敗:", error);
+        Swal.fire("獲取優惠券失敗", "發生錯誤，無法獲取優惠券", "error");
       }
     };
 
     fetchCoupons();
   }, []);
+  const setValidCoupon = (couponId) => {
+    if (couponId === "") {
+      setSelectedCoupon(null);
+      setDiscountAmount(0);
+      setCouponError(null); // 清除錯誤
+      return;
+    }
+
+    const selected = availableCoupons.find((c) => c.id == Number(couponId));
+
+    if (!selected) {
+      setCouponError("選擇的優惠券不存在"); // 設定錯誤
+      return;
+    }
+
+    if (selected.min_order_value > cartTotal) {
+      setCouponError(`此優惠券最低消費需達 NT$${selected.min_order_value}`);
+      return;
+    }
+
+    setSelectedCoupon(selected.id);
+    setCouponError(null); // 清除錯誤
+  };
 
   // 計算折扣金額
   const calculateDiscount = (couponId) => {
     const coupon = availableCoupons.find((c) => c.id == Number(couponId));
 
     if (!coupon) {
-      console.error("優惠券不存在:", couponId);
-      return 0;
+      return 0; // 不要彈出錯誤，而是直接返回 0
     }
 
     let discount = 0;
@@ -76,63 +92,41 @@ export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
       discount = Math.min(coupon.value, cartTotal);
     }
 
-    console.log("Final Calculated Discount:", discount);
-    return discount;
+    return Math.floor(discount);
   };
 
   //  變化並更新折扣金額
   useEffect(() => {
-    if (selectedCoupon) {
-      const discount = calculateDiscount(selectedCoupon);
-      setDiscountAmount(discount);
-    } else {
+    if (!selectedCoupon) {
       setDiscountAmount(0);
+      return;
     }
+
+    const discount = calculateDiscount(selectedCoupon);
+    setDiscountAmount(discount);
   }, [selectedCoupon, cartTotal]);
 
   // 使用優惠券
   const applyCoupon = async (couponId) => {
-    console.log("Applying coupon with ID:", couponId);
-
-    if (!couponId) {
-      console.error("未選擇優惠券");
+    if (!couponId || couponId == "") {
       return;
     }
 
     const coupon = availableCoupons.find((c) => c.id == Number(couponId));
-
     if (!coupon) {
-      console.error("優惠券不存在:", couponId);
+      setCouponError("選擇的優惠券不存在");
       return;
     }
 
-    if (!orderId || !orderTable || !userId) {
-      console.error(" 缺少必要參數: orderId, orderTable, userId");
-      console.log(
-        "orderId:",
-        orderId,
-        "orderTable:",
-        orderTable,
-        "userId:",
-        userId
-      );
+    if (!orderId || !userId) {
+      setCouponError("訂單資訊不完整，請稍後再試");
       return;
     }
 
-    const validOrderTables = ["hotel_order", "course_orders", "yi_orderlist"];
-    const cleanedOrderTable = orderTable.trim(); // 避免空格錯誤
-
-    if (!validOrderTables.includes(cleanedOrderTable)) {
-      console.error(" 無效的訂單類型:", cleanedOrderTable);
-      return;
-    }
-
-    const requestBody = {
-      userId: Number(userId),
-      orderId: orderId,
-      orderTable: cleanedOrderTable,
-      couponId: Number(coupon.id),
-    };
+    let correctOrderTable = orderTable;
+    if (coupon.discount_type == "hotel") correctOrderTable = "hotel_order";
+    if (coupon.discount_type == "product") correctOrderTable = "yi_orderlist";
+    if (coupon.discount_type == "course") correctOrderTable = "course_orders";
 
     try {
       const response = await fetch(
@@ -143,32 +137,31 @@ export function useCoupons(cartTotal, orderId, orderTable, token, userId) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(requestBody),
+          body: JSON.stringify({
+            userId: Number(userId),
+            orderId,
+            orderTable: correctOrderTable, 
+            couponId: Number(coupon.id),
+          }),
         }
       );
 
       const data = await response.json();
       if (!response.ok) {
-        console.error(" 優惠券無法使用:", data.message);
+        setCouponError(data.message || "優惠券無法使用");
         return;
       }
 
-      console.log(" 優惠券成功套用:", data);
+      Swal.fire("成功", "優惠券已使用成功", "success");
     } catch (error) {
-      console.error(" 套用優惠券失敗:", error);
-    }
-    
-    try {
-      await applyCoupon(selectedCoupon, orderId, orderTable, user.id);
-    } catch (error) {
-      console.error("applyCoupon 失敗，但不影響主要訂單:", error);
+      Swal.fire("錯誤", "無法使用優惠券，請稍後再試", "error");
     }
   };
 
   return {
     availableCoupons,
     selectedCoupon,
-    setSelectedCoupon,
+    setSelectedCoupon: setValidCoupon,
     discountAmount,
     finalAmount,
     setDiscountAmount,

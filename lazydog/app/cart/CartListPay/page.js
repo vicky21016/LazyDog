@@ -194,7 +194,8 @@ export default function CartListPayPage(props) {
       }
 
       //  訂單建立完成後，再使用優惠券
-      if (selectedCoupon) {
+      if (selectedCoupon && selectedCoupon !== "") {
+        // 只有當 selectedCoupon 有值時才使用優惠券
         await applyCoupon(selectedCoupon, orderId, orderTable, user.id);
       }
 
@@ -389,14 +390,17 @@ export default function CartListPayPage(props) {
                     <select
                       className="form-select"
                       value={selectedCoupon || ""}
-                      onChange={(e) => {
-                        const selectedId = e.target.value;
-                        setSelectedCoupon(selectedId); // 更新選中的優惠券 ID
-                      }}
+                      onChange={(e) =>
+                        setSelectedCoupon(e.target.value || null)
+                      }
                     >
-                      <option value="">選擇優惠券</option>
+                      <option value="">不使用優惠券</option>
                       {availableCoupons.map((coupon) => (
-                        <option key={coupon.id} value={coupon.id}>
+                        <option
+                          key={coupon.id}
+                          value={coupon.id}
+                          disabled={totalAmount < coupon.min_order_value} // 低消未達標的優惠券無法選擇
+                        >
                           {coupon.name} - {coupon.value}{" "}
                           {coupon.discount_type === "percentage" ? "%" : "NT$"}{" "}
                           (低消 NT$ {coupon.min_order_value})
