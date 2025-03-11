@@ -36,7 +36,10 @@
   padding-left: 10px;
   padding-right: 10px;
 }
-
+.customTable th{
+  padding: 10px;
+  letter-spacing: 1px;
+}
 .customTable thead tr {
   background-color: #fff6e8;
   font-weight: bold;

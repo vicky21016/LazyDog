@@ -19,7 +19,11 @@ const Product = ({ orders }) => {
               src={`/product/img/${order.imageResult[0].name}${
                 order.imageResult[0].lg_img.split(",")[0]
               }`}
-              style={{ width:'176.989px',maxHeight: "100px", objectFit: "cover" }}
+              style={{
+                width: "176.989px",
+                maxHeight: "100px",
+                objectFit: "cover",
+              }}
               alt={order.orderID}
             />
           </Link>
@@ -31,7 +35,9 @@ const Product = ({ orders }) => {
               訂購時間:{order.created_at.split("T")[0]}
             </p>
           </div>
-          <span className={couponStyles.suPrice}>NT {order.final_amount}</span>
+          <span className={couponStyles.suPrice}>
+            NT$ {Math.floor(order.final_amount).toLocaleString()}
+          </span>
         </div>
       ))}
     </>

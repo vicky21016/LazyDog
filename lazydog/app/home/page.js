@@ -202,7 +202,10 @@ export default function HomePage(props) {
         </div>
       </div>
 
-      <div className={`container-fluid ${styles.section3}`}>
+      <div
+        className={`container-fluid ${styles.section3}`}
+        style={{ backgroundColor: " #FFF6E8" }}
+      >
         <div
           className={`col-11 col-md-10 col-lg-8 d-none d-xxl-block ${styles.discountPic}`}
         >
@@ -237,6 +240,18 @@ export default function HomePage(props) {
               Book Now
             </Link>
           </div>
+           <div className={`${styles.imagesContainer}`}>
+            <img
+              className={`${styles.leftImage}`}
+              src="/teacher-img/18.svg"
+              alt=""
+            />
+            <img
+              className={`${styles.rightImage}`}
+              src="/teacher-img/23.svg"
+              alt=""
+            />
+          </div>
         </div>
         <div className={styles.icons}>
           <img
@@ -254,7 +269,9 @@ export default function HomePage(props) {
           <img className={styles.wave} src="/home/img/whiteWave2.png" alt="" />
         </div> */}
       </div>
-
+      <div>
+        <img className="" src="/teacher-img/yello2.png" alt="" />
+      </div>
       <div className={`container-fluid ${styles.section4}`}>
         <h2 className={styles.section4Title}>會員限定優惠</h2>
         <div className={`row ${styles.userCards}`}>
@@ -272,7 +289,7 @@ export default function HomePage(props) {
               />
             </div>
             <h5 className={styles.card2Word}>滿額免運</h5>
-            <p className={styles.card2P}>超取 $ 1500 / 宅配 $ 2000</p>
+            <p className={styles.card2P}>超取 $ 1,500 / 宅配 $ 2,000</p>
           </div>
           <div className={`col-5 col-md-3  ${styles.card} ${styles.card3}`}>
             <img

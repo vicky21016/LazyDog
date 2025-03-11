@@ -112,7 +112,7 @@ export default function CartListPage(props) {
                             />
                           </td>
                           <td>{cartItem.name}</td>
-                          <td>{cartItem.price}</td>
+                          <td>{Number(cartItem.price).toLocaleString()}</td>
                           <td className={`${styles.Btn}`}>
                             <button onClick={() => onIncrease(cartItem.id)}>
                               +
@@ -122,7 +122,11 @@ export default function CartListPage(props) {
                               -
                             </button>
                           </td>
-                          <td>{cartItem.count * cartItem.price}</td>
+                          <td>
+                            {Number(
+                              cartItem.count * cartItem.price
+                            ).toLocaleString()}
+                          </td>
                           <td>
                             <button
                               style={{
@@ -158,7 +162,7 @@ export default function CartListPage(props) {
                           />
                         </td>
                         <td>{cartItem.name}</td>
-                        <td>{cartItem.price}</td>
+                        <td>{Number(cartItem.price).toLocaleString()}</td>
                         <td className={`${styles.Btn}`}>
                           <button onClick={() => onIncrease(cartItem.id)}>
                             +
@@ -168,7 +172,7 @@ export default function CartListPage(props) {
                             -
                           </button>
                         </td>
-                        <td>{cartItem.count * cartItem.price}</td>
+                        <td>{Number(cartItem.count * cartItem.price).toLocaleString()}</td>
                         <td>
                           <button
                             style={{
@@ -210,7 +214,7 @@ export default function CartListPage(props) {
                           <br />
                           退房: {cartItem.checkOutDate || "未填寫"}
                         </td>
-                        <td>{cartItem.price}</td>
+                        <td>{Number(cartItem.price).toLocaleString()}</td>
                         <td className={`${styles.Btn}`}>
                           <button onClick={() => onIncrease(cartItem.id)}>
                             +
@@ -220,7 +224,11 @@ export default function CartListPage(props) {
                             -
                           </button>
                         </td>
-                        <td>{cartItem.count * cartItem.price}</td>
+                        <td>
+                          {Number(
+                            cartItem.count * cartItem.price
+                          ).toLocaleString()}
+                        </td>
                         {/* 新增日期顯示 */}
                         <td>
                           <button
@@ -251,19 +259,25 @@ export default function CartListPage(props) {
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>商品小計</span>
-                  <span>{`NT$ ${totalProductAmount}`}</span>
+                  <span>{`NT$ ${Number(
+                    totalProductAmount
+                  ).toLocaleString()}`}</span>
                 </div>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>課程小計</span>
-                  <span>{`NT$ ${totalCourseAmount}`}</span>
+                  <span>{`NT$ ${Number(
+                    totalCourseAmount
+                  ).toLocaleString()}`}</span>
                 </div>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>旅館小計</span>
-                  <span>{`NT$ ${totalHotelAmount}`}</span>
+                  <span>{`NT$ ${Number(
+                    totalHotelAmount
+                  ).toLocaleString()}`}</span>
                 </div>
               </div>
 
@@ -278,35 +292,34 @@ export default function CartListPage(props) {
                 className={`${styles.summaryItem} ${styles.summaryItem2} d-flex justify-content-between`}
               >
                 <span>總金額:</span>
-                <span
-                  className={styles.totalmoney}
-                >{`NT$ ${totalAmount}`}</span>
+                <span className={styles.totalmoney}>{`NT$ ${Number(
+                  totalAmount
+                ).toLocaleString()}`}</span>
               </div>
 
               {/* 結帳按鈕 */}
               <div className="d-flex justify-content-center pt-5 ">
-                {/* <button
-                  type="submit"
-                  style={{ backgroundColor: "#f2662b", color: "#fff" }}
-                  className="btn w-50"
-                  onClick={() => history.push("/cart/CartListPay")}
-                >
-                  商品結帳
-                </button> */}
-                <Link
-                  className={`btn w-50 ${styles.btn}`}
-                  href={{
-                    pathname: "/cart/CartListPay",
-                    // query: {
-                    //   productItems: JSON.stringify(productItems),
-                    //   courseItems: JSON.stringify(courseItems),
-                    //   hotelItems: JSON.stringify(hotelItems),
-                    //   totalAmount: totalAmount,
-                    // },
-                  }}
-                >
-                  前往結帳
-                </Link>
+                {courseItems.length > 0 ||
+                hotelItems.length > 0 ||
+                productItems.length > 0 ? (
+                  <Link
+                    className={`btn w-50 ${styles.btn}`}
+                    href={{
+                      pathname: "/cart/CartListPay",
+                    }}
+                  >
+                    前往結帳
+                  </Link>
+                ) : (
+                  <Link
+                    className={`btn w-50 ${styles.btn}`}
+                    href={{
+                      pathname: "/product/list",
+                    }}
+                  >
+                    還沒有商品 前往訂購
+                  </Link>
+                )}
               </div>
             </aside>
           </div>

@@ -51,7 +51,6 @@
   overflow: hidden;
 }
 .commentCard:hover{
-  
   .link{
     color: #f5842b;
   }
@@ -107,5 +106,10 @@
   }
   .author{
     height:150px
+  }
+  .link {
+    font-size: 16px;
+    max-height: 75px;
+    overflow: hidden;
   }
 }

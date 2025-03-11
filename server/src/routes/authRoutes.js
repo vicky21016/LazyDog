@@ -8,6 +8,9 @@ import { rename, access, constants } from "node:fs/promises";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import path from "path";
+import { v4 as uuidv4 } from "uuid";
+import nodemailer from "nodemailer";
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
@@ -22,6 +25,173 @@ const router = express.Router();
 const upload = multer({ storage });
 const secretKey = process.env.JWT_SECRET_KEY;
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const transporter = nodemailer.createTransport({
+  host: "smtp.ethereal.email",
+  port: 587,
+  auth: {
+    user: "ewald.toy61@ethereal.email",
+    pass: "wSFWDJYGncwwKaf3mJ",
+  },
+});
+const generateOTP = () => {
+  // 這裡可以自定義 OTP 的生成邏輯，例如數字或混合字串
+  // 例如生成 6 位數字的 OTP
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
+const sendOTPEmail = async (email, otp) => {
+  const mailOptions = {
+    from: '"Lazy Dog 🐶" <isabel17@ethereal.email>',
+    to: email,
+    subject: "您的 OTP 驗證碼",
+    html: `<p>您的 OTP 驗證碼是：<strong>${otp}</strong></p><p>請在 5 分鐘內使用此驗證碼。</p>`,
+  };
+  // console.log(mailOptions);
+
+  try {
+    // Send mail with defined transport object
+    const info = await transporter.sendMail(mailOptions);
+
+    // console.log("Message sent: %s", info.messageId);
+    // Preview only available when sending through an Ethereal account
+    // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    // console.log("OTP 郵件已發送至：", email);
+    console.log("OTP:", otp);
+  } catch (error) {
+    console.error("發送 OTP 郵件失敗：", error);
+    throw new Error("發送 OTP 郵件失敗");
+  }
+};
+router.post("/generate", upload.none(), async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "請提供電子郵件地址" });
+  }
+
+  try {
+    // 1. 生成 OTP
+    const otp = generateOTP();
+    const token = uuidv4();
+    // 2. 加密 OTP 存到資料庫
+    const hashedOTP = await bcrypt.hash(otp, 10);
+
+    // 3. 設定 OTP 過期時間 (例如：5 分鐘後)
+    const expiredAt = new Date();
+    expiredAt.setMinutes(expiredAt.getMinutes() + 5);
+
+    // 4. 儲存 OTP 到資料庫
+    const sql = `
+      INSERT INTO otp (email, token, hash, created_at, expired_at)
+      VALUES (?, ?, ?, NOW(), ?)
+    `;
+    await pool.execute(sql, [email, token, hashedOTP, expiredAt]);
+    console.log(email);
+    console.log(otp);
+
+    // 5. 寄送 OTP 郵件
+    await sendOTPEmail(email, otp);
+
+    res.json({
+      status: "success",
+      message: "OTP 已發送至您的電子郵件",
+      data: { token },
+    });
+  } catch (error) {
+    console.error("生成 OTP 失敗：", error);
+    res.status(500).json({ error: "生成 OTP 失敗" });
+  }
+});
+
+// router.post("/verify", upload.none(), async (req, res) => {
+//   const { token, otp } = req.body;
+
+//   if (!token || !otp) {
+//     return res.status(400).json({ error: "請提供 OTP 和 token" });
+//   }
+
+//   try {
+//     // 1. 從資料庫查詢 OTP
+//     const sql = `SELECT * FROM otp WHERE token = ? AND expired_at > NOW()`;
+//     const [rows] = await pool.execute(sql, [token]);
+
+//     if (rows.length === 0) {
+//       return res.status(400).json({ error: "無效的 OTP 或已過期" });
+//     }
+
+//     const otpData = rows[0];
+
+//     // 2. 比對 OTP
+//     const isMatch = await bcrypt.compare(otp, otpData.hash);
+
+//     if (!isMatch) {
+//       return res.status(400).json({ error: "OTP 錯誤" });
+//     }
+
+//     // 3. 如果驗證成功，刪除資料庫中已使用的 OTP
+//     await pool.execute("DELETE FROM otp WHERE id = ?", [otpData.id]);
+
+//     res.json({ status: "success", message: "OTP 驗證成功" });
+//   } catch (error) {
+//     console.error("驗證 OTP 失敗：", error);
+//     res.status(500).json({ error: "驗證 OTP 失敗" });
+//   }
+// });
+
+router.post("/forgot-password", upload.none(), async (req, res) => {
+  const { token, otp, newPassword, confirmNewPassword } = req.body;
+
+  if (!token || !otp || !newPassword || !confirmNewPassword) {
+    return res
+      .status(400)
+      .json({ error: "請提供驗證碼、token、新密碼和確認新密碼" });
+  }
+
+  if (newPassword !== confirmNewPassword) {
+    return res.status(400).json({ error: "密碼和確認密碼不符" });
+  }
+
+  try {
+    // 1. 從資料庫查詢 OTP
+    const sql = `SELECT * FROM otp WHERE token = ? AND expired_at > NOW()`;
+    const [rows] = await pool.execute(sql, [token]);
+
+    if (rows.length === 0) {
+      return res.status(400).json({ error: "無效的驗證碼或已過期" });
+    }
+
+    const otpData = rows[0];
+
+    // 2. 比對 OTP
+    const isMatch = await bcrypt.compare(otp, otpData.hash);
+
+    if (!isMatch) {
+      return res.status(400).json({ error: "驗證碼錯誤" });
+    }
+
+    // 3. 如果驗證成功，刪除資料庫中已使用的 OTP
+    await pool.execute("DELETE FROM otp WHERE id = ?", [otpData.id]);
+
+    // 4. 加密新密碼
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    // 5. 更新資料庫中用戶的密碼
+    const updateSql = `UPDATE users SET password = ? WHERE email = ?`;
+    const [result] = await pool.execute(updateSql, [
+      hashedNewPassword,
+      otpData.email,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(400).json({ error: "找不到該用戶" });
+    }
+
+    res.json({ status: "success", message: "密碼已成功重置" });
+  } catch (error) {
+    console.error("重置密碼失敗：", error);
+    res.status(500).json({ error: "重置密碼失敗" });
+  }
+});
 
 router.post("/login", upload.none(), async (req, res) => {
   const { email, password } = req.body;
@@ -414,12 +584,5 @@ async function getAvatar(img) {
     return defaultAvatar;
   }
 }
-
-// async function getAvatar(img) {
-//   if (!img) {
-//     return "http://localhost:5000/auth/Dog5.png";
-//   }
-//   return `http://localhost:5000/auth/${img}`;
-// }
 
 export default router;

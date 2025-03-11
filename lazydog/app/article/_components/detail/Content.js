@@ -1,11 +1,12 @@
 "use client";
 
 import DOMPurify from 'dompurify'
-import Image from 'next/image'
+import Link from 'next/link';
 import styles from "./page.module.css"
 import style from "../../../../styles/modules/operatorCamera.module.css";
 
 export default function Content({ article }) {
+  console.log(article)
   // 消毒處理
   const cleanHTML = DOMPurify.sanitize(article?.content || '', {
     ALLOWED_TAGS: ['p', 'h3', 'h4', 'ul', 'li', 'img', 'strong', 'em', 'br'],
@@ -35,9 +36,12 @@ export default function Content({ article }) {
       <h3 className='mb-4'>{article?.title}</h3>
       <div >
         <div className={`${styles.floor} ${style.btn3}`}>作者</div>
-        <div className={`ms-2 ${styles.auther}`} style={{ display: 'inline-block' }}>
+        <Link
+          href={{ pathname: `/article/author/${article.author_id}`, query: { list: "true" } }}
+          className={`ms-2 ${styles.auther}`}
+          style={{ display: 'inline-block' }}>
           {article?.author_name}
-        </div>
+        </Link>
       </div>
       <div
         className={`${styles.articleContent}`}

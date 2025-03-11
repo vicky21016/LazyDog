@@ -47,6 +47,7 @@ export const getId = async (req, res) => {
           title: results[0].title,
           content: results[0].content,
           cover_image: results[0].cover_image,
+          author_id:results[0].user_id,
           author_name: results[0].name,
           category_id: results[0].category_id,
           category_name: results[0].category_name,
