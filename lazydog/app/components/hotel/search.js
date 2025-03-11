@@ -162,14 +162,19 @@ const HotelSearchBar = ({
                 ></button>
               </div>
               <div className="modal-body">
-                <div id="twzipcode">
-                  <select className="county"></select>
-                  <select className="district"></select>
+                <div
+                  className="d-flex justify-content-center gap-2 my-2"
+                  id="twzipcode"
+                >
+                  <select className={`county ${styles.selectsRegion}`}></select>
+                  <select
+                    className={`district ${styles.selectsRegion}`}
+                  ></select>
                 </div>
               </div>
               <div className="modal-footer">
                 <button
-                  className={styles.suSearchBtn}
+                  className={styles.suSearchBtn2}
                   onClick={confirmLocation}
                 >
                   確定

@@ -90,7 +90,6 @@ export default function HotelHomePage() {
       }
     }
   }, [isFiltered]);
-  
 
   // 避免 useEffect 觸發多次篩選
   const isFirstRender = useRef(true);
@@ -107,7 +106,7 @@ export default function HotelHomePage() {
       isMounted = false;
     };
   }, [isFiltered]);
-  
+
   // 監聽 filteredHotels，更新分頁數
   useEffect(() => {
     const newTotalPages = Math.max(1, Math.ceil(filteredHotels.length / 10));
@@ -115,13 +114,12 @@ export default function HotelHomePage() {
       setTotalPages(newTotalPages);
     }
   }, [filteredHotels]);
-  
+
   useEffect(() => {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
   }, [totalPages]);
-  
 
   // 確保當前頁數不超過最大頁數
   useEffect(() => {
@@ -299,7 +297,7 @@ export default function HotelHomePage() {
           <div className="text-end me-5">
             {/* <span className="lumi-all-title">排序：</span> */}
             <select
-              className="form-select d-inline w-auto"
+              className={`form-select d-inline w-auto ${styles.selects}`}
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
             >
