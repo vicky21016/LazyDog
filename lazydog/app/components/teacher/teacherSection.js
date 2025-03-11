@@ -40,7 +40,7 @@ export default function TeacherSection () {
               className={`text-center text-decoration-none ${style.teacherBtn}`}
               href="/teacher/list"
             >
-              read more
+              READ MORE
             </Link>
           </div>
         </div>

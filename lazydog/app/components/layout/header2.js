@@ -306,7 +306,7 @@ export default function Header(props) {
                   setTeacherOpen(false);
                 }}
               >
-                <Link href="/product/list" className={styles["dropbtn"]}>
+                <Link href="" className={styles["dropbtn"]}>
                   寵物用品
                 </Link>
               </div>
@@ -384,7 +384,7 @@ export default function Header(props) {
                   setPDOpen(false);
                 }}
               >
-                <Link href="/teacher" className={styles["dropbtn"]}>
+                <Link href="" className={styles["dropbtn"]}>
                   寵物課程
                 </Link>
               </div>
@@ -420,7 +420,7 @@ export default function Header(props) {
                   setTeacherOpen(false);
                 }}
               >
-                <Link href="/user">會員中心</Link>
+                <Link href="">會員中心</Link>
               </div>
               <div
                 className={`${

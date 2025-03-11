@@ -8,7 +8,7 @@ export function useDogBottom() {
   const containerRef = useRef(null);
   const [Flip, setFlip] = useState(false);
   const animations = [
-    { class: styles.dogWalk, duration: 1000 },
+    { class: styles.dogWalk, duration: 900 },
     { class: styles.dogRun, duration: 400 },
   ];
   const woof = [{ class: styles.dogWoof, duration: 1000 }];
@@ -19,7 +19,7 @@ export function useDogBottom() {
   const stop = [
     { class: styles.dogSit, duration: 600 },
     { class: styles.dogStop, duration: 600 },
-    { class: styles.dogWoof, duration: 1000 },
+    { class: styles.dogWoof, duration: 800 },
   ];
   const getRandomPosition = (e) => {
     // 始終限制在螢幕寬度範圍內
@@ -34,12 +34,12 @@ export function useDogBottom() {
   const [stopOn, setStopOn] = useState(true);
   const [TimeoutId, setTimeoutId] = useState(null);
 
-  const stopDog = (e) => {
+  const stopDog = (e, now) => {
     if (TimeoutId) {
       clearTimeout(TimeoutId);
       setTimeoutId(null);
     }
-    if (stopOn == true) {
+    if (stopOn == true || now == true) {
       if (!dogRef.current || !containerRef.current) return;
 
       if (dogRef.current.className.includes(styles.flip)) {
@@ -106,11 +106,11 @@ export function useDogBottom() {
   };
 
   useEffect(() => {
-    stopDog();
+    moveDog();
     return () => {
       if (TimeoutId) clearTimeout(TimeoutId);
     };
-  }, []);
+  }, [dogRef.current]);
 
   return {
     containerRef,
@@ -120,63 +120,64 @@ export function useDogBottom() {
     setStopOn,
     TimeoutId,
     Flip,
+    moveDog,
   };
 }
 
-export function useDogRandom() {
-  const constraintsRef = useRef(null);
-  const randomDogRef = useRef(null);
-  const randomRef = useRef(null);
-  const animations = [
-    { class: styles.dogWalk, duration: 1000 },
-    { class: styles.dogRun, duration: 400 },
-    { class: styles.dogWoof, duration: 1000 },
-    { class: styles.dogSit, duration: 600 },
-    { class: styles.dogStop, duration: 600 },
-  ];
-  const transitions = [
-    { class: styles.dogWalkToSit, duration: 200 },
-    { class: styles.dogSitToWalk, duration: 200 },
-  ];
+// export function useDogRandom() {
+//   const constraintsRef = useRef(null);
+//   const randomDogRef = useRef(null);
+//   const randomRef = useRef(null);
+//   const animations = [
+//     { class: styles.dogWalk, duration: 1000 },
+//     { class: styles.dogRun, duration: 400 },
+//     { class: styles.dogWoof, duration: 1000 },
+//     { class: styles.dogSit, duration: 600 },
+//     { class: styles.dogStop, duration: 600 },
+//   ];
+//   const transitions = [
+//     { class: styles.dogWalkToSit, duration: 200 },
+//     { class: styles.dogSitToWalk, duration: 200 },
+//   ];
 
-  const getRandomAnimation = () => {
-    return animations[Math.floor(Math.random() * animations.length)];
-  };
+//   const getRandomAnimation = () => {
+//     return animations[Math.floor(Math.random() * animations.length)];
+//   };
 
-  const [RandomId, setTimeoutId] = useState(null);
+//   const [RandomId, setTimeoutId] = useState(null);
 
-  const randomDog = (e) => {
-    if (!randomDogRef.current || !randomRef.current) return;
-    if (RandomId) {
-      clearTimeout(RandomId);
-      setTimeoutId(null);
-    }
-    if (randomDogRef.current.className.includes(styles.flip)) {
-      randomDogRef.current.className = styles.dog;
-      randomDogRef.current.classList.add(styles.flip);
-    } else {
-      randomDogRef.current.className = styles.dog;
-    }
+//   const randomDog = (e) => {
+//     if (!randomDogRef.current || !randomRef.current) return;
+//     if (RandomId) {
+//       clearTimeout(RandomId);
+//       setTimeoutId(null);
+//     }
+//     if (randomDogRef.current.className.includes(styles.flip)) {
+//       randomDogRef.current.className = styles.dog;
+//       randomDogRef.current.classList.add(styles.flip);
+//     } else {
+//       randomDogRef.current.className = styles.dog;
+//     }
 
-    const newAnimation = getRandomAnimation();
-    randomDogRef.current.classList.add(newAnimation.class);
+//     const newAnimation = getRandomAnimation();
+//     randomDogRef.current.classList.add(newAnimation.class);
 
-    const id = setTimeout(randomDog, Math.max(newAnimation.duration));
-    setTimeoutId(id);
-  };
+//     const id = setTimeout(randomDog, Math.max(newAnimation.duration));
+//     setTimeoutId(id);
+//   };
 
-  useEffect(() => {
-    randomDog;
-    return () => {
-      if (RandomId) clearTimeout(RandomId);
-    };
-  }, []);
+//   useEffect(() => {
+//     randomDog;
+//     return () => {
+//       if (RandomId) clearTimeout(RandomId);
+//     };
+//   }, []);
 
-  return {
-    randomRef,
-    randomDogRef,
-    randomDog,
-    constraintsRef,
-    RandomId,
-  };
-}
+//   return {
+//     randomRef,
+//     randomDogRef,
+//     randomDog,
+//     constraintsRef,
+//     RandomId,
+//   };
+// }

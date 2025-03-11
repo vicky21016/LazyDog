@@ -11,6 +11,15 @@ import { useFavorite } from "@/hooks/product/use-favorite";
 import { Carousel } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 
+import { useAuth } from "@/hooks/use-auth";
+import { useCart } from "@/hooks/use-cart";
+import { useDogBottom } from "@/hooks/product/use-dog";
+import * as motion from "motion/react-client";
+import { AnimatePresence } from "motion/react";
+import Thead from "@/app/components/cart/thead";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+
 export default function CategoryPage() {
   const {
     width,
@@ -39,6 +48,46 @@ export default function CategoryPage() {
   } = useCategoryFetch();
   const { CardInt, hotSale } = useDetailFetch();
   const [hot, setHot] = useState(0);
+
+  const { user } = useAuth();
+  const {
+    containerRef,
+    dogRef,
+    stopDog,
+    TimeoutId,
+    Flip,
+    stopOn,
+    setStopOn,
+    moveDog,
+  } = useDogBottom();
+  const {
+    productItems = [],
+    courseItems = [],
+    hotelItems = [],
+    totalProductQty,
+    totalCourseQty,
+    totalHotelQty,
+    onIncrease,
+    onDecrease,
+    onRemove,
+  } = useCart();
+  let totalQty = totalProductQty + totalCourseQty + totalHotelQty;
+  useEffect(() => {
+    totalQty = totalProductQty + totalCourseQty + totalHotelQty;
+  }, [totalProductQty, totalCourseQty, totalHotelQty]);
+  const [isOn, setIsOn] = useState(false);
+  const toggleSwitch = () => setIsOn(!isOn);
+  useEffect(() => {
+    stopDog();
+    return () => {
+      if (TimeoutId) clearTimeout(TimeoutId);
+    };
+  }, [dogRef.current]);
+  useEffect(() => {
+    if (totalQty == 0) {
+      setIsOn(false);
+    }
+  }, [totalQty]);
 
   const { favorite, setFavorite } = useFavorite();
   const [dropDown, setDropDown] = useState(false);
@@ -173,8 +222,19 @@ export default function CategoryPage() {
                   {category}
                 </Link>
               </div>
-              <div className={styles.TitleFilter}>
+              <div
+                className={styles.TitleFilter}
+                onMouseEnter={() => {
+                  setDropDown(true);
+                }}
+                onMouseLeave={() => {
+                  setDropDown(false);
+                }}
+              >
                 <img
+                  onClick={() => {
+                    setDropDown(!dropDown);
+                  }}
                   src={`/product/font/${
                     sortName.includes("名稱")
                       ? "filter-a"
@@ -322,17 +382,30 @@ export default function CategoryPage() {
                   >
                     <img src="/product/font/left(orange).png" alt="" />
                   </button>
-                  <ul className={`${styles.OtherLikeList} row`}>
+                  <ul
+                    style={{ padding: 0 }}
+                    className={`${styles.OtherLikeList} row`}
+                  >
                     {hotSale.length > 0 &&
                       hotSale?.map((v, i) => {
                         if (i < CardInt + hot && i >= hot) {
                           return (
-                            <Card
+                            <motion.div
                               key={`Card${i}`}
-                              productID={v}
-                              favorite={favorite}
-                              setFavorite={setFavorite}
-                            />
+                              className="col"
+                              style={{ padding: 0 }}
+                              layout
+                              initial={{ opacity: 0, scale: 0 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0, scale: 0 }}
+                              transition={{ all: 0.1 }}
+                            >
+                              <Card
+                                productID={v}
+                                favorite={favorite}
+                                setFavorite={setFavorite}
+                              />
+                            </motion.div>
                           );
                         }
                       })}
@@ -509,6 +582,272 @@ export default function CategoryPage() {
           )}
         </section>
       </div>
+      {width > 991 && (
+        <div
+          style={{
+            width: "100vw",
+            height: "38px",
+            position: "fixed",
+            bottom: 0,
+            zIndex: 99999,
+          }}
+        >
+          <div className={styles.dogApp} ref={containerRef}>
+            <div
+              ref={dogRef}
+              className={`${styles.dog} ${styles.flip}`}
+              onClick={(e) => {
+                stopDog(e);
+                setStopOn(!stopOn);
+              }}
+              onMouseEnter={(e) => {
+                stopDog(e, true);
+              }}
+              // onMouseLeave={(e) => {
+              //   stopDog(e);
+              //   setStopOn(!stopOn);
+              // }}
+            >
+              {user?.id && (
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleSwitch();
+                  }}
+                  className={styles["lumi-cart-icon"]}
+                >
+                  <i className="bi bi-cart2"></i>
+                  {totalQty > 0 && (
+                    <div
+                      className={styles["lumi-cart-count"]}
+                      style={{ transform: Flip ? "" : "scaleX(-1)" }}
+                    >
+                      {totalQty}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            <AnimatePresence initial={false}>
+              <motion.div
+                layout
+                style={{
+                  display: isOn ? "flex" : "none",
+                  alignItems: isOn ? "center" : "",
+                  justifyContent: isOn ? "center" : "",
+                  width: isOn ? width : "",
+                  height: isOn ? "100vh" : "",
+                  position: isOn ? "fixed" : "",
+                  top: isOn ? "0" : "",
+                  left: isOn ? "0" : "",
+                  zIndex: isOn ? "9999" : "",
+                  background: isOn ? "rgba(0, 0, 0, 0.8)" : "",
+                  transition: "all 0.4s",
+                }}
+                onClick={toggleSwitch}
+              >
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <motion.div className={`${styles.customTable}`}>
+                    <table className="">
+                      {productItems.length > 0 && (
+                        <>
+                          <Thead />
+                          <tbody>
+                            {/* 顯示商品 */}
+                            {productItems.map((cartItem) => {
+                              const imgName = cartItem?.img
+                                ? cartItem.img.split(",")
+                                : [""];
+                              return (
+                                <tr key={cartItem.id}>
+                                  <td className={styles.table}>
+                                    <img
+                                      src={`/product/img/${encodeURIComponent(
+                                        cartItem.name
+                                      )}${imgName[0]}`}
+                                      alt={cartItem.name}
+                                    />
+                                  </td>
+                                  <td className={styles.tableName}>
+                                    {cartItem.name}
+                                  </td>
+                                  <td>
+                                    {Number(cartItem.price).toLocaleString()}
+                                  </td>
+                                  <td className={`${styles.Btn}`}>
+                                    <button
+                                      onClick={() => onIncrease(cartItem.id)}
+                                    >
+                                      +
+                                    </button>
+                                    {cartItem.count}
+                                    <button
+                                      onClick={() => onDecrease(cartItem.id)}
+                                    >
+                                      -
+                                    </button>
+                                  </td>
+                                  <td>
+                                    {Number(
+                                      cartItem.count * cartItem.price
+                                    ).toLocaleString()}
+                                  </td>
+                                  <td>
+                                    <button
+                                      style={{
+                                        border: "transparent",
+                                        backgroundColor: "white",
+                                      }}
+                                      onClick={() => onRemove(cartItem.id)}
+                                    >
+                                      <FontAwesomeIcon
+                                        icon={faTrashAlt}
+                                        style={{ color: "#f2662b" }}
+                                      />
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </>
+                      )}
+
+                      {courseItems.length > 0 && (
+                        <>
+                          <Thead />
+                          <tbody>
+                            {/* 顯示課程 */}
+                            {courseItems.map((cartItem) => (
+                              <tr key={cartItem.id}>
+                                <td className={styles.table}>
+                                  <img
+                                    src={`/course/img/${cartItem.img_url}`}
+                                    alt={cartItem.name}
+                                  />
+                                </td>
+                                <td className={styles.tableName}>
+                                  {cartItem.name}
+                                </td>
+                                <td>
+                                  {Number(cartItem.price).toLocaleString()}
+                                </td>
+                                <td className={`${styles.Btn}`}>
+                                  <button
+                                    onClick={() => onIncrease(cartItem.id)}
+                                  >
+                                    +
+                                  </button>
+                                  {cartItem.count}
+                                  <button
+                                    onClick={() => onDecrease(cartItem.id)}
+                                  >
+                                    -
+                                  </button>
+                                </td>
+                                <td>
+                                  {Number(
+                                    cartItem.count * cartItem.price
+                                  ).toLocaleString()}
+                                </td>
+                                <td>
+                                  <button
+                                    style={{
+                                      border: "transparent",
+                                      backgroundColor: "white",
+                                    }}
+                                    onClick={() => onRemove(cartItem.id)}
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faTrashAlt}
+                                      style={{ color: "#f2662b" }}
+                                    />
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </>
+                      )}
+
+                      {hotelItems.length > 0 && (
+                        <>
+                          <Thead />
+                          <tbody>
+                            {/* 顯示旅館 */}
+                            {hotelItems.map((cartItem) => (
+                              <tr key={cartItem.id}>
+                                <td className={styles.table}>
+                                  <img
+                                    src={cartItem.imageUrl}
+                                    alt={cartItem.name}
+                                  />
+                                </td>
+                                <td className={styles.tableName}>
+                                  {cartItem.name}
+                                  {/* <br />
+                          hotel_id{cartItem.hotelId}
+                          <br />
+                          room_id{cartItem.id} */}
+                                  <br />
+                                  入住: {cartItem.checkInDate || "未填寫"}
+                                  <br />
+                                  退房: {cartItem.checkOutDate || "未填寫"}
+                                </td>
+                                <td>
+                                  {Number(cartItem.price).toLocaleString()}
+                                </td>
+                                <td className={`${styles.Btn}`}>
+                                  <button
+                                    onClick={() => onIncrease(cartItem.id)}
+                                  >
+                                    +
+                                  </button>
+                                  {cartItem.count}
+                                  <button
+                                    onClick={() => onDecrease(cartItem.id)}
+                                  >
+                                    -
+                                  </button>
+                                </td>
+                                <td>
+                                  {Number(
+                                    cartItem.count * cartItem.price
+                                  ).toLocaleString()}
+                                </td>
+                                {/* 新增日期顯示 */}
+                                <td>
+                                  <button
+                                    style={{
+                                      border: "transparent",
+                                      backgroundColor: "white",
+                                    }}
+                                    onClick={() => onRemove(cartItem.id)}
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faTrashAlt}
+                                      style={{ color: "#f2662b" }}
+                                    />
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </>
+                      )}
+                    </table>
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      )}
     </>
   );
 }

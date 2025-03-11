@@ -218,7 +218,7 @@ export default function HomePage(props) {
           />
           <h2 className={styles.discountWord}>優惠的折扣</h2>
           <Link href="/fontcoupon" className={styles.readmoreBtn}>
-            Read More
+            READ MORE
           </Link>
           <div className={styles.circle}>
             20%

@@ -103,7 +103,7 @@ export default function Aside({
         priceSliderRef.current.noUiSlider.destroy();
       }
     };
-  }, []);
+  }, [priceSliderRef.current]);
 
   const [clearSearch, setClearSearch] = useState("");
   const [isChecked, setIsChecked] = useState(true);
