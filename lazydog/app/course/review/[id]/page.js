@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useReview } from "@/hooks/useCourseReview";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
+
 import Header from "../../../components/layout/header";
 import My from "../../../teacher-sign/_components/my";
 import styles from "@/styles/modules/courseReview.module.css";
@@ -18,6 +19,7 @@ const ReviewList = () => {
   const { id } = useParams();
   const { review } = useReview(id);
   console.log(review);
+  console.log(review.reply);
 
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
@@ -40,6 +42,7 @@ const ReviewList = () => {
   const loadReview = (review) => {
     setModalData(review);
   };
+  console.log(reviews?.date);
 
   const replyReview = () => {
     const replyContent = replyInputRef.current.value.trim();
@@ -66,26 +69,44 @@ const ReviewList = () => {
               <table className="table suTable table-striped table-hover">
                 <thead className="table-light">
                   <tr>
-                    <th>顧客名稱</th>
-                    <th>訂單編號</th>
-                    <th>評論日期</th>
-                    <th>評分</th>
-                    <th>評論內容</th>
-                    <th>是否回覆</th>
-                    <th>狀態</th>
-                    <th>操作</th>
+                    <th className={styles.thTsai}>訂單編號</th>
+                    <th className={styles.thTsai}>學員</th>
+                    <th className={styles.thTsai}>評論日期</th>
+                    <th className={styles.thTsai}>評分</th>
+                    <th className={styles.thTsai}>內容</th>
+                    <th className={styles.thTsai}>是否回覆</th>
+                    {/* <th className={styles.thTsai}>狀態</th> */}
+                    <th className={styles.thTsai}>操作</th>
                   </tr>
                 </thead>
                 <tbody>
                   {reviews.map((review, index) => (
                     <tr key={index}>
-                      <td>{review?.customer}</td>
-                      <td>{review?.order}</td>
-                      <td>{review?.date}</td>
-                      <td>{review?.rating}</td>
-                      <td>{review?.content}</td>
-                      <td>{review.reply ? "已回覆" : "未回覆"}</td>
-                      <td>
+                      <td className={styles.tdTsai}>{review?.order}</td>
+                      <td className={`text-nowrap ${styles.tdTsai}`}>
+                        {review?.customer}
+                      </td>
+                      <td className={styles.tdTsai}>
+                        {review?.date
+                          ? new Date(review?.date).toLocaleDateString("zh-TW", {
+                              year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                            })
+                          : ""}
+                      </td>
+                      <td className={styles.tdTsai}>
+                        <img
+                          className={styles.starRate}
+                          src="/product/font/star-fill.png"
+                        />
+                        {review?.rating}
+                      </td>
+                      <td className={styles.tdTsai}>{review?.content}</td>
+                      <td className={styles.tdTsai}>
+                        {review.reply ? "已回覆" : "未回覆"}
+                      </td>
+                      {/* <td className={`text-nowrap ${styles.tdTsai}`}>
                         <span
                           className={`badge ${
                             review.status === "公開"
@@ -95,10 +116,10 @@ const ReviewList = () => {
                         >
                           {review.status}
                         </span>
-                      </td>
-                      <td>
+                      </td> */}
+                      <td className={`text-nowrap ${styles.tdTsai}`}>
                         <button
-                          className={`btn btn-sm ${styles.btn}`}
+                          className={`btn ${styles.btn}`}
                           data-bs-toggle="modal"
                           data-bs-target="#reviewModal"
                           onClick={() => loadReview(review)}
@@ -143,7 +164,14 @@ const ReviewList = () => {
                   <strong>訂單編號：</strong> {modalData.order || "N/A"}
                 </p>
                 <p>
-                  <strong>評論日期：</strong> {modalData.date || "N/A"}
+                  <strong>評論日期：</strong>{" "}
+                  {modalData.date
+                    ? new Date(modalData?.date).toLocaleDateString("zh-TW", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                      })
+                    : "N/A"}
                 </p>
                 <p>
                   <strong>評分：</strong> {modalData.rating || "N/A"}
@@ -172,7 +200,7 @@ const ReviewList = () => {
                 </button>
                 <button
                   type="button"
-                  className={`btn ${styles.btn}`}
+                  className={`btn ${styles.btn4}`}
                   onClick={replyReview}
                 >
                   送出回覆

@@ -9,8 +9,13 @@
   justify-content: space-between;
   align-items: center;
   background-color: #f5832b;
-  transition: background 0.3s ease-in-out;
+  transition: box-shadow 0.3s ease, backdrop-filter 0.3s ease;
   z-index: 1000;
+}
+.lumi-header2.scrolled {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.212); /* 底部陰影 */
+  background-color: #f5832be5;
+  backdrop-filter: blur(5px); /* 背景模糊 */
 }
 
 .lumi-nav {

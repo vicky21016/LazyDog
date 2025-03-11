@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 import { useParams, useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import styles from "../css/teacherSignUpdate.module.css";
@@ -15,10 +16,12 @@ export default function TeacherUpdateC() {
   const [mainpic, setMainpic] = useState([]);
   const [otherpics, setOtherpics] = useState([]);
   const [deletedPics, setDeletedPics] = useState([]); // 要刪除的圖片 ID
+  const formattedDate = cs?.start_date
+    ? moment(cs.start_date).format("YYYY-MM-DD")
+    : "";
 
   const [types, setTypes] = useState([]);
   const [places, setPlaces] = useState([]);
-  // const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(`http://localhost:5000/teacher/mycourse/${sessionCode}`, {
@@ -111,7 +114,7 @@ export default function TeacherUpdateC() {
     if (
       !cs.max_people ||
       !cs.class_dates ||
-      !cs.start_date ||
+      !formattedDate ||
       !cs.start_time ||
       !cs.end_time ||
       !cs.area_id
@@ -120,8 +123,12 @@ export default function TeacherUpdateC() {
         title: "欄位未填寫完整",
         text: "請檢查所有必填欄位！",
         icon: "warning",
-        confirmButtonText: "確定",
+        // confirmButtonText: "確定",
         ...animationConfig,
+        showConfirmButton: false,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
       return;
     }
@@ -129,8 +136,12 @@ export default function TeacherUpdateC() {
       Swal.fire({
         title: "請選擇主圖片",
         icon: "warning",
-        confirmButtonText: "確定",
+        // confirmButtonText: "確定",
         ...animationConfig,
+        showConfirmButton: false,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
       return;
     }
@@ -138,8 +149,12 @@ export default function TeacherUpdateC() {
       Swal.fire({
         title: "請上傳至少一張其他圖片",
         icon: "warning",
-        confirmButtonText: "確定",
+        // confirmButtonText: "確定",
         ...animationConfig,
+        showConfirmButton: false,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
       return;
     }
@@ -158,7 +173,7 @@ export default function TeacherUpdateC() {
     const sessionData = {
       max_people: cs.max_people,
       class_dates: cs.class_dates,
-      start_date: cs.start_date,
+      start_date: formattedDate,
       area_id: cs.area_id,
       start_time: cs.start_time,
       end_time: cs.end_time,
@@ -209,11 +224,13 @@ export default function TeacherUpdateC() {
       .then((data) => {
         console.log("前台送出資料:", data);
         Swal.fire({
-          title: "資料更新成功！",
-          text: "課程資料已成功更新！",
+          title: "梯次更新成功！",
           icon: "success",
-          confirmButtonText: "確定",
-          timer: 2000,
+          timer: 2400,
+          showConfirmButton: false,
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
           willClose: () => {
             // 在 Swal 關閉後跳轉頁面
             router.push(`/teacher-sign/list`);
@@ -228,8 +245,11 @@ export default function TeacherUpdateC() {
           title: "更新失敗",
           text: "資料更新發生錯誤，請稍後再試。",
           icon: "error",
-          confirmButtonText: "確定",
+          showConfirmButton: false,
           ...animationConfig,
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
         });
       });
   };
@@ -257,21 +277,28 @@ export default function TeacherUpdateC() {
         Swal.fire({
           title: "刪除成功！",
           icon: "success",
-          confirmButtonText: "確定",
+          // confirmButtonText: "確定",
           timer: 2000,
+          showConfirmButton: false,
           ...animationConfig,
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
         });
       })
       .then(() => {
         router.push("/teacher-sign/list");
       })
       .catch((err) => {
-        console.error("Error updating data:", err);
+        console.error("軟刪除失敗 Error data:", err);
         Swal.fire({
-          title: "軟刪除失敗",
+          title: "刪除失敗",
           icon: "error",
-          confirmButtonText: "確定",
+          showConfirmButton: false,
           ...animationConfig,
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
         });
       });
   };
@@ -398,7 +425,7 @@ export default function TeacherUpdateC() {
                 <input
                   type="text"
                   className={`form-control  ${styles.controls}`}
-                  defaultValue={cs?.start_date}
+                  defaultValue={formattedDate}
                   name="start_date"
                   onChange={handleChange}
                 />
@@ -568,7 +595,7 @@ export default function TeacherUpdateC() {
             >
               <button
                 type="button"
-                className={`btn btn-primary btn-sm px-5 py-2 mt-1 mb-1 ${styles.deletedBtn}`}
+                className={`btn btn-sm px-5 py-2 mt-1 mb-1 ${styles.deletedBtn}`}
                 onClick={handleisDelete}
               >
                 刪除
@@ -582,7 +609,7 @@ export default function TeacherUpdateC() {
               </button>
               <button
                 type="submit"
-                className={`btn btn-primary btn-sm px-5 py-2 mt-1  mb-1 ${styles.submitBtn}`}
+                className={`btn btn-sm px-5 py-2 mt-1  mb-1 ${styles.submitBtn}`}
               >
                 儲存
               </button>

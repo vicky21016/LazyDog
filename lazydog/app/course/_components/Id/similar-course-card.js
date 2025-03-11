@@ -1,16 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeftLong,
-  faArrowRightLong,
-} from "@fortawesome/free-solid-svg-icons";
-import styles from "../courseId.module.css";
+import React, { useRef } from "react";
 import Link from "next/link";
-import { faLeftLong } from "@fortawesome/free-solid-svg-icons";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
+
+import styles from "../courseId.module.css";
 
 export default function SimilarCourseCard({ simiCourse }) {
+  const swiperRef = useRef(null);
+
   return (
     <>
       <div className={styles.similarCourses}>
@@ -19,7 +23,23 @@ export default function SimilarCourseCard({ simiCourse }) {
           <div className={styles.sBars}>
             <div className={styles.sbar} />
             <div className={styles.btns}>
-              <span className={styles.arrowLeft}>
+              <button
+                type="button"
+                className={styles.arrowLeft}
+                // onClick={prevSlide}
+                onClick={() => swiperRef.current?.slidePrev()}
+              >
+                <FaArrowLeftLong className="fs-5" />
+              </button>
+              <button
+                type="button"
+                className={styles.arrowRight}
+                // onClick={nextSlide}
+                onClick={() => swiperRef.current?.slideNext()}
+              >
+                <FaArrowRightLong className="fs-5" />
+              </button>
+              {/* <span className={styles.arrowLeft}>
                 <FontAwesomeIcon
                   icon={faArrowLeftLong}
                   className={styles.icon}
@@ -30,34 +50,40 @@ export default function SimilarCourseCard({ simiCourse }) {
                   icon={faArrowRightLong}
                   className={styles.icon}
                 />
-              </span>
-              {/* <img
-                className={styles.arrowLeft}
-                src="/course/img/arrow-left.png"
-                alt={`往左箭頭`}
-              /> */}
-              {/* <img
-                className={styles.arrowRight}
-                src="/course/img/arrow-right.png"
-                alt={`往右箭頭`}
-              /> */}
+              </span> */}
             </div>
           </div>
           <div className={`row gy-5 ${styles.sCards}`}>
-            {simiCourse?.map((simi) => (
-              <Link
-                className={`col-6 col-lg-3 ${styles.sCard}`}
-                key={simi.courseId}
-                href={`/course/${simi.courseId}`}
-              >
-                <img
-                  className={styles.cardImg}
-                  src={`/course/img/${simi?.img_url}`}
-                  alt={simi.courseName}
-                />
-                <h5 className={styles.cardName}>{simi.courseName}</h5>
-              </Link>
-            ))}
+            <Swiper
+              className={styles.swiperGroup}
+              modules={[Navigation, Pagination, Autoplay]}
+              spaceBetween={0}
+              slidesPerView={2} // 手機顯示2張
+              loop={true}
+              breakpoints={{
+                992: { slidesPerView: 4 },
+              }}
+              // navigation={{ clickable: true }}
+              // pagination={{ clickable: true }}
+              autoplay={{ delay: 2800, disableOnInteraction: true }}
+              onSwiper={(swiper) => (swiperRef.current = swiper)} // 綁定 Swiper
+            >
+              {simiCourse?.map((simi) => (
+                <SwiperSlide key={simi.courseId}>
+                  <Link
+                    className={`col-6 col-lg-3 ${styles.sCard}`}
+                    href={`/course/${simi.courseId}`}
+                  >
+                    <img
+                      className={styles.cardImg}
+                      src={`/course/img/${simi?.img_url}`}
+                      alt={simi.courseName}
+                    />
+                    <h5 className={styles.cardName}>{simi.courseName}</h5>
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { countries, townships, postcodes } from "./data-townships";
+import styles from "../../teacher-sign/css/teacherSignUser.module.css";
 
 export default function TWZipCode({
   initPostcode = "",
@@ -63,6 +64,7 @@ export default function TWZipCode({
           // 重置postcode的值
           setPostcode("");
         }}
+        className={styles.selects}
       >
         <option value="-1">選擇縣市</option>
         {countries.map((value, index) => (
@@ -72,12 +74,13 @@ export default function TWZipCode({
         ))}
       </select>
       <select
-        style={{ marginLeft: "10px", marginBottom: "50px" }}
+        style={{ marginBottom: "10px" }}
         value={townshipIndex}
         onChange={(e) => {
           // 將字串轉成數字
           setTownshipIndex(+e.target.value);
         }}
+        className={styles.selects}
       >
         <option value="-1">選擇區域</option>
         {countryIndex > -1 &&

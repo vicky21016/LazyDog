@@ -61,9 +61,31 @@ export default function Header(props) {
       });
     }
   };
+  const [isScrolled, setIsScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true); // 滾動超過 50px 時，添加 scrolled
+      } else {
+        setIsScrolled(false); // 滾動回頂部時，移除 scrolled
+      }
+    };
+
+    // 設定滾動事件監聽器
+    window.addEventListener("scroll", handleScroll);
+
+    // 清理事件監聽器
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []); // 空依賴陣列，保證只在組件掛載時執行一次
 
   return (
-    <header className={styles["lumi-header2"]}>
+    <header
+      className={`${styles["lumi-header2"]} ${
+        isScrolled ? styles.scrolled : ""
+      }`}
+    >
       <Link href="/" className={styles["lumi-logo2"]}>
         <img
           className={styles.logo}
@@ -184,17 +206,20 @@ export default function Header(props) {
         <div className={styles["dropdown"]}>
           <ToastContainer />
           {user ? (
-            <Link href={
-              user
-                ? user.role === "operator"
-                  ? "/hotel-coupon/operatorDetail"
-                  : user.role === "teacher"
+            <Link
+              href={
+                user
+                  ? user.role === "operator"
+                    ? "/hotel-coupon/operatorDetail"
+                    : user.role === "teacher"
                     ? "/teacher-sign/list"
                     : user.role === "user"
-                      ? "/user"
-                      : "#"
-                : "/login" // Or some default route if user is not logged in
-            } className={styles["lumi-user-icon2"]}>
+                    ? "/user"
+                    : "#"
+                  : "/login" // Or some default route if user is not logged in
+              }
+              className={styles["lumi-user-icon2"]}
+            >
               <i className="bi bi-person" />
             </Link>
           ) : (
@@ -208,17 +233,20 @@ export default function Header(props) {
 
           {user ? (
             <div className={styles["dropdown-content"]}>
-              <Link href={
-                user
-                  ? user.role === "operator"
-                    ? "/hotel-coupon/operatorDetail"
-                    : user.role === "teacher"
+              <Link
+                href={
+                  user
+                    ? user.role === "operator"
+                      ? "/hotel-coupon/operatorDetail"
+                      : user.role === "teacher"
                       ? "/teacher-sign/list"
                       : user.role === "user"
-                        ? "/user"
-                        : "#"
-                  : "/login" // Or some default route if user is not logged in
-              } className={styles["dropdown-link"]}>
+                      ? "/user"
+                      : "#"
+                    : "/login" // Or some default route if user is not logged in
+                }
+                className={styles["dropdown-link"]}
+              >
                 個人資料
               </Link>
               <Link
@@ -283,10 +311,11 @@ export default function Header(props) {
                 </Link>
               </div>
               <div
-                className={`${PDOpen
-                  ? styles["dropdown-contentOn"]
-                  : styles["dropdown-contentOff"]
-                  }`}
+                className={`${
+                  PDOpen
+                    ? styles["dropdown-contentOn"]
+                    : styles["dropdown-contentOff"]
+                }`}
               >
                 <a
                   href={`/product/list/category?category=乾糧`}
@@ -360,10 +389,11 @@ export default function Header(props) {
                 </Link>
               </div>
               <div
-                className={`${teacherOpen
-                  ? styles["dropdown-contentOn"]
-                  : styles["dropdown-contentOff"]
-                  }`}
+                className={`${
+                  teacherOpen
+                    ? styles["dropdown-contentOn"]
+                    : styles["dropdown-contentOff"]
+                }`}
               >
                 <Link
                   href="/course/list"
@@ -393,10 +423,11 @@ export default function Header(props) {
                 <Link href="/user">會員中心</Link>
               </div>
               <div
-                className={`${userOpen
-                  ? styles["dropdown-contentOn"]
-                  : styles["dropdown-contentOff"]
-                  }`}
+                className={`${
+                  userOpen
+                    ? styles["dropdown-contentOn"]
+                    : styles["dropdown-contentOff"]
+                }`}
               >
                 <Link
                   href={
@@ -404,10 +435,10 @@ export default function Header(props) {
                       ? user.role === "operator"
                         ? "/hotel-coupon/operatorDetail"
                         : user.role === "teacher"
-                          ? "/teacher-sign/list"
-                          : user.role === "user"
-                            ? "/user"
-                            : "#"
+                        ? "/teacher-sign/list"
+                        : user.role === "user"
+                        ? "/user"
+                        : "#"
                       : "/login" // Or some default route if user is not logged in
                   }
                   className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}

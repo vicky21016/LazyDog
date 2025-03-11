@@ -39,25 +39,28 @@
   } */
   .sCards {
     display: flex;
-    padding: 13px 0px;
+    gap: 10px;
+    padding: 13px 25px;
     justify-content: space-between;
     overflow: hidden;
     text-align: center;
     .sCard {
+      width: 20%;
       border-radius: 5px;
       cursor: pointer;
       transition: 0.4s;
       margin: 48px 0;
+
       &:hover {
         translate: 0 -20px;
       }
     }
     .cardImg {
-      width: 85%;
+      width: 100%;
       object-fit: cover;
       margin-bottom: 27px;
       /* border: 0.1px solid #f5f1f1; */
-      border-radius: 3px;
+      border-radius: 8px;
       @media (max-width: 992px) {
         margin-bottom: 15px;
       }
