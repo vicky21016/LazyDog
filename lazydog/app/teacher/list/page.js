@@ -46,7 +46,7 @@ export default function App() {
           selectCategories.includes(teacher.category_name)) &&
         (selectGenders.length === 0 || selectGenders.includes(teacher.gender))
     );
-
+    console.log("Filtered Data:", filterData);
     setFiltered(filterData);
     setCurrentPage(1); // 篩選後重置分頁到第 1 頁
   };
@@ -66,6 +66,7 @@ export default function App() {
     document.addEventListener("click", clickOutside);
     return () => document.removeEventListener("click", clickOutside);
   }, [filterOpen]);
+
   useEffect(() => {
     if (currentPage > totalPages) {
       setCurrentPage(1);
@@ -220,7 +221,7 @@ export default function App() {
           <section className={styles.pdArea}>
             <div className="row">
               {/* 桌機版篩選選單 */}
-              <div className={`col-3 ${styles.asideContainer}`}>
+              <div className={`col-md-3 ${styles.asideContainer}`}>
                 <Filter filterChange={filter} />
               </div>
 
@@ -249,20 +250,44 @@ export default function App() {
               <div className="col-md-9 col-12">
                 <div className="row mt-1 g-5 mb-5">
                   {currentTeacher.length > 0 ? (
-                    currentTeacher.map((teacher) => (
-                      <TeacherCard
-                        key={teacher.id}
-                        imgSrc={`/teacher-img/${teacher.img}`}
-                        col="col-6 col-md-4"
-                        name={teacher.name}
-                        text={teacher.category_name}
-                        link={`/teacher/info/${teacher.id}`}
-                      />
-                    ))
+                    <>
+                      {currentTeacher.map((teacher) => (
+                        <TeacherCard
+                          key={teacher.id}
+                          imgSrc={`/teacher-img/${teacher.img}`}
+                          col="col-6 col-md-4"
+                          name={teacher.name}
+                          text={teacher.category_name}
+                          link={`/teacher/info/${teacher.id}`}
+                        />
+                      ))}
+                      {/* 如果老師數量不足 4，補充「透明但佔位的卡片」 */}
+                      {Array.from({
+                        length: Math.max(0, 8 - currentTeacher.length),
+                      }).map((_, index) => (
+                        <div
+                          key={`empty-${index}`}
+                          className="col-6 col-md-4"
+                          style={{
+                            opacity: 0, 
+                            minHeight: "250px", 
+                          }}
+                        >
+                          <TeacherCard
+                            imgSrc=""
+                            col=""
+                            name=""
+                            text=""
+                            link=""
+                          />
+                        </div>
+                      ))}
+                    </>
                   ) : (
                     <p className="text-center">沒有符合條件的老師</p>
                   )}
                 </div>
+
                 <Page
                   totalPages={totalPages}
                   currentPage={currentPage}
