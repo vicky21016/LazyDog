@@ -61,7 +61,7 @@ export default function MyArticle() {
   // }
 
   return (
-    <div className="col-md-9">
+    <div className="col-12 col-md-9">
       <div className="w-100">
         <div>
           <div className="d-flex justify-content-between my-2">
