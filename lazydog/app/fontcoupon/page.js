@@ -472,7 +472,7 @@ export default function CouponPage() {
                   </div>
                   <h5 className={`mt-1 ${styles.suEventTitle1}`}>滿額免運</h5>
                   <p className={`mt-3 ${styles.suEventDesc}`}>
-                    超取 $1500 / 宅配 $2000
+                    超取 $1,500 / 宅配 $2,000
                   </p>
                 </div>
               </div>

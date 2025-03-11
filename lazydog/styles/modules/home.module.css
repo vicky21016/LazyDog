@@ -395,7 +395,7 @@ body {
     /* border: 1px solid #66c5bd; */
     .dogCookie {
       position: absolute;
-      right: 15%;
+      right: 12%;
       top: 72px;
       z-index: 1;
       width: 15%;
@@ -403,8 +403,8 @@ body {
 
     .cookieBag {
       position: absolute;
-      right: 6%;
-      top: 5%;
+      right: 3%;
+      top: 8%;
       /* z-index: 0; */
       width: 20%;
       @media (max-width: 992px) {
@@ -533,7 +533,7 @@ body {
 
 .section3 {
   position: relative;
-  background-color: #fff6e8;
+  background-color: #FFF6E8;
   padding: 50px 0 50px 0;
   @media (max-width: 390px) {
     padding: 85px 0 50px 0;
@@ -689,7 +689,7 @@ body {
   }
 
   .hotel {
-    padding: 10px 150px 200px;
+    padding: 0px 150px 0px;
     @media (max-width: 1400px) {
       padding: 120px 30px 100px;
     }
@@ -711,6 +711,7 @@ body {
       gap: 80px;
       @media (max-width: 768px) {
         gap: 50px;
+        margin-bottom: 50px;
       }
       @media (max-width: 390px) {
         gap: 35px;
@@ -731,6 +732,7 @@ body {
           letter-spacing: 5px;
         }
         @media (max-width: 768px) {
+          margin-top: 50px;
           letter-spacing: 5px;
         }
       }
@@ -884,7 +886,29 @@ body {
     }
   }
 }
+/* 圖片容器 */
+.imagesContainer {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 0;
+  
+.leftImage {
+  position: absolute;
+  left: 720px;
+  top: 850px;
+  transform: translateY(-50%);
+  width: 90px;
+}
 
+.rightImage {
+  position: absolute;
+  left: 1560px;
+  top: 100px;
+  transform: translateY(50%);
+  width: 100px;
+}
+}
 .section4 {
   position: relative;
   display: grid;
