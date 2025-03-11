@@ -11,9 +11,9 @@ export default function CourseCard({ courses = [], currentCourses, loading }) {
       <div className={`col-12 col-md-8 col-lg-9 ${styles.right}`}>
         <div className={styles.top}>
           <h2 className={styles.sTitle}>所有課程</h2>
-          <div className={styles.sbar}></div>
         </div>
-        <div className={styles.medium}>
+        <div className={`d-flex ${styles.medium}`}>
+          <div className={styles.sbar}></div>
           <div className={styles.count}>
             共計 <span className={styles.countNum}>{courses?.length}</span> 堂課
           </div>

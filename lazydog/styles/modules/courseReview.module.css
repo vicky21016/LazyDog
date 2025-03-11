@@ -1,4 +1,4 @@
-.wrapper {
+/* .wrapper {
   margin: 100px auto 0 !important;
 }
 .suAvatarImg {
@@ -52,7 +52,7 @@
   border-radius: 5px;
   color: white;
   border: 1px solid transparent;
-}
+} */
 
 /* 桌機版篩選選單 */
 .asideContainer {
@@ -145,6 +145,7 @@
     border-radius: 25px; /* 使文字背景有圓角 */
   }
 }
+
 /* 手機篩選按鈕 (點擊後打開篩選) */
 .filterButton {
   cursor: pointer;
@@ -157,6 +158,9 @@
   color: white;
   background-color: #ff9538;
   border-radius: 5px;
+  font-size: 14px;
+  font-weight: 450;
+  padding: 3.5px 7px;
 }
 .btn:hover {
   background-color: #fdf9f5;
@@ -185,11 +189,30 @@
   color: white;
   background-color: #66c5bd;
   border-radius: 5px;
+  font-size: 14px;
+  /* padding: 4px 8px; */
+  font-weight: 450;
+  letter-spacing: 1px;
+  padding: 6px 7px;
 }
-.btn3:hover {
+/* .btn3:hover {
   background-color: #fdf9f5;
   color: #66c5bd;
   border-color: #66c5bd;
+} */
+
+.btn4 {
+  background-color: #ff9538;
+  color: #fdf9f5;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  border-color: #ff9538;
+  cursor: pointer;
+}
+.btn4:hover {
+  background-color: #fdf9f5;
+  color: #ff9538 !important;
+  border-color: #ff9538;
 }
 .moreBtn {
   font-size: 12px;
@@ -207,24 +230,31 @@
   table-layout: fixed;
 }
 
-.suTable td {
+.tdTsai {
   padding: 10px;
-  white-space: normal;
+  /* white-space: normal; */
   word-wrap: break-word;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 350;
+  font-size: 15px;
   overflow: hidden;
-  text-align: left;
+  margin: 0 auto;
 }
-.suTable th {
+.thTsai {
   white-space: nowrap;
   text-align: center;
-  font-size: 14px;
+  font-size: 16.5px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  margin: 0 auto;
 }
 
-.btn-sm {
+/* .btn-sm {
   font-size: 14px;
   padding: 4px 8px;
   border-radius: 5px;
-}
+} */
 .btn-group {
   display: flex;
   justify-content: center;
@@ -416,4 +446,10 @@
     height: 100vh;
     padding: 15px;
   }
+}
+
+/* 星星 */
+.starRate {
+  width: 30%;
+  padding-bottom: 5px;
 }

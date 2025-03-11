@@ -126,7 +126,6 @@ export default function CourseIntro({ course, session, place, params }) {
         text: "請重新登入後再試！",
         showConfirmButton: false,
         timer: 950,
-        // timerProgressBar: true,
         customClass: {
           popup: styles.tsaiSwal,
         },
@@ -140,10 +139,8 @@ export default function CourseIntro({ course, session, place, params }) {
           Swal.fire({
             icon: "error",
             title: "移除收藏失敗",
-            // text: "找不到對應的收藏記錄！",
             showConfirmButton: false,
             timer: 950,
-            // timerProgressBar: true,
             customClass: {
               popup: styles.tsaiSwal,
             },
@@ -155,10 +152,9 @@ export default function CourseIntro({ course, session, place, params }) {
         if (response.success) {
           Swal.fire({
             icon: "success",
-            title: "已移除收藏",
+            title: "取消收藏",
             showConfirmButton: false,
             timer: 950,
-            // timerProgressBar: true,
             customClass: {
               popup: styles.tsaiSwal,
             },
@@ -351,14 +347,14 @@ export default function CourseIntro({ course, session, place, params }) {
             alt=""
           /> */}
         </div>
-        <p className={styles.description}>
+        <p
+          className={styles.description}
+          onClick={() => setExpanded(!expanded)}
+        >
           {displayText}{" "}
           {c?.description?.length > maxLength && (
-            <span
-              className={styles.toggleBtn}
-              onClick={() => setExpanded(!expanded)}
-            >
-              {expanded ? " ...收合 " : "看更多"}
+            <span className={styles.toggleBtn}>
+              {expanded ? "   顯示更少 " : "more"}
             </span>
           )}
         </p>

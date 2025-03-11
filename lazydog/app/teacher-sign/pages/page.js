@@ -7,7 +7,7 @@ import Header from "../../components/layout/header";
 import MyMenu from "../_components/my";
 import Bread from "../../components/teacher/breadcrumb";
 import Input from "../../components/forms/Input";
-import styles from "../../user/menu.module.css";
+import styles from "../css/teacherSignUser.module.css";
 import style from "../../../styles/modules/menu.module.css";
 import TWZipCode from "../../components/tw-zipcode";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
@@ -165,7 +165,7 @@ export default function Menu() {
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
-                    className={styles["select"]}
+                    className={styles.selects}
                     required
                   >
                     <option value="">請選擇性別</option>

@@ -169,8 +169,10 @@ body {
     font-style: normal;
 
     .mainPic {
-      width: 50%;
-      /* height: 320px; */
+      width: 100%;
+      height: 320px;
+      /* padding-right: 20px; */
+      border-radius: 3px;
       object-fit: cover;
       margin: 0 auto;
       @media (max-width: 768px) {
@@ -295,8 +297,9 @@ body {
         /* height: 27px;
         line-height: 28px; */
         font-size: 17px;
-        font-weight: 700;
+        font-weight: 550;
         letter-spacing: 1.5px;
+        padding-top: 1.5px;
         margin: 0;
         @media (max-width: 768px) {
           font-size: 15px;
@@ -436,18 +439,19 @@ body {
     .selects {
       margin: 5px 0;
       border-radius: 7px;
-      border: 1px solid var(--Color, #ff9538);
+      border: 2px solid var(--Color, #ff9538);
       color: #a1a1a1;
-      font-size: 15px;
-      letter-spacing: 1px;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 1.8px;
     }
     .options {
       /* appearance: none; 隱藏預設樣式 */
       /* -webkit-appearance: none; */
       /* -moz-appearance: none; */
       /* color: #3e3e3e; */
-      font-size: 14px;
-      letter-spacing: 2px;
+      font-size: 16px;
+      letter-spacing: 3px;
     }
 
     .cartBtn {
@@ -509,7 +513,7 @@ body {
         .noticeTitle {
           color: var(--text-Bk, #3e3e3e);
           font-size: 17px;
-          font-weight: 700;
+          font-weight: 600;
           line-height: 27px;
           letter-spacing: 0.8px;
         }
@@ -525,7 +529,7 @@ body {
         .qaTitle {
           color: var(--text-Bk, #3e3e3e);
           font-size: 17px;
-          font-weight: 700;
+          font-weight: 600;
           line-height: 27px;
           letter-spacing: 2.3px;
         }
@@ -540,7 +544,7 @@ body {
         .otherTitle {
           color: var(--text-Bk, #3e3e3e);
           font-size: 17px;
-          font-weight: 700;
+          font-weight: 600;
           line-height: 27px;
           letter-spacing: 8.5px;
         }
@@ -578,123 +582,6 @@ body {
 
 .section2 {
   margin-top: 100px;
-  margin-bottom: 100px;
-  .similarCourse {
-    padding: 70px 0px;
-    @media (max-width: 768px) {
-      padding: 0;
-    }
-    .sTitle {
-      margin-bottom: 18px;
-      color: var(--text-Bk, #3e3e3e);
-      font-size: 32px;
-      font-weight: bold;
-      line-height: 39px;
-      letter-spacing: 3.2px;
-      @media (max-width: 992px) {
-        padding: 0 15px;
-      }
-    }
-    .sBars {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 18px 0;
-      @media (max-width: 992px) {
-        padding: 0 15px;
-      }
-    }
-    .sbar {
-      background-color: #ff9538;
-      width: 50px;
-      height: 4px;
-      border-radius: 5px;
-    }
-    .btns {
-      display: flex;
-      gap: 23px;
-    }
-    .arrowLeft,
-    .arrowRight {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 45px;
-      height: 45px;
-      border: 1px solid #ff9538;
-      border-radius: 50%;
-      padding: 0;
-      cursor: pointer;
-      .icon {
-        font-size: 21px;
-        font-weight: 700;
-        color: #ff9538;
-      }
-      &:hover {
-        background-color: #ff9538;
-        .icon {
-          color: #fff;
-        }
-      }
-      &:active {
-        background-color: #ff851b;
-        .icon {
-          color: #fff;
-        }
-      }
-    }
-    /* .arrowRight {
-      cursor: pointer;
-    } */
-    .sCards {
-      display: flex;
-      /* padding: 13px 3px; */
-      align-items: flex-start;
-      align-self: stretch;
-      overflow: hidden;
-      text-align: center;
-      .sCard {
-        padding: 24px;
-        cursor: pointer;
-        transition: 0.4s;
-        @media (max-width: 768px) {
-          padding: 10px 20px;
-          /* margin: 20px 0px 0; */
-        }
-
-        &:hover {
-          translate: 0 -15px;
-        }
-      }
-      .cardImg {
-        /* width: 240px; */
-        /* height: 240px; */
-        width: 100%;
-        object-fit: cover;
-        margin-bottom: 27px;
-        border: 0.1px solid #f5f1f1;
-        @media (max-width: 992px) {
-          margin-bottom: 15px;
-        }
-      }
-      .cardName {
-        /* display: -webkit-box; */
-        /* -webkit-box-orient: vertical; */
-        /* overflow: hidden; */
-        /* -webkit-line-clamp: 1; */
-        /* word-wrap: break-word; */
-        color: var(--Color, #3b3330);
-        /* text-overflow: ellipsis; */
-        font-size: 17px;
-        font-weight: bold;
-        letter-spacing: 1.2px;
-        margin: 0;
-        @media (max-width: 992px) {
-          font-weight: 550;
-        }
-      }
-    }
-  }
   .similarCourse {
     padding: 70px 0px;
 
@@ -713,16 +600,16 @@ body {
         margin-left: 15px;
       }
       @media (max-width: 390px) {
-        font-size: 28px;
+        font-size: 27px;
       }
     }
     .sBars {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 18px 0 18px 0;
+      margin: 18px 0 38px 0;
       @media (max-width: 992px) {
-        margin: 18px 0 18px 15px;
+        margin: 18px 18px 18px 15px;
       }
       @media (max-width: 390px) {
         margin: 18px 19px;
@@ -736,33 +623,61 @@ body {
     }
     .btns {
       display: flex;
-      gap: 23px;
+      gap: 15px;
+      /* margin-right: 25px; */
     }
-    .arrowLeft {
-      cursor: pointer;
-    }
+    .arrowLeft,
     .arrowRight {
+      width: 47px;
+      height: 47px;
+      background: white;
+      border: 1.5px solid #ff9538;
+      border-radius: 50%;
+      color: #ff9538;
+      padding-bottom: 3px;
       cursor: pointer;
+
+      &:hover {
+        color: white;
+        background-color: #ff9538;
+      }
+      &:active {
+        color: white;
+        background-color: #ff9538;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      @media (max-width: 390px) {
+        width: 42px;
+        height: 42px;
+      }
     }
+
     .sCards {
       display: flex;
-      padding: 13px 3px;
+      padding: 26px 0px;
+      height: 460px;
+      overflow: hidden;
       align-items: flex-start;
       /* gap: 88px; */
       align-self: stretch;
       overflow: hidden;
       text-align: center;
+
       @media (max-width: 390px) {
-        padding: 43px 14px;
+        padding: 38px 14px;
+        height: 252px;
       }
       .sCard {
         border-radius: 5px;
         cursor: pointer;
         transition: 0.4s;
-        padding: 24px;
+        /* padding: 24px; */
+        margin-top: 48px;
         @media (max-width: 390px) {
           margin-top: 0;
           padding: 18px;
+          margin-top: 0;
         }
 
         &:hover {
@@ -770,13 +685,11 @@ body {
         }
       }
       .cardImg {
-        /* width: 240px; */
-        /* height: 240px; */
-        width: 100%;
+        width: 78%;
         object-fit: cover;
         margin-bottom: 27px;
-        /* border: 0.1px solid #f5f1f1; */
-        border-radius: 3px;
+        border: 0.1px solid #f5f1f1;
+        border-radius: 4px;
         @media (max-width: 992px) {
           margin-bottom: 15px;
         }
@@ -794,13 +707,18 @@ body {
         letter-spacing: 1.2px;
         padding: 2px 0;
         margin: 0;
+
         @media (max-width: 390px) {
           overflow: hidden;
           -webkit-line-clamp: 2;
           word-wrap: break-word;
-          font-size: 15px;
-          padding: 2px 5px;
+          font-size: 12.5px;
+          font-weight: 550;
+          padding: 0px 5px;
         }
+      }
+      .swiperGroup {
+        margin-top: 20px;
       }
     }
   }
@@ -809,7 +727,6 @@ body {
 /* Swal 彈跳窗 */
 .tsaiSwal {
   width: 400px;
-  /* height: 200px; */
   padding: 25px 15px;
   font-size: 16px !important;
   padding: 15px 40px 40px;

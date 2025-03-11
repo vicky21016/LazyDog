@@ -90,7 +90,8 @@ input:active {
     }
   }
   .bottom {
-    margin: 10px 0 15px;
+    min-height: 780px;
+    margin: 10px 0 25px;
     .cThead,
     .cTbody {
       display: flex;
@@ -105,8 +106,8 @@ input:active {
     /* 表頭 */
     .cThead {
       border-bottom: 0.5px solid var(--text-Gy, #bcbcbc);
-      margin-top: 8px;
-      margin-bottom: 5px;
+      margin-top: 25px;
+      margin-bottom: 20px;
       padding: 25px 25px 30px 17px;
 
       .cTh2,
@@ -146,35 +147,38 @@ input:active {
 
     .cTbodys {
       /* height: 680px; 設定最大高度，根據需要調整 */
-      overflow-y: auto; /* 當內容超過 max-height 時顯示滾動條 */
+      /* overflow-y: auto; 當內容超過 max-height 時顯示滾動條 */
+      overflow-x: hidden;
+      overflow-y: hidden;
     }
 
     /* 內容 */
     .cTbody {
       /* border: 1px solid lightblue; */
       height: 110px;
-      margin: 22px 0;
-      /* padding: 15px 20px 18px 17px; */
+      margin: 2px 0;
+      padding: 18px auto;
       box-sizing: border-box;
       cursor: pointer;
+      transition: 0.3s;
 
       &:hover {
-        border-radius: 2px;
-        background-color: #ff953821;
+        transform: scale(1.05);
+
         .cTd2,
         .cTd3,
         .cTd4,
         .cTd5 {
-          color: #5c5c5c;
+          color: #ff9538;
         }
       }
     }
     .courseImg {
       width: 110px;
       height: 110px;
-      /* padding: 8px; */
+      padding: 1px;
       object-fit: cover;
-      border-radius: 11px;
+      border-radius: 2px;
     }
     .cTd1 {
       width: 140px;
@@ -186,7 +190,7 @@ input:active {
       color: var(--text-Bk, #3e3e3e);
       text-overflow: ellipsis;
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 400;
       letter-spacing: 1px;
     }
     .cTd3 {
@@ -196,7 +200,7 @@ input:active {
       color: var(--text-Bk, #3e3e3e);
       text-overflow: ellipsis;
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 400;
       letter-spacing: 0.5px;
       line-height: 18px;
     }
@@ -208,7 +212,7 @@ input:active {
       text-overflow: ellipsis;
       font-family: "Noto Sans TC";
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 400;
     }
     .cTd5 {
       width: 200px;
@@ -218,7 +222,7 @@ input:active {
       text-overflow: ellipsis;
       font-family: "Noto Sans TC";
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 400;
     }
   }
   /* .pagination {

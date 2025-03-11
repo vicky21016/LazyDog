@@ -78,6 +78,7 @@ export default function HomePage(props) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
   return (
     <>
       <Header />
@@ -240,7 +241,7 @@ export default function HomePage(props) {
               Book Now
             </Link>
           </div>
-           <div className={`${styles.imagesContainer}`}>
+          <div className={`${styles.imagesContainer}`}>
             <img
               className={`${styles.leftImage}`}
               src="/teacher-img/18.svg"
@@ -253,7 +254,7 @@ export default function HomePage(props) {
             />
           </div>
         </div>
-        <div className={styles.icons}>
+        <div className={`d-block d-md-none ${styles.icons}`}>
           <img
             className={styles.firework1}
             src="/home/img/fireworks.png"

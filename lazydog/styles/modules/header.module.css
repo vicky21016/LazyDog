@@ -10,6 +10,11 @@
   background-color: white;
   z-index: 1000;
 }
+.lumi-header.scrolled {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.212); /* 底部陰影 */
+  background-color: rgba(255, 255, 255, 0.651);
+  backdrop-filter: blur(10px); /* 背景模糊 */
+}
 .lumi-logo {
   display: flex;
   align-items: center;
