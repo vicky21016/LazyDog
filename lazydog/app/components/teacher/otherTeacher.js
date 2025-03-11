@@ -26,9 +26,9 @@ const TeacherCard = () => {
   }, [teachers]); 
 
   return (
-    <div className="row mb-5 g-5">
+    <div className="row mb-5">
       {cards.map((card, index) => (
-        <div key={index} className={card.col}>
+        <div key={index} className={`mb-5 ${card.col}`}>
           <Link href={card.link} passHref className="text-decoration-none">
             <div className={styles.card6}>
               <img src={card.imgSrc} className="card-img-top" alt={card.name} />

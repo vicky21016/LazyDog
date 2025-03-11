@@ -45,12 +45,12 @@ function CourseSection() {
                         className={`block mx-auto text-center text-decoration-none ${style.teacherBtn}`}
                         href="/course/list"
                       >
-                        read more
+                        READ MORE
                       </Link>
                     </div>
                   </div>
                 </div>
-                <Link className="mb-3 col-lg-6 col-12" href="/course/list">
+                <Link className={`mb-3 col-lg-6 col-12 ${styles.image}`} href="/course/list">
                   <img src="/teacher-img/eat.png" alt="" />
                 </Link>
               </div>
@@ -82,12 +82,12 @@ function CourseSection() {
                         className={`block mx-auto text-center text-decoration-none ${style.teacherBtn}`}
                         href="/course/list"
                       >
-                        read more
+                        READ MORE
                       </Link>
                     </div>
                   </div>
                 </div>
-                <Link className="mb-3 col-lg-6 col-12" href="/course/list">
+                <Link className={`mb-3 col-lg-6 col-12 ${styles.image}`} href="/course/list">
                   <img src="/teacher-img/salon.png" alt="" />
                 </Link>
               </div>
@@ -119,12 +119,12 @@ function CourseSection() {
                         className={`block mx-auto text-center text-decoration-none ${style.teacherBtn}`}
                         href="/course/list"
                       >
-                        read more
+                        READ MORE
                       </Link>
                     </div>
                   </div>
                 </div>
-                <Link className="mb-3 col-lg-6 col-12" href="/course/list">
+                <Link className={`mb-3 col-lg-6 col-12 ${styles.image}`} href="/course/list">
                   <img src="/teacher-img/train.png" alt="" />
                 </Link>
               </div>
@@ -156,12 +156,12 @@ function CourseSection() {
                         className={`block mx-auto text-center text-decoration-none ${style.teacherBtn}`}
                         href="/course/list"
                       >
-                        read more
+                        READ MORE
                       </Link>
                     </div>
                   </div>
                 </div>
-                <Link className="mb-3 col-lg-6 col-12" href="/course/list">
+                <Link className={`mb-3 col-lg-6 col-12 ${styles.image}`} href="/course/list">
                   <img src="/teacher-img/care.png" alt="" />
                 </Link>
               </div>
@@ -191,12 +191,12 @@ function CourseSection() {
                         className={`block mx-auto text-center text-decoration-none ${style.teacherBtn}`}
                         href="/course/list"
                       >
-                        read more
+                        READ MORE
                       </Link>
                     </div>
                   </div>
                 </div>
-                <Link className="mb-3 col-lg-6 col-12" href="/course/list">
+                <Link className={`mb-3 col-lg-6 col-12 ${styles.image}`} href="/course/list">
                   <img src="/teacher-img/busin.png" alt="" />
                 </Link>
               </div>

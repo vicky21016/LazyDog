@@ -248,7 +248,7 @@ export default function App() {
 
               {/* 師資列表 */}
               <div className="col-md-9 col-12">
-                <div className="row mt-1 g-5 mb-5">
+                <div className="row mt-1 mb-5">
                   {currentTeacher.length > 0 ? (
                     <>
                       {currentTeacher.map((teacher) => (

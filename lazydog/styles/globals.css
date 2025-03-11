@@ -31,7 +31,7 @@ a {
 
 .lumi-m-title {
   color: #f5842b !important;
-  font-size: 36px !important;
+  font-size: 36px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -85,3 +85,11 @@ a {
   font-weight: bold !important;
 }
 /* noUi結束*/
+@media (max-width: 768px) {
+  .lumi-m-title{
+    font-size: 24px;
+  }
+  .lumi-s-title{
+    font-size: 16px;
+  }
+}
