@@ -289,31 +289,6 @@ export default function CartListPayPage(props) {
                     required
                   />
                 </div>
-                {/* 城市 */}
-                <div className="mb-3">
-                  <label htmlFor="city" className="form-label">
-                    城市
-                  </label>
-                  <Input
-                    type="text"
-                    id="city"
-                    name="city"
-                    className="form-control"
-                    required
-                  />
-                </div>
-                {/* 公司名稱 */}
-                <div className="mb-3">
-                  <label htmlFor="company-name" className="form-label">
-                    公司名稱
-                  </label>
-                  <Input
-                    type="text"
-                    id="company-name"
-                    name="company-name"
-                    className="form-control"
-                  />
-                </div>
                 {/* Email */}
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
