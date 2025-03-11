@@ -506,6 +506,7 @@ export default function ListPage(props) {
           position: "fixed",
           bottom: 0,
           overflow: "hidden",
+          zIndex: 99999,
         }}
       >
         <div className={styles.dogApp} ref={containerRef}>
