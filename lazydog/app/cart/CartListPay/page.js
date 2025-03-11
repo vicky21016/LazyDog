@@ -337,7 +337,7 @@ export default function CartListPayPage(props) {
                     </div>
                   ))}
 
-                  {/* {courseItems.map((item) => (
+                  {courseItems.map((item) => (
                     <div
                       key={item.id}
                       className="d-flex justify-content-between mb-2"
@@ -347,7 +347,7 @@ export default function CartListPayPage(props) {
                       </span>
                       <span>NT$ { Number(item.price * item.count).toLocaleString() }</span>
                     </div>
-                  ))} */}
+                  ))}
 
                   {hotelItems.map((item) => (
                     <div

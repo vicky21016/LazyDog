@@ -153,7 +153,7 @@ export default function CartListPage(props) {
                   <Thead />
                   <tbody>
                     {/* 顯示課程 */}
-                    {/* {courseItems.map((cartItem) => (
+                    {courseItems.map((cartItem) => (
                       <tr key={cartItem.id}>
                         <td className={styles.table}>
                           <img
@@ -188,7 +188,7 @@ export default function CartListPage(props) {
                           </button>
                         </td>
                       </tr>
-                    ))} */}
+                    ))}
                   </tbody>
                 </>
               )}
