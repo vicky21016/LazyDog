@@ -72,7 +72,7 @@ export default function ListCard({ id, title, name, category_name, created_at, c
         <div
           // href={{ pathname: `/article/detail/${id}`, query: { list: "true" } }}
           className={styles.customLink}
-        >Read more</div>
+        >READ MORE</div>
       </Link>
     </>
   )

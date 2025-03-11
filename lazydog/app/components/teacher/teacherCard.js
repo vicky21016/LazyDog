@@ -7,7 +7,7 @@ import styles from "../../../styles/modules/toggle.module.css"
 const TeacherCard = ({ imgSrc, col, name, text, link }) => {
   return (
    
-      <div className={col}>
+      <div className={`mb-5 ${col}`}>
         <Link href={link} passHref className="text-decoration-none">
           <div className={styles.card6} >
             <img src={imgSrc} className="card-img-top" alt="..." />

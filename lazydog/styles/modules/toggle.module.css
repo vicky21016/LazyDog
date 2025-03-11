@@ -256,7 +256,7 @@ top: -100px;
     height: 110px;
  }
  .mobile{
-  margin-bottom: 50px;
+  margin-bottom: 20px;
  }
  .person{
  height: 80px;
@@ -265,6 +265,43 @@ top: -100px;
  .imagesContainer{
   .leftImage,.rightImage
   {display: none;}
+}
+.card6 {
+  height: 264px;
+  transition: 0.4s;
+  color: #3b3330;
+  box-shadow: rgba(60, 60, 60, 0.35) 0px 5px 15px;
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+.card6Title {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 5px 0;
+  padding: 10px 15px 5px;
+}
+
+.card6 img {
+  height: 160px;
+  width: 100%;
+  background-color: #c9c9c9;
+  box-shadow: inset 8px 8px 10px #c3c3c3, inset -8px -8px 10px #cfcfcf;
+}
+
+.card6Description {
+  font-size: 12px;
+  padding: 0 15px !important;
+  color: #ff9538;
+}
+.carouselItem p{
+  font-size: 14px;
+}
+.image img{
+  width: 100%;
+  object-fit: cover;
 }
 }
 
