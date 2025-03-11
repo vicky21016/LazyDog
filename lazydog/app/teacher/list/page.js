@@ -261,7 +261,7 @@ export default function App() {
                           link={`/teacher/info/${teacher.id}`}
                         />
                       ))}
-                      {/* 補充「透明但佔位的卡片」 */}
+                      {/* 補充「透明但佔位的卡片」，避免版面跑掉 */}
                       {Array.from({
                         length: Math.max(0, 8 - currentTeacher.length),
                       }).map((_, index) => (
@@ -269,8 +269,8 @@ export default function App() {
                           key={`empty-${index}`}
                           className="col-6 col-md-4"
                           style={{
-                            opacity: 0, 
-                            minHeight: "250px", 
+                            visibility: "hidden", // 讓它隱藏但仍佔位
+                            minHeight: "250px",
                           }}
                         >
                           <TeacherCard
@@ -284,15 +284,23 @@ export default function App() {
                       ))}
                     </>
                   ) : (
-                    <p className="text-center">沒有符合條件的老師</p>
+                    // 沒有符合條件時顯示
+                    <div className="no-results">
+                      <p>沒有符合條件的老師</p>
+                    </div>
                   )}
                 </div>
 
-                <Page
-                  totalPages={totalPages}
-                  currentPage={currentPage}
-                  onPageChange={setCurrentPage}
-                />
+              
+                {filtered.length > 0 && (
+                  <Page
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    onPageChange={setCurrentPage}
+                  />
+                )}
+
+          
               </div>
             </div>
           </section>
