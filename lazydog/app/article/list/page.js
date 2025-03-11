@@ -197,7 +197,7 @@ const ArticlePage = () => {
           <main
           // style={{display:'flex',flexDirection:'column',gap:'25px'}}       
           >
-           
+
             <div className={styles.RWDfilter}>
               <div className="input-group my-3" style={{ border: '.2px solid grey', borderRadius: '5px' }}>
                 <input
@@ -297,21 +297,22 @@ const ArticlePage = () => {
               <i className="bi bi-filter"></i> 依時間排序 {sortOrder === 'asc' ? '↑' : '↓'}
             </button>
             <div
-              style={{ display: 'flex', flexDirection: 'column', gap: '25px',paddingBottom:'100px' }}
+              className={styles.main}
+            // style={{ display: 'flex', flexDirection: 'column', gap: '25px',paddingBottom:'100px' }}
             >
-               {currentArticles.length > 0 ? (
-              currentArticles.map((article) => (
+              {currentArticles.length > 0 ? (
+                currentArticles.map((article) => (
 
-                // element="div"
+                  // element="div"
 
-                <MainCard key={article.id} {...article} />
+                  <MainCard key={article.id} {...article} />
 
-              ))
-            ) : (
-              <p>沒有符合條件的文章</p>
-            )}
+                ))
+              ) : (
+                <p>沒有符合條件的文章</p>
+              )}
             </div>
-           
+
 
             <div >
               <h4 className={styles.RWDH4}>延伸閱讀</h4>

@@ -30,6 +30,12 @@
   color: rgb(255, 130, 5); /* 讓文字更清楚 */
   font-size: 36px;
 }
+.main{
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding-bottom:100px
+}
 
 .content {
   display: flex;
@@ -309,6 +315,9 @@
   .mainDog{
     height: 250px;
   }
+  .main{
+    padding-bottom: 1px;
+  }
   .container {
     display: flex;
     justify-content: center;
@@ -322,6 +331,7 @@
   }
   .RWDH4{
     display: block;
+    margin-bottom: 35px;
   }
   .H4{
     display: none;
