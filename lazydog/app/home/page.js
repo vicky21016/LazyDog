@@ -254,7 +254,7 @@ export default function HomePage(props) {
             />
           </div>
         </div>
-        <div className={styles.icons}>
+        <div className={`d-block d-md-none ${styles.icons}`}>
           <img
             className={styles.firework1}
             src="/home/img/fireworks.png"
