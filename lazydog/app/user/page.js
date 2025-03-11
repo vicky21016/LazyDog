@@ -169,7 +169,7 @@ export default function Menu() {
             />
 
             <h6>
-              性別<span className={`${styles["important"]}`}> *</span>
+              性別<span className={`${styles["important"]}`}> </span>
             </h6>
             <select
               name="gender"
@@ -187,7 +187,7 @@ export default function Menu() {
 
           <div className={styles.formGroup}>
             <h6>
-              生日<span className={`${styles["important"]}`}> *</span>
+              生日<span className={`${styles["important"]}`}> </span>
             </h6>
             <Input
               type="date"
@@ -218,7 +218,7 @@ export default function Menu() {
 
           <div className={styles.formGroup}>
             <h6>
-              所在地區<span className={`${styles["important"]}`}> *</span>
+              所在地區<span className={`${styles["important"]}`}> </span>
             </h6>
 
             <div className={styles.addressRow}>

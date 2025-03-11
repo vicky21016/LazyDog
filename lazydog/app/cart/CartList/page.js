@@ -299,28 +299,27 @@ export default function CartListPage(props) {
 
               {/* 結帳按鈕 */}
               <div className="d-flex justify-content-center pt-5 ">
-                {/* <button
-                  type="submit"
-                  style={{ backgroundColor: "#f2662b", color: "#fff" }}
-                  className="btn w-50"
-                  onClick={() => history.push("/cart/CartListPay")}
-                >
-                  商品結帳
-                </button> */}
-                <Link
-                  className={`btn w-50 ${styles.btn}`}
-                  href={{
-                    pathname: "/cart/CartListPay",
-                    // query: {
-                    //   productItems: JSON.stringify(productItems),
-                    //   courseItems: JSON.stringify(courseItems),
-                    //   hotelItems: JSON.stringify(hotelItems),
-                    //   totalAmount: totalAmount,
-                    // },
-                  }}
-                >
-                  前往結帳
-                </Link>
+                {courseItems.length > 0 ||
+                hotelItems.length > 0 ||
+                productItems.length > 0 ? (
+                  <Link
+                    className={`btn w-50 ${styles.btn}`}
+                    href={{
+                      pathname: "/cart/CartListPay",
+                    }}
+                  >
+                    前往結帳
+                  </Link>
+                ) : (
+                  <Link
+                    className={`btn w-50 ${styles.btn}`}
+                    href={{
+                      pathname: "/product/list",
+                    }}
+                  >
+                    還沒有商品 前往訂購
+                  </Link>
+                )}
               </div>
             </aside>
           </div>
