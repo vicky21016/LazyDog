@@ -591,9 +591,9 @@ export default function HotelEditPage() {
               }}
             >
               <div className={`section ${hotelStyles.suSection}`}>
-                <h5>基本資訊</h5>
+                <h5 className="mb-3">基本資訊</h5>
                 <div className="mb-3">
-                  <label>
+                  <label className="mb-2">
                     旅館名稱 <span style={{ color: "red" }}>*</span>
                   </label>
                   <input
@@ -607,7 +607,7 @@ export default function HotelEditPage() {
 
                 {/*  地址輸入：分為 縣市、區、詳細地址 */}
                 <div className="mb-3">
-                  <label>縣市</label>
+                  <label className="mb-2">縣市</label>
                   <input
                     type="text"
                     name="county"
@@ -618,7 +618,7 @@ export default function HotelEditPage() {
                 </div>
 
                 <div className="mb-3">
-                  <label>區</label>
+                  <label className="mb-2">區</label>
                   <input
                     type="text"
                     name="district"
@@ -629,7 +629,7 @@ export default function HotelEditPage() {
                 </div>
 
                 <div className="mb-3">
-                  <label>詳細地址</label>
+                  <label className="mb-2">詳細地址</label>
                   <input
                     type="text"
                     name="address"
@@ -640,7 +640,7 @@ export default function HotelEditPage() {
                 </div>
 
                 <div className="mb-3">
-                  <label>
+                  <label className="mb-2">
                     電話 <span style={{ color: "red" }}>*</span>
                   </label>
                   <input
@@ -655,7 +655,7 @@ export default function HotelEditPage() {
 
               {/* 旅館圖片：從 API 獲取 */}
               <div className={`section ${hotelStyles.suSection}`}>
-                <h5>旅館圖片</h5>
+                <h5 className="mb-3">旅館圖片</h5>
                 <div className="d-flex flex-wrap gap-3 mb-2">
                   {images.length > 0 ? (
                     images.map((img, index) => (
@@ -679,7 +679,9 @@ export default function HotelEditPage() {
 
                         {/* 主圖片標記 */}
                         {hotel.main_image_id == img.id && (
-                          <span className="badge bg-primary position-absolute top-0 start-0 m-2">
+                          <span
+                            className={`badge position-absolute top-0 start-0 m-2 ${styles.btn3}`}
+                          >
                             主圖片
                           </span>
                         )}
@@ -821,7 +823,7 @@ export default function HotelEditPage() {
                 <hr />
                 <h5 className="mb-3">新增房型</h5>
 
-                <label>房型</label>
+                <label className="mb-2">房型</label>
                 <select
                   className="form-control mb-3"
                   value={selectedRoomType}
@@ -925,7 +927,7 @@ export default function HotelEditPage() {
               </div>
               {/* 營業時間（統一顯示為一組） */}
               <div className={`section ${hotelStyles.suSection}`}>
-                <h5>營業時間 (適用於星期一到星期日)</h5>
+                <h5 className="mb-3">營業時間 (適用於星期一到星期日)</h5>
                 <div className="mb-3 d-flex align-items-center">
                   <label className="me-2" style={{ width: "120px" }}>
                     開門時間
@@ -954,7 +956,7 @@ export default function HotelEditPage() {
 
               {/* 旅館簡介 */}
               <div className={`section ${hotelStyles.suSection}`}>
-                <h5>旅館簡介</h5>
+                <h5 className="mb-3">旅館簡介</h5>
                 <textarea
                   name="introduce"
                   value={formData.introduce}

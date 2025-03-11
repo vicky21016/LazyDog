@@ -103,7 +103,9 @@ export default function CouponListPage() {
                     <tr key={coupon.id} className="text-center">
                       <td data-label="優惠代碼">{coupon.code}</td>
                       <td data-label="優惠名稱">{coupon.name}</td>
-                      <td data-label="優惠內容">{coupon.value || "無"}</td>
+                      <td data-label="優惠內容">
+                        {Number(coupon.value).toLocaleString() || "無"}
+                      </td>
                       <td data-label="開始日期">
                         {coupon.start_time
                           ? coupon.start_time.split("T")[0]
@@ -119,10 +121,10 @@ export default function CouponListPage() {
                         <span
                           className={`badge ${
                             coupon.status === "active"
-                              ?` ${styles.btn3}`
+                              ? ` ${styles.btn3}`
                               : coupon.status === "expired"
                               ? `${styles.btn}`
-                              :` ${styles.btn2}`
+                              : ` ${styles.btn2}`
                           }`}
                         >
                           {coupon.status}
@@ -181,7 +183,7 @@ export default function CouponListPage() {
                       <p>
                         <strong>優惠內容：</strong>{" "}
                         {selectedCoupon.value
-                          ? Number(selectedCoupon.value).toFixed(2)
+                          ? Number(selectedCoupon.value).toLocaleString()
                           : "無"}
                       </p>
                       <p>

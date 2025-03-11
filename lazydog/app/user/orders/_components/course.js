@@ -20,7 +20,11 @@ const Course = ({ courseOrders }) => {
               <img
                 src={`/course/img/${order.main_pic}`}
                 // src="	http://localhost:5000/api/articles/image4.jpg"
-                style={{ width:'176.989px',maxHeight: "100px", objectFit: "cover" }}
+                style={{
+                  width: "176.989px",
+                  maxHeight: "100px",
+                  objectFit: "cover",
+                }}
                 alt={`課程訂單 ${order.id}`}
               />
             </Link>
@@ -32,7 +36,9 @@ const Course = ({ courseOrders }) => {
                 建立時間: {order.order_date.split("T")[0]}
               </p>
             </div>
-            <span className={couponStyles.suPrice}>NT {order.total_price}</span>
+            <span className={couponStyles.suPrice}>
+              NT$ {Number(order.total_price).toLocaleString()}
+            </span>
           </div>
         );
       })}
