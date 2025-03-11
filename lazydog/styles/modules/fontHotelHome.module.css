@@ -82,7 +82,7 @@
 }
 
 /* 搜尋按鈕 */
-.suSearchBtn {
+.suSearchBar .suSearchBtn {
   background-color: #ff9538;
   color: white;
   padding: 11px 17px;
@@ -92,7 +92,7 @@
   letter-spacing: 1px;
   cursor: pointer;
 }
-.suSearchBtn2 {
+.suSearchBar .suSearchBtn2 {
   background-color: #ff9538;
   color: white;
   padding: 8px 12px;
@@ -196,7 +196,7 @@
 .suCheckbox:focus,
 .suCheckbox:checked,
 .suCheckbox:active {
-  box-shadow: none !important; /* 移除點擊後的藍色高亮 */
+  box-shadow: none ; /* 移除點擊後的藍色高亮 */
   background-color: #ff9538;
   border-color: #ff9538;
   color: #fff;
@@ -220,7 +220,7 @@
 .selects:focus,
 .selects:checked,
 .selects:active {
-  box-shadow: none !important; /* 移除點擊後的藍色高亮 */
+  box-shadow: none ; /* 移除點擊後的藍色高亮 */
   border: 1px solid #ff9538;
 }
 
@@ -239,7 +239,7 @@
 .selectsRegion:focus,
 .selectsRegion:checked,
 .selectsRegion:active {
-  box-shadow: none !important;
+  box-shadow: none;
   border: 1px solid #ff9538;
 }
 
@@ -414,7 +414,7 @@
   margin-right: 11px;
 }
 
-.suBookBtn {
+.suPriceBox .suBookBtn {
   background-color: #ff9538;
   color: white;
   font-size: 15.5px;
@@ -428,7 +428,7 @@
   cursor: pointer;
 }
 
-.suBookBtn:hover {
+.suPriceBox .suBookBtn:hover {
   background-color: #fdf9f5;
   color: #ff9538;
   border-color: #ff9538;
@@ -652,7 +652,7 @@
     width: 100%;
   }
 
-  .suSearchBtn {
+  .suSearchBar .suSearchBtn {
     width: 100%;
     text-align: center;
     padding: 10px;
