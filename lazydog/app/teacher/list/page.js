@@ -261,7 +261,7 @@ export default function App() {
                           link={`/teacher/info/${teacher.id}`}
                         />
                       ))}
-                      {/* 如果老師數量不足 4，補充「透明但佔位的卡片」 */}
+                      {/* 補充「透明但佔位的卡片」 */}
                       {Array.from({
                         length: Math.max(0, 8 - currentTeacher.length),
                       }).map((_, index) => (
