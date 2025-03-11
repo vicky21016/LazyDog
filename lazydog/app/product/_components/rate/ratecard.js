@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { MoonLoader } from "react-spinners";
 
 import { useAuth } from "@/hooks/use-auth";
+import useScreenSize from "@/hooks/product/use-Screen";
 import { useReviewsUpdate } from "@/hooks/product/use-reviews";
 
 export default function Ratecard({
@@ -23,6 +24,7 @@ export default function Ratecard({
   date = "",
   mutate = () => {},
 }) {
+  const { width } = useScreenSize();
   const router = useRouter();
   const { user } = useAuth();
   const rateNum = rate ? rate.toString() : "";
@@ -198,7 +200,9 @@ export default function Ratecard({
                   >
                     <img src={`http://localhost:5000/auth/${img}`} alt="" />
                     <h6>{userName}</h6>
-                    <h6>{rateNow ? "(您)" : ""}</h6>
+                    <h6 style={{ fontSize: "12px" }}>
+                      {rateNow ? "(您)" : ""}
+                    </h6>
                   </button>
                   <div className={styles.StarGroup}>
                     <p>評分更新：</p>
@@ -254,10 +258,16 @@ export default function Ratecard({
                   >
                     <img src={`http://localhost:5000/auth/${img}`} alt="" />
                     <h6>{userName}</h6>
-                    <h6>{rateNow ? "(您已購買過此商品)" : ""}</h6>
+                    <h6 style={{ fontSize: "12px" }}>
+                      {rateNow && width > 499
+                        ? `(您已購買過此商品)`
+                        : width < 500
+                        ? "(已購買)"
+                        : ""}
+                    </h6>
                   </button>
                   <div className={styles.StarGroup}>
-                    <p>評分：</p>
+                    <p style={{ display: width < 500 ? "none" : "" }}>評分：</p>
                     <StarGroup
                       rateUpdate={true}
                       rate={"1"}

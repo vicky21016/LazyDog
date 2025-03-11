@@ -325,7 +325,10 @@ export default function CartListPage(props) {
                 >
                   <img src="/product/font/left(orange).png" alt="" />
                 </button>
-                <ul className={`${styles.OtherLikeList} row`}>
+                <ul
+                  style={{ padding: 0 }}
+                  className={`${styles.OtherLikeList} row`}
+                >
                   {hotSale.length > 0 &&
                     hotSale?.map((v, i) => {
                       if (i < CardInt + hot && i >= hot) {
@@ -334,6 +337,7 @@ export default function CartListPage(props) {
                             key={`Card${i}`}
                             className="col"
                             layout
+                            style={{ padding: 0 }}
                             initial={{ opacity: 0, scale: 0 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0 }}

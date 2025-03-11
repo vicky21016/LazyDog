@@ -41,7 +41,7 @@ export default function Header(props) {
     };
     document.addEventListener("click", clickOutside);
     return () => document.removeEventListener("click", clickOutside);
-  }, [menuOpen]);
+  }, [menuRef.current, menuOpen]);
 
   const handleCartClick = async () => {
     if (!user) {
@@ -204,10 +204,10 @@ export default function Header(props) {
                   ? user.role === "operator"
                     ? "/hotel-coupon/operatorDetail"
                     : user.role === "teacher"
-                      ? "/teacher-sign/list"
-                      : user.role === "user"
-                        ? "/user"
-                        : "#"
+                    ? "/teacher-sign/list"
+                    : user.role === "user"
+                    ? "/user"
+                    : "#"
                   : "/login" // Or some default route if user is not logged in
               }
               className={styles["lumi-user-icon"]}
@@ -245,10 +245,10 @@ export default function Header(props) {
                     ? user.role === "operator"
                       ? "/hotel-coupon/operatorDetail"
                       : user.role === "teacher"
-                        ? "/teacher-sign/list"
-                        : user.role === "user"
-                          ? "/user"
-                          : "#"
+                      ? "/teacher-sign/list"
+                      : user.role === "user"
+                      ? "/user"
+                      : "#"
                     : "/login" // Or some default route if user is not logged in
                 }
                 className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
@@ -323,8 +323,9 @@ export default function Header(props) {
           <i
             ref={menuRef}
             onClick={() => setMenuOpen(!menuOpen)}
-            className={`${styles.menu} ${menuOpen ? "bi bi-x-lg" : "bi bi-list"
-              }`}
+            className={`${styles.menu} ${
+              menuOpen ? "bi bi-x-lg" : "bi bi-list"
+            }`}
           ></i>
           <nav className={styles["mobileMenubar"]}>
             <ul
@@ -341,15 +342,16 @@ export default function Header(props) {
                     setTeacherOpen(false);
                   }}
                 >
-                  <Link href="/product/list" className={styles["dropbtn"]}>
+                  <Link href="" className={styles["dropbtn"]}>
                     寵物用品
                   </Link>
                 </div>
                 <div
-                  className={`${PDOpen
-                    ? styles["dropdown-contentOn"]
-                    : styles["dropdown-contentOff"]
-                    }`}
+                  className={`${
+                    PDOpen
+                      ? styles["dropdown-contentOn"]
+                      : styles["dropdown-contentOff"]
+                  }`}
                 >
                   <a
                     href={`/product/list/category?category=乾糧`}
@@ -423,10 +425,11 @@ export default function Header(props) {
                   </Link>
                 </div>
                 <div
-                  className={`${teacherOpen
-                    ? styles["dropdown-contentOn"]
-                    : styles["dropdown-contentOff"]
-                    }`}
+                  className={`${
+                    teacherOpen
+                      ? styles["dropdown-contentOn"]
+                      : styles["dropdown-contentOff"]
+                  }`}
                 >
                   <Link
                     href="/course/list"
@@ -453,13 +456,14 @@ export default function Header(props) {
                     setTeacherOpen(false);
                   }}
                 >
-                  <Link href="/user">會員中心</Link>
+                  <Link href="">會員中心</Link>
                 </div>
                 <div
-                  className={`${userOpen
-                    ? styles["dropdown-contentOn"]
-                    : styles["dropdown-contentOff"]
-                    }`}
+                  className={`${
+                    userOpen
+                      ? styles["dropdown-contentOn"]
+                      : styles["dropdown-contentOff"]
+                  }`}
                 >
                   <Link
                     href={
@@ -467,10 +471,10 @@ export default function Header(props) {
                         ? user.role === "operator"
                           ? "/hotel-coupon/operatorDetail"
                           : user.role === "teacher"
-                            ? "/teacher-sign/list"
-                            : user.role === "user"
-                              ? "/user"
-                              : "#"
+                          ? "/teacher-sign/list"
+                          : user.role === "user"
+                          ? "/user"
+                          : "#"
                         : "/login" // Or some default route if user is not logged in
                     }
                     className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
