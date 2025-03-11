@@ -46,7 +46,7 @@ export default function Filter({ filterChange }) {
     setSearchText("");
     setselectCategories([]);
     setselectGenders([]);
-    filterChange([], []);
+    filterChange("", [], []);
   };
 
    // 一進入頁面就顯示所有老師

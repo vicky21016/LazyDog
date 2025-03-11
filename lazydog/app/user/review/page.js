@@ -40,7 +40,7 @@ export default function ReviewList() {
   }, [listOpen]);
   return (
     <div className={`col-12 col-xl-9 container ${styles.container}`}>
-      <h3 className="mb-4">評論列表</h3>
+      <h5 className="mb-4">評論列表</h5>
       <table className={`table table-striped table-hover ${styles.table}`}>
         <thead className="table-light">
           <tr className="row">

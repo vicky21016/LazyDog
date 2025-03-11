@@ -356,11 +356,13 @@ export default function CartListPayPage(props) {
                       <span>
                         {item.name} x {item.count}
                       </span>
-                      <span>NT$ {item.price * item.count}</span>
+                      <span>
+                        NT$ {Number(item.price * item.count).toLocaleString()}
+                      </span>
                     </div>
                   ))}
 
-                  {courseItems.map((item) => (
+                  {/* {courseItems.map((item) => (
                     <div
                       key={item.id}
                       className="d-flex justify-content-between mb-2"
@@ -368,9 +370,9 @@ export default function CartListPayPage(props) {
                       <span>
                         {item.name} x {item.count}
                       </span>
-                      <span>NT$ {item.price * item.count}</span>
+                      <span>NT$ { Number(item.price * item.count).toLocaleString() }</span>
                     </div>
-                  ))}
+                  ))} */}
 
                   {hotelItems.map((item) => (
                     <div
@@ -380,7 +382,9 @@ export default function CartListPayPage(props) {
                       <span>
                         {item.name} x {item.count}
                       </span>
-                      <span>NT$ {item.price * item.count}</span>
+                      <span>
+                        NT$ {Number(item.price * item.count).toLocaleString()}
+                      </span>
                     </div>
                   ))}
 
@@ -412,11 +416,11 @@ export default function CartListPayPage(props) {
                   {/* 折扣金額與最終金額 */}
                   <div className="d-flex justify-content-between mt-4">
                     <span className="subtext">折扣金額</span>
-                    <span>- NT$ {discountAmount.toFixed(0)}</span>
+                    <span>- NT$ {Number(discountAmount).toLocaleString()}</span>
                   </div>
                   <div className="d-flex justify-content-between mt-3">
                     <span className="subtext">最終金額</span>
-                    <span>NT$ {finalAmount.toFixed(0)}</span>
+                    <span>NT$ {Number(finalAmount).toLocaleString()}</span>
                   </div>
 
                   {/* 付款按鈕 */}

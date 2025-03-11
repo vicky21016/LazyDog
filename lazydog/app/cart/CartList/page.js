@@ -112,7 +112,7 @@ export default function CartListPage(props) {
                             />
                           </td>
                           <td>{cartItem.name}</td>
-                          <td>{cartItem.price}</td>
+                          <td>{Number(cartItem.price).toLocaleString()}</td>
                           <td className={`${styles.Btn}`}>
                             <button onClick={() => onIncrease(cartItem.id)}>
                               +
@@ -122,7 +122,11 @@ export default function CartListPage(props) {
                               -
                             </button>
                           </td>
-                          <td>{cartItem.count * cartItem.price}</td>
+                          <td>
+                            {Number(
+                              cartItem.count * cartItem.price
+                            ).toLocaleString()}
+                          </td>
                           <td>
                             <button
                               style={{
@@ -149,7 +153,7 @@ export default function CartListPage(props) {
                   <Thead />
                   <tbody>
                     {/* 顯示課程 */}
-                    {courseItems.map((cartItem) => (
+                    {/* {courseItems.map((cartItem) => (
                       <tr key={cartItem.id}>
                         <td className={styles.table}>
                           <img
@@ -158,7 +162,7 @@ export default function CartListPage(props) {
                           />
                         </td>
                         <td>{cartItem.name}</td>
-                        <td>{cartItem.price}</td>
+                        <td>{Number(cartItem.price).toLocaleString()}</td>
                         <td className={`${styles.Btn}`}>
                           <button onClick={() => onIncrease(cartItem.id)}>
                             +
@@ -168,7 +172,7 @@ export default function CartListPage(props) {
                             -
                           </button>
                         </td>
-                        <td>{cartItem.count * cartItem.price}</td>
+                        <td>{Number(cartItem.count * cartItem.price).toLocaleString()}</td>
                         <td>
                           <button
                             style={{
@@ -184,7 +188,7 @@ export default function CartListPage(props) {
                           </button>
                         </td>
                       </tr>
-                    ))}
+                    ))} */}
                   </tbody>
                 </>
               )}
@@ -210,7 +214,7 @@ export default function CartListPage(props) {
                           <br />
                           退房: {cartItem.checkOutDate || "未填寫"}
                         </td>
-                        <td>{cartItem.price}</td>
+                        <td>{Number(cartItem.price).toLocaleString()}</td>
                         <td className={`${styles.Btn}`}>
                           <button onClick={() => onIncrease(cartItem.id)}>
                             +
@@ -220,7 +224,11 @@ export default function CartListPage(props) {
                             -
                           </button>
                         </td>
-                        <td>{cartItem.count * cartItem.price}</td>
+                        <td>
+                          {Number(
+                            cartItem.count * cartItem.price
+                          ).toLocaleString()}
+                        </td>
                         {/* 新增日期顯示 */}
                         <td>
                           <button
@@ -251,19 +259,25 @@ export default function CartListPage(props) {
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>商品小計</span>
-                  <span>{`NT$ ${totalProductAmount}`}</span>
+                  <span>{`NT$ ${Number(
+                    totalProductAmount
+                  ).toLocaleString()}`}</span>
                 </div>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>課程小計</span>
-                  <span>{`NT$ ${totalCourseAmount}`}</span>
+                  <span>{`NT$ ${Number(
+                    totalCourseAmount
+                  ).toLocaleString()}`}</span>
                 </div>
                 <div
                   className={`${styles.summaryItem} d-flex justify-content-between`}
                 >
                   <span>旅館小計</span>
-                  <span>{`NT$ ${totalHotelAmount}`}</span>
+                  <span>{`NT$ ${Number(
+                    totalHotelAmount
+                  ).toLocaleString()}`}</span>
                 </div>
               </div>
 
@@ -278,9 +292,9 @@ export default function CartListPage(props) {
                 className={`${styles.summaryItem} ${styles.summaryItem2} d-flex justify-content-between`}
               >
                 <span>總金額:</span>
-                <span
-                  className={styles.totalmoney}
-                >{`NT$ ${totalAmount}`}</span>
+                <span className={styles.totalmoney}>{`NT$ ${Number(
+                  totalAmount
+                ).toLocaleString()}`}</span>
               </div>
 
               {/* 結帳按鈕 */}
