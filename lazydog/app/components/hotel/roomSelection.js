@@ -186,9 +186,11 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
                   unoptimized
                 />
                 <div className="card-body">
-                  <h3 className={`mb-4 ${hotelStyles.room}`}>{room.room_type_name}</h3>
+                  <h3 className={`mb-4 ${hotelStyles.room}`}>
+                    {room.room_type_name}
+                  </h3>
                   <p className={hotelStyles.suRoomPrice}>
-                    價格: {room.price} 元
+                    價格: {Number(room.price).toLocaleString()} 元
                   </p>
                   <p>允許寵物體型: {room.allowed_pet_size}</p>
                   <p>
@@ -200,7 +202,9 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
                       handleQuantityChange(room.id, Number(e.target.value))
                     }
                   >
-                    <option className={` ${hotelStyles.option}`} value="">選擇數量</option>
+                    <option className={` ${hotelStyles.option}`} value="">
+                      選擇數量
+                    </option>
                     {[...Array(room.available).keys()].map((num) => (
                       <option key={num + 1} value={num + 1}>
                         {num + 1}

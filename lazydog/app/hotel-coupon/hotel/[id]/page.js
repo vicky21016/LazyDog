@@ -85,7 +85,11 @@ export default function HotelDetailPage() {
   return (
     <>
       <Header />
-      <div className={`container ${styles.wrapper} ${isDeleted ? "opacity-50" : ""}`}>
+      <div
+        className={`container ${styles.wrapper} ${
+          isDeleted ? "opacity-50" : ""
+        }`}
+      >
         <div className="row">
           <My />
 
@@ -94,7 +98,7 @@ export default function HotelDetailPage() {
               <h5 className="mb-3">旅館資訊</h5>
               <form id="hotelForm">
                 <div className={`section ${hotelStyles.suSection}`}>
-                  <h5>基本資訊</h5>
+                  <h5 className="mb-3">基本資訊</h5>
                   <div className="mb-3">
                     <label className="form-label">
                       旅館名稱 <span style={{ color: "red" }}>*</span>
@@ -134,7 +138,7 @@ export default function HotelDetailPage() {
 
                 {/* 旅館圖片區域 */}
                 <div className={`section ${hotelStyles.suSection}`}>
-                  <h5>旅館圖片</h5>
+                  <h5 className="mb-3">旅館圖片</h5>
                   <div className="d-flex flex-wrap gap-3 mb-2">
                     {hotelImages.length > 0 ? (
                       hotelImages.map((img, index) => {
@@ -168,7 +172,7 @@ export default function HotelDetailPage() {
 
                 {/* 修正營業時間顯示 */}
                 <div className={`section ${hotelStyles.suSection}`}>
-                  <h5>營業時間</h5>
+                  <h5 className="mb-3">營業時間</h5>
                   <div className="mb-3 d-flex align-items-center">
                     <input
                       type="text"
@@ -188,7 +192,7 @@ export default function HotelDetailPage() {
 
                 {/* 旅館簡介 */}
                 <div className={`section ${hotelStyles.suSection}`}>
-                  <h5>旅館簡介</h5>
+                  <h5 className="mb-3">旅館簡介</h5>
                   <textarea
                     className="form-control"
                     value={hotel?.introduce || "未提供"}

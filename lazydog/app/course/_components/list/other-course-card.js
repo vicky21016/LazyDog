@@ -24,11 +24,17 @@ export default function OtherCourseCard() {
   // console.log(latest);
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % latest.length);
+    setCurrentIndex((prev) => {
+      const newIndex = prev + 1;
+      return newIndex >= latest.length ? 0 : newIndex;
+    });
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + latest.length) % latest.length);
+    setCurrentIndex((prev) => {
+      const newIndex = prev - 1;
+      return newIndex < 0 ? latest.length - 1 : newIndex;
+    });
   };
 
   return (
@@ -44,7 +50,6 @@ export default function OtherCourseCard() {
               onClick={prevSlide}
             >
               <FaArrowLeftLong className="fs-5" />
-              {/* <img src="/course/img/arrow-left.png" alt={`往左箭頭`} /> */}
             </button>
             <button
               type="button"
@@ -52,11 +57,9 @@ export default function OtherCourseCard() {
               onClick={nextSlide}
             >
               <FaArrowRightLong className="fs-5" />
-              {/* <img src="/course/img/arrow-right.png" alt={`往右箭頭`} /> */}
             </button>
           </div>
         </div>
-        {/* <div className={`row gy-5 ${styles.sCards}`}> */}
         <motion.div
           className={`row gy-5 ${styles.sCards}`}
           initial={{ opacity: 0, scale: 0 }}

@@ -34,7 +34,7 @@ const Hotel = ({ hotelOrders }) => {
               </p>
             </div>
             <span className={couponStyles.suPrice}>
-              NT {order.final_amount.split(".")[0]}
+              NT$ {Math.floor(order.final_amount).toLocaleString()}
             </span>
           </div>
         );

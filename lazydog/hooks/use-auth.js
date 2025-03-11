@@ -57,6 +57,34 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const resetPassword = async (token, otp, newPassword, confirmNewPassword) => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/auth/forgot-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            token,
+            otp,
+            newPassword,
+            confirmNewPassword,
+          }),
+        }
+      );
+      const data = await response.json();
+      if (data.status !== "success") {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      throw error;
+    }
+  };
+
   // Google 登入
   const googleLogin = async () => {
     try {
@@ -100,6 +128,25 @@ export function AuthProvider({ children }) {
       }
     } catch (error) {
       console.error("Google 登入錯誤:", error);
+    }
+  };
+  const generateOtp = async (email) => {
+    try {
+      const response = await fetch("http://localhost:5000/auth/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      if (data.status !== "success") {
+        throw new Error(data.message);
+      }
+      return data.data.token;
+    } catch (error) {
+      console.error("Error generating OTP:", error);
+      throw error;
     }
   };
 
@@ -391,7 +438,17 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, googleLogin, logout, register, save, updateAvatar }}
+      value={{
+        user,
+        login,
+        googleLogin,
+        logout,
+        register,
+        save,
+        updateAvatar,
+        generateOtp,
+        resetPassword,
+      }}
     >
       {children}
     </AuthContext.Provider>
