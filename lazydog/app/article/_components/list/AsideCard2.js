@@ -7,28 +7,32 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 export default function AsideCard({ id, title, cover_image, created_at }) {
     return (
         <>
-           
-           <Link
+
+            <Link
                 href={{ pathname: `/article/detail/${id}`, query: { list: "true" } }}
                 // className={styles.asideRead}
                 className={`${styles.asideRead2} row mt-2`}
             >
-                <div className="col-3">
-                    <div
-                    className="ratio ratio-1x1 w-100"
-                    >
-                        <img
-                            // className="w-100"
-                            src={cover_image}
-                            alt=""
-                            style={{ objectFit: 'cover' }}
-                        />
-                    </div>
-                </div>
                 <div
-                    className="col-9">
-                    <div className={styles.title}>{title}</div>
-                    <p style={{ color: '#9F9F9F' }}>{created_at}</p>
+                    style={{ display: 'flex' }}
+                >
+                    <div className="col-3">
+                        <div
+                            className="ratio ratio-1x1 w-100"
+                        >
+                            <img
+                                // className="w-100"
+                                src={cover_image}
+                                alt=""
+                                style={{ objectFit: 'cover' }}
+                            />
+                        </div>
+                    </div>
+                    <div
+                        className="col-9">
+                        <div className={styles.title2}>{title}</div>
+                        <p style={{ color: '#9F9F9F' }}>{created_at}</p>
+                    </div>
                 </div>
             </Link>
         </>
