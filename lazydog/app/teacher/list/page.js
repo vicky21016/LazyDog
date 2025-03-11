@@ -12,7 +12,7 @@ import style1 from "../../product/list/list.module.css";
 import style from "../../user/menu.module.css";
 
 export default function App() {
-  const { teachers = [] , loading} = useTeachers();
+  const { teachers = [], loading } = useTeachers();
   const [filtered, setFiltered] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false); // 控制篩選選單開關
 
@@ -26,17 +26,24 @@ export default function App() {
   // 分頁
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 9;
-  const totalPages = filtered.length > 0 ? Math.ceil(filtered.length / perPage) : 1;
+  const totalPages =
+    filtered.length > 0 ? Math.ceil(filtered.length / perPage) : 1;
 
   const startIndex = (currentPage - 1) * perPage;
-  const currentTeacher = (filtered || []).slice(startIndex, startIndex + perPage);
+  const currentTeacher = (filtered || []).slice(
+    startIndex,
+    startIndex + perPage
+  );
 
   // 處理篩選條件
   const filter = (searchText, selectCategories, selectGenders) => {
     const filterData = teachers.filter(
       (teacher) =>
-        (searchText === "" || teacher.name.includes(searchText) || teacher.category_name.includes(searchText)) &&
-        (selectCategories.length === 0 || selectCategories.includes(teacher.category_name)) &&
+        (searchText === "" ||
+          teacher.name.includes(searchText) ||
+          teacher.category_name.includes(searchText)) &&
+        (selectCategories.length === 0 ||
+          selectCategories.includes(teacher.category_name)) &&
         (selectGenders.length === 0 || selectGenders.includes(teacher.gender))
     );
 
@@ -47,7 +54,11 @@ export default function App() {
   // 點擊畫面其他地方時，自動關閉篩選選單
   useEffect(() => {
     const clickOutside = (event) => {
-      if (filterOpen && !event.target.closest(`.${styles.asideContainer}`) && !event.target.closest(`.${styles.filterButton}`)) {
+      if (
+        filterOpen &&
+        !event.target.closest(`.${styles.asideContainer}`) &&
+        !event.target.closest(`.${styles.filterButton}`)
+      ) {
         setFilterOpen(false);
       }
     };
@@ -60,14 +71,13 @@ export default function App() {
       setCurrentPage(1);
     }
   }, [totalPages]);
-  
-  if (loading) return
-  <>
-      <div className={style.container2}>
-          <div className={style.loader27}></div>
-         </div>
-       </>
 
+  if (loading) return;
+  <>
+    <div className={style.container2}>
+      <div className={style.loader27}></div>
+    </div>
+  </>;
 
   return (
     <>
@@ -75,63 +85,118 @@ export default function App() {
       <div className="lumi-all-wrapper">
         <div className={`${styles.collapseAside} d-lg-none`}>
           <div className={`${styles.collapseAsideContent}`}>
-          <button
-            className={`btn d-md-none ${styles.right}`}
-            onClick={() => setFilterOpen(!filterOpen)}
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#filterOffcanvas"
-            aria-expanded="false"
-            aria-controls="filterOffcanvas"
-          >
-           <i className="bi bi-chevron-right"></i>
-          </button>
+            <button
+              className={`btn d-md-none ${styles.right}`}
+              onClick={() => setFilterOpen(!filterOpen)}
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#filterOffcanvas"
+              aria-expanded="false"
+              aria-controls="filterOffcanvas"
+            >
+              <i className="bi bi-chevron-right"></i>
+            </button>
           </div>
         </div>
         <div className={styles.container}>
           <section className={style1.DmArea}>
-          <div className={`mt-5 lumi-all-wrapper ${styles.courseContainer}`}>
-      <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-          {/* 指示器 */}
-          <div className={`carousel-indicators ${styles.carouselbtn}`}>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6"></button>
-          </div>
-          <div className={`carousel-inner ${styles.carouselTrack}`} >
-            {/* 第一個課程 */}
-            <div className={`carousel-item active ${styles.carouselItem}`}>
-            <img className="d-block w-100" src="/teacher-img/m1.jpg" />
+            <div className={`mt-5 lumi-all-wrapper ${styles.courseContainer}`}>
+              <div
+                id="carouselExampleIndicators"
+                className="carousel slide"
+                data-bs-ride="carousel"
+                data-bs-interval="3000"
+              >
+                {/* 指示器 */}
+                <div className={`carousel-indicators ${styles.carouselbtn}`}>
+                  <button
+                    type="button"
+                    data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to="0"
+                    className="active"
+                    aria-current="true"
+                    aria-label="Slide 1"
+                  ></button>
+                  <button
+                    type="button"
+                    data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to="1"
+                    aria-label="Slide 2"
+                  ></button>
+                  <button
+                    type="button"
+                    data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to="2"
+                    aria-label="Slide 3"
+                  ></button>
+                  <button
+                    type="button"
+                    data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to="3"
+                    aria-label="Slide 4"
+                  ></button>
+                  <button
+                    type="button"
+                    data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to="4"
+                    aria-label="Slide 5"
+                  ></button>
+                  <button
+                    type="button"
+                    data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to="5"
+                    aria-label="Slide 6"
+                  ></button>
+                </div>
+                <div className={`carousel-inner ${styles.carouselTrack}`}>
+                  {/* 第一個課程 */}
+                  <div
+                    className={`carousel-item active ${styles.carouselItem}`}
+                  >
+                    <img className="d-block w-100" src="/teacher-img/m1.jpg" />
+                  </div>
+                  <div className={`carousel-item ${styles.carouselItem}`}>
+                    <img className="d-block w-100" src="/teacher-img/m2.jpg" />
+                  </div>
+                  <div className={`carousel-item ${styles.carouselItem}`}>
+                    <img className="d-block w-100" src="/teacher-img/m5.jpg" />
+                  </div>
+                  <div className={`carousel-item ${styles.carouselItem}`}>
+                    <img className="d-block w-100" src="/teacher-img/m6.png" />
+                  </div>
+                  <div className={`carousel-item ${styles.carouselItem}`}>
+                    <img className="d-block w-100" src="/teacher-img/m3.jpg" />
+                  </div>
+                  <div className={`carousel-item ${styles.carouselItem}`}>
+                    <img className="d-block w-100" src="/teacher-img/m7.jpg" />
+                  </div>
+                  <button
+                    className="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="prev"
+                  >
+                    <span
+                      className="carousel-control-prev-icon"
+                      aria-hidden="true"
+                    ></span>
+                    <span className="visually-hidden">Previous</span>
+                  </button>
+                  <button
+                    className="carousel-control-next"
+                    type="button"
+                    data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="next"
+                  >
+                    <span
+                      className="carousel-control-next-icon"
+                      aria-hidden="true"
+                    ></span>
+                    <span className="visually-hidden">Next</span>
+                  </button>
+                </div>
+              </div>
             </div>
-            <div className={`carousel-item ${styles.carouselItem}`}>
-            <img className="d-block w-100" src="/teacher-img/m2.jpg" />
-            </div>
-            <div className={`carousel-item ${styles.carouselItem}`}>
-            <img className="d-block w-100" src="/teacher-img/m5.jpg" />
-            </div>
-            <div className={`carousel-item ${styles.carouselItem}`}>
-            <img className="d-block w-100" src="/teacher-img/m6.png" />
-            </div>
-            <div className={`carousel-item ${styles.carouselItem}`}>
-            <img className="d-block w-100" src="/teacher-img/m3.jpg" />
-            </div>
-            <div className={`carousel-item ${styles.carouselItem}`}>
-            <img className="d-block w-100" src="/teacher-img/m7.jpg" />
-            </div>
-            <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span className="visually-hidden">Previous</span>
-        </button>
-        <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-          <span className="carousel-control-next-icon" aria-hidden="true"></span>
-          <span className="visually-hidden">Next</span>
-        </button>
-          </div>
-        </div>
-      </div>
           </section>
           <section className={styles.BreadcrumbsTitle}>
             <Breadcrumb
@@ -161,22 +226,22 @@ export default function App() {
 
               {/* 手機版篩選選單 (滑入效果) */}
               <div
-        className="offcanvas offcanvas-start"
-        tabIndex="-1"
-        id="filterOffcanvas"
-        aria-labelledby="filterOffcanvasLabel"
-      > 
-               <div className="offcanvas-header">
-      {/* <h5 className="offcanvas-title" id="filterOffcanvasLabel">
+                className="offcanvas offcanvas-start"
+                tabIndex="-1"
+                id="filterOffcanvas"
+                aria-labelledby="filterOffcanvasLabel"
+              >
+                <div className="offcanvas-header">
+                  {/* <h5 className="offcanvas-title" id="filterOffcanvasLabel">
           篩選
         </h5> */}
-      <button
-        type="button"
-        className="btn-close text-reset"
-        data-bs-dismiss="offcanvas"
-        aria-label="Close"
-      ></button>
-    </div>
+                  <button
+                    type="button"
+                    className="btn-close text-reset"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"
+                  ></button>
+                </div>
                 <Filter filterChange={filter} />
               </div>
 
@@ -198,12 +263,11 @@ export default function App() {
                     <p className="text-center">沒有符合條件的老師</p>
                   )}
                 </div>
-                <Page 
-  totalPages={totalPages} 
-  currentPage={currentPage} 
-  onPageChange={setCurrentPage} 
-/>
-
+                <Page
+                  totalPages={totalPages}
+                  currentPage={currentPage}
+                  onPageChange={setCurrentPage}
+                />
               </div>
             </div>
           </section>
