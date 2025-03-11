@@ -28,6 +28,7 @@ export const getIdS = async (id) => {
     const sqlString = 
     `SELECT articles.*, 
     article_img.url AS cover_image, 
+    users.id AS user_id, 
     users.name AS name, 
     article_type.name AS category_name, 
     comments.id AS comment_id, 

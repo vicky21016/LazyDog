@@ -12,26 +12,15 @@ export default function MyCard3({ title, author_image, content, article_id, auth
             <Link
                 href={{ pathname: `/article/detail/${article_id}`, query: { list: "true" } }}
                 className={`card mb-3 ${styles.commentCard}`}
-                style={{
-                   
-                    // paddingTop:'10px'
-                }}>
-                <div 
-                // className="row g-0"
-                className={`row g-0 ${styles.author}`}
-                style={{}}
+            >
+                <div
+                    className={`row g-0 ${styles.author}`}
                 >
-                    {/* <div className="col-md-4">
-                        <img src='http://localhost:5000/api/articles/image4.jpg'
-                            className="img-fluid rounded-start"
-                            style={{ width: '100%', height: '200px', objectFit: 'cover', overflow: 'hidden' }} />
-                    </div> */}
                     <div
                         className="col-md-1 "
-                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingLeft: '10px',height:'100%' }}
+                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingLeft: '10px', height: '100%' }}
                     >
                         <div
-                            // className="w-100"
                             style={{ width: '80px' }}
                         >
                             <div
@@ -43,7 +32,6 @@ export default function MyCard3({ title, author_image, content, article_id, auth
                                 <div>{author}</div>
                             </div>
                         </div>
-
                     </div>
                     <div
                         className="col-md-11 "
@@ -52,8 +40,6 @@ export default function MyCard3({ title, author_image, content, article_id, auth
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <div
                                     className={`${styles.link}`}
-
-                                // style={{ marginRight: '3px' }}
                                 >
                                     {content}
                                 </div>
