@@ -2,12 +2,11 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import styles from "../courseList.module.css";
-import Link from "next/link";
+// import Link from "next/link";
 
-// swiper
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 import { Autoplay, Pagination } from "swiper/modules";
+import "swiper/css";
 
 export default function News() {
   // const [newest, setNewest] = useState(null);
@@ -26,18 +25,18 @@ export default function News() {
 
   return (
     <>
-      <div className={`container d-none d-lg-block ${styles.new}`}>
+      <div className={` d-none d-lg-block ${styles.new}`}>
         {/* 影片slide */}
         <Swiper
-          spaceBetween={100}
-          centeredSlides={true}
+          spaceBetween={0}
+          // centeredSlides={true}
           autoplay={{
             delay: 6000,
             disableOnInteraction: false,
           }}
-          pagination={{
-            clickable: true,
-          }}
+          // pagination={{
+          //   clickable: true,
+          // }}
           // navigation={true}
           modules={[Autoplay, Pagination]}
           className={`mySwiper `}
@@ -50,7 +49,7 @@ export default function News() {
               playsInline
               className={styles.newVideoDogs}
             >
-              <source src="/course/video/dogplay.mp4" type="video/mp4" />
+              <source src="/course/video/sunshine.mp4" type="video/mp4" />
             </video>
           </SwiperSlide>
           <SwiperSlide className={styles.newCard}>
@@ -61,7 +60,7 @@ export default function News() {
               playsInline
               className={styles.newVideoPeople}
             >
-              <source src="/course/video/peopleWdog.mp4" type="video/mp4" />
+              <source src="/course/video/highfive.mp4" type="video/mp4" />
             </video>
           </SwiperSlide>
         </Swiper>
