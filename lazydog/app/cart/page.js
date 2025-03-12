@@ -1,11 +1,12 @@
 "use client";
-
-import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function CartPage(props) {
+  const router = useRouter();
+  router.push("/cart/CartList");
   return (
     <>
-      <div>Cart Page</div>
+
     </>
   );
 }
