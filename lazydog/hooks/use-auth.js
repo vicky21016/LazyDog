@@ -57,34 +57,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const resetPassword = async (token, otp, newPassword, confirmNewPassword) => {
-    try {
-      const response = await fetch(
-        "http://localhost:5000/auth/forgot-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: new URLSearchParams({
-            token,
-            otp,
-            newPassword,
-            confirmNewPassword,
-          }),
-        }
-      );
-      const data = await response.json();
-      if (data.status !== "success") {
-        throw new Error(data.message);
-      }
-      return data;
-    } catch (error) {
-      console.error("Error resetting password:", error);
-      throw error;
-    }
-  };
-
+ 
   // Google 登入
   const googleLogin = async () => {
     try {
@@ -130,6 +103,7 @@ export function AuthProvider({ children }) {
       console.error("Google 登入錯誤:", error);
     }
   };
+  // 獲取驗證碼
   const generateOtp = async (email) => {
     try {
       const response = await fetch("http://localhost:5000/auth/generate", {
@@ -143,12 +117,49 @@ export function AuthProvider({ children }) {
       if (data.status !== "success") {
         throw new Error(data.message);
       }
+      // localStorage.setItem("otpToken", data.data.token); // 新增這行
       return data.data.token;
     } catch (error) {
       console.error("Error generating OTP:", error);
       throw error;
     }
   };
+  // 密碼重設
+  const resetPassword = async (token, otp, newPassword, confirmNewPassword) => {
+    try {
+      const response = await fetch("http://localhost:5000/auth/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token,
+          otp,
+          newPassword,
+          confirmNewPassword,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (data.status !== "success") {
+        throw new Error(data.message);
+      }
+      if(!user){
+        router.push("/login");
+      }
+      else{
+        router.push("/user");
+      }
+      return data;
+      
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      throw error;
+    }
+  };
+  
+
 
   // 登出
   const logout = async () => {
