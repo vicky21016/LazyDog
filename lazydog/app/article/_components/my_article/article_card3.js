@@ -1,12 +1,14 @@
 "use client";
 
 import useArticle from "@/hooks/useArticle"; // 確保導入正確的 Hook
+import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
 import styles from "../my_article/page.module.css";
 import Link from "next/link";
 
-export default function MyCard3({ title, author_image, content, article_id, author }) {
-    console.log(author_image)
+export default function MyCard3({ title, content, article_id, author }) {
+    const { user } = useAuth();
+    // console.log(user)
     return (
         <>
             <Link
@@ -26,7 +28,10 @@ export default function MyCard3({ title, author_image, content, article_id, auth
                             <div
                                 className="avatar ratio ratio-1x1 rounded-circle overflow-hidden"
                             >
-                                <img className="object-fit-cover" src={author_image} />
+                                <img className="object-fit-cover" 
+                                src={user.avatar} 
+
+                                />
                             </div>
                             <div className="d-flex justify-content-center">
                                 <div>{author}</div>
