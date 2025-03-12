@@ -274,7 +274,7 @@ router.post("/register", upload.none(), async (req, res) => {
     const createdAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
     const sql =
-      "INSERT INTO `users` (`email`, `password`, `created_at`) VALUES (?, ?, ?)";
+      "INSERT INTO `users` (`email`, `password`, `created_at`,user_img) VALUES (?, ?, ?,Dog5.png)";
     const [result] = await pool.execute(sql, [
       email,
       hashedPassword,
@@ -342,7 +342,6 @@ router.post("/logout", checkToken, (req, res) => {
     secretKey,
     { expiresIn: "-10s" }
   );
-
   res.json({
     status: "success",
     data: { token },
@@ -564,6 +563,94 @@ function checkToken(req, res, next) {
     next();
   });
 }
+// 在 authRoutes.js 中新增以下路由處理 Google 登入：
+router.post("/google/google-login", upload.none(), async (req, res) => {
+  const { google_id, email, name, avatar_url } = req.body;
+
+  try {
+    if (!google_id || !email || !name) {
+      return res.status(400).json({ status: "error", message: "缺少必要欄位" });
+    }
+
+    // 檢查使用者是否已存在
+    const [existUser] = await pool.execute(
+      "SELECT * FROM users WHERE google_id = ?",
+      [google_id]
+    );
+
+    let user;
+    if (existUser.length > 0) {
+      // 使用者已存在，直接取得使用者資料
+      user = existUser[0];
+    } else {
+      // 使用者不存在，新增使用者
+      const createdAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+      const insertSql =
+        "INSERT INTO users (google_id, email, name, user_img, created_at) VALUES (?, ?, ?, ?, ?)";
+      const [result] = await pool.execute(insertSql, [
+        google_id,
+        email,
+        name,
+        avatar_url,
+        createdAt,
+      ]);
+
+      // 重新查詢使用者資料
+      const [newUser] = await pool.execute(
+        "SELECT * FROM users WHERE google_id = ?",
+        [google_id]
+      );
+      user = newUser[0];
+    }
+     // 產生Token
+     const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+        role: user.role || "user",// 如果沒有role給預設值user
+        name: user.name,
+        birthday: user.birthday,
+        gender: user.gender,
+        phone: user.phone,
+        avatar: await getAvatar(user.user_img),
+        teacher_id: user.teacher_id,
+        company_name: user.company_name,
+        business_license_number: user.business_license_number,
+        county: user.county,
+        district: user.district,
+        address: user.address,
+      },
+      secretKey,
+      {
+        expiresIn: "8h",
+      }
+    );
+    res.status(200).json({
+      status: "success",
+      data: { token },
+      message: "登入成功",
+    });
+    // console.log(data);
+    
+    // res.json({
+    //   status: "success",
+    //   token: {token},
+    //   // user: {
+    //   //   id: user.id,
+    //   //   email: user.email,
+    //   //   name: user.name,
+    //   //   avatar_url: await getAvatar(user.user_img),
+    //   // },
+    // });
+  } catch (err) {
+    console.error("Google 登入錯誤:", err);
+    res
+      .status(500)
+      .json({ status: "error", message: "Google 登入失敗", error: err.message });
+  }
+});
+
+
 
 async function getAvatar(img) {
   const basePath = path.resolve("public/user/img");
