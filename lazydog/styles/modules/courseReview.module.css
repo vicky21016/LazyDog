@@ -225,13 +225,20 @@
   color: #f5842b;
   text-decoration: underline;
 }
-.suTable {
+
+.righttop {
+  h4 {
+    font-size: 24px;
+    font-weight: bold;
+    padding-top: 8px;
+  }
+}
+/* .suTable {
   width: 100%;
   table-layout: fixed;
-}
+} */
 
 .tdTsai {
-  padding: 10px;
   /* white-space: normal; */
   word-wrap: break-word;
   text-align: center;
@@ -240,6 +247,7 @@
   font-size: 15px;
   overflow: hidden;
   margin: 0 auto;
+  padding: 8px auto;
 }
 .thTsai {
   white-space: nowrap;
@@ -450,6 +458,17 @@
 
 /* 星星 */
 .starRate {
-  width: 30%;
+  width: 24%;
   padding-bottom: 5px;
+}
+
+/* Swal 彈跳窗 */
+.tsaiSwal {
+  width: 500px;
+  padding: 25px 15px;
+  font-size: 16px !important;
+  padding: 15px 40px 40px;
+  border-radius: 35px !important;
+  background-color: white !important;
+  color: #5e5e5e;
 }

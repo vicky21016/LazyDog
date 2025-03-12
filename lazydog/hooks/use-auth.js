@@ -6,6 +6,8 @@ import { auth, provider } from "@/app/components/utils/firebase"; // 確保路�
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
+import styles from "@/app/teacher-sign/css/teacherSignUser.module.css";
+
 const appKey = "loginWithToken";
 
 const AuthContext = createContext(null);
@@ -57,7 +59,6 @@ export function AuthProvider({ children }) {
     }
   };
 
- 
   // Google 登入
   const googleLogin = async () => {
     try {
@@ -127,39 +128,38 @@ export function AuthProvider({ children }) {
   // 密碼重設
   const resetPassword = async (token, otp, newPassword, confirmNewPassword) => {
     try {
-      const response = await fetch("http://localhost:5000/auth/forgot-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token,
-          otp,
-          newPassword,
-          confirmNewPassword,
-        }),
-      });
-  
+      const response = await fetch(
+        "http://localhost:5000/auth/forgot-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token,
+            otp,
+            newPassword,
+            confirmNewPassword,
+          }),
+        }
+      );
+
       const data = await response.json();
-  
+
       if (data.status !== "success") {
         throw new Error(data.message);
       }
-      if(!user){
+      if (!user) {
         router.push("/login");
-      }
-      else{
+      } else {
         router.push("/user");
       }
       return data;
-      
     } catch (error) {
       console.error("Error resetting password:", error);
       throw error;
     }
   };
-  
-
 
   // 登出
   const logout = async () => {
@@ -276,6 +276,9 @@ export function AuthProvider({ children }) {
           title: "儲存成功",
           showConfirmButton: false,
           timer: 1000,
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
         });
         // alert("儲存成功");
         const token = result.data.token;

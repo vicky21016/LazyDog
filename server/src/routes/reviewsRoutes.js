@@ -25,19 +25,18 @@
 //   }
 // });
 
-
 // // 取得單筆評論
 // router.get("/:id", async (req, res) => {
 //   try {
-//     const sql = `SELECT 
-//     cr.*, 
+//     const sql = `SELECT
+//     cr.*,
 //     u.name AS user_name
-// FROM 
+// FROM
 //     course_reviews cr
-// JOIN 
+// JOIN
 //     users u ON cr.user_id = u.id
-// WHERE 
-//     cr.course_id = ? 
+// WHERE
+//     cr.course_id = ?
 //     AND cr.is_deleted = 0;
 // `;
 //     const [review] = await pool.execute(sql, [req.params.id]);
@@ -119,17 +118,25 @@ router.post(
 );
 
 // 業者回覆評論
-router.post(
-  "/:id/reply",
-  verifyToken,
-  verifyRole(["operator"]),
-  replycourseReview
-);
+// router.post(
+//   "/:id/reply",
+//   verifyToken,
+//   verifyRole(["operator"]),
+//   replycourseReview
+// );
 
 // 刪除自己的評論包含圖片(只是軟刪除而已)
 router.delete("/:id", verifyToken, verifyRole(["user"]), deleteReview);
 
 // 取得特定course的所有評論
-router.get("/:course_id", getcourseReview);
+router.get(
+  "/:course_id",
+  verifyToken,
+  verifyRole(["teacher"]),
+  getcourseReview
+);
+
+// 老師回覆評論
+router.put("/reply", verifyToken, verifyRole(["teacher"]), replycourseReview);
 
 export default router;

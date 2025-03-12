@@ -1,6 +1,11 @@
 import pool from "../config/mysql.js";
 
-export const createcourseReviews = async (user_id, course_id, rating, comment) => {
+export const createcourseReviews = async (
+  user_id,
+  course_id,
+  rating,
+  comment
+) => {
   try {
     const [result] = await pool.query(
       "INSERT INTO course_reviews (user_id, course_id, rating, comment, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())",
@@ -15,23 +20,23 @@ export const createcourseReviews = async (user_id, course_id, rating, comment) =
     throw new Error("無法新增評論：" + error.message);
   }
 };
-export const replycourseReviews = async (review_id, operator_id, reply) => {
+export const replycourseReviews = async (reviewId, reply) => {
   try {
     const [review] = await pool.query(
       "SELECT * FROM course_reviews WHERE id = ?",
-      [review_id]
+      [reviewId]
     );
     if (review.length == 0) {
       throw new Error("找不到該評論，無法回覆");
     }
     await pool.query(
       "UPDATE course_reviews SET reply = ?, updated_at = NOW() WHERE id = ?",
-      [reply, review_id]
+      [reply, reviewId]
     );
     return {
       success: true,
       message: "評論回覆成功",
-      data: { review_id, reply },
+      data: { reviewId, reply },
     };
   } catch (error) {
     throw new Error("無法回覆評論：" + error.message);
@@ -41,10 +46,12 @@ export const getcourseReviews = async (course_id) => {
   try {
     // 取得評論（不包含圖片）
     const [reviews] = await pool.query(
-      `SELECT cr.*, u.name AS user_name
+      `SELECT cr.*, u.name AS user_name, course.name AS courseName
        FROM course_reviews cr
        JOIN users u ON cr.user_id = u.id
-       WHERE cr.course_id = ? AND cr.is_deleted = 0 
+       JOIN course ON course.id= cr.course_id
+       WHERE cr.course_id = ? 
+       AND cr.is_deleted = 0 
        ORDER BY cr.created_at DESC`,
       [course_id]
     );
@@ -52,12 +59,12 @@ export const getcourseReviews = async (course_id) => {
       return { success: true, message: "此飯店沒有評論", data: [] };
     }
     // 取得所有評論的 ID
-    const reviewIds = reviews.map((r) => r.id);
+    // const reviewIds = reviews.map((r) => r.id);
 
     // 取得這些評論的圖片
     // const [images] = await pool.query(
-    //   `SELECT id, review_id, url 
-    //    FROM course_review_images 
+    //   `SELECT id, review_id, url
+    //    FROM course_review_images
     //    WHERE review_id IN (?) AND is_deleted = 0`,
     //   [reviewIds]
     // );
