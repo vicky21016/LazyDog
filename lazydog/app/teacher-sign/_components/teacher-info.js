@@ -6,10 +6,10 @@ import styles from "../css/teacherSignInfo.module.css";
 import Swal from "sweetalert2";
 
 export default function TeacherInfo() {
-  const router = useRouter();
+  // const router = useRouter();
   const [infos, setInfos] = useState([]);
   const [types, setTypes] = useState([]);
-  const [teacherPic, setTeacherPic] = useState([]);
+  const [teacherPic, setTeacherPic] = useState(null);
 
   // 撈後台資料
   useEffect(() => {
@@ -22,7 +22,8 @@ export default function TeacherInfo() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setTeacherPic(data.data.infos[0].img);
+        console.log(data?.data?.infos[0].img);
+        setTeacherPic(data?.data?.infos[0].img);
         setInfos(data?.data?.infos[0]);
         setTypes(data.data.types);
       })
@@ -105,8 +106,12 @@ export default function TeacherInfo() {
       Swal.fire({
         title: "請選擇老師圖片",
         icon: "warning",
-        confirmButtonText: "確定",
+        timer: 2500,
         ...animationConfig,
+        showConfirmButton: false,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
       return;
     }
@@ -136,19 +141,22 @@ export default function TeacherInfo() {
     })
       .then((res) => res.json())
       .then((data) => {
-        alert("資料更新成功！");
         console.log("更新成功:", data);
         Swal.fire({
-          title: "老師資料更新成功！",
+          title: "師資更新成功！",
           icon: "success",
-          confirmButtonText: "確定",
+          // confirmButtonText: "確定",
           timer: 2000,
-          willClose: () => {
-            // 在 Swal 關閉後跳轉頁面
-            // router.push(`/teacher-sign/list`);
-          },
           ...animationConfig,
+          showConfirmButton: false,
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
+          // willClose: () => {
+          //   router.push(`/teacher-sign/list`);
+          // },
         });
+        // alert("資料更新成功！");
       })
       .catch((err) => console.error("Error updating data:", err));
   };
@@ -159,7 +167,7 @@ export default function TeacherInfo() {
         <form onSubmit={handleSubmit}>
           <div className={`${styles.right} p-5`}>
             <h4 className={`mb-4 ${styles.tTitle}`}>師資內容</h4>
-            <div className={`mb-4`}>
+            <div className={`mb-2`}>
               <div className={`row`}>
                 <div className={`col-md-6`}>
                   <label className={`form-label ${styles.labels}`}>
@@ -169,7 +177,7 @@ export default function TeacherInfo() {
                     type="text"
                     className={`form-control ${styles.controls}`}
                     name="name"
-                    value={infos?.name}
+                    defaultValue={infos?.name}
                     onChange={handleChange}
                   />
                 </div>
@@ -179,12 +187,12 @@ export default function TeacherInfo() {
                   </label>
                   <select
                     className={`form-select ${styles.controls}`}
-                    value={infos?.category_id}
+                    defaultValue={infos?.category_id}
                     name="category_id"
                     onChange={handleChange}
                   >
                     {types.map((t) => (
-                      <option key={t.type_id} value={t.type_id}>
+                      <option key={t.type_id} defaultValue={t.type_id}>
                         {t.name}
                       </option>
                     ))}
@@ -198,9 +206,9 @@ export default function TeacherInfo() {
                     className={`form-control ${styles.controls} ${styles.scrollOrg}`}
                     style={{ resize: "none" }}
                     id="exampleFormControlTextarea1"
-                    rows={10}
+                    rows={6}
                     name="Introduce"
-                    value={infos?.Introduce}
+                    defaultValue={infos?.Introduce}
                     onChange={handleChange}
                   />
                 </div>
@@ -212,9 +220,9 @@ export default function TeacherInfo() {
                     className={`form-control ${styles.controls} ${styles.scrollOrg}`}
                     style={{ resize: "none" }}
                     id="exampleFormControlTextarea1"
-                    rows={10}
+                    rows={8}
                     name="Experience"
-                    value={infos?.Experience}
+                    defaultValue={infos?.Experience}
                     onChange={handleChange}
                   />
                 </div>
@@ -260,7 +268,7 @@ export default function TeacherInfo() {
                         document.getElementById("teacherPicUpload").click()
                       }
                     >
-                      + 封面圖
+                      + 老師圖片
                     </button>
                     <input
                       type="file"
