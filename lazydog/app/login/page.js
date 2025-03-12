@@ -34,48 +34,80 @@ export default function AppPage({ logout }) {
     }
   };
 
+  // useEffect(() => {
+  //   const existingToken = localStorage.getItem(appKey);
+  //   console.log(existingToken);
+
+
+  //   if (existingToken) {
+
+
+  //     const newUser = JSON.parse(localStorage.getItem("user"));
+  //     if (newUser && newUser.role) { // 確保 newUser 和 newUser.role 存在
+  //       setUser(newUser);
+  //       switch (newUser.role) {
+  //         case "operator":
+  //           router.push("/hotel-coupon/operatorDetail"); // 轉入 operator
+  //           break;
+  //         case "teacher":
+  //           router.push("/teacher-sign/list"); // 轉入 teacher
+  //           break;
+  //         case "user":
+  //           router.push("/user");
+  //           break;
+  //         default:
+  //           alert("出現錯誤，請通知管理員");
+  //           break;
+  //       }
+  //     } else {
+  //       router.push("/user");
+  //     }
+  //     return;
+  //   }
+  // }, []);
+
   useEffect(() => {
     const existingToken = localStorage.getItem(appKey);
     console.log(existingToken);
 
-    if (existingToken) {
-      const newUser = JSON.parse(localStorage.getItem("user"));
-      if (newUser && newUser.role) { // 確保 newUser 和 newUser.role 存在
-        setUser(newUser);
-        switch (newUser.role) {
-          case "operator":
-            router.push("/hotel-coupon/operatorDetail"); // 轉入 operator
-            break;
-          case "teacher":
-            router.push("/teacher-sign/list"); // 轉入 teacher
-            break;
-          case "user":
-            router.push("/user");
-            break;
-          default:
-            alert("出現錯誤，請通知管理員");
-            break;
+    const checkUserAndRedirect = () => {
+      console.log(567);
+
+      if (existingToken) {
+        console.log(987);
+        const newUser = JSON.parse(localStorage.getItem("user"));
+        if (newUser && newUser.role) {
+          setUser(newUser);
+          switch (newUser.role) {
+            case "operator":
+              router.push("/hotel-coupon/operatorDetail");
+              break;
+            case "teacher":
+              router.push("/teacher-sign/list");
+              break;
+            case "user":
+              router.push("/user");
+              break;
+            default:
+              alert("出現錯誤，請通知管理員");
+              break;
+          }
+        } else {
+          router.push("/user");
         }
-      } else {
-        router.push("/user");
       }
-      return;
-    }
+    };
+
+    checkUserAndRedirect(); // 呼叫這個函數來執行檢查和跳轉
   }, []);
 
+
   useEffect(() => {
+
+
     if (!user) setCheckingAuth(false); // 檢查登入狀態
   }, [user]);
 
-  // if (checkingAuth) {
-  //   return (
-  //     <>
-  //       <div className={styles.container2}>
-  //         <div className={styles.loader27}></div>
-  //       </div>
-  //     </>
-  //   ); // 顯示載入中
-  // }
 
   return (
     <>
@@ -125,8 +157,9 @@ export default function AppPage({ logout }) {
             <p className={`${styles.separator}`}>
               <span>或使用社群帳號登入</span>
             </p>
-            <SocialLogin />
+
           </form>
+          <SocialLogin />
           <p className={`${styles.signup}`}>
             還不是會員？{" "}
             <Link href="/register" className={`${styles.register}`}>

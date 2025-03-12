@@ -58,7 +58,7 @@ app.use(
 );
 
 app.use("/auth", authRouter);
-app.use("/api/auth/google", googleRouter);
+// app.use("/api/auth/google", googleRouter);
 app.use("/teacher", teacherSignRouter);
 
 app.use("/api/read", readRoutes);
