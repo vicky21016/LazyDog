@@ -166,6 +166,7 @@
     align-items: center;
     justify-content: space-around;
     overflow: hidden;
+    margin-top: 34px;
     .enterMail {
       max-width: 170px;
       border: none;
