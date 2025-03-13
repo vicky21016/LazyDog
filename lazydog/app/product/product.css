@@ -25,29 +25,33 @@
     li {
       list-style: none;
       cursor: default;
-      /* user-select: none; */
+      user-select: none;
     }
   }
 
   a {
     text-decoration: none;
     /* color: var(--Black); */
+    user-select: none;
   }
 
   figure {
     margin: 0;
     padding: 0;
+    user-select: none;
   }
 
   button {
     border: none;
     background: none;
+    user-select: none;
   }
 
-  /* div {
-    margin: 0;
-    padding: 0;
-  } */
+  div {
+    /* margin: 0;
+    padding: 0; */
+    user-select: none;
+  }
 
   h1 {
     margin: 0;
@@ -56,6 +60,7 @@
     font-weight: 700;
     color: var(--Black); */
     cursor: default;
+    user-select: none;
   }
 
   h2 {
@@ -65,6 +70,7 @@
     font-weight: 500;
     color: var(--Black); */
     cursor: default;
+    user-select: none;
   }
 
   h3 {
@@ -73,6 +79,7 @@
     /* font-size: 20px;
     color: var(--Black); */
     cursor: default;
+    user-select: none;
   }
 
   h4 {
@@ -81,6 +88,7 @@
     /* font-size: 16px;
     color: var(--Black); */
     cursor: default;
+    user-select: none;
   }
 
   h5 {
@@ -89,6 +97,7 @@
     /* font-size: 14px;
     color: var(--Black); */
     cursor: default;
+    user-select: none;
   }
 
   h6 {
@@ -97,6 +106,7 @@
     /* font-size: 12px;
     color: var(--Black); */
     cursor: default;
+    user-select: none;
   }
 
   p {
@@ -105,6 +115,7 @@
     /* font-size: 10px;
     color: var(--Black); */
     cursor: default;
+    user-select: none;
   }
 }
 .PDLayout {
