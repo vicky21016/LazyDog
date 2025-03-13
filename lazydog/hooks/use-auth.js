@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
-    console.log(123);
+
     try {
       const res = await fetch(API, { method: "POST", body: formData });
       const result = await res.json();
@@ -65,7 +65,7 @@ export function AuthProvider({ children }) {
       const result = await signInWithPopup(auth, provider);
       const googleUser = result.user;
       setUser(googleUser);
-      console.log(googleUser);
+      // console.log(googleUser);
 
       const response = await fetch(
         "http://localhost:5000/auth/google/google-login",
@@ -82,11 +82,11 @@ export function AuthProvider({ children }) {
       );
 
       const data = await response.json();
-      console.log("伺服器回應：", data);
-      console.log(data.data.token);
+      // console.log("伺服器回應：", data);
+      // console.log(data.data.token);
       const token = data.data.token;
       const newUser = jwt.decode(token);
-      console.log(newUser);
+      // console.log(newUser);
       setUser(newUser);
       localStorage.setItem(appKey, data.data.token);
       localStorage.setItem("user", JSON.stringify(newUser));
@@ -173,6 +173,7 @@ export function AuthProvider({ children }) {
   //         avatar: data.user.avatar_url,
   //         role: "user",
 
+
   //       });
 
   //       router.push("/user");
@@ -183,6 +184,7 @@ export function AuthProvider({ children }) {
   //     console.error("Google 登入錯誤:", error);
   //   }
   // };
+
 
   // 獲取驗證碼
   const generateOtp = async (email) => {

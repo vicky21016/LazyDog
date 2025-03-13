@@ -56,7 +56,7 @@ const sendOTPEmail = async (email, otp) => {
     // Preview only available when sending through an Ethereal account
     // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     // console.log("OTP 郵件已發送至：", email);
-    console.log("OTP:", otp);
+  
   } catch (error) {
     console.error("發送 OTP 郵件失敗：", error);
     throw new Error("發送 OTP 郵件失敗");
@@ -86,8 +86,6 @@ router.post("/generate", upload.none(), async (req, res) => {
       VALUES (?, ?, ?, NOW(), ?)
     `;
     await pool.execute(sql, [email, token, hashedOTP, expiredAt]);
-    console.log(email);
-    console.log(otp);
 
     // 5. 寄送 OTP 郵件
     await sendOTPEmail(email, otp);
@@ -630,8 +628,7 @@ router.post("/google/google-login", upload.none(), async (req, res) => {
       data: { token },
       message: "登入成功",
     });
-    // console.log(data);
-    
+ 
     // res.json({
     //   status: "success",
     //   token: {token},
@@ -654,7 +651,7 @@ router.post("/google/google-login", upload.none(), async (req, res) => {
 
 async function getAvatar(img) {
   const basePath = path.resolve("public/user/img");
-  console.log(basePath);
+ 
 
   const defaultAvatar = "http://localhost:5000/auth/Dog5.png";
 

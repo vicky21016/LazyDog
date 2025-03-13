@@ -390,13 +390,16 @@ export default function HotelDetailPage({ params }) {
         )}
       </div>
       {/* 我們的努力 */}
+      <div>
+        <img className="" src="/teacher-img/rice.png" alt="" />
+      </div>
       <div className={hotelStyles.suEffortSection}>
         <div className={`container text-center ${hotelStyles.container}`}>
-          <h2 className={hotelStyles.suEffortTitle}>我們的努力，看的見</h2>
-          <p className={hotelStyles.suEffortSubtitle}>
+          <h2 className={`mb-4 ${hotelStyles.suEffortTitle}`}>我們的努力，看的見</h2>
+          <p className={`mb-5 ${hotelStyles.suEffortSubtitle}`}>
             每一次陪伴、每一小時的付出，都為毛孩創造更快樂、更健康的生活！
           </p>
-          <div className={hotelStyles.suEffortStats}>
+          <div className={`${hotelStyles.suEffortStats}`}>
             {[
               { img: "Dog2.png", text: "總服務時數：8,520+ 小時" },
               { img: "Dog5.png", text: "服務狗狗：1,200+ 隻" },
@@ -404,7 +407,7 @@ export default function HotelDetailPage({ params }) {
             ].map((item, index) => (
               <div key={index} className={hotelStyles.suStatItem}>
                 <Image
-                  className={hotelStyles.suStatImage}
+                  className={`mb-4 ${hotelStyles.suStatImage}`}
                   src={`/hotel/hotel-images/page-image/${item.img}`}
                   alt={item.text}
                   width={150}
@@ -414,7 +417,7 @@ export default function HotelDetailPage({ params }) {
               </div>
             ))}
           </div>
-          <div className={hotelStyles.suEffortButtons}>
+          <div className={`mt-4 ${hotelStyles.suEffortButtons}`}>
             <button className={`btn  ${hotelStyles.suBtnPrimary}`}>
               立即預約
             </button>
