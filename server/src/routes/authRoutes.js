@@ -56,7 +56,7 @@ const sendOTPEmail = async (email, otp) => {
     // Preview only available when sending through an Ethereal account
     // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     // console.log("OTP 郵件已發送至：", email);
-  
+
   } catch (error) {
     console.error("發送 OTP 郵件失敗：", error);
     throw new Error("發送 OTP 郵件失敗");
@@ -75,6 +75,7 @@ router.post("/generate", upload.none(), async (req, res) => {
     const token = uuidv4();
     // 2. 加密 OTP 存到資料庫
     const hashedOTP = await bcrypt.hash(otp, 10);
+    console.log(otp);
 
     // 3. 設定 OTP 過期時間 (例如：5 分鐘後)
     const expiredAt = new Date();
@@ -454,8 +455,9 @@ router.post(
     if (!file) {
       return res.status(400).json({ status: "error", message: "請上傳圖片" });
     }
+    console.log(file);
 
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif|jfif|PNG)$/)) {
       return res
         .status(400)
         .json({ status: "error", message: "上傳的圖片格式不正確" });
@@ -600,8 +602,8 @@ router.post("/google/google-login", upload.none(), async (req, res) => {
       );
       user = newUser[0];
     }
-     // 產生Token
-     const token = jwt.sign(
+    // 產生Token
+    const token = jwt.sign(
       {
         id: user.id,
         email: user.email,
@@ -628,7 +630,7 @@ router.post("/google/google-login", upload.none(), async (req, res) => {
       data: { token },
       message: "登入成功",
     });
- 
+
     // res.json({
     //   status: "success",
     //   token: {token},
@@ -651,7 +653,7 @@ router.post("/google/google-login", upload.none(), async (req, res) => {
 
 async function getAvatar(img) {
   const basePath = path.resolve("public/user/img");
- 
+
 
   const defaultAvatar = "http://localhost:5000/auth/Dog5.png";
 
