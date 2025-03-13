@@ -24,6 +24,17 @@
   color: #ff9538;
   text-decoration: none;
 }
+
+.userAvatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  margin-top: -10px; 
+}
+
+
 .lumiLogo1 {
   margin-left: 20px;
   width: 60px;
