@@ -221,21 +221,15 @@ export const updateArticle = async (req, res) => {
 // 刪除文章
 export const deleteArticle = async (req, res) => {
   try {
-    console.log(req.params);
     const { id } = req.params;
     // console.log("Article ID:", id);
     const article = await deleteArticleS(id);
-    console.log(101);
-    console.log(article);
-    // if (!article) {
-    //     return res.status(404).json({ error: "文章未找到" });
-    // }
-    console.log(37);
+  
 
     return res.json({ message: "文章刪除成功", deletedArticle: article }); // 成功刪除
   } catch (error) {
     return res.status(500).json({ error: error.message + "是我這裡出問題" });
-    // console.log("捕獲到的錯誤:", error);
+   
   }
 };
 

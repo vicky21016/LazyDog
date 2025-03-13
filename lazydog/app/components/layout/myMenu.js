@@ -59,7 +59,7 @@ export default function MyMenu() {
       localStorage.removeItem("token");
       setProfile(null); //  確保立即更新
       router.push("/login");
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
@@ -226,13 +226,19 @@ export default function MyMenu() {
         <div className={`${styles.container}`}>
           {/*  顯示會員頭像與名稱 */}
           <div className="lumi-profile-section position-relative d-inline-block">
-            <img
+            {profile && profile.avatar ? (<img
               ref={avatarRef}
               src={profile?.avatar}
               alt="User Avatar"
               className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
               width="50"
-            />
+            />) : (<img
+              ref={avatarRef}
+              src='http://localhost:5000/auth/Dog5.png'
+              alt="User Avatar"
+              className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
+              width="50"
+            />)}
             {/* <FontAwesomeIcon
               icon={faCamera}
               onClick={handleClick}
