@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
-    console.log(123);
+
     try {
       const res = await fetch(API, { method: "POST", body: formData });
       const result = await res.json();
@@ -65,7 +65,7 @@ export function AuthProvider({ children }) {
       const result = await signInWithPopup(auth, provider);
       const googleUser = result.user;
       setUser(googleUser);
-      console.log(googleUser);
+      // console.log(googleUser);
 
 
       const response = await fetch(
@@ -83,11 +83,11 @@ export function AuthProvider({ children }) {
       );
 
       const data = await response.json();
-      console.log("伺服器回應：", data);
-      console.log(data.data.token);
+      // console.log("伺服器回應：", data);
+      // console.log(data.data.token);
       const token = data.data.token
     const newUser = jwt.decode(token);
-    console.log(newUser);
+    // console.log(newUser);
     setUser(newUser);
       localStorage.setItem(appKey, data.data.token);
       localStorage.setItem("user", JSON.stringify(newUser));
@@ -134,62 +134,6 @@ export function AuthProvider({ children }) {
       console.error("Google 登入錯誤:", error);
     }
   };
-
-  // const googleLogin = async () => {
-  //   try {
-  //     // Google 登入
-  //     const result = await signInWithPopup(auth, provider);
-  //     const googleUser = result.user;
-  //     setUser(googleUser); // 更新 user 状态
-
-  //     // 发送 Google 用户信息到后端
-  //     const response = await fetch("http://localhost:5000/auth/google/google-login", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         google_id: googleUser.uid,
-  //         email: googleUser.email,
-  //         name: googleUser.displayName,
-  //         avatar_url: googleUser.photoURL,
-  //       }),
-  //     });
-
-  //     const data = await response.json();
-  //     console.log("伺服器回應：", data);
-
-  //     if (data.token) {
-  //       localStorage.setItem(appKey, data.token);
-  //       localStorage.setItem(
-  //         "user",
-  //         JSON.stringify({
-  //           id: data.user.id,
-  //           email: data.user.email,
-  //           name: data.user.name,
-  //           avatar: data.user.avatar_url,
-  //           role: "user",
-  //           token: data.token,
-  //         })
-  //       );
-  //       setUser({
-  //         ...googleUser,  // 保留 Google 用户信息
-  //         id: data.user.id, // 使用后端返回的 id
-  //         token: data.token, // 使用后端返回的 token
-  //         name: user.user.name,
-  //         avatar: data.user.avatar_url,
-  //         role: "user",
-
-
-  //       });
-
-  //       router.push("/user");
-  //     } else {
-  //       console.warn("後端未回傳 Token");
-  //     }
-  //   } catch (error) {
-  //     console.error("Google 登入錯誤:", error);
-  //   }
-  // };
-
 
   // 獲取驗證碼
   const generateOtp = async (email) => {

@@ -68,13 +68,13 @@ export default function AppPage({ logout }) {
 
   useEffect(() => {
     const existingToken = localStorage.getItem(appKey);
-    console.log(existingToken);
+
 
     const checkUserAndRedirect = () => {
-      console.log(567);
+
 
       if (existingToken) {
-        console.log(987);
+
         const newUser = JSON.parse(localStorage.getItem("user"));
         if (newUser && newUser.role) {
           setUser(newUser);
