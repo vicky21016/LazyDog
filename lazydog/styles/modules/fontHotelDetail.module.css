@@ -75,7 +75,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 80px 0;
+  padding: 20px 0 100px 0 ;
   text-align: center;
 }
 
@@ -96,7 +96,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: 35px;
   flex-wrap: wrap;
 }
 
@@ -128,19 +128,20 @@
 .suEffortButtons {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 25px;
 }
 
 .suEffortButtons .btn {
   font-size: 16px;
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 5px;
 }
 
 .suEffortButtons .suBtnPrimary {
   background-color: #ff9538 !important;
   color: white !important;
   border: 1px solid transparent;
+  width: 250px;
 }
 
 .suEffortButtons .suBtnPrimary:hover {
@@ -153,6 +154,7 @@
   color: #ff9538 !important;
   border: 2px solid #ff9538    !important;
   background: transparent;
+  width: 250px;
 }
 
 .suEffortButtons .suBtnOutlineLight:hover {
