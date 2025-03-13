@@ -615,6 +615,7 @@ export default function CategoryPage() {
                     toggleSwitch();
                   }}
                   className={styles["lumi-cart-icon"]}
+                  style={{ color: isOn ? "#ffffff" : "" }}
                 >
                   <i className="bi bi-cart2"></i>
                   {totalQty > 0 && (

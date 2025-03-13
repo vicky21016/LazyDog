@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
-const API_URL = 'http://localhost:5000/api/articles';
+const API_URL = "http://localhost:5000/api/articles";
 
 export default function useMyArticles(userId) {
   const [articles, setArticles] = useState([]);
@@ -14,12 +14,17 @@ export default function useMyArticles(userId) {
     setLoading(true);
     try {
       const response = await fetch(`${API_URL}/author/${userId}`);
-      if (!response.ok) throw new Error('無法獲取作者的文章');
+      if (!response.ok) {
+        setArticles(-1); // ❌ 設定 -1，代表錯誤
+        setError("無法獲取作者的文章");
+        return;
+      }
 
       const data = await response.json();
       setArticles(data);
-      console.log(data)
+      console.log(data);
     } catch (err) {
+      setArticles(-1); // ❌ 捕捉到錯誤時，也設定 -1
       setError(err.message);
     } finally {
       setLoading(false);
@@ -33,16 +38,3 @@ export default function useMyArticles(userId) {
 
   return { articles, loading, error };
 }
-
-
-
-// export default useMyArticles;
-{/* <div >
-              <h4>延伸閱讀</h4>
-              {articles
-                .sort(() => Math.random() - 0.5)
-                .slice(0, 5)
-                .map((article) => (
-                  <AsideCard key={article.id} {...article} />
-                ))}
-            </div> */}

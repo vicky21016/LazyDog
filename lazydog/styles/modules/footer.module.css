@@ -53,7 +53,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 15px;
+  gap: 14px;
   padding: 21px 0 0 0;
   figure {
     margin: 0 0 10px 0;
@@ -75,7 +75,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 30px;
+    gap: 35px;
 
     .address {
       display: flex;
@@ -90,7 +90,7 @@
         font-weight: 550;
         line-height: 28px; /* 170% */
         letter-spacing: 3.5px;
-        margin: 10px 0 0 0;
+        margin: 5px 0 0 0;
       }
     }
 
@@ -118,13 +118,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 17px;
+  gap: 12px;
   .clientService {
-    padding: 5px 0 15px;
+    padding: 31px 0 6px;
     user-select: none;
     color: var(--Color-4, #fdfaf5);
-    font-size: 21px;
-    font-weight: 500;
+    font-size: 21.5px;
+    font-weight: 600;
     line-height: 34px; /* 106.25% */
     letter-spacing: 2px;
     margin: 0;
@@ -166,6 +166,7 @@
     align-items: center;
     justify-content: space-around;
     overflow: hidden;
+    margin-top: 34px;
     .enterMail {
       max-width: 170px;
       border: none;
@@ -220,6 +221,7 @@
   line-height: 65px;
   letter-spacing: 2px;
   user-select: none;
+  padding-bottom: 5px;
   margin: 0 0;
 }
 /* ---------------------------------- */
@@ -232,6 +234,7 @@
   min-height: 100px; /* 最小高度 */
   max-height: 150px; /* 最大高度 */
   overflow: hidden;
+  margin-top: 80px;
 }
 
 .waves {

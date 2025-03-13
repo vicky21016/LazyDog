@@ -24,8 +24,8 @@ export default function App () {
 
     const [activeTab, setActiveTab] = useState("exps");
 
-  const handleRadioChange = (tab) => {
-    setSelectedTab(tab);
+  // const handleRadioChange = (tab) => {
+  //   setSelectedTab(tab);
 
     if (loading) return
     <>
@@ -33,7 +33,7 @@ export default function App () {
             <div className={style.loader27}></div>
            </div>
          </>
-  };
+  // };
 
   return (
     <>
@@ -54,7 +54,7 @@ export default function App () {
           <Profile teacher={teacher} />
           {/* <SocialLinks /> */}
           <div className={`row ${styles.profile}`}>
-            <div className="my-5 ">
+            <div className="my-3 ">
               <div className="">
                 {/* <ToggleButtons onRadioChange={handleRadioChange} /> */}
                 <div className="row g-5">

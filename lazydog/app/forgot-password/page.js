@@ -82,7 +82,7 @@ export default function ForgetPasswordForm() {
   return (
     <>
       <Header />
-      <div className={styles.LumiAllWrapper}>
+      <div className="lumi-all-wrapper">
         <main className={`w-100 m-auto text-center ${styles["container"]}`}>
           <h4 className={`text-center mb-4 ${styles["text"]}`}>重設密碼</h4>
           <p className={`text-center mb-4 ${styles["text-note"]}`}>
@@ -94,7 +94,7 @@ export default function ForgetPasswordForm() {
                 <input
                   type="email"
                   name="email"
-                  className={`form-control w-100 ${styles["form-control"]}`}
+                  className={`form-control w-100 ${styles["formControl"]}`}
                   placeholder="電子郵件地址"
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -106,7 +106,7 @@ export default function ForgetPasswordForm() {
                   <input
                     type="text"
                     name="otp"
-                    className={`form-control ${styles["form-control"]}`}
+                    className={`form-control ${styles["formControl"]}`}
                     placeholder="電子郵件驗證碼"
                     onChange={(e) => setUserOtp(e.target.value)}
                   />
@@ -131,7 +131,7 @@ export default function ForgetPasswordForm() {
                   type="password"
                   name="newPassword"
                   autocomplete="new-password"
-                  className={`form-control w-100 ${styles['form-control']} ${styles['invalid']} `}
+                  className={`form-control w-100 ${styles['formControl']} ${styles['invalid']} `}
                   placeholder="密碼"
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
@@ -144,7 +144,7 @@ export default function ForgetPasswordForm() {
                   type="password"
                   name="confirmNewPassword"
                   autocomplete="off"
-                  className={`form-control w-100 ${styles['form-control']} ${styles['invalid']} `}
+                  className={`form-control w-100 ${styles['formControl']} ${styles['invalid']} `}
                   placeholder="確認密碼"
                   onChange={(e) => setConfirmNewPassword(e.target.value)}
                 />

@@ -38,9 +38,7 @@ export default function AppPage({ logout }) {
   //   const existingToken = localStorage.getItem(appKey);
   //   console.log(existingToken);
 
-
   //   if (existingToken) {
-
 
   //     const newUser = JSON.parse(localStorage.getItem("user"));
   //     if (newUser && newUser.role) { // 確保 newUser 和 newUser.role 存在
@@ -101,13 +99,9 @@ export default function AppPage({ logout }) {
     checkUserAndRedirect(); // 呼叫這個函數來執行檢查和跳轉
   }, []);
 
-
   useEffect(() => {
-
-
     if (!user) setCheckingAuth(false); // 檢查登入狀態
   }, [user]);
-
 
   return (
     <>
@@ -147,17 +141,13 @@ export default function AppPage({ logout }) {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <Link
-              href="/forgot-password"
-              className={`${styles.fogotpass}`}
-            >
+            <Link href="/forgot-password" className={`${styles.fogotpass}`}>
               忘記密碼？
             </Link>
             <button className={`${styles.loginbtn}`}>登入</button>
             <p className={`${styles.separator}`}>
               <span>或使用社群帳號登入</span>
             </p>
-
           </form>
           <SocialLogin />
           <p className={`${styles.signup}`}>

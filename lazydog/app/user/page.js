@@ -164,7 +164,7 @@ export default function Menu() {
   return (
     <div className="col-12 col-lg-9">
       <div className={`${styles["container"]}`}>
-        <h4 className={`mb-4 ${styles["information"]}`}>基本資料</h4>
+        <h4 className={`mb-4 ${styles["information"]}`}>會員資料</h4>
         <form onSubmit={handleSubmit} className={styles["form-container"]}>
           <div className={styles.formGroup}>
             <h6>
@@ -179,13 +179,14 @@ export default function Menu() {
             />
 
             <h6>
-              性別<span className={`${styles["important"]}`}> </span>
+              性別
+              <span className={` ${styles["important"]}`}> </span>
             </h6>
             <select
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className={styles["select"]}
+              className={styles.selects}
               required
             >
               <option value="">請選擇性別</option>

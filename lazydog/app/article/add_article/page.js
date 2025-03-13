@@ -84,8 +84,11 @@ export default function AddArticlePage() {
     try {
       await createArticle(newArticle);  // 傳遞帶有 author_id 的文章資料到後端
       console.log(newArticle)
-      Swal.fire("文章新增成功！");
-      router.push('/article/list'); // 跳轉到文章列表頁
+      // Swal.fire("文章新增成功！");
+      // router.push('/article/list'); // 跳轉到文章列表頁
+      Swal.fire("留言成功").then(() => {
+        router.push('/article/list');
+    });
     } catch (error) {
       console.error("提交文章失敗:", error);
       Swal.fire("提交文章失敗，請檢查網路連線");

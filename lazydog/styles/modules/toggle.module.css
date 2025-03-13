@@ -24,15 +24,18 @@
 }
 
 .menuItem:hover {
-  color: #ff9538;
-  font-weight: bold;
+  background-color: #ff9538;
+  color: #fff;
+  border: none;
 }
 
 .icon {
   margin-right: 8px;
   font-size: 16px;
 }
-
+.active{
+  color: #ff9538;
+}
 /* teacher */
 .server {
   background-image: url(../../public/teacher-img/bag.png);

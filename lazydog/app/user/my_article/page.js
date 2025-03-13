@@ -16,12 +16,14 @@ export default function MyArticle() {
   const userId = user?.id;
   const [checkingAuth, setCheckingAuth] = useState(true);
   const { articles } = useMyArticles(userId); // ✅ 只載入該用戶的文章
-  console.log(articles)
 
   useEffect(() => {
-    if (!articles.length) return; // 如果 articles 為空，則不執行後續邏輯
-    setCheckingAuth(false);
+    if (articles === -1 || (Array.isArray(articles) && articles.length > 0)) {
+      setCheckingAuth(false);
+    }
   }, [articles]);
+
+  // **顯示 loading 畫面**
   if (checkingAuth) {
     return (
       <div className={styles.container2}>
@@ -34,72 +36,65 @@ export default function MyArticle() {
     <div className="col-12 col-md-9">
       <div className="w-100">
         <div>
+          {/* 標題 + 按鈕 */}
           <div className="d-flex justify-content-between my-2">
             <h4>我的文章</h4>
-            <button
-              className={styles.post}
-            >
-              <Link
-                href="/article/add_article"
-                className={styles.postLink}
-              >
+            <button className={styles.post}>
+              <Link href="/article/add_article" className={styles.postLink}>
                 <i className="bi bi-check-circle"></i> 發布文章
               </Link>
             </button>
           </div>
-         
-            <ul className="nav nav-tabs mt-4">
-              <li className="nav-item">
-                <Link
-                  className="nav-link active"
-                  aria-current="page"
-                  href="#"
-                  style={{ color: 'white', backgroundColor: '#f5842b' }}
-                >文章</Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  href="/user/my_comment"
-                  style={{ color: '#f5842b', backgroundColor: 'white' }}
-                >留言</Link>
-              </li>
-            </ul>
-          
-          <ScrollMotionContainer
-            // element="div"
-            style={{
-              borderRadius: "5px",
-              height: "750px",
-              overflowY: "scroll",
-            }}
-          >
-            {articles.length > 0 &&
-              articles.map((article) => (
-                <ScrollMotionItem
-                  // element="div"
-                  type="up"
-                >
+
+          {/* 選單 */}
+          <ul className="nav nav-tabs mt-4">
+            <li className="nav-item">
+              <Link
+                className="nav-link active"
+                aria-current="page"
+                href="#"
+                style={{ color: "white", backgroundColor: "#f5842b" }}
+              >
+                文章
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                href="/user/my_comment"
+                style={{ color: "#f5842b", backgroundColor: "white" }}
+              >
+                留言
+              </Link>
+            </li>
+          </ul>
+
+          {/* 如果 articles === -1，顯示「您還未發表過文章」 */}
+          {articles === -1 ? (
+            <div className={styles.container2}>
+              <div>您還未發表過文章</div>
+            </div>
+          ) : (
+            // 否則顯示文章列表
+            <ScrollMotionContainer
+              style={{
+                borderRadius: "5px",
+                height: "750px",
+                overflowY: "scroll",
+              }}
+            >
+              {articles.map((article) => (
+                <ScrollMotionItem type="up" key={article.id}>
                   <MyCard2
-                    key={article.id}
                     id={article.id}
                     title={article.title}
-                    cover_image={
-                      article.cover_image || "/images/default-cover.jpg"
-                    }
-                    created_at={new Date(
-                      article.created_at
-                    ).toLocaleDateString()}
-                  />{" "}
+                    cover_image={article.cover_image || "/images/default-cover.jpg"}
+                    created_at={new Date(article.created_at).toLocaleDateString()}
+                  />
                 </ScrollMotionItem>
               ))}
-            {/* {articles.length > 0 ? articles.map((article) => (
-            <ScrollMotionItem
-              element="div"
-              type="up">
-              <MyCard2 key={article.id} id={article.id} title={article.title} cover_image={article.cover_image || "/images/default-cover.jpg"} created_at={new Date(article.created_at).toLocaleDateString()} /> </ScrollMotionItem>
-          )) : <p></p>} */}
-          </ScrollMotionContainer>
+            </ScrollMotionContainer>
+          )}
         </div>
       </div>
     </div>
