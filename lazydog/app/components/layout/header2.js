@@ -82,9 +82,8 @@ export default function Header(props) {
 
   return (
     <header
-      className={`${styles["lumi-header2"]} ${
-        isScrolled ? styles.scrolled : ""
-      }`}
+      className={`${styles["lumi-header2"]} ${isScrolled ? styles.scrolled : ""
+        }`}
     >
       <Link href="/" className={styles["lumi-logo2"]}>
         <img
@@ -212,15 +211,19 @@ export default function Header(props) {
                   ? user.role === "operator"
                     ? "/hotel-coupon/operatorDetail"
                     : user.role === "teacher"
-                    ? "/teacher-sign/list"
-                    : user.role === "user"
-                    ? "/user"
-                    : "#"
+                      ? "/teacher-sign/list"
+                      : user.role === "user"
+                        ? "/user"
+                        : "#"
                   : "/login" // Or some default route if user is not logged in
               }
               className={styles["lumi-user-icon2"]}
             >
-              <i className="bi bi-person" />
+              {user && user.avatar ? (
+                <img src={user.avatar} alt="User Avatar" className={styles.userAvatar} />
+              ) : (
+                <i className="bi bi-person" />
+              )}
             </Link>
           ) : (
             <>
@@ -239,10 +242,10 @@ export default function Header(props) {
                     ? user.role === "operator"
                       ? "/hotel-coupon/operatorDetail"
                       : user.role === "teacher"
-                      ? "/teacher-sign/list"
-                      : user.role === "user"
-                      ? "/user"
-                      : "#"
+                        ? "/teacher-sign/list"
+                        : user.role === "user"
+                          ? "/user"
+                          : "#"
                     : "/login" // Or some default route if user is not logged in
                 }
                 className={styles["dropdown-link"]}
@@ -311,11 +314,10 @@ export default function Header(props) {
                 </Link>
               </div>
               <div
-                className={`${
-                  PDOpen
+                className={`${PDOpen
                     ? styles["dropdown-contentOn"]
                     : styles["dropdown-contentOff"]
-                }`}
+                  }`}
               >
                 <a
                   href={`/product/list/category?category=乾糧`}
@@ -389,11 +391,10 @@ export default function Header(props) {
                 </Link>
               </div>
               <div
-                className={`${
-                  teacherOpen
+                className={`${teacherOpen
                     ? styles["dropdown-contentOn"]
                     : styles["dropdown-contentOff"]
-                }`}
+                  }`}
               >
                 <Link
                   href="/course/list"
@@ -423,11 +424,10 @@ export default function Header(props) {
                 <Link href="">會員中心</Link>
               </div>
               <div
-                className={`${
-                  userOpen
+                className={`${userOpen
                     ? styles["dropdown-contentOn"]
                     : styles["dropdown-contentOff"]
-                }`}
+                  }`}
               >
                 <Link
                   href={
@@ -435,10 +435,10 @@ export default function Header(props) {
                       ? user.role === "operator"
                         ? "/hotel-coupon/operatorDetail"
                         : user.role === "teacher"
-                        ? "/teacher-sign/list"
-                        : user.role === "user"
-                        ? "/user"
-                        : "#"
+                          ? "/teacher-sign/list"
+                          : user.role === "user"
+                            ? "/user"
+                            : "#"
                       : "/login" // Or some default route if user is not logged in
                   }
                   className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
