@@ -110,7 +110,7 @@ export const updateCoupon = async (id, data) => {
 
   const formattedData = {
     ...data,
-    discount_type: data.discountType ? data.discountType.toLowerCase() : "fixed", 
+    discount_type: data.discountType ? data.discountType.toLowerCase() : "fixed",
     discountValue: isNaN(Number(data.discountValue)) ? 0 : Number(data.discountValue),
     minAmount: isNaN(Number(data.minAmount)) ? 0 : Number(data.minAmount),
   };
@@ -240,10 +240,21 @@ export const claimCouponByCode = async (code) => {
     return;
   }
 
+  console.log(token);
+  console.log("Token 長度:", token.length);
+  console.log("Token 是否包含 .:", token.includes('.'));
+
   try {
-    // 從 JWT Token 解析 `userId`
-    const payload = JSON.parse(atob(token.split(".")[1])); 
-    const userId = payload.id;
+    // 🚀 修正：確保 Base64Url 轉換為 Base64
+    const base64UrlToBase64 = (base64Url) => {
+      return base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    };
+
+    const payloadBase64 = token.split(".")[1];
+    const decodedPayload = JSON.parse(atob(base64UrlToBase64(payloadBase64)));
+    const userId = decodedPayload.id;
+
+    console.log("解碼後的 Payload:", decodedPayload);
 
     const res = await fetch("http://localhost:5000/api/coupon/usage/typing", {
       method: "POST",

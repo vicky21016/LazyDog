@@ -77,6 +77,8 @@ export default function ProfileCouponPage(props) {
   // 領取優惠券
   const handleClaimCoupon = async () => {
     setError(""); // 清除錯誤
+    
+    
     if (!couponCode.trim()) {
       setError("請輸入優惠券代碼");
       return;
