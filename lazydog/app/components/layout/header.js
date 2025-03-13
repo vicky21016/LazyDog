@@ -454,9 +454,15 @@ export default function Header(props) {
                       : styles["dropdown-contentOff"]
                   }`}
                 >
+                   <Link
+                    href="/teacher"
+                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                  >
+                    師資 & 課程
+                  </Link>
                   <Link
                     href="/course/list"
-                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                    className={`${styles["dropdown-link"]}`}
                   >
                     課程
                   </Link>

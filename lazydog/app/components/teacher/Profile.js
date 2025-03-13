@@ -57,7 +57,7 @@ export default function Profile () {
           </div>
         </div>
       </div>
-      <div className={styles.socialLinks}>
+      {/* <div className={styles.socialLinks}>
         <span className="me-3">分享到</span>
         <a
           className={`text-decoration-none mx-2 ${styles["icon"]}`}
@@ -75,7 +75,7 @@ export default function Profile () {
         <a className={`text-decoration-none mx-2 ${styles["icon"]}`} href="#">
           <i className="bi bi-share-fill"></i>
         </a>
-      </div>
+      </div> */}
     </>
   );
 };

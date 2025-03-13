@@ -42,10 +42,21 @@ export const replycourseReviews = async (reviewId, reply) => {
     throw new Error("無法回覆評論：" + error.message);
   }
 };
-export const getcourseReviews = async (course_id) => {
+export const getcourseReviews = async (teacher_id) => {
   try {
     // 取得評論（不包含圖片）
     const [reviews] = await pool.query(
+
+//       `SELECT cr.*, u.name AS user_name
+//              FROM course_reviews cr
+//              JOIN users u ON cr.user_id = u.id
+//              JOIN course_session cs ON cr.course_id = cs.course_id
+//              WHERE cs.teacher_id = ? AND cr.is_deleted = 0
+//              GROUP BY cr.id
+//              ORDER BY cr.created_at DESC;
+// `,
+//       [teacher_id]
+
       `SELECT cr.*, u.name AS user_name, course.name AS courseName
        FROM course_reviews cr
        JOIN users u ON cr.user_id = u.id
