@@ -11,7 +11,8 @@ import {
   removeCourseFavorite,
 } from "@/services/allFavoriteService";
 import { useAuth } from "@/hooks/use-auth";
-import styles from "../orders/userCoupon.module.css"
+import styles from "../orders/userCoupon.module.css";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 export default function UserFavoritePage() {
   const { user } = useAuth();
@@ -81,12 +82,12 @@ export default function UserFavoritePage() {
     if (user?.id) {
       fetchCourseFavorites();
     }
-  }, [user?.id]); 
-  
+  }, [user?.id]);
+
   const fetchFavorites = async () => {
     try {
       setLoading(true);
-  
+
       // 取得旅館收藏
       const hotelResponse = await getHotelFavorites();
       // console.log("旅館收藏 API 回應:", hotelResponse);
@@ -95,7 +96,7 @@ export default function UserFavoritePage() {
       } else {
         console.log("未獲取到旅館收藏");
       }
-  
+
       // 取得商品收藏
       const productResponse = await getProductFavorites();
       // console.log("商品收藏 API 回應:", productResponse);
@@ -106,12 +107,14 @@ export default function UserFavoritePage() {
         // console.log("完整的商品收藏 ID 列表:", allProductIDs);
         setPdFavoriteList((prev) => {
           const newFavorites = [...new Set(allProductIDs)];
-          return JSON.stringify(prev) !== JSON.stringify(newFavorites) ? newFavorites : prev;
+          return JSON.stringify(prev) !== JSON.stringify(newFavorites)
+            ? newFavorites
+            : prev;
         });
-              } else {
+      } else {
         console.log("未獲取到商品收藏");
       }
-  
+
       // 取得課程收藏
       await fetchCourseFavorites();
     } catch (error) {
@@ -120,7 +123,7 @@ export default function UserFavoritePage() {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     if (pdFavoriteList.length > 0) {
       fetchProductDetails(pdFavoriteList);
@@ -165,6 +168,9 @@ export default function UserFavoritePage() {
       showConfirmButton: true,
       confirmButtonText: "我再想想",
       confirmButtonColor: "#bcbcbc", // 設定按鈕顏色
+      customClass: {
+        popup: styles.tsaiSwal,
+      },
     });
 
     if (result.isConfirmed) {
@@ -190,12 +196,18 @@ export default function UserFavoritePage() {
             title: response.message || "成功移除收藏",
             showConfirmButton: false,
             timer: 1500,
+            customClass: {
+              popup: styles.tsaiSwal,
+            },
           });
         } else {
           Swal.fire({
             icon: "error",
             title: "刪除失敗",
             text: response.error || "請稍後再試",
+            customClass: {
+              popup: styles.tsaiSwal,
+            },
           });
         }
       } catch (error) {
@@ -204,12 +216,13 @@ export default function UserFavoritePage() {
           icon: "error",
           title: "刪除失敗",
           text: "請稍後再試或聯繫客服",
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
         });
       }
     }
   };
-
-
 
   // 移除商品收藏
 
@@ -224,6 +237,9 @@ export default function UserFavoritePage() {
       showCancelButton: true, // 顯示取消按鈕
       cancelButtonText: "忍痛刪除", // 設定取消按鈕文字
       cancelButtonColor: "#dc3545", // 設定取消按鈕顏色
+      customClass: {
+        popup: styles.tsaiSwal,
+      },
     }).then(async (result) => {
       if (result.isDismissed) {
         // console.log(pdFavoriteList);
@@ -272,21 +288,27 @@ export default function UserFavoritePage() {
         showCancelButton: true,
         cancelButtonText: "忍痛刪除",
         cancelButtonColor: "#dc3545",
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
-  
+
       if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
         const response = await removeHotelFavorite(favoriteId, user.id);
-  
+
         if (response.success) {
           setHotelFavorites((prev) =>
             prev.filter((item) => item.id !== favoriteId)
           );
-  
+
           Swal.fire({
             icon: "success",
-            title: "刪除成功",
+            title: "移除收藏",
             showConfirmButton: false,
             timer: 1500,
+            customClass: {
+              popup: styles.tsaiSwal,
+            },
           });
         }
       }
@@ -297,25 +319,25 @@ export default function UserFavoritePage() {
         title: "刪除失敗",
         text: "請稍後再試或聯繫客服",
         showConfirmButton: true,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
     }
   };
-  
-
- 
 
   return (
-    <div className={`col-md-9 col-12 ${styles.container}`}>
-      <div className="d-flex justify-content-between my-2">
+    <div className={`col-md-9 col-12 pt-1 ${styles.container}`}>
+      {/* <div className="d-flex justify-content-between my-2">
         <h5 className="text-center mb-4">我的最愛</h5>
-      </div>
+      </div> */}
 
       {loading ? (
         <p className="text-center">載入中...</p>
       ) : (
         <>
           {/* 商品收藏 */}
-          <div className="mb-5">
+          <div className="mb-5 ms-1">
             <h6 className="mb-4">商品收藏</h6>
             <div className="row">
               {productFavorites.length > 0 ? (
@@ -326,52 +348,57 @@ export default function UserFavoritePage() {
                   return (
                     <div className="col-md-3 col-6" key={index}>
                       <div
-                        className="card position-relative mb-4 shadow-sm"
+                        className={`card position-relative mb-4 shadow-md  ${styles.favProImgs}`}
                         style={{
                           overflow: "hidden",
-                          borderRadius: "10px",
+                          borderRadius: "0",
                         }}
                       >
                         {/* 移除按鈕 */}
                         <button
-                          className="btn btn-danger position-absolute"
+                          className="btn position-absolute"
                           style={{
-                            background: "red",
-                            right: "10px",
-                            top: "10px",
+                            color: "#FF9538",
+                            right: "11px",
+                            top: "11px",
                             zIndex: 10,
-                            width: "30px",
-                            height: "30px",
+                            // width: "30px",
+                            // height: "30px",
+                            fontSize: "23px",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
                             padding: 0,
-                            borderRadius: "50%",
-                            fontSize: "16px",
                           }}
                           onClick={() => handleRemoveProductFavorite(item.id)}
                         >
-                          ✖
+                          {/* ✖ */}
+                          <FaHeart className={styles.clickHeart} />
                         </button>
 
                         {/* 商品圖片（修正 URL 編碼） */}
                         <img
                           src={item.image_url}
-                          className="card-img-top"
+                          className={`card-img-top`}
                           alt={item.name || "商品圖片"}
                           onError={(e) => (e.target.src = "/lazydog.png")}
-                          style={{ height: "200px", objectFit: "cover" }}
+                          style={{
+                            height: "100%",
+                            objectFit: "cover",
+                            borderRadius: "2px",
+                            opacity: "0.85",
+                          }}
                         />
 
-                        <div className="card-body text-center">
+                        {/* <div className="card-body text-center">
                           <h6 className="card-title mt-2">{item.name}</h6>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   );
                 })
               ) : (
-                <p className="text-center">目前沒有收藏的商品。</p>
+                <p className={`${styles.noFavProduct}`}>目前沒有收藏的商品。</p>
               )}
             </div>
           </div>
@@ -382,36 +409,36 @@ export default function UserFavoritePage() {
             <div className="row">
               {hotelFavorites.length > 0 ? (
                 hotelFavorites.map((item) => (
-                  <div className="col-md-3 col-6" key={item.id}>
+                  <div className="col-md-4 col-6" key={item.id}>
                     <div
-                      className="card position-relative mb-4 shadow-sm"
+                      className={`card position-relative mb-4 shadow-md  ${styles.favHotelImgs}`}
                       style={{
                         overflow: "hidden",
-                        borderRadius: "10px",
+                        borderRadius: "0",
                       }}
                     >
                       {/* 移除按鈕 */}
                       <button
-                        className="btn btn-danger position-absolute"
+                        className="btn position-absolute favHotelImgs"
                         style={{
-                          background: "red",
+                          color: "#FF9538",
                           right: "10px",
                           top: "10px",
                           zIndex: 10,
-                          width: "30px",
-                          height: "30px",
+                          // width: "30px",
+                          // height: "30px",
+                          fontSize: "23px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
                           padding: 0,
-                          borderRadius: "50%",
-                          fontSize: "16px",
                         }}
                         onClick={() =>
                           handleRemoveHotelFavorite(item.id, item.course_id)
                         } // 確保傳 course_id
                       >
-                        ✖
+                        {/* ✖ */}
+                        <FaHeart className={styles.clickHeart} />
                       </button>
 
                       {/* 旅館圖片 */}
@@ -420,17 +447,22 @@ export default function UserFavoritePage() {
                         className="card-img-top"
                         alt={item.name || "旅館圖片"}
                         onError={(e) => (e.target.src = "/lazydog.png")}
-                        style={{ height: "200px", objectFit: "cover" }}
+                        style={{
+                          height: "100%",
+                          objectFit: "cover",
+                          borderRadius: "2px",
+                          opacity: "0.80",
+                        }}
                       />
 
-                      <div className="card-body text-center">
+                      {/* <div className="card-body text-center">
                         <h6 className="card-title mt-2">{item.name}</h6>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 ))
               ) : (
-                <p className="text-center">目前沒有收藏的旅館。</p>
+                <p className={`${styles.noFavHotel}`}>目前沒有收藏的旅館。</p>
               )}
             </div>
           </div>
@@ -443,32 +475,32 @@ export default function UserFavoritePage() {
                 courseFavorites.map((item) => (
                   <div className="col-md-3 col-6" key={item.id}>
                     <div
-                      className="card position-relative mb-4 shadow-sm"
+                      className={`card position-relative mb-4 shadow-md  ${styles.favCourseImgs}`}
                       style={{
                         overflow: "hidden",
-                        borderRadius: "10px",
+                        borderRadius: "0",
                       }}
                     >
                       {/* 移除按鈕 */}
                       <button
-                        className="btn btn-danger position-absolute"
+                        className="btn position-absolute"
                         style={{
-                          background: "red",
+                          color: "#FF9538",
                           right: "10px",
                           top: "10px",
                           zIndex: 10,
-                          width: "30px",
-                          height: "30px",
+                          // width: "30px",
+                          // height: "30px",
+                          fontSize: "23px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
                           padding: 0,
-                          borderRadius: "50%",
-                          fontSize: "16px",
                         }}
                         onClick={() => handleRemoveCourseFavorite(item.id)}
                       >
-                        ✖
+                        {/* ✖ */}
+                        <FaHeart className={styles.clickHeart} />
                       </button>
 
                       {/* 課程圖片 */}
@@ -477,17 +509,23 @@ export default function UserFavoritePage() {
                         className="card-img-top"
                         alt={item.name || "課程圖片"}
                         onError={(e) => (e.target.src = "/lazydog.png")}
-                        style={{ height: "200px", objectFit: "cover" }}
+                        style={{
+                          height: "100%",
+                          objectFit: "cover",
+                          borderRadius: "0",
+                          opacity: "0.83",
+                          borderRadius: "2px",
+                        }}
                       />
 
-                      <div className="card-body text-center">
+                      {/* <div className="card-body text-center">
                         <h6 className="card-title mt-2">{item.name}</h6>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 ))
               ) : (
-                <p className="text-center">目前沒有收藏的課程。</p>
+                <p className={`${styles.noFavCourse}`}>目前沒有收藏的課程。</p>
               )}
             </div>
           </div>
