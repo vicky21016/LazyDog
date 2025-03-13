@@ -218,12 +218,12 @@ export default function HotelHomePage() {
   };
 
   // 計算當前頁面顯示的飯店
-  const indexOfLastHotel = currentPage * 10;
-  const indexOfFirstHotel = indexOfLastHotel - 10;
-  const currentHotels = (filteredHotels || []).slice(
-    indexOfFirstHotel,
-    indexOfLastHotel
-  );
+const indexOfLastHotel = currentPage * 10;
+const indexOfFirstHotel = indexOfLastHotel - 10;
+const currentHotels = (filteredHotels || []).slice(
+  indexOfFirstHotel,
+  indexOfLastHotel
+);
 
   const handleHotelClick = (hotelId) => {
     const storedParams =
@@ -342,10 +342,10 @@ export default function HotelHomePage() {
 
           {/* 分頁功能 */}
           <Page
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+  currentPage={currentPage}
+  totalPages={totalPages}
+  onPageChange={setCurrentPage}
+/>
         </div>
       </div>
     </>
