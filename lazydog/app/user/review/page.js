@@ -75,9 +75,14 @@ export default function ReviewList() {
                       <Link
                         className="row"
                         href={`/product/detail?productID=${v.productID}`}
+                        styles={{ height: "70px" }}
                       >
-                        <td className="col-4 d-flex align-items-start">
+                        <td
+                          className="col-4 d-flex align-items-start"
+                          styles={{ padding: "5px" }}
+                        >
                           <img
+                            className={styles.productPic}
                             src={`/product/img/${encodeURIComponent(
                               v.PDname
                             )}_(1).webp`}
@@ -92,7 +97,8 @@ export default function ReviewList() {
                         <td className="col-1 d-flex align-items-center justify-content-center">
                           {v.rating}
                           <img
-                            style={{ width: "10px", paddingTop: "2px" }}
+                            className={styles.star}
+                            // style={{ width: "10px", paddingTop: "2px" }}
                             src="/product/font/star-fill.png"
                             alt=""
                           />
