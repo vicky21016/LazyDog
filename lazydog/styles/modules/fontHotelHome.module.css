@@ -196,7 +196,7 @@
 .suCheckbox:focus,
 .suCheckbox:checked,
 .suCheckbox:active {
-  box-shadow: none ; /* 移除點擊後的藍色高亮 */
+  box-shadow: none; /* 移除點擊後的藍色高亮 */
   background-color: #ff9538;
   border-color: #ff9538;
   color: #fff;
@@ -220,7 +220,7 @@
 .selects:focus,
 .selects:checked,
 .selects:active {
-  box-shadow: none ; /* 移除點擊後的藍色高亮 */
+  box-shadow: none; /* 移除點擊後的藍色高亮 */
   border: 1px solid #ff9538;
 }
 
@@ -456,8 +456,12 @@
   margin: 0 5px;
 }
 
-.pageItem:focus {
+.pageItem:focus,
+.pageItem:active,
+.pageLink:focus,
+.pageLink:active {
   box-shadow: none !important;
+  border: none !important;
 }
 
 .pageLink {

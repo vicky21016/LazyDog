@@ -46,9 +46,9 @@
   .labels:focus,
   .controls:focus,
   .options:active {
-    outline: 2px solid #ff9538 !important;
+    border: 1px solid #ff9538 !important;
     box-shadow: none !important;
-    border-color: transparent !important;
+    /* border-color: transparent !important; */
   }
 
   .labels {
@@ -91,15 +91,6 @@
     border: none;
     padding: 8px 10px 0 13px;
   }
-  /* .select:focus,
-  .select option:checked {
-    background-color: #ff9538;
-  } */
-
-  /* 目前改不了顏色 */
-  /* .pleaseChoose {
-    color: #a1a1a1;
-  } */
 
   .mainPic {
     position: relative;
@@ -328,7 +319,9 @@
     font-weight: 500;
     letter-spacing: 2px;
   }
-  .submitBtn:hover {
+  .submitBtn:hover,
+  .submitBtn:active,
+  .submitBtn:focus {
     background-color: #ff9538;
     color: #fff;
   }
@@ -347,4 +340,15 @@
     background-color: #ec4c4c;
     color: #fff;
   }
+}
+
+/* Swal 彈跳窗 */
+.tsaiSwal {
+  width: 500px;
+  padding: 25px 15px;
+  font-size: 16px !important;
+  padding: 15px 40px 40px;
+  border-radius: 35px !important;
+  background-color: white !important;
+  color: #5e5e5e;
 }

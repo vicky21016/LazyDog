@@ -27,14 +27,14 @@
 }
 
 .list {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 /* 活動輪播 */
 .new {
   position: relative;
   width: 100%;
-  height: 480px;
+  height: 530px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -56,14 +56,14 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top;
+    object-position: center bottom;
     /* border-radius: 10px; */
   }
   .newVideoPeople {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 80%;
+    object-position: center bottom;
     /* border-radius: 10px; */
   }
   .bottom {
@@ -180,8 +180,8 @@
     color: #9c9a9a;
     font-size: 15px;
     font-weight: 500;
-    letter-spacing: 2px;
-    padding: 0 10px 2px 20px;
+    letter-spacing: 2.3px;
+    padding: 1px 10px 1px 18px;
     cursor: pointer;
   }
   .searchInput:focus::placeholder {
@@ -475,7 +475,7 @@
   /* 所有課程 */
   .right {
     position: relative;
-    padding: 21px 0 0 40px;
+    padding: 21px 0 0 30px;
     margin-bottom: 150px;
 
     @media (max-width: 992px) {
@@ -485,7 +485,7 @@
   .top {
     margin: 45px 0 50px;
     @media (max-width: 992px) {
-      margin: 45px 15px 50px;
+      margin: 45px 0px 50px;
     }
     @media (max-width: 390px) {
       margin: 85px 15px 30px;
@@ -503,12 +503,7 @@
       font-size: 28px;
     }
   }
-  .sbar {
-    background-color: #ff9538;
-    width: 50px;
-    height: 4px;
-    border-radius: 5px;
-  }
+
   .medium {
     display: flex;
     justify-content: space-between;
@@ -516,6 +511,12 @@
     padding: 0 3px 0 2px;
     @media (max-width: 390px) {
       display: none;
+    }
+    .sbar {
+      background-color: #ff9538;
+      width: 50px;
+      height: 4px;
+      border-radius: 5px;
     }
   }
 
@@ -525,6 +526,7 @@
     font-weight: 600;
     line-height: normal;
     letter-spacing: 0.84px;
+    padding-right: 40px;
     @media (max-width: 992px) {
       margin-left: 15px;
     }
@@ -563,9 +565,9 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 100%;
+    width: 90%;
     border-radius: 5px;
-    padding: 18px;
+    padding: 20px;
     cursor: pointer;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 
@@ -584,8 +586,10 @@
 
   .img {
     width: 100%;
+    /* padding: 5px; */
     object-fit: cover;
-    border: 1px solid var(--text-Wh, #f7f7f7);
+    /* border: 1px solid var(--text-Wh, #f7f7f7); */
+    border-radius: 3px;
     margin-bottom: 8px;
 
     @media (max-width: 992px) {
@@ -708,7 +712,7 @@
 .section2 {
   margin-top: 100px;
   .similarCourse {
-    padding: 70px 0px;
+    padding: 30px 0px;
 
     @media (max-width: 390px) {
       padding: 0;
@@ -780,7 +784,7 @@
 
     .sCards {
       display: flex;
-      padding: 26px 0px;
+      padding: 26px 0 0;
       height: 460px;
       overflow: hidden;
       align-items: flex-start;
@@ -797,7 +801,7 @@
         border-radius: 5px;
         cursor: pointer;
         transition: 0.4s;
-        padding: 24px;
+        /* padding: 24px; */
         margin-top: 48px;
         @media (max-width: 390px) {
           margin-top: 0;
@@ -810,9 +814,7 @@
         }
       }
       .cardImg {
-        /* width: 240px; */
-        /* height: 240px; */
-        width: 90%;
+        width: 78%;
         object-fit: cover;
         margin-bottom: 27px;
         border: 0.1px solid #f5f1f1;
@@ -843,6 +845,9 @@
           font-weight: 550;
           padding: 0px 5px;
         }
+      }
+      .swiperGroup {
+        margin-top: 20px;
       }
     }
   }

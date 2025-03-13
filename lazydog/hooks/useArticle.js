@@ -46,11 +46,6 @@ function useArticles() {
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
             const data = await response.json();
-            // data.comments.forEach((comment) => {
-            //     if (comment.author_img && comment.author_img.startsWith("images/")) {
-            //         comment.author_img = `http://localhost:5000/auth/${comment.author_img}`;
-            //     }
-            // });
             data.comments.forEach((comment) => {
                 comment.author_img = `http://localhost:5000/auth/${comment.author_img}`;
             });

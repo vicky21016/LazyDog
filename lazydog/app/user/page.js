@@ -99,12 +99,22 @@ export default function Menu() {
         icon: "success",
         title: "更新成功",
         text: `您的資料已更新`,
+        showConfirmButton: false,
+        timer: 950,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "更新失敗",
         text: error.message || "請稍後再試",
+        showConfirmButton: false,
+        timer: 950,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
     }
   };

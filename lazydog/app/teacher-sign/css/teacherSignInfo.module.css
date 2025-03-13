@@ -8,7 +8,7 @@
 
 .scrollOrg::-webkit-scrollbar {
   width: var(--sb-size);
-  padding: 100px 10px 100px 0;
+  /* padding: 100px 10px 100px 0; */
 }
 
 .scrollOrg::-webkit-scrollbar-track {
@@ -41,7 +41,7 @@ input:active {
   background: #fff;
   height: auto;
   overflow-y: auto;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px -1px 6px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.1);
   /* margin-top: 100px; */
 
   .tTitle {
@@ -122,6 +122,7 @@ input:active {
     height: 100%;
     .imgCr {
       width: 100%;
+      height: 100%;
       object-fit: cover;
       border-radius: 8px;
       cursor: pointer;
@@ -147,7 +148,7 @@ input:active {
     overflow: hidden;
     border: 0.8px solid #ecebeb;
     border-radius: 15px;
-    height: 250px;
+    height: 180px;
     padding: 0;
     &:hover {
       border: 1.2px solid #fca85f;
@@ -242,4 +243,15 @@ input:active {
     background-color: #ff9538;
     color: #fff;
   }
+}
+
+/* Swal 彈跳窗 */
+.tsaiSwal {
+  width: 500px;
+  padding: 25px 15px;
+  font-size: 16px !important;
+  padding: 15px 40px 40px;
+  border-radius: 35px !important;
+  background-color: white !important;
+  color: #5e5e5e;
 }

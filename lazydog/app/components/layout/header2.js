@@ -61,9 +61,31 @@ export default function Header(props) {
       });
     }
   };
+  const [isScrolled, setIsScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true); // 滾動超過 50px 時，添加 scrolled
+      } else {
+        setIsScrolled(false); // 滾動回頂部時，移除 scrolled
+      }
+    };
+
+    // 設定滾動事件監聽器
+    window.addEventListener("scroll", handleScroll);
+
+    // 清理事件監聽器
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []); // 空依賴陣列，保證只在組件掛載時執行一次
 
   return (
-    <header className={styles["lumi-header2"]}>
+    <header
+      className={`${styles["lumi-header2"]} ${
+        isScrolled ? styles.scrolled : ""
+      }`}
+    >
       <Link href="/" className={styles["lumi-logo2"]}>
         <img
           className={styles.logo}

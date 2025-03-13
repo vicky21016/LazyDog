@@ -1,14 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 import styles from "../courseList.module.css";
 
 export default function OtherCourseCard() {
   const [latest, setLatest] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // const [currentIndex, setCurrentIndex] = useState(0);
   const itemsPerPage = 4;
 
   useEffect(() => {
@@ -23,19 +28,20 @@ export default function OtherCourseCard() {
   }, []);
   // console.log(latest);
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => {
-      const newIndex = prev + 1;
-      return newIndex >= latest.length ? 0 : newIndex;
-    });
-  };
+  // const nextSlide = () => {
+  //   setCurrentIndex((prev) => {
+  //     const newIndex = prev + 1;
+  //     return newIndex >= latest.length ? 0 : newIndex;
+  //   });
+  // };
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => {
-      const newIndex = prev - 1;
-      return newIndex < 0 ? latest.length - 1 : newIndex;
-    });
-  };
+  // const prevSlide = () => {
+  //   setCurrentIndex((prev) => {
+  //     const newIndex = prev - 1;
+  //     return newIndex < 0 ? latest.length - 1 : newIndex;
+  //   });
+  // };
+  const swiperRef = useRef(null);
 
   return (
     <>
@@ -47,42 +53,40 @@ export default function OtherCourseCard() {
             <button
               type="button"
               className={styles.arrowLeft}
-              onClick={prevSlide}
+              // onClick={prevSlide}
+              onClick={() => swiperRef.current?.slidePrev()}
             >
               <FaArrowLeftLong className="fs-5" />
             </button>
             <button
               type="button"
               className={styles.arrowRight}
-              onClick={nextSlide}
+              // onClick={nextSlide}
+              onClick={() => swiperRef.current?.slideNext()}
             >
               <FaArrowRightLong className="fs-5" />
             </button>
           </div>
         </div>
-        <motion.div
-          className={`row gy-5 ${styles.sCards}`}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0 }}
-          transition={{ all: 0.1 }}
-        >
-          {latest
-            ?.slice(currentIndex, currentIndex + itemsPerPage)
-            .map((la) => (
-              <motion.div
-                key={la.courseId}
-                layout
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0 }}
-                transition={{ all: 0.1 }}
-                className={`col-6 col-lg-3 m-0 ${styles.sCard}`}
-              >
-                <Link
-                  href={`/course/${la.courseId}`}
-                  className={styles.linkStyle}
-                >
+
+        <div className={`row gy-5 ${styles.sCards}`}>
+          <Swiper
+            className={styles.swiperGroup}
+            modules={[Navigation, Pagination, Autoplay]}
+            spaceBetween={0}
+            slidesPerView={2} // 手機顯示2張
+            loop={true}
+            breakpoints={{
+              992: { slidesPerView: 4 },
+            }}
+            // navigation={{ clickable: true }}
+            // pagination={{ clickable: true }}
+            autoplay={{ delay: 2800, disableOnInteraction: true }}
+            onSwiper={(swiper) => (swiperRef.current = swiper)} // 綁定 Swiper
+          >
+            {latest?.map((la) => (
+              <SwiperSlide key={la.courseId}>
+                <Link className={styles.sCard} href={`/course/${la.courseId}`}>
                   <img
                     className={styles.cardImg}
                     src={`/course/img/${la.img_url}`}
@@ -90,11 +94,13 @@ export default function OtherCourseCard() {
                   />
                   <h5 className={styles.cardName}>{la.courseName}</h5>
                 </Link>
-              </motion.div>
+              </SwiperSlide>
             ))}
-        </motion.div>
+          </Swiper>
+        </div>
 
-        {/* {latest?.map((la) => (
+        {/* <div className={`row gy-5 ${styles.sCards}`}>
+          {latest?.map((la) => (
             <Link
               className={`col-6 col-lg-3 m-0 ${styles.sCard}`}
               key={la.courseId}
@@ -107,8 +113,8 @@ export default function OtherCourseCard() {
               />
               <h5 className={styles.cardName}>{la.courseName}</h5>
             </Link>
-          ))} */}
-        {/* </div> */}
+          ))}
+        </div> */}
       </div>
     </>
   );

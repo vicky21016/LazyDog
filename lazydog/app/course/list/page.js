@@ -41,15 +41,15 @@ export default function CourseListPage() {
         // if (filters.places.length)
         //   query.append("placeF", filters.places.join(","));
 
-        console.log("查詢參數:", query.toString());
-        console.log("目前篩選:", filters);
+        // console.log("查詢參數:", query.toString());
+        // console.log("目前篩選:", filters);
 
         const res = await fetch(
           `http://localhost:5000/api/course?${query.toString()}`
         );
         const data = await res.json();
 
-        console.log("後端回應:", data);
+        // console.log("後端回應:", data);
 
         setCourses(data?.data?.courses || []);
         setTypes(data?.data?.types || []);

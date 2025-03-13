@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import { usePhotoUpload } from "@/hooks/usePhotoUpload";
 import { usePathname, useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/use-auth";
-import { List } from "semantic-ui-react";
 import Link from "next/link";
+
+import { useAuth } from "@/hooks/use-auth";
+
+import { List } from "semantic-ui-react";
+import { FaPencil } from "react-icons/fa6";
+import { FaChalkboardTeacher, FaRegCommentDots } from "react-icons/fa";
+import { FaUser } from "react-icons/fa6";
+import { BsFillGeoAltFill } from "react-icons/bs";
 import styles from "../../../styles/modules/operatorCamera.module.css";
 import style from "../../../styles/modules/menu.module.css";
+
 export default function My() {
   const pathname = usePathname();
   const { user } = useAuth();
@@ -17,27 +24,27 @@ export default function My() {
     {
       name: "我的師資",
       path: "/teacher-sign/info",
-      icon: <i class="bi bi-bookmark-fill"></i>,
+      icon: <FaChalkboardTeacher className="fs-5 b-1" />,
     },
     {
       name: "我的課程",
       path: "/teacher-sign/list",
-      icon: <i class="bi bi-pen"></i>,
+      icon: <FaPencil className="fs-5 b-1" />,
     },
     {
       name: "課程評論",
       path: `/course/review/${user.teacher_id}`,
-      icon: <i class="bi bi-chat-heart-fill"></i>,
+      icon: <FaRegCommentDots className="fs-5 b-1" />,
     },
     {
       name: "開課地點",
       path: "/teacher-sign/place",
-      icon: <i class="bi bi-geo"></i>,
+      icon: <BsFillGeoAltFill className="fs-5 b-1" />,
     },
     {
       name: "會員資料",
       path: "/teacher-sign/pages",
-      icon: <i className="bi bi-person-fill "></i>,
+      icon: <FaUser className="mb-1" />,
     },
   ];
 
