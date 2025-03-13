@@ -162,14 +162,16 @@ export default function UserFavoritePage() {
     const result = await Swal.fire({
       icon: "warning",
       title: "確認刪除收藏？",
-      showCancelButton: true, // 顯示取消按鈕
-      cancelButtonText: "忍痛刪除", // 設定取消按鈕文字
-      cancelButtonColor: "#dc3545", // 設定取消按鈕顏色
       showConfirmButton: true,
       confirmButtonText: "我再想想",
-      confirmButtonColor: "#bcbcbc", // 設定按鈕顏色
+      // confirmButtonColor: "#bcbcbc",
+      showCancelButton: true,
+      cancelButtonText: "忍痛刪除",
+      // cancelButtonColor: "#dc3545",
       customClass: {
         popup: styles.tsaiSwal,
+        confirmButton: styles.tsaiSwalButton2,
+        cancelButton: styles.tsaiSwalButton1,
       },
     });
 
@@ -233,12 +235,14 @@ export default function UserFavoritePage() {
       title: "確認刪除收藏？",
       showConfirmButton: true,
       confirmButtonText: "我再想想",
-      confirmButtonColor: "#bcbcbc", // 設定按鈕顏色
-      showCancelButton: true, // 顯示取消按鈕
-      cancelButtonText: "忍痛刪除", // 設定取消按鈕文字
-      cancelButtonColor: "#dc3545", // 設定取消按鈕顏色
+      // confirmButtonColor: "#bcbcbc",
+      showCancelButton: true,
+      cancelButtonText: "忍痛刪除",
+      // cancelButtonColor: "#dc3545",
       customClass: {
         popup: styles.tsaiSwal,
+        confirmButton: styles.tsaiSwalButton2,
+        cancelButton: styles.tsaiSwalButton1,
       },
     }).then(async (result) => {
       if (result.isDismissed) {
@@ -284,12 +288,14 @@ export default function UserFavoritePage() {
         title: "確認刪除收藏？",
         showConfirmButton: true,
         confirmButtonText: "我再想想",
-        confirmButtonColor: "#bcbcbc",
+        // confirmButtonColor: "#bcbcbc",
         showCancelButton: true,
         cancelButtonText: "忍痛刪除",
-        cancelButtonColor: "#dc3545",
+        // cancelButtonColor: "#dc3545",
         customClass: {
           popup: styles.tsaiSwal,
+          confirmButton: styles.tsaiSwalButton2,
+          cancelButton: styles.tsaiSwalButton1,
         },
       });
 
@@ -386,7 +392,7 @@ export default function UserFavoritePage() {
                             height: "100%",
                             objectFit: "cover",
                             borderRadius: "2px",
-                            opacity: "0.85",
+                            opacity: "0.9",
                           }}
                         />
 

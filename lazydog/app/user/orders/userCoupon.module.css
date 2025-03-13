@@ -220,7 +220,7 @@
   }
 }
 .clickHeart {
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+  /* box-shadow: 0 0 12px rgba(255, 255, 255, 0.6); */
 }
 .noFavProduct {
   height: 287px;
@@ -253,4 +253,20 @@
   border-radius: 35px !important;
   background-color: white !important;
   color: #5e5e5e;
+}
+.tsaiSwalButton1 {
+  background-color: #fa524c !important;
+  border-radius: 5px;
+  font-size: 14.5px;
+  font-weight: 550 !important;
+  letter-spacing: 0.5px;
+  margin: 5px 10px;
+}
+.tsaiSwalButton2 {
+  background-color: #cccbcb !important;
+  border-radius: 5px;
+  font-size: 14.5px;
+  font-weight: 550 !important;
+  letter-spacing: 0.5px;
+  margin: 5px 10px;
 }
