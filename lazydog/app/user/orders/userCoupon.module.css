@@ -1,3 +1,16 @@
+.container {
+  padding: 10px 20px 45px;
+
+  h5 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    color: #3b3330;
+    padding-bottom: 15px;
+  }
+}
+
 .profileCard {
   border-radius: 10px;
   padding: 20px;
@@ -26,12 +39,16 @@
 }
 
 .suNavTabs {
-  border-bottom: 2px solid #ddd;
+  border-bottom: 1px solid #ddd;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 450;
+  letter-spacing: 1.2px;
+  margin-bottom: 28px;
+  padding: 0px 15px 0 8px;
 }
 
 .suNavTabs .suNavLink {
+  display: block;
   color: black;
   border-bottom: 2px solid transparent;
 }
@@ -40,23 +57,29 @@
   color: #ff9538;
   border-bottom: 2px solid #ff9538;
 }
-.suCouponCard {
+
+.suNavTabs .suNavLink:focus {
+  color: #ff9538;
+  border-bottom: 2px solid #ff9538;
+}
+
+/* suCouponCard 實際控制在_component裡那支 */
+/* .suCouponCard {
   display: flex;
   align-items: center;
-  justify-content: space-between ;
-  border: 1px solid #ddd ;
+  justify-content: space-between;
+  border: 1px solid #ddd;
   border-radius: 10px;
-  padding:0 5px 0 0;
-  background-color: white ;
-  margin-bottom: 15px ;
+  padding: 0 5px 0 0;
+  background-color: white;
+  margin-bottom: 15px;
   height: 100px;
   overflow: hidden;
-
 }
 .suCouponCard .suPrice {
   font-size: 22px;
   font-weight: bold;
-  color: #66C5BD;
+  color: #66c5bd;
 }
 
 .suCouponCard .suDetails {
@@ -71,7 +94,7 @@
 .suUsed {
   background-color: #d4edda;
   font-size: 14px;
-  color: #66C5BD;
+  color: #66c5bd;
 }
 
 .suExpired {
@@ -89,7 +112,7 @@
   text-align: right;
 }
 .suCouponCard .suAction a {
-  color: #66C5BD;
+  color: #66c5bd;
   text-decoration: none;
   font-weight: bold;
 }
@@ -121,7 +144,7 @@
 }
 
 .statusFilter button {
-  border: none ;
+  border: none;
   background: none;
   font-size: 16px;
   font-weight: bold;
@@ -130,10 +153,8 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 .statusFilter button:hover {
-  color:#ff9538;
+  color: #ff9538;
 }
-
-
 
 .suTable th,
 .suTable td {
@@ -155,8 +176,7 @@
   min-width: 100px;
 }
 @media (max-width: 768px) {
-.container{
-  padding: 30px;
-}
-
+  .container {
+    padding: 30px;
   }
+} */

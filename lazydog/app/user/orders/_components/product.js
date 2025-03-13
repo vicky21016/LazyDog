@@ -19,20 +19,20 @@ const Product = ({ orders }) => {
               src={`/product/img/${order.imageResult[0].name}${
                 order.imageResult[0].lg_img.split(",")[0]
               }`}
-              style={{
-                width: "176.989px",
-                maxHeight: "100px",
-                objectFit: "cover",
-              }}
+              // style={{
+              // width: "180px",
+              // maxHeight: "100",
+              // objectFit: "cover",
+              // }}
               alt={order.orderID}
             />
           </Link>
           <div className={couponStyles.suDetails}>
-            <Link href="" style={{ color: "#f5842b" }}>
-              訂單編號:{order.orderID}
+            <Link href="" style={{ color: "#ff9538" }}>
+              訂單編號 : {order.orderID}
             </Link>
             <p className="text-muted">
-              訂購時間:{order.created_at.split("T")[0]}
+              訂購時間 : {order.created_at.split("T")[0]}
             </p>
           </div>
           <span className={couponStyles.suPrice}>
