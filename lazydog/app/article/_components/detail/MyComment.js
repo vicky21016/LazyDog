@@ -18,16 +18,16 @@ const CommentSection = () => {
     if (authLoading) {
         return <div>加載中...</div>;
     }
-    
+
     if (!user) {
         return <p className="text-muted">請先登入以發表評論</p>;
     }
-    
+
 
     // 設置默認頭像
     const defaultAvatar = '/path/to/default-avatar.jpg';
     // const modifiedAvatar = user?.avatar ? user.avatar.replace('/images/', '/') : defaultAvatar;
-    const modifiedAvatar = user?.avatar ? user.avatar.replace('/images/', '/') :'';
+    const modifiedAvatar = user?.avatar ? user.avatar.replace('/images/', '/') : '';
     // const modifiedAvatar = user.avatar 
     // console.log(defaultAvatar)
     console.log(modifiedAvatar)
@@ -45,14 +45,16 @@ const CommentSection = () => {
                 user_id: user.id
             };
             await createComment(commentData);
-            Swal.fire("留言成功");
-            window.location.reload();
+            Swal.fire("留言成功").then(() => {
+                window.location.reload();
+            });
             setCommentContent("");
         } catch (err) {
             console.error("留言創建失敗:", err);
             Swal.fire("留言創建失敗");
         }
     };
+
 
     if (authLoading) {
         return <div>加載中...</div>;

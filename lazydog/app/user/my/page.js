@@ -4,7 +4,7 @@ import React from "react";
 import { List } from "semantic-ui-react";
 import Link from "next/link"; // 使用 Next.js 的 Link 元件
 import { usePathname } from "next/navigation";
-import Header from "../components/layout/header"; 
+import Header from "../components/layout/header";
 
 export default function MyMenu() {
   const pathname = usePathname();

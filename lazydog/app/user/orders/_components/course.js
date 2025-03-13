@@ -21,19 +21,19 @@ const Course = ({ courseOrders }) => {
                 src={`/course/img/${order.main_pic}`}
                 // src="	http://localhost:5000/api/articles/image4.jpg"
                 style={{
-                  width: "176.989px",
-                  maxHeight: "100px",
+                  // width: "100%",
+                  // height: "100%",
                   objectFit: "cover",
                 }}
                 alt={`課程訂單 ${order.id}`}
               />
             </Link>
             <div className={couponStyles.suDetails}>
-              <Link href="" style={{ color: "#f5842b" }}>
+              <Link href="" style={{ color: "#ff9538" }}>
                 {order.name}
               </Link>
               <p className="text-muted">
-                建立時間: {order.order_date.split("T")[0]}
+                建立時間 : {order.order_date.split("T")[0]}
               </p>
             </div>
             <span className={couponStyles.suPrice}>

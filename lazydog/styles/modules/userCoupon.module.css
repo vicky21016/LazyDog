@@ -1,3 +1,16 @@
+.couponSection {
+  padding: 10px 20px 45px;
+
+  h5 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    color: #3b3330;
+    padding-bottom: 15px;
+  }
+}
+
 .profileCard {
   border-radius: 10px;
   padding: 20px;
@@ -15,20 +28,39 @@
   text-decoration: none;
   margin-right: 20px;
   gap: 20px;
+  opacity: 0.7;
 }
-
 .suFeatureLinks2 {
   color: #ff9538;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
   margin-right: 20px;
+  opacity: 0.7;
+}
+.suFeatureLinks1:hover,
+.suFeatureLinks2:hover {
+  opacity: 1;
+}
+
+.suFiltersContainer {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  margin-right: 30px;
 }
 
 .suNavTabs {
+  flex: 1;
   border-bottom: 2px solid #ddd;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 505;
+  letter-spacing: 1px;
+}
+.suNavTabs li {
+  flex: 1;
+  text-align: center;
 }
 
 .suNavTabs .suNavLink {
@@ -40,22 +72,37 @@
   color: #ff9538;
   border-bottom: 2px solid #ff9538;
 }
+.suNavTabs .suNavLink:focus {
+  color: #ff9538;
+  border-bottom: 2px solid #ff9538;
+}
+
+.suCouponCards {
+  max-height: 50vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  border-radius: 5px;
+  padding-right: 25px;
+  margin-top: 15px;
+  padding: 0 30px 0 0px;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 輕微的陰影 */
+}
 .suCouponCard {
   display: flex;
   align-items: center;
-  justify-content: space-between ;
-  border: 1px solid #ddd ;
+  justify-content: space-between;
+  border: 1px solid #ddd;
   border-radius: 10px;
-  padding: 15px ;
-  background-color: white ;
-  margin-bottom: 15px ;
-  height: 100px;
-
+  padding: 15px 25px 15px 32px;
+  background-color: white;
+  margin-bottom: 15px;
+  height: 110px;
 }
 .suCouponCard .suPrice {
-  font-size: 22px;
-  font-weight: bold;
-  color: #66C5BD;
+  font-size: 25px;
+  font-weight: 550;
+  width: 120px;
+  color: #66c5bd;
 }
 
 .suCouponCard .suDetails {
@@ -66,11 +113,18 @@
 .suCouponCard .suDetails p {
   margin: 0;
   font-size: 14px;
+  letter-spacing: 0.5px;
+  line-height: 21px;
 }
 .suUsed {
+  text-align: center;
   background-color: #d4edda;
+  width: 82px;
+  border-radius: 5px;
   font-size: 14px;
-  color: #66C5BD;
+  font-weight: 600;
+  color: #66c5bd;
+  padding: 2px 0;
 }
 
 .suExpired {
@@ -88,9 +142,10 @@
   text-align: right;
 }
 .suCouponCard .suAction a {
-  color: #66C5BD;
+  color: #66c5bd;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .profileCard .btn {
@@ -120,7 +175,7 @@
 }
 
 .statusFilter button {
-  border: none ;
+  border: none;
   background: none;
   font-size: 16px;
   font-weight: bold;
@@ -129,10 +184,8 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 .statusFilter button:hover {
-  color:#ff9538;
+  color: #ff9538;
 }
-
-
 
 .suTable th,
 .suTable td {
@@ -152,4 +205,22 @@
 
 .btnAction {
   min-width: 100px;
+}
+
+.btn {
+  cursor: pointer;
+  outline: none;
+  border: 1px solid transparent;
+  color: white;
+  background-color: #ff9538;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 450;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+}
+.btn:hover {
+  background-color: #faf6f1;
+  color: #ff9538 !important;
+  border-color: #ff9538;
 }
