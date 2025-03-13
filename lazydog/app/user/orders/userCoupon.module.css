@@ -193,7 +193,7 @@
 /* 我的收藏 */
 .favProImgs {
   /* width: 225px; */
-  height: 263px;
+  height: 260px;
   border: 1px solid #f0efef;
   /* border-radius: 6px;
   overflow: "hidden"; */
@@ -203,8 +203,8 @@
 }
 .favHotelImgs {
   /* width: 304px; */
-  height: 220px;
-  border: 1px solid #f0efef;
+  height: 215px;
+  border: 1px solid #f7f5f5;
   border-radius: 0;
   @media (max-width: 390px) {
     height: auto;
