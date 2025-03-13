@@ -84,7 +84,7 @@ const useComment = () => {
     //     }
     // })
       setComments(result); // 保存留言資料
-      console.log(result)
+      // console.log(result)
       return result; // 返回資料供組件使用
     } catch (err) {
       setError(err.message || "獲取留言失敗"); // 設置錯誤訊息

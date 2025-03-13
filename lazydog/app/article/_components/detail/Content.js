@@ -6,7 +6,7 @@ import styles from "./page.module.css"
 import style from "../../../../styles/modules/operatorCamera.module.css";
 
 export default function Content({ article }) {
-  console.log(article)
+  // console.log(article)
   // 消毒處理
   const cleanHTML = DOMPurify.sanitize(article?.content || '', {
     ALLOWED_TAGS: ['p', 'h3', 'h4', 'ul', 'li', 'img', 'strong', 'em', 'br'],
