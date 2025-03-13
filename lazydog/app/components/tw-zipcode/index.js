@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { countries, townships, postcodes } from "./data-townships";
-import styles from "../../teacher-sign/css/teacherSignUser.module.css";
+import styles from "@/app/user/menu.module.css";
 
 export default function TWZipCode({
   initPostcode = "",
