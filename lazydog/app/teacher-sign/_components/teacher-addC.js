@@ -125,8 +125,12 @@ export default function TeacherAddC() {
       Swal.fire({
         title: "欄位未填寫完整",
         icon: "warning",
-        confirmButtonText: "確定",
+        timer: 2500,
         ...animationConfig,
+        showConfirmButton: false,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
       return;
     }
@@ -134,17 +138,25 @@ export default function TeacherAddC() {
       Swal.fire({
         title: "請選擇封面圖片",
         icon: "warning",
-        confirmButtonText: "確定",
+        timer: 2500,
         ...animationConfig,
+        showConfirmButton: false,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
       return;
     }
     if (otherpics.length === 0) {
       Swal.fire({
-        title: "請上傳至少一張其他圖片",
+        title: "請上傳其他圖片",
         icon: "warning",
-        confirmButtonText: "確定",
+        timer: 3000,
         ...animationConfig,
+        showConfirmButton: false,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
       return;
     }
@@ -195,12 +207,12 @@ export default function TeacherAddC() {
         Swal.fire({
           title: "新增成功！",
           icon: "success",
-          confirmButtonText: "確定",
-          // timer: 2500,
-          // willClose: () => {
-          //   router.push(`/teacher-sign/list`);
-          // },
+          timer: 2500,
           ...animationConfig,
+          showConfirmButton: false,
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
         });
       })
       .catch((err) => {
@@ -209,8 +221,12 @@ export default function TeacherAddC() {
           title: "新增失敗",
           text: "新增時發生錯誤，請稍後再試。",
           icon: "error",
-          confirmButtonText: "確定",
+          timer: 2500,
           ...animationConfig,
+          showConfirmButton: false,
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
         });
       });
   };

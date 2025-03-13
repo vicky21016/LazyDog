@@ -13,6 +13,7 @@ const CommentSection = () => {
     const { createComment, loading, error, data } = useComment();
     const { id } = useParams();
     const { user, loading: authLoading, } = useAuth();
+    console.log(user)
 
     if (authLoading) {
         return <div>加載中...</div>;
@@ -29,7 +30,7 @@ const CommentSection = () => {
     const modifiedAvatar = user?.avatar ? user.avatar.replace('/images/', '/') :'';
     // const modifiedAvatar = user.avatar 
     // console.log(defaultAvatar)
-    // console.log(modifiedAvatar)
+    console.log(modifiedAvatar)
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!commentContent.trim()) {

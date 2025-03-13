@@ -56,7 +56,7 @@
 
 /* 數量 */
 
-.suQuantityBtn {
+.suSearchBar  .suQuantityBtn {
   background: none;
   border: none;
   cursor: pointer;
@@ -69,7 +69,7 @@
   border-radius: 20px;
 }
 
-.suQuantityBtn:hover {
+.suSearchBar .suQuantityBtn:hover {
   background: #f3dccc;
   /* height: auto; */
   border-radius: 50px;
@@ -103,8 +103,8 @@
   letter-spacing: 1px;
   cursor: pointer;
 }
-.suSearchBtn:hover,
-.suSearchBtn2:hover {
+.suSearchBar .suSearchBtn:hover,
+.suSearchBar .suSearchBtn2:hover {
   background-color: #fdf9f5;
   color: #ff9538;
   border-color: #ff9538;
@@ -133,7 +133,7 @@
   margin: 0 auto 45px;
 }
 
-.suMapBtn {
+.suMapCard .suMapBtn {
   position: absolute;
   top: 16px;
   left: 50%;
@@ -152,7 +152,7 @@
   z-index: 10;
 }
 
-.suMapBtn:hover {
+.suMapCard .suMapBtn:hover {
   background: #66c5bd;
 }
 
@@ -285,7 +285,7 @@
 }
 
 /* 篩選按鈕 */
-.suClearFilterBtn {
+.suFilterGroup .suClearFilterBtn {
   display: block;
   margin: 0 auto;
   width: 100%;
@@ -300,7 +300,7 @@
   cursor: pointer;
 }
 
-.suClearFilterBtn:hover {
+.suFilterGroup .suClearFilterBtn:hover {
   background: #ff9538;
   color: white;
 }
@@ -684,7 +684,7 @@
     letter-spacing: 0px;
     margin: 5px;
   }
-  .suSearchBtn {
+  .suSearchBar .suSearchBtn {
     padding: 10px;
     font-size: 14px;
   }

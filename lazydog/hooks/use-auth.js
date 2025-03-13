@@ -6,6 +6,8 @@ import { auth, provider } from "@/app/components/utils/firebase"; // 確保路�
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import jwt from "jsonwebtoken";
 import Swal from "sweetalert2";
+import styles from "@/app/teacher-sign/css/teacherSignUser.module.css";
+
 const appKey = "loginWithToken";
 
 const AuthContext = createContext(null);
@@ -57,16 +59,16 @@ export function AuthProvider({ children }) {
     }
   };
 
- 
   // Google 登入
   const googleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const googleUser = result.user;
       setUser(googleUser);
+      // console.log(googleUser);
 
       const response = await fetch(
-        "http://localhost:5000/api/auth/google/google-login",
+        "http://localhost:5000/auth/google/google-login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -80,29 +82,110 @@ export function AuthProvider({ children }) {
       );
 
       const data = await response.json();
-      console.log("伺服器回應：", data);
+      // console.log("伺服器回應：", data);
+      // console.log(data.data.token);
+      const token = data.data.token;
+      const newUser = jwt.decode(token);
+      // console.log(newUser);
+      setUser(newUser);
+      localStorage.setItem(appKey, data.data.token);
+      localStorage.setItem("user", JSON.stringify(newUser));
+      router.push("/user");
+      // console.log(user);
+      // setUser(data);
+      // localStorage.setItem(appKey, data.data);
+      // console.log(user);
 
-      if (data.token) {
-        localStorage.setItem(appKey, data.token);
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            id: data.user.id,
-            email: data.user.email,
-            name: data.user.name,
-            avatar: data.user.avatar_url,
-            role: "user",
-            token: data.token,
-          })
-        );
-        router.push("/user");
-      } else {
-        console.warn("後端未回傳 Token");
-      }
+      // if (data.data) {
+      //   localStorage.setItem(appKey, data.token);
+      //   localStorage.setItem(
+      //     "user",
+      //     JSON.stringify({
+      //       id: data.user.id,
+      //       email: data.user.email,
+      //       name: data.user.name,
+      //       avatar: data.user.avatar_url,
+      //       role: "user",
+      //       token: data.token,
+      //     })
+      //   );
+
+      //   // setUser({
+      //   //   ...googleUser,
+      //   //   id: data.user.id,
+      //   //   token: data.token,
+      //   //   name: user.user.name,
+      //   //   avatar: data.user.avatar_url,
+      //   //   role: "user",
+      //   // });
+
+      //   router.push("/user");
+      //   console.log(user);
+
+      // } else {
+      //   console.warn("後端未回傳 Token");
+      // }
     } catch (error) {
       console.error("Google 登入錯誤:", error);
     }
   };
+
+  // const googleLogin = async () => {
+  //   try {
+  //     // Google 登入
+  //     const result = await signInWithPopup(auth, provider);
+  //     const googleUser = result.user;
+  //     setUser(googleUser); // 更新 user 状态
+
+  //     // 发送 Google 用户信息到后端
+  //     const response = await fetch("http://localhost:5000/auth/google/google-login", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         google_id: googleUser.uid,
+  //         email: googleUser.email,
+  //         name: googleUser.displayName,
+  //         avatar_url: googleUser.photoURL,
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+  //     console.log("伺服器回應：", data);
+
+  //     if (data.token) {
+  //       localStorage.setItem(appKey, data.token);
+  //       localStorage.setItem(
+  //         "user",
+  //         JSON.stringify({
+  //           id: data.user.id,
+  //           email: data.user.email,
+  //           name: data.user.name,
+  //           avatar: data.user.avatar_url,
+  //           role: "user",
+  //           token: data.token,
+  //         })
+  //       );
+  //       setUser({
+  //         ...googleUser,  // 保留 Google 用户信息
+  //         id: data.user.id, // 使用后端返回的 id
+  //         token: data.token, // 使用后端返回的 token
+  //         name: user.user.name,
+  //         avatar: data.user.avatar_url,
+  //         role: "user",
+
+
+  //       });
+
+  //       router.push("/user");
+  //     } else {
+  //       console.warn("後端未回傳 Token");
+  //     }
+  //   } catch (error) {
+  //     console.error("Google 登入錯誤:", error);
+  //   }
+  // };
+
+
   // 獲取驗證碼
   const generateOtp = async (email) => {
     try {
@@ -127,39 +210,38 @@ export function AuthProvider({ children }) {
   // 密碼重設
   const resetPassword = async (token, otp, newPassword, confirmNewPassword) => {
     try {
-      const response = await fetch("http://localhost:5000/auth/forgot-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token,
-          otp,
-          newPassword,
-          confirmNewPassword,
-        }),
-      });
-  
+      const response = await fetch(
+        "http://localhost:5000/auth/forgot-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token,
+            otp,
+            newPassword,
+            confirmNewPassword,
+          }),
+        }
+      );
+
       const data = await response.json();
-  
+
       if (data.status !== "success") {
         throw new Error(data.message);
       }
-      if(!user){
+      if (!user) {
         router.push("/login");
-      }
-      else{
+      } else {
         router.push("/user");
       }
       return data;
-      
     } catch (error) {
       console.error("Error resetting password:", error);
       throw error;
     }
   };
-  
-
 
   // 登出
   const logout = async () => {
@@ -276,6 +358,9 @@ export function AuthProvider({ children }) {
           title: "儲存成功",
           showConfirmButton: false,
           timer: 1000,
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
         });
         // alert("儲存成功");
         const token = result.data.token;
@@ -391,6 +476,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     // 監聽 Firebase 登入狀態
+
     let token = localStorage.getItem(appKey);
 
     if (!token) {
@@ -399,6 +485,7 @@ export function AuthProvider({ children }) {
     }
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log(444);
       if (currentUser) {
         localStorage.setItem(
           "user",
@@ -413,6 +500,8 @@ export function AuthProvider({ children }) {
     });
     if (token) {
       const fetchData = async () => {
+        console.log(user);
+
         let API = "http://localhost:5000/auth/status";
         try {
           const res = await fetch(API, {

@@ -58,7 +58,7 @@ app.use(
 );
 
 app.use("/auth", authRouter);
-app.use("/api/auth/google", googleRouter);
+// app.use("/api/auth/google", googleRouter);
 app.use("/teacher", teacherSignRouter);
 
 app.use("/api/read", readRoutes);
@@ -83,7 +83,7 @@ app.use("/api/course", courseRoutes);
 app.use("/api/articles", articlesRoutes);
 app.use("/teachers", teacherRoute);
 app.use("/api/comment", commentRoutes);
-app.use("/api/reviews", reviewsRoutes);
+app.use("/api/course_reviews", reviewsRoutes);
 
 app.use("/ecpay-test-only", ecpay);
 app.use("/order", order);

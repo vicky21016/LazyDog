@@ -83,7 +83,7 @@ export const getCourses = async ({
       AND cm.main_pic = 1
       GROUP BY c.id
       ORDER BY cs.start_date ASC
-      LIMIT 6
+      LIMIT 8
       ;`);
     if (latest.length == 0) {
       console.log("近期開課不存在");

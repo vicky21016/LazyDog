@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "../../styles/modules/fontCoupon.module.css";
 import Image from "next/image";
 import Header from "../components/layout/header";
@@ -14,19 +14,6 @@ export default function CouponPage() {
     code: "",
     expiry: "",
   });
-  const [bootstrapModal, setBootstrapModal] = useState(null);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && !window.bootstrap) {
-      import("bootstrap/dist/js/bootstrap.bundle.min.js").then((bootstrap) => {
-        window.bootstrap = bootstrap;
-        const modalElement = document.getElementById("couponModal");
-        if (modalElement) {
-          setBootstrapModal(new bootstrap.Modal(modalElement));
-        }
-      });
-    }
-  }, []);
 
   const handleClaimCoupon = async (couponId) => {
     try {
@@ -38,22 +25,28 @@ export default function CouponPage() {
       }
 
       const coupon = response.coupon;
-      if (!coupon || !coupon.name) {
+      if (!coupon || !coupon.name || !coupon.code || !coupon.expiry) {
         throw new Error("回傳的優惠券資料有誤");
       }
 
+      // 更新優惠券資訊
       setSelectedCoupon({
         name: coupon.name,
         code: coupon.code,
         expiry: coupon.expiry,
       });
 
-      // **手動初始化 Bootstrap Modal**
-      if (bootstrapModal) {
-        bootstrapModal.show();
-      } else {
-        console.error("Bootstrap Modal 尚未初始化");
-      }
+      // 使用 SweetAlert 顯示成功訊息
+      Swal.fire({
+        icon: "success",
+        title: "🎉 領取優惠券成功！",
+        html: `
+          <p class="fs-5 fw-bold text-primary">${coupon.name}</p>
+          <p class="text-danger">優惠券代碼：${coupon.code}</p>
+          <p class="text-muted">有效期限：${coupon.expiry}</p>
+        `,
+        confirmButtonText: "確認",
+      });
     } catch (error) {
       console.error("領取優惠券失敗", error);
       Swal.fire({
@@ -68,58 +61,6 @@ export default function CouponPage() {
     <>
       <Header />
       <div style={{ marginTop: "90px" }}>
-        <div
-          className="modal fade"
-          id="couponModal"
-          tabIndex="-1"
-          aria-labelledby="couponModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div
-              className={`modal-content animate__bounceIn ${styles.suModalContent}`}
-            >
-              <div className="modal-header bg-warning">
-                <h5 className="modal-title fw-bold" id="couponModalLabel">
-                  🎉 領取優惠券成功！
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body text-center">
-                <div className={styles.suSuccessAnimation}>
-                  <div className={styles.suCheckmark}></div>
-                </div>
-                <p className="fs-5 fw-bold text-primary" id="couponName">
-                  優惠券名稱
-                </p>
-                <p
-                  className={`text-danger ${styles.suCouponCode}`}
-                  id="couponCode"
-                >
-                  優惠券代碼：{selectedCoupon.code}
-                </p>
-                <p className="text-muted" id="couponExpiry">
-                  有效期限：{selectedCoupon.expiry}
-                </p>
-              </div>
-              <div className="modal-footer justify-content-center">
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  data-bs-dismiss="modal"
-                >
-                  確認
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* 第一個優惠券區塊 */}
         <div className={`container-fluid ${styles.suCouponContainer}`}>
           <div className="container">
@@ -177,6 +118,7 @@ export default function CouponPage() {
             </div>
           </div>
         </div>
+
         {/* 第二個區塊 (促銷圖片 + 3 張優惠券) */}
         <div className={`container-fluid ${styles.suSecondSection}`}>
           <div className="container">
@@ -265,9 +207,8 @@ export default function CouponPage() {
           </div>
         </div>
 
-        {/* 第三個區塊  */}
-
-        <div className={`container-fluid  ${styles.suThirdSection}`}>
+        {/* 第三個區塊 */}
+        <div className={`container-fluid ${styles.suThirdSection}`}>
           <div className="container">
             <div className="row align-items-center justify-content-between">
               <div className="col-lg-5 col-md-5 col-sm-12 mt-5 text-center">
@@ -357,6 +298,7 @@ export default function CouponPage() {
             </div>
           </div>
         </div>
+
         {/* 第四個區塊 */}
         <div className={`container-fluid ${styles.suForthSection}`}>
           <div className="container">
@@ -449,14 +391,15 @@ export default function CouponPage() {
             </div>
           </div>
         </div>
-        {/* 第五個區塊  */}
+
+        {/* 第五個區塊 */}
         <div className={`container-fluid ${styles.suFifthSection}`}>
           <div className="container">
             <div className="row justify-content-center mt-5">
-              <div className="col-lg-4 col-md-6 col-sm-12 mb-4 ">
+              <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
                 <div className={`user-event ${styles.suEvent}`}>
-                  <h4 className={` mt-3 ${styles.suEventTitle}`}>首購會員</h4>
-                  <h2 className={` mt-3 ${styles.suEventDiscount}`}>現折50</h2>
+                  <h4 className={`mt-3 ${styles.suEventTitle}`}>首購會員</h4>
+                  <h2 className={`mt-3 ${styles.suEventDiscount}`}>現折50</h2>
                   <p className={`mt-3 ${styles.suEventDesc}`}>
                     單筆消費滿 $500 即可使用
                   </p>
