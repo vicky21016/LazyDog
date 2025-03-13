@@ -24,7 +24,7 @@ export default function MyArticle() {
     return `http://localhost:5000/auth/${imagePath}`;
   };
 
-  // console.log(comments)
+  // console.log(user.avatar)
   // console.log("userid:"+userid)
   // console.log("comments:"+comments)
   // console.log("我這裡是使用者留言的頁面")

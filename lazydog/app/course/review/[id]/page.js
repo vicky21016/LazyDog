@@ -1,34 +1,28 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 // import styles from "../../../styles/modules/operatorCamera.module.css";
-import { useReview } from "@/hooks/useCourseReview";
+import { useReview, replyReviewAPI } from "@/hooks/useCourseReview";
+import { useAuth, user } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-
-import Header from "../../../components/layout/header";
-import My from "../../../teacher-sign/_components/my";
+import Swal from "sweetalert2";
+import Header from "@/app/components/layout/header";
+import My from "@/app/teacher-sign/_components/my";
 import styles from "@/styles/modules/courseReview.module.css";
-// ReviewList
-// reviews.js 裡get+post+delete+put做API連結後台，
-//下面都是假資料參考用就好
+
 const ReviewList = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const replyInputRef = useRef(null);
   const router = useRouter();
-
   const { id } = useParams();
   const { review } = useReview(id);
-  console.log(review);
-  console.log(review.reply);
+  const { user } = useAuth();
+  // console.log(user.teacher_id);
 
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
-  const changepage = (path) => {
-    if (path) {
-      router.push(`/hotel-coupon/${path}`);
-    }
-  };
 
   const reviews = review.map((item) => ({
     customer: `${item.user_name}`,
@@ -36,21 +30,51 @@ const ReviewList = () => {
     date: `${item.created_at}`,
     rating: `${item.rating}`,
     content: `${item.comment}`,
-    replied: true,
+    courseName: `${item.courseName}`,
+    reply: `${item.reply}`,
+    // replied: true,
     status: "公開",
   }));
   const loadReview = (review) => {
+    console.log("送去Modal:", review);
     setModalData(review);
   };
-  console.log(reviews?.date);
 
-  const replyReview = () => {
+  const hanleReplyReview = async () => {
     const replyContent = replyInputRef.current.value.trim();
+
     if (replyContent) {
-      alert(`回覆成功：${replyContent}`);
-      replyInputRef.current.value = ""; // 清空
+      const { order: reviewId } = modalData;
+      console.log("送出的資料：", { reviewId, replyContent });
+
+      try {
+        const teacherId = user.teacher_id;
+        const data = await replyReviewAPI(reviewId, replyContent);
+        Swal.fire({
+          icon: "success",
+          title: "回覆成功",
+          showConfirmButton: false,
+          timer: 1000,
+          customClass: { popup: styles.tsaiSwal },
+        });
+        // replyInputRef.current.value = ""; // 清空回覆框
+      } catch (err) {
+        Swal.fire({
+          title: "回覆失敗",
+          text: err.message || "回覆時發生錯誤，請稍後再試。",
+          icon: "error",
+          timer: 2500,
+          customClass: { popup: styles.tsaiSwal },
+        });
+      }
     } else {
-      alert("請先填寫回覆內容");
+      Swal.fire({
+        icon: "warning",
+        title: "請先填寫回覆內容",
+        showConfirmButton: false,
+        timer: 1000,
+        customClass: { popup: styles.tsaiSwal },
+      });
     }
   };
 
@@ -137,7 +161,7 @@ const ReviewList = () => {
 
         {/* Modal */}
         <div
-          className="modal fade"
+          className={`modal fade ${modalOpen ? "show" : ""}`}
           id="reviewModal"
           tabIndex="-1"
           aria-labelledby="reviewModalLabel"
@@ -164,6 +188,9 @@ const ReviewList = () => {
                   <strong>訂單編號：</strong> {modalData.order || "N/A"}
                 </p>
                 <p>
+                  <strong>訂購課程：</strong> {modalData.courseName || "N/A"}
+                </p>
+                <p>
                   <strong>評論日期：</strong>{" "}
                   {modalData.date
                     ? new Date(modalData?.date).toLocaleDateString("zh-TW", {
@@ -173,20 +200,27 @@ const ReviewList = () => {
                       })
                     : "N/A"}
                 </p>
-                <p>
+                {/* <p>
                   <strong>評分：</strong> {modalData.rating || "N/A"}
-                </p>
+                </p> */}
                 <p>
                   <strong>評論內容：</strong>
                 </p>
                 <p className="border p-2">{modalData.content || "N/A"}</p>
-                <label className="form-label mt-3">回覆：</label>
+                <label className="form-label mt-3">
+                  <strong>回覆：</strong>{" "}
+                </label>
                 <textarea
+                  value={modalData.reply || ""}
                   ref={replyInputRef}
                   className="form-control"
                   rows="3"
                   placeholder={
-                    review.reply ? review.reply : "請輸入回覆內容..."
+                    // review.reply ? review.reply : "請輸入回覆內容..."
+                    modalData.reply ? "" : "請輸入回覆內容..."
+                  }
+                  onChange={(e) =>
+                    setModalData({ ...modalData, reply: e.target.value })
                   }
                 ></textarea>
               </div>
@@ -201,7 +235,7 @@ const ReviewList = () => {
                 <button
                   type="button"
                   className={`btn ${styles.btn4}`}
-                  onClick={replyReview}
+                  onClick={hanleReplyReview}
                 >
                   送出回覆
                 </button>

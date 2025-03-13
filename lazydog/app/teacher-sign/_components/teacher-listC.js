@@ -20,7 +20,7 @@ export default function TeacherListC() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setMycourse(data.data);
       })
       .catch((err) => {
