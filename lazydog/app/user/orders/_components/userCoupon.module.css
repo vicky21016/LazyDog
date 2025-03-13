@@ -1,4 +1,4 @@
-.profileCard {
+/* .profileCard {
   border-radius: 10px;
   padding: 20px;
 }
@@ -39,39 +39,68 @@
 .suNavTabs .suNavLink:hover {
   color: #ff9538;
   border-bottom: 2px solid #ff9538;
-}
+} */
+
+/* .suCouponCards {
+  max-height: 60vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 0 15px;
+} */
+
 .suCouponCard {
   display: flex;
   align-items: center;
-  justify-content: space-between ;
-  border: 1px solid #ddd ;
+  justify-content: space-between;
+  border: 1px solid #ddd;
   border-radius: 10px;
-  padding:0 5px 0 0;
-  background-color: white ;
-  margin-bottom: 15px ;
-  height: 100px;
+  background-color: white;
+  margin-bottom: 15px;
+  height: 155px;
   overflow: hidden;
+  padding: 10px 45px;
+  margin: 0 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.116);
+  transition: 0.4s;
 
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  img {
+    width: 130px;
+    height: 120px;
+    object-fit: cover;
+    /* box-shadow: 2px 1px 2px rgba(0, 0, 0, 0.1); */
+  }
 }
+
 .suCouponCard .suPrice {
-  font-size: 22px;
-  font-weight: bold;
-  color: #66C5BD;
+  font-size: 21.5px;
+  font-weight: 550;
+  color: #66c5bd;
 }
 
 .suCouponCard .suDetails {
   flex: 1;
-  padding-left: 15px;
+  padding-left: 30px;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 25px;
+  letter-spacing: 0.7px;
 }
 
 .suCouponCard .suDetails p {
   margin: 0px;
-  font-size: 14px;
+  font-size: 13.5px;
+  font-weight: 400;
+  letter-spacing: 0.8px;
+  padding-left: 1px;
 }
 .suUsed {
   background-color: #d4edda;
   font-size: 14px;
-  color: #66C5BD;
+  color: #66c5bd;
 }
 
 .suExpired {
@@ -89,7 +118,7 @@
   text-align: right;
 }
 .suCouponCard .suAction a {
-  color: #66C5BD;
+  color: #66c5bd;
   text-decoration: none;
   font-weight: bold;
 }
@@ -121,7 +150,7 @@
 }
 
 .statusFilter button {
-  border: none ;
+  border: none;
   background: none;
   font-size: 16px;
   font-weight: bold;
@@ -130,10 +159,8 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 .statusFilter button:hover {
-  color:#ff9538;
+  color: #ff9538;
 }
-
-
 
 .suTable th,
 .suTable td {
