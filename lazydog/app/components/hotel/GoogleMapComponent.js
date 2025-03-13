@@ -59,7 +59,12 @@ const GoogleMapComponent = ({ hotels }) => {
         <div style="max-width: 250px; max-height: 200px; padding: 10px; text-align: center; overflow: hidden;">
           <img src="${imageUrl}" alt="${hotel.name}" 
             style="width: 100%; max-height: 150px; height: auto; border-radius: 8px; margin-bottom: 8px;">
-          <h5 style="margin: 5px 0; font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${hotel.name}</h5>
+          <a href="/hotel-coupon/fonthotelDetail/${hotel.id}" 
+             style="text-decoration: none; color: inherit;">
+            <h5 style="margin: 5px 0; font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              ${hotel.name}
+            </h5>
+          </a>
         </div>
       `;
 

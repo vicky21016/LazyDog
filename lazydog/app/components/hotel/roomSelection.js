@@ -156,7 +156,6 @@ const RoomSelection = ({ hotelId, checkInDate, checkOutDate, quantity }) => {
         showConfirmButton: false,
         timer: 1500, // 1.5 秒後自動關閉
       });
-      router.push("/cart/CartList");
     } catch (error) {
       console.error("加入購物車失敗:", error);
       Swal.fire({
