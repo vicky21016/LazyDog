@@ -36,6 +36,7 @@ export default function Ratecard({
   const [rateUpdate, setRateUpdate] = useState(false);
   const [newRate, setNewRate] = useState(rateNum || 1);
   const [deleteRate, setDeleteRate] = useState(false);
+  const [userPic, setUserPic] = useState(`http://localhost:5000/auth/${img}`);
   const {
     formData,
     handleSubmit,
@@ -141,7 +142,13 @@ export default function Ratecard({
                       }, 100);
                     }}
                   >
-                    <img src={`http://localhost:5000/auth/${img}`} alt="" />
+                    <img
+                      src={userPic}
+                      onError={() =>
+                        setUserPic(`http://localhost:5000/auth/dog5.png`)
+                      }
+                      alt=""
+                    />
                     <h6>{userName}</h6>
                     <h6>{rateNow ? "(您)" : ""}</h6>
                   </button>
@@ -198,7 +205,13 @@ export default function Ratecard({
                       }, 100);
                     }}
                   >
-                    <img src={`http://localhost:5000/auth/${img}`} alt="" />
+                    <img
+                      src={userPic}
+                      onError={() =>
+                        setUserPic(`http://localhost:5000/auth/dog5.png`)
+                      }
+                      alt=""
+                    />
                     <h6>{userName}</h6>
                     <h6 style={{ fontSize: "12px" }}>
                       {rateNow ? "(您)" : ""}
@@ -256,7 +269,13 @@ export default function Ratecard({
                       }, 100);
                     }}
                   >
-                    <img src={`http://localhost:5000/auth/${img}`} alt="" />
+                    <img
+                      src={userPic}
+                      onError={() =>
+                        setUserPic(`http://localhost:5000/auth/dog5.png`)
+                      }
+                      alt=""
+                    />
                     <h6>{userName}</h6>
                     <h6 style={{ fontSize: "12px" }}>
                       {rateNow && width > 499

@@ -37,7 +37,7 @@ export default function ForgetPasswordForm() {
   return (
     <>
       <Header />
-      <div className="lumi-all-wrapper">
+      <div className={styles.LumiAllWrapper}>
         <main className={`w-100 m-auto text-center ${styles["container"]}`}>
           <h4 className={`text-center mb-4 ${styles["text"]}`}>重設密碼</h4>
           <p className={`text-center mb-4 ${styles["text-note"]}`}>

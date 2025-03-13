@@ -261,8 +261,35 @@
   }
 }
 @media (max-width: 768px) {
-  .container{
+  .container {
     padding: 30px;
   }
-  
-    }
+}
+.container2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 300px auto 20px;
+}
+
+.loader27 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0000;
+  animation: loader27-animation 1s infinite alternate linear;
+  background: radial-gradient(circle closest-side, #f6ce5b 94%, #0000)
+    right/calc(200% - 1em) 100%;
+}
+
+.loader27::before {
+  content: "Loading...";
+  background: inherit;
+  background-clip: text;
+  background-image: radial-gradient(circle closest-side, #fff 94%, #f5842b);
+}
+
+@keyframes loader27-animation {
+  100% {
+    background-position: left;
+  }
+}
