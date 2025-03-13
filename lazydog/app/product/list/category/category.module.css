@@ -329,6 +329,8 @@
   width: 60px;
   height: 38px;
   cursor: pointer;
+  position: relative;
+  z-index: 10000;
 }
 .dogWoof {
   background: url("@/app/product/template/woof.png") 0 0;
