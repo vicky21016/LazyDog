@@ -357,7 +357,7 @@ export default function UserFavoritePage() {
                         className={`card position-relative mb-4 shadow-md  ${styles.favProImgs}`}
                         style={{
                           overflow: "hidden",
-                          borderRadius: "0",
+                          borderRadius: "5px",
                         }}
                       >
                         {/* 移除按鈕 */}
@@ -420,7 +420,7 @@ export default function UserFavoritePage() {
                       className={`card position-relative mb-4 shadow-md  ${styles.favHotelImgs}`}
                       style={{
                         overflow: "hidden",
-                        borderRadius: "0",
+                        borderRadius: "5px",
                       }}
                     >
                       {/* 移除按鈕 */}
@@ -484,7 +484,7 @@ export default function UserFavoritePage() {
                       className={`card position-relative mb-4 shadow-md  ${styles.favCourseImgs}`}
                       style={{
                         overflow: "hidden",
-                        borderRadius: "0",
+                        borderRadius: "5px",
                       }}
                     >
                       {/* 移除按鈕 */}
