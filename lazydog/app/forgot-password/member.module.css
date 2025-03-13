@@ -1,9 +1,4 @@
-.LumiAllWrapper {
-  height: 60vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 .container {
   max-width: 410px;
   border-radius: 8px;
@@ -19,7 +14,7 @@
   }
 
 
-/* .formControl {
+.formControl {
   font-size: 14px;
   height: 45px;
 }
@@ -28,7 +23,7 @@
   width: 100%;
   padding: 0 8px 0;
   border: none;
-} */
+}
 
   .form-control {
     font-size: 14px;
@@ -38,7 +33,6 @@
     width: 100%;
     padding: 0 8px 0;
     border: none;
-    border-bottom: 1px solid #ccc;
   }
 
 
