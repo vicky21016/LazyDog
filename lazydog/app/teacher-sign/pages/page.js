@@ -11,10 +11,12 @@ import styles from "../css/teacherSignUser.module.css";
 import style from "../../../styles/modules/menu.module.css";
 import TWZipCode from "../../components/tw-zipcode";
 import { useLocationSelector } from "@/hooks/useLocationSelector";
+import Swal from "sweetalert2";
 // import { auth, signOut, onAuth } from "./firebase";
 
 export default function Menu() {
   // const { city, district, closeModal, openModal } = useLocationSelector();
+  const router = useRouter();
   const [checkingAuth, setCheckingAuth] = useState(true);
   const { user, save } = useAuth();
 
@@ -71,6 +73,33 @@ export default function Menu() {
     console.log(user.id);
 
     e.preventDefault();
+
+    if (!formData.name || !formData.phone) {
+      Swal.fire({
+        icon: "warning",
+        title: "請填寫欄位",
+        showClass: {
+          popup: `
+            animate__animated
+            animate__fadeInUp
+            animate__faster
+          `,
+        },
+        hideClass: {
+          popup: `
+            animate__animated
+            animate__fadeOutDown
+            animate__faster
+          `,
+        },
+        showConfirmButton: false,
+        timer: 950,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
+      });
+      return;
+    }
 
     try {
       await save(
@@ -155,18 +184,19 @@ export default function Menu() {
                     placeholder="姓名"
                     value={formData.name}
                     onChange={handleChange}
-                    required
+                    // required
                   />
 
                   <h6>
-                    性別<span className={`${styles["important"]}`}> *</span>
+                    性別
+                    {/* <span className={`${styles["important"]}`}> *</span> */}
                   </h6>
                   <select
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
                     className={styles.selects}
-                    required
+                    // required
                   >
                     <option value="">請選擇性別</option>
                     <option value="male">男</option>
@@ -177,27 +207,29 @@ export default function Menu() {
 
                 <div className={styles.formGroup}>
                   <h6>
-                    生日<span className={`${styles["important"]}`}> *</span>
+                    生日
+                    {/* <span className={`${styles["important"]}`}> *</span> */}
                   </h6>
                   <Input
                     type="date"
                     name="birthday"
                     value={formattedDate}
                     onChange={handleChange}
-                    required
+                    // required
                   />
                 </div>
 
                 <div className={`${styles.formGroup} ${styles.phone}`}>
                   <h6>
-                    聯絡電話<span className={`${styles["important"]}`}> *</span>
+                    聯絡電話
+                    <span className={`${styles["important"]}`}> *</span>
                   </h6>
                   <Input
                     name="phone"
                     placeholder="聯絡電話"
                     value={formData.phone}
                     onChange={handleChange}
-                    required
+                    // required
                   />
 
                   <h6>
@@ -208,7 +240,8 @@ export default function Menu() {
 
                 <div className={styles.formGroup}>
                   <h6>
-                    所在地區<span className={`${styles["important"]}`}> *</span>
+                    所在地區
+                    {/* <span className={`${styles["important"]}`}> *</span> */}
                   </h6>
 
                   <div className={styles.addressRow}>

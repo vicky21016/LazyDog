@@ -28,11 +28,11 @@ export const getInfo = async (req, res) => {
 
 export const updateInfo = async (req, res) => {
   try {
-    // console.log("📂 解析後的檔案:", req.file); // 🛠️ 查看 multer 是否成功處理圖片
-    // console.log("前端傳來的資料", req.body);
+    console.log("📂 解析後的檔案:", req.file); // 🛠️ 查看 multer 是否成功處理圖片
+    console.log("前端傳來的資料", req.body);
 
     const { name, category_id, Introduce, Experience, teacherId } = req.body; // 從請求的 body 取得要更新的資料
-    const img = req.file ? req.file.filename : null; // 如果有檔案，使用檔案名稱，否則為 null
+    const img = req.file ? req.file.filename : req.body.teacherPic; // 如果有檔案，使用檔案名稱，否則為 null
     const updateData = {
       name,
       category_id,
@@ -41,6 +41,7 @@ export const updateInfo = async (req, res) => {
       img,
       teacherId,
     };
+    // console.log(img);
 
     // 呼叫更新函數，傳入 teacherId 和要更新的資料
     const success = await updateTeacherInfo(updateData);

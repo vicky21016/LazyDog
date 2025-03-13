@@ -1,3 +1,4 @@
+import { verifyToken } from "../middlewares/authMiddleware.js";
 import {
   createcourseReviews,
   replycourseReviews,
@@ -49,15 +50,14 @@ export const createcourseReview = async (req, res) => {
 };
 export const replycourseReview = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { reply } = req.body;
-    const operator_id = req.user.id;
+    const { reviewId, reply } = req.body;
+    console.log(req.body);
 
-    if (!reply) {
-      return res.status(400).json({ error: "請提供回覆內容" });
+    if (!reviewId || !reply) {
+      return res.status(400).json({ error: "請提供評論 ID 和回覆內容" });
     }
 
-    const updatedReview = await replycourseReviews(id, operator_id, reply);
+    const updatedReview = await replycourseReviews(reviewId, reply);
     if (!updatedReview) {
       return res.status(404).json({ error: "找不到該評論或無法回覆" });
     }
@@ -72,6 +72,7 @@ export const replycourseReview = async (req, res) => {
 export const getcourseReview = async (req, res) => {
   try {
     const { course_id } = req.params;
+    // console.log(req.params);
     const reviews = await getcourseReviews(course_id);
 
     res.status(200).json({ success: true, data: reviews });

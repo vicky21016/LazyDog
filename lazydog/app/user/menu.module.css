@@ -1,4 +1,3 @@
-
 .container {
   /* max-width: 600px; */
   margin: auto;
@@ -12,9 +11,9 @@
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 16px;
-  color:#3b3330;
+  color: #3b3330;
 }
-.important{
+.important {
   color: rgb(255, 97, 97);
   /* font-size: 12px; */
 }
@@ -26,7 +25,6 @@
 
 .form-group {
   display: flex;
-  
 }
 
 .filed {
@@ -34,7 +32,7 @@
   width: 100%;
   border: 1px solid #ccc;
 }
-.filed:focus{
+.filed:focus {
   border: 2px solid #ffa726;
   outline: none;
 }
@@ -51,11 +49,11 @@
 }
 
 .store:hover {
-    background-color: #fdf9f5;
-    color: #ff9538;
-    border-color: #ff9538;
-  }
-.exStore{
+  background-color: #fdf9f5;
+  color: #ff9538;
+  border-color: #ff9538;
+}
+.exStore {
   grid-column: span 1;
   background-color: #fdf9f5;
   color: #ff9538;
@@ -72,7 +70,6 @@
   border-color: #ff9538;
 }
 
-
 .container2 {
   display: flex;
   align-items: center;
@@ -85,7 +82,7 @@
   font-weight: bold;
   color: #0000;
   animation: loader27-animation 1s infinite alternate linear;
-  background: radial-gradient(circle closest-side, #F6CE5B 94%, #0000)
+  background: radial-gradient(circle closest-side, #f6ce5b 94%, #0000)
     right/calc(200% - 1em) 100%;
 }
 
@@ -93,11 +90,22 @@
   content: "Loading...";
   background: inherit;
   background-clip: text;
-  background-image: radial-gradient(circle closest-side, #fff 94%, #F5842B);
+  background-image: radial-gradient(circle closest-side, #fff 94%, #f5842b);
 }
 
 @keyframes loader27-animation {
   100% {
     background-position: left;
   }
+}
+
+/* Swal 彈跳窗 */
+.tsaiSwal {
+  width: 400px;
+  padding: 25px 15px;
+  font-size: 16px !important;
+  padding: 15px 40px 40px;
+  border-radius: 35px !important;
+  background-color: white !important;
+  color: #5e5e5e;
 }
