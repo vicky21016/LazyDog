@@ -17,11 +17,13 @@ import Swal from 'sweetalert2';
 import TitleInput from '../../_components/update/TitleInput';
 import CategorySelect from '../../_components/update/CategorySelect';
 import ImageUpload from '../../_components/update/ImageUpload';
+import { useRouter } from 'next/navigation';
 
 export default function UpdateArticlePage({ params }) {
   const { updateArticle, getArticle } = useArticles();
   const { uploadCover, isLoading, error } = useUploadCover();
   const { user } = useAuth();
+  const router = useRouter();
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -101,7 +103,10 @@ export default function UpdateArticlePage({ params }) {
 
     try {
       await updateArticle(articleId, updatedArticle);
-      Swal.fire("文章更新成功！");
+      // Swal.fire("文章更新成功！");
+      Swal.fire("留言成功").then(() => {
+        router.push('/user/my_article');
+    });
     } catch (error) {
       console.error("提交文章失敗:", error);
       Swal.fire("文章更新失敗，請檢查網路連線");
@@ -172,12 +177,12 @@ export default function UpdateArticlePage({ params }) {
                 >
                   {isLoading ? '保存中...' : (
                     <>
-                      <Link
-                        href="http://localhost:3000/user/my_article"
+                      <div
+                        // href="http://localhost:3000/user/my_article"
                         className={styles.postLink}
                       >
                         <i className="bi bi-check-circle"></i> 保存文章
-                      </Link>
+                      </div>
                     </>
                   )}
                 </button>
