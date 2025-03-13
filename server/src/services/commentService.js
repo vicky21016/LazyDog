@@ -85,10 +85,10 @@ export const getCommentByAuthorS = async (author_id) => {
       [author_id]
     );
 
-    if (comment.length === 0) {
-      return { message: "該作者沒有文章或文章已被刪除" };
-    }
-    // console.log(comment)
+    // if (comment.length === 0) {
+    //   return ([]);
+    // }
+    console.log(comment)
 
     return comment;
   } catch (error) {
