@@ -43,7 +43,6 @@ export default function App () {
           <Breadcrumb
             links={[
               { label: "首頁 ", href: "/" },
-              { label: " 師資服務", href: "/teacher" },
               {
                 label: " 師資列表",
                 href: "/teacher/list",
