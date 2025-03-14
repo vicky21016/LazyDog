@@ -56,7 +56,6 @@ const sendOTPEmail = async (email, otp) => {
     // Preview only available when sending through an Ethereal account
     // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     // console.log("OTP 郵件已發送至：", email);
-
   } catch (error) {
     console.error("發送 OTP 郵件失敗：", error);
     throw new Error("發送 OTP 郵件失敗");
@@ -273,11 +272,12 @@ router.post("/register", upload.none(), async (req, res) => {
     const createdAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
     const sql =
-      "INSERT INTO `users` (`email`, `password`, `created_at`,user_img) VALUES (?, ?, ?,Dog5.png)";
+      "INSERT INTO `users` (`email`, `password`, `created_at`, `user_img`) VALUES (?, ?, ?, ?)";
     const [result] = await pool.execute(sql, [
       email,
       hashedPassword,
       createdAt,
+      "Dog5.png",
     ]);
 
     // Assuming you also want to set teacher_id when the user registers, you may need to update the `users` table schema for this
@@ -607,7 +607,7 @@ router.post("/google/google-login", upload.none(), async (req, res) => {
       {
         id: user.id,
         email: user.email,
-        role: user.role || "user",// 如果沒有role給預設值user
+        role: user.role || "user", // 如果沒有role給預設值user
         name: user.name,
         birthday: user.birthday,
         gender: user.gender,
@@ -643,17 +643,16 @@ router.post("/google/google-login", upload.none(), async (req, res) => {
     // });
   } catch (err) {
     console.error("Google 登入錯誤:", err);
-    res
-      .status(500)
-      .json({ status: "error", message: "Google 登入失敗", error: err.message });
+    res.status(500).json({
+      status: "error",
+      message: "Google 登入失敗",
+      error: err.message,
+    });
   }
 });
 
-
-
 async function getAvatar(img) {
   const basePath = path.resolve("public/user/img");
-
 
   const defaultAvatar = "http://localhost:5000/auth/Dog5.png";
 

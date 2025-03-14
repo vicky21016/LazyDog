@@ -50,12 +50,20 @@ export function AuthProvider({ children }) {
           router.push("/user");
           break;
         default:
-          alert("出現錯誤，請通知管理員");
+          // alert("出現錯誤，請通知管理員");
+          Swal.fire({
+            icon: "error",
+            text: "出現錯誤，請通知管理員",
+          });
           break;
       }
     } catch (err) {
       console.log(err);
-      alert(`登入失敗: ${err.message}`);
+      // alert(`登入失敗: ${err.message}`);
+      Swal.fire({
+        icon: "error",
+        text: `登入失敗: ${err.message}`,
+      });
     }
   };
 
@@ -173,7 +181,6 @@ export function AuthProvider({ children }) {
   //         avatar: data.user.avatar_url,
   //         role: "user",
 
-
   //       });
 
   //       router.push("/user");
@@ -184,7 +191,6 @@ export function AuthProvider({ children }) {
   //     console.error("Google 登入錯誤:", error);
   //   }
   // };
-
 
   // 獲取驗證碼
   const generateOtp = async (email) => {
@@ -273,7 +279,11 @@ export function AuthProvider({ children }) {
       window.location.href = "/login";
     } catch (err) {
       console.log(err);
-      alert(err.message);
+      // alert(err.message);
+      Swal.fire({
+        icon: "error",
+        text: err.message,
+      });
     }
   };
 
@@ -291,11 +301,19 @@ export function AuthProvider({ children }) {
       const result = await res.json();
       if (result.status !== "success") throw new Error(result.message);
 
-      alert("註冊成功");
+      // alert("註冊成功");
+      Swal.fire({
+        icon: "success",
+        text: "註冊成功",
+      });
       router.push("/login");
     } catch (err) {
       console.log(err);
-      alert(`註冊失敗: ${err.message}`);
+      // alert(`註冊失敗: ${err.message}`);
+      Swal.fire({
+        icon: "error",
+        text: `註冊失敗: ${err.message}`,
+      });
     }
   };
 
@@ -374,11 +392,19 @@ export function AuthProvider({ children }) {
         // setUser(JSON.parse(localStorage.getItem("user")));
         // 若為 operator，��重新��向 operator ��面
       } else {
-        alert("儲存失敗");
+        // alert("儲存失敗");
+        Swal.fire({
+          icon: "error",
+          title: "儲存失敗",
+        });
       }
     } catch (err) {
       console.log(err);
-      alert(`儲存失敗: ${err.message}`);
+      // alert(`儲存失敗: ${err.message}`);
+      Swal.fire({
+        icon: "error",
+        title: `儲存失敗: ${err.message}`,
+      });
     }
   };
   // 更新大頭照
@@ -531,7 +557,11 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (user == -1) return; // 等待 user 讀取完成
     if (!user && protectedRoutes.includes(pathname)) {
-      alert("請先登入");
+      // alert("請先登入");
+      Swal.fire({
+        icon: "warning",
+        title: "請先登入",
+      });
       router.replace(loginRoute);
     }
   }, [pathname, user]);

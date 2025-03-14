@@ -2,46 +2,58 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Header from "../components/layout/header"; 
+import Header from "../components/layout/header";
 import SocialLogin from "../components/auth/SocialLogin";
 import InputFiled from "../components/forms/InputField";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
-import styles from "../../styles/modules/form.module.css"
+import styles from "../../styles/modules/form.module.css";
+import Swal from "sweetalert2";
 export default function Register() {
-   const [email, setEmail] = useState("");
-   const [password, setPassword] = useState("");
-   const [confirmPassword, setConfirmPassword] = useState("");
-    const { user, register} = useAuth();
-    const router = useRouter();
-   const dateForm = () => {
-//     const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-// if (!isValidEmail(email)) {
-//   return res.status(400).json({ status: "fail", message: "電子郵件格式無效" });
-// }
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const { user, register } = useAuth();
+  const router = useRouter();
+  const dateForm = () => {
+    //     const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    // if (!isValidEmail(email)) {
+    //   return res.status(400).json({ status: "fail", message: "電子郵件格式無效" });
+    // }
     if (password.length < 8) {
-      alert("密碼需至少包含 8 個字符");
+      // alert("密碼需至少包含 8 個字符");
+      Swal.fire({
+        icon: "error",
+        text: "密碼需至少包含 8 個字符",
+      });
       return false;
     }
     return true;
   };
-   const handleRegister = async (e) => {
-     e.preventDefault();
-     if (!dateForm()) return;
-     if (password !== confirmPassword) {
-       alert("密碼和確認密碼不一致");
-       return;
-     }
-try {
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (!dateForm()) return;
+    if (password !== confirmPassword) {
+      // alert("密碼和確認密碼不一致");
+      Swal.fire({
+        icon: "error",
+        text: "密碼和確認密碼不一致",
+      });
+      return;
+    }
+    try {
       await register(email, password, confirmPassword);
-      router.push("/login"); 
+      router.push("/login");
     } catch (error) {
-      alert("註冊失敗！");
+      // alert("註冊失敗！");
+      Swal.fire({
+        icon: "error",
+        text: "註冊失敗！",
+      });
       console.error(error);
     }
-     
-   };
-  
+  };
+
   return (
     <>
       <Header />
