@@ -10,14 +10,15 @@ export default function ComponentsInputFiled({
   value,
   onChange,
 }) {
+  console.log(styles);
   return (
     <>
-      <div className="mb-3 ">
+      <div className={`mb-3 ${styles.teacherInput}`}>
         <input
           type={type}
           name={name}
           placeholder={placeholder}
-          className={` p-2 rounded ${styles["filed"]}`}
+          className={` p-2 rounded ${styles.filed}`}
           value={value} // 綁定 value 到狀態
           onChange={onChange}
         />
