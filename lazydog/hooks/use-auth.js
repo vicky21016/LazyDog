@@ -459,8 +459,8 @@ export function AuthProvider({ children }) {
     if (user == -1 || user == null) return; // 等待 user 讀取完成
     if (!pathname == "/") return;
     if (!stablePathname == "/") return;
-    if (!user && protectedRoutes.includes(stablePathname || pathname)) {
-      // if (!user) {
+    // if (!user && protectedRoutes.includes(stablePathname || pathname)) {
+    if (!user) {
       //備案
       // alert("請先登入");
       Swal.fire({
@@ -474,8 +474,8 @@ export function AuthProvider({ children }) {
       });
       router.replace(loginRoute);
     }
-  }, [stablePathname, pathname, user]);
-  // }, [ user]);
+    // }, [stablePathname, pathname, user]);
+  }, [user]);
   return (
     <AuthContext.Provider
       value={{
