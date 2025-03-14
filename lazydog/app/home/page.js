@@ -4,8 +4,12 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 import { FaAngleUp, FaTicketAlt } from "react-icons/fa";
 
 import styles from "../../styles/modules/home.module.css";
@@ -79,6 +83,8 @@ export default function HomePage(props) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  console.log(hotSale);
+
   return (
     <>
       <Header />
@@ -146,7 +152,11 @@ export default function HomePage(props) {
               productDetails.map((product, index) => {
                 if (index >= 5) return;
                 return (
-                  <div key={index} className={`col-2 ${styles.card}`}>
+                  <Link
+                    href={`/product/detail?productID=${hotSale[index]}`}
+                    key={index}
+                    className={`col-2 ${styles.card}`}
+                  >
                     <div className={styles.pdPics}>
                       <img
                         className={styles.dryfood}
@@ -158,12 +168,12 @@ export default function HomePage(props) {
                       <p className={styles.p}>{product.name}</p>
                       {/* <p className={styles.price}>${product.price}</p> */}
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
           </div>
           {/* 手機板  */}
-          {/* <div className={`row d-block d-md-none ${styles.productCards}`}>
+          <div className={`row d-block d-md-none ${styles.productCards}`}>
             <Swiper
               slidesPerView={1}
               spaceBetween={23}
@@ -180,22 +190,26 @@ export default function HomePage(props) {
                   if (index >= 5) return;
                   return (
                     <SwiperSlide className={`col-2 ${styles.card}`}>
-                      <div className={styles.pdPics}>
-                        <img
-                          className={styles.dryfood}
-                          src={product.image_url}
-                          alt=""
-                        />
-                      </div>
-                      <div className={styles.pdWords}>
-                        <p className={styles.p}>{product.name}</p>
-                        <p className={styles.p}>${product.price}</p>
-                      </div>
+                      <Link
+                        href={`/product/detail?productID=${hotSale[index]}`}
+                      >
+                        <div className={styles.pdPics}>
+                          <img
+                            className={styles.dryfood}
+                            src={product.image_url}
+                            alt=""
+                          />
+                        </div>
+                        <div className={styles.pdWords}>
+                          <p className={styles.p}>{product.name}</p>
+                          <p className={styles.p}>${product.price}</p>
+                        </div>
+                      </Link>
                     </SwiperSlide>
                   );
                 })}
             </Swiper>
-          </div> */}
+          </div>
         </div>
 
         <div className={styles.brownWave}>
