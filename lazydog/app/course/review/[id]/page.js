@@ -30,7 +30,7 @@ const ReviewList = () => {
     date: `${item.created_at}`,
     rating: `${item.rating}`,
     content: `${item.comment}`,
-    courseName: `${item.courseName}`,
+    courseName: `${item.course_name}`,
     reply: item.reply ?? "",
     // replied: true,
     status: "公開",
