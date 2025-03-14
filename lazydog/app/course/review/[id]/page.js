@@ -30,8 +30,8 @@ const ReviewList = () => {
     date: `${item.created_at}`,
     rating: `${item.rating}`,
     content: `${item.comment}`,
-    courseName: `${item.courseName}`,
-    reply: `${item.reply}`,
+    courseName: `${item.course_name}`,
+    reply: item.reply ?? "",
     // replied: true,
     status: "公開",
   }));
@@ -128,8 +128,13 @@ const ReviewList = () => {
                       </td>
                       <td className={styles.tdTsai}>{review?.content}</td>
                       <td className={styles.tdTsai}>
-                        {review.reply ? "已回覆" : "未回覆"}
+                        {review.reply !== null &&
+                        review.reply !== undefined &&
+                        review.reply.trim() !== ""
+                          ? "已回覆"
+                          : "未回覆"}
                       </td>
+
                       {/* <td className={`text-nowrap ${styles.tdTsai}`}>
                         <span
                           className={`badge ${
