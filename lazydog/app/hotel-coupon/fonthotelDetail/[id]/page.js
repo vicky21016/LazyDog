@@ -8,7 +8,6 @@ import "../../../../html/hotel-coupon/css/fontHotelHome.css";
 import hotelStyles from "../../../../styles/modules/fontHotelDetail.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Image from "next/image";
-import { useLocationSelector } from "@/hooks/useLocationSelector";
 import { useGoogleMap } from "@/hooks/useGoogleMap";
 import {
   getHotelById,
@@ -22,7 +21,6 @@ import {
   getHotelFavorites,
 } from "@/services/allFavoriteService";
 import Header from "../../../components/layout/header";
-import SearchBar from "../../../components/hotel/search";
 import Breadcrumb from "../../../components/teacher/breadcrumb";
 import RoomSelection from "../../../components/hotel/roomSelection";
 import { useAuth } from "@/hooks/use-auth";
@@ -73,31 +71,9 @@ export default function HotelDetailPage({ params }) {
     if (quantity !== quantityFromUrl) setQuantity(quantityFromUrl);
   }, [checkInDateFromUrl, checkOutDateFromUrl, quantityFromUrl]);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedParams = JSON.parse(sessionStorage.getItem("searchParams"));
-      if (storedParams) {
-        if (!checkInDate && storedParams.checkInDate)
-          setCheckInDate(storedParams.checkInDate);
-        if (!checkOutDate && storedParams.checkOutDate)
-          setCheckOutDate(storedParams.checkOutDate);
-        if (!quantity && storedParams.quantity)
-          setQuantity(storedParams.quantity);
-      }
-    }
-  }, []);
+ 
 
-  // 使用 useLocationSelector 獲取 location
-  const {
-    location,
-    locationModalRef,
-    openModal,
-    city,
-    district,
-    closeModal,
-    confirmLocation,
-    clearLocation,
-  } = useLocationSelector();
+  
 
   // 獲取旅館資料
   useEffect(() => {
@@ -309,23 +285,7 @@ export default function HotelDetailPage({ params }) {
     <>
       <Header />
       <div style={{ marginTop: '80px' }}>
-      <SearchBar
-        location={location}
-        city={city}
-        district={district}
-        openModal={openModal}
-        closeModal={closeModal}
-        locationModalRef={locationModalRef}
-        quantity={quantity}
-        confirmLocation={confirmLocation}
-        clearLocation={clearLocation}
-        setQuantity={setQuantity}
-        onSearch={handleSearch}
-        checkInDate={checkInDate}
-        checkOutDate={checkOutDate}
-        onCheckInDateChange={setCheckInDate}
-        onCheckOutDateChange={setCheckOutDate}
-      />
+      
       {/* 簡介 */}
       <div className={`container mt-5 ${hotelStyles.container}`}>
         <Breadcrumb
@@ -418,13 +378,19 @@ export default function HotelDetailPage({ params }) {
             ))}
           </div>
           <div className={`mt-4 ${hotelStyles.suEffortButtons}`}>
-            <button className={`btn  ${hotelStyles.suBtnPrimary}`}>
-              立即預約
-            </button>
-            <button className={`btn ${hotelStyles.suBtnOutlineLight}`}>
-              了解更多
-            </button>
-          </div>
+  <button
+    className={`btn ${hotelStyles.suBtnPrimary}`}
+    onClick={() => router.push("/hotel-coupon/fonthotelHome")} 
+  >
+    立即預約
+  </button>
+  <button
+    className={`btn ${hotelStyles.suBtnOutlineLight}`}
+    onClick={() => router.push("/")} 
+  >
+    了解更多
+  </button>
+</div>
         </div>
       </div>
       {/* Google 地圖 */}
