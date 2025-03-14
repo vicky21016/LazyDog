@@ -14,8 +14,13 @@ import {
 import "nouislider/dist/nouislider.css";
 import PriceSlider from "@/app/components/hotel/PriceSlider";
 
-export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
-  const [showAllFacilities, setShowAllFacilities] = useState(true);
+export default function SideBar({
+  hotelId,
+  onSearch,
+  onClear,
+  searchParams = {},
+}) {
+  const [showAllFacilities, setShowAllFacilities] = useState(false);
   const [roomTypes, setRoomTypes] = useState([]); //所有房型
   const [selectedRoomType, setSelectedRoomType] = useState("");
   const [hotels, setHotels] = useState([]);
@@ -148,7 +153,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
       roomType: selectedRoomType ?? null,
       tags: selectedTags.length > 0 ? selectedTags.map(Number) : [],
     };
-
+    // console.log(filterParams);
     try {
       await onSearch(filterParams, true);
       setIsSearching(false);
@@ -186,6 +191,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
     setMaxPrice(newMaxPrice);
   };
 
+  // console.log(selectedRating);
   return (
     <>
       {/* 桌機 */}
@@ -231,7 +237,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
               onChange={(e) => setSelectedRating(e.target.value)}
             >
               <option value="">全部</option>
-              {[5, 4, 3, 2, 1].map((rating) => (
+              {[4, 3, 2, 1].map((rating) => (
                 <option key={rating} value={rating}>
                   {rating} &#9733; 以上
                 </option>
@@ -411,7 +417,7 @@ export default function SideBar({ hotelId, onSearch, onClear, searchParams }) {
                   onChange={(e) => setSelectedRating(e.target.value)}
                 >
                   <option value="">全部</option>
-                  {[5, 4, 3, 2, 1].map((rating) => (
+                  {[4, 3, 2, 1].map((rating) => (
                     <option key={rating} value={rating}>
                       {rating} ⭐ 以上
                     </option>

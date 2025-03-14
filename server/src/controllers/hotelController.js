@@ -10,7 +10,7 @@ import {
   updateMainImages,
   deleteHotelImagesByIds,
   insertHotelImage,
-  deleteImageById
+  deleteImageById,
 } from "../services/hotelService.js";
 import pool from "../config/mysql.js";
 const validateHotelId = (id) => {
@@ -71,7 +71,6 @@ export const getByIds = async (req, res) => {
     handleError(res, error, "獲取飯店失敗");
   }
 };
-
 
 export const getOperatorHotels = async (req, res) => {
   try {
@@ -168,7 +167,7 @@ export const updateHotel = async (req, res) => {
     console.log("收到 PATCH 請求，更新內容:", req.body);
 
     const userId = req.user.id;
-    const { deleteImageIds, ...hotelData } = req.body; 
+    const { deleteImageIds, ...hotelData } = req.body;
 
     // 檢查該使用者是否有對應的旅館
     const [hotelRows] = await pool.query(
@@ -198,9 +197,6 @@ export const updateHotel = async (req, res) => {
     return res.status(500).json({ error: "伺服器錯誤" });
   }
 };
-
-
-
 
 export const updateMainImage = async (req, res) => {
   try {
@@ -263,31 +259,31 @@ export const getPaginatedHotels = async (req, res) => {
 
 /* 取得篩選後的飯店 */
 export const getFilteredHotelsS = async (req, res) => {
+  // console.log(req.body);
   try {
     const filters = {
       city: req.body.city || null,
       district: req.body.district || null,
       checkInDate: req.body.checkInDate || null,
       checkOutDate: req.body.checkOutDate || null,
-      min_rating: req.body.minRating ? parseFloat(req.body.minRating) : null,
-      min_price: req.body.minPrice ? Math.max(0, parseFloat(req.body.minPrice)) : 0, // ✅ 確保 min_price >= 0
+      min_rating: req.body.rating ? parseFloat(req.body.rating) : null,
+      min_price: req.body.minPrice
+        ? Math.max(0, parseFloat(req.body.minPrice))
+        : 0, // ✅ 確保 min_price >= 0
       max_price: req.body.maxPrice
         ? Math.min(10000, parseFloat(req.body.maxPrice)) // ✅ 限制 max_price 最高 10000
         : 10000,
-      room_type_id: req.body.roomTypeId ? parseInt(req.body.roomTypeId) : null,
+      room_type_id: req.body.roomType ? parseInt(req.body.roomType) : null,
       tags: req.body.tags
         ? req.body.tags.map(Number).filter((n) => !isNaN(n))
         : [],
     };
-
     const hotels = await getFilteredHotels(filters);
     res.json(hotels);
   } catch (error) {
     handleError(res, error, "獲取篩選飯店失敗");
   }
 };
-
-
 
 //刪除單張圖片
 export const deleteHotelImage = async (req, res) => {
@@ -302,7 +298,6 @@ export const deleteHotelImage = async (req, res) => {
     handleError(res, error, "刪除圖片失敗");
   }
 };
-
 
 export const deleteHotelImages = async (req, res) => {
   try {
@@ -332,7 +327,7 @@ export const uploadHotelImage = async (req, res) => {
     // 修正這行，確保存完整 URL
     const baseUrl = "http://localhost:5000";
     const imageUrl = `${baseUrl}/uploads/hotel/${req.file.filename}`;
-    
+
     const imageId = await insertHotelImage(hotelId, imageUrl);
 
     res.json({ status: "success", image_id: imageId, image_url: imageUrl });
@@ -340,4 +335,3 @@ export const uploadHotelImage = async (req, res) => {
     handleError(res, error, "圖片上傳失敗");
   }
 };
-
