@@ -46,11 +46,11 @@ export const getcourseReviews = async (teacher_id) => {
   try {
     // 取得評論（不包含圖片）
     const [reviews] = await pool.query(
-
-      `SELECT cr.*, u.name AS user_name
+      `SELECT cr.*, u.name AS user_name, c.name AS course_name
              FROM course_reviews cr
              JOIN users u ON cr.user_id = u.id
              JOIN course_session cs ON cr.course_id = cs.course_id
+             JOIN course c ON cr.course_id = c.id
              WHERE cs.teacher_id = ? AND cr.is_deleted = 0
              GROUP BY cr.id
              ORDER BY cr.created_at DESC;
@@ -61,8 +61,8 @@ export const getcourseReviews = async (teacher_id) => {
       //  FROM course_reviews cr
       //  JOIN users u ON cr.user_id = u.id
       //  JOIN course ON course.id= cr.course_id
-      //  WHERE cr.course_id = ? 
-      //  AND cr.is_deleted = 0 
+      //  WHERE cr.course_id = ?
+      //  AND cr.is_deleted = 0
       //  ORDER BY cr.created_at DESC`,
       // [course_id]
     );
