@@ -38,17 +38,26 @@ export default function Register() {
       Swal.fire({
         icon: "error",
         text: "密碼和確認密碼不一致",
+        showConfirmButton: false,
+        timer: 950,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
       return;
     }
     try {
       await register(email, password, confirmPassword);
-      router.push("/login");
     } catch (error) {
       // alert("註冊失敗！");
       Swal.fire({
         icon: "error",
         text: "註冊失敗！",
+        showConfirmButton: false,
+        timer: 950,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
       console.error(error);
     }

@@ -54,6 +54,11 @@ export function AuthProvider({ children }) {
           Swal.fire({
             icon: "error",
             text: "出現錯誤，請通知管理員",
+            showConfirmButton: false,
+            timer: 950,
+            customClass: {
+              popup: styles.tsaiSwal,
+            },
           });
           break;
       }
@@ -283,6 +288,11 @@ export function AuthProvider({ children }) {
       Swal.fire({
         icon: "error",
         text: err.message,
+        showConfirmButton: false,
+        timer: 950,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
     }
   };
@@ -305,6 +315,11 @@ export function AuthProvider({ children }) {
       Swal.fire({
         icon: "success",
         text: "註冊成功",
+        showConfirmButton: false,
+        timer: 950,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
       router.push("/login");
     } catch (err) {
@@ -313,7 +328,13 @@ export function AuthProvider({ children }) {
       Swal.fire({
         icon: "error",
         text: `註冊失敗: ${err.message}`,
+        showConfirmButton: false,
+        timer: 950,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
+      router.push("/register");
     }
   };
 
@@ -396,6 +417,11 @@ export function AuthProvider({ children }) {
         Swal.fire({
           icon: "error",
           title: "儲存失敗",
+          showConfirmButton: false,
+          timer: 950,
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
         });
       }
     } catch (err) {
@@ -404,6 +430,11 @@ export function AuthProvider({ children }) {
       Swal.fire({
         icon: "error",
         title: `儲存失敗: ${err.message}`,
+        showConfirmButton: false,
+        timer: 950,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
     }
   };
@@ -561,6 +592,11 @@ export function AuthProvider({ children }) {
       Swal.fire({
         icon: "warning",
         title: "請先登入",
+        showConfirmButton: false,
+        timer: 950,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
       router.replace(loginRoute);
     }
