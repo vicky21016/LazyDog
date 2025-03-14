@@ -226,7 +226,7 @@ export const removeCourseFavorite = async (favoriteId) => {
     const result = await res.json();
 
     if (res.ok) {
-      return { success: true, message: "刪除成功" };
+      return { success: true, message: "移除收藏" };
     }
 
     throw new Error(result.message || "移除課程收藏失敗");

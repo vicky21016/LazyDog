@@ -1,3 +1,25 @@
+.container {
+  padding: 10px 20px 45px;
+
+  h5 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    color: #3b3330;
+    padding-bottom: 15px;
+  }
+
+  h6 {
+    font-size: 22px;
+    font-weight: 550;
+    letter-spacing: 0.8px;
+    margin-bottom: 16px;
+    color: #3b3330;
+    padding-bottom: 5px;
+  }
+}
+
 .suAvatarImg {
   width: 100px;
   height: 100px;
@@ -74,7 +96,7 @@
   font-weight: bold;
   color: #0000;
   animation: loader27-animation 1s infinite alternate linear;
-  background: radial-gradient(circle closest-side, #F6CE5B 94%, #0000)
+  background: radial-gradient(circle closest-side, #f6ce5b 94%, #0000)
     right/calc(200% - 1em) 100%;
 }
 
@@ -82,7 +104,7 @@
   content: "Loading...";
   background: inherit;
   background-clip: text;
-  background-image: radial-gradient(circle closest-side, #fff 94%, #F5842B);
+  background-image: radial-gradient(circle closest-side, #fff 94%, #f5842b);
 }
 
 @keyframes loader27-animation {
@@ -97,8 +119,8 @@
   border-radius: 7px;
   border: none;
   font-size: 16px;
-  border:1.5 solid #f5842b;
-  .postLink{
+  border: 1.5 solid #f5842b;
+  .postLink {
     color: white;
   }
 }
@@ -106,14 +128,14 @@
 .post:hover {
   background-color: white;
   color: #f5842b;
-  border:1.5 solid #f5842b;
-  .postLink{
+  border: 1.5 solid #f5842b;
+  .postLink {
     color: #f5842b;
   }
 }
 
-@media screen and (max-width: 390px){
-  .card{
+@media screen and (max-width: 390px) {
+  .card {
     height: 300px;
     margin-bottom: 15px;
   }
