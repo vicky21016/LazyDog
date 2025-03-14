@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, useRef } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+} from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { auth, provider } from "@/app/components/utils/firebase"; // 確保路徑正確
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
@@ -17,6 +24,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(-1);
   const router = useRouter();
   const pathname = usePathname();
+  const stablePathname = useMemo(() => pathname, [pathname]);
   const protectedRoutes = ["/user"];
   const loginRoute = "/login";
   const isMounted = useRef(false);
@@ -104,100 +112,11 @@ export function AuthProvider({ children }) {
       localStorage.setItem(appKey, data.data.token);
       localStorage.setItem("user", JSON.stringify(newUser));
       router.push("/user");
-      // console.log(user);
-      // setUser(data);
-      // localStorage.setItem(appKey, data.data);
-      // console.log(user);
-
-      // if (data.data) {
-      //   localStorage.setItem(appKey, data.token);
-      //   localStorage.setItem(
-      //     "user",
-      //     JSON.stringify({
-      //       id: data.user.id,
-      //       email: data.user.email,
-      //       name: data.user.name,
-      //       avatar: data.user.avatar_url,
-      //       role: "user",
-      //       token: data.token,
-      //     })
-      //   );
-
-      //   // setUser({
-      //   //   ...googleUser,
-      //   //   id: data.user.id,
-      //   //   token: data.token,
-      //   //   name: user.user.name,
-      //   //   avatar: data.user.avatar_url,
-      //   //   role: "user",
-      //   // });
-
-      //   router.push("/user");
-      //   console.log(user);
-
-      // } else {
-      //   console.warn("後端未回傳 Token");
-      // }
     } catch (error) {
       console.error("Google 登入錯誤:", error);
     }
   };
 
-  // const googleLogin = async () => {
-  //   try {
-  //     // Google 登入
-  //     const result = await signInWithPopup(auth, provider);
-  //     const googleUser = result.user;
-  //     setUser(googleUser); // 更新 user 状态
-
-  //     // 发送 Google 用户信息到后端
-  //     const response = await fetch("http://localhost:5000/auth/google/google-login", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         google_id: googleUser.uid,
-  //         email: googleUser.email,
-  //         name: googleUser.displayName,
-  //         avatar_url: googleUser.photoURL,
-  //       }),
-  //     });
-
-  //     const data = await response.json();
-  //     console.log("伺服器回應：", data);
-
-  //     if (data.token) {
-  //       localStorage.setItem(appKey, data.token);
-  //       localStorage.setItem(
-  //         "user",
-  //         JSON.stringify({
-  //           id: data.user.id,
-  //           email: data.user.email,
-  //           name: data.user.name,
-  //           avatar: data.user.avatar_url,
-  //           role: "user",
-  //           token: data.token,
-  //         })
-  //       );
-  //       setUser({
-  //         ...googleUser,  // 保留 Google 用户信息
-  //         id: data.user.id, // 使用后端返回的 id
-  //         token: data.token, // 使用后端返回的 token
-  //         name: user.user.name,
-  //         avatar: data.user.avatar_url,
-  //         role: "user",
-
-  //       });
-
-  //       router.push("/user");
-  //     } else {
-  //       console.warn("後端未回傳 Token");
-  //     }
-  //   } catch (error) {
-  //     console.error("Google 登入錯誤:", error);
-  //   }
-  // };
-
-  // 獲取驗證碼
   const generateOtp = async (email) => {
     try {
       const response = await fetch("http://localhost:5000/auth/generate", {
@@ -480,57 +399,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // useEffect(() => {
-  //   // console.count("useEffect00 次數");
-  //   // 監聽 Firebase 登入狀態*
-  //   let token = localStorage.getItem(appKey);
-  //   if (!token) {
-  //     setUser(null); // 確保未登入時使用是 null
-  //     return;
-  //   }
-
-  //   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-  //     if (currentUser) {
-  //       setUser(currentUser);
-  //       localStorage.setItem(
-  //         "user",
-  //         JSON.stringify({
-  //           uid: currentUser.uid,
-  //           email: currentUser.email,
-  //           name: currentUser.displayName,
-  //           avatar: currentUser.photoURL,
-  //         })
-  //       );
-  //     }
-  //   });
-  //   if (token) {
-  //     const fetchData = async () => {
-  //       let API = "http://localhost:5000/auth/status";
-  //       try {
-  //         const res = await fetch(API, {
-  //           method: "POST",
-  //           headers: { Authorization: `Bearer ${token}` },
-  //         });
-  //         const result = await res.json();
-  //         if (result.status !== "success") throw new Error(result.message);
-
-  //         // 更新 token
-  //         token = result.data.token;
-  //         localStorage.setItem(appKey, token);
-
-  //         // 解析 token 並更新 user
-  //         const newUser = jwt.decode(token);
-  //         setUser(newUser);
-  //       } catch (err) {
-  //         console.log(err);
-  //         localStorage.removeItem(appKey);
-  //       }
-  //     };
-  //     unsubscribe();
-  //     fetchData();
-  //   }
-  // }, []);
-
   useEffect(() => {
     // 監聽 Firebase 登入狀態
 
@@ -586,8 +454,14 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    if (user == -1) return; // 等待 user 讀取完成
-    if (!user && protectedRoutes.includes(pathname)) {
+    console.log(user, pathname);
+
+    if (user == -1 || user == null) return; // 等待 user 讀取完成
+    if (!pathname == "/") return;
+    if (!stablePathname == "/") return;
+    if (!user && protectedRoutes.includes(stablePathname || pathname)) {
+      // if (!user) {
+      //備案
       // alert("請先登入");
       Swal.fire({
         icon: "warning",
@@ -600,8 +474,8 @@ export function AuthProvider({ children }) {
       });
       router.replace(loginRoute);
     }
-  }, [pathname, user]);
-
+  }, [stablePathname, pathname, user]);
+  // }, [ user]);
   return (
     <AuthContext.Provider
       value={{

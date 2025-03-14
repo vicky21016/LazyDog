@@ -352,6 +352,9 @@ body {
       align-self: stretch;
       margin-left: 5px;
       margin-bottom: 19px;
+      @media screen and (max-width: 390px) {
+        gap: 5px;
+      }
 
       .dateTitle {
         font-size: 15px;
@@ -381,6 +384,9 @@ body {
       align-self: stretch;
       margin-left: 5px;
       margin-bottom: 19px;
+      @media screen and (max-width: 390px) {
+        gap: 5px;
+      }
 
       .durTitle {
         font-size: 15px;
@@ -408,6 +414,9 @@ body {
       gap: 10px;
       align-self: stretch;
       margin-left: 5px;
+      @media screen and (max-width: 390px) {
+        gap: 5px;
+      }
 
       .areaTitle {
         font-size: 15px;
@@ -427,6 +436,9 @@ body {
         /* line-height: 27px; */
         margin: 0 0 0 6px;
         text-wrap: nowrap;
+        @media screen and (max-width: 390px) {
+          font-size: 14px;
+        }
       }
     }
 

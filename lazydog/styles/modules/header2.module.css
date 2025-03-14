@@ -23,7 +23,7 @@
   border-radius: 50%;
   object-fit: cover;
   object-position: center;
-  margin-top: -6px; 
+  margin-top: -6px;
 }
 
 .lumi-nav {
@@ -219,7 +219,7 @@
   }
 }
 @media (max-width: 768px) {
-  .lumi-header {
+  .lumi-header2 {
     padding: 10px 15px;
   }
   .lumi-logo1 {
@@ -239,3 +239,14 @@
     display: none;
   }
 }
+/* Swal 彈跳窗 */
+.tsaiSwal {
+  width: 400px;
+  padding: 25px 15px;
+  font-size: 16px !important;
+  padding: 15px 40px 40px;
+  border-radius: 35px !important;
+  background-color: white !important;
+  color: #5e5e5e;
+}
+

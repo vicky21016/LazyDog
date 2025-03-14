@@ -59,7 +59,7 @@ export default function MyMenu() {
       localStorage.removeItem("token");
       setProfile(null); //  確保立即更新
       router.push("/login");
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const { fileInputRef, avatarRef, uploadPhoto, fileChange, deletePhoto } =
@@ -129,19 +129,14 @@ export default function MyMenu() {
         </div>
         <div className={`text-center`}>
           {/*  顯示會員頭像與名稱 */}
-          <div className="lumi-profile-section position-relative d-inline-block">
-            <img
-              ref={avatarRef}
-              src={profile?.avatar}
-              alt="User Avatar"
-              className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
-              width="50"
-            />
-            {/* <FontAwesomeIcon
-              icon={faCamera}
-              onClick={handleClick}
-              style={{ cursor: "pointer" }}
-            /> */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            className="lumi-profile-section position-relative"
+          >
             <input
               id="avatarInput"
               type="file"
@@ -151,7 +146,24 @@ export default function MyMenu() {
             />
 
             {/* <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5> */}
-            <div className={styles.dropdownItem}>
+            <div className={styles.CameradropdownItem}>
+              {profile?.avatar ? (
+                <img
+                  ref={avatarRef}
+                  src={profile?.avatar}
+                  alt="User Avatar"
+                  className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
+                  width="50"
+                />
+              ) : (
+                <img
+                  ref={avatarRef}
+                  src="http://localhost:5000/auth/Dog5.png"
+                  alt="User Avatar"
+                  className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
+                  width="50"
+                />
+              )}
               <button
                 className={`btn btn-light ${styles.suCameraIcon}`}
                 type="button"
@@ -225,25 +237,14 @@ export default function MyMenu() {
       <div className={`col-3 ${styles.asideContainer}`}>
         <div className={`${styles.container}`}>
           {/*  顯示會員頭像與名稱 */}
-          <div className="lumi-profile-section position-relative d-inline-block">
-            {profile && profile.avatar ? (<img
-              ref={avatarRef}
-              src={profile?.avatar}
-              alt="User Avatar"
-              className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
-              width="50"
-            />) : (<img
-              ref={avatarRef}
-              src='http://localhost:5000/auth/Dog5.png'
-              alt="User Avatar"
-              className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
-              width="50"
-            />)}
-            {/* <FontAwesomeIcon
-              icon={faCamera}
-              onClick={handleClick}
-              style={{ cursor: "pointer" }}
-            /> */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            className="lumi-profile-section position-relative"
+          >
             <input
               id="avatarInput"
               type="file"
@@ -253,7 +254,24 @@ export default function MyMenu() {
             />
 
             {/* <h5 className="lumi-welcome">歡迎，{profile?.name || "會員"}！</h5> */}
-            <div className={styles.dropdownItem}>
+            <div className={styles.CameradropdownItem}>
+              {profile?.avatar ? (
+                <img
+                  ref={avatarRef}
+                  src={profile?.avatar}
+                  alt="User Avatar"
+                  className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
+                  width="50"
+                />
+              ) : (
+                <img
+                  ref={avatarRef}
+                  src="http://localhost:5000/auth/Dog5.png"
+                  alt="User Avatar"
+                  className={`mb-4 rounded-circle ${styles.suAvatarImg}`}
+                  width="50"
+                />
+              )}
               <button
                 className={`btn btn-light ${styles.suCameraIcon}`}
                 type="button"

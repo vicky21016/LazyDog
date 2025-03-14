@@ -118,13 +118,13 @@ export default function ListPage(props) {
   //   };
   // }, []);
 
-  if (error) {
-    return (
-      <div className="container">
-        <img style={{ width: "100%" }} src="/product/404.png" />
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="container">
+  //       <img style={{ width: "100%" }} src="/product/404.png" />
+  //     </div>
+  //   );
+  // }
 
   return (
     <>

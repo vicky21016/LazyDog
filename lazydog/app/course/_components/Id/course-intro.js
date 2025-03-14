@@ -326,7 +326,7 @@ export default function CourseIntro({ course, session, place, params }) {
           <h2 className={styles.name}>{c?.name}</h2>
           <div
             onClick={handleFavorite}
-            className={`me-5 ${styles.heart}`}
+            className={` ${styles.heart}`}
             style={{ cursor: "pointer" }}
           >
             {isFavorite ? (

@@ -49,15 +49,14 @@ export default function Header(props) {
 
   const handleCartClick = async () => {
     if (!user) {
-      await toast.warning("請先登入!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+      Swal.fire({
+        title: "請先登入",
+        icon: "warning",
+        showConfirmButton: false,
+        timer: 950,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
     }
   };
@@ -82,8 +81,9 @@ export default function Header(props) {
 
   return (
     <header
-      className={`${styles["lumi-header2"]} ${isScrolled ? styles.scrolled : ""
-        }`}
+      className={`${styles["lumi-header2"]} ${
+        isScrolled ? styles.scrolled : ""
+      }`}
     >
       <Link href="/" className={styles["lumi-logo2"]}>
         <img
@@ -203,7 +203,7 @@ export default function Header(props) {
 
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
-          <ToastContainer />
+          {/* <ToastContainer /> */}
           {user ? (
             <Link
               href={
@@ -211,16 +211,20 @@ export default function Header(props) {
                   ? user.role === "operator"
                     ? "/hotel-coupon/operatorDetail"
                     : user.role === "teacher"
-                      ? "/teacher-sign/list"
-                      : user.role === "user"
-                        ? "/user"
-                        : "#"
+                    ? "/teacher-sign/list"
+                    : user.role === "user"
+                    ? "/user"
+                    : "#"
                   : "/login" // Or some default route if user is not logged in
               }
               className={styles["lumi-user-icon2"]}
             >
               {user && user.avatar ? (
-                <img src={user.avatar} alt="User Avatar" className={styles.userAvatar} />
+                <img
+                  src={user.avatar}
+                  alt="User Avatar"
+                  className={styles.userAvatar}
+                />
               ) : (
                 <i className="bi bi-person" />
               )}
@@ -230,7 +234,7 @@ export default function Header(props) {
               <Link href="/login" className={styles["lumi-user-icon2"]}>
                 <i className="bi bi-person" />
               </Link>
-              <ToastContainer />
+              {/* <ToastContainer /> */}
             </>
           )}
 
@@ -242,10 +246,10 @@ export default function Header(props) {
                     ? user.role === "operator"
                       ? "/hotel-coupon/operatorDetail"
                       : user.role === "teacher"
-                        ? "/teacher-sign/list"
-                        : user.role === "user"
-                          ? "/user"
-                          : "#"
+                      ? "/teacher-sign/list"
+                      : user.role === "user"
+                      ? "/user"
+                      : "#"
                     : "/login" // Or some default route if user is not logged in
                 }
                 className={styles["dropdown-link"]}
@@ -277,14 +281,13 @@ export default function Header(props) {
             <Link
               onClick={() => {
                 handleCartClick();
-                toast.info("Please log in to view your cart");
               }}
               href="/login"
               className={styles["lumi-cart-icon2"]}
             >
               <i className="bi bi-cart2"></i>
             </Link>
-            <ToastContainer />
+            {/* <ToastContainer /> */}
           </>
         )}
       </div>
@@ -314,10 +317,11 @@ export default function Header(props) {
                 </Link>
               </div>
               <div
-                className={`${PDOpen
+                className={`${
+                  PDOpen
                     ? styles["dropdown-contentOn"]
                     : styles["dropdown-contentOff"]
-                  }`}
+                }`}
               >
                 <a
                   href={`/product/list/category?category=乾糧`}
@@ -391,17 +395,18 @@ export default function Header(props) {
                 </Link>
               </div>
               <div
-                className={`${teacherOpen
+                className={`${
+                  teacherOpen
                     ? styles["dropdown-contentOn"]
                     : styles["dropdown-contentOff"]
-                  }`}
+                }`}
               >
                 <Link
-                    href="/teacher"
-                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
-                  >
-                    師資 & 課程
-                  </Link>
+                  href="/teacher"
+                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                >
+                  師資 & 課程
+                </Link>
                 <Link
                   href="/course/list"
                   className={`${styles["dropdown-link"]}`}
@@ -430,10 +435,11 @@ export default function Header(props) {
                 <Link href="">會員中心</Link>
               </div>
               <div
-                className={`${userOpen
+                className={`${
+                  userOpen
                     ? styles["dropdown-contentOn"]
                     : styles["dropdown-contentOff"]
-                  }`}
+                }`}
               >
                 <Link
                   href={
@@ -441,10 +447,10 @@ export default function Header(props) {
                       ? user.role === "operator"
                         ? "/hotel-coupon/operatorDetail"
                         : user.role === "teacher"
-                          ? "/teacher-sign/list"
-                          : user.role === "user"
-                            ? "/user"
-                            : "#"
+                        ? "/teacher-sign/list"
+                        : user.role === "user"
+                        ? "/user"
+                        : "#"
                       : "/login" // Or some default route if user is not logged in
                   }
                   className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}

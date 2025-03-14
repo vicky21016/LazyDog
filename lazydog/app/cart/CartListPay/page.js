@@ -11,8 +11,8 @@ import { useCart } from "@/hooks/use-cart"; // 引入useCart以便取得購物�
 import { useOrder } from "@/hooks/use-order";
 import { useCoupons } from "@/hooks/use-coupon";
 import Header from "../../components/layout/header";
-import Input from "../../components/forms/Input";
-import InputFiled from "../../components/forms/InputField";
+// import input from "../../components/forms/input";
+// import inputFiled from "../../components/forms/inputField";
 import styles from "../css/CartList.module.css";
 import Hotel from "../../components/cart/hotel";
 import Course from "../../components/cart/course";
@@ -247,7 +247,7 @@ export default function CartListPayPage(props) {
         </div>
         <div className={`container lumi-all-wrapper ${styles.container}`}>
           <h4 className="mb-5">購買資訊</h4>
-          <form action="">
+          <form>
             <div className="row">
               <main className={`col-lg-5 col-md-auto col-auto me-5`}>
                 <div className="mb-3 row">
@@ -255,7 +255,7 @@ export default function CartListPayPage(props) {
                     <label htmlFor="first-name" className="form-label">
                       姓氏 <span style={{ color: "red" }}>*</span>
                     </label>
-                    <Input
+                    <input
                       type="text"
                       id="first-name"
                       name="first-name"
@@ -267,7 +267,7 @@ export default function CartListPayPage(props) {
                     <label htmlFor="last-name" className="form-label">
                       名字 <span style={{ color: "red" }}>*</span>
                     </label>
-                    <Input
+                    <input
                       type="text"
                       id="last-name"
                       name="last-name"
@@ -281,7 +281,7 @@ export default function CartListPayPage(props) {
                   <label htmlFor="adress" className="form-label">
                     地址 <span style={{ color: "red" }}>*</span>
                   </label>
-                  <Input
+                  <input
                     type="text"
                     id="adress"
                     name="adress"
@@ -294,7 +294,7 @@ export default function CartListPayPage(props) {
                   <label htmlFor="email" className="form-label">
                     Email <span style={{ color: "red" }}>*</span>
                   </label>
-                  <Input
+                  <input
                     type="email"
                     id="email"
                     name="email"
@@ -307,7 +307,7 @@ export default function CartListPayPage(props) {
                   <label htmlFor="phone" className="form-label">
                     電話 <span style={{ color: "red" }}>*</span>
                   </label>
-                  <Input
+                  <input
                     type="tel"
                     id="phone"
                     name="phone"
@@ -345,7 +345,9 @@ export default function CartListPayPage(props) {
                       <span>
                         {item.name} x {item.count}
                       </span>
-                      <span>NT$ { Number(item.price * item.count).toLocaleString() }</span>
+                      <span>
+                        NT$ {Number(item.price * item.count).toLocaleString()}
+                      </span>
                     </div>
                   ))}
 

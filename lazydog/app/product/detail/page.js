@@ -164,7 +164,7 @@ function DetailContent() {
     setRate(width >= 1200 ? 3 : width >= 768 ? 2 : 1);
   }, [width]);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (e) => {
     // 檢查用戶是否登入
     if (!user) {
       Swal.fire({
@@ -193,6 +193,11 @@ function DetailContent() {
         showConfirmButton: false,
         timer: 1000, // 1.5 秒後自動關閉
       });
+      if (e == true) {
+        setTimeout(() => {
+          router.push("/cart/CartList");
+        }, 100);
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -520,10 +525,7 @@ function DetailContent() {
                     <button
                       className={btnHover ? "" : styles.BtnBuynow}
                       onClick={() => {
-                        handleAddToCart();
-                        setTimeout(() => {
-                          router.push("/cart/CartList");
-                        }, 100);
+                        handleAddToCart(true);
                       }}
                       onMouseEnter={() => setBtnHover(true)}
                       onMouseLeave={() => setBtnHover(false)}

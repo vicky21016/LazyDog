@@ -8,10 +8,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebase } from "../utils/firebase";
 import styles from "../../../styles/modules/header.module.css";
-
 import { useCart } from "@/hooks/use-cart";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 export default function Header(props) {
   const [usernow, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false); // 控制選單展開
@@ -45,14 +43,14 @@ export default function Header(props) {
 
   const handleCartClick = async () => {
     if (!user) {
-      await toast.warning("請先登入才能使用購物車!", {
-        position: "top-center",
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+      Swal.fire({
+        title: "請先登入",
+        icon: "warning",
+        showConfirmButton: false,
+        timer: 950,
+        customClass: {
+          popup: styles.tsaiSwal,
+        },
       });
     }
   };
@@ -81,8 +79,9 @@ export default function Header(props) {
 
   return (
     <header
-      className={`${styles["lumi-header"]} ${isScrolled ? styles.scrolled : ""
-        }`}
+      className={`${styles["lumi-header"]} ${
+        isScrolled ? styles.scrolled : ""
+      }`}
     >
       <Link href="/" className={styles["lumi-logo"]}>
         <img src="/images/logo.png" alt="Logo" />
@@ -218,7 +217,6 @@ export default function Header(props) {
       {/* 右上角的會員與購物車 */}
       <div className={styles["lumi-user-actions"]}>
         <div className={styles["dropdown"]}>
-          <ToastContainer />
           {user ? (
             <Link
               href={
@@ -226,16 +224,20 @@ export default function Header(props) {
                   ? user.role === "operator"
                     ? "/hotel-coupon/operatorDetail"
                     : user.role === "teacher"
-                      ? "/teacher-sign/list"
-                      : user.role === "user"
-                        ? "/user"
-                        : "#"
+                    ? "/teacher-sign/list"
+                    : user.role === "user"
+                    ? "/user"
+                    : "#"
                   : "/login" // Or some default route if user is not logged in
               }
               className={styles["lumi-user-icon"]}
             >
               {user && user.avatar ? (
-                <img src={user.avatar} alt="User Avatar" className={styles.userAvatar} />
+                <img
+                  src={user.avatar}
+                  alt="User Avatar"
+                  className={styles.userAvatar}
+                />
               ) : (
                 <i className="bi bi-person" />
               )}
@@ -246,20 +248,19 @@ export default function Header(props) {
                 href="/login"
                 className={styles["lumi-user-icon"]}
                 onClick={() =>
-                  toast.warning("請先登入!", {
-                    position: "top-center",
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
+                  Swal.fire({
+                    title: "請先登入",
+                    icon: "warning",
+                    showConfirmButton: false,
+                    timer: 950,
+                    customClass: {
+                      popup: styles.tsaiSwal,
+                    },
                   })
                 }
               >
                 <i className="bi bi-person" />
               </Link>
-              <ToastContainer />
             </>
           )}
 
@@ -271,10 +272,10 @@ export default function Header(props) {
                     ? user.role === "operator"
                       ? "/hotel-coupon/operatorDetail"
                       : user.role === "teacher"
-                        ? "/teacher-sign/list"
-                        : user.role === "user"
-                          ? "/user"
-                          : "#"
+                      ? "/teacher-sign/list"
+                      : user.role === "user"
+                      ? "/user"
+                      : "#"
                     : "/login" // Or some default route if user is not logged in
                 }
                 className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
@@ -349,8 +350,9 @@ export default function Header(props) {
           <i
             ref={menuRef}
             onClick={() => setMenuOpen(!menuOpen)}
-            className={`${styles.menu} ${menuOpen ? "bi bi-x-lg" : "bi bi-list"
-              }`}
+            className={`${styles.menu} ${
+              menuOpen ? "bi bi-x-lg" : "bi bi-list"
+            }`}
           ></i>
           <nav className={styles["mobileMenubar"]}>
             <ul
@@ -372,10 +374,11 @@ export default function Header(props) {
                   </Link>
                 </div>
                 <div
-                  className={`${PDOpen
-                    ? styles["dropdown-contentOn"]
-                    : styles["dropdown-contentOff"]
-                    }`}
+                  className={`${
+                    PDOpen
+                      ? styles["dropdown-contentOn"]
+                      : styles["dropdown-contentOff"]
+                  }`}
                 >
                   <a
                     href={`/product/list/category?category=乾糧`}
@@ -449,12 +452,13 @@ export default function Header(props) {
                   </Link>
                 </div>
                 <div
-                  className={`${teacherOpen
-                    ? styles["dropdown-contentOn"]
-                    : styles["dropdown-contentOff"]
-                    }`}
+                  className={`${
+                    teacherOpen
+                      ? styles["dropdown-contentOn"]
+                      : styles["dropdown-contentOff"]
+                  }`}
                 >
-                   <Link
+                  <Link
                     href="/teacher"
                     className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
                   >
@@ -488,10 +492,11 @@ export default function Header(props) {
                   <Link href="">會員中心</Link>
                 </div>
                 <div
-                  className={`${userOpen
-                    ? styles["dropdown-contentOn"]
-                    : styles["dropdown-contentOff"]
-                    }`}
+                  className={`${
+                    userOpen
+                      ? styles["dropdown-contentOn"]
+                      : styles["dropdown-contentOff"]
+                  }`}
                 >
                   <Link
                     href={
@@ -499,10 +504,10 @@ export default function Header(props) {
                         ? user.role === "operator"
                           ? "/hotel-coupon/operatorDetail"
                           : user.role === "teacher"
-                            ? "/teacher-sign/list"
-                            : user.role === "user"
-                              ? "/user"
-                              : "#"
+                          ? "/teacher-sign/list"
+                          : user.role === "user"
+                          ? "/user"
+                          : "#"
                         : "/login" // Or some default route if user is not logged in
                     }
                     className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}

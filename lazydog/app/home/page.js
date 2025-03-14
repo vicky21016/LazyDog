@@ -83,7 +83,7 @@ export default function HomePage(props) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  console.log(hotSale);
+  // console.log(hotSale);
 
   return (
     <>

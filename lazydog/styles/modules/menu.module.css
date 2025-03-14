@@ -87,6 +87,45 @@
 .suDropdownItem {
   cursor: pointer;
 }
+.CameradropdownItem {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+  .suAvatarImg {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 3px solid #ddd;
+  }
+  .suDropdownMenu {
+    min-width: 120px;
+    text-align: center;
+  }
+  .suCameraIcon {
+    position: absolute;
+    top: 75px;
+    right: 5px;
+    background: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  .suDropdownMenu {
+    min-width: 120px;
+    text-align: center;
+  }
+  .suDropdownItem {
+    cursor: pointer;
+  }
+  .suCameraIcon {
+    right: -5px;
+  }
+}
 .suCameraIcon {
   position: absolute;
   top: 75px;
