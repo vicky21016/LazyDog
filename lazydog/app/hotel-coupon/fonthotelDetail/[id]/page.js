@@ -378,13 +378,19 @@ export default function HotelDetailPage({ params }) {
             ))}
           </div>
           <div className={`mt-4 ${hotelStyles.suEffortButtons}`}>
-            <button className={`btn  ${hotelStyles.suBtnPrimary}`}>
-              立即預約
-            </button>
-            <button className={`btn ${hotelStyles.suBtnOutlineLight}`}>
-              了解更多
-            </button>
-          </div>
+  <button
+    className={`btn ${hotelStyles.suBtnPrimary}`}
+    onClick={() => router.push("/hotel-coupon/fonthotelHome")} 
+  >
+    立即預約
+  </button>
+  <button
+    className={`btn ${hotelStyles.suBtnOutlineLight}`}
+    onClick={() => router.push("/")} 
+  >
+    了解更多
+  </button>
+</div>
         </div>
       </div>
       {/* Google 地圖 */}
