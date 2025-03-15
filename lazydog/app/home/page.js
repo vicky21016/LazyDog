@@ -5,7 +5,7 @@ import Link from "next/link";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -181,8 +181,12 @@ export default function HomePage(props) {
               pagination={{
                 clickable: true,
               }}
-              navigation={true}
-              modules={[Pagination, Navigation]}
+              autoplay={{
+                delay: 1500, // 設定 1 秒 (1000 毫秒)
+                disableOnInteraction: false, // 使用者滑動後仍然繼續自動播放
+              }}
+              // navigation={true}
+              modules={[Pagination, Autoplay, Navigation]}
               className="mySwiper"
             >
               {productDetails.length > 0 &&
@@ -268,7 +272,7 @@ export default function HomePage(props) {
             />
           </div>
         </div>
-        <div className={`d-block d-md-none ${styles.icons}`}>
+        <div className={`d-none d-md-block ${styles.icons}`}>
           <img
             className={styles.firework1}
             src="/home/img/fireworks.png"

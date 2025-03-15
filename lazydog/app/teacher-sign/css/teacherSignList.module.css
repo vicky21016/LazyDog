@@ -46,6 +46,11 @@ input:active {
   .top {
     display: flex;
     justify-content: space-between;
+    padding: 48px 48px 0;
+
+    @media (max-width: 390px) {
+      padding: 30px 30px 0;
+    }
 
     .tTitle {
       font-weight: bold;
@@ -92,6 +97,12 @@ input:active {
   .bottom {
     min-height: 780px;
     margin: 10px 0 25px;
+    padding: 0 48px;
+
+    @media (max-width: 390px) {
+      padding: 0 10px;
+    }
+
     .cThead,
     .cTbody {
       display: flex;
@@ -173,6 +184,7 @@ input:active {
         }
       }
     }
+
     .courseImg {
       width: 110px;
       height: 110px;
@@ -225,36 +237,4 @@ input:active {
       font-weight: 400;
     }
   }
-  /* .pagination {
-    display: flex;
-    gap: 5px;
-    padding: 50px 0 15px;
-    .pageItem {
-      justify-content: center;
-      align-items: center;
-    }
-
-    .pageLink {
-      border: 1px solid #66c5bd;
-      text-align: center;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      padding: 3px 0 0 0;
-      margin: 0 5px;
-      color: #bcbcbc;
-      border: none;
-      box-sizing: border-box;
-    }
-    .pageLink:hover {
-      background-color: #f5842b;
-      color: #fff;
-    }
-
-    .pageItem.active .pageLink {
-        background-color: #f5842b;
-        color: #fff;
-        border-radius: 60%;
-        }
-  } */
 }
