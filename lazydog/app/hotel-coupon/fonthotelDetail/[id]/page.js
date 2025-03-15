@@ -71,10 +71,6 @@ export default function HotelDetailPage({ params }) {
     if (quantity !== quantityFromUrl) setQuantity(quantityFromUrl);
   }, [checkInDateFromUrl, checkOutDateFromUrl, quantityFromUrl]);
 
- 
-
-  
-
   // 獲取旅館資料
   useEffect(() => {
     if (id && !didFetch.current) {
@@ -180,7 +176,6 @@ export default function HotelDetailPage({ params }) {
     router.push(`/hotel-coupon/fonthotelHome?${paramsString}`);
   };
 
-  
   // 獲取收藏狀態
   useEffect(() => {
     if (id && user?.id && token) {
@@ -222,10 +217,10 @@ export default function HotelDetailPage({ params }) {
           // title: "收藏成功！",
           text: response.message || "旅館已加入您的收藏清單！",
           showConfirmButton: false,
-            timer: 950,
-            customClass: {
-                          popup: styles.tsaiSwal,
-                        },
+          timer: 950,
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
         });
       } else {
         Swal.fire({
@@ -233,11 +228,11 @@ export default function HotelDetailPage({ params }) {
           title: "收藏失敗",
           // text: response?.message || "請稍後再試",
           showConfirmButton: false,
-                      timer: 2000,
-                      timerProgressBar: true,
-                      customClass: {
-                        popup: styles.tsaiSwal,
-                      },
+          timer: 2000,
+          timerProgressBar: true,
+          customClass: {
+            popup: styles.tsaiSwal,
+          },
         });
       }
     } catch (error) {
@@ -284,125 +279,135 @@ export default function HotelDetailPage({ params }) {
   return (
     <>
       <Header />
-      <div style={{ marginTop: '80px' }}>
-      
-      {/* 簡介 */}
-      <div className={`container mt-5 ${hotelStyles.container}`}>
-        <Breadcrumb
-          links={[
-            { label: "首頁 ", href: "/" },
-            { label: "旅館列表", href: "/hotel-coupon/fonthotelHome" },
-            {
-              label: "旅館介紹",
-              href: `/hotel-coupon/fonthotelDetail/${id}`,
-              active: true,
-            },
-          ]}
-        />
-        {loading ? (
-          <p className="text-center mt-5">載入中...</p>
-        ) : hotel ? (
-          <>
-            <div className="mt-5 row">
-              <div className="col-lg-6">
-                <img
-                  src={hotel?.main_image_url || "/hotel/location.png"}
-                  alt={hotel?.name || "飯店圖片"}
-                  className={hotelStyles.suHotelImage}
-                />
-              </div>
-              <div
-                className={`col-lg-6 ps-5 ${hotelStyles.suHotelDescription}`}
-              >
-                <h3 className="mb-5 text-center">
-                  {hotel.name}
-                  <div
-            onClick={handleFavorite}
-            className={`me-5 `}
-            style={{ cursor: "pointer", float: "right", color:"#ff9538"}}
-          >
-            {isFavorite ? (
-              <FaHeart className="fs-4" />
-            ) : (
-              <FaRegHeart className="fs-4" />
-            )}
-          </div>
-                </h3>
-                {/* <p>入住時間: {checkInDate}</p>
+      <div style={{ marginTop: "80px" }}>
+        {/* 簡介 */}
+        <div className={`container mt-5 ${hotelStyles.container}`}>
+          <Breadcrumb
+            links={[
+              { label: "首頁 ", href: "/" },
+              { label: "旅館列表", href: "/hotel-coupon/fonthotelHome" },
+              {
+                label: "旅館介紹",
+                href: `/hotel-coupon/fonthotelDetail/${id}`,
+                active: true,
+              },
+            ]}
+          />
+          {loading ? (
+            <p className="text-center mt-5">載入中...</p>
+          ) : hotel ? (
+            <>
+              <div className="mt-5 row">
+                <div className="col-lg-6">
+                  <img
+                    src={hotel?.main_image_url || "/hotel/location.png"}
+                    alt={hotel?.name || "飯店圖片"}
+                    className={hotelStyles.suHotelImage}
+                  />
+                </div>
+                <div
+                  className={`col-lg-6 ps-5 ${hotelStyles.suHotelDescription}`}
+                >
+                  <h3 className="mb-5 text-center">
+                    {hotel.name}
+                    <div
+                      onClick={handleFavorite}
+                      className={`me-5 `}
+                      style={{
+                        cursor: "pointer",
+                        float: "right",
+                        color: "#ff9538",
+                      }}
+                    >
+                      {isFavorite ? (
+                        <FaHeart className="fs-4" />
+                      ) : (
+                        <FaRegHeart className="fs-4" />
+                      )}
+                    </div>
+                  </h3>
+                  {/* <p>入住時間: {checkInDate}</p>
                 <p>退房時間: {checkOutDate}</p>
                 <p>數量: {quantity}</p> */}
-                {/* 測試用 */}
-                <p className={hotelStyles.suIntroduce}>
-                  {hotel.introduce || "暫無介紹"}
-                </p>
+                  {/* 測試用 */}
+                  <p className={hotelStyles.suIntroduce}>
+                    {hotel.introduce || "暫無介紹"}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            {/* 房型選擇 */}
-            <RoomSelection
-              hotelId={id}
-              checkIn={checkInDate}
-              checkOut={checkOutDate}
-            />
-          </>
-        ) : (
-          <p className="text-center">飯店不存在</p>
-        )}
-      </div>
-      {/* 我們的努力 */}
-      <div>
-        <img className="" src="/teacher-img/rice.png" alt="" />
-      </div>
-      <div className={hotelStyles.suEffortSection}>
-        <div className={`container text-center ${hotelStyles.container}`}>
-          <h2 className={`mb-4 ${hotelStyles.suEffortTitle}`}>我們的努力，看的見</h2>
-          <p className={`mb-5 ${hotelStyles.suEffortSubtitle}`}>
-            每一次陪伴、每一小時的付出，都為毛孩創造更快樂、更健康的生活！
-          </p>
-          <div className={`${hotelStyles.suEffortStats}`}>
-            {[
-              { img: "Dog2.png", text: "總服務時數：8,520+ 小時" },
-              { img: "Dog5.png", text: "服務狗狗：1,200+ 隻" },
-              { img: "Mask group.png", text: "滿意度：98.7%" },
-            ].map((item, index) => (
-              <div key={index} className={hotelStyles.suStatItem}>
-                <Image
-                  className={`mb-4 ${hotelStyles.suStatImage}`}
-                  src={`/hotel/hotel-images/page-image/${item.img}`}
-                  alt={item.text}
-                  width={150}
-                  height={150}
-                />
-                <p>{item.text}</p>
-              </div>
-            ))}
-          </div>
-          <div className={`mt-4 ${hotelStyles.suEffortButtons}`}>
-  <button
-    className={`btn ${hotelStyles.suBtnPrimary}`}
-    onClick={() => router.push("/hotel-coupon/fonthotelHome")} 
-  >
-    立即預約
-  </button>
-  <button
-    className={`btn ${hotelStyles.suBtnOutlineLight}`}
-    onClick={() => router.push("/")} 
-  >
-    了解更多
-  </button>
-</div>
+              {/* 房型選擇 */}
+              <RoomSelection
+                hotelId={id}
+                checkIn={checkInDate}
+                checkOut={checkOutDate}
+              />
+            </>
+          ) : (
+            <p className="text-center">飯店不存在</p>
+          )}
         </div>
-      </div>
-      {/* Google 地圖 */}
-      <div className={hotelStyles.suMapContainer}>
-        {lat && lng ? (
-          <div ref={mapRef} style={{ height: "500px", width: "100%" }}></div>
-        ) : (
-          <p className="text-center">
-            無法載入地圖，請確認旅館是否有經緯度數據。
-          </p>
-        )}
-      </div>
+        {/* 我們的努力 */}
+        <div style={{ width: "100%" }}>
+          <img
+            style={{ width: "100%" }}
+            className=""
+            src="/teacher-img/rice.png"
+            alt=""
+          />
+        </div>
+        <div className={hotelStyles.suEffortSection}>
+          <div className={`container text-center ${hotelStyles.container}`}>
+            <h2 className={`mb-4 ${hotelStyles.suEffortTitle}`}>
+              我們的努力，看的見
+            </h2>
+            <p className={`mb-5 ${hotelStyles.suEffortSubtitle}`}>
+              每一次陪伴、每一小時的付出，都為毛孩創造更快樂、更健康的生活！
+            </p>
+            <div className={`${hotelStyles.suEffortStats}`}>
+              {[
+                { img: "Dog2.png", text: "總服務時數：8,520+ 小時" },
+                { img: "Dog5.png", text: "服務狗狗：1,200+ 隻" },
+                { img: "Mask group.png", text: "滿意度：98.7%" },
+              ].map((item, index) => (
+                <div key={index} className={hotelStyles.suStatItem}>
+                  <Image
+                    className={`mb-4 ${hotelStyles.suStatImage}`}
+                    src={`/hotel/hotel-images/page-image/${item.img}`}
+                    alt={item.text}
+                    width={150}
+                    height={150}
+                  />
+                  <p>{item.text}</p>
+                </div>
+              ))}
+            </div>
+            <div className={`mt-4 ${hotelStyles.suEffortButtons}`}>
+              <button
+                className={`btn ${hotelStyles.suBtnPrimary}`}
+                onClick={() => router.push("/hotel-coupon/fonthotelHome")}
+              >
+                立即預約
+              </button>
+              <button
+                className={`btn ${hotelStyles.suBtnOutlineLight}`}
+                onClick={() => router.push("/")}
+              >
+                了解更多
+              </button>
+            </div>
+          </div>
+        </div>
+        {/* Google 地圖 */}
+        <div className={hotelStyles.suMapContainer}>
+          {lat && lng ? (
+            <div ref={mapRef} style={{ height: "500px", width: "100%" }}></div>
+          ) : (
+            <p className="text-center">
+              無法載入地圖，請確認旅館是否有經緯度數據。
+            </p>
+          )}
+        </div>
       </div>
     </>
   );

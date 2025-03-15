@@ -46,8 +46,13 @@ function CourseSection() {
           </Link>
         </div>
       </div>
-      <div>
-        <img className="" src="/teacher-img/rice2.png" alt="" />
+      <div style={{ width: "100%" }}>
+        <img
+          style={{ width: "100%" }}
+          className=""
+          src="/teacher-img/rice2.png"
+          alt=""
+        />
       </div>
     </>
   );
