@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import styles from "../../../styles/modules/toggle.module.css"
+import styles from "../../../styles/modules/toggle.module.css";
 import OtherTeacher from "./otherTeacher";
-import style from "../../../styles/modules/teacher.module.css"
-export default function TeacherSection () {
+import style from "../../../styles/modules/teacher.module.css";
+export default function TeacherSection() {
   const [state, setState] = useState(null);
 
   return (
@@ -45,8 +45,13 @@ export default function TeacherSection () {
           </div>
         </div>
 
-        <div>
-          <img className="" src="/teacher-img/yellow.png" alt="" />
+        <div style={{ width: "100%" }}>
+          <img
+            style={{ width: "100%" }}
+            className=""
+            src="/teacher-img/yellow.png"
+            alt=""
+          />
         </div>
       </div>
 
@@ -99,8 +104,13 @@ export default function TeacherSection () {
         </div>
       </div>
 
-      <div>
-        <img className="" src="/teacher-img/yello2.png" alt="" />
+      <div style={{ width: "100%" }}>
+        <img
+          style={{ width: "100%" }}
+          className=""
+          src="/teacher-img/yello2.png"
+          alt=""
+        />
       </div>
       <div className={`lumi-all-wrapper pb-5 ${styles.container}`}>
         <h3 className="my-5 lumi-m-title ">推薦師資</h3>
@@ -111,4 +121,4 @@ export default function TeacherSection () {
       </div>
     </section>
   );
-};
+}
