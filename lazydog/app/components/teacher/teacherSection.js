@@ -116,8 +116,13 @@ export default function TeacherSection() {
         <h3 className="my-5 lumi-m-title ">推薦師資</h3>
         <OtherTeacher />
       </div>
-      <div>
-        <img className="" src="/teacher-img/rice.png" alt="" />
+      <div style={{ width: "100%" }}>
+        <img
+          style={{ width: "100%" }}
+          className=""
+          src="/teacher-img/rice.png"
+          alt=""
+        />
       </div>
     </section>
   );
