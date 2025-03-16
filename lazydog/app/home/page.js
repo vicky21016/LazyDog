@@ -189,7 +189,7 @@ export default function HomePage(props) {
                 productDetails.map((product, index) => {
                   if (index >= 5) return;
                   return (
-                    <SwiperSlide className={`col-2 ${styles.card}`}>
+                    <SwiperSlide key={index} className={`col-2 ${styles.card}`}>
                       <Link
                         href={`/product/detail?productID=${hotSale[index]}`}
                       >

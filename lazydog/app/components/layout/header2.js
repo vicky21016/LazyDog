@@ -1,16 +1,12 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "@/hooks/use-auth";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebase } from "../utils/firebase";
 import styles from "../../../styles/modules/header2.module.css";
 import { useCart } from "@/hooks/use-cart";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 export default function Header(props) {
   const [usernow, setUser] = useState(null);
@@ -214,7 +210,7 @@ export default function Header(props) {
                     ? "/teacher-sign/list"
                     : user.role === "user"
                     ? "/user"
-                    : "#"
+                    : "/login"
                   : "/login" // Or some default route if user is not logged in
               }
               className={styles["lumi-user-icon2"]}
@@ -238,7 +234,7 @@ export default function Header(props) {
             </>
           )}
 
-          {user ? (
+          {user && user?.id > 0 ? (
             <div className={styles["dropdown-content"]}>
               <Link
                 href={
@@ -432,44 +428,49 @@ export default function Header(props) {
                   setTeacherOpen(false);
                 }}
               >
-                <Link href="">會員中心</Link>
-              </div>
-              <div
-                className={`${
-                  userOpen
-                    ? styles["dropdown-contentOn"]
-                    : styles["dropdown-contentOff"]
-                }`}
-              >
                 <Link
                   href={
-                    user
-                      ? user.role === "operator"
-                        ? "/hotel-coupon/operatorDetail"
-                        : user.role === "teacher"
-                        ? "/teacher-sign/list"
-                        : user.role === "user"
-                        ? "/user"
-                        : "#"
-                      : "/login" // Or some default route if user is not logged in
+                    user ? "" : "/login" // Or some default route if user is not logged in
                   }
-                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
                 >
-                  個人資料
+                  會員中心
                 </Link>
-                <Link
-                  href="/user/userFavorite"
-                  className={styles["dropdown-link"]}
-                >
-                  我的收藏
-                </Link>
-                <div
-                  onClick={logout}
-                  className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
-                >
-                  登出
-                </div>
               </div>
+              {user && user?.id > 0 ? (
+                <div
+                  className={`${
+                    userOpen
+                      ? styles["dropdown-contentOn"]
+                      : styles["dropdown-contentOff"]
+                  }`}
+                >
+                  <Link
+                    href={
+                      user
+                        ? user.role === "operator"
+                          ? "/hotel-coupon/operatorDetail"
+                          : user.role === "teacher"
+                          ? "/teacher-sign/list"
+                          : user.role === "user"
+                          ? "/user"
+                          : "#"
+                        : "/login" // Or some default route if user is not logged in
+                    }
+                    className={styles["dropdown-link"]}
+                  >
+                    個人資料
+                  </Link>
+                  <Link
+                    href="/user/userFavorite"
+                    className={styles["dropdown-link"]}
+                  >
+                    我的收藏
+                  </Link>
+                  <div onClick={logout} className={styles["dropdown-link"]}>
+                    登出
+                  </div>
+                </div>
+              ) : null}
             </li>
             {user ? (
               <li>
