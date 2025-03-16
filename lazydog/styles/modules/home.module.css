@@ -491,7 +491,8 @@ body {
         @media (max-width: 390px) {
           font-size: 1.3rem;
           letter-spacing: 1.5px;
-          line-height: 15px;
+          line-height: 30px;
+          padding: 0 12px;
         }
       }
       .price {
@@ -533,7 +534,7 @@ body {
 
 .section3 {
   position: relative;
-  background-color: #FFF6E8;
+  background-color: #fff6e8;
   padding: 50px 0 50px 0;
   @media (max-width: 390px) {
     padding: 85px 0 50px 0;
@@ -892,22 +893,22 @@ body {
   justify-content: space-between;
   position: relative;
   z-index: 0;
-  
-.leftImage {
-  position: absolute;
-  left: 720px;
-  top: 850px;
-  transform: translateY(-50%);
-  width: 90px;
-}
 
-.rightImage {
-  position: absolute;
-  left: 1560px;
-  top: 100px;
-  transform: translateY(50%);
-  width: 100px;
-}
+  .leftImage {
+    position: absolute;
+    left: 720px;
+    top: 850px;
+    transform: translateY(-50%);
+    width: 90px;
+  }
+
+  .rightImage {
+    position: absolute;
+    left: 1560px;
+    top: 100px;
+    transform: translateY(50%);
+    width: 100px;
+  }
 }
 .section4 {
   position: relative;
