@@ -11,7 +11,6 @@ import My from "@/app/teacher-sign/_components/my";
 import styles from "@/styles/modules/courseReview.module.css";
 
 const ReviewList = () => {
-  const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const replyInputRef = useRef(null);
   const router = useRouter();
@@ -38,37 +37,20 @@ const ReviewList = () => {
   const loadReview = (review) => {
     console.log("送去Modal:", review);
     setModalData(review);
+
+    setTimeout(() => {
+      const modalElement = document.getElementById("reviewModal");
+      if (modalElement) {
+        const modalInstance = new bootstrap.Modal(modalElement);
+        modalInstance.show();
+      }
+    }, 100);
   };
 
   const hanleReplyReview = async () => {
     const replyContent = replyInputRef.current.value.trim();
 
-    if (replyContent) {
-      const { order: reviewId } = modalData;
-      console.log("送出的資料：", { reviewId, replyContent });
-
-      try {
-        const teacherId = user.teacher_id;
-        const data = await replyReviewAPI(reviewId, replyContent);
-        Swal.fire({
-          icon: "success",
-          title: "回覆成功",
-          showConfirmButton: false,
-          timer: 1000,
-          customClass: { popup: styles.tsaiSwal },
-        });
-        router.refresh();
-        // replyInputRef.current.value = ""; // 清空回覆框
-      } catch (err) {
-        Swal.fire({
-          title: "回覆失敗",
-          text: err.message || "回覆時發生錯誤，請稍後再試。",
-          icon: "error",
-          timer: 2500,
-          customClass: { popup: styles.tsaiSwal },
-        });
-      }
-    } else {
+    if (!replyContent) {
       Swal.fire({
         icon: "warning",
         title: "請先填寫回覆內容",
@@ -76,9 +58,49 @@ const ReviewList = () => {
         timer: 1000,
         customClass: { popup: styles.tsaiSwal },
       });
+      return;
+    }
+
+    const { order: reviewId } = modalData;
+    console.log("送出的資料：", { reviewId, replyContent });
+
+    try {
+      await replyReviewAPI(reviewId, replyContent);
+
+      Swal.fire({
+        icon: "success",
+        title: "回覆成功",
+        showConfirmButton: false,
+        timer: 1000,
+        customClass: { popup: styles.tsaiSwal },
+      });
+
+      const modalElement = document.getElementById("reviewModal");
+      if (modalElement) {
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) modalInstance.hide();
+      }
+
+      setTimeout(() => {
+        document
+          .querySelectorAll(".modal-backdrop")
+          .forEach((el) => el.remove());
+        document.body.classList.remove("modal-open");
+      }, 300); 
+
+      replyInputRef.current.value = "";
+
+     router.refresh();
+    } catch (err) {
+      Swal.fire({
+        title: "回覆失敗",
+        text: err.message || "回覆時發生錯誤，請稍後再試。",
+        icon: "error",
+        timer: 2500,
+        customClass: { popup: styles.tsaiSwal },
+      });
     }
   };
-
   return (
     <>
       <Header />
@@ -167,7 +189,7 @@ const ReviewList = () => {
 
         {/* Modal */}
         <div
-          className={`modal fade ${modalOpen ? "show" : ""}`}
+          className="modal fade"
           id="reviewModal"
           tabIndex="-1"
           aria-labelledby="reviewModalLabel"
