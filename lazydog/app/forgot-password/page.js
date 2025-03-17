@@ -5,9 +5,11 @@ import Link from "next/link";
 import Header from "../components/layout/header";
 // import useAuth from "../hooks/use-auth";
 import { useAuth } from "@/hooks/use-auth";
+import { Eye, EyeOff } from "lucide-react"; // 使用 lucide-react 來顯示眼睛圖標
 
 export default function ForgetPasswordForm() {
-  const { generateOtp, resetPassword,user } = useAuth();
+  const [password, setPassword] = useState(false); // 控制密碼可見性
+  const { generateOtp, resetPassword, user } = useAuth();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,6 +18,11 @@ export default function ForgetPasswordForm() {
   const [userOtp, setUserOtp] = useState(""); // 使用者輸入的驗證碼
   const [newPassword, setNewPassword] = useState(""); // 使用者輸入的新密碼
   const [confirmNewPassword, setConfirmNewPassword] = useState(""); // 使用者再次確認的新密碼
+
+  const togglePassword = () => {
+    setPassword((prev) => !prev);
+  };
+
   useEffect(() => {
     // otp 有新值時，在這裡執行一些操作，例如 log 出新值
     if (otp) {
@@ -42,7 +49,6 @@ export default function ForgetPasswordForm() {
       setError("獲取驗證碼失敗，請稍後再試");
     }
     setLoading(false);
-
   };
 
   const handleResetPassword = async (e) => {
@@ -131,12 +137,18 @@ export default function ForgetPasswordForm() {
                   type="password"
                   name="newPassword"
                   autocomplete="new-password"
-                  className={`form-control w-100 ${styles['formControl']} ${styles['invalid']} `}
+                  className={`form-control w-100 ${styles["formControl"]} ${styles["invalid"]} `}
                   placeholder="密碼"
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
+                <button
+                  type="button"
+                  className={styles.eyeButton}
+                  onClick={togglePassword}
+                >
+                  {password ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
-
             </div>
             <div className="row mb-4">
               <div className="col-sm-12">
@@ -144,24 +156,37 @@ export default function ForgetPasswordForm() {
                   type="password"
                   name="confirmNewPassword"
                   autocomplete="off"
-                  className={`form-control w-100 ${styles['formControl']} ${styles['invalid']} `}
+                  className={`form-control w-100 ${styles["formControl"]} ${styles["invalid"]} `}
                   placeholder="確認密碼"
                   onChange={(e) => setConfirmNewPassword(e.target.value)}
                 />
+                <button
+                  type="button"
+                  className={styles.eyeButton}
+                  onClick={togglePassword}
+                >
+                  {password ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
-
             </div>
 
-            <button type="submit" className={`btn mb-4 w-100 ${styles['submit']}`}>
+            <button
+              type="submit"
+              className={`btn mb-4 w-100 ${styles["submit"]}`}
+            >
               確定
             </button>
 
             <div className="row mt-2">
-              {!user && (<p className={`${styles['notice']}`}>
-                還不是會員？
-                <Link className={`${styles['join']}`} href="/register">加入我們</Link>。
-              </p>)}
-
+              {!user && (
+                <p className={`${styles["notice"]}`}>
+                  還不是會員？
+                  <Link className={`${styles["join"]}`} href="/register">
+                    加入我們
+                  </Link>
+                  。
+                </p>
+              )}
             </div>
           </form>
         </main>
