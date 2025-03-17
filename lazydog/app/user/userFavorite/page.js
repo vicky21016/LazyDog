@@ -13,6 +13,7 @@ import {
 import { useAuth } from "@/hooks/use-auth";
 import styles from "../orders/userCoupon.module.css";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import Link from "next/link";
 
 export default function UserFavoritePage() {
   const { user } = useAuth();
@@ -245,7 +246,8 @@ export default function UserFavoritePage() {
         cancelButton: styles.tsaiSwalButton1,
       },
     }).then(async (result) => {
-      if (result.isDismissed) {
+      // console.log(result);
+      if (result.dismiss == "cancel") {
         // console.log(pdFavoriteList);
         const favorite = pdFavoriteList.filter((v) => v !== favoriteId);
         // console.log(favorite);
@@ -376,26 +378,30 @@ export default function UserFavoritePage() {
                             justifyContent: "center",
                             padding: 0,
                           }}
-                          onClick={() => handleRemoveProductFavorite(item.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRemoveProductFavorite(item.id);
+                          }}
                         >
                           {/* ✖ */}
                           <FaHeart className={styles.clickHeart} />
                         </button>
 
                         {/* 商品圖片（修正 URL 編碼） */}
-                        <img
-                          src={item.image_url}
-                          className={`card-img-top`}
-                          alt={item.name || "商品圖片"}
-                          onError={(e) => (e.target.src = "/lazydog.png")}
-                          style={{
-                            height: "100%",
-                            objectFit: "cover",
-                            borderRadius: "2px",
-                            opacity: "0.9",
-                          }}
-                        />
-
+                        <Link href={`/product/detail?productID=${item.id}`}>
+                          <img
+                            src={item.image_url}
+                            className={`card-img-top`}
+                            alt={item.name || "商品圖片"}
+                            onError={(e) => (e.target.src = "/lazydog.png")}
+                            style={{
+                              height: "100%",
+                              objectFit: "cover",
+                              borderRadius: "2px",
+                              opacity: "0.9",
+                            }}
+                          />
+                        </Link>
                         {/* <div className="card-body text-center">
                           <h6 className="card-title mt-2">{item.name}</h6>
                         </div> */}
