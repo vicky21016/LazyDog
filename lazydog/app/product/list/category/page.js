@@ -8,7 +8,7 @@ import Card from "../../_components/card/card";
 import { useCategoryFetch, useDetailFetch } from "@/hooks/product/use-fetch";
 import { useFavorite } from "@/hooks/product/use-favorite";
 
-import { Carousel } from "react-bootstrap";
+import { Collapse, Carousel } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 
 import { useAuth } from "@/hooks/use-auth";
@@ -122,41 +122,41 @@ export default function CategoryPage() {
     <>
       <div className={`${styles.collapseAside} d-lg-none`}>
         <div className={`${styles.collapseAsideContent}`}>
-          <div
-            className={`${styles.collapseHorizontal} collapse collapse-horizontal`}
-            id="collapseWidthExample"
-          >
-            <Aside
-              changeUrl={changeUrl}
-              keyword={keyword}
-              setKeyword={setKeyword}
-              minPrice={minPrice}
-              maxPrice={maxPrice}
-              setMaxPrice={setMaxPrice}
-              setMinPrice={setMinPrice}
-              sortName={sortName}
-            />
-            <button
-              ref={collapseRef}
-              className={`${styles.collapseAsideBtn} btn`}
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseWidthExample"
-              aria-expanded="false"
-              aria-controls="collapseWidthExample"
-              onClick={() => setTimeout(() => setCollapseBtn(false), 50)}
+          <Collapse in={collapseBtn}>
+            <div
+              id="example-collapse-text"
+              className={`${styles.collapseHorizontal}`}
             >
-              <img src={`/product/font/left(orange).png`} alt="" />
-            </button>
-          </div>
+              <Aside
+                changeUrl={changeUrl}
+                keyword={keyword}
+                setKeyword={setKeyword}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                setMaxPrice={setMaxPrice}
+                setMinPrice={setMinPrice}
+                sortName={sortName}
+              />
+              <button
+                ref={collapseRef}
+                className={`${styles.collapseAsideBtn} btn`}
+                type="button"
+                onClick={() => {
+                  setCollapseBtn(false);
+                }}
+                aria-controls="example-collapse-text"
+                aria-expanded={collapseBtn}
+              >
+                <img src={`/product/font/left(orange).png`} alt="" />
+              </button>
+            </div>
+          </Collapse>
           {collapseBtn == false && (
             <button
               className={`${styles.collapseAsideBtn} btn`}
               type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseWidthExample"
-              aria-expanded="false"
-              aria-controls="collapseWidthExample"
+              aria-controls="example-collapse-text"
+              aria-expanded={collapseBtn}
               onClick={() => setCollapseBtn(true)}
             >
               <img src={`/product/font/right(orange).png`} alt="" />
