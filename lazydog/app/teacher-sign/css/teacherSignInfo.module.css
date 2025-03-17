@@ -238,6 +238,7 @@ input:active {
     font-weight: 500;
     letter-spacing: 2px;
     padding: 10px 0;
+    text-wrap: nowrap;
   }
   .submitBtn:hover {
     background-color: #ff9538;

@@ -595,21 +595,21 @@ export default function TeacherUpdateC() {
             >
               <button
                 type="button"
-                className={`btn btn-sm px-5 py-2 mt-1 mb-1 ${styles.deletedBtn}`}
+                className={`btn btn-sm mt-1 mb-1 ${styles.deletedBtn}`}
                 onClick={handleisDelete}
               >
                 刪除
               </button>
               <button
                 type="button"
-                className={`btn btn-sm px-5 py-2 mt-1  mb-1 ${styles.cancleBtn}`}
+                className={`btn btn-sm mt-1 mb-1 ${styles.cancleBtn}`}
                 onClick={() => changepage("list")}
               >
                 取消
               </button>
               <button
                 type="submit"
-                className={`btn btn-sm px-5 py-2 mt-1  mb-1 ${styles.submitBtn}`}
+                className={`btn btn-sm mt-1 mb-1 ${styles.submitBtn}`}
               >
                 儲存
               </button>

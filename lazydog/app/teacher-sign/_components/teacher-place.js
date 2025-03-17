@@ -63,11 +63,11 @@ export default function TeacherPlace() {
             {/* 第一～第三筆資料 */}
             {places.slice(0, 3).map((p, index) => (
               <div key={p.id} className={`row ${styles.cTbody}`}>
-                <div className={`col-5 col-md-1 ${styles.cTd1}`}>
+                <div className={`col-12 col-md-1 ${styles.cTd1}`}>
                   {p.region}
                 </div>
                 <div
-                  className={`col-7 col-md-9 ${styles.cTd2}`}
+                  className={`col-12 col-md-9 ${styles.cTd2}`}
                   onClick={() => handlePlaceClick(p, index)}
                 >
                   <i className="bi bi-geo-alt-fill"></i> {p.address}
@@ -78,11 +78,11 @@ export default function TeacherPlace() {
             {/* 第四～第五筆資料 */}
             {places.slice(3, 5).map((p, index) => (
               <div key={p.id} className={`row ${styles.cTbody}`}>
-                <div className={`col-5 col-md-1 ${styles.cTd1}`}>
+                <div className={`col-12 col-md-1 ${styles.cTd1}`}>
                   {p.region}
                 </div>
                 <div
-                  className={`col-7 col-md-9 ${styles.cTd2}`}
+                  className={`col-12 col-md-9 ${styles.cTd2}`}
                   onClick={() => handlePlaceClick(p, index + 3)}
                 >
                   <i className="bi bi-info-circle-fill"></i> {p.address}
