@@ -17,7 +17,7 @@ import Thead from "@/app/components/cart/thead";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 
-import { Carousel } from "react-bootstrap";
+import { Collapse, Carousel } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 
 export default function ListPage(props) {
@@ -129,7 +129,7 @@ export default function ListPage(props) {
   return (
     <>
       <div className={`${styles.collapseAside} d-lg-none`}>
-        <div className={`${styles.collapseAsideContent}`}>
+        {/* <div className={`${styles.collapseAsideContent}`}>
           <div
             className={`${styles.collapseHorizontal} collapse collapse-horizontal`}
             id="collapseWidthExample"
@@ -164,6 +164,45 @@ export default function ListPage(props) {
               data-bs-target="#collapseWidthExample"
               aria-expanded="false"
               aria-controls="collapseWidthExample"
+              onClick={() => setCollapseBtn(true)}
+            >
+              <img src={`/product/font/right(orange).png`} alt="" />
+            </button>
+          )}
+        </div> */}
+        <div className={`${styles.collapseAsideContent}`}>
+          <Collapse in={collapseBtn}>
+            <div
+              id="example-collapse-text"
+              className={`${styles.collapseHorizontal}`}
+            >
+              <Aside
+                changeUrl={changeUrl}
+                setPageNow={setPageNow}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                setMaxPrice={setMaxPrice}
+                setMinPrice={setMinPrice}
+                sortName={sortName}
+              />
+              <button
+                ref={collapseRef}
+                className={`${styles.collapseAsideBtn} btn`}
+                type="button"
+                onClick={() => setCollapseBtn(false)}
+                aria-controls="example-collapse-text"
+                aria-expanded={collapseBtn}
+              >
+                <img src={`/product/font/left(orange).png`} alt="" />
+              </button>
+            </div>
+          </Collapse>
+          {collapseBtn == false && (
+            <button
+              className={`${styles.collapseAsideBtn} btn`}
+              type="button"
+              aria-controls="example-collapse-text"
+              aria-expanded={collapseBtn}
               onClick={() => setCollapseBtn(true)}
             >
               <img src={`/product/font/right(orange).png`} alt="" />
