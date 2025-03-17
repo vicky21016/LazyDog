@@ -36,17 +36,17 @@
   font-size: 20px;
 }
 
-.room{
+.room {
   color: #ff9538 !important;
   font-weight: bold;
 }
 
-.select{
+.select {
   .option:hover {
     background-color: #ff9538 !important;
   }
 }
-.select:focus{
+.select:focus {
   border-color: #ff9538 !important;
   outline: none;
 }
@@ -75,7 +75,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 20px 0 100px 0 ;
+  padding: 20px 0 100px 0;
   text-align: center;
 }
 
@@ -129,12 +129,14 @@
   display: flex;
   justify-content: center;
   gap: 25px;
-}
-
-.suEffortButtons .btn {
-  font-size: 16px;
-  padding: 12px 24px;
-  border-radius: 5px;
+  .btn {
+    @media screen and (max-width: 768px) {
+      font-size: 16px;
+      padding: 12px 24px;
+      border-radius: 5px;
+      margin: 0 auto;
+    }
+  }
 }
 
 .suEffortButtons .suBtnPrimary {
@@ -152,17 +154,15 @@
 
 .suEffortButtons .suBtnOutlineLight {
   color: #ff9538 !important;
-  border: 2px solid #ff9538    !important;
+  border: 2px solid #ff9538 !important;
   background: transparent;
   width: 250px;
 }
 
 .suEffortButtons .suBtnOutlineLight:hover {
-  background-color: #ff9538  !important;
+  background-color: #ff9538 !important;
   color: white !important;
 }
-
-
 
 /*Google 地圖 API  */
 .suMapContainer {
@@ -190,8 +190,8 @@
     margin-bottom: -140px; /* 避免 footer 波浪壓縮 */
     -webkit-mask-image: linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 1) 90%, /* 讓 footer 過渡更順暢 */
-      rgba(0, 0, 0, 0) 98%
+      rgba(0, 0, 0, 1) 90%,
+      /* 讓 footer 過渡更順暢 */ rgba(0, 0, 0, 0) 98%
     );
     mask-image: linear-gradient(
       to bottom,
@@ -199,11 +199,10 @@
       rgba(0, 0, 0, 0) 98%
     );
   }
-  .container{
+  .container {
     padding: 30px;
   }
 }
-
 
 /* (RWD) */
 @media (max-width: 1024px) {
