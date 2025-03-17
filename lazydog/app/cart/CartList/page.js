@@ -111,7 +111,7 @@ export default function CartListPage(props) {
                               alt={cartItem.name}
                             />
                           </td>
-                          <td>{cartItem.name}</td>
+                          <td className={styles.truncate}>{cartItem.name}</td>
                           <td>{Number(cartItem.price).toLocaleString()}</td>
                           <td className={`${styles.Btn}`}>
                             <button onClick={() => onIncrease(cartItem.id)}>
@@ -161,7 +161,7 @@ export default function CartListPage(props) {
                             alt={cartItem.name}
                           />
                         </td>
-                        <td>{cartItem.name}</td>
+                        <td className={styles.truncate}>{cartItem.name}</td>
                         <td>{Number(cartItem.price).toLocaleString()}</td>
                         <td className={`${styles.Btn}`}>
                           <button onClick={() => onIncrease(cartItem.id)}>
@@ -172,7 +172,11 @@ export default function CartListPage(props) {
                             -
                           </button>
                         </td>
-                        <td>{Number(cartItem.count * cartItem.price).toLocaleString()}</td>
+                        <td>
+                          {Number(
+                            cartItem.count * cartItem.price
+                          ).toLocaleString()}
+                        </td>
                         <td>
                           <button
                             style={{
@@ -203,7 +207,7 @@ export default function CartListPage(props) {
                         <td className={styles.table}>
                           <img src={cartItem.imageUrl} alt={cartItem.name} />
                         </td>
-                        <td>
+                        <td className={styles.truncate}>
                           {cartItem.name}
                           {/* <br />
                           hotel_id{cartItem.hotelId}

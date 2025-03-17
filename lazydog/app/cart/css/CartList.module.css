@@ -36,7 +36,7 @@
   padding-left: 10px;
   padding-right: 10px;
 }
-.customTable th{
+.customTable th {
   padding: 10px;
   letter-spacing: 1px;
 }
@@ -197,6 +197,27 @@
     margin-top: 50px;
     padding: 30px;
   }
+  .table {
+    display: none;
+  }
+  .imgth {
+    display: none;
+  }
+  .truncatedText {
+    display: block;
+  }
+  .customTable th,
+  .customTable td {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .Btn button {
+    background-color: #fdf9f5;
+    color: #bcbcbc;
+    border-radius: 5px;
+    border-color: #bcbcbc;
+    margin: 5px;
+  }
 }
 
 .OtherLikeContent {
@@ -241,4 +262,27 @@
   display: flex;
   align-items: center;
   gap: 30px;
+}
+
+@media (max-width: 768px) {
+  .truncate {
+    max-width: 100px; /* 保持原本的截斷寬度 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.3s ease; /* 添加過渡效果 */
+    cursor: pointer; /*添加滑鼠游標*/
+    position: relative; /* 增加相對定位 */
+  }
+  .truncate:hover {
+    overflow: visible; /* 顯示完整文字 */
+    white-space: normal; /* 允許換行 */
+    text-overflow: clip;
+    z-index: 1; /* 確保懸停時在上方 */
+    background-color: #fff6e8; /* 添加背景顏色 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: absolute; /* 添加絕對定位 */
+    padding: 10px;
+    min-width: 200px;
+  }
 }

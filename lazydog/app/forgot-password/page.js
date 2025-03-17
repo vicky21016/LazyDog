@@ -5,7 +5,7 @@ import Link from "next/link";
 import Header from "../components/layout/header";
 // import useAuth from "../hooks/use-auth";
 import { useAuth } from "@/hooks/use-auth";
-import { Eye, EyeOff } from "lucide-react"; // 使用 lucide-react 來顯示眼睛圖標
+import Input from "../components/forms/InputField";
 
 export default function ForgetPasswordForm() {
   const [password, setPassword] = useState(false); // 控制密碼可見性
@@ -133,7 +133,7 @@ export default function ForgetPasswordForm() {
 
             <div className="row mb-4">
               <div className="col-sm-12">
-                <input
+                <Input
                   type="password"
                   name="newPassword"
                   autocomplete="new-password"
@@ -141,18 +141,11 @@ export default function ForgetPasswordForm() {
                   placeholder="密碼"
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
-                <button
-                  type="button"
-                  className={styles.eyeButton}
-                  onClick={togglePassword}
-                >
-                  {password ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
               </div>
             </div>
             <div className="row mb-4">
               <div className="col-sm-12">
-                <input
+                <Input
                   type="password"
                   name="confirmNewPassword"
                   autocomplete="off"
@@ -160,13 +153,6 @@ export default function ForgetPasswordForm() {
                   placeholder="確認密碼"
                   onChange={(e) => setConfirmNewPassword(e.target.value)}
                 />
-                <button
-                  type="button"
-                  className={styles.eyeButton}
-                  onClick={togglePassword}
-                >
-                  {password ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
               </div>
             </div>
 
