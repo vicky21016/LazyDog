@@ -142,7 +142,7 @@
     align-self: stretch;
     color: #F5842B;
     background-color: white;
-    border: 1px solid #F5842B;
+    border: 1px solid #F5842B !important;
     border-radius: 66px;
   }  
   .clear:hover{
