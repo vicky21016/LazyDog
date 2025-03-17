@@ -25,12 +25,20 @@ const router = express.Router();
 const upload = multer({ storage });
 const secretKey = process.env.JWT_SECRET_KEY;
 const __dirname = dirname(fileURLToPath(import.meta.url));
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.ethereal.email",
+//   port: 587,
+//   auth: {
+//     user: "ewald.toy61@ethereal.email",
+//     pass: "wSFWDJYGncwwKaf3mJ",
+//   },
+// });
+
 const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
-  port: 587,
+  service: "gmail",
   auth: {
-    user: "ewald.toy61@ethereal.email",
-    pass: "wSFWDJYGncwwKaf3mJ",
+    user: "lazydoglazydog123456789@gmail.com", // 你的 Gmail
+    pass: "wgezsqmlcphcavqz", // 16 碼的應用程式密碼
   },
 });
 const generateOTP = () => {
@@ -41,7 +49,7 @@ const generateOTP = () => {
 
 const sendOTPEmail = async (email, otp) => {
   const mailOptions = {
-    from: '"Lazy Dog 🐶" <isabel17@ethereal.email>',
+    from: '"Lazy Dog 🐶" <ewald.toy61@ethereal.email>',
     to: email,
     subject: "您的 OTP 驗證碼",
     html: `<p>您的 OTP 驗證碼是：<strong>${otp}</strong></p><p>請在 5 分鐘內使用此驗證碼。</p>`,
