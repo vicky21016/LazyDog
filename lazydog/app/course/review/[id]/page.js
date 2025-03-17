@@ -57,6 +57,7 @@ const ReviewList = () => {
           timer: 1000,
           customClass: { popup: styles.tsaiSwal },
         });
+        router.refresh();
         // replyInputRef.current.value = ""; // 清空回覆框
       } catch (err) {
         Swal.fire({
