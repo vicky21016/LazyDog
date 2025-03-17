@@ -403,8 +403,19 @@ export default function CartListPayPage(props) {
                   {/* 付款按鈕 */}
                   <button
                     className={`mt-5 ${styles.btn1}`}
-                    type="button"
+                    type="submit"
                     onClick={handleEcpay}
+                    style={{
+                      backgroundColor: "#ff9538",
+                      color: "white",
+                      padding: "5px",
+                      border: "1px solid transparent",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      textAlign: "center",
+                      letterSpacing: "1px",
+                      width: "100%",
+                    }}
                   >
                     付款
                   </button>
