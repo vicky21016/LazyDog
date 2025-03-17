@@ -384,13 +384,13 @@ export default function HotelDetailPage({ params }) {
             </div>
             <div className={`mt-4 ${hotelStyles.suEffortButtons}`}>
               <button
-                className={`btn ${hotelStyles.suBtnPrimary}`}
+                className={`btn ${hotelStyles.suBtnPrimary} ${hotelStyles.btn}`}
                 onClick={() => router.push("/hotel-coupon/fonthotelHome")}
               >
                 立即預約
               </button>
               <button
-                className={`btn ${hotelStyles.suBtnOutlineLight}`}
+                className={`btn ${hotelStyles.btn} ${hotelStyles.suBtnOutlineLight}`}
                 onClick={() => router.push("/")}
               >
                 了解更多
