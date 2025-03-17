@@ -86,7 +86,7 @@ export default function AddArticlePage() {
       console.log(newArticle)
       // Swal.fire("文章新增成功！");
       // router.push('/article/list'); // 跳轉到文章列表頁
-      Swal.fire("留言成功").then(() => {
+      Swal.fire("文章新增成功").then(() => {
         router.push('/article/list');
     });
     } catch (error) {

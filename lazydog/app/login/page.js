@@ -34,45 +34,11 @@ export default function AppPage({ logout }) {
     }
   };
 
-  // useEffect(() => {
-  //   const existingToken = localStorage.getItem(appKey);
-  //   console.log(existingToken);
-
-  //   if (existingToken) {
-
-  //     const newUser = JSON.parse(localStorage.getItem("user"));
-  //     if (newUser && newUser.role) { // 確保 newUser 和 newUser.role 存在
-  //       setUser(newUser);
-  //       switch (newUser.role) {
-  //         case "operator":
-  //           router.push("/hotel-coupon/operatorDetail"); // 轉入 operator
-  //           break;
-  //         case "teacher":
-  //           router.push("/teacher-sign/list"); // 轉入 teacher
-  //           break;
-  //         case "user":
-  //           router.push("/user");
-  //           break;
-  //         default:
-  //           alert("出現錯誤，請通知管理員");
-  //           break;
-  //       }
-  //     } else {
-  //       router.push("/user");
-  //     }
-  //     return;
-  //   }
-  // }, []);
-
   useEffect(() => {
     const existingToken = localStorage.getItem(appKey);
 
-
     const checkUserAndRedirect = () => {
-
-
       if (existingToken) {
-
         const newUser = JSON.parse(localStorage.getItem("user"));
         if (newUser && newUser.role) {
           setUser(newUser);

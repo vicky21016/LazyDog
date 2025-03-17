@@ -110,14 +110,14 @@ const ReviewList = () => {
               <table className="table suTable table-striped table-hover">
                 <thead className="table-light">
                   <tr>
-                    <th style={{ width: "12%" }}>顧客名稱</th>
-                    <th style={{ width: "10%" }}>訂單編號</th>
-                    <th style={{ width: "12%" }}>評論日期</th>
-                    <th style={{ width: "8%" }}>評分</th>
-                    <th style={{ width: "30%" }}>評論內容</th>
-                    <th style={{ width: "10%" }}>是否回覆</th>
-                    <th style={{ width: "8%" }}>狀態</th>
-                    <th style={{ width: "10%" }}>操作</th>
+                    <th className="reviewTd1" style={{ width: "12%" }}>顧客名稱</th>
+                    <th className="reviewTd2" style={{ width: "10%" }}>訂單編號</th>
+                    <th className="reviewTd3" style={{ width: "12%" }}>評論日期</th>
+                    <th className="reviewTd4" style={{ width: "8%" }}>評分</th>
+                    <th className="reviewTd5" style={{ width: "30%" }}>評論內容</th>
+                    <th className="reviewTd6" style={{ width: "10%" }}>是否回覆</th>
+                    <th className="reviewTd7" style={{ width: "8%" }}>狀態</th>
+                    <th className="reviewTd8" style={{ width: "10%" }}>操作</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -150,9 +150,7 @@ const ReviewList = () => {
                       <td data-label="狀態">
                         <span
                           className={`badge ${
-                            review.status === "公開"
-                              ? [styles.btn3]
-                              : [styles.btn]
+                            review.status === "公開" ? styles.btn3 : styles.btn
                           }`}
                         >
                           {review.status}
@@ -165,7 +163,8 @@ const ReviewList = () => {
                           data-bs-target="#reviewModal"
                           onClick={() => loadReview(review)}
                         >
-                          檢視 / 回覆
+                          檢視<br/>
+                          回覆
                         </button>
                       </td>
                     </tr>

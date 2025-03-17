@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import My from "../../components/hotel/my";
 import Header from "../../components/layout/header";
 import { getCoupons, softDeleteCoupon } from "@/services/couponService"; // 導入 API 函數
-import Swal from "sweetalert2"; 
+import Swal from "sweetalert2";
 
 export default function CouponListPage() {
   const [coupons, setCoupons] = useState([]); // 存儲優惠券數據
@@ -46,23 +46,32 @@ export default function CouponListPage() {
 
   // 刪除優惠券
   const handleDeleteCoupon = async (couponId) => {
-    const confirmDelete = window.confirm("確定要刪除這張優惠券嗎？");
-    if (!confirmDelete) return;
-
-    try {
-      const result = await softDeleteCoupon(couponId); // 調用 API 刪除優惠券
-      if (result.success) {
-        setCoupons((prevCoupons) =>
-          prevCoupons.filter((coupon) => coupon.id !== couponId)
-        );
-        Swal.fire("已刪除", "優惠券已刪除", "success");
-      } else {
-        Swal.fire("刪除失敗", result.message, "error");
-       
+    Swal.fire({
+      title: "確定要刪除這張優惠券嗎？",
+      text: "此操作不可恢復",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "確定刪除",
+      cancelButtonText: "取消",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await softDeleteCoupon(couponId); // 調用 API 刪除優惠券
+          if (response.success) {
+            setCoupons((prevCoupons) =>
+              prevCoupons.filter((coupon) => coupon.id !== couponId)
+            );
+            Swal.fire("已刪除", "優惠券已刪除", "success");
+          } else {
+            Swal.fire("刪除失敗", response.message, "error");
+          }
+        } catch (error) {
+          Swal.fire("刪除失敗", "發生錯誤，無法刪除優惠券", "error");
+        }
       }
-    } catch (error) {
-      Swal.fire("刪除失敗", "發生錯誤，無法刪除優惠券", "error");
-    }
+    });
   };
 
   // 編輯優惠券

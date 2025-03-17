@@ -227,7 +227,7 @@ export default function Header(props) {
                     ? "/teacher-sign/list"
                     : user.role === "user"
                     ? "/user"
-                    : "#"
+                    : "/login"
                   : "/login" // Or some default route if user is not logged in
               }
               className={styles["lumi-user-icon"]}
@@ -263,8 +263,7 @@ export default function Header(props) {
               </Link>
             </>
           )}
-
-          {user ? (
+          {user && user?.id > 0 ? (
             <div className={styles["dropdown-content"]}>
               <Link
                 href={
@@ -489,45 +488,52 @@ export default function Header(props) {
                     setTeacherOpen(false);
                   }}
                 >
-                  <Link href="">會員中心</Link>
-                </div>
-                <div
-                  className={`${
-                    userOpen
-                      ? styles["dropdown-contentOn"]
-                      : styles["dropdown-contentOff"]
-                  }`}
-                >
                   <Link
                     href={
-                      user
-                        ? user.role === "operator"
-                          ? "/hotel-coupon/operatorDetail"
-                          : user.role === "teacher"
-                          ? "/teacher-sign/list"
-                          : user.role === "user"
-                          ? "/user"
-                          : "#"
-                        : "/login" // Or some default route if user is not logged in
+                      user ? "" : "/login" // Or some default route if user is not logged in
                     }
-                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
                   >
-                    個人資料
+                    會員中心
                   </Link>
-
-                  <Link
-                    href="/user/userFavorite"
-                    className={styles["dropdown-link"]}
-                  >
-                    我的收藏
-                  </Link>
-                  <div
-                    onClick={logout}
-                    className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
-                  >
-                    登出
-                  </div>
                 </div>
+                {user && user?.id > 0 ? (
+                  <div
+                    className={`${
+                      userOpen
+                        ? styles["dropdown-contentOn"]
+                        : styles["dropdown-contentOff"]
+                    }`}
+                  >
+                    <Link
+                      href={
+                        user
+                          ? user.role === "operator"
+                            ? "/hotel-coupon/operatorDetail"
+                            : user.role === "teacher"
+                            ? "/teacher-sign/list"
+                            : user.role === "user"
+                            ? "/user"
+                            : "#"
+                          : "/login" // Or some default route if user is not logged in
+                      }
+                      className={`${styles["dropdown-link"]} ${styles["dropdown-link-top"]}`}
+                    >
+                      個人資料
+                    </Link>
+                    <Link
+                      href="/user/userFavorite"
+                      className={styles["dropdown-link"]}
+                    >
+                      我的收藏
+                    </Link>
+                    <div
+                      onClick={logout}
+                      className={`${styles["dropdown-link"]} ${styles["dropdown-link-bottom"]}`}
+                    >
+                      登出
+                    </div>
+                  </div>
+                ) : null}
               </li>
             </ul>
           </nav>
