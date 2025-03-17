@@ -44,7 +44,7 @@ export default function TeacherListC() {
   };
   return (
     <>
-      <div className={`col-lg-9 col-md-12 col-12`}>
+      <div className={`col-md-9 col-12`}>
         <div className={`pb-3 ${styles.right}`}>
           <div className={`${styles.top}`}>
             <h4 className={`mb-4 ${styles.tTitle}`}>我的課程</h4>
@@ -58,12 +58,12 @@ export default function TeacherListC() {
             </button>
           </div>
           <div className={`${styles.bottom}`}>
-            <div className={styles.cThead}>
-              <div className={styles.cTh1} />
-              <div className={styles.cTh2}>課程名稱</div>
-              <div className={styles.cTh3}>上課日期</div>
-              <div className={styles.cTh4}>地點</div>
-              <div className={styles.cTh5}>更新日期</div>
+            <div className={`row ${styles.cThead}`}>
+              <div className={`col ${styles.cTh1}`}></div>
+              <div className={`col ${styles.cTh2}`}>課程名稱</div>
+              <div className={`col ${styles.cTh3}`}>上課日期</div>
+              <div className={`col ${styles.cTh4}`}>上課地點</div>
+              <div className={`col ${styles.cTh5}`}>更新日期</div>
             </div>
             <div className={`${styles.cTbodys}`}>
               {currentCourses.map((m) => {
@@ -91,21 +91,23 @@ export default function TeacherListC() {
                 return (
                   <Link
                     key={m.session_id}
-                    className={styles.cTbody}
+                    className={`row ${styles.cTbody}`}
                     href={`/teacher-sign/update/${m.session_id}`}
                   >
-                    <div className={styles.cTd1}>
+                    <div className={`col ${styles.cTd1}`}>
                       <img
                         className={styles.courseImg}
                         src={`/course/img/${m?.img_url}`}
                         alt={m?.course_name}
                       />
                     </div>
-                    <div className={styles.cTd2}>{m.course_name}</div>
-                    <div className={`d-none`}>上課日期</div>
-                    <div className={styles.cTd3}>{formattedStartDate}</div>
-                    <div className={styles.cTd4}>{m.region}</div>
-                    <div className={styles.cTd5}>{formattedDate}</div>
+                    <div className={`col ${styles.cTd2}`}>{m.course_name}</div>
+                    {/* <div className={`d-none`}>上課日期</div> */}
+                    <div className={`col ${styles.cTd3}`}>
+                      {formattedStartDate}
+                    </div>
+                    <div className={`col ${styles.cTd4}`}>{m.region}</div>
+                    <div className={`col ${styles.cTd5}`}>{formattedDate}</div>
                   </Link>
                 );
               })}

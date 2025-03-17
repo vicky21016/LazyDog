@@ -71,51 +71,59 @@ export default function ProfileCouponPage(props) {
       className={` col-12 col-md-9 coupon-section ${couponStyles.container}`}
     >
       <h5 className="mb-3">我的訂單</h5>
-      <ul className={`nav ${couponStyles.suNavTabs}`}>
-        <li className="nav-item">
+      <ul className={`nav ${couponStyles.suNavTabs} flex-column flex-md-row`}>
+        {" "}
+        {/* 使用 Bootstrap 的 flex-column flex-md-row */}
+        <li className="nav-item w-100 w-md-auto mb-2 mb-md-0">
+          {" "}
+          {/* 使用 Bootstrap 的 w-100 w-md-auto */}
           <a
             className={`nav-link ${couponStyles.suNavLink} ${
               activeTab === "全部" ? "active" : ""
-            }`}
+            } `}
             href="#"
             onClick={() => handleTabClick("全部")}
           >
             全部
           </a>
         </li>
-        <li className="nav-item">
-          <a
-            className={`nav-link ${couponStyles.suNavLink} ${
-              activeTab === "商品" ? "active" : ""
-            }`}
-            href="#"
-            onClick={() => handleTabClick("商品")}
-          >
-            商品 ({orders.length})
-          </a>
-        </li>
-        <li className="nav-item">
-          <a
-            className={`nav-link ${couponStyles.suNavLink} ${
-              activeTab === "課程" ? "active" : ""
-            }`}
-            href="#"
-            onClick={() => handleTabClick("課程")}
-          >
-            課程 ({courseOrders.length})
-          </a>
-        </li>
-        <li className="nav-item">
-          <a
-            className={`nav-link ${couponStyles.suNavLink} ${
-              activeTab === "旅館" ? "active" : ""
-            }`}
-            href="#"
-            onClick={() => handleTabClick("旅館")}
-          >
-            旅館 ({hotelOrders.length})
-          </a>
-        </li>
+        <div className="d-flex flex-column flex-md-row w-100">
+          {" "}
+          {/* 使用 Bootstrap 的 d-flex flex-column flex-md-row */}
+          <li className="nav-item w-100 w-md-auto">
+            <a
+              className={`nav-link ${couponStyles.suNavLink} ${
+                activeTab === "商品" ? "active" : ""
+              }`}
+              href="#"
+              onClick={() => handleTabClick("商品")}
+            >
+              商品 ({orders.length})
+            </a>
+          </li>
+          <li className="nav-item w-100 w-md-auto">
+            <a
+              className={`nav-link ${couponStyles.suNavLink} ${
+                activeTab === "課程" ? "active" : ""
+              }`}
+              href="#"
+              onClick={() => handleTabClick("課程")}
+            >
+              課程 ({courseOrders.length})
+            </a>
+          </li>
+          <li className="nav-item w-100 w-md-auto">
+            <a
+              className={`nav-link ${couponStyles.suNavLink} ${
+                activeTab === "旅館" ? "active" : ""
+              }`}
+              href="#"
+              onClick={() => handleTabClick("旅館")}
+            >
+              旅館 ({hotelOrders.length})
+            </a>
+          </li>
+        </div>
       </ul>
 
       {/* 根據選取的頁籤來渲染內容 */}

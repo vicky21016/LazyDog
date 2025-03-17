@@ -181,3 +181,18 @@
 .btnAction {
   min-width: 100px;
 }
+@media (max-width: 767px) {
+  .suCouponCard {
+    display: block; /* 保證 suCouponCard 顯示 */
+  }
+
+  .suCouponCard .suDetails,
+  .suCouponCard .suPrice {
+    display: none; /* 隱藏 suDetails 和 suPrice */
+  }
+
+  .suCouponCard img {
+    display: block; /* 顯示圖片 */
+    width: 100%; /* 可以根據需要調整圖片大小 */
+  }
+}

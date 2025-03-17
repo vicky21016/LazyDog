@@ -108,10 +108,11 @@ input:active {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 40px;
+      /* height: 40px; */
       box-sizing: border-box;
       overflow: hidden;
-      padding: 0 20px 0 17px;
+      padding: 0 ;
+      /* padding: 0 20px 0 17px; */
     }
 
     /* 表頭 */
@@ -119,7 +120,7 @@ input:active {
       border-bottom: 0.5px solid var(--text-Gy, #bcbcbc);
       margin-top: 25px;
       margin-bottom: 20px;
-      padding: 25px 25px 30px 17px;
+      /* padding: 25px 25px 30px 17px; */
 
       .cTh2,
       .cTh3,
@@ -172,7 +173,7 @@ input:active {
       box-sizing: border-box;
       cursor: pointer;
       transition: 0.3s;
-
+      
       &:hover {
         transform: scale(1.05);
 
@@ -184,6 +185,15 @@ input:active {
         }
       }
     }
+    @media (max-width: 991px) {
+        .cTbody{
+          height: 90px;
+          .cTd2{
+            text-align: start;
+          }
+        }
+      }
+
 
     .courseImg {
       width: 110px;
@@ -236,5 +246,10 @@ input:active {
       font-size: 15px;
       font-weight: 400;
     }
+  }
+}
+@media (max-width: 991px) {
+  .cTh1, .cTd1{
+    display: none;
   }
 }
