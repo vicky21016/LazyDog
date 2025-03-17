@@ -230,7 +230,9 @@ const ArticlePage = () => {
                     className="accordion-collapse collapse"
                     aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample">
-                    <div className="accordion-body">
+                    <div className="accordion-body"
+                      style={{ width: '366px' }}
+                    >
                       <a
                         href="#"
                         onClick={(e) => {
