@@ -428,6 +428,7 @@ function CardContent({ productID = "" }) {
                         ref={cardRef}
                         onClick={(e) => {
                           e.stopPropagation();
+                          setIsOn(false);
                         }}
                       >
                         <motion.img
@@ -576,6 +577,7 @@ function CardContent({ productID = "" }) {
                     ref={cardRef}
                     onClick={(e) => {
                       e.stopPropagation();
+                      setIsOn(false);
                     }}
                   >
                     <motion.img
