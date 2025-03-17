@@ -412,33 +412,50 @@
   margin: 100px auto 0;
 }
 @media (max-width: 375px) {
-  .suTable td {
-    font-size: 12px;
-    padding: 6px;
-  }
-  .btn-group {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  .btn-sm {
-    font-size: 12px;
-    padding: 5px 8px;
-  }
-  .badge {
-    font-size: 10px;
-    padding: 4px 6px;
-  }
-  .add-coupon-btn {
-    font-size: 14px;
-    padding: 8px;
-  }
-  .moreBtn {
-    font-size: 10px;
+  /* ✅ 隱藏「訂單編號」、「評論日期」、「是否回覆」、「狀態」 */
+  .suTable td:nth-child(2),  /* 訂單編號 */
+  .suTable td:nth-child(3),  /* 評論日期 */
+  .suTable td:nth-child(6),  /* 是否回覆 */
+  .suTable td:nth-child(7),  /* 狀態 */
+  .suTable th:nth-child(2),
+  .suTable th:nth-child(3),
+  .suTable th:nth-child(6),
+  .suTable th:nth-child(7) {
+    display: none !important;
   }
 
+  /* ✅ 隱藏「評論內容」，但保留「檢視 / 回覆」按鈕 */
+  .suTable td:nth-child(5) {
+    display: none !important;
+  }
+
+  /* ✅ 確保「操作」按鈕寬度正常 */
+  .suTable td:nth-child(8) {
+    text-align: center;
+  }
+  
+  .suTable td:nth-child(8) .btn {
+    width: 100%;
+    font-size: 12px;
+    padding: 5px;
+  }
+
+  /* ✅ 確保表格可滾動 */
+  .suTable {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+@media (max-width: 375px) {
   .modal-content {
-    height: 100vh;
+    max-height: 90vh;
+    overflow: hidden;
+  }
+
+  .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
     padding: 15px;
   }
 }
