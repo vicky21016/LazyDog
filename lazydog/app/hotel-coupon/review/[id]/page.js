@@ -163,7 +163,8 @@ const ReviewList = () => {
                           data-bs-target="#reviewModal"
                           onClick={() => loadReview(review)}
                         >
-                          檢視 / 回覆
+                          檢視<br/>
+                          回覆
                         </button>
                       </td>
                     </tr>
