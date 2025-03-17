@@ -92,6 +92,10 @@
 .top select {
   display: none;
 }
+.aside {
+   
+  width: 377px;
+}
 
 .aside-category {
   display: flex;

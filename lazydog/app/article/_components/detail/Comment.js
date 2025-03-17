@@ -13,7 +13,7 @@ export default function Comment({ content, author, author_img, id }) {
     const [showModal, setShowModal] = useState(false);
     const { user } = useAuth();
     const { deleteComment, loading } = useComment(); // 從 useComment 鉤子中獲取 deleteComment
-    // console.log(id);
+    console.log(user);
 
     // 控制 Modal 的顯示與隱藏
     const handleClose = () => setShowModal(false);
