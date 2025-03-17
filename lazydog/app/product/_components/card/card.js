@@ -244,7 +244,7 @@ function CardContent({ productID = "" }) {
                     alt=""
                   />
                 </motion.div>
-                <motion.div
+                {/* <motion.div
                   layout
                   style={{
                     display: isOn ? "none" : "",
@@ -259,7 +259,7 @@ function CardContent({ productID = "" }) {
                 >
                   <img src={`/product/font/cart-fill-big.png`} alt="" />
                   <p>{productCount > 0 ? productCount : cartRate}</p>
-                </motion.div>
+                </motion.div> */}
                 <motion.figure
                   layout
                   style={{
