@@ -147,7 +147,16 @@ export default function CartListPayFinshPage(props) {
                 </div>
               </div>
             </main>
-            <aside className={`col-lg-4 col-md-8 col-8 p-4 ${styles.aside}`}>
+            <aside
+              className={`col-lg-4 col-md-8 col-8 p-4`}
+              style={{
+                display: "flex",
+                justifyContent: "center", // 水平置中
+                alignItems: "center", // 垂直置中（如果有內容需要垂直居中）
+                backgroundColor: "#FFF6E8",
+                margin: "0 auto", // 這是使 aside 水平置中的關鍵
+              }}
+            >
               <div className=" pb-5">
                 <h6 className="mb-4">以下為回傳資料:</h6>
                 <p>交易編號: {searchParams?.get("MerchantTradeNo")}</p>
