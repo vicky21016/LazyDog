@@ -8,7 +8,7 @@ export default function Thead(props) {
       <thead>
 <tr>
   <th style={{ width: 110 }} />
-  <th>商品品項</th>
+  <th>品項</th>
   <th>單價</th>
   <th>數量</th>
   <th>總價</th>
