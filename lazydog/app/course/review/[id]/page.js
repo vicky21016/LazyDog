@@ -116,11 +116,11 @@ const ReviewList = () => {
               <table className="table suTable table-striped table-hover">
                 <thead className="table-light">
                   <tr>
-                    <th className={styles.thTsai}>訂單編號</th>
+                    <th className={styles.thTsai1}>訂單編號</th>
                     <th className={styles.thTsai}>學員</th>
-                    <th className={styles.thTsai}>評論日期</th>
+                    <th className={styles.thTsai1}>評論日期</th>
                     <th className={styles.thTsai}>評分</th>
-                    <th className={styles.thTsai}>內容</th>
+                    <th className={styles.thTsai1}>內容</th>
                     <th className={styles.thTsai}>是否回覆</th>
                     {/* <th className={styles.thTsai}>狀態</th> */}
                     <th className={styles.thTsai}>操作</th>
@@ -129,11 +129,11 @@ const ReviewList = () => {
                 <tbody>
                   {reviews.map((review, index) => (
                     <tr key={index}>
-                      <td className={styles.tdTsai}>{review?.order}</td>
+                      <td className={styles.tdTsai1}>{review?.order}</td>
                       <td className={`text-nowrap ${styles.tdTsai}`}>
                         {review?.customer}
                       </td>
-                      <td className={styles.tdTsai}>
+                      <td className={styles.tdTsai1}>
                         {review?.date
                           ? new Date(review?.date).toLocaleDateString("zh-TW", {
                               year: "numeric",
@@ -149,7 +149,7 @@ const ReviewList = () => {
                         />
                         {review?.rating}
                       </td>
-                      <td className={styles.tdTsai}>{review?.content}</td>
+                      <td className={styles.tdTsai1}>{review?.content}</td>
                       <td className={styles.tdTsai}>
                         {review.reply !== null &&
                         review.reply !== undefined &&

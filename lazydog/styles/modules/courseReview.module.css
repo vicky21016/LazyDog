@@ -239,7 +239,7 @@
   table-layout: fixed;
 } */
 
-.tdTsai {
+.tdTsai, .tdTsai1 {
   /* white-space: normal; */
   word-wrap: break-word;
   text-align: center;
@@ -251,6 +251,14 @@
   padding: 12px auto;
 }
 .thTsai {
+  white-space: nowrap;
+  text-align: center;
+  font-size: 15.5px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  margin: 0 auto;
+}
+.thTsai1 {
   white-space: nowrap;
   text-align: center;
   font-size: 15.5px;
@@ -371,6 +379,12 @@
   .modal-content {
     height: 100vh;
     border-radius: 0;
+  }
+  .thTsai1{
+    display: none;
+  }
+  .tdTsai1{
+    display: none;
   }
 }
 
