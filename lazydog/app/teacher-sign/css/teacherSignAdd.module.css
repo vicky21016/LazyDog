@@ -239,6 +239,7 @@
     text-decoration: none;
     font-weight: 500;
     letter-spacing: 2px;
+    text-wrap: nowrap;
   }
   .cancleBtn:hover {
     background-color: #b1b4b8;
@@ -251,6 +252,7 @@
     color: #ff9538;
     font-weight: 500;
     letter-spacing: 2px;
+    text-wrap: nowrap;
   }
   .submitBtn:hover {
     background-color: #ff9538;
