@@ -12,7 +12,7 @@ LAZYDOG 是一個針對寵物與飼主打造的全方位服務平台，致力於
 
 ## 技術棧
 
-- **前端**：React, Next.js, HTML5, CSS3, Bootstrap 4
+- **前端**：React, Next.js, HTML5, CSS, Bootstrap 
 - **後端**：Node.js, Express
 - **數據庫**：MySQL
 - **API**：RESTful API
